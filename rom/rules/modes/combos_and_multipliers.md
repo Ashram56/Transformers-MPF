@@ -67,8 +67,13 @@ On a major shot:
    **award = M × (100,000 + 25,000 × combo_way)** where M = that shot's multiplier (1, 2, or 3 when the
    roving 3X is on it) [0x01002c7c] [0x01023538]; leff 35, audit 154 (0x9a).
 3. Else (shot not allowed, e.g. left ramp twice): the chain keeps its way count and the window restarts.
-4. In all cases, if no timed mode runs (0x01006704): mask = 0x3f minus the shot if it is the eject or left
-   ramp; combo_ticks = 312; task 0x92 restarted. During a timed mode no new window starts.
+4. In all cases the window tasks 0x92/0x93 are killed; then, if no **multiball** runs (0x01002afc ->
+   `any_multiball_running` 0x01006704): mask = 0x3f minus the shot if it is the eject or left ramp;
+   combo_ticks = 312; task 0x92 restarted. During a multiball no new window starts (a window already open still
+   pays the next shot, then ends). Timed battles, double and fast scoring do not affect combos. Observed: task
+   0x92 restarted at 34.07-64.35 during the Blackout battle (traces/battle_blackout.jsonl, battle from 26.15),
+   but never during Mudflap & Skids (traces/battle_mudflap.jsonl, flag 30 27.34-48.99; next window 54.60) or
+   Optimus A (traces/optimus_autobot.jsonl, flag 31 34.93-81.53).
 - Window: task 0x92 counts combo_ticks down by 7 every 7 ticks (312 ticks = 5.07 s), not counting while
   0x0103a4f0(3) reports the ball held; then task 0x93 keeps the window open **124 more ticks (2.0 s)**.
   Observed: countdown 312 → 0 in 5.1 s (t 30.83 → 35.94); shots 5.7 s and 6.9 s after the previous one still
@@ -152,7 +157,7 @@ On a major shot:
 - Lane lamps 49-52, 8-11 hold the lane state.
 
 ## 9. Interactions
-- No new combo window starts during a timed mode (0x01006704); the multiplier and combo totals feed the combo
+- No new combo window starts during a multiball (0x01002afc -> 0x01006704); the multiplier and combo totals feed the combo
   champion tables (adj 90-95).
 - Left orbit / right orbit / ramp shots also advance the mode-progress ladder 0x01020074 (deff 91 "n MORE ...",
   owned by the mode specs) and the Starscream etc. modes; those awards appear next to the combo award in

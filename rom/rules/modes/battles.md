@@ -131,8 +131,9 @@ ignored while task 0x47 runs (a ball that just came round from the left orbit / 
 needed = 4. (verified: traces/battle_starscream.jsonl 10.52 mode_start_lit 30)
 
 **Qualifying allowed** [0x0101fdac] when all of these hold:
-- `clu_start_allowed` [0x01022ca8]: no timed mode running (`any_timed_mode_running`: battles, double/fast scoring),
-  no battle running [0x01022f64: any record's running fn], side-complete feature not running (flag 0x3c),
+- `clu_start_allowed` [0x01022ca8]: no multiball running (`any_multiball_running` 0x01006704: game flags 0x1e
+  Mudflap & Skids, 0x1f / 0x22 Optimus A / D, 0x25 / 0x29 Megatron A / D, 0x3e wizard multiball), no battle
+  running [0x01022f64: any record's running fn], side-complete feature not running (flag 0x3c),
   `zuse_qualify_enabled` false [0x0100ff80], 0x010363b4 false (wizard);
 - the player's own side is not complete (all 4 own bits in battle_completed) unless flag 0x3d (side-complete
   feature already played) is set; and if the other side is complete too and flag 0x3d set: not allowed;
@@ -282,8 +283,12 @@ Two phases, the phase is kept per player:
 
 ### 5.7 Mudflap & Skids (Autobot 3) [0x01019150, 0x01019294, 0x01019550]
 - A **multiball**, no timer: start = `multiball_start(balls in play + 1, or 2 if none, ..., ball save adj 78 x 62
-  ticks)`; sets flag 0x1e (running), clears 0x1d; clears flag 0x14 when no timed mode runs (so ADD-A-BALL can be
-  awarded). Intro deff 116 from task 0x6e.
+  ticks)`; sets flag 0x1e (running), clears 0x1d. It then calls `any_multiball_running` [0x01006704] to clear flag
+  0x14 (ADD-A-BALL used) only when no multiball runs, but flag 0x1e is already set at that point, so the test is
+  always true and **flag 0x14 is never cleared here** (unlike the Optimus / wizard multiball starts, which test
+  before setting their flag). So in the ROM, ADD-A-BALL stays unavailable in Mudflap & Skids while flag 0x14 is
+  still set from an earlier award. Observed: traces/battle_mudflap.jsonl 27.34 flag 30 set and 29 cleared, no
+  clear of flag 20; compare traces/optimus_autobot.jsonl 34.93 flag 20 cleared by 0x1027ad0. Intro deff 116 from task 0x6e.
 - All six main shots lit; a lit hit unlights it; when all six are made they all relight.
 - Value = min(200,000 + 50,000 x (hits this run + C), 500,000) [0x010190e0, hits 0x35058 counted before the
   value is read, so the first hit of a run is 250,000 with C = 0 - observed]. Shots left 11; when it reaches 0 it is
@@ -360,9 +365,12 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
   started but not completed, solid = completed; the lit battle additionally blinks via leff 104.
 
 ## 9. Interactions
-- Only one battle at a time; while one runs no mode start, no lit-battle rotation, Energon targets pay 5,000
-  (timed mode), the side-complete feature cannot start.
-- Double / fast scoring are timed modes too: while they run no battle can be qualified.
+- Only one battle at a time; while one runs no mode start, no lit-battle rotation, and the side-complete feature
+  cannot start (`zuse_qualify_enabled` 0x0100ff80 needs no timed mode; Mudflap & Skids blocks it as a multiball).
+- Energon targets pay 5,000 only during Mudflap & Skids (a multiball) [0x0103096c]; the seven timed battles leave
+  them normal (observed: traces/switches.jsonl 128.67, Energon lit for 75,000 during the Blackout battle).
+- Double / fast scoring are timed modes but do not block battle qualifying (`clu_start_allowed` has no timed-mode
+  test); they do block the side-complete feature and ADD MORE TIME applies to them.
 - Mudflap & Skids is a multiball: its intro waits for display priority; ADD-A-BALL works during it.
 - ADD MORE TIME (Allspark mystery) is forced whenever a timed battle runs and flag 0x13 is clear.
 - Completions feed the Cybertron wizard (items 1-4 Decepticons, 6-9 Autobots, `FUN_01035af0`), audit counters
