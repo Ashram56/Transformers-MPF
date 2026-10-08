@@ -36,7 +36,7 @@ if __name__ == '__main__':
     with Pool(4) as p: rows = p.map(job, range(len(ents)))
     keys = ['sample','kind','mask','streams','rate','samples','duration_s','rom_len32','rom_duration_s','length_check','loop_start_s','file','script_file_offset','stream_file_offsets']
     with open(os.path.join(OUT, 'samples.csv'), 'w', newline='') as f:
-        w = csv.DictWriter(f, keys, extrasaction='ignore'); w.writeheader()
+        w = csv.DictWriter(f, keys, extrasaction='ignore', lineterminator='\n'); w.writeheader()
         for r in rows:
             r = dict(r); r['sample'] = '0x%03x' % r['sample']; r['mask'] = '0x%02x' % r['mask']; w.writerow(r)
     import collections

@@ -29,7 +29,7 @@ with zipfile.ZipFile(os.path.join(OUT, 'media', 'rom_images_all.zip'), 'w', zipf
         h = H[i]; rows.append(dict(image=i, rid=h['rid'], group=h['group'], flags=h['flags'], w=h['w'], h=h['h'],
                                     format=h['format'], file_offset='0x%x' % h['addr']))
 with open(os.path.join(OUT, 'images.csv'), 'w', newline='') as f:
-    w = csv.DictWriter(f, list(rows[0])); w.writeheader(); w.writerows(rows)
+    w = csv.DictWriter(f, list(rows[0]), lineterminator='\n'); w.writeheader(); w.writerows(rows)
 # animations: runs of consecutive images ending at a flag-2 image, all full height (32), 2+ frames
 anims = []; cur = []
 for i in ids:

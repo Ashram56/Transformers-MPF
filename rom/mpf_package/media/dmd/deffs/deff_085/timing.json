@@ -1,0 +1,3073 @@
+{
+ "deff": 85,
+ "fn": "0x1011d88",
+ "flags": 2,
+ "priority": 196,
+ "background": false,
+ "capture": "fg1",
+ "forced_at_s": 78.1578,
+ "ended_ms": 1321.4,
+ "window_ms": 1350.9,
+ "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
+ "frames": [
+  {
+   "i": 0,
+   "t_ms": 25.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 1,
+   "t_ms": 75.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 2,
+   "t_ms": 125.5,
+   "dur_ms": 33
+  },
+  {
+   "i": 3,
+   "t_ms": 158.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 4,
+   "t_ms": 208.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 5,
+   "t_ms": 258.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 6,
+   "t_ms": 308.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 7,
+   "t_ms": 358.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 8,
+   "t_ms": 408.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 9,
+   "t_ms": 458.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 10,
+   "t_ms": 508.9,
+   "dur_ms": 33
+  },
+  {
+   "i": 11,
+   "t_ms": 542.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 12,
+   "t_ms": 592.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 13,
+   "t_ms": 642.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 14,
+   "t_ms": 692.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 15,
+   "t_ms": 742.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 16,
+   "t_ms": 792.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 17,
+   "t_ms": 842.2,
+   "dur_ms": 33
+  },
+  {
+   "i": 18,
+   "t_ms": 875.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 19,
+   "t_ms": 925.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 20,
+   "t_ms": 975.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 21,
+   "t_ms": 1025.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 22,
+   "t_ms": 1075.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 23,
+   "t_ms": 1125.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 24,
+   "t_ms": 1175.5,
+   "dur_ms": 50
+  },
+  {
+   "i": 25,
+   "t_ms": 1225.5,
+   "dur_ms": 33
+  },
+  {
+   "i": 26,
+   "t_ms": 1258.9,
+   "dur_ms": 63
+  }
+ ],
+ "pages": [
+  {
+   "t_ms": 2.0,
+   "fg": 9,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 0.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 0.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1.0,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 50.0,
+   "fg": 11,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 49.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 49.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 49.2,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 49.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 98.7,
+   "fg": 13,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 97.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 97.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 97.7,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 98.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 98.6,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 146.6,
+   "fg": 15,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 145.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 145.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 145.7,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 146.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 195.1,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 193.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 193.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 194.0,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 194.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 194.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 243.0,
+   "fg": 1,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 241.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 242.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 242.1,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 242.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 291.5,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 290.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 290.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 290.4,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 291.0,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 291.3,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 339.6,
+   "fg": 5,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 338.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 338.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 338.7,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 339.4,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 388.1,
+   "fg": 7,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 386.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 386.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 387.0,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 387.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 387.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 436.2,
+   "fg": 9,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 435.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 435.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 435.2,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 435.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 484.6,
+   "fg": 11,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 483.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 483.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 483.6,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 484.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 484.5,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 532.5,
+   "fg": 13,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 531.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 531.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 531.7,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 532.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 581.1,
+   "fg": 15,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 579.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 579.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 580.1,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 580.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 580.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 629.1,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 628.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 628.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 628.2,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 628.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 677.5,
+   "fg": 1,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 676.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 676.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 676.5,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 677.1,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 677.4,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 725.6,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 724.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 724.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 724.6,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 725.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 774.0,
+   "fg": 5,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 772.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 772.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 773.0,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 773.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 773.8,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 822.2,
+   "fg": 7,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 821.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 821.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 821.4,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 821.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 870.8,
+   "fg": 9,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 869.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 869.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 869.8,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 870.4,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 870.6,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 918.5,
+   "fg": 11,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 917.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 917.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 917.7,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 918.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 966.9,
+   "fg": 13,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 965.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 965.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 965.9,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 966.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 966.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1015.2,
+   "fg": 15,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1014.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1014.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1014.3,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1014.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1063.6,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1062.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1062.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1062.6,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1063.2,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1063.4,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1111.6,
+   "fg": 1,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1110.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1110.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1110.6,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1111.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1160.0,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1158.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1158.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1158.9,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1159.5,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1159.8,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1208.1,
+   "fg": 5,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1206.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1207.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1207.2,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1207.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "lr": "215fc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1256.7,
+   "fg": 7,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1255.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117992,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1255.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1255.6,
+     "str": "ALL HAIL MEGATRON",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1256.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "215fc"
+    },
+    {
+     "t_ms": 1256.6,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1305.4,
+   "fg": 11,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1305.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117968,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1305.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "lr": "216cc"
+    }
+   ]
+  },
+  {
+   "t_ms": 1321.4,
+   "fg": 12,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1321.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117968,
+     "width": -1,
+     "page": 12,
+     "lr": "216cc"
+    },
+    {
+     "t_ms": 1321.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "lr": "216cc"
+    }
+   ]
+  }
+ ],
+ "sounds": [
+  {
+   "t_ms": 0.2,
+   "call": "12c",
+   "via": "SNDPLAY",
+   "deff": 85,
+   "lr": "1011dc4"
+  }
+ ],
+ "leffs": [
+  {
+   "t_ms": 0.1,
+   "leff": 83,
+   "lr": "1011dbc"
+  }
+ ],
+ "events": [
+  {
+   "t_ms": 0.0,
+   "event": 33
+  },
+  {
+   "t_ms": 0.0,
+   "event": 10
+  },
+  {
+   "t_ms": 0.0,
+   "event": 11
+  },
+  {
+   "t_ms": 0.1,
+   "event": 73
+  },
+  {
+   "t_ms": 0.1,
+   "event": 27
+  },
+  {
+   "t_ms": 0.3,
+   "event": 87
+  },
+  {
+   "t_ms": 0.3,
+   "event": 89
+  },
+  {
+   "t_ms": 2.1,
+   "event": 74
+  },
+  {
+   "t_ms": 15.8,
+   "event": 32
+  },
+  {
+   "t_ms": 16.3,
+   "event": 33
+  },
+  {
+   "t_ms": 16.4,
+   "event": 74
+  },
+  {
+   "t_ms": 31.8,
+   "event": 32
+  },
+  {
+   "t_ms": 32.4,
+   "event": 33
+  },
+  {
+   "t_ms": 32.4,
+   "event": 74
+  },
+  {
+   "t_ms": 47.8,
+   "event": 32
+  },
+  {
+   "t_ms": 48.4,
+   "event": 33
+  },
+  {
+   "t_ms": 50.0,
+   "event": 74
+  },
+  {
+   "t_ms": 64.1,
+   "event": 32
+  },
+  {
+   "t_ms": 64.7,
+   "event": 33
+  },
+  {
+   "t_ms": 64.7,
+   "event": 74
+  },
+  {
+   "t_ms": 80.1,
+   "event": 32
+  },
+  {
+   "t_ms": 80.7,
+   "event": 33
+  },
+  {
+   "t_ms": 80.7,
+   "event": 74
+  },
+  {
+   "t_ms": 96.1,
+   "event": 32
+  },
+  {
+   "t_ms": 96.6,
+   "event": 33
+  },
+  {
+   "t_ms": 96.6,
+   "event": 10
+  },
+  {
+   "t_ms": 96.6,
+   "event": 11
+  },
+  {
+   "t_ms": 98.8,
+   "event": 74
+  },
+  {
+   "t_ms": 112.3,
+   "event": 32
+  },
+  {
+   "t_ms": 112.8,
+   "event": 33
+  },
+  {
+   "t_ms": 112.9,
+   "event": 74
+  },
+  {
+   "t_ms": 128.3,
+   "event": 32
+  },
+  {
+   "t_ms": 128.8,
+   "event": 33
+  },
+  {
+   "t_ms": 128.9,
+   "event": 74
+  },
+  {
+   "t_ms": 144.3,
+   "event": 32
+  },
+  {
+   "t_ms": 144.8,
+   "event": 33
+  },
+  {
+   "t_ms": 146.6,
+   "event": 74
+  },
+  {
+   "t_ms": 160.5,
+   "event": 32
+  },
+  {
+   "t_ms": 161.2,
+   "event": 33
+  },
+  {
+   "t_ms": 161.2,
+   "event": 74
+  },
+  {
+   "t_ms": 176.5,
+   "event": 32
+  },
+  {
+   "t_ms": 177.2,
+   "event": 33
+  },
+  {
+   "t_ms": 177.2,
+   "event": 74
+  },
+  {
+   "t_ms": 192.6,
+   "event": 32
+  },
+  {
+   "t_ms": 193.2,
+   "event": 33
+  },
+  {
+   "t_ms": 193.2,
+   "event": 10
+  },
+  {
+   "t_ms": 193.2,
+   "event": 11
+  },
+  {
+   "t_ms": 195.1,
+   "event": 74
+  },
+  {
+   "t_ms": 208.8,
+   "event": 32
+  },
+  {
+   "t_ms": 209.4,
+   "event": 33
+  },
+  {
+   "t_ms": 209.4,
+   "event": 74
+  },
+  {
+   "t_ms": 224.8,
+   "event": 32
+  },
+  {
+   "t_ms": 225.4,
+   "event": 33
+  },
+  {
+   "t_ms": 225.6,
+   "event": 74
+  },
+  {
+   "t_ms": 240.8,
+   "event": 32
+  },
+  {
+   "t_ms": 241.3,
+   "event": 33
+  },
+  {
+   "t_ms": 243.0,
+   "event": 74
+  },
+  {
+   "t_ms": 257.0,
+   "event": 32
+  },
+  {
+   "t_ms": 257.6,
+   "event": 33
+  },
+  {
+   "t_ms": 257.6,
+   "event": 74
+  },
+  {
+   "t_ms": 273.0,
+   "event": 32
+  },
+  {
+   "t_ms": 273.7,
+   "event": 33
+  },
+  {
+   "t_ms": 273.7,
+   "event": 74
+  },
+  {
+   "t_ms": 289.0,
+   "event": 32
+  },
+  {
+   "t_ms": 289.7,
+   "event": 33
+  },
+  {
+   "t_ms": 289.7,
+   "event": 10
+  },
+  {
+   "t_ms": 289.7,
+   "event": 11
+  },
+  {
+   "t_ms": 291.5,
+   "event": 74
+  },
+  {
+   "t_ms": 305.4,
+   "event": 32
+  },
+  {
+   "t_ms": 305.9,
+   "event": 33
+  },
+  {
+   "t_ms": 305.9,
+   "event": 74
+  },
+  {
+   "t_ms": 321.4,
+   "event": 32
+  },
+  {
+   "t_ms": 321.9,
+   "event": 33
+  },
+  {
+   "t_ms": 322.0,
+   "event": 74
+  },
+  {
+   "t_ms": 337.3,
+   "event": 32
+  },
+  {
+   "t_ms": 337.9,
+   "event": 33
+  },
+  {
+   "t_ms": 339.7,
+   "event": 74
+  },
+  {
+   "t_ms": 353.5,
+   "event": 32
+  },
+  {
+   "t_ms": 354.1,
+   "event": 33
+  },
+  {
+   "t_ms": 354.3,
+   "event": 74
+  },
+  {
+   "t_ms": 369.5,
+   "event": 32
+  },
+  {
+   "t_ms": 370.1,
+   "event": 33
+  },
+  {
+   "t_ms": 370.1,
+   "event": 74
+  },
+  {
+   "t_ms": 385.5,
+   "event": 32
+  },
+  {
+   "t_ms": 386.1,
+   "event": 33
+  },
+  {
+   "t_ms": 386.2,
+   "event": 10
+  },
+  {
+   "t_ms": 386.2,
+   "event": 11
+  },
+  {
+   "t_ms": 388.1,
+   "event": 74
+  },
+  {
+   "t_ms": 401.8,
+   "event": 32
+  },
+  {
+   "t_ms": 402.4,
+   "event": 33
+  },
+  {
+   "t_ms": 402.5,
+   "event": 74
+  },
+  {
+   "t_ms": 417.8,
+   "event": 32
+  },
+  {
+   "t_ms": 418.4,
+   "event": 33
+  },
+  {
+   "t_ms": 418.5,
+   "event": 74
+  },
+  {
+   "t_ms": 433.9,
+   "event": 32
+  },
+  {
+   "t_ms": 434.4,
+   "event": 33
+  },
+  {
+   "t_ms": 436.2,
+   "event": 74
+  },
+  {
+   "t_ms": 450.1,
+   "event": 32
+  },
+  {
+   "t_ms": 450.7,
+   "event": 33
+  },
+  {
+   "t_ms": 450.7,
+   "event": 74
+  },
+  {
+   "t_ms": 466.1,
+   "event": 32
+  },
+  {
+   "t_ms": 466.8,
+   "event": 33
+  },
+  {
+   "t_ms": 466.9,
+   "event": 74
+  },
+  {
+   "t_ms": 482.0,
+   "event": 32
+  },
+  {
+   "t_ms": 482.6,
+   "event": 33
+  },
+  {
+   "t_ms": 482.6,
+   "event": 10
+  },
+  {
+   "t_ms": 482.6,
+   "event": 11
+  },
+  {
+   "t_ms": 484.6,
+   "event": 74
+  },
+  {
+   "t_ms": 498.3,
+   "event": 32
+  },
+  {
+   "t_ms": 498.8,
+   "event": 33
+  },
+  {
+   "t_ms": 498.9,
+   "event": 74
+  },
+  {
+   "t_ms": 514.3,
+   "event": 32
+  },
+  {
+   "t_ms": 514.8,
+   "event": 33
+  },
+  {
+   "t_ms": 515.0,
+   "event": 74
+  },
+  {
+   "t_ms": 530.3,
+   "event": 32
+  },
+  {
+   "t_ms": 530.9,
+   "event": 33
+  },
+  {
+   "t_ms": 532.5,
+   "event": 74
+  },
+  {
+   "t_ms": 546.5,
+   "event": 32
+  },
+  {
+   "t_ms": 547.2,
+   "event": 33
+  },
+  {
+   "t_ms": 547.2,
+   "event": 74
+  },
+  {
+   "t_ms": 562.6,
+   "event": 32
+  },
+  {
+   "t_ms": 563.2,
+   "event": 33
+  },
+  {
+   "t_ms": 563.2,
+   "event": 74
+  },
+  {
+   "t_ms": 578.6,
+   "event": 32
+  },
+  {
+   "t_ms": 579.2,
+   "event": 33
+  },
+  {
+   "t_ms": 579.2,
+   "event": 10
+  },
+  {
+   "t_ms": 579.2,
+   "event": 11
+  },
+  {
+   "t_ms": 581.1,
+   "event": 74
+  },
+  {
+   "t_ms": 594.8,
+   "event": 32
+  },
+  {
+   "t_ms": 595.4,
+   "event": 33
+  },
+  {
+   "t_ms": 595.4,
+   "event": 74
+  },
+  {
+   "t_ms": 610.8,
+   "event": 32
+  },
+  {
+   "t_ms": 611.3,
+   "event": 33
+  },
+  {
+   "t_ms": 611.6,
+   "event": 74
+  },
+  {
+   "t_ms": 626.8,
+   "event": 32
+  },
+  {
+   "t_ms": 627.3,
+   "event": 33
+  },
+  {
+   "t_ms": 629.1,
+   "event": 74
+  },
+  {
+   "t_ms": 643.0,
+   "event": 32
+  },
+  {
+   "t_ms": 643.6,
+   "event": 33
+  },
+  {
+   "t_ms": 643.7,
+   "event": 74
+  },
+  {
+   "t_ms": 659.0,
+   "event": 32
+  },
+  {
+   "t_ms": 659.7,
+   "event": 33
+  },
+  {
+   "t_ms": 659.7,
+   "event": 74
+  },
+  {
+   "t_ms": 675.0,
+   "event": 32
+  },
+  {
+   "t_ms": 675.7,
+   "event": 33
+  },
+  {
+   "t_ms": 675.7,
+   "event": 10
+  },
+  {
+   "t_ms": 675.7,
+   "event": 11
+  },
+  {
+   "t_ms": 677.6,
+   "event": 74
+  },
+  {
+   "t_ms": 691.4,
+   "event": 32
+  },
+  {
+   "t_ms": 691.9,
+   "event": 33
+  },
+  {
+   "t_ms": 692.0,
+   "event": 74
+  },
+  {
+   "t_ms": 707.3,
+   "event": 32
+  },
+  {
+   "t_ms": 707.9,
+   "event": 33
+  },
+  {
+   "t_ms": 707.9,
+   "event": 74
+  },
+  {
+   "t_ms": 723.3,
+   "event": 32
+  },
+  {
+   "t_ms": 723.9,
+   "event": 33
+  },
+  {
+   "t_ms": 725.6,
+   "event": 74
+  },
+  {
+   "t_ms": 739.5,
+   "event": 32
+  },
+  {
+   "t_ms": 740.1,
+   "event": 33
+  },
+  {
+   "t_ms": 740.3,
+   "event": 74
+  },
+  {
+   "t_ms": 755.5,
+   "event": 32
+  },
+  {
+   "t_ms": 756.1,
+   "event": 33
+  },
+  {
+   "t_ms": 756.1,
+   "event": 74
+  },
+  {
+   "t_ms": 771.5,
+   "event": 32
+  },
+  {
+   "t_ms": 772.2,
+   "event": 33
+  },
+  {
+   "t_ms": 772.2,
+   "event": 10
+  },
+  {
+   "t_ms": 772.2,
+   "event": 11
+  },
+  {
+   "t_ms": 774.0,
+   "event": 74
+  },
+  {
+   "t_ms": 787.8,
+   "event": 32
+  },
+  {
+   "t_ms": 788.4,
+   "event": 33
+  },
+  {
+   "t_ms": 788.5,
+   "event": 74
+  },
+  {
+   "t_ms": 803.9,
+   "event": 32
+  },
+  {
+   "t_ms": 804.4,
+   "event": 33
+  },
+  {
+   "t_ms": 804.5,
+   "event": 74
+  },
+  {
+   "t_ms": 819.9,
+   "event": 32
+  },
+  {
+   "t_ms": 820.4,
+   "event": 33
+  },
+  {
+   "t_ms": 822.2,
+   "event": 74
+  },
+  {
+   "t_ms": 836.1,
+   "event": 32
+  },
+  {
+   "t_ms": 836.6,
+   "event": 33
+  },
+  {
+   "t_ms": 836.7,
+   "event": 74
+  },
+  {
+   "t_ms": 852.0,
+   "event": 32
+  },
+  {
+   "t_ms": 852.6,
+   "event": 33
+  },
+  {
+   "t_ms": 852.6,
+   "event": 74
+  },
+  {
+   "t_ms": 868.0,
+   "event": 32
+  },
+  {
+   "t_ms": 868.6,
+   "event": 33
+  },
+  {
+   "t_ms": 868.6,
+   "event": 10
+  },
+  {
+   "t_ms": 868.6,
+   "event": 11
+  },
+  {
+   "t_ms": 870.8,
+   "event": 74
+  },
+  {
+   "t_ms": 884.3,
+   "event": 32
+  },
+  {
+   "t_ms": 884.8,
+   "event": 33
+  },
+  {
+   "t_ms": 884.9,
+   "event": 74
+  },
+  {
+   "t_ms": 900.3,
+   "event": 32
+  },
+  {
+   "t_ms": 900.9,
+   "event": 33
+  },
+  {
+   "t_ms": 901.0,
+   "event": 74
+  },
+  {
+   "t_ms": 916.3,
+   "event": 32
+  },
+  {
+   "t_ms": 916.9,
+   "event": 33
+  },
+  {
+   "t_ms": 918.5,
+   "event": 74
+  },
+  {
+   "t_ms": 932.6,
+   "event": 32
+  },
+  {
+   "t_ms": 933.2,
+   "event": 33
+  },
+  {
+   "t_ms": 933.2,
+   "event": 74
+  },
+  {
+   "t_ms": 948.6,
+   "event": 32
+  },
+  {
+   "t_ms": 949.2,
+   "event": 33
+  },
+  {
+   "t_ms": 949.2,
+   "event": 74
+  },
+  {
+   "t_ms": 964.6,
+   "event": 32
+  },
+  {
+   "t_ms": 965.1,
+   "event": 33
+  },
+  {
+   "t_ms": 965.2,
+   "event": 10
+  },
+  {
+   "t_ms": 965.2,
+   "event": 11
+  },
+  {
+   "t_ms": 967.1,
+   "event": 74
+  },
+  {
+   "t_ms": 980.8,
+   "event": 32
+  },
+  {
+   "t_ms": 981.4,
+   "event": 33
+  },
+  {
+   "t_ms": 981.4,
+   "event": 74
+  },
+  {
+   "t_ms": 996.8,
+   "event": 32
+  },
+  {
+   "t_ms": 997.3,
+   "event": 33
+  },
+  {
+   "t_ms": 997.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1012.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1013.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1015.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1029.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1029.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1029.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1045.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1045.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1045.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1061.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1061.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1061.7,
+   "event": 10
+  },
+  {
+   "t_ms": 1061.7,
+   "event": 11
+  },
+  {
+   "t_ms": 1063.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1077.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1077.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1077.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1093.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1093.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1093.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1109.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1109.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1111.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1125.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1126.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1126.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1141.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1142.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1142.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1157.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1158.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1158.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1158.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1160.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1173.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1174.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1174.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1189.9,
+   "event": 32
+  },
+  {
+   "t_ms": 1190.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1190.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1205.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1206.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1208.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1222.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1222.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1222.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1238.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1238.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1238.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1254.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1254.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1254.6,
+   "event": 10
+  },
+  {
+   "t_ms": 1254.6,
+   "event": 11
+  },
+  {
+   "t_ms": 1256.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1270.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1270.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1271.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1286.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1286.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1287.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1302.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1302.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1305.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1318.4,
+   "event": 32
+  },
+  {
+   "t_ms": 1318.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1321.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1334.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1334.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1334.9,
+   "event": 73
+  },
+  {
+   "t_ms": 1335.1,
+   "event": 73
+  },
+  {
+   "t_ms": 1335.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1350.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1350.3,
+   "event": 27
+  },
+  {
+   "t_ms": 1350.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1350.9,
+   "event": 10
+  },
+  {
+   "t_ms": 1350.9,
+   "event": 11
+  }
+ ]
+}
