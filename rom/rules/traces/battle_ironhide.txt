@@ -1,0 +1,41 @@
+# Ironhide (Autobot side, POKED: battle_lit=0x20). Level patterns: center; left+right ramp; orbits+center
+autoplunge 0
+start 1
+wait 3
+button left
+wait 1
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_32
+poke 2111ecc 32 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark ih_hit_center
+hit 11
+wait 3
+mark ih_hit_left_ramp
+hit 10
+wait 2
+mark ih_hit_right_ramp
+hit 14
+wait 2
+mark ih_hit_left_orbit
+hit 5
+wait 2
+mark poke_remaining_1
+poke 2111e8c 1 1
+mark ih_hit_center_completes
+hit 11
+wait 12
+drain
+wait 6

@@ -1,0 +1,40 @@
+# Ratchet (Autobot side, POKED: battle_lit=0x80). All six lit, lowest lit shot doubles; ended by a drain
+autoplunge 0
+start 1
+wait 3
+button left
+wait 1
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_128
+poke 2111ecc 128 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark ra_hit_left_orbit
+hit 5
+wait 2
+mark ra_hit_allspark_double
+hit 3
+wait 4
+mark ra_hit_left_ramp_double
+hit 10
+wait 2
+mark ra_hit_right_ramp
+hit 14
+wait 2
+mark ra_hit_left_ramp_unlit
+hit 10
+wait 2
+mark ra_drain_ends_battle
+drain
+wait 12

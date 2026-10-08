@@ -76,6 +76,19 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
   (0x21660, 0x215ac, 0x217b4, 0x2174c message id; 0x21838, 0x21a78, 0x21b4c string or format), so 95% of text
   draws carry the format behind them (e.g. `%,02lu`, `VOLUME %d`). Effects 48, 95, 129 and 135 keep the earlier
   capture without sources (they did not render in the re-run).
+- **Printed values and fit fonts (code + observed).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
+  DECOMP OUT_CSV [tracer logs]`) also walks tasks the effect starts. It has four more columns. `call_site` is the
+  helper's return address (BL + 4, same as `call_site`/`lr` in captures). `args` gives one entry per printf
+  vararg, paired with its % conversion (`%P` = the ROM's plural/ordinal chooser, which also takes an argument). Each
+  entry is the value's source read back from the call site: a RAM address with its name when known, a call `fn()@addr`
+  (small getters inlined as `{= expr}`), a constant, a loop counter, or `deff task arg (task+0x30)` with the
+  direct `deff_start` caller that stores it. `args_observed` lists the values the helper received in the
+  emulator. The tracer logs the first four vararg words: entry sp+12 for 0x21660/0x21a78 (7 fixed arguments)
+  and sp+16 for 0x217b4 (8). Env `POKE=addr=value[:size],...` writes RAM before each forced effect, so a value
+  can be tied to its address. `font_list` decodes a pointer font operand, a 0-terminated u32 list of font ids.
+  `text_draw_str_fit` (0x21b90) tries the ids in order and uses the first whose `text_width` is at most the width
+  argument. With width 0, it uses the first id that fits the 128-px screen for the alignment flags. Font 0 ends the
+  list and is used if nothing else fits.
 - **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
   status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
   GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.

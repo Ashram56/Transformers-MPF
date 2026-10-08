@@ -1,0 +1,51 @@
+# Autobot side (left flipper on the choose-side screen): four mode-start shots start Bumblebee;
+# all six shots lit (phase 1), then the Bumblebee target (phase 2) completes it
+autoplunge 0
+start 1
+wait 3
+button left
+wait 1
+plunge
+wait 2
+hit 26
+wait 2
+mark qualify_1_left_orbit
+hit 5
+wait 2
+mark qualify_2_left_ramp
+hit 10
+wait 2
+mark qualify_3_right_ramp
+hit 14
+wait 2
+mark qualify_4_right_orbit
+hit 12
+wait 7
+mark bb_allspark
+hit 3
+wait 3
+mark bb_left_orbit
+hit 5
+wait 2
+mark bb_left_ramp
+hit 10
+wait 2
+mark bb_right_ramp
+hit 14
+wait 2
+mark bb_right_orbit
+hit 12
+wait 2
+mark bb_unlit_right_ramp
+hit 14
+wait 2
+mark bb_center_last_phase1
+hit 11
+wait 4
+mark bb_phase2_bumblebee_target
+hit 1
+wait 8
+mark next_lit_battle_check
+wait 2
+drain
+wait 6

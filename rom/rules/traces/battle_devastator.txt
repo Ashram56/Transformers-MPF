@@ -1,0 +1,43 @@
+# Devastator (POKED: battle_lit=8). Right orbit, then a rover moved by the pop bumpers starting at the Allspark
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_8
+poke 2111ecc 8 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark dv_hit_right_orbit
+hit 12
+wait 3
+mark dv_hit_allspark_rover
+hit 3
+wait 4
+mark dv_right_orbit_again
+hit 12
+wait 3
+mark dv_bumper_moves_rover
+hit 30
+wait 1
+hit 30
+wait 1
+mark dv_hit_left_ramp_rover
+hit 10
+wait 2
+mark poke_remaining_1
+poke 2111e54 1 1
+hit 12
+wait 12
+drain
+wait 6

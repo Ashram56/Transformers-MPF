@@ -1,5 +1,7 @@
 // tf_180 display-effect tracer (port of the Tron mpf_package/tools/tracer.cpp).
 // usage: tracer MODE DUR LOG DMD [deff ids...]   MODE = attract | game (force deffs during a running game)
+// env POKE="addr=value[:size],..." writes RAM (size 1/2/4 bytes, default 4) just before each forced deff starts,
+// so the logged printf arguments (TXTSRC ... args=) can be matched to the RAM they were read from.
 #include "common.h"
 // ---- tf_180 addresses (code)
 #define A_TASK_SLEEP 0xacfc
@@ -22,6 +24,8 @@
 static FILE* LOG; static FILE* DMD;
 static std::vector<int> force; static size_t forceIdx=0; static std::atomic<int> forceArmed{0};
 static double nextForce=0, forceT=0; static int curForce=-1; static int injecting=0; static unsigned sv[16];
+struct Poke{ unsigned a,v,n; }; static std::vector<Poke> pokes;
+static void do_pokes(){ for(auto&p:pokes){ for(unsigned i=0;i<p.n;i++){ if(p.n==4 && i==0 && !(p.a&3)){ PinmameArmWrite32(p.a,p.v); break; } PinmameArmWrite8(p.a+i,(p.v>>(8*i))&0xff);} } }
 static unsigned r16(unsigned a){ return PinmameArmRead8(a) | (PinmameArmRead8(a+1)<<8); }
 static void curdeff(unsigned &task, unsigned &did, unsigned &fn){ task=PinmameArmRead32(R_CUR_TASK); if(task){ did=r16(task+0x24); fn=PinmameArmRead32(task+4);} else {did=0;fn=0;} }
 static void hook(unsigned pc, unsigned* r){
@@ -37,7 +41,7 @@ static void hook(unsigned pc, unsigned* r){
     if(forceArmed && forceIdx<force.size() && curForce<0 && t>nextForce){
       curForce=force[forceIdx++]; forceT=t;
       for(int i=0;i<16;i++) sv[i]=r[i];
-      r[0]=curForce; r[1]=0; r[2]=1; r[14]=A_TASK_SLEEP; r[15]=A_DEFF_START; injecting=1;
+      do_pokes(); r[0]=curForce; r[1]=0; r[2]=1; r[14]=A_TASK_SLEEP; r[15]=A_DEFF_START; injecting=1;
       fprintf(LOG,"%.4f FORCE %d\n",t,curForce);
     }
     break; }
@@ -55,9 +59,13 @@ static void hook(unsigned pc, unsigned* r){
   case 0x21660: case 0x215ac: case 0x217b4: case 0x2174c: case 0x21838: case 0x21a78: case 0x21b4c: {
     unsigned tk,d,f; curdeff(tk,d,f); if(!d) break;
     int isMsg = pc==0x21660||pc==0x215ac||pc==0x217b4||pc==0x2174c;
-    if(isMsg){ fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x msg=%u\n",emu(),pc,d,tk,r[14],r[0]&0xffff); break; }
+    // printf helpers: varargs are on the stack after the fixed (x, y, color[, width]) words: entry sp+12 for
+    // 0x21660 / 0x21a78 (7 fixed args), sp+16 for 0x217b4 (8 fixed args); log the first 4 words
+    char av[96]=""; if(pc==0x21660||pc==0x21a78||pc==0x217b4){ unsigned va=r[13]+(pc==0x217b4?16:12);
+      snprintf(av,sizeof av," args=%u,%u,%u,%u",PinmameArmRead32(va),PinmameArmRead32(va+4),PinmameArmRead32(va+8),PinmameArmRead32(va+12)); }
+    if(isMsg){ fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x msg=%u%s\n",emu(),pc,d,tk,r[14],r[0]&0xffff,av); break; }
     char buf[160]; int k=0; for(;k<159;k++){ unsigned ch=PinmameArmRead8(r[0]+k); if(!ch) break; buf[k]=(ch=='\n')?'|':(ch=='"'?'\'':(ch<32||ch>126?'?':ch));} buf[k]=0;
-    fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x str=\"%s\"\n",emu(),pc,d,tk,r[14],buf); break; }
+    fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x str=\"%s\"%s\n",emu(),pc,d,tk,r[14],buf,av); break; }
   case A_EVENT: fprintf(LOG,"%.4f EVENT %u\n",emu(),r[0]); break;
   case A_AUDIT: fprintf(LOG,"%.4f AUDIT %u lr=%x\n",emu(),r[0],r[14]); break;
   }
@@ -68,6 +76,8 @@ int main(int argc,char**argv){
   const char* mode=argv[1]; double dur=atof(argv[2]);
   LOG=fopen(argv[3],"w"); DMD=fopen(argv[4],"wb"); g_dmd_cb=dmdcb;
   for(int i=5;i<argc;i++) force.push_back(atoi(argv[i]));
+  if(getenv("POKE")){ char* e=strdup(getenv("POKE")); for(char* t=strtok(e,",");t;t=strtok(0,",")){ Poke p{0,0,4}; char* q=strchr(t,'='); if(!q) continue;
+      p.a=strtoul(t,0,0); p.v=strtoul(q+1,&q,0); if(*q==':') p.n=atoi(q+1); pokes.push_back(p); } }
   if(start_pinmame("tf_180",hook)) return 1;
   waitemu(0.5); for(int s:{18,19,20,21}) PinmameSetSwitch(s,1);
   waitemu(8);
