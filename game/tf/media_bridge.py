@@ -55,8 +55,8 @@ def format_rom_text(line, args):
     return SPEC.sub(sub, line)
 
 
-# Deffs drawn as ROM draw lists (tf/score_screen.py, interim layouts) while the package has no frames for them
-DRAWN = (19, 1)
+# Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
+DRAWN = (19,)
 
 
 class MediaBridge:
@@ -74,9 +74,6 @@ class MediaBridge:
         self.music_key = None
         self.service_shown = False
         self.counters = {}
-        self.last_scores = {}
-        self.award = (0, None, None)               # last points, shown since, blink counter since
-        self.bar_max = {}
         self._refresh = None
         self.active = set()                        # deffs on screen that draw the status panel or live values
         self.started = {}                          # deff id -> the args of its last start
@@ -88,6 +85,9 @@ class MediaBridge:
         self.shown = set()                         # deff and text slides playing now
         self.kept = None                           # the last one, stopped but left up until the next plays
         self.drawn = set()                         # deffs shown by deff_draw (rom_screen) in place of their frames
+        self.drawn_since = {}                      # deff in DRAWN -> when it started
+        self.drawn_last = None
+        self._drawn_timer = None
 
     # ------------------------------------------------------------------ transport
 
@@ -123,7 +123,7 @@ class MediaBridge:
             args = dict(args, **live())
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
         if not info["text"]:
-            return dict(self.score_display_args() if info.get("panel") else {}, **passed)
+            return dict(self.panel_args(info), **passed)
         if deff_id in TEXT_ARGS:
             values = [args.get(k) for k in TEXT_ARGS[deff_id]]
         else:
@@ -131,7 +131,7 @@ class MediaBridge:
         if deff_id == 19:                              # score display: ball number and score
             values = [self.machine.game.player.ball if self.os.game and self.os.game.player else 0,
                       self.os.game.player.score if self.os.game and self.os.game.player else 0]
-        out = dict(self.score_display_args() if info.get("panel") else {}, **passed)
+        out = dict(self.panel_args(info), **passed)
         for i, line in enumerate(info["text"]):
             n = sum(1 for spec in SPEC.findall(line) if not spec.startswith("P"))   # %P picks by the last number
             if n and len(values) < n:              # value not reported by the rules: leave the line blank
@@ -145,15 +145,19 @@ class MediaBridge:
 
     def deff_start(self, deff_id, priority, **args):
         info = self.data["deffs"].get(deff_id) if self.data else None
-        if not info and deff_id in DRAWN:                # no captured frames yet: the interim draw list
+        if deff_id in DRAWN:                             # drawn live from its draw calls
             self.drawn.add(deff_id)
-            self.text_show("rom_screen", [], priority, draw=self.drawn_screen(deff_id))
+            self.drawn_since[deff_id] = self.machine.clock.get_time()
+            self.drawn_last = self.drawn_screen(deff_id)
+            self.text_show("rom_screen", [], priority, draw=self.drawn_last)
+            if self._drawn_timer is None and self.connected(need_data=False):
+                self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, 0.1)
             return
         if not info:
             return
         slide = info["slide"]
         self.started[deff_id] = args
-        if info.get("panel") or deff_id in getattr(self.os, "deff_values", {}):
+        if info.get("panel") is not None or deff_id in getattr(self.os, "deff_values", {}):
             self.active.add(deff_id)
             if self._refresh is None and self.connected():   # timer bars move between scores
                 self._refresh = self.machine.clock.schedule_interval(self.score_changed, 0.25)
@@ -168,19 +172,32 @@ class MediaBridge:
         self.active.discard(deff_id)
         if deff_id in self.drawn:
             self.drawn.discard(deff_id)
+            if self._drawn_timer is not None and not self.drawn & set(DRAWN):
+                self.machine.clock.unschedule(self._drawn_timer)
+                self._drawn_timer = None
             self._remove("rom_screen")
         elif info:
             self._remove(info["slide"])
 
-    def drawn_screen(self, deff_id):
-        """The interim screen of a deff in DRAWN (tf/score_screen.py)."""
+    def scores(self):
+        game = self.os.game
+        return [p.score for p in game.player_list] if game else []
+
+    def panel_args(self, info):
+        """The live status panel of a deff that draws it (tf/score_screen.py panel_draw, at the deff's level)."""
+        if not info or info.get("panel") is None:
+            return {}
         from tf import score_screen
-        if deff_id == 19:
-            game = self.os.game
-            players = [p.score for p in game.player_list] if game else []
-            ball = game.player.ball if game and game.player else 1
-            return score_screen.score_draw(players, self.os.player_num or 1, ball, self.credits_text())
-        return score_screen.attract_draw(self.credits_text())
+        return {"draw": score_screen.panel_draw(self.scores(), self.os.player_num or 1, info["panel"])}
+
+    def drawn_screen(self, deff_id):
+        """The screen of a deff in DRAWN (tf/score_screen.py): the score display."""
+        from tf import score_screen
+        game = self.os.game
+        ball = game.player.ball if game and game.player else 1
+        ticks = int((self.machine.clock.get_time() - self.drawn_since.get(deff_id, 0)) / TICK)
+        return score_screen.score_draw(self.scores(), self.os.player_num or 1, ball, self.credits_text(),
+                                       self.replay_text() if game else "", ticks)
 
     def deff_draw(self, deff_id, priority, draw):
         """A running deff whose next screen its captured frames do not hold (deff 4 dims after 30 s): the ROM
@@ -237,66 +254,36 @@ class MediaBridge:
                 return "REPLAY AT " + format_rom_text("%,02lu", [level])
         return ""
 
-    def _bar(self, key, seconds, start=0):
-        """Timer bar length 0-10: seconds * 10 / start (FUN_01022ffc keeps the larger of both)."""
-        top = max(self.bar_max.get(key, 0) if seconds else 0, start, seconds)
-        self.bar_max[key] = top
-        return seconds * 10 // top if top else 0
-
-    def score_display_args(self):
-        """Event args of deff 19 beyond line0/line1, for tf/score_display.gd."""
-        game = self.os.game
-        players = game.player_list if game else []
-        now = self.machine.clock.get_time()
-        current = self.os.player_num
-        if current and players:                      # last points: the current player's score change
-            score = players[current - 1].score
-            delta = score - self.last_scores.get(current, score)
-            self.last_scores[current] = score
-            value, shown, _ = self.award
-            if delta > 0:
-                age = (now - shown) / TICK if shown is not None else 99
-                self.award = (value, shown, now) if age < 16 and delta < value else (delta, now, now)
-        value, shown, blink = self.award
-        out = {"players": max(len(players), 1), "player": current or 1,
-               "valid": bool(getattr(self.os, "ball_validated", False)) or not game,
-               "credits": self.credits_text(), "replay": self.replay_text() if game else "",
-               "award": format_rom_text("%,02lu", [value]) if value else "",
-               "award_age": int((now - shown) / TICK) if shown is not None else 99,
-               "blink_age": int((now - blink) / TICK) if blink is not None else 999}
-        for p in range(1, 5):
-            out["p%d" % p] = format_rom_text("%,02lu", [players[p - 1].score]) if p <= len(players) else ""
-        # the game's own status panel values (Tron: its timer bars), from the features (hook score_panel)
-        for key, seconds in (self.os.hook("score_panel") or {}).items() if hasattr(self.os, "hook") else ():
-            out[key] = self._bar(key, seconds)
-        return out
+    def redraw(self, *_):
+        """A drawn deff's screen again (scores, credits, the replay row's phase), sent when it changed."""
+        for deff_id in DRAWN:
+            if deff_id in self.drawn:
+                draw = self.drawn_screen(deff_id)
+                if draw != self.drawn_last:
+                    self.drawn_last = draw
+                    self._send("slides_play", {"rom_screen": {"action": "update", "key": "rom_screen",
+                                                              "expire": None}}, need_data=False, draw=draw)
 
     def score_changed(self, *_):
         """Score flush (and every 0.25 s while a panel shows): refresh the score display and the
         status panel of the effects on screen."""
-        for deff_id in DRAWN:
-            if deff_id in self.drawn:
-                self._send("slides_play", {"rom_screen": {"action": "update", "key": "rom_screen", "expire": None}},
-                           need_data=False, draw=self.drawn_screen(deff_id))
+        self.redraw()
         if not self.data:
             return
         args = None
-        for deff_id in sorted(self.active | ({19} if self.os.display.bg == 19 else set())):
+        for deff_id in sorted(self.active):
             info = self.data["deffs"].get(deff_id)
             live = deff_id in getattr(self.os, "deff_values", {})
-            if not info or not (info.get("panel") or live):
+            if not info or not (info.get("panel") is not None or live):
                 continue
-            args = self.score_display_args() if args is None else args
-            mine = dict(args) if info.get("panel") else {}
-            if deff_id == 19 or live:
-                # its own lines only: BALL n / score for deff 19, fresh RAM values for a live deff (one
-                # effect's lines never go to another: they share the names line0, line1, ...)
+            mine = self.panel_args(info)
+            if live:
+                # its own lines only: fresh RAM values for a live deff (one effect's lines never go to
+                # another: they share the names line0, line1, ...)
                 mine.update({k: v for k, v in self.deff_lines(deff_id, self.started.get(deff_id, {})).items()
                              if k.startswith("line") or k == "screen"})
             self._send("slides_play", {info["slide"]: {"action": "update", "key": info["slide"],
                                                        "expire": None}}, **mine)
-        if args is None:
-            self.score_display_args()                  # keep the last-points tracking current
 
     # ------------------------------------------------------------------ service menu
 

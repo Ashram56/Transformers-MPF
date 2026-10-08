@@ -22,7 +22,7 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 |---|---|
 | OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code) |
 | Devices | ROM names and numbers (rom/mpf_package); trough, shooter lane, left eject, Megatron lock |
-| Display | ROM fonts (all 27, from the font table) and the ROM images; score display and attract are **interim layouts** until the display effects are captured |
+| Display | ROM fonts (all 27); one slide per captured display effect (113, the ROM's frames and timing) with the live status panel; score display drawn from its captured draw calls. Values inside other effects are still the capture's |
 | Sound | every ROM sample, one pool per sound call; music intros play once and the body loops |
 | Rules, scoring, lamp effects, coil times | waiting on the ROM extraction's specs and captures |
 | Hardware | virtual (desktop + MPF Monitor) by default; P-ROC numbers generated (game/config/rom/proc_numbers.yaml); VPX bridge is agent D's |

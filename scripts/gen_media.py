@@ -9,11 +9,10 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/fonts/                        the ROM fonts (scripts/gen_fonts.py)
 - game/tf/media_data.json            sound pools (one per ROM sound call) and display effect facts for
                                      tf/media_bridge.py
+- game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each captured display effect
+- game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs)
 
-Display effects: none yet. The package has the ROM's images and animations but not which deff plays which
-frames, at what timing, with what text (the ROM extraction's display captures, pending). Until then
-tf/media_bridge.py draws the score display (deff 19) and attract (deff 1) from ROM fonts (tf/score_screen.py)
-and the other deffs show nothing (the previous screen stays, as on the ROM between effects).
+The score display (deff 19) is drawn live from its draw calls (tf/score_screen.py).
 
 Usage: .venv/bin/python scripts/gen_media.py [--only-data]
 """
@@ -94,9 +93,121 @@ def build_sounds(only_data):
     return pools
 
 
+DMD_COLOR = "Color(1, 0.45, 0.05, 1)"
+DEFFS = os.path.join(PKG, "media", "dmd", "deffs")
+PANEL_LR = "216cc"          # return address of the status panel's score draw in the captures' text records
+PANEL_WIDTH = 41            # columns 0-40: the panel and its separator
+
+
+def deff_rows():
+    import csv
+    with open(os.path.join(PKG, "event_map.csv"), encoding="utf-8") as f:
+        return {int(r["deff"]): r for r in csv.DictReader(f)}
+
+
+def capture_frames(folder, timing):
+    """[(RGBA image, ms)] of the capture: grey levels (level x 17) as white with the level in every channel,
+    so the slide's DMD tint gives the colour."""
+    from PIL import Image
+    out = []
+    for f in timing.get("frames") or []:
+        img = Image.open(os.path.join(folder, "frames", "%04d.png" % f["i"])).convert("L")
+        out.append((Image.merge("RGBA", (img, img, img, Image.new("L", img.size, 255))), max(1, int(f["dur_ms"]))))
+    return out
+
+
+def panel_level(timing, frames):
+    """The palette level the deff draws the status panel at (None: no panel). The capture's panel shows one
+    player's score: its brightest dot in columns 0-38 is the level (deff 38 draws it dim)."""
+    texts = [t for p in timing.get("pages") or [] for t in p["texts"]]
+    if not any(str(t.get("lr")) == PANEL_LR and t["x"] == 38 for t in texts):
+        return None
+    top = max((img.crop((0, 0, PANEL_WIDTH - 2, 32)).getextrema()[0][1] for img, _ in frames), default=255)
+    return max(1, round(top / 17)) if top else 15
+
+
+def loop_period(frames):
+    """The shortest run of frames that repeats through the whole recording, or None (a looping deff's capture
+    stops mid-cycle: looping the whole recording would jump back from the middle of the cycle)."""
+    import hashlib
+    h = [hashlib.md5(img.tobytes()).hexdigest() for img, _ in frames]
+    n = len(h)
+    return next((p for p in range(1, n // 2 + 1) if all(h[i] == h[i + p] for i in range(n - p))), None)
+
+
+def write_slide(deff_id, frames, loop, folder_rel, panel):
+    import hashlib
+    name = "deff_{:03d}".format(deff_id)
+    ext, entries, seen = [], [], {}
+    for img, ms in frames:
+        digest = hashlib.md5(img.tobytes()).hexdigest()
+        if digest not in seen:
+            fname = "f{:03d}.png".format(len(seen))
+            img.save(os.path.join(GAME, folder_rel, fname))
+            seen[digest] = "t{}".format(len(seen))
+            ext.append('[ext_resource type="Texture2D" path="res://{}/{}" id="{}"]'.format(folder_rel, fname,
+                                                                                         seen[digest]))
+        entries.append('{{"duration": {:.1f}, "texture": ExtResource("{}")}}'.format(ms, seen[digest]))
+    parts = ['[gd_scene load_steps={} format=3]'.format(len(ext) + 3 + (1 if panel is not None else 0)), '',
+             '[ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_slide.gd" id="slide"]']
+    if panel is not None:
+        parts.append('[ext_resource type="Script" path="res://tf/rom_screen.gd" id="screen"]')
+    parts += ext
+    parts += ['', '[sub_resource type="SpriteFrames" id="frames"]',
+              'animations = [{{"frames": [{}], "loop": {}, "name": &"default", "speed": 1000.0}}]'.format(
+                  ", ".join(entries), "true" if loop else "false")]
+    parts += ['', '[node name="{}" type="Control"]'.format(name), 'layout_mode = 3', 'anchors_preset = 0',
+              'offset_right = 128.0', 'offset_bottom = 32.0', 'script = ExtResource("slide")', '',
+              '[node name="Background" type="ColorRect" parent="."]', 'layout_mode = 0',
+              'offset_right = 128.0', 'offset_bottom = 32.0', 'color = Color(0, 0, 0, 1)', '',
+              '[node name="Anim" type="AnimatedSprite2D" parent="."]', 'modulate = {}'.format(DMD_COLOR),
+              'sprite_frames = SubResource("frames")', 'autoplay = "default"', 'centered = false']
+    if panel is not None:                      # the live status panel (tf/score_screen.py panel_draw)
+        parts += ['', '[node name="Panel" type="Control" parent="."]', 'layout_mode = 0',
+                  'offset_right = 128.0', 'offset_bottom = 32.0', 'script = ExtResource("screen")']
+    with open(os.path.join(GAME, "slides", "deffs", name + ".tscn"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(parts) + "\n")
+    return name
+
+
 def build_deffs(only_data):
-    """Display effects with frames: none until the ROM extraction's captures (see the module docstring)."""
-    return {}
+    """One slide per captured display effect: the ROM's frames at their observed times (a background deff
+    loops its shortest repeating cycle). Where the deff draws the status panel, the capture's panel columns
+    (0-40, the score 00 of the capture run) are cleared and the live panel is drawn over them. Deffs with no
+    captured frame (the ROM drew nothing in the capture window, or they read live state) are left out;
+    deff 19 is drawn from its draw calls (tf/score_screen.py)."""
+    from PIL import ImageDraw
+    import fsutil
+    rows = deff_rows()
+    out = {}
+    if not only_data:
+        fsutil.clear_dir(os.path.join(GAME, "slides", "deffs"))
+        fsutil.clear_dir(os.path.join(GAME, "media", "dmd"))
+    for folder in sorted(glob.glob(os.path.join(DEFFS, "deff_*"))):
+        deff_id = int(os.path.basename(folder).split("_")[1])
+        if deff_id == 19:
+            continue
+        with open(os.path.join(folder, "timing.json"), encoding="utf-8") as f:
+            timing = json.load(f)
+        if not timing.get("frames"):
+            continue
+        frames = capture_frames(folder, timing)
+        panel = panel_level(timing, frames)
+        loop = rows.get(deff_id, {}).get("background_loop") == "yes"
+        out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
+                        "panel": panel, "args": []}
+        if only_data:
+            continue
+        if panel is not None:
+            for img, _ in frames:
+                ImageDraw.Draw(img).rectangle((0, 0, PANEL_WIDTH - 1, 31), fill=(0, 0, 0, 255))
+        if loop:
+            period = loop_period(frames)
+            frames = frames[:period] if period else frames
+        rel = "media/dmd/deff_{:03d}".format(deff_id)
+        os.makedirs(os.path.join(GAME, rel), exist_ok=True)
+        write_slide(deff_id, frames, loop, rel, panel)
+    return out
 
 
 def main():

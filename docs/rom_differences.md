@@ -5,9 +5,9 @@ extraction delivers the data.
 
 | Area | ROM | Here | Kind |
 |---|---|---|---|
-| Score display (deff 19) | 0x0102fb8c: scores by FUN_0102f200, status panel by FUN_0102fa40 (not decoded) | ROM fonts in a plain layout: current score large, others small, ball and credits on the bottom row (tf/score_screen.py) | interim, until captured |
-| Attract (deff 1) | 0x0103c584, the attract show | GAME OVER and the credits in ROM fonts | interim, until captured |
-| Other display effects | frames, timing and text per deff | nothing drawn (the previous screen stays) | interim, until captured |
+| Score display (deff 19) | 0x0102fb8c | drawn live from the captured draw calls; the dim level of players not up and the font for scores wider than 87 dots are inferred (tf/score_screen.py) | inferred details |
+| Display effects with values | the ROM prints live values (scores, counts, credits, high scores) | the capture's frames, so the values are those of the capture run (CREDITS 1/3, high score table, 00); the status panel is live | interim, until each deff's text is drawn live |
+| Deffs without frames (39) | they draw live state or nothing in the capture window | nothing drawn (the previous screen stays) | interim |
 | Scoring and rules | switch handlers per the rules specs | no points; outlanes start the ball save only | interim, until the specs |
 | Lamp effects | leff shows | none (leff ids and priorities are tracked) | interim |
 | Coil drive times | per coil | MPF defaults | interim, until decoded |
