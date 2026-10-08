@@ -1,17 +1,15 @@
-"""Autobot or Decepticon: the side each player plays, which picks the base music (rom/rom_data/sound/music_table.csv).
+"""Autobot or Decepticon: the side each player plays, which picks the base music (rom/rules/switches_and_shots.md
+"Side choice", rom/rom_data/sound/music_table.csv).
 
-Music table entry 0x34cd4 (code): while the side choice runs (task 200) the background deff is 40 with music
-0x1a (Autobot) / 0x1b (Decepticon); after it, deff 19 with 0x1c / 0x1d until the playfield is valid; the
-fallback entry 0x34cec plays 0x1e / 0x1f in play. The ROM extraction notes that which side value is Autobot is
-a guess; the sound call roles follow its labels.
-
-Observed (rom/rules/traces/sounds.jsonl, one player, no flipper during the choice):
-- game start 17.72 s: deff 19, deff 40 and music 0x1b, with leffs 104, 92, 95 (a later ball: 104, 92 and
-  music 0x1d; leff 14 one tick later is the OS's ball save leff);
-- plunge 30.58 s: deff 41 (its sound 0x58 and leff 96 come with the deff) 0.60 s later (37 ticks), then deff 19
-  and music 0x1d; after the first award, 0x1f.
-Inferred: the choice runs on each player's first ball, Decepticon is the side kept when nobody chooses, and a
-flipper button during the choice switches the side (the music follows; the switching sound is not known).
+- Game start (code + observed): the player's side byte (0x02112107 + player) is 2 = Decepticon; task 200 runs
+  and the music table gives deff 40 with music 0x1a (Autobot) / 0x1b (Decepticon), with leffs 104, 92, 95.
+- Either flipper toggles the side (1 = Autobot, 2 = Decepticon), plays 0x257 and re-evaluates the music
+  (deff 40 function 0x1034198).
+- The shooter lane opening starts task 0xc9 (0x1033f18): 31 ticks later 0x1033f54 shows deff 41 with sound
+  0x57 (Autobot) / 0x58 (Decepticon) and kills task 200. A playfield switch other than 12 (right orbit) ends the
+  choice earlier (event hooks 0x6b/0x6c; the same ending is inferred).
+- After it: deff 19 with 0x1c / 0x1d until the playfield is valid, 0x1e / 0x1f in play.
+Inferred: the choice runs on each player's first ball (one-player traces only).
 """
 from tf.features import Feature
 
@@ -21,14 +19,16 @@ MUSIC = {"choose": {AUTOBOT: 0x1a, DECEPTICON: 0x1b},
          "ball_start": {AUTOBOT: 0x1c, DECEPTICON: 0x1d},
          "play": {AUTOBOT: 0x1e, DECEPTICON: 0x1f}}
 CHOICE_DEFF, CHOSEN_DEFF = 40, 41
-CHOICE_END_TICKS = 37              # deff 41 after the ball leaves the shooter lane (observed 0.604 s)
+CHOICE_END_TICKS = 31              # task 0xc9's sleep before deff 41 (code)
+TOGGLE_SOUND = 0x257
+CHOSEN_SOUND = {AUTOBOT: 0x57, DECEPTICON: 0x58}
 BALL_START_LEFFS = (104, 92)
 CHOICE_LEFF = 95
 
 
 class Side(Feature):
     name = "side"
-    HOOKS = ("player_first_ball", "base_music", "ball_start_media", "ball_end")
+    HOOKS = ("player_first_ball", "base_music", "ball_start_media", "ball_end", "switch")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -67,7 +67,12 @@ class Side(Feature):
     def _flipper(self):
         if self.choosing and self.os.game and not self.os.tilted:
             self.pd["side"] = AUTOBOT if self.side() == DECEPTICON else DECEPTICON
+            self.os.sound(TOGGLE_SOUND, in_deff=CHOICE_DEFF)
             self.os.display.rules_refresh()
+
+    def switch(self, num):
+        if self.choosing and num != 12:
+            self._chosen()
 
     def _launched(self):
         if self.choosing and self.os.game:
@@ -77,7 +82,8 @@ class Side(Feature):
         if not self.choosing or not self.os.game:
             return
         self.choosing = False
-        self.os.deff_start(CHOSEN_DEFF)
+        side = self.side()
+        self.os.deff_start(CHOSEN_DEFF, sounds=[(0, lambda: self.os.sound(CHOSEN_SOUND[side], in_deff=CHOSEN_DEFF))])
         self.os.request_refresh()                    # deff 19 and its music right after deff 41's sound
 
 

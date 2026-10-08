@@ -5,10 +5,17 @@ a handler in the game code. Each handler here applies the OS part every handler 
 ball is on the playfield, validates it, reloads the ball search), then calls the feature hooks registered under
 "sw_<number>" and "switch" in registration order (os.hook), then adds the switch's base score.
 
-What the game handlers do (their hooks, the order, the base scores) comes from the ROM extraction's rules specs,
-which are not delivered yet: until then no handler scores (BASE_SCORE is empty) and the only game behaviour is the
-outlanes' ball save, which every SAM game's outlane handler starts (ball_save_try, OS code; Tron's outlane handlers
-call it first, inferred to be the same here).
+The scores, sounds, display and lamp effects are the ROM extraction's per-switch trace (rom/rules/
+switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
+- BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
+- slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a;
+- pop bumpers: 3000 (0x102c8c8) + 170 (0x1032f8c), sound 0x15c, deff 46, leff 26 and 27 / 28 / 29;
+- the lanes: the left lane function 0x102db28 (switches 8, 24, 25) and the right one 0x102e208 (7, 28, 29)
+  award 2500 with sound 0x169 + leff 97 (left) / 0x16d + leff 100 (right) on most hits. They hold a state the
+  trace shows but does not explain (1000 or 10000 on some hits, other sounds): INTERIM, the most frequent
+  result, until the lanes' rule is specified.
+The features behind the other awards (Bumblebee 0x1001a70, Energon 0x10309a4, the shots of 0x1020074 and
+0x1002f0c, the 2-bank 0x102e9c0, the spinner 0x10320a4, Optimus, the Megatron lock) come with their specs.
 """
 
 SW = {  # SAM switch number -> MPF switch name (rom/mpf_package/config/switches.yaml), playfield switches only
@@ -26,10 +33,15 @@ HOLES = {3: "s_left_eject", 38: "s_megatron_lock_4", 39: "s_megatron_lock_3", 40
          41: "s_m_tron_lock_1_back"}
 NUM = {name: num for num, name in SW.items()}
 OUTLANES = {24: 1, 29: 2}       # switch -> drain side (ball_save_try: 1 left, 2 right)
-# the outlane handlers' media (observed, traces/sounds.jsonl): saved -> sound 0x169 + leff 97 (FUN_0102db28),
-# lost -> sound 0x16d + leff 100 (FUN_0102e208)
-OUTLANE_SAVED, OUTLANE_LOST = (0x169, 97), (0x16d, 100)
-BASE_SCORE = {}                 # switch -> base points (from the rules specs, not delivered yet)
+BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 30, 12: 1220, 13: 30, 14: 1170,
+              24: 100000, 25: 1090, 28: 1090, 29: 100000, 34: 90, 35: 560, 37: 30, 45: 30, 46: 1110, 49: 1110,
+              50: 30, 51: 30}
+SLINGS = {26: 440, 27: 440}
+SLING_SOUND = 0x15a
+POPS = {30: 27, 31: 28, 32: 29}  # pop bumper -> its own leff (with leff 26)
+POP_SCORE, POP_EXTRA, POP_SOUND, POP_DEFF, POP_LEFF, POP_AUDIT = 3000, 170, 0x15c, 46, 26, 73
+LANES = {8: "left", 24: "left", 25: "left", 7: "right", 28: "right", 29: "right"}
+LANE_AWARD = {"left": (2500, 0x169, 97), "right": (2500, 0x16d, 100)}   # points, sound, leff (interim)
 
 
 class SwitchLayer:
@@ -58,10 +70,26 @@ class SwitchLayer:
             return
         os_.playfield_switch(num)
         if num in OUTLANES:
-            sound, leff = OUTLANE_SAVED if os_.ball_save_try(OUTLANES[num]) else OUTLANE_LOST
-            os_.sound(sound)
-            os_.leff_start(leff)
+            os_.ball_save_try(OUTLANES[num])
         os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
+        if os_.tilted:
+            return
+        if num in LANES:
+            points, sound, leff = LANE_AWARD[LANES[num]]
+            os_.score_add(points)
+            os_.sound(sound)
+            os_.leff_start(leff)
+        if num in SLINGS:
+            os_.score_add(SLINGS[num])
+            os_.sound(SLING_SOUND)
+        if num in POPS:
+            os_.audit(POP_AUDIT)
+            os_.score_add(POP_SCORE)
+            os_.sound(POP_SOUND)
+            os_.deff_start(POP_DEFF)
+            os_.leff_start(POP_LEFF)
+            os_.leff_start(POPS[num])
+            os_.score_add(POP_EXTRA)
         if BASE_SCORE.get(num):
             os_.base_score(BASE_SCORE[num])

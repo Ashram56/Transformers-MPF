@@ -60,7 +60,7 @@ class TestSounds(TfTestCase):
         self.advance_time_and_run(0.6)
         self.assertEqual(0x053, self.sounds()[-1])              # 62 ticks later
 
-    def test_outlane_saved_and_lost(self):
+    def test_outlanes_lane_award_and_ball_save(self):
         self.start_game()
         self.release_switch_and_run("s_shooter_lane", 2)
         self.hit_and_release_switch("s_left_outlane")           # ball save running: saved
