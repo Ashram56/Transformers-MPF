@@ -65,7 +65,70 @@ def forced_picks(name):
                       and not any(p.get("ev") == "sound" and p.get("call") == "0x257" and 0 < e["t"] - p["t"] < 0.2
                                   for p in evs)]
     forced.update(forced_samples(evs))
+    forced.update(forced_vars(evs))
     return forced
+
+
+def reference_inputs(name):
+    """{(kind, key): [seconds after "ready"]} of the reference run's inputs: switch hits, marks, drains,
+    buttons (scenario.sync)."""
+    import json
+    path = os.path.join(TRACES, name + ".jsonl")
+    out = {}
+    if not os.path.exists(path):
+        return out
+    t0 = None
+    for line in open(path, encoding="utf-8"):
+        e = json.loads(line)
+        if e.get("ev") == "ready":
+            t0 = e["t"]
+        if t0 is None:
+            continue
+        key = None
+        if e.get("ev") == "switch":
+            key = ("switch", e["sw"])
+        elif e.get("ev") == "mark":
+            key = ("mark", e["text"])
+        elif e.get("ev") == "sim" and e.get("what") == "drain":
+            key = ("drain", None)
+        elif e.get("ev") == "button":
+            key = ("button", e.get("button") or e.get("name"))
+        if key:
+            out.setdefault(key, []).append(e["t"] - t0)
+    return out
+
+
+def forced_vars(evs):
+    """Random picks read from the watched variables of the battle traces (watch_battle.tsv):
+    - "mode_start": the shot a mode-start hit relit (one bit added while the lit count did not grow);
+    - "blackout": the shot of the group Blackout added to its lit set (index in the group);
+    - "allspark": the mystery award item (allspark_last, 1-12; else its audit 74 + item, traces without vars)."""
+    out = {}
+    audited = []
+    groups = ((0x01, 0x02, 0x04), (0x08, 0x10, 0x20))
+    used = [0, 0]
+    for e in evs:
+        if e.get("ev") == "audit" and 75 <= e.get("id", 0) <= 86:
+            audited.append(e["id"] - 75)
+        if e.get("ev") != "var":
+            continue
+        name, value, old = e["name"], e["value"], e.get("old", 0)
+        added = value & ~old
+        if name == "mode_start_lit" and added and bin(value).count("1") <= bin(old).count("1"):
+            out.setdefault("mode_start", []).append(added.bit_length() - 1)
+        elif name == "bo_lit":
+            if old == 0:
+                used = [0, 0]
+            g = 0 if value & 0x07 else 1
+            new = value & ~used[g]
+            used[g] = value
+            if new in groups[g]:
+                out.setdefault("blackout", []).append(groups[g].index(new))
+        elif name == "allspark_last" and 1 <= value <= 12:       # 0xffff: RAM before the game starts
+            out.setdefault("allspark", []).append(value - 1)
+    if audited and "allspark" not in out:
+        out["allspark"] = audited
+    return out
 
 
 def forced_samples(evs):
@@ -162,9 +225,11 @@ class ScenarioRun(TfTestCase):
         self.autoplunge = 1.0
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
         self.tf.forced = forced_picks(name)
+        self.ref_times = reference_inputs(name)
         self.fill_trough()
         self.wait(6)                                  # the ROM boots 8 s before line 1
         self.log("ready")
+        self.ready_at = self.machine.clock.get_time()
         with open(os.path.join(TRACES, name + ".txt"), encoding="utf-8") as f:
             for line in f:
                 line = line.split("#", 1)[0].strip()
@@ -178,7 +243,27 @@ class ScenarioRun(TfTestCase):
 
     def command(self, args):
         cmd, rest = args[0], args[1:]
+        if cmd == "hit":
+            self.sync(("switch", int(rest[0])))
+        elif cmd == "mark":
+            self.sync(("mark", " ".join(rest)))
+        elif cmd == "drain" and not rest:
+            self.sync(("drain", None))
+        elif cmd == "button":
+            self.sync(("button", rest[0]))
         getattr(self, "cmd_" + cmd)(*rest)
+
+    def sync(self, key):
+        """Wait until the reference run's time of this input: the harness's own step overshoot grows with the
+        emulator's load (2.17 to 2.27 s per "hit + wait 2" in the battle traces), so the inputs follow the
+        reference instead of drifting. An input the rebuild already passed runs at once."""
+        times = getattr(self, "ref_times", {}).get(key)
+        if not times:
+            return
+        target = times.pop(0)
+        now = self.machine.clock.get_time() - self.ready_at
+        if target > now + 0.0005:
+            self.wait(target - now)
 
     def cmd_start(self, n="1"):
         n = int(n)

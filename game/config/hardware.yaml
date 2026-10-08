@@ -49,3 +49,11 @@ ball_devices:
     jam_switch: s_megatron_jam
     eject_coil: c_megatron_lockup
     eject_timeouts: 2s
+
+ball_holds:
+  hold_left_eject:          # the Allspark keeps its ball until the rules release it (tf/features/allspark.py)
+    hold_devices: bd_left_eject
+    balls_to_hold: 1
+    enable_events: game_started
+    disable_events: game_ended
+    release_one_events: tf_hold_release

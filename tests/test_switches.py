@@ -99,8 +99,9 @@ class TestSwitchScores(TfTestCase):
         self.assertEqual(440 + 10000, self.hit("s_left_slingshot"))   # every switch scores fast_value
 
     def test_combos(self):
-        """combos_and_multipliers.md 4 (combos.jsonl): 2-way 150,000, 3-way 175,000."""
+        """combos_and_multipliers.md 4 (combos.jsonl): 2-way 150,000, 3-way 175,000; the left ramp is also a lit
+        mode-start shot (battles.md 4.2: 15,000 as the second one); the center lane adds 2,500 (Optimus access)."""
         self.start_ball()
         self.hit("s_left_orbit_top")
-        self.assertEqual(150000 + 1170, self.hit("s_l_ramp_exit"))
-        self.assertEqual(175000 + 30, self.hit("s_center_lane"))
+        self.assertEqual(150000 + 15000 + 1170, self.hit("s_l_ramp_exit"))
+        self.assertEqual(175000 + 2500 + 30, self.hit("s_center_lane"))

@@ -5,10 +5,12 @@ traces/scoring.jsonl).
 - Each pop hit (handler 0x01032f8c, tf/switches.py: +170, audit 73) queues one award; task 0x51 pays one
   queued award per tick [0x0102ca98] and ends 93 ticks after the last one, setting pop_value back to
   pop_base [0x0102ca30] (observed: back to 3,000 1.53 s after the last hit).
-- An award [0x0102c8c8]: score pop_value, then pop_value + 1,000 up to 20,000 (not during a timed mode or a
-  multiball, 0x0102c878); sound 0x15b Autobot / 0x15c Decepticon (0x15d during double or fast scoring);
-  deff 46 (the burst total pop_total, 0x353d4) only when it is not showing and no timed mode or multiball
-  runs; leff 26 + leff 27 / 28 / 29 (top / right / bottom).
+- An award [0x0102c8c8]: score pop_value, then pop_value + 1,000 up to 20,000; sound 0x15b Autobot / 0x15c
+  Decepticon (0x15d during double or fast scoring); deff 46 (the burst total pop_total, 0x353d4) unless it is
+  showing; leff 26 + leff 27 / 28 / 29 (top / right / bottom). The step and deff 46 are skipped during a multiball
+  or with flag 0x3c ([0x0102c878] -> [0x01006704], the multiball flags, which the decompile names
+  any_timed_mode_running); during a battle both happen (observed: traces/battle_devastator 43.86 / 45.04 s:
+  3,000 then 4,000, deff 46 each time).
 - POPS GROW (left-eject award "POPS SCORE", deff 47) and super pop bumpers come with the left eject's award
   bag (grow() is ready for it).
 """
@@ -60,7 +62,7 @@ class Pops(Feature):
             return
         num = self.queue.pop(0)
         pd = self.pd
-        busy = os_.timed_mode_running() or os_.any_multiball()
+        busy = os_.any_multiball() or os_.flag(0x3c)       # [0x0102c878]
         os_.score_add(pd.pop_value)
         if not os_.display.running(DEFF):
             self.total = 0

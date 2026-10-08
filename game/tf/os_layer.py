@@ -46,8 +46,9 @@ ST_BONUS, ST_END_BALL, ST_ATTRACT, ST_TILT = 0x01, 0x04, 0x10, 0x200
 FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
 COUNTING_SWITCHES = {1, 2, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 45, 46, 49, 50, 51}
 
-# Game flags of the running multiballs (FUN_0100f918 on Tron); tf_180's are not mapped yet
-MULTIBALL_FLAGS = ()
+# Game flags of the running multiballs: [0x01006704], named any_timed_mode_running in the decompile, tests these
+# six flags (FUN_0100f918 on Tron). 0x1e Mudflap & Skids; the others come with their specs.
+MULTIBALL_FLAGS = (0x1e, 0x1f, 0x22, 0x25, 0x29, 0x3e)
 BALL_SAVE_GRACE = 218        # ticks (0xda) of grace after the ball-save timer
 SERVE_EJECT_TICKS = 32
 LATER_SERVE_EXTRA_TICKS = 6     # every later ball start: trough eject 0.645 s after the ball start, not 0.545 s
@@ -355,12 +356,13 @@ class TfOS(CustomCode):
         return bool(self.hooks.get(name))
 
     def any_multiball(self):
-        """A multiball runs (Tron FUN_0100f918: one of the multiball game flags is set)."""
+        """A multiball runs: [0x01006704] (the decompile's any_timed_mode_running) tests the six multiball flags.
+        It gates the Energon targets, the battle qualify (clu_start_allowed), the pops step and the combo window."""
         return any(f in self.flags for f in MULTIBALL_FLAGS)
 
     def timed_mode_running(self):
-        """A timed mode runs (tf_180 0x0102c878 / 0x01006704: pops do not step, the 2-bank scores 5,000, no
-        combo window starts); the battle modes register hook "timed_mode" as they are ported."""
+        """A timed mode runs ([0x010067bc]: the battle timer tasks 0x9c..0xaa, double scoring 0xac, fast scoring
+        0xc3): the 2-bank scores 5,000 ([0x0102e994], with a multiball), ADD MORE TIME is offered. Hook "timed_mode"."""
         return bool(self.hook("timed_mode"))
 
     def timed_mode_paused(self):

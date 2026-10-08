@@ -223,6 +223,17 @@ class Display:
             if self.fg is None:
                 self.refresh()                     # the rules' background deff comes back (deff 19)
 
+    def set_media(self, deff_id, seconds, leffs=(), sounds=()):
+        """What the rules know of a deff the package has no capture of (no timing.json, or one without an
+        end): its run length, the lamp effects and sounds its code starts (read from the reference traces
+        by the feature that calls this). A capture with a length wins."""
+        info = self.media.get(deff_id)
+        if info and info.seconds:
+            return
+        info = media_table.DeffInfo(deff_id, "deff_%03d" % deff_id)
+        info.seconds, info.leffs, info.sounds = seconds, list(leffs), list(sounds)
+        self.media[deff_id] = info
+
     def set_hold_tail(self, deff_id, seconds):
         """deff_hold_frames(n, 0x20) [0x01024460] when a deff's hold is not the usual 10 ticks: for its last
         `seconds` the deff runs at priority 0x20, so any other deff may replace it (measured per deff)."""
@@ -389,8 +400,11 @@ class Display:
     def when_idle(self, task_id, deff_id, timeout=SHOW_TIMEOUT, on_end=None, **deff_args):
         """FUN_0100fd88, used by the mode TOTAL tasks 0x4d-0x58: wait until no show task runs, no
         foreground deff is on screen and this is the oldest such task waiting, then play deff_id;
-        on_end() runs when it is over (or when the wait times out)."""
+        on_end() runs when it is over (or when the wait times out). tf_180 [0x0100664c] reloads the ball-search
+        countdown when it is called and again when its deff starts (observed: battle_blackout, total deff 103 at
+        66.04 s, ball search 10.1 s later)."""
         from tf.os_layer import TICK
+        self.os.ball_search_reload()
         self.idle_waits = [w for w in self.idle_waits if w[0] != task_id]
         self.idle_waits.append([task_id, deff_id, self.os.now + timeout * TICK, on_end, deff_args])
         if len(self.idle_waits) == 1:
@@ -408,6 +422,7 @@ class Display:
         if self.fg is None and not self.show_running():
             task_id, deff_id, _, on_end, args = self.idle_waits.pop(0)
             self.start(deff_id, **args)
+            self.os.ball_search_reload()
             info = self.media.get(deff_id)
             if on_end:
                 self.os.machine.clock.schedule_once(lambda: on_end(), info.seconds if info else 0)

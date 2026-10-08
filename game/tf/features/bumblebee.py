@@ -36,7 +36,7 @@ MAX_COUNT = 90
 
 class Bumblebee(Feature):
     name = "bumblebee"
-    HOOKS = ("player_first_ball", "sw_1", "switch", "ball_end", "tilt", "scoring_boost")
+    HOOKS = ("player_first_ball", "sw_1", "switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -120,6 +120,8 @@ class Bumblebee(Feature):
 
     def scoring_boost(self):
         return self.running or None
+
+    timed_mode = scoring_boost          # a timed mode ([0x010067bc], task 0xac / 0xc3)
 
     ball_end = stop
     tilt = stop

@@ -2,7 +2,8 @@
 [0x01004394] [0x010047b8] [0x01004220] + observed in traces/scoring.jsonl t 104.88-161.46).
 
 - Switches 50 (top) and 37 (bottom), handler 30 points + audit 70 (tf/switches.py BASE_SCORE / here).
-- During a timed mode (or while fast scoring runs, inferred for 0x010067bc): 5,000, sound 0x261, leff 143.
+- During a multiball or a timed mode ([0x0102e994]: [0x01006704] multiball flags, [0x010067bc] battle timers,
+  double and fast scoring): 5,000, sound 0x261, leff 143.
 - Else twobank_left > 0: - 1, 75,000, sound 0x263, leff 144, deff 126 "n MORE FOR FAST SCORING"; reaching 0
   shows deff 131 "FAST SCORING READY" instead and leffs 147 / 148 run while it is ready.
 - twobank_left = 0: fast scoring starts [0x01004394]: 100,000, starts + 1, twobank_left = 5 + 2 x starts (cap
@@ -36,7 +37,7 @@ TASK, AWARD_TASK = "fast_scoring", 0x5b
 
 class TwoBank(Feature):
     name = "twobank"
-    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "tilt", "scoring_boost")
+    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -75,7 +76,7 @@ class TwoBank(Feature):
             return
         if self.running:
             self._fast_target(num)
-        if os_.timed_mode_running() or self.running:
+        if os_.any_multiball() or os_.timed_mode_running() or self.running:     # [0x0102e994]
             points, sound, leff = LOCKED
             os_.score_add(points)
             os_.sound(sound)
@@ -202,6 +203,8 @@ class TwoBank(Feature):
 
     def scoring_boost(self):
         return self.running or None
+
+    timed_mode = scoring_boost          # a timed mode ([0x010067bc], task 0xac / 0xc3)
 
 
 def feature(os_):

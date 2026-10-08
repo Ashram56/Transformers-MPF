@@ -8,7 +8,7 @@ ball is on the playfield, validates it, reloads the ball search), then calls the
 The scores, sounds, display and lamp effects are the ROM extraction's per-switch trace (rom/rules/
 switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
 - BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
-- slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a;
+- slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
 - pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
 Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add). The features behind the
 switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
@@ -34,14 +34,16 @@ BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 3
               24: 100000, 25: 1090, 28: 1090, 29: 100000, 34: 90, 35: 560, 37: 30, 45: 30, 46: 1110, 49: 1110,
               50: 30, 51: 30}
 SLINGS = {26: 440, 27: 440}
-SLING_SOUND = 0x15a
+SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon (observed: game_flow player 1 Autobot 0x159)
 POPS = (30, 31, 32)
 POP_EXTRA = 170
 # audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, observed callers
 # 0x1033aec, 0x1033c1c / 0x1033c5c, 0x1033b24, 0x1033050); the shot audits 65-68 are the mode-progress
 # function's (0x1020074, with the modes)
 SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
-EXTRA_BASE = {45: 30}           # the captive ball handler adds its 30 twice (observed 60)
+# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
+# traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
+BOTH_EDGES = {45: 3}
 
 
 class SwitchLayer:
@@ -53,6 +55,8 @@ class SwitchLayer:
         for num, name in SW.items():
             if name in self.machine.switches:
                 sc.add_switch_handler(name, self._dispatch(num))
+                if num in BOTH_EDGES:
+                    sc.add_switch_handler(name, self._dispatch(num), state=0)
 
     def _dispatch(self, num):
         """The ROM runs a playfield handler as a task about one tick after the switch closes. A handler does
@@ -61,7 +65,7 @@ class SwitchLayer:
         def on_close():
             if not self.os.game or not self.os.in_play:
                 return
-            self.os.after(1, lambda: self.handle(num))
+            self.os.after(BOTH_EDGES.get(num, 1), lambda: self.handle(num))
         return on_close
 
     def handle(self, num):
@@ -80,11 +84,9 @@ class SwitchLayer:
             return
         if num in SLINGS:
             os_.score_add(SLINGS[num])
-            os_.sound(SLING_SOUND)
+            os_.sound(SLING_SOUND.get(os_.pd.get("side", 2), 0x15a))
         if num in POPS:
             os_.hook("pop", num)
             os_.score_add(POP_EXTRA)
         if BASE_SCORE.get(num):
             os_.base_score(BASE_SCORE[num])
-        if EXTRA_BASE.get(num):
-            os_.base_score(EXTRA_BASE[num])

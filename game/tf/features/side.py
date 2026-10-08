@@ -23,7 +23,7 @@ CHOICE_DEFF, CHOSEN_DEFF = 40, 41
 CHOICE_END_TICKS = 31              # task 0xc9's sleep before deff 41 (code)
 TOGGLE_SOUND = 0x257
 CHOSEN_SOUND = {AUTOBOT: 0x57, DECEPTICON: 0x58}
-BALL_START_LEFFS = (104, 92)
+BALL_START_LEFFS = (92,)         # leff 104 (lit battle) is the battles rule (tf/features/battles.py)
 CHOICE_LEFF = 95
 
 
@@ -77,6 +77,7 @@ class Side(Feature):
     def _flipper(self):
         if self.choosing and self.os.game and not self.os.tilted:
             self.pd["side"] = AUTOBOT if self.side() == DECEPTICON else DECEPTICON
+            self.os.hook("side_changed")             # the side's first battle is lit [0x01022d7c]
             self.os.sound(TOGGLE_SOUND, in_deff=CHOICE_DEFF)
             self.os.display.rules_refresh()
 
