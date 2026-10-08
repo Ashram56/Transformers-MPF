@@ -1,7 +1,8 @@
 """Autobot or Decepticon: the side each player plays, which picks the base music (rom/rules/switches_and_shots.md
 "Side choice", rom/rom_data/sound/music_table.csv).
 
-- Game start (code + observed): the player's side byte (0x02112107 + player) is 2 = Decepticon; task 200 runs
+- Game start (code + observed): the player's side byte (0x02112107 + player) comes from adj 65 (random by
+  default: Decepticon in traces/sounds and basic, Autobot for both players in game_flow); task 200 runs
   and the music table gives deff 40 with music 0x1a (Autobot) / 0x1b (Decepticon), with leffs 104, 92, 95.
 - Either flipper toggles the side (1 = Autobot, 2 = Decepticon), plays 0x257 and re-evaluates the music
   (deff 40 function 0x1034198).
@@ -28,7 +29,7 @@ CHOICE_LEFF = 95
 
 class Side(Feature):
     name = "side"
-    HOOKS = ("player_first_ball", "base_music", "ball_start_media", "ball_end", "switch")
+    HOOKS = ("player_first_ball", "base_music", "ball_start_media", "ball_end", "switch", "side_choosing")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -44,11 +45,20 @@ class Side(Feature):
         return self.pd.get("side", DECEPTICON) if self.os.game else DECEPTICON
 
     def player_first_ball(self):
-        self.pd["side"] = DECEPTICON
+        """The starting side by adj 65 TRANSFORMERS SELECT: 0 random, 1 Autobot, 2 Decepticon (game_flow.md 2;
+        the ROM's random source was not identified)."""
+        select = self.os.adj[65]
+        if select in (AUTOBOT, DECEPTICON):
+            self.pd["side"] = select
+        else:
+            self.pd["side"] = AUTOBOT if self.os.pick("side", [1, 1]) == 0 else DECEPTICON
         self.choosing = True
 
     def ball_end(self):
         self.choosing = False
+
+    def side_choosing(self):
+        return self.choosing or None
 
     def base_music(self):
         if not self.os.game:

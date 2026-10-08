@@ -1,0 +1,130 @@
+"""Combos and shot multipliers (rom/rules/modes/combos_and_multipliers.md sections 4 and 6; code [0x01002f0c]
+[0x01002be4] [0x01002b5c] [0x010236e8] [0x01023538] + observed in traces/combos.jsonl).
+
+Major shots (index / mask bit): 0 left eject (when the eject kicks), 1 left orbit (sw6), 2 left ramp exit
+(sw10), 3 center lane (sw11), 4 right ramp exit (sw14), 5 right orbit (sw12: not when the ball just came
+round the left orbit, switch timer 7, and not within 187 ticks of the previous right orbit shot).
+
+Combos, on a major shot:
+1. no window running: combo_way = 1, no award;
+2. the shot's bit in combo_mask: way + 1, award M x (100,000 + 25,000 x way) with M the shot's multiplier,
+   leff 35, audit 154 (observed 150,000 ... 250,000 for 2- to 6-way);
+3. else the way count stays.
+Then, unless a timed mode runs, mask = all six minus the shot when it is the eject or the left ramp, and the
+window restarts: 312 ticks (task 0x92) + 124 grace ticks (task 0x93). NOT YET: the arrows of the allowed
+shots (leff 34's task [0x01003104], never logged as a leff start in the traces).
+deff 48 (n-WAY COMBO) is never started in 1.80 (no starter; the status panel shows combos).
+
+Shot multipliers (per ball, 1X unless the shot's hold flag 0x16 + s is set):
+- lighting (own lanes complete, left-eject award): if a shot is below 2X, mult_lit and leff 37 run, deff 44;
+- the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38 (inferred: after its combo award).
+NOT YET: the roving 3X when all six are at 2X (task 0xb6, leff 39).
+Inferred: the right orbit's left-orbit timer is 2 s (observed: sw12 1.2 s after sw6 never counted).
+"""
+from tf.features import Feature
+
+ORDER = 45
+SHOTS = {6: 1, 10: 2, 11: 3, 14: 4, 12: 5}      # switch -> shot index (the eject, 0, from its ball device)
+EJECT, LEFT_RAMP, RIGHT_ORBIT = 0, 2, 5
+ALL = 0x3f
+WINDOW_TICKS, GRACE_TICKS = 312, 124
+WINDOW_TASK = 0x92
+AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
+RIGHT_ORBIT_REPEAT_TICKS = 187
+LEFT_ORBIT_SECONDS = 2.0
+MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
+MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
+HOLD_FLAG = 0x16
+
+
+class Combos(Feature):
+    name = "combos"
+    HOOKS = ("player_first_ball", "ball_start", "switch", "shot_mult_light", "ball_end", "tilt")
+
+    def __init__(self, os_):
+        super().__init__(os_)
+        self.way = 0
+        self.mask = ALL
+        self.left_orbit_at = -10.0
+        self.right_orbit_at = -10.0
+        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF,
+                      order=0x01023928)
+        self.machine.events.add_handler("balldevice_bd_left_eject_ejecting_ball", self._eject)
+
+    def _eject(self, **kwargs):
+        self.shot(EJECT)
+
+    def player_first_ball(self):
+        self.pd.combo_total = 0
+        self.pd.combo_best = 1
+
+    def ball_start(self):
+        pd = self.pd
+        old = pd.get("shot_mult", [1] * 6)
+        pd.shot_mult = [old[s] if self.os.flag(HOLD_FLAG + s) else 1 for s in range(6)]
+        pd.mult_lit = False
+
+    def switch(self, num):
+        os_ = self.os
+        if num not in SHOTS or os_.tilted:
+            return
+        if num == 6:
+            self.left_orbit_at = os_.now
+        if num == 12:
+            if os_.now - self.left_orbit_at < LEFT_ORBIT_SECONDS:
+                return
+            if os_.now - self.right_orbit_at < RIGHT_ORBIT_REPEAT_TICKS * 0.01626:
+                return
+            self.right_orbit_at = os_.now
+        self.shot(SHOTS[num])
+
+    def shot(self, index):
+        os_ = self.os
+        if not os_.game or not os_.in_play or os_.tilted:
+            return
+        pd = self.pd
+        bit = 1 << index
+        if not os_.task_running(WINDOW_TASK):
+            self.way = 1
+        elif self.mask & bit:
+            self.way += 1
+            pd.combo_total = pd.get("combo_total", 0) + 1
+            pd.combo_best = max(pd.get("combo_best", 1), (self.way << 16) | pd.shot_mult[index])
+            os_.score_add(pd.shot_mult[index] * (100000 + 25000 * self.way))
+            os_.leff_start(AWARD_LEFF)
+            os_.audit(AWARD_AUDIT)
+        if pd.get("mult_lit") and pd.shot_mult[index] < 2:
+            pd.shot_mult[index] = 2
+            pd.mult_lit = False
+            os_.deff_start(MULT_DEFF)                   # its sound 0x05b comes with it
+            os_.leff_start(MULT_LEFF)
+            os_.request_refresh()
+        if not os_.timed_mode_running():
+            self.mask = ALL & ~(bit if index in (EJECT, LEFT_RAMP) else 0)
+            restart = not os_.task_running(WINDOW_TASK)
+            os_.task_start(WINDOW_TASK, WINDOW_TICKS + GRACE_TICKS, self._window_end)
+            if restart:
+                os_.request_refresh()
+
+    def _window_end(self):
+        self.os.request_refresh()
+
+    def shot_mult_light(self):
+        """[0x010236e8]: shot multipliers lit when a shot is below 2X (the roving 3X otherwise: not yet)."""
+        os_ = self.os
+        pd = self.pd
+        below = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
+        if below:
+            pd.mult_lit = True
+            os_.deff_start(MULT_LIT_DEFF)
+            os_.request_refresh()
+
+    def ball_end(self):
+        self.os.task_kill(WINDOW_TASK)
+        self.way = 0
+
+    tilt = ball_end
+
+
+def feature(os_):
+    return Combos(os_)

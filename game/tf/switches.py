@@ -9,13 +9,10 @@ The scores, sounds, display and lamp effects are the ROM extraction's per-switch
 switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
 - BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
 - slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a;
-- pop bumpers: 3000 (0x102c8c8) + 170 (0x1032f8c), sound 0x15c, deff 46, leff 26 and 27 / 28 / 29;
-- the lanes: the left lane function 0x102db28 (switches 8, 24, 25) and the right one 0x102e208 (7, 28, 29)
-  award 2500 with sound 0x169 + leff 97 (left) / 0x16d + leff 100 (right) on most hits. They hold a state the
-  trace shows but does not explain (1000 or 10000 on some hits, other sounds): INTERIM, the most frequent
-  result, until the lanes' rule is specified.
-The features behind the other awards (Bumblebee 0x1001a70, Energon 0x10309a4, the shots of 0x1020074 and
-0x1002f0c, the 2-bank 0x102e9c0, the spinner 0x10320a4, Optimus, the Megatron lock) come with their specs.
+- pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
+Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add). The features behind the
+switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
+rom/rules/modes/).
 """
 
 SW = {  # SAM switch number -> MPF switch name (rom/mpf_package/config/switches.yaml), playfield switches only
@@ -38,10 +35,13 @@ BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 3
               50: 30, 51: 30}
 SLINGS = {26: 440, 27: 440}
 SLING_SOUND = 0x15a
-POPS = {30: 27, 31: 28, 32: 29}  # pop bumper -> its own leff (with leff 26)
-POP_SCORE, POP_EXTRA, POP_SOUND, POP_DEFF, POP_LEFF, POP_AUDIT = 3000, 170, 0x15c, 46, 26, 73
-LANES = {8: "left", 24: "left", 25: "left", 7: "right", 28: "right", 29: "right"}
-LANE_AWARD = {"left": (2500, 0x169, 97), "right": (2500, 0x16d, 100)}   # points, sound, leff (interim)
+POPS = (30, 31, 32)
+POP_EXTRA = 170
+# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, observed callers
+# 0x1033aec, 0x1033c1c / 0x1033c5c, 0x1033b24, 0x1033050); the shot audits 65-68 are the mode-progress
+# function's (0x1020074, with the modes)
+SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
+EXTRA_BASE = {45: 30}           # the captive ball handler adds its 30 twice (observed 60)
 
 
 class SwitchLayer:
@@ -71,25 +71,20 @@ class SwitchLayer:
         os_.playfield_switch(num)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
+        if num in SW_AUDIT and not os_.tilted:
+            os_.audit(SW_AUDIT[num])
+        os_.hook("bonus_add")
         os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
         if os_.tilted:
             return
-        if num in LANES:
-            points, sound, leff = LANE_AWARD[LANES[num]]
-            os_.score_add(points)
-            os_.sound(sound)
-            os_.leff_start(leff)
         if num in SLINGS:
             os_.score_add(SLINGS[num])
             os_.sound(SLING_SOUND)
         if num in POPS:
-            os_.audit(POP_AUDIT)
-            os_.score_add(POP_SCORE)
-            os_.sound(POP_SOUND)
-            os_.deff_start(POP_DEFF, values=[POP_SCORE + POP_EXTRA])    # the printed value: inferred
-            os_.leff_start(POP_LEFF)
-            os_.leff_start(POPS[num])
+            os_.hook("pop", num)
             os_.score_add(POP_EXTRA)
         if BASE_SCORE.get(num):
             os_.base_score(BASE_SCORE[num])
+        if EXTRA_BASE.get(num):
+            os_.base_score(EXTRA_BASE[num])

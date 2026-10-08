@@ -37,8 +37,7 @@ class TestSounds(TfTestCase):
         self.assertIn(96, self.leffs())                         # and its lamp effect
         self.assertEqual(0x1d, self.sounds()[-1])               # ball start music, Decepticon
         self.assertEqual(19, self.tf.display.bg)
-        for name in ("s_left_slingshot", "s_right_slingshot", "s_top_bumper"):
-            self.hit_and_release_switch(name)
+        self.hit_and_release_switch("s_right_orbit")          # a force switch validates alone
         self.advance_time_and_run(1)
         self.assertTrue(self.tf.pf_valid)
         self.assertEqual(0x1f, self.sounds()[-1])               # main play music

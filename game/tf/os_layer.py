@@ -39,11 +39,10 @@ START_HOLD_TICKS = 62   # adj 36 GAME RESTART: START held this long (timer 4, 0x
 # game state word bits (Tron 0x37274)
 ST_BONUS, ST_END_BALL, ST_ATTRACT, ST_TILT = 0x01, 0x04, 0x10, 0x200
 
-# Valid playfield: "force" switches validate at once, 3 distinct "counting" ones do. tf_180's switch table flags
-# (rom/rom_data/io/switches.csv flags_0x0c) split the playfield switches in two classes: 0x24000000 (lanes,
-# orbits, ramp exits, spinner, the outlanes) and 0x14000000 / 0x04000000 / 0x18000000 / 0x1fff0000 (targets,
-# ramp entrances, slings, pops, Optimus, captive ball). On Tron the lanes and ramp exits force and the targets,
-# slings and pops count, so the first class forces here (inferred: the flag meaning is not decoded yet).
+# Valid playfield (OS, game_flow.md 4.3): the switch descriptor's top byte (rom/rom_data/io/switches.csv
+# flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). The spec infers that
+# slings and pops (0x04) do not count, but traces/basic validates on the 3rd different switch of slings 26, 27
+# and pop 30 (play music 0x01f at 7.78 s): they count, as on Tron (observed).
 FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
 COUNTING_SWITCHES = {1, 2, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 45, 46, 49, 50, 51}
 
@@ -86,6 +85,7 @@ GAME = {
     # the base music is the side's (tf/features/side.py)
     "music_plunger": 0x1d,      # ball start, Decepticon (observed at each ball start)
     "music_play": 0x1f,         # main play, Decepticon (observed after the first award)
+    "add_player_sound": 0x048,
     "game_start_sound": None,   # none observed (traces/sounds.jsonl: only the side choice music 0x1b)
     "tilt_warning_speech": 0x052,   # observed 0.51 s (31 ticks) after sound 0x016
     "tilt_speech": 0x053,       # observed 1.01 s (62 ticks) after sound 0x017
@@ -181,6 +181,9 @@ class PlayerData:
     def get(self, name, default=None):
         return getattr(self, name, default)
 
+    def __contains__(self, name):
+        return hasattr(self, name)
+
 
 class TfOS(CustomCode):
 
@@ -207,6 +210,7 @@ class TfOS(CustomCode):
         self.replays_awarded = {}
         self.shoot_again = False    # game flag 9: this ball is a shoot-again ball
         self.ball_scored = False
+        self.pf_mult = 1            # playfield multiplier 0x3243c (double scoring sets 2)
         self.serve_type = 0
         self._mb_pending = 0
         self._mb_save = (0, 0)
@@ -353,6 +357,11 @@ class TfOS(CustomCode):
     def any_multiball(self):
         """A multiball runs (Tron FUN_0100f918: one of the multiball game flags is set)."""
         return any(f in self.flags for f in MULTIBALL_FLAGS)
+
+    def timed_mode_running(self):
+        """A timed mode runs (tf_180 0x0102c878 / 0x01006704: pops do not step, the 2-bank scores 5,000, no
+        combo window starts); the battle modes register hook "timed_mode" as they are ported."""
+        return bool(self.hook("timed_mode"))
 
     def timed_mode_paused(self):
         """Mode clocks hold while the playfield is not validated or while a show task waits or plays (Tron
@@ -763,11 +772,12 @@ class TfOS(CustomCode):
         self.task_kill(0x35)
 
     def score_add(self, points):
-        """score_add [0x0002340c]: x playfield multiplier (always 1); nothing while tilted or out of game."""
+        """score_add [0x0002340c]: x playfield multiplier gf_pf_mult (2 during double scoring); nothing while
+        tilted or out of game."""
         if not self.game or self.state & 0x210 or not self.game.player:
             return 0
-        self.trace.log("score_add", points=points, multiplier=1, player=self.player_num)
-        points = self.score_event(points)
+        self.trace.log("score_add", points=points, multiplier=self.pf_mult, player=self.player_num)
+        points = self.score_event(points * self.pf_mult)
         self.ball_search_reload()
         self._add_score(points)
         if not self.ball_scored:
@@ -931,6 +941,7 @@ class TfOS(CustomCode):
         if num > 1:
             self.credit_model.take(1)
             self.audit(0x11)
+            self.sound(GAME["add_player_sound"])     # observed: traces/game_flow.jsonl 5.88 s (player 2)
 
     def _start_held(self):
         """adj 36 GAME RESTART [0x00020d14]: START held 62 ticks (timer 4) on ball 2 or later restarts the game,
@@ -1040,6 +1051,7 @@ class TfOS(CustomCode):
         self._counting_seen = set()
         self.ball_scored = False
         self.tilt_warnings = 0
+        self.pf_mult = 1                             # gf_pf_mult 0x3243c: 1 at ball start (game_flow.md 4.2)
         if first_ball:
             self.hook("player_first_ball")           # event 0x26
         self.hook("ball_start")                      # event 0x11
@@ -1505,6 +1517,7 @@ class TfOS(CustomCode):
             self._ball_ending_done(queue)
             return
         self.state |= ST_BONUS
+        self.pf_mult = 1                             # end_of_ball: gf_pf_mult = 1 before the bonus (never doubled)
         bonus = self.features_by_name.get("bonus")
         if bonus:
             bonus.run(lambda total: self._bonus_done(queue, total))
@@ -1513,8 +1526,7 @@ class TfOS(CustomCode):
 
     def _bonus_done(self, queue, total):
         if total:
-            # event 0x16, multiplier 1, not a score_add; the score event still applies (a double
-            # scoring still running doubles the bonus: Tron traces)
+            # event 0x16, multiplier 1, not a score_add
             self._add_score(self.score_event(total))
             self.hook("score_changed")
         self.state &= ~ST_BONUS

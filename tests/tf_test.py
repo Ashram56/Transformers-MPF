@@ -36,6 +36,7 @@ class TfTestCase(MpfTestCase):
         self.machine.tf.random.seed(RANDOM_SEED)     # live play draws from an unseeded generator
         if self.FREE_PLAY:
             self.machine.tf.adj.override(34, 1)
+        self.machine.tf.forced["side"] = [1] * 4         # every player starts as Decepticon (adj 65 RANDOM)
 
     @property
     def tf(self):

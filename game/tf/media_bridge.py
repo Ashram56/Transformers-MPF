@@ -300,7 +300,7 @@ class MediaBridge:
                 # its own lines only: fresh RAM values for a live deff (one effect's lines never go to
                 # another: they share the names line0, line1, ...)
                 mine.update({k: v for k, v in self.deff_lines(deff_id, self.started.get(deff_id, {})).items()
-                             if k.startswith("line") or k == "screen"})
+                             if k.startswith("line") or k in ("screen", "values")})
             self._send("slides_play", {info["slide"]: {"action": "update", "key": info["slide"],
                                                        "expire": None}}, **mine)
 

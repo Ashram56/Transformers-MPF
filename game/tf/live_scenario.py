@@ -12,6 +12,7 @@ import shlex
 # 0.144 s after the credit
 COIN_DELAY = 30 * 0.01626
 COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN_DELAY
+START_GAP = 0.9                     # rom/tools/trace/tf_ref.cpp "start": 0.3 s held + 0.6 s per press
 SCRIPT_START_TIME = 2.745 - 1.896
 SETTLE = 0.1
 COINS_PER_PLAYER = 4                # tf_ref "start N": 4 coins per player, then Start N times
@@ -81,11 +82,12 @@ class LiveScenario:
             self.sw("s_right_coin_slot", 1, t)
             self.sw("s_right_coin_slot", 0, t + 0.01)
         t += START_AFTER_COIN
-        for _ in range(n):
+        for i in range(n):                  # tf_ref: one Start press per 0.9 s
+            if i:
+                t += START_GAP
             self.sw("s_start_button", 1, t)
             self.sw("s_start_button", 0, t + 0.01)
-            t += 0.1
-        self.t += t + SCRIPT_START_TIME - 0.1 * n
+        self.t += t + SCRIPT_START_TIME
 
     def cmd_wait(self, s):
         self.t += float(s)

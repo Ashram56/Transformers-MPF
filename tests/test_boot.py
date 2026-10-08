@@ -44,6 +44,7 @@ class TestBoot(TfTestCase):
         self.hit_and_release_switch("s_start_button")
         self.advance_time_and_run(2)
         self.plunge()
+        # 3 different counting switches validate, slings and pops included (traces/basic)
         for name in ("s_left_slingshot", "s_right_slingshot"):
             self.hit_and_release_switch(name)
             self.advance_time_and_run(0.2)

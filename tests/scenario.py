@@ -16,6 +16,7 @@ from tests.tf_test import ROOT, TfTestCase
 TRACES = os.path.join(ROOT, "rom", "rules", "traces")
 OUT = os.path.join(ROOT, "captures", "traces")
 
+START_GAP = 0.9                     # rom/tools/trace/tf_ref.cpp "start": 0.3 s held + 0.6 s per press
 SCRIPT_START_TIME = 2.745 - 1.896   # 'start' runs this long after the Start press (reference traces)
 # the reference traces credit a coin 0.528 s after the script starts; the coin task waits adj 62 COIN INPUT
 # DELAY (30 ticks at factory settings) first, so the coin switch closes that much earlier, and START comes
@@ -58,6 +59,11 @@ def forced_picks(name):
             forced.setdefault("match", []).append(len(hits))
     for deff_id, (stop_ev, stop_id) in CLIP_DEFFS.items():
         forced["deff_{}_seconds".format(deff_id)] = clip_lengths(evs, deff_id, stop_ev, stop_id)
+    # the starting side of each player's choice (adj 65 RANDOM): the side-choice music 0x01a Autobot / 0x01b
+    forced["side"] = [0 if e["call"] == "0x01a" else 1 for e in evs
+                      if e.get("ev") == "sound" and e.get("call") in ("0x01a", "0x01b")
+                      and not any(p.get("ev") == "sound" and p.get("call") == "0x257" and 0 < e["t"] - p["t"] < 0.2
+                                  for p in evs)]
     forced.update(forced_samples(evs))
     return forced
 
@@ -185,12 +191,14 @@ class ScenarioRun(TfTestCase):
             self.wait(0.01)
             self.sw("s_right_coin_slot", 0)
         self.wait(START_AFTER_COIN - 0.01)
-        for _ in range(n):
+        for i in range(n):                  # tf_ref holds Start 0.3 s, then waits 0.6 s: one press per 0.9 s
+            if i:
+                self.wait(START_GAP - 0.1)
             self.sw("s_start_button", 1)
             self.wait(0.01)
             self.sw("s_start_button", 0)
             self.wait(0.09)
-        self.wait(SCRIPT_START_TIME - 0.1 * n)
+        self.wait(SCRIPT_START_TIME - 0.1)
 
     def step(self, seconds):
         """One tron_ref step_to(): the requested time plus the average overshoot."""
