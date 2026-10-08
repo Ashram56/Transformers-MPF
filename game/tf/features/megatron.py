@@ -33,15 +33,19 @@ leff 72, sound 0xe4, audit 0x7b); after 10 the center lane scores 3 double jackp
 audit 0x7d, requirement 0 completed) and the jackpots start over.
 End: down to one ball the running flag goes (music back), 218 ticks later the total (A deff 74 + leff 67, D deff
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
-Not modelled: task 0x57, adj 69 virtual lock, the insert lamps of each phase.
+Not modelled: task 0x57, adj 69 virtual lock. The rule leff (62 / 70) flashes the lit shots from the side's mask.
 """
 from tf.features import Feature
+from tf.lamps import shot_blink
 
 ORDER = 38
 AUTOBOT, DECEPTICON = 1, 2
 SWITCHES = ("s_m_tron_lock_1_back", "s_megatron_lock_2", "s_megatron_lock_3", "s_megatron_lock_4")
 SWITCH_NUMS = (41, 40, 39, 38)
 RELEASE_EVENT = "tf_megatron_release"
+# shot tables {mask bit, lamp group} [0x040c63e4 A, 0x040c65dc D]: the orange arrows, Megatron, Optimus (D)
+ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)), (0x40, (29,)))
+SHOT_LAMPS = {62: ARROWS, 70: ARROWS + ((0x80, (59,)),)}
 SETTLE_TICKS = 46
 SERVE_TICKS = 155
 ENTRY_POINTS = 5120
@@ -336,6 +340,9 @@ class Megatron(Feature):
         for side in self.sides.values():
             os_.deff_rule((lambda s: lambda: s.active)(side), side.bg, music=side.music, priority=0x60)
             os_.lamp_rule((lambda s: lambda: s.active)(side), leff=side.rule_leff, order=0x0100cee0 + side.flag)
+            # the rule leff flashes the lit shots (leff_062 / leff_070 [0x0100cf28 / 0x0100ee54])
+            os_.lamps.leff_code(side.rule_leff,
+                                shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.mask)(side)))
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
 
     def player_first_ball(self):

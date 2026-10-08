@@ -214,6 +214,53 @@ class LeffTask:
         self.children = []
 
 
+def shot_blink(rows, mask_fn, blink=3):
+    """The mode rule leffs that flash the lit shots (leff_046 / 054 / 062 / 070 [0x010285e8 ...]): `rows` the
+    mode's shot table [(mask bit, lamps)], each lit shot's lamps claimed and all on / all off every `blink`
+    ticks, the others released to the rules. -> fn(LeffTask) for Lamps.leff_code."""
+    def run(task, on=True):
+        mask = mask_fn() or 0
+        for bit, lamps in rows:
+            for lamp in lamps:
+                if mask & bit:
+                    task.set(lamp, on)
+                else:
+                    task.release(lamp)
+        task.sleep(blink, lambda t: run(t, not on))
+    return run
+
+
+def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, chase=8):
+    """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
+    lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is
+    lit the shot lamps go back to the rules and `super_lamps` light one by one, then go out one by one, a step
+    every `chase` ticks (the order inferred)."""
+    def shots(task, on=True):
+        if super_fn():
+            for lamp in all_lamps:
+                task.release(lamp)
+            return sweep(task, 0, True)
+        counts = counts_fn()
+        for lamp in super_lamps:                # claimed (off) from the start, drawn only by the sweep
+            if not any(lamp in lamps for lamps in rows):
+                task.set(lamp, False)
+        for i, lamps in enumerate(rows):
+            made = counts[i] if i < len(counts) else 0
+            for u, lamp in enumerate(lamps):
+                task.set(lamp, on or u < made)
+        task.sleep(blink, lambda t: shots(t, not on))
+
+    def sweep(task, step, lighting):
+        if step < len(super_lamps):
+            task.set(super_lamps[step], lighting)
+            task.sleep(chase, lambda t: sweep(t, step + 1, lighting))
+        elif lighting:
+            sweep(task, 0, False)
+        else:
+            shots(task)
+    return shots
+
+
 class Lamps:
     """The lamp matrix as the ROM keeps it. `in` / add / discard keep the old set interface
     (os.lamps: inserts the rules read back) as lamp_test / lamp_on_solid / lamp_off_all."""

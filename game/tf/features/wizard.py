@@ -25,6 +25,7 @@ the side mode's start, the wizard multiball's start [0x0100a788]:
 Wizard shot numbering: 0 Allspark, 1 left orbit, 2 left ramp, 3 center lane, 4 right orbit, 5 right ramp.
 """
 from tf.features import Feature
+from tf.lamps import hit_count_blink
 
 ORDER = 37
 AUTOBOT, DECEPTICON = 1, 2
@@ -52,6 +53,11 @@ WMB_BALLS, WMB_SAVE, WMB_GRACE = 4, 937, 312
 WMB_START_AUDIT, WMB_AWARD_AUDIT, WMB_SUPER_AUDIT = 0x97, 0x98, 0x99
 WMB_INTRO, WMB_INTRO_TASK, WMB_INTRO_LEFF = 86, 0x7c, 86
 WMB_BG, WMB_MUSIC, WMB_RULE_LEFF = 87, 0x3d, 87
+# per shot its inserts (lamp groups 0x37-0x3c side mode, 0x41-0x46 wizard multiball; tables 0x040c66e4 /
+# 0x040c7ac8), the super's sweep (group 0x3d / 0x47)
+SIDE_LAMPS = ((13, 14), (17, 18), (46, 45), (42, 41), (37, 38), (32, 33))
+WMB_LAMPS = ((13, 14, 15), (17, 18, 19), (46, 45, 44), (42, 41, 40), (37, 38, 39), (32, 33, 34))
+SUPER_SWEEP = (12, 13, 14, 15)
 WMB_HIT_DEFF, WMB_HIT_LEFF, WMB_HIT_SOUND = 88, 89, 0x131
 WMB_SUPER_DEFF = 89
 WMB_TOTAL_DEFF, WMB_TOTAL_LEFF, WMB_TOTAL_TASK = 90, 91, 0x90
@@ -83,6 +89,12 @@ class Wizard(Feature):
                                                       self.side_sum]})
         os_.deff_live((WMB_BG,), lambda: {"values": [WMB_POINTS + WMB_STEP * sum(self.wmb_counts)]})
         os_.lamp_rule(lambda: self.side_running, leff=SIDE_RULE_LEFF, order=0x01010958)
+        # leff_079 / leff_087 [0x010109a0 / 0x01037060]: made hits solid, the rest flashing; the super's sweep
+        os_.lamps.leff_code(SIDE_RULE_LEFF, hit_count_blink(
+            SIDE_LAMPS, lambda: self.side_counts, self.side_super_lit, SUPER_SWEEP, sum(SIDE_LAMPS, ())))
+        os_.lamps.leff_code(WMB_RULE_LEFF, hit_count_blink(
+            WMB_LAMPS, lambda: self.wmb_counts, lambda: all(c >= WMB_HITS for c in self.wmb_counts), SUPER_SWEEP,
+            sum(WMB_LAMPS, ())))
         os_.lamp_rule(lambda: self.side_running and self.side_super_lit(), leff=SIDE_LIT_LEFF, order=0x01010959)
         os_.lamp_rule(lambda: self.wmb_running, leff=WMB_RULE_LEFF, order=0x01037018)
         os_.lamp_rule(lambda: self.wmb_running and all(c >= WMB_HITS for c in self.wmb_counts), leff=WMB_SUPER_LIT_LEFF,

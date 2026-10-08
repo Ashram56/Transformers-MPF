@@ -25,9 +25,10 @@ D: a lit shot J (deff 65, leff 56, sound 0xa5, audit 0x71), removed, Optimus lit
 sound 0xaa, audit 0x72); the center lane in that phase scores J again (the ROM's quirk); none left: the super at
 Optimus (leff 55; deff 67, leff 58, sound 0xab, audit 0x73). A super: requirement 5 completed, all shots relit.
 End: down to one ball the running flag goes, 218 ticks later the total (A deff 62 + leff 51, D deff 68 + leff 59).
-Not modelled: the Optimus motor (coil 30) and target coil 12, the shot inserts, the chained speech of deff 144.
+Not modelled: the Optimus motor (coil 30) and target coil 12, the chained speech of deff 144.
 """
 from tf.features import Feature
+from tf.lamps import shot_blink
 
 ORDER = 41
 AUTOBOT, DECEPTICON = 1, 2
@@ -54,6 +55,9 @@ WIZARD_REQ = 5
 END_TICKS = 218
 PCT = (100, 100, 75, 50)
 ALL = 0x3f
+# shot tables {mask bit, lamp group} [0x040c729c A, 0x040c7400 D]: the orange arrows, then the lock (A) / Optimus (D)
+ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)))
+SHOT_LAMPS = {46: ARROWS + ((0x40, (29,)),), 54: ARROWS + ((0x40, (59,)),)}
 OPTIMUS_BIT = 0x40
 # deffs the package has no length for: (seconds, leffs, sounds) as observed in traces/optimus_autobot.jsonl (the
 # jackpots, 2.2 s apart, still play their speech 2.5 s in; the total runs until the trace ends: length inferred)
@@ -299,6 +303,9 @@ class Optimus(Feature):
             os_.deff_rule((lambda s: lambda: s.active and s.shown)(side), side.bg, music=side.music, priority=0x60)
             os_.lamp_rule((lambda s: lambda: s.active and s.shown)(side), leff=side.rule_leff,
                           order=0x01028000 + side.flag)
+            # the rule leff flashes the lit shots (leff_046 / leff_054 [0x010285e8 / 0x0102a72c])
+            os_.lamps.leff_code(side.rule_leff,
+                                shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.lit)(side)))
             os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.super_leff,
                           order=0x01028100 + side.flag)
         for i, leff in enumerate(BATTLE_RULE_LEFFS):
