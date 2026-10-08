@@ -29,8 +29,9 @@ class TestBoot(TfTestCase):
         self.advance_time_and_run(2)
         self.assertModeRunning("game")
         self.assertEqual(1, self.machine.game.player.ball)
-        self.assertEqual(19, self.tf.display.bg)                # the score display
+        self.assertEqual(40, self.tf.display.bg)                # the side choice (tf/features/side.py)
         self.plunge()
+        self.assertEqual(19, self.tf.display.bg)                # the score display once the side is chosen
         self.hit_and_release_switch("s_left_top_lane")          # a lane: playfield valid
         self.advance_time_and_run(1)
         self.assertTrue(self.tf.pf_valid)

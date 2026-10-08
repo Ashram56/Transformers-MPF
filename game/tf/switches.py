@@ -26,6 +26,9 @@ HOLES = {3: "s_left_eject", 38: "s_megatron_lock_4", 39: "s_megatron_lock_3", 40
          41: "s_m_tron_lock_1_back"}
 NUM = {name: num for num, name in SW.items()}
 OUTLANES = {24: 1, 29: 2}       # switch -> drain side (ball_save_try: 1 left, 2 right)
+# the outlane handlers' media (observed, traces/sounds.jsonl): saved -> sound 0x169 + leff 97 (FUN_0102db28),
+# lost -> sound 0x16d + leff 100 (FUN_0102e208)
+OUTLANE_SAVED, OUTLANE_LOST = (0x169, 97), (0x16d, 100)
 BASE_SCORE = {}                 # switch -> base points (from the rules specs, not delivered yet)
 
 
@@ -55,7 +58,9 @@ class SwitchLayer:
             return
         os_.playfield_switch(num)
         if num in OUTLANES:
-            os_.ball_save_try(OUTLANES[num])
+            sound, leff = OUTLANE_SAVED if os_.ball_save_try(OUTLANES[num]) else OUTLANE_LOST
+            os_.sound(sound)
+            os_.leff_start(leff)
         os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
         if BASE_SCORE.get(num):

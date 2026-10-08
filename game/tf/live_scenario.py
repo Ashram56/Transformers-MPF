@@ -14,6 +14,7 @@ COIN_DELAY = 30 * 0.01626
 COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN_DELAY
 SCRIPT_START_TIME = 2.745 - 1.896
 SETTLE = 0.1
+COINS_PER_PLAYER = 4                # tf_ref "start N": 4 coins per player, then Start N times
 TROUGH_SWITCHES = (18, 19, 20, 21)  # tron_ref's 4-ball trough: MPF's trough device owns these switches
 RANDOM_SEED = 1974                  # tests/tron_test.py; live play stays unseeded
 BUTTONS = {"left": "s_l_flipper_button", "right": "s_r_flipper_button", "tilt": "s_tilt_pendulum",
@@ -74,7 +75,7 @@ class LiveScenario:
     def cmd_start(self, n="1"):
         n = int(n)
         t = COIN_FIRST
-        for i in range(3 * n):
+        for i in range(COINS_PER_PLAYER * n):
             if i:
                 t += COIN_GAP
             self.sw("s_right_coin_slot", 1, t)

@@ -23,8 +23,9 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 | OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code) |
 | Devices | ROM names and numbers (rom/mpf_package); trough, shooter lane, left eject, Megatron lock |
 | Display | ROM fonts (all 27); one slide per captured display effect (113, the ROM's frames and timing) with the live status panel; score display drawn from its captured draw calls. Values inside other effects are still the capture's |
-| Sound | every ROM sample, one pool per sound call; music intros play once and the body loops |
-| Rules, scoring, lamp effects, coil times | waiting on the ROM extraction's specs and captures |
+| Sound | every ROM sample, one pool per sound call; music intros play once and the body loops; base music by side (Autobot / Decepticon), coin, tilt, launch, ball save and drain sounds as traced; each deff plays its captured sounds |
+| Coils | the pulse and hold times measured in the emulator (rom/mpf_package/config/coils.yaml) |
+| Rules, scoring, lamp shows | waiting on the ROM extraction's specs; `scripts/trace_check.py basic` matches the reference up to the first scoring switch |
 | Hardware | virtual (desktop + MPF Monitor) by default; P-ROC numbers generated (game/config/rom/proc_numbers.yaml); VPX bridge is agent D's |
 
 Interim tables read from the ROM until the package carries them: `game/config/interim/` (scripts/interim_tables.py,

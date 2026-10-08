@@ -83,12 +83,16 @@ GAME = {
     "shoot_again_lamp": 3,      # ROLL OUT: the insert between the flippers (VPX table: li3, x 0.45 y 0.88), inferred
     "eb_lamp": 55,              # EXTRA BALL
     "special_lamp": 53,         # SPECIAL
-    "music_plunger": None,      # Tron 0x01a: the score display's music until the playfield is valid
-    "music_play": None,         # Tron 0x01b: the main play music
-    "game_start_sound": None,   # Tron 0x0f5
-    "tilt_warning_speech": None,    # Tron 0x03d, 31 ticks after sound 0x016
-    "tilt_speech": None,        # Tron 0x03e, 63 ticks after sound 0x017
-    "game_over_music": None,    # Tron 0x01d, one tick after the return to attract
+    # the base music is the side's (tf/features/side.py)
+    "music_plunger": 0x1d,      # ball start, Decepticon (observed at each ball start)
+    "music_play": 0x1f,         # main play, Decepticon (observed after the first award)
+    "game_start_sound": None,   # none observed (traces/sounds.jsonl: only the side choice music 0x1b)
+    "tilt_warning_speech": 0x052,   # observed 0.51 s (31 ticks) after sound 0x016
+    "tilt_speech": 0x053,       # observed 1.01 s (62 ticks) after sound 0x017
+    "tilt_speech_ticks": 62,
+    "launch_sound": 0x056,      # observed on every plunge and auto-launch, 0.08 s after the lane opens
+    "launch_sound_ticks": 4,
+    "game_over_music": None,    # not traced yet
     "game_over_leff": None,     # Tron 133, with it
 }
 SHOOT_AGAIN_LAMP = GAME["shoot_again_lamp"]
@@ -267,6 +271,7 @@ class TfOS(CustomCode):
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob)
         sw.add_switch_handler("s_l_flipper_button", lambda: self._flipper_launch(1))
         sw.add_switch_handler("s_r_flipper_button", lambda: self._flipper_launch(2))
+        sw.add_switch_handler("s_shooter_lane", self._shooter_left, state=0)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_opened)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_closed, state=0)
         self._power_off_run = 0     # counts deff 4 starts, so a dim timer of an earlier start does nothing
@@ -975,6 +980,12 @@ class TfOS(CustomCode):
         the eject timeout); the multiball task waits for it."""
         self.device_busy = unconfirmed
 
+    def _shooter_left(self):
+        """The ball leaves the shooter lane, plunged or auto-launched: the launch sound (GAME, observed;
+        FUN_01032dfc plays it, from which switch is not traced)."""
+        if self.game and not self.tilted and GAME["launch_sound"] is not None:
+            self.after(GAME["launch_sound_ticks"], lambda: self.game and self.sound(GAME["launch_sound"]))
+
     def _shooter_ejecting(self, mechanical_eject=False, **kwargs):
         """Auto-launch (coil 2): the OS runs task 0x3c from the launch, so the shooter lane does not raise
         the orbit post and the launched ball's orbit pass is ignored (sw23; portal_multiball_shots.jsonl
@@ -1361,7 +1372,7 @@ class TfOS(CustomCode):
         self.deff_start(21)
         self.leff_start(9)
         self.sound(0x017)
-        self.after(63, lambda: self.sound(GAME["tilt_speech"]))
+        self.after(GAME["tilt_speech_ticks"], lambda: self.sound(GAME["tilt_speech"]))
         for flipper in self.machine.flippers.values():
             flipper.disable()
 

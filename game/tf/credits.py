@@ -24,7 +24,7 @@ CUSTOM PRICING values (machine vars custom_coin_units, custom_units_per_credit).
 # COINS THROUGH LEFT / RIGHT / CENTER / FOURTH / FIFTH SLOT (tf_180 audit table: counters 2, 4, 3, 5, 6)
 SLOTS = {"s_left_coin_slot": (0, 2), "s_right_coin_slot": (1, 4), "s_center_coin_slot": (2, 3),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
-CREDIT_SOUND, COIN_SOUND = None, None     # Tron 0x0f1 (event 0x19) / 0x0f0 (event 0x1a); tf_180's not known yet
+CREDIT_SOUND, COIN_SOUND = 0x043, 0x042   # observed (traces/sounds.jsonl): 0x043 on the coin that completes a credit, 0x042 on the others
 METER_AUDIT, PAID_CREDITS_AUDIT, SERVICE_CREDITS_AUDIT = 7, 1, 0x24
 # The pricing tables are ROM data not read yet for tf_180: every GAME PRICING value uses Tron's USA 10 table
 # (inferred; tf_180's factory default is adj 28 = 66)

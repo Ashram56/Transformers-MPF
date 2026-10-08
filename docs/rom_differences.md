@@ -10,6 +10,6 @@ extraction delivers the data.
 | Deffs without frames (39) | they draw live state or nothing in the capture window | nothing drawn (the previous screen stays) | interim |
 | Scoring and rules | switch handlers per the rules specs | no points; outlanes start the ball save only | interim, until the specs |
 | Lamp effects | leff shows | none (leff ids and priorities are tracked) | interim |
-| Coil drive times | per coil | MPF defaults | interim, until decoded |
+| Side choice (task 200) | the choice at game start, deff 40 / 41 | runs on each player's first ball, a flipper switches the side, Decepticon kept when nobody chooses; ends 37 ticks after the launch (tf/features/side.py) | inferred, until the rules spec |
 | Pricing | the ROM's pricing tables | Tron's USA 25c pricing | interim (inferred) |
 | Service menu in a game | suspends the game task | asks END GAME? (Tron recreation, MPF timers cannot be suspended) | MPF limit |

@@ -25,6 +25,7 @@ COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN
 # every hit is followed by 100 ms settle; with STEP_OVERSHOOT on both phases a hit lasts ~173 ms past
 # its ms (reference traces: hit + wait 1 = 1.17-1.18 s)
 SETTLE = 0.1
+COINS_PER_PLAYER = 4                # tf_ref "start N": 4 coins per player, then Start N times
 TROUGH_SWITCHES = (18, 19, 20, 21)  # tron_ref's 4-ball trough
 # tron_ref's step_to() runs the emulator in 5 ms slices and stops at the first slice past the target, so
 # each switch phase of a hit lasts about 6.5 ms longer (fit over the reference traces; plain waits do not
@@ -45,42 +46,16 @@ def switch_name(num):
 def forced_picks(name):
     """Random choices the ROM made in the reference run, so the rebuild makes the same ones."""
     import json
-    forced = {"arcade": []}
+    forced = {}
     path = os.path.join(TRACES, name + ".jsonl")
     if not os.path.exists(path):
         return forced
     evs = [json.loads(line) for line in open(path, encoding="utf-8")]
     for i, e in enumerate(evs):
-        if e.get("ev") == "audit" and 0x53 <= e.get("id", 0) <= 0x5e:
-            forced["arcade"].append(e["id"] - 0x53)
         if e.get("ev") == "deff_start" and e.get("id") == 38:
             hits = [n for n in evs[i + 1:] if n.get("ev") == "audit" and n.get("id") == 0x0f
                     and n["t"] - e["t"] < 7.5]
             forced.setdefault("match", []).append(len(hits))
-        if e.get("ev") == "deff_start" and e.get("id") == 105:
-            # the reel stops at a random slot: take the length from what followed the deff in the ROM.
-            # That is the start of its 10-tick hold (deff_hold_frames(10, 0x20)), where the next deff may
-            # start, so the run length is 10 ticks longer.
-            hold = 10 * 0.01626
-            # the slot the award stopped in: the reel scrolls 5, 18 or 30 frames of 3 ticks before its
-            # stop sound 0x0e3 (deff_105_arcade_award 0x0100e8bc)
-            stop = next((n["t"] - e["t"] for n in evs[i + 1:] if n.get("ev") == "sound"
-                         and n.get("call") == "0x0e3" and n.get("in_deff") == 105), None)
-            if stop is not None:
-                from tf.features.arcade import scroll_frames
-                forced.setdefault("arcade_slot", []).append(
-                    min(range(3), key=lambda k: abs(scroll_frames(k) * 3 * 0.01626 - stop)))
-            for n in evs[i + 1:]:
-                if n.get("ev") == "deff_start" and n.get("id") not in (19, 105):
-                    forced.setdefault("deff_105_seconds", []).append(n["t"] - e["t"] + hold)
-                    break
-                if n.get("ev") == "sound" and n.get("call") == "0x0fd":
-                    forced.setdefault("deff_105_seconds", []).append(n["t"] - e["t"] - 0.045 + hold)
-                    break
-    # left outlane hits (task 0x37 starts, logged twice per hit): insult speech 0x129 or not
-    lefts = sorted({e["t"] for e in evs if e.get("ev") == "task_start" and e.get("task") == "0x37"})
-    forced["insult"] = [0 if any(n.get("ev") == "sound" and n.get("call") == "0x129" and 0 <= n["t"] - t < 0.1
-                                 for n in evs) else 1 for t in lefts]
     for deff_id, (stop_ev, stop_id) in CLIP_DEFFS.items():
         forced["deff_{}_seconds".format(deff_id)] = clip_lengths(evs, deff_id, stop_ev, stop_id)
     forced.update(forced_samples(evs))
@@ -90,17 +65,8 @@ def forced_picks(name):
 def forced_samples(evs):
     """Sample picks of sound calls that a chained sound (snd_play_chain, caller 0x2ccb8) waited for: the
     gap from the call to the chained sound tells which sample the ROM played."""
-    import csv
-    base = os.path.join(ROOT, "assets", "callouts")
-    dur = {}
-    with open(os.path.join(base, "samples_index.csv"), encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            dur[int(row["sample_id"], 16)] = float(row["duration_s"] or 0)
-    lengths = {}
-    with open(os.path.join(base, "sound_calls.csv"), encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            lengths[int(row["call_id"], 16)] = [dur.get(int(x, 16), 0)
-                                                for x in row["sample_ids (one picked per play)"].split()]
+    from tf.os_layer import sample_lengths
+    lengths = sample_lengths(os.path.join(ROOT, "rom", "rom_data", "sound"))
     sounds = [e for e in evs if e.get("ev") == "sound" and not e.get("in_deff")]
     picks, index = {}, {}
     for e in sounds:
@@ -128,7 +94,7 @@ def forced_samples(evs):
 # Deffs that play a random film clip first, so their length varies: the ROM's length is read from the
 # stop of the effect the deff runs (its exit handler stops it). A deff replaced by a new start of the
 # same deff keeps the recorded length (None).
-CLIP_DEFFS = {48: ("leff_stop", 48), 111: ("tube_show_stop", 62)}
+CLIP_DEFFS = {}     # deffs of random length, read from what stopped them in the trace (none known yet)
 
 
 def clip_lengths(evs, deff_id, stop_ev, stop_id):
@@ -212,7 +178,7 @@ class ScenarioRun(TfTestCase):
         n = int(n)
         self.log("script", what="start", players=n)
         self.wait(COIN_FIRST)
-        for i in range(3 * n):
+        for i in range(COINS_PER_PLAYER * n):
             if i:
                 self.wait(COIN_GAP)
             self.sw("s_right_coin_slot", 1)
