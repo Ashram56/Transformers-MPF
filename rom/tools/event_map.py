@@ -51,7 +51,8 @@ def main(ddir, din, dout, libidx, csvp):
     OS_NAMES = {0x215ac: 'text_draw_msg_page', 0x217b4: 'text_printf_msg_fit_page', 0x21838: 'text_draw_str_page',
                 0x21a78: 'text_printf_page', 0x21b4c: 'text_draw_str_fit_page', 0x1caf0: 'score_add', 0x1cb0c: 'score_add_player',
                 0x1aa40: 'current_player', 0x1a94c: 'num_players', 0x103aec0: 'multiball_start', 0x20be4: 'deff_stop',
-                0x178b0: 'bg_entry_eval', 0x73cc: 'lamp_compositor_tick', 0x1033e30: 'player_side', 0x1033e84: 'side_choice_running'}
+                0x178b0: 'bg_entry_eval', 0x73cc: 'lamp_compositor_tick', 0x1033e30: 'player_side', 0x1033e84: 'side_choice_running',
+                0x1006704: 'any_multiball_running', 0x10067bc: 'any_timed_mode_running'}
     for a, n, _ in F:
         if a in OS_NAMES and n != OS_NAMES[a]: ren[n] = OS_NAMES[a]
         if a in OS_NAMES: continue
