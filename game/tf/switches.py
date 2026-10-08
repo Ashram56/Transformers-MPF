@@ -44,6 +44,8 @@ SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
 # switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
 # traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
+# handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
+DELAY = {51: 5}
 
 
 class SwitchLayer:
@@ -65,7 +67,7 @@ class SwitchLayer:
         def on_close():
             if not self.os.game or not self.os.in_play:
                 return
-            self.os.after(BOTH_EDGES.get(num, 1), lambda: self.handle(num))
+            self.os.after(BOTH_EDGES.get(num, DELAY.get(num, 1)), lambda: self.handle(num))
         return on_close
 
     def handle(self, num):

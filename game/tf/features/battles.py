@@ -704,13 +704,13 @@ class Battles(Feature):
     HOOKS = ("player_first_ball", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
-             "sw_30", "sw_31", "sw_32", "battle_running")
+             "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
 
     def __init__(self, os_):
         super().__init__(os_)
         self.battles = [cls(self) for cls in BATTLES]
         self.left_orbit_at = {5: -10.0, 6: -10.0}
-        self.center_at = -10.0
+        self.center_at = self.lane_at = -10.0
         self.launched_at = self.back_door_at = self.right_at = -10.0
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._launched, state=0)
         self.ended_at_drain = False
@@ -750,10 +750,16 @@ class Battles(Feature):
         for b in self.battles:
             b.reset()
             pd["done_" + b.key] = 0
-        pd.wizard_played = {}
-        pd.wizard_completed = {}
         self.ms_reset()
         self.side_changed()
+
+    def wizard_reset(self):
+        """[0x010359f4(2)]: 0x01022b88(0xff) and each battle's reset (the wizard multiball start)."""
+        pd = self.pd
+        pd.battle_started = pd.battle_completed = 0
+        for b in self.battles:
+            b.reset()
+        self.os.request_refresh()
 
     def ball_start(self):
         """The lit-battle rule's leff 104 is the first effect of every ball start (all traces: 104, then 92):
@@ -774,11 +780,8 @@ class Battles(Feature):
         pd.battle_lit = 0x10 if pd.get("side", DECEPTICON) == AUTOBOT else 0x01
 
     def wizard(self, item, what):
-        """[0x01035af0(item, what)]: 1 played, 2 completed; their audits 0x81 + item / 0x8c + item."""
-        pd = self.pd
-        store = pd.wizard_played if what == 1 else pd.wizard_completed
-        store[item] = store.get(item, 0) + 1
-        self.os.audit((WIZARD_PLAYED_AUDIT if what == 1 else WIZARD_DONE_AUDIT) + item)
+        """[0x01035af0(item, what)]: 1 collected, 2 completed (tf/features/wizard.py)."""
+        self.os.hook("wizard_req", item, what)
 
     def running(self):
         return next((b for b in self.battles if b.scoring), None)
@@ -907,7 +910,7 @@ class Battles(Feature):
 
     # ------------------------------------------------------------------ shots
 
-    def shot(self, shot):
+    def shot(self, shot, mb=True):
         """A battle shot made (the shot handlers): its audit, every battle's hit fn, the mode-start rule (and
         the left orbit's combo, which the orbit tokens decide here)."""
         os_ = self.os
@@ -915,6 +918,8 @@ class Battles(Feature):
             return
         if shot in SHOT_AUDIT:
             os_.audit(SHOT_AUDIT[shot])
+        if mb:
+            os_.hook("mb_shot", shot)               # the multiball and wizard shot rules
         self.battle_shot(shot)
         if shot in MS_SHOT:
             self.mode_start_shot(MS_SHOT[shot])
@@ -949,22 +954,23 @@ class Battles(Feature):
     def sw_10(self):
         self.shot(LEFT_RAMP)
 
-    def _center(self):
+    def _center(self, mb=True):
         now = self.os.now
         last, self.center_at = self.center_at, now
         if now - last < CENTER_LOCK_S:
             return
-        self.shot(CENTER)
+        self.shot(CENTER, mb)
 
     def sw_11(self):
+        self.lane_at = self.os.now                  # the right orbit's debounce counts the lane only (optimus_* traces)
         self._center()
 
     def sw_51(self):
-        self._center()
+        self._center(mb=False)                      # Optimus has its own multiball rules (hook sw_51)
 
     def sw_12(self):
         now = self.os.now
-        last = max(list(self.left_orbit_at.values()) + [self.back_door_at, self.center_at, self.launched_at])
+        last = max(list(self.left_orbit_at.values()) + [self.back_door_at, self.lane_at, self.launched_at])
         if now - last < RIGHT_IGNORE_S or now - self.right_at < RIGHT_REPEAT_S:
             return
         self.right_at = now

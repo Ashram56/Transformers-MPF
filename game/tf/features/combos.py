@@ -13,7 +13,8 @@ Combos, on a major shot:
 3. else the way count stays.
 Then the window ends, and unless a multiball runs ([0x01002afc] -> [0x01006704], the multiball flags, named
 any_timed_mode_running in the decompile) mask = all six minus the shot when it is the eject or the left ramp and
-the window restarts: 312 ticks (task 0x92) + 124 grace ticks (task 0x93). During a battle it restarts (observed:
+the window restarts: 312 ticks (task 0x92, not counting while the
+left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (observed:
 traces/battle_starscream.jsonl, no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
 combo on every shot). NOT YET: the arrows of the allowed
 shots (leff 34's task [0x01003104], never logged as a leff start in the traces).
@@ -33,7 +34,7 @@ ORDER = 45
 SHOTS = {10: 2, 11: 3, 14: 4}      # switch -> shot index (eject 0, the orbits 1 and 5: hook combo_shot)
 EJECT, LEFT_RAMP, RIGHT_ORBIT = 0, 2, 5
 ALL = 0x3f
-WINDOW_TICKS, GRACE_TICKS = 312, 124
+WINDOW_TICKS, GRACE_TICKS, STEP_TICKS = 312, 124, 7
 WINDOW_TASK = 0x92
 AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
@@ -48,6 +49,7 @@ class Combos(Feature):
     def __init__(self, os_):
         super().__init__(os_)
         self.way = 0
+        self.ticks = 0
         self.mask = ALL
         os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF,
                       order=0x01023928)
@@ -96,9 +98,22 @@ class Combos(Feature):
             os_.request_refresh()
             return
         self.mask = ALL & ~(bit if index in (EJECT, LEFT_RAMP) else 0)
-        os_.task_start(WINDOW_TASK, WINDOW_TICKS + GRACE_TICKS, self._window_end)
+        self.ticks = WINDOW_TICKS
+        os_.task_start(WINDOW_TASK, STEP_TICKS, self._step)
         if restart:
             os_.request_refresh()
+
+    def _step(self):
+        """[0x01002b5c]: combo_ticks - 7 every 7 ticks, not while the left eject's device task runs (a held
+        ball, [0x0103a4f0(3)]; traces/wizard_multiball.jsonl: the eject's window still open 7.4 s on), then
+        124 ticks of grace."""
+        os_ = self.os
+        if not os_.ball_held:
+            self.ticks = max(self.ticks - STEP_TICKS, 0)
+        if self.ticks:
+            os_.task_start(WINDOW_TASK, STEP_TICKS, self._step)
+        else:
+            os_.task_start(WINDOW_TASK, GRACE_TICKS, self._window_end)
 
     def _window_end(self):
         self.os.request_refresh()

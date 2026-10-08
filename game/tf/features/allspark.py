@@ -23,6 +23,9 @@ SWITCH = "s_left_eject"
 SETTLE_TICKS = 47
 POLL_TICKS = 6
 EJECT_TICKS = 54
+REFUSED_EJECT_TICKS = 2
+CONFIRM_S, MPF_TIMEOUT_S = 2.0, 1.0       # the device task without a confirming switch; hardware.yaml
+WARN_TRIES = 0x3a9
 WARN_SOUND, WARN_LEFF = 0x157, 21
 EJECT_SOUND, EJECT_LEFF = 0x158, 22
 RELEASE_EVENT = "tf_hold_release"
@@ -86,6 +89,8 @@ class Allspark(Feature):
         """[0x0100a788] event 2, ball entered."""
         os_ = self.os
         os_.audit(ENTER_AUDIT)
+        os_.hook("eject_modes")                     # the wizard modes' hits and starts first [0x0100a788]
+        os_.hook("mb_shot", 0)
         os_.hook("battle_shot", 0)
         if self.pd.get("allspark_lit", 0) > 0:
             self.award()
@@ -103,6 +108,14 @@ class Allspark(Feature):
             return
         if os_.show_running():
             os_.after(POLL_TICKS, self._kickout)
+            return
+        if os_.game and not os_.state & 0x310 and os_.sound_refused(WARN_SOUND):
+            # the warning cannot play (a jackpot's speech holds its channel): event 7 retries snd_play 937 times
+            # in one go, then the eject follows at once (traces/optimus_*.jsonl, megatron_decepticon.jsonl:
+            # 937 calls, 0x158 + leff 22 two ticks later)
+            for _ in range(WARN_TRIES):
+                os_.trace.log("sound", call="0x{:03x}".format(WARN_SOUND), in_deff=0)
+            os_.after(REFUSED_EJECT_TICKS, self._eject)
             return
         if os_.game and not os_.state & 0x310:
             os_.sound(WARN_SOUND)
@@ -123,8 +136,18 @@ class Allspark(Feature):
         self.machine.events.post(RELEASE_EVENT)
 
     def _eject_success(self, **kwargs):
-        """MPF confirms the eject (a playfield switch or the 2 s timeout): ball search may run again (observed:
-        battle_blackout, a search 10.9 s after the eject with no switch in between)."""
+        """MPF confirms the eject (a playfield switch or its 1 s timeout): ball search may run again (observed:
+        battle_blackout, a search 10.9 s after the eject with no switch in between). The device's own task
+        runs 2 s when no switch confirms it: MPF's timeout is shorter only so that a ball coming back 1.5 s
+        after an eject is a new entry (wizard_all_hail_megatron.jsonl), not a failed eject."""
+        os_ = self.os
+        wait = CONFIRM_S - (os_.now - os_.device_released_at)
+        if wait > 0 and os_.now - os_.device_released_at >= MPF_TIMEOUT_S - 0.05:
+            os_.machine.clock.schedule_once(lambda: self._confirmed(), wait)
+            return
+        self._confirmed()
+
+    def _confirmed(self):
         self.os._device_eject_confirmed()
         self.os.device_ejecting = False
 

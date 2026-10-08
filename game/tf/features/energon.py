@@ -80,6 +80,7 @@ class Energon(Feature):
         os_.leff_start(SET_LEFF)
         os_.sound(SET_SOUND)
         os_.score_add(min(SET_BASE + SET_STEP * sets, SET_CAP))
+        os_.hook("lock_completion")                 # [0x01030b34] -> [0x0100af0c] (tf/features/megatron.py)
         os_.task_start(DEBOUNCE_TASK, DEBOUNCE_TICKS)
         pd.energon_sets = min(sets + 1, 255)
         pd.energon_lit = 0

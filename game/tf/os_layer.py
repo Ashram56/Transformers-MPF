@@ -161,6 +161,24 @@ def sample_lengths(base):
     return out
 
 
+def sample_channels(base):
+    """{sound call: [(channel mask, priority) of each sample it picks from]}: the sample's mask (samples.csv) and
+    the low byte of the call's flags word (sound_calls.csv flags_0x10; meaning inferred: 0x157 with 0x9e is
+    refused while a 0x0c-mask jackpot sample of a 0x1c1 call plays, played over a 0x10-mask one)."""
+    import csv
+    masks = {}
+    with open(os.path.join(base, "samples.csv"), encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            masks[int(row["sample"], 16)] = int(row.get("mask") or "0", 16)
+    out = {}
+    with open(os.path.join(base, "sound_calls.csv"), encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            ids = [int(x, 16) for x in (row["samples"] or "").split()]
+            prio = int(row.get("flags_0x10") or "0", 16) & 0xff
+            out[int(row["call"], 16)] = [(masks.get(i, 0), prio) for i in ids]
+    return out
+
+
 class Task:
     """One ROM task: a timer that calls back after a number of ticks."""
 
@@ -497,6 +515,15 @@ class TfOS(CustomCode):
     def deff_start(self, deff_id, **args):
         return self.display.start(deff_id, **args)
 
+    def deff_media(self, deff_id, leff=None, sound=None):
+        """The lamp effect and first sound that come with deff_id, unless its capture plays them already (a
+        capture's media start with the deff; started twice they would show twice in a trace)."""
+        info = self.display.media.get(deff_id)
+        if leff is not None and not (info and leff in info.leffs):
+            self.leff_start(leff)
+        if sound is not None and not (info and any(c == sound and t < 0.05 for t, c in info.sounds)):
+            self.sound(sound, in_deff=deff_id)
+
     def deff_stop(self, deff_id):
         self.display.stop(deff_id)
 
@@ -538,7 +565,26 @@ class TfOS(CustomCode):
         else:
             i = self.pick("sample_0x{:03x}".format(call), [1] * len(lengths)) if len(lengths) > 1 else 0
         self.media.sound(call, i or 0)             # the media controller plays the same sample
+        channels = self.sample_channels(call)
+        if channels and (i or 0) < len(channels):
+            self._playing = [p for p in getattr(self, "_playing", []) if p[0] > self.now]
+            self._playing.append((self.now + lengths[i or 0],) + channels[i or 0])
         return self.now + lengths[i or 0]
+
+    def sound_refused(self, call):
+        """The sound board refuses `call` while a sample of a higher priority call plays on one of its channels
+        (inferred from the Allspark's warning 0x157, [0x0100a788] event 7: refused during the jackpot speech)."""
+        channels = self.sample_channels(call)
+        if not channels:
+            return False
+        mask, prio = channels[0]
+        return any(end > self.now and m & mask and p > prio for end, m, p in getattr(self, "_playing", []))
+
+    def sample_channels(self, call):
+        if not hasattr(self, "_sample_channels"):
+            self._sample_channels = sample_channels(os.path.join(self.machine.machine_path, "..", "rom",
+                                                                 "rom_data", "sound"))
+        return self._sample_channels.get(call, [])
 
     def sound_stop(self, call):
         """FUN_0002ceb4(call): stop the sample a sound call plays (Tron: the arcade reel's roll)."""
@@ -851,8 +897,10 @@ class TfOS(CustomCode):
         self.audit(9 + n)
 
         def show():
-            if self.display.show_running():
-                self.task_start(0x33, 1, show)       # FUN_000287a4: wait while a show runs
+            if self.display.show_running() or (self.display.fg is not None and self.display.fg_prio > 0x9f):
+                # FUN_000287a4: wait while a show runs, or a mode's award deff (traces/wizard_multiball.jsonl:
+                # the replay as the last wizard hit deff 88 ends)
+                self.task_start(0x33, 1, show)
                 return
             if self.deff_start(28):
                 self.leff_start(17)
