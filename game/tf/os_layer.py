@@ -65,7 +65,8 @@ DEVICE_BUSY_TICKS = 149
 MB_FIRST_EJECT_TICKS = 51
 SAVE_SERVE_TICKS = 48           # ball save re-serve: deff 20 -> shooter lane opens 1.383 s (Tron traces)
 BALL_SEARCH_EVENT_TICKS = 36
-BALL_SEARCH_RUN_TICKS = 297     # a search that finds no ball: the coils cycle, then the countdown resumes
+BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
+                                # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
 BALL_SEARCH_TICKS = 104     # search task 0x2b; a drain during it ends the ball after it
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
@@ -102,8 +103,6 @@ GAME = {
     "tilt_speech_ticks": 62,
     "launch_sound": 0x056,      # observed on every plunge and auto-launch, 0.08 s after the lane opens
     "launch_sound_ticks": 4,
-    "game_over_music": None,    # not traced yet
-    "game_over_leff": None,     # Tron 133, with it
 }
 SHOOT_AGAIN_LAMP = GAME["shoot_again_lamp"]
 START_LAMP = GAME["start_lamp"]
@@ -1596,6 +1595,8 @@ class TfOS(CustomCode):
             played = self.now - self._valid_at
             self._valid_at = None
             self.game_seconds += played
+            if self.game and self.game.player:
+                self.game.player.play_seconds = (self.game.player.play_seconds or 0) + played
             self.audits.add_extra("ball_seconds", played)
         if self.task_running(0x37):                  # end_of_ball [0x00020764]: last outlane drain side
             self.audit(0x28)
@@ -1658,10 +1659,13 @@ class TfOS(CustomCode):
         self.state |= 0x18
         if self._restart or self._service_kill:      # adj 36 / the service menu: no game over
             return
-        # game-time audit (audits 59-71, by the game's validated play time) and the score-range audits
-        # (audits 30-46, one per player) [0x00023774]
+        # game-time audits (audits 59-71), one per player by that player's play time (RAM 0x37630, whole
+        # seconds counted with audit 0x3c [0x0001f344], bucketed from the table at 0x33328 [0x0001f564];
+        # observed: game_flow.jsonl 158.64 s, two players under a minute: counter 46 twice), and the
+        # score-range audits (audits 30-46, one per player) [0x00023774]
         players = self.game.player_list if self.game else []
-        self.audit(self.audits.game_time_counter(self.game_seconds))
+        for player in players:
+            self.audit(self.audits.game_time_counter(int(player.play_seconds or 0)))
         for player in players:
             self.audit(self.audits.score_range_counter(player.score))
         self.audits.add_extra("game_seconds", self.game_seconds)

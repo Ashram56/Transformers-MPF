@@ -32,12 +32,16 @@ class Attract(Feature):
             self.os.leff_stop(1)
 
     def attract_start(self):
-        self.start()
+        """Event 0x08 at the end of the game: the game is still being torn down, so no game check."""
+        self._show()
 
     def start(self):
         self._handle = None
         if self.os.game:
             return
+        self._show()
+
+    def _show(self):
         self.os.deff_start(1)
         self.os.leff_start(1, loop=True)
 

@@ -158,6 +158,7 @@ class Display:
                     max(0.0, seconds - self.hold_tail.get(deff_id, hold_ticks * TICK))))
         if replaced is not None and self.show is replaced:
             self.show = None
+            self.os.ball_search_reload()            # the show task's end (below, _end_show)
             if replaced.on_end:
                 replaced.on_end()
             self._pump()
@@ -212,6 +213,7 @@ class Display:
             else:
                 self.show_held = True
             show, self.show = self.show, None
+            self.os.ball_search_reload()
             if show.on_end:
                 show.on_end()
             deff_id, _, on_start = self.select()
@@ -326,7 +328,11 @@ class Display:
             self.refresh()
 
     def _end_show(self):
+        """The show task [0x01006480] reloads the ball-search countdown when it runs, when its deff starts and
+        when the deff is over (observed: game_flow.jsonl, super skill shot deff 43 49.21-51.73 s, no search
+        before the drain at 60.47 s)."""
         show, self.show = self.show, None
+        self.os.ball_search_reload()
         if show.on_end:
             show.on_end()
         self.refresh()
@@ -455,6 +461,7 @@ class Display:
             if self.fg == old.deff_id:
                 self._end_fg(stopped=True)
         self.shows.append(Show(task_id, deff_id, threshold, timeout, on_start, on_end, self.os.now, deff_args))
+        self.os.ball_search_reload()
         # FUN_0000c2b8 takes the first show task in the OS task list, i.e. the oldest one waiting
         # (traces/end_of_line_multiball.jsonl: task 0x87 deff 139, then 0x83 deff 133, then 0x97).
         # The show task first runs once its caller has finished (a deff the caller starts right after
@@ -496,6 +503,7 @@ class Display:
             self.shows.pop(0)
             self.show = first
             self.start(first.deff_id, refresh=False, **first.deff_args)
+            self.os.ball_search_reload()
             if first.on_start:
                 first.on_start()
             self.os.request_refresh()            # rules that wait for this show's deff (e.g. a mode intro)
