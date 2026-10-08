@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compare a rebuild trace with the ROM reference trace for one scenario.
 
-Wraps assets/rules/tools/trace/trace_compare.py. Before comparing it drops events that are not rules
+Wraps rom/tools/trace/trace_compare.py. Before comparing it drops events that are not rules
 behaviour: OS bookkeeping audits (time played, 59-64), and sounds played from inside a display effect
 (in_deff != 0; those belong to the effect's media show, checked separately), and, unless --strict, the
 score display deff 19 (and its tube show 10) and the mode background deffs that the deff rules restart
@@ -22,21 +22,24 @@ import sys
 import tempfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-REF = os.path.join(ROOT, "assets", "rules", "traces")
+REF = os.path.join(ROOT, "rom", "rules", "traces")
 CAND = os.path.join(ROOT, "captures", "traces")
-COMPARE = os.path.join(ROOT, "assets", "rules", "tools", "trace", "trace_compare.py")
+COMPARE = os.path.join(ROOT, "rom", "tools", "trace", "trace_compare.py")
 DEFAULT = "score,deff_start,sound,leff_start,tube_show_start,audit,multiball_start,mark,lamp,coil"
 OS_AUDITS = {59, 60, 61, 62, 63, 64}
 
 
 STRICT = False
+# where the ROM's deff rules start a rule's background deff: Tron 0x19944, tf_180 0x1794c (its music table code,
+# rom/rom_data/sound/music_table.csv; deff 40 at game start and deff 19 after deff 41 in traces/sounds.jsonl)
+RULE_CALLERS = ("0x19944", "0x1794c")
 
 
 def keep(e):
     if not STRICT and e.get("ev") == "deff_start" and e.get("id") == 19:
         return False            # score display re-asserted by the deff rules (display housekeeping)
-    if not STRICT and e.get("ev") == "deff_start" and (e.get("caller") == "0x19944" or e.get("rule")):
-        return False            # mode background deffs (re)started by the deff rules [0x000198a8], same reason
+    if not STRICT and e.get("ev") == "deff_start" and (e.get("caller") in RULE_CALLERS or e.get("rule")):
+        return False            # mode background deffs (re)started by the deff rules, same reason
     if not STRICT and e.get("ev") == "tube_show_start" and e.get("id") == 10:
         return False            # the tube show deff 19 starts with itself
     if e.get("ev") == "sound" and e.get("caller") == "0x2c97c":

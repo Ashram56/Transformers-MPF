@@ -1,0 +1,35 @@
+#show_version=6
+# ROM lamp effect (leff) 37, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 584 ms).
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 97ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 195ms
+  lights:
+    l_allspark_x: "7f7f7f"
+    l_center_lane_x: "7f7f7f"
+    l_left_orbit_x: "7f7f7f"
+    l_left_ramp_x: "7f7f7f"
+    l_right_orbit_x: "7f7f7f"
+    l_right_ramp_x: "7f7f7f"
+- duration: 98ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 194ms
+  lights:
+    l_allspark_x: "7f7f7f"
+    l_center_lane_x: "7f7f7f"
+    l_left_orbit_x: "7f7f7f"
+    l_left_ramp_x: "7f7f7f"
+    l_right_orbit_x: "7f7f7f"
+    l_right_ramp_x: "7f7f7f"

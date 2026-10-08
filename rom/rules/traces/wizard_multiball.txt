@@ -1,0 +1,94 @@
+# Autobots Roll Out (Autobot side wizard mode) and Wizard Multiball (Battle for Cybertron), factory settings.
+# POKES: the Autobot requirements 5-9 are marked completed in NVRAM (0x0211210c + 16*req, value 0x0101) to
+# qualify Autobots Roll Out; after one real shot its six shot counters (RAM 0x34eb4 + 4*i) are set to 2 to
+# light its super jackpot; then requirements 0-4 are marked completed so all 11 are done for the Wizard Multiball.
+autoplunge 0
+start 1
+wait 2
+button left 150
+wait 2
+plunge
+autoplunge 1
+wait 2
+mark poke_autobot_requirements
+poke 211215c 257 4
+poke 211216c 257 4
+poke 211217c 257 4
+poke 211218c 257 4
+poke 211219c 257 4
+wait 1
+mark start_aro
+hit 3
+wait 8
+mark aro_shot
+hit 10
+wait 2
+mark poke_aro_counters
+poke 34eb4 2
+poke 34eb8 2
+poke 34ebc 2
+poke 34ec0 2
+poke 34ec4 2
+poke 34ec8 2
+wait 1
+mark aro_super
+hit 3
+wait 9
+mark poke_decepticon_requirements
+poke 211210c 257 4
+poke 211211c 257 4
+poke 211212c 257 4
+poke 211213c 257 4
+poke 211214c 257 4
+wait 1
+mark start_wizard_mb
+hit 3
+wait 14
+mark wmb_shots
+hit 3
+wait 3
+hit 5
+wait 3.5
+hit 10
+wait 2
+hit 11
+wait 3.5
+hit 12
+wait 2
+hit 14
+wait 2
+hit 3
+wait 3
+hit 5
+wait 3.5
+hit 10
+wait 2
+hit 11
+wait 3.5
+hit 12
+wait 2
+hit 14
+wait 2
+hit 3
+wait 3
+hit 5
+wait 3.5
+hit 10
+wait 2
+hit 11
+wait 3.5
+hit 12
+wait 2
+mark last_shot
+hit 14
+wait 3
+mark super_wizard
+hit 3
+wait 6
+mark drains
+drain
+wait 1
+drain
+wait 1
+drain
+wait 7

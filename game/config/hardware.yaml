@@ -43,9 +43,25 @@ ball_devices:
   bd_left_eject:          # left eject saucer (switch 3, coil 22)
     ball_switches: s_left_eject
     eject_coil: c_left_eject
-    eject_timeouts: 2s
+    eject_timeouts: 1s        # a ball can come back 1.5 s after an eject (traces/wizard_all_hail_megatron.jsonl)
   bd_megatron:            # Megatron lock: lock #1 (back) to #4 and the jam switch, kicked out by coil 3
     ball_switches: s_m_tron_lock_1_back, s_megatron_lock_2, s_megatron_lock_3, s_megatron_lock_4
     jam_switch: s_megatron_jam
     eject_coil: c_megatron_lockup
-    eject_timeouts: 2s
+    eject_timeouts: 350ms     # the multiball release kicks the balls 0.3-0.5 s apart (traces/megatron_*.jsonl)
+    exit_count_delay: 100ms
+    entrance_count_delay: 300ms
+
+ball_holds:
+  hold_left_eject:          # the Allspark keeps its ball until the rules release it (tf/features/allspark.py)
+    hold_devices: bd_left_eject
+    balls_to_hold: 1
+    enable_events: game_started
+    disable_events: game_ended
+    release_one_events: tf_hold_release
+  hold_megatron:            # the Megatron lock keeps every ball entering it; the rules kick or release them (tf/features/megatron.py)
+    hold_devices: bd_megatron
+    balls_to_hold: 4
+    enable_events: game_started
+    disable_events: game_ended
+    release_one_events: tf_megatron_release

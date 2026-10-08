@@ -1,0 +1,83 @@
+#show_version=6
+# ROM lamp effect (leff) 166, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1570 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 97ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 107ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32

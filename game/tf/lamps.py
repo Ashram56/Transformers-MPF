@@ -9,8 +9,8 @@ The SAM OS keeps (read in Tron Legacy's decompile, Tron OS addresses; the same O
 - lamp groups (tf_180 table 0x040d1510, 148 entries, not read yet).
 
 Here a running leff is a layer at its ROM priority that plays the leff's captured show
-(rom/mpf_package/config/shows/lampfx_NNN_*.yaml from the ROM extraction, none delivered yet; a leff without a
-show draws nothing). The composite drives the MPF lights (key "tf") and is logged as `lamp` events (1-80)
+(rom/mpf_package/config/shows/lampfx_NNN.yaml, listed in rom/rom_data/io/lamp_effects.csv; a leff without a
+show, the ROM drawing it from game state, draws nothing until a feature draws it with leff_code). The composite drives the MPF lights (key "tf") and is logged as `lamp` events (1-80)
 exactly like the ROM reference traces; flasher pulses are logged as `coil` on/off events.
 
 The list-5 lamp rules (rule_obj_init(obj, 5, fn, 0x20)) that redraw inserts from game state on every
@@ -31,18 +31,27 @@ FLASH_TICKS = 5             # compositor FUN_00007f68 inverts the flash phase ev
 # filter; the MPF lights get the unfiltered output.
 OFF_DELAY = 0.065
 MPF_KEY = "tf"
-# The reference traces report a pulsed coil as on until ~0.24 s after its pulse ended (an 18 ms zen
-# flasher pulse reads 0.24 s, a 64 ms pulse ~0.33 s, shaker strength 1/2 (75/265 ms) 0.27/0.46 s):
-# the `coil` events are logged through the same hold, so back-to-back pulses read as one flash.
-COIL_OFF_DELAY = 0.24
+# The tf_180 reference traces log the drivers raw (rom/rules/traces/basic.jsonl 4.70 s: the Optimus flasher of
+# leff 96 as 3-17 ms on / off slices), unlike Tron's, which held a pulsed coil on ~0.24 s: no hold here.
+COIL_OFF_DELAY = 0.0
 WHITE, BLACK = "ffffff", "000000"
+
+
+def leff_rows(rom):
+    """The ROM's leff table (rom/rom_data/io/lamp_effects.csv: leff, priority, coils_pulsed, run_ms, loops
+    "yes" for a leff that runs until stopped, show), [] without the extraction."""
+    path = os.path.join(rom, "rom_data", "io", "lamp_effects.csv")
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 def parse_show(path):
     """Minimal reader for the package's generated show files (no YAML library in the venv):
     -> [(seconds, {light: on(bool) or hex color}, {flasher: ms})]."""
     steps = []
-    section = None
+    section = coil = None
     for line in open(path, encoding="utf-8"):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
@@ -51,9 +60,20 @@ def parse_show(path):
             steps.append([int(m.group(1)) / 1000.0, {}, {}])
             section = None
             continue
-        m = re.match(r"\s+(lights|flashers):\s*$", line)
+        m = re.match(r"\s+(lights|flashers|coils):\s*$", line)
         if m:
             section = m.group(1)
+            continue
+        m = re.match(r"\s+pulse_ms:\s*(\d+)\s*$", line)
+        if m and steps and section == "coils" and coil:
+            steps[-1][2][coil] = int(m.group(1))
+            continue
+        m = re.match(r"\s+action:", line)
+        if m:
+            continue
+        m = re.match(r"\s+(\S+):\s*$", line)
+        if m and section == "coils":
+            coil = m.group(1)
             continue
         m = re.match(r"\s+(\S+):\s*'?([0-9a-fA-F]+)(ms)?'?\s*$", line)
         if m and steps and section:
@@ -194,6 +214,53 @@ class LeffTask:
         self.children = []
 
 
+def shot_blink(rows, mask_fn, blink=3):
+    """The mode rule leffs that flash the lit shots (leff_046 / 054 / 062 / 070 [0x010285e8 ...]): `rows` the
+    mode's shot table [(mask bit, lamps)], each lit shot's lamps claimed and all on / all off every `blink`
+    ticks, the others released to the rules. -> fn(LeffTask) for Lamps.leff_code."""
+    def run(task, on=True):
+        mask = mask_fn() or 0
+        for bit, lamps in rows:
+            for lamp in lamps:
+                if mask & bit:
+                    task.set(lamp, on)
+                else:
+                    task.release(lamp)
+        task.sleep(blink, lambda t: run(t, not on))
+    return run
+
+
+def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, chase=8):
+    """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
+    lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is
+    lit the shot lamps go back to the rules and `super_lamps` light one by one, then go out one by one, a step
+    every `chase` ticks (the order inferred)."""
+    def shots(task, on=True):
+        if super_fn():
+            for lamp in all_lamps:
+                task.release(lamp)
+            return sweep(task, 0, True)
+        counts = counts_fn()
+        for lamp in super_lamps:                # claimed (off) from the start, drawn only by the sweep
+            if not any(lamp in lamps for lamps in rows):
+                task.set(lamp, False)
+        for i, lamps in enumerate(rows):
+            made = counts[i] if i < len(counts) else 0
+            for u, lamp in enumerate(lamps):
+                task.set(lamp, on or u < made)
+        task.sleep(blink, lambda t: shots(t, not on))
+
+    def sweep(task, step, lighting):
+        if step < len(super_lamps):
+            task.set(super_lamps[step], lighting)
+            task.sleep(chase, lambda t: sweep(t, step + 1, lighting))
+        elif lighting:
+            sweep(task, 0, False)
+        else:
+            shots(task)
+    return shots
+
+
 class Lamps:
     """The lamp matrix as the ROM keeps it. `in` / add / discard keep the old set interface
     (os.lamps: inserts the rules read back) as lamp_test / lamp_on_solid / lamp_off_all."""
@@ -217,15 +284,13 @@ class Lamps:
         self.tube_players = {}      # tube show id -> ShowPlayer
         self.code_leffs = {}        # leff id -> (layer priority, fn(LeffTask)): leffs drawn by code
         self.rules = []             # list-5 lamp rules: (priority, seq, fn)
-        root = os.path.join(self.machine.machine_path, "..", "rom", "mpf_package")
-        self.show_dir = os.path.join(root, "config", "shows")
+        rom = os.path.join(self.machine.machine_path, "..", "rom")
+        self.show_dir = os.path.join(rom, "mpf_package", "config", "shows")
         self._shows = {}
-        self.leff_info = {}         # leff id -> (show name, loops, priority); none until the package captures them
-        if os.path.exists(os.path.join(root, "lamp_effects.csv")):
-            with open(os.path.join(root, "lamp_effects.csv"), encoding="utf-8") as f:
-                for row in csv.DictReader(f):
-                    self.leff_info[int(row["leff"])] = (row["show"], int(row["loops"] or 0),
-                                                        int(row["priority"] or 0))
+        self.leff_info = {}         # leff id -> (show name, loops (-1 = until stopped), priority)
+        for row in leff_rows(rom):
+            self.leff_info[int(row["leff"])] = (row["show"], -1 if row["loops"] == "yes" else 0,
+                                                int(row["priority"] or 0))
         self.names = {}             # MPF light name -> lamp number (lamp matrix only)
         self.lights = {}            # lamp number -> MPF light
         self.groups = {}            # light tag (rom_group_N) -> lamp numbers

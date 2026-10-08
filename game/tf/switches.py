@@ -5,10 +5,15 @@ a handler in the game code. Each handler here applies the OS part every handler 
 ball is on the playfield, validates it, reloads the ball search), then calls the feature hooks registered under
 "sw_<number>" and "switch" in registration order (os.hook), then adds the switch's base score.
 
-What the game handlers do (their hooks, the order, the base scores) comes from the ROM extraction's rules specs,
-which are not delivered yet: until then no handler scores (BASE_SCORE is empty) and the only game behaviour is the
-outlanes' ball save, which every SAM game's outlane handler starts (ball_save_try, OS code; Tron's outlane handlers
-call it first, inferred to be the same here).
+The scores, sounds, display and lamp effects are the ROM extraction's per-switch trace (rom/rules/
+switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
+- BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
+- slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
+- pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
+Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add) except sw 6's (0x010332e4 returns
+without it; observed: traces/combos.jsonl last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
+switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
+rom/rules/modes/).
 """
 
 SW = {  # SAM switch number -> MPF switch name (rom/mpf_package/config/switches.yaml), playfield switches only
@@ -26,7 +31,23 @@ HOLES = {3: "s_left_eject", 38: "s_megatron_lock_4", 39: "s_megatron_lock_3", 40
          41: "s_m_tron_lock_1_back"}
 NUM = {name: num for num, name in SW.items()}
 OUTLANES = {24: 1, 29: 2}       # switch -> drain side (ball_save_try: 1 left, 2 right)
-BASE_SCORE = {}                 # switch -> base points (from the rules specs, not delivered yet)
+BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 30, 12: 1220, 13: 30, 14: 1170,
+              24: 100000, 25: 1090, 28: 1090, 29: 100000, 34: 90, 35: 560, 37: 30, 45: 30, 46: 1110, 49: 1110,
+              50: 30, 51: 30}
+SLINGS = {26: 440, 27: 440}
+SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon (observed: game_flow player 1 Autobot 0x159)
+POPS = (30, 31, 32)
+POP_EXTRA = 170
+# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, observed callers
+# 0x1033aec, 0x1033c1c / 0x1033c5c, 0x1033b24, 0x1033050); the shot audits 65-68 are the mode-progress
+# function's (0x1020074, with the modes)
+SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
+# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
+# traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
+BOTH_EDGES = {45: 3}
+NO_BONUS = {6}
+# handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
+DELAY = {51: 5}
 
 
 class SwitchLayer:
@@ -38,6 +59,8 @@ class SwitchLayer:
         for num, name in SW.items():
             if name in self.machine.switches:
                 sc.add_switch_handler(name, self._dispatch(num))
+                if num in BOTH_EDGES:
+                    sc.add_switch_handler(name, self._dispatch(num), state=0)
 
     def _dispatch(self, num):
         """The ROM runs a playfield handler as a task about one tick after the switch closes. A handler does
@@ -46,7 +69,7 @@ class SwitchLayer:
         def on_close():
             if not self.os.game or not self.os.in_play:
                 return
-            self.os.after(1, lambda: self.handle(num))
+            self.os.after(BOTH_EDGES.get(num, DELAY.get(num, 1)), lambda: self.handle(num))
         return on_close
 
     def handle(self, num):
@@ -56,7 +79,19 @@ class SwitchLayer:
         os_.playfield_switch(num)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
+        if num in SW_AUDIT and not os_.tilted:
+            os_.audit(SW_AUDIT[num])
+        if num not in NO_BONUS:
+            os_.hook("bonus_add")
         os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
+        if os_.tilted:
+            return
+        if num in SLINGS:
+            os_.score_add(SLINGS[num])
+            os_.sound(SLING_SOUND.get(os_.pd.get("side", 2), 0x15a))
+        if num in POPS:
+            os_.hook("pop", num)
+            os_.score_add(POP_EXTRA)
         if BASE_SCORE.get(num):
             os_.base_score(BASE_SCORE[num])

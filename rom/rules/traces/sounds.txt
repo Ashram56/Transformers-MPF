@@ -1,0 +1,55 @@
+# sound contexts: attract, coin, start, shooter lane wait, launch, playfield, tilt warnings + tilt,
+# outlane drains after ball save expires, game over, attract after the game
+autoplunge 0
+mark attract
+wait 5
+mark coin
+button coin
+wait 2
+mark start
+start 1
+mark shooter_wait
+wait 12
+mark plunge
+plunge
+wait 3
+mark play
+hit 26
+hit 30
+hit 1
+hit 2
+hit 4
+wait 1
+hit 10
+wait 3
+mark tilt_warning
+button tilt 50
+wait 2
+mark tilt_warning_2
+button tilt 50
+wait 2
+mark tilt
+button tilt 50
+wait 4
+drain
+mark after_tilt
+wait 12
+mark ball2
+plunge
+wait 1
+hit 27
+wait 20
+mark drain_ball2
+drain left
+wait 12
+mark ball3
+plunge
+wait 1
+hit 26
+wait 20
+mark drain_ball3
+drain right
+mark game_over
+wait 30
+mark attract_after
+wait 60

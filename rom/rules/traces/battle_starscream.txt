@@ -1,0 +1,41 @@
+# Decepticon (default side): four mode-start shots light Starscream, then Starscream shots, timer runs out
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 2
+hit 26
+wait 2
+mark qualify_1_left_orbit
+hit 5
+wait 2
+mark qualify_2_left_ramp
+hit 10
+wait 2
+mark qualify_3_right_ramp
+hit 14
+wait 2
+mark qualify_4_right_orbit
+hit 12
+wait 7
+mark ss_hit_left_orbit
+hit 5
+wait 2
+mark ss_hit_left_ramp
+hit 10
+wait 2
+mark ss_hit_center
+hit 11
+wait 2
+mark ss_hit_unlit_left_ramp
+hit 10
+wait 2
+mark ss_hit_right_ramp
+hit 14
+wait 2
+mark ss_wait_timer
+wait 45
+mark after_timer
+wait 3
+drain
+wait 6

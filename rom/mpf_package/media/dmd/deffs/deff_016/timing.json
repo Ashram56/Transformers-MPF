@@ -1,0 +1,3143 @@
+{
+ "deff": 16,
+ "fn": "0x103de04",
+ "flags": 2,
+ "priority": 238,
+ "background": false,
+ "capture": "fg1",
+ "forced_at_s": 46.4941,
+ "ended_ms": 1985.8,
+ "window_ms": 2064.3,
+ "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
+ "frames": [
+  {
+   "i": 0,
+   "t_ms": 5.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 1,
+   "t_ms": 72.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 2,
+   "t_ms": 139.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 3,
+   "t_ms": 205.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 4,
+   "t_ms": 272.6,
+   "dur_ms": 50
+  },
+  {
+   "i": 5,
+   "t_ms": 322.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 6,
+   "t_ms": 389.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 7,
+   "t_ms": 455.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 8,
+   "t_ms": 522.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 9,
+   "t_ms": 589.2,
+   "dur_ms": 83
+  },
+  {
+   "i": 10,
+   "t_ms": 672.6,
+   "dur_ms": 50
+  },
+  {
+   "i": 11,
+   "t_ms": 722.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 12,
+   "t_ms": 789.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 13,
+   "t_ms": 855.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 14,
+   "t_ms": 922.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 15,
+   "t_ms": 989.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 16,
+   "t_ms": 1055.9,
+   "dur_ms": 50
+  },
+  {
+   "i": 17,
+   "t_ms": 1105.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 18,
+   "t_ms": 1172.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 19,
+   "t_ms": 1239.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 20,
+   "t_ms": 1305.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 21,
+   "t_ms": 1372.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 22,
+   "t_ms": 1439.2,
+   "dur_ms": 50
+  },
+  {
+   "i": 23,
+   "t_ms": 1489.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 24,
+   "t_ms": 1555.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 25,
+   "t_ms": 1622.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 26,
+   "t_ms": 1689.2,
+   "dur_ms": 67
+  },
+  {
+   "i": 27,
+   "t_ms": 1755.9,
+   "dur_ms": 67
+  },
+  {
+   "i": 28,
+   "t_ms": 1822.6,
+   "dur_ms": 50
+  },
+  {
+   "i": 29,
+   "t_ms": 1872.6,
+   "dur_ms": 67
+  },
+  {
+   "i": 30,
+   "t_ms": 1939.2,
+   "dur_ms": 50
+  }
+ ],
+ "pages": [
+  {
+   "t_ms": 2.0,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 0.9,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1.6,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 65.9,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 64.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 65.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 129.9,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 128.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 129.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 193.9,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 192.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 193.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 257.9,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 256.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 257.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 321.9,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 320.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 321.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 385.9,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 384.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 385.5,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 449.9,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 448.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 449.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 513.8,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 512.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 513.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 577.9,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 576.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 577.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 641.8,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 640.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 641.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 705.8,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 704.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 705.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 769.8,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 768.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 769.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 833.9,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 832.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 833.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 897.8,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 896.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 897.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 961.9,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 960.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 961.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1025.8,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1024.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1025.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1089.8,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1088.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1089.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1153.8,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1152.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1153.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1217.9,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1216.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1217.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1281.8,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1280.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1281.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1345.9,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1344.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1345.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1409.8,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1408.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1409.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1473.9,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1472.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1473.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1537.8,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1536.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1537.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1601.9,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1600.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1601.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1665.9,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1664.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1665.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1729.8,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1728.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1729.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1793.9,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1792.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1793.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1857.9,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1856.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1857.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1921.9,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1920.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1921.4,
+     "str": "0 CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 7,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "103dfcc",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1230,
+     "source": "%d CREDIT%P1//S/% FOR A"
+    }
+   ]
+  },
+  {
+   "t_ms": 1985.8,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1984.8,
+     "str": "TOURNAMENT GAME",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df40",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1232,
+     "source": "TOURNAMENT GAME"
+    },
+    {
+     "t_ms": 1985.4,
+     "str": "CREDITS FOR A",
+     "font": 15,
+     "flags": 1,
+     "x": 21,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "103df80",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1231,
+     "source": "CREDIT%P1//S/% FOR A"
+    }
+   ]
+  }
+ ],
+ "sounds": [],
+ "leffs": [],
+ "events": [
+  {
+   "t_ms": 0.0,
+   "event": 33
+  },
+  {
+   "t_ms": 0.0,
+   "event": 73
+  },
+  {
+   "t_ms": 0.1,
+   "event": 27
+  },
+  {
+   "t_ms": 2.1,
+   "event": 74
+  },
+  {
+   "t_ms": 15.7,
+   "event": 32
+  },
+  {
+   "t_ms": 16.2,
+   "event": 33
+  },
+  {
+   "t_ms": 16.2,
+   "event": 10
+  },
+  {
+   "t_ms": 16.2,
+   "event": 11
+  },
+  {
+   "t_ms": 16.3,
+   "event": 74
+  },
+  {
+   "t_ms": 31.7,
+   "event": 32
+  },
+  {
+   "t_ms": 32.2,
+   "event": 33
+  },
+  {
+   "t_ms": 32.2,
+   "event": 74
+  },
+  {
+   "t_ms": 47.7,
+   "event": 32
+  },
+  {
+   "t_ms": 48.2,
+   "event": 33
+  },
+  {
+   "t_ms": 48.3,
+   "event": 73
+  },
+  {
+   "t_ms": 48.3,
+   "event": 74
+  },
+  {
+   "t_ms": 63.7,
+   "event": 32
+  },
+  {
+   "t_ms": 64.2,
+   "event": 33
+  },
+  {
+   "t_ms": 65.9,
+   "event": 74
+  },
+  {
+   "t_ms": 79.7,
+   "event": 32
+  },
+  {
+   "t_ms": 80.2,
+   "event": 33
+  },
+  {
+   "t_ms": 80.3,
+   "event": 74
+  },
+  {
+   "t_ms": 95.8,
+   "event": 32
+  },
+  {
+   "t_ms": 96.3,
+   "event": 33
+  },
+  {
+   "t_ms": 96.3,
+   "event": 74
+  },
+  {
+   "t_ms": 111.8,
+   "event": 32
+  },
+  {
+   "t_ms": 112.3,
+   "event": 33
+  },
+  {
+   "t_ms": 112.3,
+   "event": 10
+  },
+  {
+   "t_ms": 112.3,
+   "event": 11
+  },
+  {
+   "t_ms": 112.4,
+   "event": 74
+  },
+  {
+   "t_ms": 127.7,
+   "event": 32
+  },
+  {
+   "t_ms": 128.2,
+   "event": 33
+  },
+  {
+   "t_ms": 129.9,
+   "event": 74
+  },
+  {
+   "t_ms": 143.7,
+   "event": 32
+  },
+  {
+   "t_ms": 144.2,
+   "event": 33
+  },
+  {
+   "t_ms": 144.3,
+   "event": 74
+  },
+  {
+   "t_ms": 159.7,
+   "event": 32
+  },
+  {
+   "t_ms": 160.2,
+   "event": 33
+  },
+  {
+   "t_ms": 160.3,
+   "event": 74
+  },
+  {
+   "t_ms": 175.7,
+   "event": 32
+  },
+  {
+   "t_ms": 176.2,
+   "event": 33
+  },
+  {
+   "t_ms": 176.3,
+   "event": 74
+  },
+  {
+   "t_ms": 191.7,
+   "event": 32
+  },
+  {
+   "t_ms": 192.2,
+   "event": 33
+  },
+  {
+   "t_ms": 193.9,
+   "event": 74
+  },
+  {
+   "t_ms": 207.7,
+   "event": 32
+  },
+  {
+   "t_ms": 208.2,
+   "event": 33
+  },
+  {
+   "t_ms": 208.3,
+   "event": 10
+  },
+  {
+   "t_ms": 208.3,
+   "event": 11
+  },
+  {
+   "t_ms": 208.3,
+   "event": 74
+  },
+  {
+   "t_ms": 223.8,
+   "event": 32
+  },
+  {
+   "t_ms": 224.3,
+   "event": 33
+  },
+  {
+   "t_ms": 224.3,
+   "event": 74
+  },
+  {
+   "t_ms": 239.8,
+   "event": 32
+  },
+  {
+   "t_ms": 240.3,
+   "event": 33
+  },
+  {
+   "t_ms": 240.4,
+   "event": 74
+  },
+  {
+   "t_ms": 255.7,
+   "event": 32
+  },
+  {
+   "t_ms": 256.2,
+   "event": 33
+  },
+  {
+   "t_ms": 257.9,
+   "event": 74
+  },
+  {
+   "t_ms": 271.7,
+   "event": 32
+  },
+  {
+   "t_ms": 272.2,
+   "event": 33
+  },
+  {
+   "t_ms": 272.3,
+   "event": 74
+  },
+  {
+   "t_ms": 287.7,
+   "event": 32
+  },
+  {
+   "t_ms": 288.2,
+   "event": 33
+  },
+  {
+   "t_ms": 288.3,
+   "event": 74
+  },
+  {
+   "t_ms": 303.7,
+   "event": 32
+  },
+  {
+   "t_ms": 304.2,
+   "event": 33
+  },
+  {
+   "t_ms": 304.2,
+   "event": 10
+  },
+  {
+   "t_ms": 304.2,
+   "event": 11
+  },
+  {
+   "t_ms": 304.3,
+   "event": 74
+  },
+  {
+   "t_ms": 319.7,
+   "event": 32
+  },
+  {
+   "t_ms": 320.2,
+   "event": 33
+  },
+  {
+   "t_ms": 321.9,
+   "event": 74
+  },
+  {
+   "t_ms": 335.7,
+   "event": 32
+  },
+  {
+   "t_ms": 336.2,
+   "event": 33
+  },
+  {
+   "t_ms": 336.3,
+   "event": 74
+  },
+  {
+   "t_ms": 351.8,
+   "event": 32
+  },
+  {
+   "t_ms": 352.3,
+   "event": 33
+  },
+  {
+   "t_ms": 352.3,
+   "event": 74
+  },
+  {
+   "t_ms": 367.8,
+   "event": 32
+  },
+  {
+   "t_ms": 368.3,
+   "event": 33
+  },
+  {
+   "t_ms": 368.4,
+   "event": 74
+  },
+  {
+   "t_ms": 383.7,
+   "event": 32
+  },
+  {
+   "t_ms": 384.3,
+   "event": 33
+  },
+  {
+   "t_ms": 385.9,
+   "event": 74
+  },
+  {
+   "t_ms": 399.7,
+   "event": 32
+  },
+  {
+   "t_ms": 400.2,
+   "event": 33
+  },
+  {
+   "t_ms": 400.2,
+   "event": 10
+  },
+  {
+   "t_ms": 400.2,
+   "event": 11
+  },
+  {
+   "t_ms": 400.3,
+   "event": 74
+  },
+  {
+   "t_ms": 415.7,
+   "event": 32
+  },
+  {
+   "t_ms": 416.2,
+   "event": 33
+  },
+  {
+   "t_ms": 416.2,
+   "event": 74
+  },
+  {
+   "t_ms": 431.7,
+   "event": 32
+  },
+  {
+   "t_ms": 432.2,
+   "event": 33
+  },
+  {
+   "t_ms": 432.3,
+   "event": 74
+  },
+  {
+   "t_ms": 447.7,
+   "event": 32
+  },
+  {
+   "t_ms": 448.2,
+   "event": 33
+  },
+  {
+   "t_ms": 449.9,
+   "event": 74
+  },
+  {
+   "t_ms": 463.7,
+   "event": 32
+  },
+  {
+   "t_ms": 464.2,
+   "event": 33
+  },
+  {
+   "t_ms": 464.3,
+   "event": 74
+  },
+  {
+   "t_ms": 479.8,
+   "event": 32
+  },
+  {
+   "t_ms": 480.3,
+   "event": 33
+  },
+  {
+   "t_ms": 480.3,
+   "event": 74
+  },
+  {
+   "t_ms": 495.8,
+   "event": 32
+  },
+  {
+   "t_ms": 496.3,
+   "event": 33
+  },
+  {
+   "t_ms": 496.3,
+   "event": 10
+  },
+  {
+   "t_ms": 496.3,
+   "event": 11
+  },
+  {
+   "t_ms": 496.5,
+   "event": 74
+  },
+  {
+   "t_ms": 511.7,
+   "event": 32
+  },
+  {
+   "t_ms": 512.2,
+   "event": 33
+  },
+  {
+   "t_ms": 513.9,
+   "event": 74
+  },
+  {
+   "t_ms": 527.7,
+   "event": 32
+  },
+  {
+   "t_ms": 528.2,
+   "event": 33
+  },
+  {
+   "t_ms": 528.3,
+   "event": 74
+  },
+  {
+   "t_ms": 543.7,
+   "event": 32
+  },
+  {
+   "t_ms": 544.2,
+   "event": 33
+  },
+  {
+   "t_ms": 544.3,
+   "event": 74
+  },
+  {
+   "t_ms": 559.7,
+   "event": 32
+  },
+  {
+   "t_ms": 560.2,
+   "event": 33
+  },
+  {
+   "t_ms": 560.3,
+   "event": 73
+  },
+  {
+   "t_ms": 560.3,
+   "event": 74
+  },
+  {
+   "t_ms": 575.7,
+   "event": 32
+  },
+  {
+   "t_ms": 576.2,
+   "event": 33
+  },
+  {
+   "t_ms": 577.9,
+   "event": 74
+  },
+  {
+   "t_ms": 591.7,
+   "event": 32
+  },
+  {
+   "t_ms": 592.3,
+   "event": 33
+  },
+  {
+   "t_ms": 592.3,
+   "event": 10
+  },
+  {
+   "t_ms": 592.3,
+   "event": 11
+  },
+  {
+   "t_ms": 592.3,
+   "event": 74
+  },
+  {
+   "t_ms": 607.8,
+   "event": 32
+  },
+  {
+   "t_ms": 608.3,
+   "event": 33
+  },
+  {
+   "t_ms": 608.3,
+   "event": 74
+  },
+  {
+   "t_ms": 623.7,
+   "event": 32
+  },
+  {
+   "t_ms": 624.3,
+   "event": 33
+  },
+  {
+   "t_ms": 624.4,
+   "event": 74
+  },
+  {
+   "t_ms": 639.7,
+   "event": 32
+  },
+  {
+   "t_ms": 640.2,
+   "event": 33
+  },
+  {
+   "t_ms": 641.9,
+   "event": 74
+  },
+  {
+   "t_ms": 655.7,
+   "event": 32
+  },
+  {
+   "t_ms": 656.2,
+   "event": 33
+  },
+  {
+   "t_ms": 656.2,
+   "event": 74
+  },
+  {
+   "t_ms": 671.7,
+   "event": 32
+  },
+  {
+   "t_ms": 672.2,
+   "event": 33
+  },
+  {
+   "t_ms": 672.2,
+   "event": 74
+  },
+  {
+   "t_ms": 687.7,
+   "event": 32
+  },
+  {
+   "t_ms": 688.2,
+   "event": 33
+  },
+  {
+   "t_ms": 688.2,
+   "event": 10
+  },
+  {
+   "t_ms": 688.2,
+   "event": 11
+  },
+  {
+   "t_ms": 688.3,
+   "event": 74
+  },
+  {
+   "t_ms": 703.7,
+   "event": 32
+  },
+  {
+   "t_ms": 704.2,
+   "event": 33
+  },
+  {
+   "t_ms": 705.9,
+   "event": 74
+  },
+  {
+   "t_ms": 719.8,
+   "event": 32
+  },
+  {
+   "t_ms": 720.3,
+   "event": 33
+  },
+  {
+   "t_ms": 720.3,
+   "event": 74
+  },
+  {
+   "t_ms": 735.8,
+   "event": 32
+  },
+  {
+   "t_ms": 736.3,
+   "event": 33
+  },
+  {
+   "t_ms": 736.3,
+   "event": 74
+  },
+  {
+   "t_ms": 751.7,
+   "event": 32
+  },
+  {
+   "t_ms": 752.2,
+   "event": 33
+  },
+  {
+   "t_ms": 752.4,
+   "event": 74
+  },
+  {
+   "t_ms": 767.7,
+   "event": 32
+  },
+  {
+   "t_ms": 768.2,
+   "event": 33
+  },
+  {
+   "t_ms": 769.8,
+   "event": 74
+  },
+  {
+   "t_ms": 783.7,
+   "event": 32
+  },
+  {
+   "t_ms": 784.2,
+   "event": 33
+  },
+  {
+   "t_ms": 784.2,
+   "event": 10
+  },
+  {
+   "t_ms": 784.2,
+   "event": 11
+  },
+  {
+   "t_ms": 784.3,
+   "event": 74
+  },
+  {
+   "t_ms": 799.7,
+   "event": 32
+  },
+  {
+   "t_ms": 800.2,
+   "event": 33
+  },
+  {
+   "t_ms": 800.3,
+   "event": 74
+  },
+  {
+   "t_ms": 815.7,
+   "event": 32
+  },
+  {
+   "t_ms": 816.2,
+   "event": 33
+  },
+  {
+   "t_ms": 816.3,
+   "event": 74
+  },
+  {
+   "t_ms": 831.7,
+   "event": 32
+  },
+  {
+   "t_ms": 832.2,
+   "event": 33
+  },
+  {
+   "t_ms": 833.9,
+   "event": 74
+  },
+  {
+   "t_ms": 847.8,
+   "event": 32
+  },
+  {
+   "t_ms": 848.4,
+   "event": 33
+  },
+  {
+   "t_ms": 848.4,
+   "event": 74
+  },
+  {
+   "t_ms": 863.8,
+   "event": 32
+  },
+  {
+   "t_ms": 864.3,
+   "event": 33
+  },
+  {
+   "t_ms": 864.3,
+   "event": 74
+  },
+  {
+   "t_ms": 879.7,
+   "event": 32
+  },
+  {
+   "t_ms": 880.2,
+   "event": 33
+  },
+  {
+   "t_ms": 880.3,
+   "event": 10
+  },
+  {
+   "t_ms": 880.3,
+   "event": 11
+  },
+  {
+   "t_ms": 880.4,
+   "event": 74
+  },
+  {
+   "t_ms": 895.7,
+   "event": 32
+  },
+  {
+   "t_ms": 896.2,
+   "event": 33
+  },
+  {
+   "t_ms": 897.8,
+   "event": 74
+  },
+  {
+   "t_ms": 911.7,
+   "event": 32
+  },
+  {
+   "t_ms": 912.2,
+   "event": 33
+  },
+  {
+   "t_ms": 912.2,
+   "event": 74
+  },
+  {
+   "t_ms": 927.7,
+   "event": 32
+  },
+  {
+   "t_ms": 928.2,
+   "event": 33
+  },
+  {
+   "t_ms": 928.2,
+   "event": 74
+  },
+  {
+   "t_ms": 943.7,
+   "event": 32
+  },
+  {
+   "t_ms": 944.2,
+   "event": 33
+  },
+  {
+   "t_ms": 944.2,
+   "event": 74
+  },
+  {
+   "t_ms": 959.7,
+   "event": 32
+  },
+  {
+   "t_ms": 960.2,
+   "event": 33
+  },
+  {
+   "t_ms": 961.9,
+   "event": 74
+  },
+  {
+   "t_ms": 975.8,
+   "event": 32
+  },
+  {
+   "t_ms": 976.3,
+   "event": 33
+  },
+  {
+   "t_ms": 976.3,
+   "event": 10
+  },
+  {
+   "t_ms": 976.3,
+   "event": 11
+  },
+  {
+   "t_ms": 976.3,
+   "event": 74
+  },
+  {
+   "t_ms": 991.8,
+   "event": 32
+  },
+  {
+   "t_ms": 992.3,
+   "event": 33
+  },
+  {
+   "t_ms": 992.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1007.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1008.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1008.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1023.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1024.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1025.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1039.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1040.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1040.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1055.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1056.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1056.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1071.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1072.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1072.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1072.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1072.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1087.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1088.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1089.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1103.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1104.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1104.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1119.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1120.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1120.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1135.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1136.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1136.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1151.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1152.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1153.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1167.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1168.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1168.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1168.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1168.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1183.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1184.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1184.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1199.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1200.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1200.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1215.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1216.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1217.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1231.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1232.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1232.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1247.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1248.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1248.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1263.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1264.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1264.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1264.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1264.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1279.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1280.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1281.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1295.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1296.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1296.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1311.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1312.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1312.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1327.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1328.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1328.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1343.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1344.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1345.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1359.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1360.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1360.3,
+   "event": 10
+  },
+  {
+   "t_ms": 1360.3,
+   "event": 11
+  },
+  {
+   "t_ms": 1360.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1375.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1376.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1376.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1391.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1392.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1392.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1407.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1408.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1409.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1423.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1424.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1424.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1439.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1440.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1440.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1455.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1456.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1456.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1456.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1456.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1471.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1472.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1473.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1487.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1488.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1488.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1503.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1504.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1504.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1519.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1520.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1520.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1535.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1536.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1537.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1551.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1552.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1552.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1552.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1552.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1567.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1568.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1568.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1583.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1584.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1584.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1599.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1600.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1601.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1615.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1616.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1616.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1631.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1632.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1632.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1647.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1648.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1648.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1648.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1648.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1663.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1664.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1665.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1679.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1680.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1680.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1695.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1696.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1696.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1711.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1712.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1712.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1727.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1728.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1729.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1743.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1744.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1744.3,
+   "event": 10
+  },
+  {
+   "t_ms": 1744.3,
+   "event": 11
+  },
+  {
+   "t_ms": 1744.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1759.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1760.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1760.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1775.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1776.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1776.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1791.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1792.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1793.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1807.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1808.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1808.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1823.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1824.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1824.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1839.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1840.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1840.4,
+   "event": 10
+  },
+  {
+   "t_ms": 1840.4,
+   "event": 11
+  },
+  {
+   "t_ms": 1840.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1855.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1856.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1857.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1871.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1872.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1872.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1887.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1888.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1888.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1903.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1904.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1904.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1919.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1920.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1921.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1935.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1936.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1936.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1936.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1936.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1951.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1952.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1952.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1967.7,
+   "event": 32
+  },
+  {
+   "t_ms": 1968.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1968.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1983.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1984.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1985.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1999.7,
+   "event": 32
+  },
+  {
+   "t_ms": 2000.2,
+   "event": 33
+  },
+  {
+   "t_ms": 2000.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2015.7,
+   "event": 32
+  },
+  {
+   "t_ms": 2016.2,
+   "event": 33
+  },
+  {
+   "t_ms": 2016.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2031.7,
+   "event": 32
+  },
+  {
+   "t_ms": 2032.2,
+   "event": 33
+  },
+  {
+   "t_ms": 2032.2,
+   "event": 10
+  },
+  {
+   "t_ms": 2032.2,
+   "event": 11
+  },
+  {
+   "t_ms": 2032.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2047.7,
+   "event": 32
+  },
+  {
+   "t_ms": 2048.2,
+   "event": 33
+  },
+  {
+   "t_ms": 2048.2,
+   "event": 73
+  },
+  {
+   "t_ms": 2048.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2063.7,
+   "event": 32
+  },
+  {
+   "t_ms": 2063.8,
+   "event": 27
+  },
+  {
+   "t_ms": 2064.3,
+   "event": 33
+  }
+ ]
+}

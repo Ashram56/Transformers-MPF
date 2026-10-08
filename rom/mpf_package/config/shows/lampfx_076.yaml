@@ -1,0 +1,30 @@
+#show_version=6
+# ROM lamp effect (leff) 76, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 1040 ms); lead-in of 130 ms left out.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 130ms
+  lights:
+    l_allspark_orange: "000000"
+    l_allspark_purple: "ffffff"
+    l_allspark_red: "000000"
+    l_allspark_x: "ffffff"
+- duration: 130ms
+  lights:
+    l_allspark_red: "ffffff"
+- duration: 130ms
+  lights:
+    l_allspark_orange: "ffffff"
+- duration: 130ms
+  lights:
+    l_allspark_x: "000000"
+- duration: 130ms
+  lights:
+    l_allspark_purple: "000000"
+- duration: 130ms
+  lights:
+    l_allspark_red: "000000"
+- duration: 130ms
+  lights:
+    l_allspark_orange: "000000"
+- duration: 130ms
+  lights:
+    l_allspark_x: "ffffff"

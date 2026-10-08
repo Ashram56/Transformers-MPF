@@ -1,0 +1,311 @@
+#show_version=6
+# ROM lamp effect (leff) 158, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1830 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 10ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+    l_top_lane_red_bot: "000000"
+    l_top_lane_red_top: "000000"
+- duration: 17ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 16ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 7ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 26ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 16ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 6ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 10ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 6ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 26ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 16ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 17ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 23ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 10ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 16ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 16ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 7ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 26ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 22ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 10ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 16ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 17ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 32ms
+  lights:
+    l_right_2_bank_target_bot: "ffffff"
+    l_right_2_bank_target_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_right_2_bank_target_bot: "000000"
+    l_right_2_bank_target_top: "000000"
+- duration: 6ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 75ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 39ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 42ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 71ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 10ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 82ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 22ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 59ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 55ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 26ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 81ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 7ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 75ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 38ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 43ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 71ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 10ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 81ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 23ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 59ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 65ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"

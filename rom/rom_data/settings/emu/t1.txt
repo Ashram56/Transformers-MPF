@@ -1,0 +1,597 @@
+dumpram ram_usa.bin
+peek 3379e 8
+credits
+callstr 44a4 1 B
+menu 1
+menu 2
+menu 3
+menu 4
+menu 5
+menu 6
+menu 7
+menu 8
+menu 9
+menu 10
+menu 11
+menu 12
+menu 13
+menu 14
+menu 15
+menu 16
+menu 17
+call 340 1
+call 3d8 1
+call 340 2
+call 3d8 2
+call 340 3
+call 3d8 3
+call 340 4
+call 3d8 4
+call 340 5
+call 3d8 5
+call 340 6
+call 3d8 6
+call 340 7
+call 3d8 7
+call 340 8
+call 3d8 8
+call 340 9
+call 3d8 9
+call 340 10
+call 3d8 10
+call 340 11
+call 3d8 11
+call 340 12
+call 3d8 12
+call 340 13
+call 3d8 13
+call 340 14
+call 3d8 14
+call 340 15
+call 3d8 15
+call 340 16
+call 3d8 16
+call 340 17
+call 3d8 17
+call 340 18
+call 3d8 18
+call 340 19
+call 3d8 19
+call 340 20
+call 3d8 20
+call 340 21
+call 3d8 21
+call 340 22
+call 3d8 22
+call 340 23
+call 3d8 23
+call 340 24
+call 3d8 24
+call 340 25
+call 3d8 25
+call 340 26
+call 3d8 26
+call 340 27
+call 3d8 27
+call 340 28
+call 3d8 28
+call 340 29
+call 3d8 29
+call 340 30
+call 3d8 30
+call 340 31
+call 3d8 31
+call 340 32
+call 3d8 32
+call 340 33
+call 3d8 33
+call 340 34
+call 3d8 34
+call 340 35
+call 3d8 35
+call 340 36
+call 3d8 36
+call 340 37
+call 3d8 37
+call 340 38
+call 3d8 38
+call 340 39
+call 3d8 39
+call 340 40
+call 3d8 40
+call 340 41
+call 3d8 41
+call 340 42
+call 3d8 42
+call 340 43
+call 3d8 43
+call 340 44
+call 3d8 44
+call 340 45
+call 3d8 45
+call 340 46
+call 3d8 46
+call 340 47
+call 3d8 47
+call 340 48
+call 3d8 48
+call 340 49
+call 3d8 49
+call 340 50
+call 3d8 50
+call 340 51
+call 3d8 51
+call 340 52
+call 3d8 52
+call 340 53
+call 3d8 53
+call 340 54
+call 3d8 54
+call 340 55
+call 3d8 55
+call 340 56
+call 3d8 56
+call 340 57
+call 3d8 57
+call 340 58
+call 3d8 58
+call 340 59
+call 3d8 59
+call 340 60
+call 3d8 60
+call 340 61
+call 3d8 61
+call 340 62
+call 3d8 62
+call 340 63
+call 3d8 63
+call 340 64
+call 3d8 64
+call 340 65
+call 3d8 65
+call 340 66
+call 3d8 66
+call 340 67
+call 3d8 67
+call 340 68
+call 3d8 68
+call 340 69
+call 3d8 69
+call 340 70
+call 3d8 70
+call 340 71
+call 3d8 71
+call 340 72
+call 3d8 72
+call 340 73
+call 3d8 73
+call 340 74
+call 3d8 74
+call 340 75
+call 3d8 75
+call 340 76
+call 3d8 76
+call 340 77
+call 3d8 77
+call 340 78
+call 3d8 78
+call 340 79
+call 3d8 79
+call 340 80
+call 3d8 80
+call 340 81
+call 3d8 81
+call 340 82
+call 3d8 82
+call 340 83
+call 3d8 83
+call 340 84
+call 3d8 84
+call 340 85
+call 3d8 85
+call 340 86
+call 3d8 86
+call 340 87
+call 3d8 87
+call 340 88
+call 3d8 88
+call 340 89
+call 3d8 89
+call 340 90
+call 3d8 90
+call 340 91
+call 3d8 91
+call 340 92
+call 3d8 92
+call 340 93
+call 3d8 93
+call 340 94
+call 3d8 94
+call 340 95
+call 3d8 95
+call 340 96
+call 3d8 96
+call 340 97
+call 3d8 97
+call 340 98
+call 3d8 98
+audit 1
+audit 2
+audit 3
+audit 4
+audit 5
+audit 6
+audit 7
+audit 8
+audit 9
+audit 10
+audit 11
+audit 12
+audit 13
+audit 14
+audit 15
+audit 16
+audit 17
+audit 18
+audit 19
+audit 20
+audit 21
+audit 22
+audit 23
+audit 24
+audit 25
+audit 26
+audit 27
+audit 28
+audit 29
+audit 30
+audit 31
+audit 32
+audit 33
+audit 34
+audit 35
+audit 36
+audit 37
+audit 38
+audit 39
+audit 40
+audit 41
+audit 42
+audit 43
+audit 44
+audit 45
+audit 46
+audit 47
+audit 48
+audit 49
+audit 50
+audit 51
+audit 52
+audit 53
+audit 54
+audit 55
+audit 56
+audit 57
+audit 58
+audit 59
+audit 60
+audit 61
+audit 62
+audit 63
+audit 64
+audit 65
+audit 66
+audit 67
+audit 68
+audit 69
+audit 70
+audit 71
+audit 72
+audit 73
+audit 74
+audit 75
+audit 76
+audit 77
+audit 78
+audit 79
+audit 80
+audit 81
+audit 82
+audit 83
+audit 84
+audit 85
+audit 86
+audit 87
+audit 88
+audit 89
+audit 90
+audit 91
+audit 92
+audit 93
+audit 94
+audit 95
+audit 96
+audit 97
+audit 98
+audit 99
+audit 100
+audit 101
+audit 102
+audit 103
+audit 104
+audit 105
+audit 106
+audit 107
+audit 108
+audit 109
+audit 110
+audit 111
+audit 112
+audit 113
+audit 114
+audit 115
+audit 116
+audit 117
+audit 118
+audit 119
+audit 120
+audit 121
+audit 122
+audit 123
+audit 124
+audit 125
+audit 126
+audit 127
+audit 128
+audit 129
+audit 130
+audit 131
+audit 132
+audit 133
+audit 134
+audit 135
+audit 136
+audit 137
+audit 138
+audit 139
+audit 140
+audit 141
+audit 142
+audit 143
+audit 144
+audit 145
+audit 146
+audit 147
+audit 148
+audit 149
+audit 150
+audit 151
+audit 152
+audit 153
+audit 154
+audit 155
+audit 156
+audit 157
+audit 158
+audit 159
+audit 160
+audit 161
+audit 162
+audit 163
+audit 164
+audit 165
+audit 166
+audit 1 0x90
+audit 5 0x90
+audit 6 0x90
+audit 7 0x90
+audit 8 0x90
+audit 9 0x90
+audit 10 0x90
+audit 11 0x90
+audit 12 0x90
+mark POKE
+call c3c 17 40
+call c3c 18 10
+call c3c 14 2
+call c3c 15 4
+call c3c 16 5
+call c3c 10 3
+call c3c 11 2
+call c3c 12 1
+call c3c 13 1
+call c3c 9 7
+call c3c 8 120
+call c3c 40 30
+call c3c 41 25
+call c3c 63 9000
+call c3c 60 10000
+call c3c 2 5
+call c3c 3 2
+call c3c 4 1
+call c3c 5 1
+call c3c 6 1
+call c3c 7 13
+call c3c 1 6
+call c3c 19 3
+call c3c 36 2
+call c3c 65 17
+call c3c 66 77
+call c3c 87 4
+call c3c 154 9
+audit 1
+audit 2
+audit 3
+audit 4
+audit 5
+audit 6
+audit 7
+audit 8
+audit 9
+audit 10
+audit 11
+audit 12
+audit 13
+audit 14
+audit 15
+audit 16
+audit 17
+audit 18
+audit 19
+audit 20
+audit 21
+audit 22
+audit 23
+audit 24
+audit 25
+audit 26
+audit 27
+audit 28
+audit 29
+audit 30
+audit 31
+audit 32
+audit 33
+audit 34
+audit 35
+audit 36
+audit 37
+audit 38
+audit 39
+audit 40
+audit 41
+audit 42
+audit 43
+audit 44
+audit 45
+audit 46
+audit 47
+audit 48
+audit 49
+audit 50
+audit 51
+audit 52
+audit 53
+audit 54
+audit 55
+audit 56
+audit 57
+audit 58
+audit 59
+audit 60
+audit 61
+audit 62
+audit 63
+audit 64
+audit 65
+audit 66
+audit 67
+audit 68
+audit 69
+audit 70
+audit 71
+audit 72
+audit 73
+audit 74
+audit 75
+audit 76
+audit 77
+audit 78
+audit 79
+audit 80
+audit 81
+audit 82
+audit 83
+audit 84
+audit 85
+audit 86
+audit 87
+audit 88
+audit 89
+audit 90
+audit 91
+audit 92
+audit 93
+audit 94
+audit 95
+audit 96
+audit 97
+audit 98
+audit 99
+audit 100
+audit 101
+audit 102
+audit 103
+audit 104
+audit 105
+audit 106
+audit 107
+audit 108
+audit 109
+audit 110
+audit 111
+audit 112
+audit 113
+audit 114
+audit 115
+audit 116
+audit 117
+audit 118
+audit 119
+audit 120
+audit 121
+audit 122
+audit 123
+audit 124
+audit 125
+audit 126
+audit 127
+audit 128
+audit 129
+audit 130
+audit 131
+audit 132
+audit 133
+audit 134
+audit 135
+audit 136
+audit 137
+audit 138
+audit 139
+audit 140
+audit 141
+audit 142
+audit 143
+audit 144
+audit 145
+audit 146
+audit 147
+audit 148
+audit 149
+audit 150
+audit 151
+audit 152
+audit 153
+audit 154
+audit 155
+audit 156
+audit 157
+audit 158
+audit 159
+audit 160
+audit 161
+audit 162
+audit 163
+audit 164
+audit 165
+audit 166
+audit 1 0x90
+audit 5 0x90
+audit 6 0x90
+audit 7 0x90
+audit 8 0x90
+audit 9 0x90
+audit 10 0x90
+audit 11 0x90
+audit 12 0x90
+mark END

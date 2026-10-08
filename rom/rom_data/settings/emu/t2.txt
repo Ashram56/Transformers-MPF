@@ -1,0 +1,100 @@
+mark PRICING_USA10
+credits
+key 3
+key 3
+key 3
+wait 1
+credits
+callstr 44a4 1 B
+key 4
+wait 1
+credits
+callstr 44a4 1 B
+key 5
+wait 1
+credits
+callstr 44a4 1 B
+key 6
+wait 1
+credits
+callstr 44a4 1 B
+mark GERMANY2
+adjset 28 24
+credits
+callstr 26a4c B 24
+key 4
+wait 1
+credits
+callstr 44a4 1 B
+key 5
+wait 1
+credits
+callstr 44a4 1 B
+key 3
+wait 1
+credits
+callstr 44a4 1 B
+mark EURO3
+adjset 28 13
+credits
+key 3
+wait 1
+credits
+callstr 44a4 1 B
+key 3
+wait 1
+credits
+callstr 44a4 1 B
+key 4
+wait 1
+credits
+callstr 44a4 1 B
+mark FREEPLAY
+adjset 34 1
+callstr 44a4 1 B
+adjset 34 0
+mark CREDITLIMIT
+call 4338 1
+credits
+adjset 28 66
+adjset 33 4
+key 4
+wait 1
+key 4
+wait 1
+credits
+key 4
+wait 1
+credits
+callstr 44a4 1 B
+key 4
+wait 1
+credits
+callstr 44a4 1 B
+adjset 33 30
+mark COINDELAY_OFF
+adjset 62 61
+key 3
+wait 1
+credits
+adjset 62 30
+mark ADJ25
+call 4338 1
+key 4
+wait 1
+key 4
+wait 1
+credits
+key 1
+wait 4
+adjpoke 25 0
+credits
+adjlog 1
+call 1c410 1 1
+adjlog 0
+wait 2
+credits
+call 1c410 1 2
+wait 2
+credits
+mark END

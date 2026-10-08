@@ -1,0 +1,33 @@
+8.0057 ready dip0=0x80
+8.0057 mark boot_done
+8.0057 key 4
+8.0535 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+8.0536 coin_task_run slot=1 credsys=1
+8.4215 key 4
+8.4695 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+8.4696 coin_task_run slot=1 credsys=1
+8.5337 audit_add counter=3 n=1 lr=0x3fe4
+8.5337 audit_add counter=7 n=4 lr=0x4048
+8.5344 audit_add counter=1 n=1 lr=0x40e0
+8.5344 event_post 0x19 arg0=0x101 lr=0x4108
+8.9543 audit_add counter=3 n=1 lr=0x3fe4
+8.9544 audit_add counter=7 n=4 lr=0x4048
+8.9550 audit_add counter=1 n=1 lr=0x40e0
+8.9550 event_post 0x19 arg0=0x1000101 lr=0x4108
+8.9553 audit_add counter=1 n=1 lr=0x40e0
+8.9554 event_post 0x19 arg0=0x1000101 lr=0x4108
+9.8484 credits pos=7 credits=3 chk=0xf5
+9.8484 mark press_start
+9.8484 key 1
+9.8973 audit_add counter=17 n=1 lr=0x1a294
+18.2578 mark ball1
+18.9061 audit_add counter=73 n=1 lr=0x1033050
+28.9719 audit_add counter=37 n=1 lr=0x103b7d8
+39.1055 drain in_play=0
+39.6323 audit_add counter=8 n=1 lr=0x19ee8
+47.2205 mark ball2
+47.2205 drain in_play=0
+55.3300 mark ball3
+55.3300 drain in_play=0
+67.4443 mark after_game
+71.6541 end

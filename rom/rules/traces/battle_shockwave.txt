@@ -1,0 +1,42 @@
+# Shockwave (POKED: battle_lit=2 to skip the rotation). Shots: Allspark, then right ramp, then all six
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_2
+poke 2111ecc 2 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark sw_hit_allspark
+hit 3
+wait 4
+mark sw_hit_right_ramp
+hit 14
+wait 2
+mark sw_hit_left_orbit_all_lit
+hit 5
+wait 2
+mark sw_hit_left_ramp
+hit 10
+wait 2
+mark sw_hit_left_ramp_again_unlit
+hit 10
+wait 2
+mark poke_remaining_1
+poke 2111e9c 1 1
+mark sw_hit_center_completes
+hit 11
+wait 12
+drain
+wait 6

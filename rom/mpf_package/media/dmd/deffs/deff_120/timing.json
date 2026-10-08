@@ -1,0 +1,10935 @@
+{
+ "deff": 120,
+ "fn": "0x1013628",
+ "flags": 2,
+ "priority": 176,
+ "background": false,
+ "capture": "fg0",
+ "forced_at_s": 92.5473,
+ "ended_ms": 3749.7,
+ "window_ms": 3780.0,
+ "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
+ "frames": [
+  {
+   "i": 0,
+   "t_ms": 2.7,
+   "dur_ms": 17
+  },
+  {
+   "i": 1,
+   "t_ms": 19.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 2,
+   "t_ms": 86.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 3,
+   "t_ms": 152.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 4,
+   "t_ms": 219.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 5,
+   "t_ms": 286.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 6,
+   "t_ms": 352.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 7,
+   "t_ms": 402.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 8,
+   "t_ms": 469.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 9,
+   "t_ms": 536.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 10,
+   "t_ms": 602.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 11,
+   "t_ms": 669.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 12,
+   "t_ms": 719.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 13,
+   "t_ms": 786.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 14,
+   "t_ms": 852.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 15,
+   "t_ms": 919.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 16,
+   "t_ms": 986.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 17,
+   "t_ms": 1052.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 18,
+   "t_ms": 1102.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 19,
+   "t_ms": 1169.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 20,
+   "t_ms": 1236.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 21,
+   "t_ms": 1302.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 22,
+   "t_ms": 1369.4,
+   "dur_ms": 83
+  },
+  {
+   "i": 23,
+   "t_ms": 1452.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 24,
+   "t_ms": 1502.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 25,
+   "t_ms": 1569.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 26,
+   "t_ms": 1636.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 27,
+   "t_ms": 1702.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 28,
+   "t_ms": 1769.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 29,
+   "t_ms": 1836.0,
+   "dur_ms": 83
+  },
+  {
+   "i": 30,
+   "t_ms": 1919.4,
+   "dur_ms": 100
+  },
+  {
+   "i": 31,
+   "t_ms": 2019.4,
+   "dur_ms": 17
+  },
+  {
+   "i": 32,
+   "t_ms": 2036.0,
+   "dur_ms": 83
+  },
+  {
+   "i": 33,
+   "t_ms": 2119.4,
+   "dur_ms": 33
+  },
+  {
+   "i": 34,
+   "t_ms": 2152.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 35,
+   "t_ms": 2219.4,
+   "dur_ms": 33
+  },
+  {
+   "i": 36,
+   "t_ms": 2252.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 37,
+   "t_ms": 2302.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 38,
+   "t_ms": 2369.4,
+   "dur_ms": 33
+  },
+  {
+   "i": 39,
+   "t_ms": 2402.7,
+   "dur_ms": 83
+  },
+  {
+   "i": 40,
+   "t_ms": 2486.0,
+   "dur_ms": 17
+  },
+  {
+   "i": 41,
+   "t_ms": 2502.7,
+   "dur_ms": 83
+  },
+  {
+   "i": 42,
+   "t_ms": 2586.0,
+   "dur_ms": 100
+  },
+  {
+   "i": 43,
+   "t_ms": 2686.0,
+   "dur_ms": 17
+  },
+  {
+   "i": 44,
+   "t_ms": 2702.7,
+   "dur_ms": 83
+  },
+  {
+   "i": 45,
+   "t_ms": 2786.0,
+   "dur_ms": 33
+  },
+  {
+   "i": 46,
+   "t_ms": 2819.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 47,
+   "t_ms": 2886.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 48,
+   "t_ms": 2936.0,
+   "dur_ms": 33
+  },
+  {
+   "i": 49,
+   "t_ms": 2969.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 50,
+   "t_ms": 3036.0,
+   "dur_ms": 33
+  },
+  {
+   "i": 51,
+   "t_ms": 3069.4,
+   "dur_ms": 83
+  },
+  {
+   "i": 52,
+   "t_ms": 3152.7,
+   "dur_ms": 17
+  },
+  {
+   "i": 53,
+   "t_ms": 3169.4,
+   "dur_ms": 100
+  },
+  {
+   "i": 54,
+   "t_ms": 3269.4,
+   "dur_ms": 83
+  },
+  {
+   "i": 55,
+   "t_ms": 3352.7,
+   "dur_ms": 17
+  },
+  {
+   "i": 56,
+   "t_ms": 3369.4,
+   "dur_ms": 83
+  },
+  {
+   "i": 57,
+   "t_ms": 3452.7,
+   "dur_ms": 33
+  },
+  {
+   "i": 58,
+   "t_ms": 3486.0,
+   "dur_ms": 67
+  },
+  {
+   "i": 59,
+   "t_ms": 3552.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 60,
+   "t_ms": 3602.7,
+   "dur_ms": 67
+  },
+  {
+   "i": 61,
+   "t_ms": 3669.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 62,
+   "t_ms": 3719.4,
+   "dur_ms": 50
+  }
+ ],
+ "pages": [
+  {
+   "t_ms": 3.5,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 1.3,
+     "img": 8052,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 67.6,
+   "fg": 17,
+   "bg": 0,
+   "images": [
+    {
+     "t_ms": 65.3,
+     "img": 8053,
+     "page": 17,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 67.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 67.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 132.2,
+   "fg": 1,
+   "bg": 2,
+   "images": [
+    {
+     "t_ms": 129.8,
+     "img": 8054,
+     "page": 1,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 132.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 132.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 196.7,
+   "fg": 3,
+   "bg": 4,
+   "images": [
+    {
+     "t_ms": 194.4,
+     "img": 8055,
+     "page": 3,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 196.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 196.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 261.2,
+   "fg": 5,
+   "bg": 6,
+   "images": [
+    {
+     "t_ms": 258.8,
+     "img": 8056,
+     "page": 5,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 261.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 261.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 325.8,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 323.4,
+     "img": 8057,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 325.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 325.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 390.2,
+   "fg": 9,
+   "bg": 10,
+   "images": [
+    {
+     "t_ms": 387.8,
+     "img": 8058,
+     "page": 9,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 390.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 390.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 454.6,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 452.3,
+     "img": 8059,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 454.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 454.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 519.2,
+   "fg": 13,
+   "bg": 14,
+   "images": [
+    {
+     "t_ms": 516.8,
+     "img": 8060,
+     "page": 13,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 519.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 519.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 583.7,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 581.3,
+     "img": 8061,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 583.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 583.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 648.2,
+   "fg": 17,
+   "bg": 0,
+   "images": [
+    {
+     "t_ms": 645.8,
+     "img": 8062,
+     "page": 17,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 648.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 648.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 712.6,
+   "fg": 1,
+   "bg": 2,
+   "images": [
+    {
+     "t_ms": 710.3,
+     "img": 8063,
+     "page": 1,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 712.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 712.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 777.4,
+   "fg": 3,
+   "bg": 4,
+   "images": [
+    {
+     "t_ms": 775.0,
+     "img": 8064,
+     "page": 3,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 777.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 777.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 841.4,
+   "fg": 5,
+   "bg": 6,
+   "images": [
+    {
+     "t_ms": 839.1,
+     "img": 8065,
+     "page": 5,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 841.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 841.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 905.9,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 903.6,
+     "img": 8066,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 905.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 905.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 970.3,
+   "fg": 9,
+   "bg": 10,
+   "images": [
+    {
+     "t_ms": 968.1,
+     "img": 8067,
+     "page": 9,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 970.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 970.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1035.0,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 1032.6,
+     "img": 8068,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1034.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1034.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1099.4,
+   "fg": 13,
+   "bg": 14,
+   "images": [
+    {
+     "t_ms": 1097.1,
+     "img": 8069,
+     "page": 13,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1099.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1099.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1163.9,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 1161.6,
+     "img": 8070,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1163.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1163.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1228.4,
+   "fg": 17,
+   "bg": 0,
+   "images": [
+    {
+     "t_ms": 1226.1,
+     "img": 8071,
+     "page": 17,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1228.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1228.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1293.0,
+   "fg": 1,
+   "bg": 2,
+   "images": [
+    {
+     "t_ms": 1290.6,
+     "img": 8072,
+     "page": 1,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1292.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1292.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1356.9,
+   "fg": 3,
+   "bg": 4,
+   "images": [
+    {
+     "t_ms": 1354.9,
+     "img": 8073,
+     "page": 3,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1356.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1356.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1421.1,
+   "fg": 5,
+   "bg": 6,
+   "images": [
+    {
+     "t_ms": 1419.2,
+     "img": 8074,
+     "page": 5,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1421.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1421.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1485.4,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 1483.4,
+     "img": 8075,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1485.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1485.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1549.7,
+   "fg": 9,
+   "bg": 10,
+   "images": [
+    {
+     "t_ms": 1547.7,
+     "img": 8076,
+     "page": 9,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1549.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1549.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1613.8,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 1611.9,
+     "img": 8077,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1613.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1613.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1678.2,
+   "fg": 13,
+   "bg": 14,
+   "images": [
+    {
+     "t_ms": 1676.2,
+     "img": 8078,
+     "page": 13,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1678.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1678.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1742.4,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 1740.4,
+     "img": 8079,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "101285c"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1742.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1742.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1806.1,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1804.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 1805.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 1805.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1806.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1821.9,
+   "fg": 1,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1821.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1821.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1837.9,
+   "fg": 2,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1837.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1837.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1854.3,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1852.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 1853.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 1854.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1854.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1870.2,
+   "fg": 5,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1870.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1870.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1886.2,
+   "fg": 6,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1886.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1886.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1904.4,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 1901.2,
+     "img": 8052,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1902.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 1903.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 1904.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1904.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1918.7,
+   "fg": 9,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1918.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1918.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1934.5,
+   "fg": 10,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1934.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1934.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1952.7,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 1949.4,
+     "img": 8052,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 1951.2,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 1951.7,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 1952.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1952.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1966.7,
+   "fg": 13,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1966.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1966.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1982.7,
+   "fg": 14,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1982.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1982.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1999.1,
+   "fg": 15,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1997.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 1998.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 1998.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1999.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2014.9,
+   "fg": 17,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2014.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2014.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2030.9,
+   "fg": 0,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2030.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2030.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2047.5,
+   "fg": 1,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2046.1,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2046.6,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2047.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2047.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2063.2,
+   "fg": 3,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2063.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2063.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2079.2,
+   "fg": 4,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2079.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2079.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2097.3,
+   "fg": 5,
+   "bg": 6,
+   "images": [
+    {
+     "t_ms": 2094.1,
+     "img": 8052,
+     "page": 5,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2095.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2096.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2097.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2097.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2111.4,
+   "fg": 7,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2111.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2111.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2127.5,
+   "fg": 8,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2127.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2127.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2145.7,
+   "fg": 9,
+   "bg": 10,
+   "images": [
+    {
+     "t_ms": 2142.4,
+     "img": 8052,
+     "page": 9,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2144.2,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2144.7,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2145.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2145.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2159.7,
+   "fg": 11,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2159.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2159.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2175.9,
+   "fg": 12,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2175.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2175.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2192.1,
+   "fg": 13,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2190.6,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2191.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2191.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2192.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2207.9,
+   "fg": 15,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2207.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2207.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2224.0,
+   "fg": 16,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2223.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2223.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2240.4,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2239.0,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2239.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2240.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2240.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2255.9,
+   "fg": 1,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2255.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2255.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2271.9,
+   "fg": 2,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2271.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2271.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2290.1,
+   "fg": 3,
+   "bg": 4,
+   "images": [
+    {
+     "t_ms": 2286.9,
+     "img": 8052,
+     "page": 3,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2288.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2289.2,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2290.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2290.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2304.3,
+   "fg": 5,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2304.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2304.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2320.2,
+   "fg": 6,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2320.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2320.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2338.3,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 2335.1,
+     "img": 8052,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2336.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2337.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2338.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2338.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2352.5,
+   "fg": 9,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2352.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2352.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2368.5,
+   "fg": 10,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2368.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2368.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2384.9,
+   "fg": 11,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2383.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2383.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2384.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2384.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2400.7,
+   "fg": 13,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2400.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2400.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2416.7,
+   "fg": 14,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2416.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2416.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2433.4,
+   "fg": 15,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2431.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2432.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2433.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2433.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2448.9,
+   "fg": 17,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2448.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2448.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2464.9,
+   "fg": 0,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2464.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2464.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2483.1,
+   "fg": 1,
+   "bg": 2,
+   "images": [
+    {
+     "t_ms": 2479.9,
+     "img": 8052,
+     "page": 1,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2481.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2482.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2483.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2483.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2497.2,
+   "fg": 3,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2497.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2497.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2513.2,
+   "fg": 4,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2513.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2513.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2531.9,
+   "fg": 5,
+   "bg": 6,
+   "images": [
+    {
+     "t_ms": 2528.2,
+     "img": 8052,
+     "page": 5,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2530.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2530.9,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2531.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2531.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2545.8,
+   "fg": 7,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2545.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2545.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2562.0,
+   "fg": 8,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2561.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2561.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2577.8,
+   "fg": 9,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2576.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2576.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2577.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2577.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2593.7,
+   "fg": 11,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2593.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2593.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2609.7,
+   "fg": 12,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2609.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2609.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2626.1,
+   "fg": 13,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2624.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2625.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2625.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2626.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2642.0,
+   "fg": 15,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2641.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2641.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2658.0,
+   "fg": 16,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2657.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2657.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2676.1,
+   "fg": 17,
+   "bg": 0,
+   "images": [
+    {
+     "t_ms": 2672.9,
+     "img": 8052,
+     "page": 17,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2674.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2675.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2675.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2676.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2690.3,
+   "fg": 1,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2690.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2690.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2706.1,
+   "fg": 2,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2706.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2706.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2724.3,
+   "fg": 3,
+   "bg": 4,
+   "images": [
+    {
+     "t_ms": 2721.1,
+     "img": 8052,
+     "page": 3,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2722.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2723.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2724.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2724.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2738.4,
+   "fg": 5,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2738.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2738.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2754.4,
+   "fg": 6,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2754.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2754.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2770.9,
+   "fg": 7,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2769.5,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2770.0,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2770.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2770.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2786.7,
+   "fg": 9,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2786.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2786.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2802.7,
+   "fg": 10,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2802.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2802.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2819.2,
+   "fg": 11,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2817.8,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2818.2,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2819.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2819.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2835.2,
+   "fg": 13,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2835.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2835.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2851.2,
+   "fg": 14,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2851.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2851.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2869.4,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 2866.1,
+     "img": 8052,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2867.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2868.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2869.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2869.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2883.5,
+   "fg": 17,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2883.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2883.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2899.5,
+   "fg": 0,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2899.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2899.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2917.7,
+   "fg": 1,
+   "bg": 2,
+   "images": [
+    {
+     "t_ms": 2914.5,
+     "img": 8052,
+     "page": 1,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 2916.2,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2916.7,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2917.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2917.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2931.4,
+   "fg": 3,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2931.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2931.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2947.6,
+   "fg": 4,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2947.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2947.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2963.8,
+   "fg": 5,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2962.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 2962.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 2963.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2963.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2979.6,
+   "fg": 7,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2979.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2979.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 2995.7,
+   "fg": 8,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 2995.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 2995.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3012.1,
+   "fg": 9,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3010.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3011.2,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3012.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3012.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3027.7,
+   "fg": 11,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3027.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3027.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3043.8,
+   "fg": 12,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3043.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3043.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3061.9,
+   "fg": 13,
+   "bg": 14,
+   "images": [
+    {
+     "t_ms": 3058.7,
+     "img": 8052,
+     "page": 13,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3060.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3060.9,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3061.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3061.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3076.1,
+   "fg": 15,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3075.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3075.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3092.0,
+   "fg": 16,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3091.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3091.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3110.2,
+   "fg": 17,
+   "bg": 0,
+   "images": [
+    {
+     "t_ms": 3107.0,
+     "img": 8052,
+     "page": 17,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3108.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3109.2,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3110.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3110.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3124.0,
+   "fg": 1,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3123.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3123.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3139.9,
+   "fg": 2,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3139.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3139.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3156.3,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3154.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3155.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3156.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3156.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3172.2,
+   "fg": 5,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3172.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3172.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3188.2,
+   "fg": 6,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3188.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3188.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3204.8,
+   "fg": 7,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3203.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3203.9,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3204.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3204.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3220.1,
+   "fg": 9,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3220.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3220.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3236.1,
+   "fg": 10,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3236.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3236.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3254.4,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 3251.2,
+     "img": 8052,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3252.9,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3253.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3254.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3254.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3268.5,
+   "fg": 13,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3268.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3268.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3284.5,
+   "fg": 14,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3284.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3284.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3302.7,
+   "fg": 15,
+   "bg": 16,
+   "images": [
+    {
+     "t_ms": 3299.5,
+     "img": 8052,
+     "page": 15,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3301.3,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3301.7,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3302.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3302.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3316.4,
+   "fg": 17,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3316.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3316.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3332.6,
+   "fg": 0,
+   "bg": 16,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3332.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3332.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3348.8,
+   "fg": 1,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3347.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3347.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3348.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3348.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3364.7,
+   "fg": 3,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3364.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3364.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3380.7,
+   "fg": 4,
+   "bg": 2,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3380.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3380.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3397.0,
+   "fg": 5,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3395.7,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3396.1,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3396.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3397.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3412.9,
+   "fg": 7,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3412.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3412.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3428.9,
+   "fg": 8,
+   "bg": 6,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3428.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3428.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3446.6,
+   "fg": 9,
+   "bg": 10,
+   "images": [
+    {
+     "t_ms": 3443.8,
+     "img": 8052,
+     "page": 9,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3445.3,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3445.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3446.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3446.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3460.7,
+   "fg": 11,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3460.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3460.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3476.7,
+   "fg": 12,
+   "bg": 10,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3476.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3476.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3494.7,
+   "fg": 13,
+   "bg": 14,
+   "images": [
+    {
+     "t_ms": 3491.8,
+     "img": 8052,
+     "page": 13,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3493.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3493.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3494.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3494.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3508.9,
+   "fg": 15,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3508.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3508.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3525.0,
+   "fg": 16,
+   "bg": 14,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3524.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3524.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3541.3,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3540.0,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3540.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3541.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3541.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3557.2,
+   "fg": 1,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3557.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3557.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 1,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3573.2,
+   "fg": 2,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3573.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3573.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3589.6,
+   "fg": 3,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3588.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3588.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3589.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3589.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 3,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3605.4,
+   "fg": 5,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3605.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3605.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 5,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3621.4,
+   "fg": 6,
+   "bg": 4,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3621.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3621.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3639.3,
+   "fg": 7,
+   "bg": 8,
+   "images": [
+    {
+     "t_ms": 3636.4,
+     "img": 8052,
+     "page": 7,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3638.0,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3638.4,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3639.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3639.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 7,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3653.6,
+   "fg": 9,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3653.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3653.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 9,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3669.6,
+   "fg": 10,
+   "bg": 8,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3669.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3669.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3687.6,
+   "fg": 11,
+   "bg": 12,
+   "images": [
+    {
+     "t_ms": 3684.8,
+     "img": 8052,
+     "page": 11,
+     "x": 41,
+     "y": 0,
+     "fn": 1013628,
+     "lr": "10136e0"
+    }
+   ],
+   "texts": [
+    {
+     "t_ms": 3686.4,
+     "str": "RATCHET",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 14,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": 1013708,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1653,
+     "source": "RATCHET"
+    },
+    {
+     "t_ms": 3686.8,
+     "str": "BATTLE",
+     "font": 16,
+     "flags": 4,
+     "x": 127,
+     "y": 28,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "101372c",
+     "helper": "text_draw_msg_page",
+     "msg_id": 1654,
+     "source": "BATTLE"
+    },
+    {
+     "t_ms": 3687.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3687.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 11,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3701.7,
+   "fg": 13,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3701.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3701.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 13,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3717.8,
+   "fg": 14,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3717.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3717.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3733.7,
+   "fg": 15,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3733.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3733.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 3749.7,
+   "fg": 16,
+   "bg": 12,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 3749.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117964,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 3749.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  }
+ ],
+ "sounds": [
+  {
+   "t_ms": 0.2,
+   "call": "0x17d",
+   "via": "SNDPLAY",
+   "deff": 120,
+   "lr": 1013674
+  },
+  {
+   "t_ms": 64.3,
+   "call": "0x234",
+   "via": "SNDPLAY",
+   "deff": 120,
+   "lr": 1012890
+  },
+  {
+   "t_ms": 2528.2,
+   "call": "0x235",
+   "via": "SNDPLAY",
+   "deff": 120,
+   "lr": "10136c0"
+  }
+ ],
+ "leffs": [
+  {
+   "t_ms": 0.2,
+   "leff": 135,
+   "lr": 1013668
+  }
+ ],
+ "events": [
+  {
+   "t_ms": 0.0,
+   "event": 33
+  },
+  {
+   "t_ms": 0.1,
+   "event": 73
+  },
+  {
+   "t_ms": 0.1,
+   "event": 27
+  },
+  {
+   "t_ms": 0.2,
+   "event": 87
+  },
+  {
+   "t_ms": 0.2,
+   "event": 89
+  },
+  {
+   "t_ms": 3.6,
+   "event": 73
+  },
+  {
+   "t_ms": 3.6,
+   "event": 74
+  },
+  {
+   "t_ms": 15.8,
+   "event": 32
+  },
+  {
+   "t_ms": 16.3,
+   "event": 33
+  },
+  {
+   "t_ms": 16.3,
+   "event": 10
+  },
+  {
+   "t_ms": 16.3,
+   "event": 11
+  },
+  {
+   "t_ms": 16.3,
+   "event": 74
+  },
+  {
+   "t_ms": 31.8,
+   "event": 32
+  },
+  {
+   "t_ms": 32.3,
+   "event": 33
+  },
+  {
+   "t_ms": 32.3,
+   "event": 74
+  },
+  {
+   "t_ms": 47.8,
+   "event": 32
+  },
+  {
+   "t_ms": 48.3,
+   "event": 33
+  },
+  {
+   "t_ms": 48.3,
+   "event": 74
+  },
+  {
+   "t_ms": 63.8,
+   "event": 32
+  },
+  {
+   "t_ms": 64.3,
+   "event": 33
+  },
+  {
+   "t_ms": 64.4,
+   "event": 87
+  },
+  {
+   "t_ms": 64.4,
+   "event": 89
+  },
+  {
+   "t_ms": 67.6,
+   "event": 74
+  },
+  {
+   "t_ms": 80.3,
+   "event": 32
+  },
+  {
+   "t_ms": 80.8,
+   "event": 33
+  },
+  {
+   "t_ms": 80.9,
+   "event": 74
+  },
+  {
+   "t_ms": 96.3,
+   "event": 32
+  },
+  {
+   "t_ms": 96.8,
+   "event": 33
+  },
+  {
+   "t_ms": 96.8,
+   "event": 74
+  },
+  {
+   "t_ms": 112.3,
+   "event": 32
+  },
+  {
+   "t_ms": 112.8,
+   "event": 33
+  },
+  {
+   "t_ms": 112.8,
+   "event": 10
+  },
+  {
+   "t_ms": 112.8,
+   "event": 11
+  },
+  {
+   "t_ms": 113.2,
+   "event": 74
+  },
+  {
+   "t_ms": 128.3,
+   "event": 32
+  },
+  {
+   "t_ms": 128.8,
+   "event": 33
+  },
+  {
+   "t_ms": 132.2,
+   "event": 74
+  },
+  {
+   "t_ms": 144.8,
+   "event": 32
+  },
+  {
+   "t_ms": 145.4,
+   "event": 33
+  },
+  {
+   "t_ms": 145.4,
+   "event": 74
+  },
+  {
+   "t_ms": 160.8,
+   "event": 32
+  },
+  {
+   "t_ms": 161.4,
+   "event": 33
+  },
+  {
+   "t_ms": 161.4,
+   "event": 74
+  },
+  {
+   "t_ms": 176.9,
+   "event": 32
+  },
+  {
+   "t_ms": 177.4,
+   "event": 33
+  },
+  {
+   "t_ms": 177.4,
+   "event": 74
+  },
+  {
+   "t_ms": 192.8,
+   "event": 32
+  },
+  {
+   "t_ms": 193.4,
+   "event": 33
+  },
+  {
+   "t_ms": 196.7,
+   "event": 74
+  },
+  {
+   "t_ms": 209.3,
+   "event": 32
+  },
+  {
+   "t_ms": 209.8,
+   "event": 33
+  },
+  {
+   "t_ms": 209.9,
+   "event": 10
+  },
+  {
+   "t_ms": 209.9,
+   "event": 11
+  },
+  {
+   "t_ms": 209.9,
+   "event": 74
+  },
+  {
+   "t_ms": 225.3,
+   "event": 32
+  },
+  {
+   "t_ms": 225.8,
+   "event": 33
+  },
+  {
+   "t_ms": 225.9,
+   "event": 74
+  },
+  {
+   "t_ms": 241.3,
+   "event": 32
+  },
+  {
+   "t_ms": 241.8,
+   "event": 33
+  },
+  {
+   "t_ms": 242.0,
+   "event": 74
+  },
+  {
+   "t_ms": 257.3,
+   "event": 32
+  },
+  {
+   "t_ms": 257.8,
+   "event": 33
+  },
+  {
+   "t_ms": 261.2,
+   "event": 74
+  },
+  {
+   "t_ms": 273.8,
+   "event": 32
+  },
+  {
+   "t_ms": 274.4,
+   "event": 33
+  },
+  {
+   "t_ms": 274.4,
+   "event": 74
+  },
+  {
+   "t_ms": 289.9,
+   "event": 32
+  },
+  {
+   "t_ms": 290.4,
+   "event": 33
+  },
+  {
+   "t_ms": 290.4,
+   "event": 74
+  },
+  {
+   "t_ms": 305.9,
+   "event": 32
+  },
+  {
+   "t_ms": 306.4,
+   "event": 33
+  },
+  {
+   "t_ms": 306.4,
+   "event": 10
+  },
+  {
+   "t_ms": 306.4,
+   "event": 11
+  },
+  {
+   "t_ms": 306.5,
+   "event": 74
+  },
+  {
+   "t_ms": 321.8,
+   "event": 32
+  },
+  {
+   "t_ms": 322.4,
+   "event": 33
+  },
+  {
+   "t_ms": 322.4,
+   "event": 73
+  },
+  {
+   "t_ms": 325.8,
+   "event": 74
+  },
+  {
+   "t_ms": 338.3,
+   "event": 32
+  },
+  {
+   "t_ms": 338.8,
+   "event": 33
+  },
+  {
+   "t_ms": 338.9,
+   "event": 74
+  },
+  {
+   "t_ms": 354.3,
+   "event": 32
+  },
+  {
+   "t_ms": 354.8,
+   "event": 33
+  },
+  {
+   "t_ms": 354.8,
+   "event": 74
+  },
+  {
+   "t_ms": 370.3,
+   "event": 32
+  },
+  {
+   "t_ms": 370.8,
+   "event": 33
+  },
+  {
+   "t_ms": 371.0,
+   "event": 74
+  },
+  {
+   "t_ms": 386.3,
+   "event": 32
+  },
+  {
+   "t_ms": 386.8,
+   "event": 33
+  },
+  {
+   "t_ms": 390.2,
+   "event": 74
+  },
+  {
+   "t_ms": 402.8,
+   "event": 32
+  },
+  {
+   "t_ms": 403.4,
+   "event": 33
+  },
+  {
+   "t_ms": 403.4,
+   "event": 10
+  },
+  {
+   "t_ms": 403.4,
+   "event": 11
+  },
+  {
+   "t_ms": 403.4,
+   "event": 74
+  },
+  {
+   "t_ms": 418.8,
+   "event": 32
+  },
+  {
+   "t_ms": 419.4,
+   "event": 33
+  },
+  {
+   "t_ms": 419.4,
+   "event": 74
+  },
+  {
+   "t_ms": 434.8,
+   "event": 32
+  },
+  {
+   "t_ms": 435.4,
+   "event": 33
+  },
+  {
+   "t_ms": 435.4,
+   "event": 74
+  },
+  {
+   "t_ms": 450.8,
+   "event": 32
+  },
+  {
+   "t_ms": 451.4,
+   "event": 33
+  },
+  {
+   "t_ms": 454.6,
+   "event": 74
+  },
+  {
+   "t_ms": 467.3,
+   "event": 32
+  },
+  {
+   "t_ms": 467.8,
+   "event": 33
+  },
+  {
+   "t_ms": 467.9,
+   "event": 74
+  },
+  {
+   "t_ms": 483.3,
+   "event": 32
+  },
+  {
+   "t_ms": 483.8,
+   "event": 33
+  },
+  {
+   "t_ms": 483.8,
+   "event": 74
+  },
+  {
+   "t_ms": 499.3,
+   "event": 32
+  },
+  {
+   "t_ms": 499.8,
+   "event": 33
+  },
+  {
+   "t_ms": 499.8,
+   "event": 10
+  },
+  {
+   "t_ms": 499.8,
+   "event": 11
+  },
+  {
+   "t_ms": 500.0,
+   "event": 74
+  },
+  {
+   "t_ms": 515.3,
+   "event": 32
+  },
+  {
+   "t_ms": 515.9,
+   "event": 33
+  },
+  {
+   "t_ms": 519.2,
+   "event": 74
+  },
+  {
+   "t_ms": 531.8,
+   "event": 32
+  },
+  {
+   "t_ms": 532.4,
+   "event": 33
+  },
+  {
+   "t_ms": 532.4,
+   "event": 74
+  },
+  {
+   "t_ms": 547.8,
+   "event": 32
+  },
+  {
+   "t_ms": 548.4,
+   "event": 33
+  },
+  {
+   "t_ms": 548.4,
+   "event": 74
+  },
+  {
+   "t_ms": 563.8,
+   "event": 32
+  },
+  {
+   "t_ms": 564.4,
+   "event": 33
+  },
+  {
+   "t_ms": 564.4,
+   "event": 74
+  },
+  {
+   "t_ms": 579.8,
+   "event": 32
+  },
+  {
+   "t_ms": 580.4,
+   "event": 33
+  },
+  {
+   "t_ms": 583.7,
+   "event": 74
+  },
+  {
+   "t_ms": 596.3,
+   "event": 32
+  },
+  {
+   "t_ms": 596.8,
+   "event": 33
+  },
+  {
+   "t_ms": 596.8,
+   "event": 10
+  },
+  {
+   "t_ms": 596.8,
+   "event": 11
+  },
+  {
+   "t_ms": 596.9,
+   "event": 74
+  },
+  {
+   "t_ms": 612.3,
+   "event": 32
+  },
+  {
+   "t_ms": 612.8,
+   "event": 33
+  },
+  {
+   "t_ms": 612.8,
+   "event": 74
+  },
+  {
+   "t_ms": 628.3,
+   "event": 32
+  },
+  {
+   "t_ms": 628.8,
+   "event": 33
+  },
+  {
+   "t_ms": 629.1,
+   "event": 74
+  },
+  {
+   "t_ms": 644.3,
+   "event": 32
+  },
+  {
+   "t_ms": 644.9,
+   "event": 33
+  },
+  {
+   "t_ms": 648.2,
+   "event": 74
+  },
+  {
+   "t_ms": 660.8,
+   "event": 32
+  },
+  {
+   "t_ms": 661.4,
+   "event": 33
+  },
+  {
+   "t_ms": 661.4,
+   "event": 74
+  },
+  {
+   "t_ms": 676.8,
+   "event": 32
+  },
+  {
+   "t_ms": 677.4,
+   "event": 33
+  },
+  {
+   "t_ms": 677.4,
+   "event": 74
+  },
+  {
+   "t_ms": 692.8,
+   "event": 32
+  },
+  {
+   "t_ms": 693.4,
+   "event": 33
+  },
+  {
+   "t_ms": 693.4,
+   "event": 10
+  },
+  {
+   "t_ms": 693.4,
+   "event": 11
+  },
+  {
+   "t_ms": 693.4,
+   "event": 74
+  },
+  {
+   "t_ms": 708.8,
+   "event": 32
+  },
+  {
+   "t_ms": 709.3,
+   "event": 33
+  },
+  {
+   "t_ms": 712.6,
+   "event": 74
+  },
+  {
+   "t_ms": 725.3,
+   "event": 32
+  },
+  {
+   "t_ms": 725.8,
+   "event": 33
+  },
+  {
+   "t_ms": 725.8,
+   "event": 74
+  },
+  {
+   "t_ms": 741.3,
+   "event": 32
+  },
+  {
+   "t_ms": 741.8,
+   "event": 33
+  },
+  {
+   "t_ms": 741.8,
+   "event": 74
+  },
+  {
+   "t_ms": 757.3,
+   "event": 32
+  },
+  {
+   "t_ms": 757.8,
+   "event": 33
+  },
+  {
+   "t_ms": 758.0,
+   "event": 74
+  },
+  {
+   "t_ms": 773.3,
+   "event": 32
+  },
+  {
+   "t_ms": 774.0,
+   "event": 33
+  },
+  {
+   "t_ms": 777.4,
+   "event": 74
+  },
+  {
+   "t_ms": 789.5,
+   "event": 32
+  },
+  {
+   "t_ms": 790.1,
+   "event": 33
+  },
+  {
+   "t_ms": 790.2,
+   "event": 10
+  },
+  {
+   "t_ms": 790.2,
+   "event": 11
+  },
+  {
+   "t_ms": 790.2,
+   "event": 74
+  },
+  {
+   "t_ms": 805.6,
+   "event": 32
+  },
+  {
+   "t_ms": 806.1,
+   "event": 33
+  },
+  {
+   "t_ms": 806.2,
+   "event": 74
+  },
+  {
+   "t_ms": 821.6,
+   "event": 32
+  },
+  {
+   "t_ms": 822.1,
+   "event": 33
+  },
+  {
+   "t_ms": 822.1,
+   "event": 74
+  },
+  {
+   "t_ms": 837.5,
+   "event": 32
+  },
+  {
+   "t_ms": 838.1,
+   "event": 33
+  },
+  {
+   "t_ms": 841.4,
+   "event": 74
+  },
+  {
+   "t_ms": 854.0,
+   "event": 32
+  },
+  {
+   "t_ms": 854.6,
+   "event": 33
+  },
+  {
+   "t_ms": 854.6,
+   "event": 74
+  },
+  {
+   "t_ms": 870.0,
+   "event": 32
+  },
+  {
+   "t_ms": 870.6,
+   "event": 33
+  },
+  {
+   "t_ms": 870.6,
+   "event": 74
+  },
+  {
+   "t_ms": 886.0,
+   "event": 32
+  },
+  {
+   "t_ms": 886.6,
+   "event": 33
+  },
+  {
+   "t_ms": 886.7,
+   "event": 10
+  },
+  {
+   "t_ms": 886.7,
+   "event": 11
+  },
+  {
+   "t_ms": 886.9,
+   "event": 74
+  },
+  {
+   "t_ms": 902.0,
+   "event": 32
+  },
+  {
+   "t_ms": 902.6,
+   "event": 33
+  },
+  {
+   "t_ms": 905.9,
+   "event": 74
+  },
+  {
+   "t_ms": 918.6,
+   "event": 32
+  },
+  {
+   "t_ms": 919.1,
+   "event": 33
+  },
+  {
+   "t_ms": 919.2,
+   "event": 74
+  },
+  {
+   "t_ms": 934.6,
+   "event": 32
+  },
+  {
+   "t_ms": 935.1,
+   "event": 33
+  },
+  {
+   "t_ms": 935.2,
+   "event": 74
+  },
+  {
+   "t_ms": 950.6,
+   "event": 32
+  },
+  {
+   "t_ms": 951.1,
+   "event": 33
+  },
+  {
+   "t_ms": 951.1,
+   "event": 74
+  },
+  {
+   "t_ms": 966.5,
+   "event": 32
+  },
+  {
+   "t_ms": 967.1,
+   "event": 33
+  },
+  {
+   "t_ms": 970.3,
+   "event": 74
+  },
+  {
+   "t_ms": 983.0,
+   "event": 32
+  },
+  {
+   "t_ms": 983.6,
+   "event": 33
+  },
+  {
+   "t_ms": 983.6,
+   "event": 10
+  },
+  {
+   "t_ms": 983.6,
+   "event": 11
+  },
+  {
+   "t_ms": 983.6,
+   "event": 74
+  },
+  {
+   "t_ms": 999.0,
+   "event": 32
+  },
+  {
+   "t_ms": 999.6,
+   "event": 33
+  },
+  {
+   "t_ms": 999.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1015.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1015.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1015.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1031.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1031.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1035.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1047.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1048.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1048.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1063.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1064.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1064.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1079.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1080.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1080.1,
+   "event": 10
+  },
+  {
+   "t_ms": 1080.1,
+   "event": 11
+  },
+  {
+   "t_ms": 1080.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1095.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1096.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1099.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1112.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1112.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1112.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1128.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1128.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1128.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1144.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1144.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1144.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1160.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1160.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1163.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1176.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1177.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1177.2,
+   "event": 10
+  },
+  {
+   "t_ms": 1177.2,
+   "event": 11
+  },
+  {
+   "t_ms": 1177.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1192.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1193.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1193.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1208.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1209.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1209.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1224.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1225.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1228.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1241.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1241.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1241.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1257.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1257.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1257.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1273.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1273.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1273.7,
+   "event": 10
+  },
+  {
+   "t_ms": 1273.7,
+   "event": 11
+  },
+  {
+   "t_ms": 1273.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1289.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1289.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1293.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1305.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1306.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1306.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1321.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1322.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1322.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1337.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1338.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1338.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1353.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1354.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1356.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1369.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1370.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1370.3,
+   "event": 10
+  },
+  {
+   "t_ms": 1370.3,
+   "event": 11
+  },
+  {
+   "t_ms": 1370.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1385.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1386.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1386.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1401.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1402.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1402.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1417.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1418.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1421.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1434.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1434.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1434.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1450.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1450.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1450.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1466.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1466.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1466.5,
+   "event": 10
+  },
+  {
+   "t_ms": 1466.5,
+   "event": 11
+  },
+  {
+   "t_ms": 1466.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1482.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1482.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1485.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1498.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1498.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1498.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1514.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1514.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1514.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1530.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1530.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1530.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1546.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1546.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1549.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1562.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1563.1,
+   "event": 33
+  },
+  {
+   "t_ms": 1563.1,
+   "event": 10
+  },
+  {
+   "t_ms": 1563.1,
+   "event": 11
+  },
+  {
+   "t_ms": 1563.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1578.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1579.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1579.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1594.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1595.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1595.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1610.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1611.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1613.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1626.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1627.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1627.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1642.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1643.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1643.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1658.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1659.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1659.3,
+   "event": 10
+  },
+  {
+   "t_ms": 1659.3,
+   "event": 11
+  },
+  {
+   "t_ms": 1659.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1674.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1675.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1678.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1691.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1691.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1691.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1707.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1707.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1707.6,
+   "event": 74
+  },
+  {
+   "t_ms": 1723.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1723.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1723.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1739.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1739.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1742.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1755.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1755.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1755.8,
+   "event": 10
+  },
+  {
+   "t_ms": 1755.8,
+   "event": 11
+  },
+  {
+   "t_ms": 1755.8,
+   "event": 74
+  },
+  {
+   "t_ms": 1771.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1771.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1771.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1787.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1787.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1787.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1803.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1803.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1806.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1819.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1820.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1821.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1835.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1836.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1837.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1851.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1852.0,
+   "event": 33
+  },
+  {
+   "t_ms": 1852.0,
+   "event": 10
+  },
+  {
+   "t_ms": 1852.0,
+   "event": 11
+  },
+  {
+   "t_ms": 1854.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1867.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1868.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1870.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1883.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1884.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1886.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1899.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1900.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1904.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1916.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1916.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1918.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1932.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1932.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1934.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1948.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1948.5,
+   "event": 33
+  },
+  {
+   "t_ms": 1948.5,
+   "event": 10
+  },
+  {
+   "t_ms": 1948.5,
+   "event": 11
+  },
+  {
+   "t_ms": 1952.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1964.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1964.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1966.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1980.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1980.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1982.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1996.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1996.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1999.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2012.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2013.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2014.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2028.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2029.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2030.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2044.6,
+   "event": 32
+  },
+  {
+   "t_ms": 2045.1,
+   "event": 33
+  },
+  {
+   "t_ms": 2045.1,
+   "event": 10
+  },
+  {
+   "t_ms": 2045.1,
+   "event": 11
+  },
+  {
+   "t_ms": 2047.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2060.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2061.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2063.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2076.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2077.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2079.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2092.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2093.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2097.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2109.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2109.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2111.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2125.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2125.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2127.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2141.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2141.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2141.5,
+   "event": 10
+  },
+  {
+   "t_ms": 2141.5,
+   "event": 11
+  },
+  {
+   "t_ms": 2145.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2157.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2157.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2159.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2173.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2173.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2175.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2189.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2189.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2192.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2205.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2206.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2207.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2221.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2222.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2224.0,
+   "event": 74
+  },
+  {
+   "t_ms": 2237.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2238.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2238.0,
+   "event": 10
+  },
+  {
+   "t_ms": 2238.0,
+   "event": 11
+  },
+  {
+   "t_ms": 2240.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2253.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2254.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2255.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2269.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2270.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2271.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2285.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2286.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2290.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2301.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2302.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2304.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2317.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2318.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2320.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2333.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2334.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2334.3,
+   "event": 10
+  },
+  {
+   "t_ms": 2334.3,
+   "event": 11
+  },
+  {
+   "t_ms": 2338.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2350.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2350.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2352.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2366.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2366.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2368.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2382.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2382.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2384.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2398.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2398.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2400.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2414.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2414.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2416.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2430.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2430.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2430.8,
+   "event": 10
+  },
+  {
+   "t_ms": 2430.8,
+   "event": 11
+  },
+  {
+   "t_ms": 2433.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2446.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2447.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2449.0,
+   "event": 74
+  },
+  {
+   "t_ms": 2462.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2463.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2464.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2478.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2479.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2483.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2494.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2495.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2497.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2510.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2511.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2513.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2526.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2527.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2527.3,
+   "event": 10
+  },
+  {
+   "t_ms": 2527.3,
+   "event": 11
+  },
+  {
+   "t_ms": 2528.2,
+   "event": 87
+  },
+  {
+   "t_ms": 2528.2,
+   "event": 89
+  },
+  {
+   "t_ms": 2531.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2543.1,
+   "event": 32
+  },
+  {
+   "t_ms": 2543.6,
+   "event": 33
+  },
+  {
+   "t_ms": 2545.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2559.1,
+   "event": 32
+  },
+  {
+   "t_ms": 2559.6,
+   "event": 33
+  },
+  {
+   "t_ms": 2562.0,
+   "event": 74
+  },
+  {
+   "t_ms": 2575.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2575.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2577.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2591.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2591.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2593.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2607.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2607.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2609.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2623.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2623.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2623.8,
+   "event": 10
+  },
+  {
+   "t_ms": 2623.8,
+   "event": 11
+  },
+  {
+   "t_ms": 2626.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2639.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2640.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2642.0,
+   "event": 74
+  },
+  {
+   "t_ms": 2655.5,
+   "event": 32
+  },
+  {
+   "t_ms": 2656.0,
+   "event": 33
+  },
+  {
+   "t_ms": 2658.0,
+   "event": 74
+  },
+  {
+   "t_ms": 2671.6,
+   "event": 32
+  },
+  {
+   "t_ms": 2672.1,
+   "event": 33
+  },
+  {
+   "t_ms": 2676.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2687.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2688.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2690.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2703.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2704.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2706.1,
+   "event": 74
+  },
+  {
+   "t_ms": 2719.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2720.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2720.3,
+   "event": 10
+  },
+  {
+   "t_ms": 2720.3,
+   "event": 11
+  },
+  {
+   "t_ms": 2724.3,
+   "event": 74
+  },
+  {
+   "t_ms": 2736.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2736.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2738.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2752.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2752.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2754.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2768.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2768.7,
+   "event": 33
+  },
+  {
+   "t_ms": 2770.9,
+   "event": 74
+  },
+  {
+   "t_ms": 2784.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2784.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2786.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2800.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2800.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2802.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2816.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2816.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2816.8,
+   "event": 10
+  },
+  {
+   "t_ms": 2816.8,
+   "event": 11
+  },
+  {
+   "t_ms": 2819.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2832.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2833.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2835.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2848.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2849.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2851.2,
+   "event": 74
+  },
+  {
+   "t_ms": 2864.8,
+   "event": 32
+  },
+  {
+   "t_ms": 2865.3,
+   "event": 33
+  },
+  {
+   "t_ms": 2869.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2881.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2881.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2883.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2897.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2897.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2899.5,
+   "event": 74
+  },
+  {
+   "t_ms": 2913.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2913.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2913.6,
+   "event": 10
+  },
+  {
+   "t_ms": 2913.6,
+   "event": 11
+  },
+  {
+   "t_ms": 2917.7,
+   "event": 74
+  },
+  {
+   "t_ms": 2929.1,
+   "event": 32
+  },
+  {
+   "t_ms": 2929.6,
+   "event": 33
+  },
+  {
+   "t_ms": 2931.4,
+   "event": 74
+  },
+  {
+   "t_ms": 2945.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2945.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2947.6,
+   "event": 74
+  },
+  {
+   "t_ms": 2961.0,
+   "event": 32
+  },
+  {
+   "t_ms": 2961.5,
+   "event": 33
+  },
+  {
+   "t_ms": 2963.8,
+   "event": 74
+  },
+  {
+   "t_ms": 2977.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2977.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2979.6,
+   "event": 74
+  },
+  {
+   "t_ms": 2993.3,
+   "event": 32
+  },
+  {
+   "t_ms": 2993.8,
+   "event": 33
+  },
+  {
+   "t_ms": 2995.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3009.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3009.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3009.8,
+   "event": 10
+  },
+  {
+   "t_ms": 3009.8,
+   "event": 11
+  },
+  {
+   "t_ms": 3012.1,
+   "event": 74
+  },
+  {
+   "t_ms": 3025.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3025.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3027.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3041.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3041.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3043.8,
+   "event": 74
+  },
+  {
+   "t_ms": 3057.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3057.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3061.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3073.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3074.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3076.1,
+   "event": 74
+  },
+  {
+   "t_ms": 3089.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3090.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3092.0,
+   "event": 74
+  },
+  {
+   "t_ms": 3105.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3106.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3106.0,
+   "event": 10
+  },
+  {
+   "t_ms": 3106.0,
+   "event": 11
+  },
+  {
+   "t_ms": 3110.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3121.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3122.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3124.0,
+   "event": 74
+  },
+  {
+   "t_ms": 3137.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3138.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3139.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3153.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3154.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3156.3,
+   "event": 74
+  },
+  {
+   "t_ms": 3169.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3170.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3172.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3185.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3186.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3188.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3201.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3202.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3202.3,
+   "event": 10
+  },
+  {
+   "t_ms": 3202.3,
+   "event": 11
+  },
+  {
+   "t_ms": 3204.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3217.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3218.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3220.1,
+   "event": 74
+  },
+  {
+   "t_ms": 3233.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3234.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3236.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3249.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3250.3,
+   "event": 33
+  },
+  {
+   "t_ms": 3254.4,
+   "event": 74
+  },
+  {
+   "t_ms": 3266.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3266.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3268.5,
+   "event": 74
+  },
+  {
+   "t_ms": 3282.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3282.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3284.5,
+   "event": 74
+  },
+  {
+   "t_ms": 3298.1,
+   "event": 32
+  },
+  {
+   "t_ms": 3298.6,
+   "event": 33
+  },
+  {
+   "t_ms": 3298.6,
+   "event": 10
+  },
+  {
+   "t_ms": 3298.6,
+   "event": 11
+  },
+  {
+   "t_ms": 3302.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3314.1,
+   "event": 32
+  },
+  {
+   "t_ms": 3314.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3316.4,
+   "event": 74
+  },
+  {
+   "t_ms": 3330.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3330.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3332.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3346.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3346.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3348.8,
+   "event": 74
+  },
+  {
+   "t_ms": 3362.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3362.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3364.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3378.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3378.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3380.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3394.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3394.8,
+   "event": 33
+  },
+  {
+   "t_ms": 3394.8,
+   "event": 10
+  },
+  {
+   "t_ms": 3394.8,
+   "event": 11
+  },
+  {
+   "t_ms": 3397.0,
+   "event": 74
+  },
+  {
+   "t_ms": 3410.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3411.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3412.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3426.6,
+   "event": 32
+  },
+  {
+   "t_ms": 3427.1,
+   "event": 33
+  },
+  {
+   "t_ms": 3428.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3442.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3442.9,
+   "event": 33
+  },
+  {
+   "t_ms": 3446.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3458.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3458.9,
+   "event": 33
+  },
+  {
+   "t_ms": 3460.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3474.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3475.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3476.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3490.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3491.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3491.0,
+   "event": 10
+  },
+  {
+   "t_ms": 3491.0,
+   "event": 11
+  },
+  {
+   "t_ms": 3494.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3506.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3507.2,
+   "event": 33
+  },
+  {
+   "t_ms": 3508.9,
+   "event": 74
+  },
+  {
+   "t_ms": 3522.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3523.2,
+   "event": 33
+  },
+  {
+   "t_ms": 3525.0,
+   "event": 74
+  },
+  {
+   "t_ms": 3538.8,
+   "event": 32
+  },
+  {
+   "t_ms": 3539.2,
+   "event": 33
+  },
+  {
+   "t_ms": 3541.3,
+   "event": 74
+  },
+  {
+   "t_ms": 3555.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3555.5,
+   "event": 33
+  },
+  {
+   "t_ms": 3557.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3571.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3571.4,
+   "event": 33
+  },
+  {
+   "t_ms": 3573.2,
+   "event": 74
+  },
+  {
+   "t_ms": 3587.0,
+   "event": 32
+  },
+  {
+   "t_ms": 3587.4,
+   "event": 33
+  },
+  {
+   "t_ms": 3587.5,
+   "event": 10
+  },
+  {
+   "t_ms": 3587.5,
+   "event": 11
+  },
+  {
+   "t_ms": 3589.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3603.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3603.7,
+   "event": 33
+  },
+  {
+   "t_ms": 3605.4,
+   "event": 74
+  },
+  {
+   "t_ms": 3619.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3619.7,
+   "event": 33
+  },
+  {
+   "t_ms": 3621.4,
+   "event": 74
+  },
+  {
+   "t_ms": 3635.3,
+   "event": 32
+  },
+  {
+   "t_ms": 3635.7,
+   "event": 33
+  },
+  {
+   "t_ms": 3639.3,
+   "event": 74
+  },
+  {
+   "t_ms": 3651.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3652.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3653.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3667.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3668.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3669.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3683.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3683.9,
+   "event": 33
+  },
+  {
+   "t_ms": 3684.0,
+   "event": 10
+  },
+  {
+   "t_ms": 3684.0,
+   "event": 11
+  },
+  {
+   "t_ms": 3687.6,
+   "event": 74
+  },
+  {
+   "t_ms": 3699.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3699.9,
+   "event": 33
+  },
+  {
+   "t_ms": 3701.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3715.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3716.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3717.8,
+   "event": 74
+  },
+  {
+   "t_ms": 3731.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3732.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3733.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3747.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3748.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3749.7,
+   "event": 74
+  },
+  {
+   "t_ms": 3763.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3764.1,
+   "event": 33
+  },
+  {
+   "t_ms": 3764.1,
+   "event": 73
+  },
+  {
+   "t_ms": 3764.1,
+   "event": 74
+  },
+  {
+   "t_ms": 3779.5,
+   "event": 32
+  },
+  {
+   "t_ms": 3779.6,
+   "event": 27
+  },
+  {
+   "t_ms": 3780.0,
+   "event": 33
+  },
+  {
+   "t_ms": 3780.0,
+   "event": 10
+  },
+  {
+   "t_ms": 3780.0,
+   "event": 11
+  }
+ ]
+}

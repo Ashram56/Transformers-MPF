@@ -1,4 +1,4 @@
-"""Plays a tron_ref scenario (assets/rules/traces/<name>.txt) in real time on a running machine.
+"""Plays a tron_ref scenario (rom/rules/traces/<name>.txt) in real time on a running machine.
 
 Used for live render checks with the Godot media controller: `TF_LIVE_SCENARIO=<name> mpf game . -c config,hw_virtual -t -X`
 (the smart_virtual platform moves the balls). The commands mirror tests/scenario.py, which runs the same
@@ -12,8 +12,10 @@ import shlex
 # 0.144 s after the credit
 COIN_DELAY = 30 * 0.01626
 COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN_DELAY
+START_GAP = 0.9                     # rom/tools/trace/tf_ref.cpp "start": 0.3 s held + 0.6 s per press
 SCRIPT_START_TIME = 2.745 - 1.896
 SETTLE = 0.1
+COINS_PER_PLAYER = 4                # tf_ref "start N": 4 coins per player, then Start N times
 TROUGH_SWITCHES = (18, 19, 20, 21)  # tron_ref's 4-ball trough: MPF's trough device owns these switches
 RANDOM_SEED = 1974                  # tests/tron_test.py; live play stays unseeded
 BUTTONS = {"left": "s_l_flipper_button", "right": "s_r_flipper_button", "tilt": "s_tilt_pendulum",
@@ -34,14 +36,28 @@ class LiveScenario:
         self.started = False
         self.machine.events.add_handler("mode_attract_started", self._start, priority=1)
 
+    def _forced(self):
+        if self.name.endswith(".txt"):
+            return {}
+        import sys
+        root = os.path.abspath(os.path.join(self.machine.machine_path, ".."))
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        try:
+            from tests.scenario import forced_picks
+            return forced_picks(self.name)
+        except Exception:       # noqa: BLE001 (a checkout without the tests)
+            return {}
+
     def _start(self, **kwargs):
         if self.started:
             return
         self.started = True
         self.os.random.seed(RANDOM_SEED)                # a scenario replays the same random choices
+        self.os.forced.update(self._forced())           # and the reference run's picks, as tests/scenario.py
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
         path = self.name if self.name.endswith(".txt") else os.path.join(
-            self.machine.machine_path, "..", "assets", "rules", "traces", self.name + ".txt")   # or a script file
+            self.machine.machine_path, "..", "rom", "rules", "traces", self.name + ".txt")   # or a script file
         self.t = 2.0                                   # let the media controller settle
         with open(path, encoding="utf-8") as f:
             for line in f:
@@ -74,17 +90,18 @@ class LiveScenario:
     def cmd_start(self, n="1"):
         n = int(n)
         t = COIN_FIRST
-        for i in range(3 * n):
+        for i in range(COINS_PER_PLAYER * n):
             if i:
                 t += COIN_GAP
             self.sw("s_right_coin_slot", 1, t)
             self.sw("s_right_coin_slot", 0, t + 0.01)
         t += START_AFTER_COIN
-        for _ in range(n):
+        for i in range(n):                  # tf_ref: one Start press per 0.9 s
+            if i:
+                t += START_GAP
             self.sw("s_start_button", 1, t)
             self.sw("s_start_button", 0, t + 0.01)
-            t += 0.1
-        self.t += t + SCRIPT_START_TIME - 0.1 * n
+        self.t += t + SCRIPT_START_TIME
 
     def cmd_wait(self, s):
         self.t += float(s)

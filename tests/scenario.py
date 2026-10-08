@@ -16,6 +16,7 @@ from tests.tf_test import ROOT, TfTestCase
 TRACES = os.path.join(ROOT, "rom", "rules", "traces")
 OUT = os.path.join(ROOT, "captures", "traces")
 
+START_GAP = 0.9                     # rom/tools/trace/tf_ref.cpp "start": 0.3 s held + 0.6 s per press
 SCRIPT_START_TIME = 2.745 - 1.896   # 'start' runs this long after the Start press (reference traces)
 # the reference traces credit a coin 0.528 s after the script starts; the coin task waits adj 62 COIN INPUT
 # DELAY (30 ticks at factory settings) first, so the coin switch closes that much earlier, and START comes
@@ -25,6 +26,7 @@ COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN
 # every hit is followed by 100 ms settle; with STEP_OVERSHOOT on both phases a hit lasts ~173 ms past
 # its ms (reference traces: hit + wait 1 = 1.17-1.18 s)
 SETTLE = 0.1
+COINS_PER_PLAYER = 4                # tf_ref "start N": 4 coins per player, then Start N times
 TROUGH_SWITCHES = (18, 19, 20, 21)  # tron_ref's 4-ball trough
 # tron_ref's step_to() runs the emulator in 5 ms slices and stops at the first slice past the target, so
 # each switch phase of a hit lasts about 6.5 ms longer (fit over the reference traces; plain waits do not
@@ -45,62 +47,130 @@ def switch_name(num):
 def forced_picks(name):
     """Random choices the ROM made in the reference run, so the rebuild makes the same ones."""
     import json
-    forced = {"arcade": []}
+    forced = {}
     path = os.path.join(TRACES, name + ".jsonl")
     if not os.path.exists(path):
         return forced
     evs = [json.loads(line) for line in open(path, encoding="utf-8")]
     for i, e in enumerate(evs):
-        if e.get("ev") == "audit" and 0x53 <= e.get("id", 0) <= 0x5e:
-            forced["arcade"].append(e["id"] - 0x53)
         if e.get("ev") == "deff_start" and e.get("id") == 38:
             hits = [n for n in evs[i + 1:] if n.get("ev") == "audit" and n.get("id") == 0x0f
                     and n["t"] - e["t"] < 7.5]
             forced.setdefault("match", []).append(len(hits))
-        if e.get("ev") == "deff_start" and e.get("id") == 105:
-            # the reel stops at a random slot: take the length from what followed the deff in the ROM.
-            # That is the start of its 10-tick hold (deff_hold_frames(10, 0x20)), where the next deff may
-            # start, so the run length is 10 ticks longer.
-            hold = 10 * 0.01626
-            # the slot the award stopped in: the reel scrolls 5, 18 or 30 frames of 3 ticks before its
-            # stop sound 0x0e3 (deff_105_arcade_award 0x0100e8bc)
-            stop = next((n["t"] - e["t"] for n in evs[i + 1:] if n.get("ev") == "sound"
-                         and n.get("call") == "0x0e3" and n.get("in_deff") == 105), None)
-            if stop is not None:
-                from tf.features.arcade import scroll_frames
-                forced.setdefault("arcade_slot", []).append(
-                    min(range(3), key=lambda k: abs(scroll_frames(k) * 3 * 0.01626 - stop)))
-            for n in evs[i + 1:]:
-                if n.get("ev") == "deff_start" and n.get("id") not in (19, 105):
-                    forced.setdefault("deff_105_seconds", []).append(n["t"] - e["t"] + hold)
-                    break
-                if n.get("ev") == "sound" and n.get("call") == "0x0fd":
-                    forced.setdefault("deff_105_seconds", []).append(n["t"] - e["t"] - 0.045 + hold)
-                    break
-    # left outlane hits (task 0x37 starts, logged twice per hit): insult speech 0x129 or not
-    lefts = sorted({e["t"] for e in evs if e.get("ev") == "task_start" and e.get("task") == "0x37"})
-    forced["insult"] = [0 if any(n.get("ev") == "sound" and n.get("call") == "0x129" and 0 <= n["t"] - t < 0.1
-                                 for n in evs) else 1 for t in lefts]
     for deff_id, (stop_ev, stop_id) in CLIP_DEFFS.items():
         forced["deff_{}_seconds".format(deff_id)] = clip_lengths(evs, deff_id, stop_ev, stop_id)
+    # the starting side of each player's choice (adj 65 RANDOM): the side-choice music 0x01a Autobot / 0x01b
+    forced["side"] = [0 if e["call"] == "0x01a" else 1 for e in evs
+                      if e.get("ev") == "sound" and e.get("call") in ("0x01a", "0x01b")
+                      and not any(p.get("ev") == "sound" and p.get("call") == "0x257" and 0 < e["t"] - p["t"] < 0.2
+                                  for p in evs)]
     forced.update(forced_samples(evs))
+    forced.update(forced_vars(evs))
     return forced
+
+
+def reference_inputs(name):
+    """{(kind, key): [seconds after "ready"]} of the reference run's inputs: switch hits, marks, drains,
+    buttons (scenario.sync)."""
+    import json
+    path = os.path.join(TRACES, name + ".jsonl")
+    out = {}
+    if not os.path.exists(path):
+        return out
+    t0 = None
+    for line in open(path, encoding="utf-8"):
+        e = json.loads(line)
+        if e.get("ev") == "ready":
+            t0 = e["t"]
+        if t0 is None:
+            continue
+        key = None
+        if e.get("ev") == "switch":
+            key = ("switch", e["sw"])
+        elif e.get("ev") == "mark":
+            key = ("mark", e["text"])
+        elif e.get("ev") == "sim" and e.get("what") == "drain":
+            key = ("drain", None)
+        elif e.get("ev") == "button":
+            key = ("button", e.get("button") or e.get("name"))
+        if key:
+            out.setdefault(key, []).append(e["t"] - t0)
+    return out
+
+
+def forced_vars(evs):
+    """Random picks read from the watched variables of the battle traces (watch_battle.tsv):
+    - "mode_start": the shot a mode-start hit relit (one bit added while the lit count did not grow);
+    - "blackout": the shot of the group Blackout added to its lit set (index in the group);
+    - "allspark": the mystery award item (allspark_last, 1-12; else its audit 74 + item, traces without vars)."""
+    out = {}
+    audited = []
+    groups = ((0x01, 0x02, 0x04), (0x08, 0x10, 0x20))
+    used = [0, 0]
+    for e in evs:
+        if e.get("ev") == "audit" and 75 <= e.get("id", 0) <= 86:
+            audited.append(e["id"] - 75)
+        if e.get("ev") != "var":
+            continue
+        name, value, old = e["name"], e["value"], e.get("old", 0)
+        added = value & ~old
+        if name == "mode_start_lit" and added and bin(value).count("1") <= bin(old).count("1"):
+            out.setdefault("mode_start", []).append(added.bit_length() - 1)
+        elif name == "bo_lit":
+            if old == 0:
+                used = [0, 0]
+            g = 0 if value & 0x07 else 1
+            new = value & ~used[g]
+            used[g] = value
+            if new in groups[g]:
+                out.setdefault("blackout", []).append(groups[g].index(new))
+        elif name == "allspark_last" and 1 <= value <= 12:       # 0xffff: RAM before the game starts
+            out.setdefault("allspark", []).append(value - 1)
+    if audited and "allspark" not in out:
+        out["allspark"] = audited
+    if "mode_start" not in out:
+        picks = mode_start_from_scores(evs)
+        if picks:
+            out["mode_start"] = picks
+    return out
+
+
+MS_SHOT_AUDIT = {65: 1, 67: 2, 68: 3, 66: 4}     # shot audits (battles.SHOT_AUDIT) -> mode-start shot
+
+
+def mode_start_from_scores(evs):
+    """Mode-start relight picks of a trace without the watched lit mask: replay the factory mask (0x1e, minimum 3,
+    4 hits) over the mode-start scores (score_add caller 0x10200e0, shot from its audit 65-68); a scored shot that
+    is not lit is the oldest pending relight. Picks not revealed stay None (free)."""
+    lit, hits, picks, pending = 0x1e, 0, [], []
+    for i, e in enumerate(evs):
+        if e.get("ev") != "score_add" or e.get("caller") != "0x10200e0":
+            continue
+        shot = next((MS_SHOT_AUDIT[a["id"]] for a in evs[max(0, i - 6):i]
+                     if a.get("ev") == "audit" and a.get("id") in MS_SHOT_AUDIT and e["t"] - a["t"] < 0.05), None)
+        if shot is None:
+            return []                       # a shot this replay cannot place: leave every pick free
+        if not lit & (1 << shot):
+            if not pending:
+                return []
+            picks[pending.pop(0)] = shot
+            lit |= 1 << shot
+        hits += 1
+        if hits >= 4:
+            lit, hits, pending = 0x1e, 0, []
+            continue
+        lit &= ~(1 << shot)
+        if bin(lit).count("1") < 3:
+            pending.append(len(picks))
+            picks.append(None)
+    return picks
 
 
 def forced_samples(evs):
     """Sample picks of sound calls that a chained sound (snd_play_chain, caller 0x2ccb8) waited for: the
     gap from the call to the chained sound tells which sample the ROM played."""
-    import csv
-    base = os.path.join(ROOT, "assets", "callouts")
-    dur = {}
-    with open(os.path.join(base, "samples_index.csv"), encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            dur[int(row["sample_id"], 16)] = float(row["duration_s"] or 0)
-    lengths = {}
-    with open(os.path.join(base, "sound_calls.csv"), encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            lengths[int(row["call_id"], 16)] = [dur.get(int(x, 16), 0)
-                                                for x in row["sample_ids (one picked per play)"].split()]
+    from tf.os_layer import sample_lengths
+    lengths = sample_lengths(os.path.join(ROOT, "rom", "rom_data", "sound"))
     sounds = [e for e in evs if e.get("ev") == "sound" and not e.get("in_deff")]
     picks, index = {}, {}
     for e in sounds:
@@ -128,7 +198,7 @@ def forced_samples(evs):
 # Deffs that play a random film clip first, so their length varies: the ROM's length is read from the
 # stop of the effect the deff runs (its exit handler stops it). A deff replaced by a new start of the
 # same deff keeps the recorded length (None).
-CLIP_DEFFS = {48: ("leff_stop", 48), 111: ("tube_show_stop", 62)}
+CLIP_DEFFS = {}     # deffs of random length, read from what stopped them in the trace (none known yet)
 
 
 def clip_lengths(evs, deff_id, stop_ev, stop_id):
@@ -190,9 +260,11 @@ class ScenarioRun(TfTestCase):
         self.autoplunge = 1.0
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
         self.tf.forced = forced_picks(name)
+        self.ref_times = reference_inputs(name)
         self.fill_trough()
         self.wait(6)                                  # the ROM boots 8 s before line 1
         self.log("ready")
+        self.ready_at = self.machine.clock.get_time()
         with open(os.path.join(TRACES, name + ".txt"), encoding="utf-8") as f:
             for line in f:
                 line = line.split("#", 1)[0].strip()
@@ -206,25 +278,47 @@ class ScenarioRun(TfTestCase):
 
     def command(self, args):
         cmd, rest = args[0], args[1:]
+        if cmd == "hit":
+            self.sync(("switch", int(rest[0])))
+        elif cmd == "mark":
+            self.sync(("mark", " ".join(rest)))
+        elif cmd == "drain" and not rest:
+            self.sync(("drain", None))
+        elif cmd == "button":
+            self.sync(("button", rest[0]))
         getattr(self, "cmd_" + cmd)(*rest)
+
+    def sync(self, key):
+        """Wait until the reference run's time of this input: the harness's own step overshoot grows with the
+        emulator's load (2.17 to 2.27 s per "hit + wait 2" in the battle traces), so the inputs follow the
+        reference instead of drifting. An input the rebuild already passed runs at once."""
+        times = getattr(self, "ref_times", {}).get(key)
+        if not times:
+            return
+        target = times.pop(0)
+        now = self.machine.clock.get_time() - self.ready_at
+        if target > now + 0.0005:
+            self.wait(target - now)
 
     def cmd_start(self, n="1"):
         n = int(n)
         self.log("script", what="start", players=n)
         self.wait(COIN_FIRST)
-        for i in range(3 * n):
+        for i in range(COINS_PER_PLAYER * n):
             if i:
                 self.wait(COIN_GAP)
             self.sw("s_right_coin_slot", 1)
             self.wait(0.01)
             self.sw("s_right_coin_slot", 0)
         self.wait(START_AFTER_COIN - 0.01)
-        for _ in range(n):
+        for i in range(n):                  # tf_ref holds Start 0.3 s, then waits 0.6 s: one press per 0.9 s
+            if i:
+                self.wait(START_GAP - 0.1)
             self.sw("s_start_button", 1)
             self.wait(0.01)
             self.sw("s_start_button", 0)
             self.wait(0.09)
-        self.wait(SCRIPT_START_TIME - 0.1 * n)
+        self.wait(SCRIPT_START_TIME - 0.1)
 
     def step(self, seconds):
         """One tron_ref step_to(): the requested time plus the average overshoot."""

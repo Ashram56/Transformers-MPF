@@ -20,11 +20,13 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 
 | Area | State |
 |---|---|
-| OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code) |
+| OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code); the 98 adjustments, 166 audits and service menu from the ROM extraction's settings package; the 68 pricing presets (rom/rom_data/settings/pricing.json) |
 | Devices | ROM names and numbers (rom/mpf_package); trough, shooter lane, left eject, Megatron lock |
-| Display | ROM fonts (all 27, from the font table) and the ROM images; score display and attract are **interim layouts** until the display effects are captured |
-| Sound | every ROM sample, one pool per sound call; music intros play once and the body loops |
-| Rules, scoring, lamp effects, coil times | waiting on the ROM extraction's specs and captures |
+| Display | ROM fonts (all 27); one slide per captured display effect (128, the ROM's frames and timing) with the live status panel (100 effects); score display drawn from its captured draw calls; printf texts in 71 effects drawn live from their ROM formats, fit-font numbers in the font the ROM picks (tf/deff_values.gd) |
+| Sound | every ROM sample, one pool per sound call; music intros play once and the body loops; base music by side (Autobot / Decepticon), coin, tilt, launch, ball save and drain sounds as traced; each deff plays its captured sounds |
+| Coils | the pulse and hold times measured in the emulator (rom/mpf_package/config/coils.yaml) |
+| Lamp shows | every captured leff (111 shows in rom/mpf_package/config/shows) plays at its ROM priority with its flasher pulses; leffs the ROM draws from game state (67, no show) draw nothing yet. `trace_check.py basic`: lamps 46/47 samples, flashers 3/7 bursts |
+| Rules, scoring | switch handlers, side choice, skill shots, pops, lanes, spinner, Bumblebee and double scoring, 2-bank and fast scoring, combos, shot multipliers, bonus, Energon targets, the Allspark (left eject) mystery award, mode-start shots, the eight character battles, the Megatron lock and multiball, the Optimus battle and multiball (Autobot and Decepticon rules), All Hail Megatron / Autobots Roll Out and the Wizard Multiball, the shaker motor by adj 96, the Optimus figure's motor and hit kicker, the orbit gate and the ball search's coil sweep (tf/features/, from rom/rules/modes/; shaker, Optimus and gate runs match every trace where the play matches). Scores, display effects and audits match the ROM, in order, in all 24 reference traces (`trace_check.py`; `combos` reads its mode-start relight picks from its mode-start scores); the timing differences left (0.3-0.9 s, speech-driven deff lengths, the Allspark warning, the bonus end in `allspark_energon`) are rows of docs/rom_differences.md. Every ball search and Optimus kicker run lands where the ROM's does |
 | Hardware | virtual (desktop + MPF Monitor) by default; P-ROC numbers generated (game/config/rom/proc_numbers.yaml); VPX bridge is agent D's |
 
 Interim tables read from the ROM until the package carries them: `game/config/interim/` (scripts/interim_tables.py,

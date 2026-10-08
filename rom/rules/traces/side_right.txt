@@ -1,0 +1,13 @@
+# side choice: press the right flipper on the choose-your-side screen
+autoplunge 0
+start 1
+wait 2
+mark press_right
+button right 150
+wait 3
+mark plunge
+plunge
+wait 4
+hit 26
+wait 3
+mark end

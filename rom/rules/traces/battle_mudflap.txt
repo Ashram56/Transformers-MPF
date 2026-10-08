@@ -1,0 +1,46 @@
+# Mudflap & Skids (Autobot side, POKED: battle_lit=0x40). Multiball: all six lit, ends when back to one ball
+autoplunge 0
+start 1
+wait 3
+button left
+wait 1
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_64
+poke 2111ecc 64 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark mf_plunge_added_ball
+plunge
+wait 3
+mark mf_hits
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+mark poke_remaining_1
+poke 2111e64 1 1
+hit 12
+wait 2
+hit 10
+wait 2
+mark drain_to_one_ball
+drain
+wait 6
+mark after_end
+hit 10
+wait 2
+drain
+wait 6

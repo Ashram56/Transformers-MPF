@@ -42,7 +42,8 @@ HOLD_TICKS_BY_DEFF = {}
 # A show task whose end the deferred rules refresh waits for (Tron: the Flynn's Arcade show 0x97); none here yet
 RULES_HOLD_SHOW = None
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-PKG = os.path.join(ROOT, "rom", "mpf_package")
+ROM = os.path.join(ROOT, "rom")
+PKG = os.path.join(ROM, "mpf_package")
 INTERIM = os.path.join(ROOT, "game", "config", "interim")
 
 
@@ -127,6 +128,9 @@ class Display:
             if refresh and not self.show and self.mode_bg():
                 os_.after(1, lambda: self.mode_bg() and self.start(self.mode_bg(), refresh=False))
             return False
+        # the show task waits for its own deff [0x0100fbb0]: another effect replacing it ends the show
+        # (traces/optimus_decepticon.jsonl: the jackpots replace intro deff 63, the Allspark ejects at once)
+        replaced = self.show if self.show is not None and self.fg == self.show.deff_id != deff_id else None
         self._end_fg(stopped=True)
         if self.bg is not None:
             os_.media.deff_stop(self.bg)
@@ -152,6 +156,12 @@ class Display:
                 self._sound_handles.append(os_.machine.clock.schedule_once(
                     lambda: self._hold(deff_id),
                     max(0.0, seconds - self.hold_tail.get(deff_id, hold_ticks * TICK))))
+        if replaced is not None and self.show is replaced:
+            self.show = None
+            self.os.ball_search_reload()            # the show task's end (below, _end_show)
+            if replaced.on_end:
+                replaced.on_end()
+            self._pump()
         if refresh and not self.show:
             os_.after(1, self.refresh)
         return True
@@ -203,6 +213,7 @@ class Display:
             else:
                 self.show_held = True
             show, self.show = self.show, None
+            self.os.ball_search_reload()
             if show.on_end:
                 show.on_end()
             deff_id, _, on_start = self.select()
@@ -221,6 +232,17 @@ class Display:
             self.bg = None
             if self.fg is None:
                 self.refresh()                     # the rules' background deff comes back (deff 19)
+
+    def set_media(self, deff_id, seconds, leffs=(), sounds=()):
+        """What the rules know of a deff the package has no capture of (no timing.json, or one without an
+        end): its run length, the lamp effects and sounds its code starts (read from the reference traces
+        by the feature that calls this). A capture with a length wins."""
+        info = self.media.get(deff_id)
+        if info and info.seconds:
+            return
+        info = media_table.DeffInfo(deff_id, "deff_%03d" % deff_id)
+        info.seconds, info.leffs, info.sounds = seconds, list(leffs), list(sounds)
+        self.media[deff_id] = info
 
     def set_hold_tail(self, deff_id, seconds):
         """deff_hold_frames(n, 0x20) [0x01024460] when a deff's hold is not the usual 10 ticks: for its last
@@ -306,7 +328,11 @@ class Display:
             self.refresh()
 
     def _end_show(self):
+        """The show task [0x01006480] reloads the ball-search countdown when it runs, when its deff starts and
+        when the deff is over (observed: game_flow.jsonl, super skill shot deff 43 49.21-51.73 s, no search
+        before the drain at 60.47 s)."""
         show, self.show = self.show, None
+        self.os.ball_search_reload()
         if show.on_end:
             show.on_end()
         self.refresh()
@@ -385,12 +411,17 @@ class Display:
 
     # ------------------------------------------------------------------ mode totals (tasks 0x4d-0x58)
 
-    def when_idle(self, task_id, deff_id, timeout=SHOW_TIMEOUT, on_end=None, **deff_args):
+    def when_idle(self, task_id, deff_id, timeout=SHOW_TIMEOUT, on_end=None, on_start=None, **deff_args):
         """FUN_0100fd88, used by the mode TOTAL tasks 0x4d-0x58: wait until no show task runs, no
         foreground deff is on screen and this is the oldest such task waiting, then play deff_id;
-        on_end() runs when it is over (or when the wait times out)."""
+        on_end() runs when it is over (or when the wait times out). tf_180 [0x0100664c] reloads the ball-search
+        countdown when it is called and again when its deff starts (observed: battle_blackout, total deff 103 at
+        66.04 s, ball search 10.1 s later)."""
         from tf.os_layer import TICK
+        self.os.ball_search_reload()
         self.idle_waits = [w for w in self.idle_waits if w[0] != task_id]
+        if on_start:
+            deff_args["_on_start"] = on_start
         self.idle_waits.append([task_id, deff_id, self.os.now + timeout * TICK, on_end, deff_args])
         if len(self.idle_waits) == 1:
             self._idle_tick()
@@ -406,7 +437,12 @@ class Display:
             return
         if self.fg is None and not self.show_running():
             task_id, deff_id, _, on_end, args = self.idle_waits.pop(0)
+            args = dict(args)
+            on_start = args.pop("_on_start", None)
             self.start(deff_id, **args)
+            if on_start:
+                on_start()
+            self.os.ball_search_reload()
             info = self.media.get(deff_id)
             if on_end:
                 self.os.machine.clock.schedule_once(lambda: on_end(), info.seconds if info else 0)
@@ -418,12 +454,19 @@ class Display:
     def queue(self, task_id, deff_id, timeout=SHOW_TIMEOUT, threshold=SHOW_THRESHOLD, on_start=None,
               on_end=None, **deff_args):
         self.shows = [s for s in self.shows if s.task_id != task_id]
+        if self.show is not None and self.show.task_id == task_id:
+            # task_start kills the running show task of that id and its effect: the new one plays at once
+            # (traces/megatron_decepticon.jsonl: each BALL n LOCKED replaces the previous one, task 0x73)
+            old, self.show = self.show, None
+            if self.fg == old.deff_id:
+                self._end_fg(stopped=True)
         self.shows.append(Show(task_id, deff_id, threshold, timeout, on_start, on_end, self.os.now, deff_args))
+        self.os.ball_search_reload()
         # FUN_0000c2b8 takes the first show task in the OS task list, i.e. the oldest one waiting
         # (traces/end_of_line_multiball.jsonl: task 0x87 deff 139, then 0x83 deff 133, then 0x97).
         # The show task first runs once its caller has finished (a deff the caller starts right after
         # queueing, e.g. deff 55 after the extra ball show 0x82, is on screen first).
-        if self._pump_handle is None and not self.show:
+        if self._pump_handle is None and (not self.show or threshold != SHOW_THRESHOLD):
             self._pump_handle = self.os.machine.clock.schedule_once(self._pump_tick, 0)
 
     def cancel(self, task_id):
@@ -441,6 +484,13 @@ class Display:
         if self._pump_handle:
             self.os.machine.clock.unschedule(self._pump_handle)
             self._pump_handle = None
+        if self.show and self.shows and self.shows[0].threshold != SHOW_THRESHOLD and self.fg is not None \
+                and self.fg_prio < self.shows[0].threshold:
+            # a show waiting on its own priority (a multiball intro) does not wait for the show playing below it
+            # (traces/megatron_decepticon.jsonl 29.65 s: intro deff 75 over the lock show's deff 140)
+            old, self.show = self.show, None
+            if old.on_end:
+                old.on_end()
         if self.show or not self.shows:
             return
         from tf.os_layer import TICK
@@ -453,6 +503,7 @@ class Display:
             self.shows.pop(0)
             self.show = first
             self.start(first.deff_id, refresh=False, **first.deff_args)
+            self.os.ball_search_reload()
             if first.on_start:
                 first.on_start()
             self.os.request_refresh()            # rules that wait for this show's deff (e.g. a mode intro)
@@ -489,8 +540,8 @@ UNCLAIMED = set()    # leffs that pulse a flasher themselves without owning it (
 
 
 class Leffs:
-    """Flasher ownership of lamp-matrix effects (the package's lamp_effects.csv: flashers, priority; until it is
-    delivered, the priorities of game/config/interim/leffs.csv and no flashers).
+    """Flasher ownership of lamp-matrix effects (rom/rom_data/io/lamp_effects.csv: coils pulsed, priority, length;
+    without it, the priorities of game/config/interim/leffs.csv and no flashers).
 
     Lamps are drawn in priority layers, so they never conflict (leff 99 starts under leff 52), but a
     leff start is refused while a running leff with a higher priority uses one of its flashers (a
@@ -502,14 +553,14 @@ class Leffs:
     def __init__(self, os_):
         self.os = os_
         self.info = {}
-        path = os.path.join(PKG, "lamp_effects.csv")
-        if os.path.exists(path):
-            with open(path, encoding="utf-8") as f:
-                for row in csv.DictReader(f):
-                    outputs = frozenset(row["flashers"].split()) if int(row["leff"]) not in UNCLAIMED else frozenset()
-                    length = float(row["length_ms"]) / 1000 if row["loops"] == "0" and row["length_ms"] else None
-                    self.info[int(row["leff"])] = (outputs, int(row["priority"] or 0), length)
-        else:
+        from tf.lamps import leff_rows     # noqa: PLC0415 (lamps imports the OS layer)
+        rows = leff_rows(ROM)
+        for row in rows:
+            leff_id = int(row["leff"])
+            outputs = frozenset(row["coils_pulsed"].split()) if leff_id not in UNCLAIMED else frozenset()
+            length = float(row["run_ms"]) / 1000 if row["loops"] != "yes" and row["run_ms"] else None
+            self.info[leff_id] = (outputs, int(row["priority"] or 0), length)
+        if not rows:
             with open(os.path.join(INTERIM, "leffs.csv"), encoding="utf-8") as f:
                 for row in csv.DictReader(f):
                     self.info[int(row["leff"])] = (frozenset(), int(row["priority"]), None)

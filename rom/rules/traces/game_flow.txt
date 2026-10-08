@@ -1,0 +1,86 @@
+# game flow: two players (factory settings; side is random per adj 65: here player 1 = Autobot, player 2 =
+# Decepticon), skill shots, ball save, re-serve without a valid playfield, bonus, tilt, rotation, game over.
+# Watch list: watch_game_flow.tsv
+autoplunge 0
+start 2
+wait 3
+mark p1_ball1_plunge
+plunge
+wait 1
+mark p1_hands_free_skill_lane
+hit 7
+wait 1
+hit 26
+wait 1
+mark p1_drain_in_ball_save
+drain
+wait 4
+mark p1_sling_only_then_drain
+hit 27
+wait 1
+drain
+wait 3
+mark p1_reserved_plunge
+plunge
+wait 1
+hit 12
+wait 12
+mark p1_drain_after_save
+drain left
+wait 10
+mark p2_ball1_flip_side
+button right
+wait 1
+plunge
+wait 1
+mark p2_super_skill
+hit 13
+wait 1
+hit 12
+wait 12
+mark p2_drain
+drain right
+wait 10
+mark p1_ball2
+plunge
+wait 1
+mark p1_flipper_then_skill
+button left 100
+wait 1
+hit 8
+wait 1
+hit 12
+wait 1
+mark tilt_warning_1
+button tilt 50
+wait 2
+mark tilt_warning_2
+button tilt 50
+wait 2
+mark tilt
+button tilt 50
+wait 4
+drain
+wait 6
+mark p2_ball2
+plunge
+wait 2
+hit 12
+wait 12
+drain
+wait 10
+mark p1_ball3
+plunge
+wait 2
+hit 12
+wait 12
+drain
+wait 10
+mark p2_ball3
+plunge
+wait 2
+hit 12
+wait 12
+drain
+mark game_over
+wait 40

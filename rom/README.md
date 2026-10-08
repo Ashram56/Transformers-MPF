@@ -23,6 +23,21 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rom_data/io/` | `switches.csv` (64 matrix), `dedicated_switches.csv` (D1-D32 with PinMAME numbers), `coils.csv` (35, flags decoded, test/ball-search times, wire colours), `lamps.csv` (80) |
 | `rom_data/sound/` | `samples.csv` (668 directory entries: kind, rate, duration, ROM length check, loop point, stream offsets), `sound_calls.csv` (705 calls: sample list, raw fields) |
 | `rom_data/dmd/images.csv` | All 10,212 images: header fields and file offset |
+| `rom_data/dmd/deffs.csv` | The 155 display effects (deffs): function, flags, priority, background flag, capture summary |
+| `rom_data/io/coil_timing.csv` | Every coil's pulse, ball-search and hold times measured from the solenoid register writes in the emulator; `coils.csv` carries the `mpf_default_pulse_ms`, `mpf_default_hold_power` and `mpf_source` this gives, and `coils.yaml` uses them |
+| `rom_data/sound/sound_call_uses.csv` | Per sound call: role where identified (coin, credit, tilt, ball save, drain, launch, music), how it was identified, scenarios it was heard in, deffs that play it, code call sites |
+| `rom_data/sound/music_table.csv` | The ROM's background table: 18 prioritized entries, each a condition plus a background deff and its music call (base music per side, mode music) |
+| `rom_data/io/lamp_effects.csv`, `lamp_groups.json` | The 178 lamp effects (leffs): function, flags, lamp group, coil group, priority, how the capture ended, loop, show file, lamps and flashers used, who starts it; the 148 lamp groups |
+| `mpf_package/config/shows/lampfx_NNN.yaml` | 111 lamp effects as MPF shows, captured in the emulator (`tools/emu/lfx.cpp`); looping ones cut to one period |
+| `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball: points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
+| `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
+| `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
+| `rom_data/settings/` | `adjustments.csv` (98: NVRAM slot, defaults, range, menu, labels, country overrides, readers), `audits.csv` (166: menu, formula, incremented_by), `pricing.json`/`.csv` (68 presets), `presets.csv`, `service_texts.csv`, `menus_runtime.json`; see its README |
+| `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory USA defaults observed in the emulator |
+| `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
+| `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
+| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
+| `rom_data/dmd/deff_text_formats.csv` | Static list of the text each effect can draw, read from the decompile (helper, font, flags, x, y, message id, text or printf format), for effects that print live values or did not render |
 | `mpf_package/config/` | MPF v6 config: `switches.yaml`, `coils.yaml`, `lights.yaml`, `sounds.yaml` (659 sounds, 694 pools, one per sound call) |
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
 | `mpf_package/media/sounds/{speech,sfx,music}/XXXX.wav` | Every sample, file name = ROM sample id |
@@ -51,6 +66,50 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
   WAV with `loop_start_at`.
 - **Images (code).** Formats 0, 1, 3, 7, 9, 12 as on Tron. Most animations are 87x32 (drawn at x = 41 on Tron;
   assumed here until display effects are captured), 693 images are full 128x32.
+- **Display effects (code + observed).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
+  the 21 background effects (attract, status panel 40, mode backgrounds), bit 1 most foreground effects. The deff
+  id is the u16 at task+0x24 of the deff task. Effects were captured by calling `deff_start(id)` from the
+  `task_sleep` hook in a started game (`tools/emu/tracer.cpp`). 153 of 155 rendered; 8 and 22 are stubs. About 35
+  end within 0.3 s when forced because they read game state (mode scores, shots lit) and need live play to show.
+  Every image the effects draw goes through `bitmap_draw` and every glyph through `text_draw_str`, so
+  `timing.json` lists those two and leaves out the blits under them. The tracer also hooks the seven text helpers
+  (0x21660, 0x215ac, 0x217b4, 0x2174c message id; 0x21838, 0x21a78, 0x21b4c string or format), so 95% of text
+  draws carry the format behind them (e.g. `%,02lu`, `VOLUME %d`). Effects 48, 95, 129 and 135 keep the earlier
+  capture without sources (they did not render in the re-run).
+- **Printed values and fit fonts (code + observed).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
+  DECOMP OUT_CSV [tracer logs]`) also walks tasks the effect starts. It has four more columns. `call_site` is the
+  helper's return address (BL + 4, same as `call_site`/`lr` in captures). `args` gives one entry per printf
+  vararg, paired with its % conversion (`%P` = the ROM's plural/ordinal chooser, which also takes an argument). Each
+  entry is the value's source read back from the call site: a RAM address with its name when known, a call `fn()@addr`
+  (small getters inlined as `{= expr}`), a constant, a loop counter, or `deff task arg (task+0x30)` with the
+  direct `deff_start` caller that stores it. `args_observed` lists the values the helper received in the
+  emulator. The tracer logs the first four vararg words: entry sp+12 for 0x21660/0x21a78 (7 fixed arguments)
+  and sp+16 for 0x217b4 (8). Env `POKE=addr=value[:size],...` writes RAM before each forced effect, so a value
+  can be tied to its address. `font_list` decodes a pointer font operand, a 0-terminated u32 list of font ids.
+  `text_draw_str_fit` (0x21b90) tries the ids in order and uses the first whose `text_width` is at most the width
+  argument. With width 0, it uses the first id that fits the 128-px screen for the alignment flags. Font 0 ends the
+  list and is used if nothing else fits.
+- **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
+  status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
+  GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.
+- **Coils (observed).** Timed from the 250 us solenoid register writes. Flippers: 40.5 ms then hold at 1 ms on
+  every 12 ms (duty 0.083). Pops 34 ms in play (64 ms in ball search and coil test), slings 67-68 ms, trough,
+  launch, eject and Optimus target 64-65 ms. The orbit gate (5) and the motors (8, 30) are held, not pulsed.
+  Coil 24 ("OPTIONAL COIL") fires 81 ms on every coin: it is the coin meter output (inferred).
+- **Music (code + observed).** Background deff and music come from an 18-entry priority table walked by
+  0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
+  player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
+  0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
+  entries. Which value is Autobot is inferred (1 = Autobot).
+- **Lamp effects (observed).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
+  on every lamp compositor tick (0x73cc), only the lamps the effect's own task owns (shared leff layer 0x36394 /
+  mask 0x363a8 and the layer list at 0x31480). 119 end by themselves, 59 run until stopped. 111 produce lamps or
+  flasher pulses; the other 67 draw from game state, need a lamp parameter from their caller, or were refused.
+- **Side choice (code + observed).** Side byte 0x02112107 + player: 1 = Autobot, 2 = Decepticon (default).
+  Either flipper toggles it on the choose-side screen; the plunge confirms it 31 ticks later (deff 41).
+- **Names in the decompile.** OS functions were named by matching Tron's decompile (same OS). Game-code
+  functions that matched a Tron game function keep Tron's name (for example `dbattle_can_progress`): the code
+  is alike but the meaning on Transformers can differ. Deff and leff functions are named from this ROM's tables.
 - **IO (code).** Name tables use the Tron 24-byte, five-language records. Coil descriptor layout is the Tron one
   (flags, test fn, ball-search fn, name, test ms, ball-search ms, two wire colour message ids). Coil register map
   (1-8 SOL_B, 9-16 SOL_A, 17-24 SOL_C, 25-32 FLSH_LMP, 33-35 aux) is the SAM standard and not yet confirmed from
@@ -58,15 +117,18 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
 
 ## Status
 
-Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library.
+Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library, fonts,
+adjustments and audits, the decompile, the display effect captures and the event map.
 
-Next, in this order: Ghidra decompile and OS function map, display effect captures (per-effect frames, timing,
-sounds, text layout), coil pulse and hold times measured at 1 ms, lamp effects, fonts, settings and service menu,
-then rules specs with reference traces.
+Also delivered: coil timing, sound call roles and the music table, the reference tracer with six traces, the
+lamp effects as shows, the switch handler spec with the side choice and the bonus.
+
+Next, in this order: settings in package format with pricing, the format string behind each text draw, rules
+specs per mode with traces, switch flags.
 
 Open items:
-1. Coil register map and the aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) need the
-   IO pointer block read in the emulator.
-2. Animation frame times in `dmd_library` are a 50 ms placeholder until the effects are captured.
+1. The aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) were not seen firing yet. The
+   coil register map is PinMAME's SAM map, and the measured pulses match each coil's role.
+2. 225 library animations keep a 50 ms placeholder frame time; about 35 effects need live play to capture.
 3. Meaning of the sound call fields at +0x0c..+0x13 (`flags_0x10` holds values like 0x1b0, 0x1ff) is not decoded.
 4. 60 samples are in no sound call; they may be played directly or be unused.

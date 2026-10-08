@@ -1,0 +1,59 @@
+switch,name,hit,handler,handler_arg,switch_flags,score_total,awards,sounds,deffs,leffs,coils,audit_counters,flags,tag
+1,BUMBLEBEE TARGET,first,0x1033adc,0,0x14000000,20030,20000 (0x1001a70) + 30 (handler),0x26b,128 deff_128,150,18:64ms 23:64ms 18:65ms x2 23:65ms,71,,observed
+1,BUMBLEBEE TARGET,repeat,0x1033adc,0,0x14000000,25030,25000 (0x1001a70) + 30 (handler),0x26b,128 deff_128,150,18:65ms x2 23:65ms 23:64ms 18:64ms,71,,observed
+2,ENERGON (LEFT),first,0x1033a28,48,0x14000000,76110,75000 (0x10309a4) + 1110 (handler),"0x25e 0x01f [music: main play, Decepticon] 0x25f",124 deff_124,140,18:32ms x3 23:32ms x3,,+16 +16 +16 +16 +16 +71 -13 -12 -13 -12 -13 -12 -13 -12 -13 -12,observed
+2,ENERGON (LEFT),repeat,0x1033a28,48,0x14000000,11110,10000 (0x10309a4) + 1110 (handler),0x25d,,141,,,,observed
+4,L. RAMP ENTRANCE,first,0x10337e8,0,0x14000000,560,560 (handler),0x273,,,,,,observed
+4,L. RAMP ENTRANCE,repeat,0x10337e8,0,0x14000000,560,560 (handler),0x273,,,,,,observed
+5,LEFT ORBIT (BOTTOM),first,0x1033354,0,0x14000000,11220,10000 (0x1020074) + 1220 (handler),0x172,91 deff_091_0_more,103 103,18:3ms x6 21:3ms x6 23:3ms x6 8:202ms 5:1493ms,65,,observed
+5,LEFT ORBIT (BOTTOM),repeat,0x1033354,0,0x14000000,1220,1220 (handler),,,,,,,observed
+6,LEFT ORBIT (TOP),first,0x10332e4,0,0x14000000,150000,150000 (0x1002f0c),,,35,5:1503ms,65 154,,observed
+6,LEFT ORBIT (TOP),repeat,0x10332e4,0,0x14000000,0,,,,,,,,observed
+7,RIGHT TOP LANE,first,0x103361c,0,0x24000000,5060,2500 (0x102e208) + 2560 (handler),0x16d [drain (ball lost)],,100,,,,observed
+7,RIGHT TOP LANE,repeat,0x103361c,0,0x24000000,5060,2500 (0x102e208) + 2560 (handler),0x16d [drain (ball lost)],,100,,,,observed
+8,LEFT TOP LANE,first,0x10335d0,0,0x24000000,5060,2500 (0x102db28) + 2560 (handler),0x169 [ball saved sound],,97,,,,observed
+8,LEFT TOP LANE,repeat,0x10335d0,0,0x24000000,5060,2500 (0x102db28) + 2560 (handler),0x169 [ball saved sound],,97,,,,observed
+10,L. RAMP EXIT,first,0x1033824,0,0x24000000,16170,15000 (0x1020074) + 1170 (handler),0x172,91 deff_091_0_more,103 103,18:3ms x6 21:3ms x6 23:3ms x6 8:202ms,67,,observed
+10,L. RAMP EXIT,repeat,0x1033824,0,0x24000000,1170,1170 (handler),,,,,67,,observed
+11,CENTER LANE,first,0x1033b3c,0,0x24000000,152530,2500 (0x1025de4) + 150000 (0x1002f0c) + 30 (handler),0x2a3 0x2a4,141 deff_141_0_more,170 35,8:202ms 31:29ms,154,+72,observed
+11,CENTER LANE,repeat,0x1033b3c,0,0x24000000,177530,2500 (0x1025de4) + 175000 (0x1002f0c) + 30 (handler),0x2a3 0x2a4,141 deff_141_0_more,170 35,8:202ms 31:30ms,154,+72,observed
+12,RIGHT ORBIT,first,0x1033530,0,0x24000000,1220,1220 (handler),,,,,,,observed
+12,RIGHT ORBIT,repeat,0x1033530,0,0x24000000,221220,20000 (0x1020074) + 200000 (0x1002f0c) + 1220 (handler),0x172,91 deff_091_0_more,103 35 103,18:3ms x5 21:3ms x5 23:3ms x5 8:203ms,66 154,,observed
+13,MEGATRON BACK DOOR,first,0x1033c80,0,0x14000000,30,30 (handler),,,,,,,observed
+13,MEGATRON BACK DOOR,repeat,0x1033c80,0,0x14000000,30,30 (handler),,,,,,,observed
+14,R. RAMP EXIT,first,0x1033918,0,0x24000000,351170,25000 (0x1020074) + 100000 (0x101caa4) + 225000 (0x1002f0c) + 1170 (handler),0x1a9 0x02a 0x1c2,100 deff_100_blackout 101 deff_101_blackout,35 113 114,8:386ms,68 88 93 132 154,-19,observed
+14,R. RAMP EXIT,repeat,0x1033918,0,0x24000000,276170,25000 (0x101cc6c) + 250000 (0x1002f0c) + 1170 (handler),0x1aa,101 deff_101_blackout,35,,68 154,,observed
+24,LEFT OUTLANE,first,0x1033670,8,0x24000000,102500,2500 (0x102db28) + 100000 (handler),0x169 [ball saved sound],101 deff_101_blackout,97,,,,observed
+24,LEFT OUTLANE,repeat,0x1033670,8,0x24000000,101000,1000 (0x102db28) + 100000 (handler),0x168,,98,,,,observed
+25,LEFT RETURN LANE,first,0x10336f0,9,0x24000000,11090,10000 (0x102db28) + 1090 (handler),0x16a 0x059 0x05a,44 deff_044 101 deff_101_blackout,99 37,,,,observed
+25,LEFT RETURN LANE,repeat,0x10336f0,9,0x24000000,3590,2500 (0x102db28) + 1090 (handler),0x169 [ball saved sound],,97,,,,observed
+26,LEFT SLINGSHOT,first,0x1033104,0,0x04000000,440,440 (0x1033104),0x15a,,,13:66ms,,,observed
+26,LEFT SLINGSHOT,repeat,0x1033104,0,0x04000000,440,440 (0x1033104),0x15a,,,13:66ms,,,observed
+27,RIGHT SLINGSHOT,first,0x10331a4,0,0x04000000,440,440 (0x10331a4),0x15a,,,14:66ms,,,observed
+27,RIGHT SLINGSHOT,repeat,0x10331a4,0,0x04000000,440,440 (0x10331a4),0x15a,,,14:66ms,,,observed
+28,RIGHT RETURN LANE,first,0x1033728,10,0x24000000,3590,2500 (0x102e208) + 1090 (handler),0x16d [drain (ball lost)],,100,,,,observed
+28,RIGHT RETURN LANE,repeat,0x1033728,10,0x24000000,2090,1000 (0x102e208) + 1090 (handler),0x16c,,101,,,,observed
+29,RIGHT OUTLANE,first,0x1033764,11,0x24000000,110000,10000 (0x102e208) + 100000 (handler),0x16e,45 deff_045,102,,,,observed
+29,RIGHT OUTLANE,repeat,0x1033764,11,0x24000000,102500,2500 (0x102e208) + 100000 (handler),0x16d [drain (ball lost)],,100,,,,observed
+30,TOP BUMPER,first,0x1032f8c,0,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 27,9:34ms 21:33ms 21:32ms x2,73,,observed
+30,TOP BUMPER,repeat,0x1032f8c,0,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 27,9:34ms 21:32ms x3,73,,observed
+31,RIGHT BUMPER,first,0x1032f8c,1,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 28,10:34ms 21:33ms 21:32ms x2,73,,observed
+31,RIGHT BUMPER,repeat,0x1032f8c,1,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 28,10:34ms 21:32ms x2 21:33ms,73,,observed
+32,BOTTOM BUMPER,first,0x1032f8c,2,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 29,11:34ms 21:32ms x3,73,,observed
+32,BOTTOM BUMPER,repeat,0x1032f8c,2,0x04000000,3170,3000 (0x102c8c8) + 170 (0x1032f8c),0x15c,46 deff_046,26 29,11:34ms 21:32ms x2 21:33ms,73,,observed
+34,RIGHT ORBIT SPINNER,first,0x1033a08,0,0x24000000,2590,2500 (0x10320a4) + 90 (handler),0x26d,,152,19:33ms,,,observed
+34,RIGHT ORBIT SPINNER,repeat,0x1033a08,0,0x24000000,2590,2500 (0x10320a4) + 90 (handler),0x26d,,152,19:32ms,,,observed
+35,R. RAMP ENTRANCE,first,0x10338dc,0,0x14000000,560,560 (handler),0x272,,,,,,observed
+35,R. RAMP ENTRANCE,repeat,0x10338dc,0,0x14000000,560,560 (handler),0x272,,,,,,observed
+37,R. 2 BANK TARGET-BOT,first,0x1033c40,20,0x14000000,5030,5000 (0x102e9c0) + 30 (handler),0x261,,143,,70,,observed
+37,R. 2 BANK TARGET-BOT,repeat,0x1033c40,20,0x14000000,5030,5000 (0x102e9c0) + 30 (handler),0x261,,143,,70,,observed
+45,CAPTIVE BALL,first,0x1033b14,0,0x1fff0000,60,30 (handler) + 30 (handler),,,,,72,,observed
+45,CAPTIVE BALL,repeat,0x1033b14,0,0x1fff0000,60,30 (handler) + 30 (handler),,,,,72,,observed
+46,ENERGON (RIGHT),first,0x1033aa0,35,0x14000000,76110,75000 (0x10309a4) + 1110 (handler),0x25e,124 deff_124 101 deff_101_blackout,140,18:32ms x3 23:32ms x3,,,observed
+46,ENERGON (RIGHT),repeat,0x1033aa0,35,0x14000000,11110,10000 (0x10309a4) + 1110 (handler),0x25d,101 deff_101_blackout,141,,,,observed
+49,ENERGON (CENTER),first,0x1033a64,54,0x14000000,251110,250000 (0x10309a4) + 1110 (handler),0x260 0x13e 0x13f,125 deff_125 101 deff_101_blackout,142 40,,,,observed
+49,ENERGON (CENTER),repeat,0x1033a64,54,0x14000000,76110,75000 (0x10309a4) + 1110 (handler),0x25e,124 deff_124 101 deff_101_blackout,140,18:32ms 23:32ms 18:33ms x2 23:33ms x2,,,observed
+50,R. 2 BANK TARGET-TOP,first,0x1033c00,21,0x14000000,5030,5000 (0x102e9c0) + 30 (handler),"0x261 0x01f [music: main play, Decepticon]",,143 104,,70,,observed
+50,R. 2 BANK TARGET-TOP,repeat,0x1033c00,21,0x14000000,75030,75000 (0x102e9c0) + 30 (handler),0x263 0x266 0x265,126 deff_126_0_more,144,19:32ms x3,70,+48,observed
+51,OPTIMUS PRIME,first,0x1033d3c,0,0x18000000,30,30 (handler),0x05b 0x05c,50 deff_050,38,12:65ms,,,observed
+51,OPTIMUS PRIME,repeat,0x1033d3c,0,0x18000000,30,30 (handler),0x1cb 0x1cc,103 deff_103_blackout,116,12:66ms,,,observed

@@ -1,0 +1,51 @@
+# Blackout (POKED: battle_lit=4). One random lit shot from the left group / right group alternately
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 2
+hit 26
+wait 2
+mark poke_battle_lit_4
+poke 2111ecc 4 4
+wait 1
+mark qualify
+hit 5
+wait 2
+hit 10
+wait 2
+hit 14
+wait 2
+hit 12
+wait 7
+mark bo_hits
+hit 3
+wait 4
+hit 5
+wait 2
+hit 10
+wait 2
+hit 11
+wait 2
+hit 14
+wait 2
+hit 12
+wait 2
+hit 3
+wait 4
+hit 5
+wait 2
+hit 10
+wait 2
+mark poke_remaining_1
+poke 2111e94 1 1
+hit 14
+wait 2
+hit 12
+wait 2
+hit 11
+wait 2
+hit 3
+wait 12
+drain
+wait 6

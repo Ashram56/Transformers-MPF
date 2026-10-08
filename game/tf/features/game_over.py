@@ -3,10 +3,10 @@ Timings are Tron's reference traces (the same OS)."""
 import random
 
 from tf.features import Feature
-from tf.os_layer import GAME
 
 MATCH_REVEAL = 258       # ticks from deff 38 to the match award (traces/game_flow.jsonl 4.19 s)
-ATTRACT_DELAY = 482      # ticks from the match display to attract (7.84 s measured)
+ATTRACT_DELAY = 370      # ticks from the match display to attract (traces/game_flow.jsonl 158.65 -> 164.66 s)
+GAME_OVER_MUSIC, GAME_OVER_SPEECH, SPEECH_TICKS = 0x24, 0x4b, 0x7c   # task 0x9b [0x01006138]
 
 
 class GameOver(Feature):
@@ -49,10 +49,10 @@ class GameOver(Feature):
     def _attract(self, done):
         os_ = self.os
         os_.hook("attract_start")                 # event 0x08: deff 1, leff 1, attract tube rule
-        # Tron task 0x45 [0x0100f29c], one tick later: the game-over music with its leff (game code; tf_180's
-        # are not known yet)
-        os_.after(1, lambda: (os_.sound(GAME["game_over_music"]),
-                              GAME["game_over_leff"] and os_.leff_start(GAME["game_over_leff"])))
+        # task 0x9b [0x01006138], one tick later: the game-over music 0x24 (unless it already plays), then the
+        # speech 0x4b 124 ticks later (observed: game_flow.jsonl 164.68 / 166.66 s); no leff
+        os_.after(1, lambda: os_.sound(GAME_OVER_MUSIC))
+        os_.after(1 + SPEECH_TICKS, lambda: os_.game or os_.sound(GAME_OVER_SPEECH))   # a game start kills it
         done()
 
 
