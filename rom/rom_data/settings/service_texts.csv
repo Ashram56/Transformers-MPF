@@ -1,0 +1,676 @@
+msg,text,role,menu,item,item_text,screen_fn,drawn_by,notes,tag
+0xb1,GO TO DIAGNOSTICS MENU,menu item name,MAIN MENU,1,GO TO DIAGNOSTICS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 0,observed
+0xb2,GO TO AUDITS MENU,menu item name,MAIN MENU,2,GO TO AUDITS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 2,observed
+0xb3,GO TO ADJUSTMENTS MENU,menu item name,MAIN MENU,3,GO TO ADJUSTMENTS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 4,observed
+0xb4,GO TO UTILITIES MENU,menu item name,MAIN MENU,4,GO TO UTILITIES MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 6,observed
+0xb5,EXIT SERVICE MENU,menu item name,MAIN MENU,5,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xb6,GO TO SWITCH MENU,menu item name,MAIN MENU > DIAGNOSTICS,6,GO TO SWITCH MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 20,observed
+0xb7,GO TO COIL MENU,menu item name,MAIN MENU > DIAGNOSTICS,7,GO TO COIL MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 22,observed
+0xb8,GO TO LAMP MENU,menu item name,MAIN MENU > DIAGNOSTICS,8,GO TO LAMP MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 24,observed
+0xb9,GO TO FLASH LAMPS MENU,menu item name,MAIN MENU > DIAGNOSTICS,9,GO TO FLASH LAMPS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 26,observed
+,,dynamic: msg_id,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,0x1048a9c FUN_01048a9c y=0x1f,,code
+,,dynamic: uVar4,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,0x1048a9c FUN_01048a9c y=0x1f,,code
+0x24a,TECHNICIAN ALERT - (%d/%d),text_printf_msg,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,0x1048a9c FUN_01048a9c y=4,,code
+0x24b,NO,text_draw_msg,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,0x1048a9c FUN_01048a9c y=0xe,,code
+0x24c,TECHNICIAN ALERTS,text_draw_msg,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,0x1048a9c FUN_01048a9c y=0x17,,code
+0xba,TECHNICIAN ALERTS,menu item name,MAIN MENU > DIAGNOSTICS,10,TECHNICIAN ALERTS,0x1048a9c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 30,observed
+,,dynamic: uVar2,MAIN MENU > DIAGNOSTICS,11,SOUND/SPEAKER TEST,0x1047ee0,0x1047ee0 FUN_01047ee0 y=0x1d,,code
+0x238,SOUND / SPEAKER TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS,11,SOUND/SPEAKER TEST,0x1047ee0,0x1047ee0 FUN_01047ee0 y=5,,code
+0x239,#%d,text_printf_msg,MAIN MENU > DIAGNOSTICS,11,SOUND/SPEAKER TEST,0x1047ee0,0x1047ee0 FUN_01047ee0 y=0x16,,code
+0xbb,SOUND/SPEAKER TEST,menu item name,MAIN MENU > DIAGNOSTICS,11,SOUND/SPEAKER TEST,0x1047ee0,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 34,observed
+0x254,BURN-IN,text_draw_msg,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=4,,code
+0x255,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=4,,code
+0x256,TOTAL BURN-IN TIME:,text_draw_msg,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=0xe,,code
+0x257,%d:%02d,text_printf_msg,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=0x17,,code
+0x258,%d:%02d:%02d,text_printf_msg,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=0x17,,code
+0x259,PRESS 'SELECT' TO START,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,0x10476b8 FUN_010476b8 y=0x1f,,code
+0xbc,BEGIN BURN-IN,menu item name,MAIN MENU > DIAGNOSTICS,12,BEGIN BURN-IN,0x10476b8,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 36,observed
+0xbd,DOT MATRIX TEST,menu item name,MAIN MENU > DIAGNOSTICS,13,DOT MATRIX TEST,0x1047a50,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 38,observed
+,,dynamic: msg_id,,14,DISPLAY SOFTWARE ERRORS,0x1047c88,0x1047c88 FUN_01047c88 y=0x1f,,code
+0x25a,SOFTWARE ERRORS,text_draw_msg,,14,DISPLAY SOFTWARE ERRORS,0x1047c88,0x1047c88 FUN_01047c88 y=4,,code
+0x25b,SOFTWARE ERROR %u/%u,text_printf_msg,,14,DISPLAY SOFTWARE ERRORS,0x1047c88,0x1047c88 FUN_01047c88 y=4,,code
+0x25c,#%u (TYPE %d),text_printf_msg,,14,DISPLAY SOFTWARE ERRORS,0x1047c88,0x1047c88 FUN_01047c88 y=0xf,,code
+0xbe,DISPLAY SOFTWARE ERRORS,menu item name,(not in any runtime menu),14,DISPLAY SOFTWARE ERRORS,0x1047c88,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 40; shown only if 0x2b270: game flag 7 set and 0x4fb8() != 0 (software errors were logged),code
+0xbf,GO TO FUSE TABLE,menu item name,(not in any runtime menu),15,GO TO FUSE TABLE,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),page; icon image 42,code
+0xc0,DR. PINBALL,menu item name,(not in any runtime menu),16,DR. PINBALL,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 44,code
+,,dynamic: msg_id,,17,TICKET DISPENSER TEST,0x10487ac,0x10487ac FUN_010487ac y=0x16,,code
+,,dynamic: (&DAT_040c9c6c)[uVar8],,17,TICKET DISPENSER TEST,0x10487ac,0x10487ac FUN_010487ac y=0x1f,,code
+0x23c,TICKET DISPENSER TEST,text_draw_msg,,17,TICKET DISPENSER TEST,0x10487ac,0x10487ac FUN_010487ac y=4,,code
+0xc1,TICKET DISPENSER TEST,menu item name,(not in any runtime menu),17,TICKET DISPENSER TEST,0x10487ac,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 48,code
+0xc2,RETURN TO MAIN MENU,menu item name,MAIN MENU > DIAGNOSTICS,18,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xc3,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS,19,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xc4,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS,20,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: *(ushort *)(iVar15 + 0x16),MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,0x104cae4 FUN_0104cae4,,code
+,,dynamic: *(ushort *)(iVar15 + 0x18),MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,0x104cae4 FUN_0104cae4,,code
+,,dynamic: uVar3,MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,0x104cae4 FUN_0104cae4 y=0x15,,code
+0x112,SWITCH TEST,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,0x104cae4 FUN_0104cae4 y=8,,code
+0x115,NONE,text_draw_msg,MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,0x104cae4 FUN_0104cae4 y=0xf,,code
+0xc5,SWITCH TEST,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,21,SWITCH TEST,0x104cae4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 50,observed
+,,dynamic: *(ushort *)(iVar11 + 0x16),MAIN MENU > DIAGNOSTICS > SWITCH MENU,22,ACTIVE SWITCH TEST,0x104b95c,0x104b95c FUN_0104b95c,,code
+,,dynamic: *(ushort *)(iVar11 + 0x18),MAIN MENU > DIAGNOSTICS > SWITCH MENU,22,ACTIVE SWITCH TEST,0x104b95c,0x104b95c FUN_0104b95c,,code
+0x116,ACTIVE SWITCHES,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS > SWITCH MENU,22,ACTIVE SWITCH TEST,0x104b95c,0x104b95c FUN_0104b95c y=0xb,,code
+0x117,NONE,text_draw_msg,MAIN MENU > DIAGNOSTICS > SWITCH MENU,22,ACTIVE SWITCH TEST,0x104b95c,0x104b95c FUN_0104b95c y=0x12,,code
+0xc6,ACTIVE SWITCH TEST,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,22,ACTIVE SWITCH TEST,0x104b95c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 52,observed
+0xc7,SINGLE SWITCH TEST,menu item name,(not in any runtime menu),23,SINGLE SWITCH TEST,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),page; icon image 54,code
+,,dynamic: *(ushort *)(iVar16 + 0x16),MAIN MENU > DIAGNOSTICS > SWITCH MENU,24,SWITCH ALERTS,0x104beb8,0x104beb8 FUN_0104beb8,,code
+,,dynamic: *(ushort *)(iVar16 + 0x18),MAIN MENU > DIAGNOSTICS > SWITCH MENU,24,SWITCH ALERTS,0x104beb8,0x104beb8 FUN_0104beb8,,code
+,,dynamic: uVar11,MAIN MENU > DIAGNOSTICS > SWITCH MENU,24,SWITCH ALERTS,0x104beb8,0x104beb8 FUN_0104beb8 y=0x15,,code
+0x118,SWITCH ALERTS,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS > SWITCH MENU,24,SWITCH ALERTS,0x104beb8,0x104beb8 FUN_0104beb8 y=8,,code
+0xc8,SWITCH ALERTS,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,24,SWITCH ALERTS,0x104beb8,service menu renderer (item table 0x40e3c40 +0xc),action; icon image 56,observed
+0xc9,RETURN TO DIAGNOSTICS MENU,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,25,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xca,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,26,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xcb,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS > SWITCH MENU,27,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: *(ushort *)(iVar5 + 0x14),MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c,,code
+,,dynamic: *(ushort *)(iVar5 + 0x16),MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c,,code
+0x11b,COIL TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c y=5,,code
+0x11c,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c y=5,,code
+0x11e,%s,text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c y=0xe,,code
+0x11f,%s (X%d),text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c y=0xe,,code
+0x120,#%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,0x1046f4c FUN_01046f4c y=0x16,,code
+0xcc,SINGLE COIL TEST,menu item name,MAIN MENU > DIAGNOSTICS > COIL MENU,28,SINGLE COIL TEST,0x1046f4c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 58,observed
+,,dynamic: *(ushort *)(iVar5 + 0x14),MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98,,code
+,,dynamic: *(ushort *)(iVar5 + 0x16),MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98,,code
+0x121,CYCLING COIL TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98 y=5,,code
+0x122,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98 y=5,,code
+0x123,%s,text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98 y=0xe,,code
+0x124,%s (X%d),text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98 y=0xe,,code
+0x125,#%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,0x1046a98 FUN_01046a98 y=0x16,,code
+0xcd,CYCLING COIL TEST,menu item name,MAIN MENU > DIAGNOSTICS > COIL MENU,29,CYCLING COIL TEST,0x1046a98,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 60,observed
+0xce,RETURN TO DIAGNOSTICS MENU,menu item name,MAIN MENU > DIAGNOSTICS > COIL MENU,30,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xcf,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS > COIL MENU,31,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xd0,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS > COIL MENU,32,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: msg_id,MAIN MENU > DIAGNOSTICS > LAMP MENU,33,SINGLE LAMP TEST,0x104a6c8,0x104a6c8 FUN_0104a6c8,,code
+,,dynamic: msg_id_00,MAIN MENU > DIAGNOSTICS > LAMP MENU,33,SINGLE LAMP TEST,0x104a6c8,0x104a6c8 FUN_0104a6c8,,code
+0x126,SINGLE LAMP TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,33,SINGLE LAMP TEST,0x104a6c8,0x104a6c8 FUN_0104a6c8 y=8,,code
+0x127,LAMP #%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,33,SINGLE LAMP TEST,0x104a6c8,0x104a6c8 FUN_0104a6c8 y=0x15,,code
+0xd1,SINGLE LAMP TEST,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,33,SINGLE LAMP TEST,0x104a6c8,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 62,observed
+0x128,ALL LAMPS TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,34,TEST ALL LAMPS,0x1049cf4,0x1049cf4 FUN_01049cf4 y=0xb,,code
+0x129,ALL LAMPS ON,text_draw_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,34,TEST ALL LAMPS,0x1049cf4,0x1049cf4 FUN_01049cf4 y=0x18,,code
+0xd2,TEST ALL LAMPS,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,34,TEST ALL LAMPS,0x1049cf4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 64,observed
+,,dynamic: puVar10[1],MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,0x104aeac FUN_0104aeac,,code
+,,dynamic: puVar10[2],MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,0x104aeac FUN_0104aeac,,code
+,,dynamic: *puVar10,MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,0x104aeac FUN_0104aeac y=0x15,,code
+0x12a,ROW LAMPS TEST,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,0x104aeac FUN_0104aeac y=8,,code
+0x12b,LAMP ROW #%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,0x104aeac FUN_0104aeac y=0xf,,code
+0xd3,LAMP ROW TEST,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,35,LAMP ROW TEST,0x104aeac,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 66,observed
+,,dynamic: puVar10[1],MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,0x104a0d0 FUN_0104a0d0,,code
+,,dynamic: puVar10[2],MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,0x104a0d0 FUN_0104a0d0,,code
+,,dynamic: *puVar10,MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,0x104a0d0 FUN_0104a0d0 y=0x15,,code
+0x12c,COLUMN LAMPS TEST,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,0x104a0d0 FUN_0104a0d0 y=8,,code
+0x12d,LAMP COLUMN #%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,0x104a0d0 FUN_0104a0d0 y=0xf,,code
+0xd4,LAMP COLUMN TEST,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,36,LAMP COLUMN TEST,0x104a0d0,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 68,observed
+,,dynamic: *puVar13,,37,ORDERED LAMP TEST,0x104a9fc,0x104a9fc FUN_0104a9fc,,code
+,,dynamic: *puVar14,,37,ORDERED LAMP TEST,0x104a9fc,0x104a9fc FUN_0104a9fc,,code
+,,dynamic: param_1,,37,ORDERED LAMP TEST,0x104a9fc,0x21308 FUN_00021308,,code
+0x12e,ORDERED LAMP TEST,text_draw_msg,,37,ORDERED LAMP TEST,0x104a9fc,0x104a9fc FUN_0104a9fc y=8,,code
+0x12f,LAMP #%d,text_printf_msg,,37,ORDERED LAMP TEST,0x104a9fc,0x104a9fc FUN_0104a9fc y=0x15,,code
+0xd5,ORDERED LAMP TEST,menu item name,(not in any runtime menu),37,ORDERED LAMP TEST,0x104a9fc,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 70; shown only if 0x2b29c: RAM 0x31316 != 0,code
+0xd6,RETURN TO DIAGNOSTICS MENU,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,38,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xd7,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,39,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xd8,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS > LAMP MENU,40,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: *(ushort *)(iVar5 + 0x14),MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8,,code
+,,dynamic: *(ushort *)(iVar5 + 0x16),MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8,,code
+0x130,FLASH LAMP TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8 y=5,,code
+0x131,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8 y=5,,code
+0x132,%s,text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8 y=0xe,,code
+0x133,%s (X%d),text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8 y=0xe,,code
+0x134,#%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,0x10492b8 FUN_010492b8 y=0x16,,code
+0xd9,SINGLE FLASH LAMP TEST,menu item name,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,41,SINGLE FLASH LAMP TEST,0x10492b8,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 72,observed
+,,dynamic: *(ushort *)(iVar5 + 0x14),MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4,,code
+,,dynamic: *(ushort *)(iVar5 + 0x16),MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4,,code
+0x135,CYCLING FLASH LAMP TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4 y=5,,code
+0x136,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4 y=5,,code
+0x137,%s,text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4 y=0xe,,code
+0x138,%s (X%d),text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4 y=0xe,,code
+0x139,#%d,text_printf_msg,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,0x1048de4 FUN_01048de4 y=0x16,,code
+0xda,CYCLING FLASH LAMP TEST,menu item name,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,42,CYCLING FLASH LAMP TEST,0x1048de4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 74,observed
+0xdb,RETURN TO DIAGNOSTICS MENU,menu item name,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,43,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xdc,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,44,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xdd,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS > FLASH LAMPS MENU,45,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0xde,COIL FLOW CHART,menu item name,DR. PINBALL,46,COIL FLOW CHART,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),page; icon image 76,observed
+0xdf,SWITCH FLOW CHART,menu item name,DR. PINBALL,47,SWITCH FLOW CHART,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),page; icon image 78,observed
+0xe0,LAMP FLOW CHART,menu item name,DR. PINBALL,48,LAMP FLOW CHART,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),page; icon image 80,observed
+0xe1,RETURN TO DIAGNOSTICS MENU,menu item name,DR. PINBALL,49,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xe2,EXIT SERVICE MENU,menu item name,DR. PINBALL,50,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xe3,DISPLAY HELP SCREEN,menu item name,DR. PINBALL,51,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: param_6,MAIN MENU > AUDITS,52,EARNINGS AUDITS,0x1046508,0x1046598 FUN_01046598 y=5,,code
+0x154,EARNINGS AUDIT #%d,"audit screen title: msg passed to 0x1046598 (arg 6, y=5)",MAIN MENU > AUDITS,52,EARNINGS AUDITS,0x1046508,0x1046508 FUN_01046508,,code
+0x281,[LIFETIME: %s],text_printf_msg,MAIN MENU > AUDITS,52,EARNINGS AUDITS,0x1046508,0x1046598 FUN_01046598 y=0x1e,,code
+0xe4,EARNINGS AUDITS,menu item name,MAIN MENU > AUDITS,52,EARNINGS AUDITS,0x1046508,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 82,observed
+0x155,STANDARD AUDIT #%d,"audit screen title: msg passed to 0x1046598 (arg 6, y=5)",MAIN MENU > AUDITS,53,STANDARD AUDITS,0x1046990,0x1046990 FUN_01046990,,code
+0xe5,STANDARD AUDITS,menu item name,MAIN MENU > AUDITS,53,STANDARD AUDITS,0x1046990,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 84,observed
+,,dynamic: uVar4,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=uVar5,,code
+,,dynamic: msg_id,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0xcad8 FUN_0000cad8,,code
+,,dynamic: uVar2,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0xcad8 FUN_0000cad8,,code
+0x156,AUDIT DATA DUMP,text_draw_msg_fit,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=4,,code
+0x157,INSERT USB MEMORY STICK,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0xf,,code
+0x158,OR,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x15,,code
+0x159,PRESS 'BACK' TO EXIT,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x1b,,code
+0x15a,USB DEVICE NOT RECOGNIZED,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0xc,,code
+0x15b,INSERT NEW USB MEMORY STICK,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x15c,OR,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x19,,code
+0x15d,PRESS 'BACK' TO EXIT,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x1f,,code
+0x15e,SCANNING FILE SYSTEM,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x160,CHECKING FREE SPACE,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x162,INSUFFICIENT SPACE LEFT,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0xd,,code
+0x163,ON USB MEMORY STICK,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x164,FOR AUDIT DUMP,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x19,,code
+0x166,PRESS 'SELECT' TO SAVE AUDITS,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x167,OR,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x19,,code
+0x169,WRITING AUDITS TO FILE,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x13,,code
+0x16b,AUDIT DUMP,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=10,,code
+0x16c,COMPLETE,text_draw_msg,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x12,,code
+0x16d,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x104df4c FUN_0104df4c y=0x1b,,code
+0x27a,"%s, %s %d, %d %02d:%02d:%02d%s",msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0xcad8 FUN_0000cad8,,code
+0x27b,# AUDIT DUMP EXECUTED: ,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x1484 FUN_00001484,,code
+0x27c,# AUDITS SINCE: ,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x1484 FUN_00001484,,code
+0x27e,# FACTORY RESET: ,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x1484 FUN_00001484,,code
+0x27f,# COIN AUDITS RESET: ,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x1484 FUN_00001484,,code
+0x280,# GAME AUDITS RESET: ,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x1484 FUN_00001484,,code
+0x3e9,REDEMPTION DATA,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x265dc FUN_000265dc,,code
+0xa8,HDW. %d,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x6d74 FUN_00006d74,,code
+0xa9,SYS. %x.%02x,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0xe348 FUN_0000e348,,code
+0xaa,%c%x.%x,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x6c34 FUN_00006c34,,code
+0xab,%c%x.%02x,msg_get,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,0x6c34 FUN_00006c34,,code
+0xe6,DUMP AUDITS TO USB,menu item name,MAIN MENU > AUDITS,54,DUMP AUDITS TO USB,0x104df4c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 86,observed
+0xe7,RETURN TO MAIN MENU,menu item name,MAIN MENU > AUDITS,55,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xe8,EXIT SERVICE MENU,menu item name,MAIN MENU > AUDITS,56,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xe9,DISPLAY HELP SCREEN,menu item name,MAIN MENU > AUDITS,57,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: param_6,MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,0x1045c08 FUN_01045c08 y=5,,code
+,,dynamic: param_2[param_3],MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,0x76c FUN_0000076c,,code
+0x140,STANDARD ADJUSTMENT #%d,"adjustment screen title: msg passed to 0x1045c08 (arg 6, y=5)",MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,0x10464bc FUN_010464bc,,code
+0x141,INSTALLED,msg_get,MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,0x1045c08 FUN_01045c08,,code
+0x142,FACTORY DEFAULT,msg_get,MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,0x1045c08 FUN_01045c08,,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 4 FAST BOOT value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 10 PLAYER LANGUAGE SELECT value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 21 REPLAY BOOST value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 34 FREE PLAY value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 36 GAME RESTART value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 37 BILL VALIDATOR value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 41 COINDOOR BALL SAVER value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 42 COMPETITION MODE value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 43 CONSOLATION BALL value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 46 PLAYER COMPETITION value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 47 TEAM SCORES value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 48 ALLOW HIGH SCORES value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 63 LOST BALL RECOVERY value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 64 COIN DOOR DISABLE TILT value 0,code
+0x287,CUSTOM,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 68,observed
+0x29f,NONE,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 11 REPLAY TYPE value 0,code
+0x2a0,FIXED,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 11 REPLAY TYPE value 1,code
+0x2a1,DYNAMIC,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 11 REPLAY TYPE value 2,code
+0x2a2,AUTO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 11 REPLAY TYPE value 3,code
+0x2a3,CREDIT,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 13 REPLAY AWARD value 0,code
+0x2a4,TICKET,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 13 REPLAY AWARD value 1,code
+0x2a5,TOKEN,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 13 REPLAY AWARD value 2,code
+0x2a6,EXTRA BALL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 13 REPLAY AWARD value 3,code
+0x2a9,CREDIT,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 23 SPECIAL AWARD value 0,code
+0x2aa,TICKET,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 23 SPECIAL AWARD value 1,code
+0x2ab,TOKEN,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 23 SPECIAL AWARD value 2,code
+0x2ac,POINTS,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 23 SPECIAL AWARD value 3,code
+0x2ad,EXTRA BALL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 23 SPECIAL AWARD value 4,code
+0x2b2,AUSTRALIA 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 0,observed
+0x2b3,AUSTRALIA 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 1,observed
+0x2b4,AUSTRALIA 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 2,observed
+0x2b5,AUSTRALIA 4,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 3,observed
+0x2b6,AUSTRALIA 5,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 4,observed
+0x2b7,AUSTRALIA 6,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 5,observed
+0x2b8,CANADA 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 6,observed
+0x2b9,CANADA 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 7,observed
+0x2ba,CROATIA,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 8,observed
+0x2bb,DENMARK 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 9,observed
+0x2bc,DENMARK 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 10,observed
+0x2bd,EURO 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 11,observed
+0x2be,EURO 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 12,observed
+0x2bf,EURO 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 13,observed
+0x2c0,EURO 4,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 14,observed
+0x2c1,EURO 5,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 15,observed
+0x2c2,EURO 6,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 16,observed
+0x2c3,EURO 7,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 17,observed
+0x2c4,EURO 8,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 18,observed
+0x2c5,EURO 9,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 19,observed
+0x2c6,EURO 10,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 20,observed
+0x2c7,EURO 11,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 21,observed
+0x2c8,EURO 12,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 22,observed
+0x2c9,GERMANY 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 23,observed
+0x2ca,GERMANY 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 24,observed
+0x2cb,GERMANY 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 25,observed
+0x2cc,ITALY 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 26,observed
+0x2cd,ITALY 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 27,observed
+0x2ce,JAPAN 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 28,observed
+0x2cf,JAPAN 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 29,observed
+0x2d0,LITHUANIA,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 30,observed
+0x2d1,MIDDLE EAST,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 31,observed
+0x2d2,NEW ZEALAND 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 32,observed
+0x2d3,NEW ZEALAND 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 33,observed
+0x2d4,NORWAY 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 34,observed
+0x2d5,NORWAY 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 35,observed
+0x2d6,NORWAY 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 36,observed
+0x2d7,NORWAY 4,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 37,observed
+0x2d8,NORWAY 5,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 38,observed
+0x2d9,NORWAY 6,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 39,observed
+0x2da,NORWAY 7,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 40,observed
+0x2db,NORWAY 8,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 41,observed
+0x2dc,PORTUGAL,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 42,observed
+0x2dd,RUSSIA,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 43,observed
+0x2de,SOUTH AFRICA 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 44,observed
+0x2df,SOUTH AFRICA 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 45,observed
+0x2e0,SWEDEN 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 46,observed
+0x2e1,SWEDEN 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 47,observed
+0x2e2,SWITZERLAND 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 48,observed
+0x2e3,SWITZERLAND 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 49,observed
+0x2e4,TAIWAN,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 50,observed
+0x2e5,UK 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 51,observed
+0x2e6,UK 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 52,observed
+0x2e7,UK 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 53,observed
+0x2e8,UK 4,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 54,observed
+0x2e9,UK 5,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 55,observed
+0x2ea,UK 6,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 56,observed
+0x2eb,USA 1,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 57,observed
+0x2ec,USA 2,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 58,observed
+0x2ed,USA 3,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 59,observed
+0x2ee,USA 4,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 60,observed
+0x2ef,USA 5,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 61,observed
+0x2f0,USA 6,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 62,observed
+0x2f1,USA 7,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 63,observed
+0x2f2,USA 8,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 64,observed
+0x2f3,USA 9,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 65,observed
+0x2f4,USA 10,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 66,observed
+0x2f5,USA 11,pricing preset name,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,0x26a4c (adj 28 formatter: pricing record +0x10),GAME PRICING = 67,observed
+0x2f6,CREDIT,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 29 MATCH AWARD value 0,code
+0x2f7,TICKET,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 29 MATCH AWARD value 1,code
+0x2f8,TOKEN,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 29 MATCH AWARD value 2,code
+0x2fa,OFF,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 35 KNOCKER VOLUME value 0,code
+0x2fb,LOW,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 35 KNOCKER VOLUME value 1,code
+0x2fc,NORMAL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 35 KNOCKER VOLUME value 2,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 4 FAST BOOT value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 10 PLAYER LANGUAGE SELECT value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 21 REPLAY BOOST value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 34 FREE PLAY value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 36 GAME RESTART value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 37 BILL VALIDATOR value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 41 COINDOOR BALL SAVER value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 42 COMPETITION MODE value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 43 CONSOLATION BALL value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 46 PLAYER COMPETITION value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 47 TEAM SCORES value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 48 ALLOW HIGH SCORES value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 63 LOST BALL RECOVERY value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 64 COIN DOOR DISABLE TILT value 1,code
+0x300,OFF,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 40 FLIPPER BALL LAUNCH value 0,code
+0x301,LEFT FLIPPER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 40 FLIPPER BALL LAUNCH value 1,code
+0x302,RIGHT FLIPPER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 40 FLIPPER BALL LAUNCH value 2,code
+0x303,EITHER FLIPPER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 40 FLIPPER BALL LAUNCH value 3,code
+0x304,BOTH FLIPPERS,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 40 FLIPPER BALL LAUNCH value 4,code
+0x305,COIN METER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 44 Q24 OPTION value 0,code
+0x306,TOKEN DISPENSER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 44 Q24 OPTION value 1,code
+0x307,KNOCKER,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 44 Q24 OPTION value 2,code
+0x309,CREDIT,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 54 HIGH SCORE AWARD value 0,code
+0x30a,TICKET,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 54 HIGH SCORE AWARD value 1,code
+0x30b,TOKEN,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 54 HIGH SCORE AWARD value 2,code
+0x30c,3 INITIALS,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 60 HSTD INITIALS value 0,code
+0x30d,10 LETTER NAME,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 60 HSTD INITIALS value 1,code
+0x98,HARD,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 1 COIL PULSE POWER value 0,code
+0x99,SOFT,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 1 COIL PULSE POWER value 1,code
+0x9a,NORMAL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 1 COIL PULSE POWER value 2,code
+0x9b,OFF,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 2 CUSTOM MESSAGE value 0,code
+0x9c,ON,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 2 CUSTOM MESSAGE value 1,code
+0x9d,CHANGE,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 2 CUSTOM MESSAGE value 2,code
+0x9e,12-HOUR,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 3 TIME FORMAT value 0,code
+0x9f,24-HOUR,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 3 TIME FORMAT value 1,code
+0xa0,OFF,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 5 FLASH LAMP POWER value 0,code
+0xa1,DIM,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 5 FLASH LAMP POWER value 1,code
+0xa2,NORMAL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 5 FLASH LAMP POWER value 2,code
+0xa3,ENGLISH,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 7 LANGUAGE value 0,code
+0xa4,DEUTSCH,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 7 LANGUAGE value 1,code
+0xa5,FRANCAIS,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 7 LANGUAGE value 2,code
+0xa6,ESPANOL,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 7 LANGUAGE value 3,code
+0xa7,ITALIANO,adjustment value label,ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 7 LANGUAGE value 4,code
+0xea,STANDARD ADJUSTMENTS,menu item name,MAIN MENU > ADJUSTMENTS,58,STANDARD ADJUSTMENTS,0x10464bc,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 88,observed
+0xeb,RETURN TO MAIN MENU,menu item name,MAIN MENU > ADJUSTMENTS,59,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xec,EXIT SERVICE MENU,menu item name,MAIN MENU > ADJUSTMENTS,60,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xed,DISPLAY HELP SCREEN,menu item name,MAIN MENU > ADJUSTMENTS,61,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0xee,GO TO INSTALLS MENU,menu item name,MAIN MENU > UTILITIES,62,GO TO INSTALLS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 90,observed
+,,dynamic: *param_1,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x21d00 FUN_00021d00 y=param_6,,code
+0x22c,SET CUSTOM MESSAGE,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=4,,code
+0x22d,RESTORE FACTORY DEFAULT,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0xc,,code
+0x22e,CUSTOM MESSAGE?,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0x13,,code
+0x231,CUSTOM MESSAGE,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=10,,code
+0x232,RESTORED,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0x12,,code
+0x233,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0x1b,,code
+0x234,"ABCDEFGHIJKLMNOPQRSTUVWXYZ!""#$%&'()*+,-./0123456789:;<=>?@",msg_get,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234,,code
+0x235,CUSTOM MESSAGE,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=10,,code
+0x236,SET,text_draw_msg,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0x12,,code
+0x237,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,0x104d234 FUN_0104d234 y=0x1b,,code
+0xef,ENTER CUSTOM MESSAGE,menu item name,MAIN MENU > UTILITIES,63,ENTER CUSTOM MESSAGE,0x104d950,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 92,observed
+,,dynamic: param_3,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0xcbf8 FUN_0000cbf8,,code
+,,dynamic: uVar3,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0xcbf8 FUN_0000cbf8,,code
+0x1ff,SET DATE/TIME,text_draw_msg,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0x104da1c FUN_0104da1c y=4,,code
+0x200,CURRENT DATE/TIME:,text_draw_msg,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0x104da1c FUN_0104da1c y=0x10,,code
+0x201,DATE/TIME SET,text_draw_msg,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0x104da1c FUN_0104da1c y=10,,code
+0x202,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,0x104da1c FUN_0104da1c y=0x1b,,code
+0xf0,SET DATE/TIME,menu item name,MAIN MENU > UTILITIES,64,SET DATE/TIME,0x104da1c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 96,observed
+0xf1,GO TO RESETS MENU,menu item name,MAIN MENU > UTILITIES,65,GO TO RESETS MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 98,observed
+0xf2,GO TO SERIAL MENU,menu item name,(not in any runtime menu),66,GO TO SERIAL MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 100,code
+0xf3,GO TO USB MENU,menu item name,MAIN MENU > UTILITIES,67,GO TO USB MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 102,observed
+0xf4,RETURN TO MAIN MENU,menu item name,MAIN MENU > UTILITIES,68,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0xf5,EXIT SERVICE MENU,menu item name,MAIN MENU > UTILITIES,69,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0xf6,DISPLAY HELP SCREEN,menu item name,MAIN MENU > UTILITIES,70,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: param_5,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=0x12,,code
+,,dynamic: param_4,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=10,,code
+,,dynamic: param_3,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=9,,code
+0x1dc,INSTALL EXTRA EASY,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049c2c FUN_01049c2c,,code
+0x1dd,EXTRA EASY SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049c2c FUN_01049c2c,,code
+0x1de,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049c2c FUN_01049c2c,,code
+0x1df,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049c2c FUN_01049c2c,,code
+0x1fb,(INSTALLED),text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=0xf,,code
+0x1fc,PRESS 'SELECT' TO INSTALL,text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=0x16,,code
+0x1fd,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=0x1c,,code
+0x1fe,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,0x1049910 FUN_01049910 y=0x1b,,code
+0xf7,INSTALL EXTRA EASY,menu item name,MAIN MENU > UTILITIES > INSTALLS,71,INSTALL EXTRA EASY,0x1049c2c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 104,observed
+0x1e0,INSTALL EASY,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,72,INSTALL EASY,0x1049734,0x1049734 FUN_01049734,,code
+0x1e1,EASY SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,72,INSTALL EASY,0x1049734,0x1049734 FUN_01049734,,code
+0x1e2,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,72,INSTALL EASY,0x1049734,0x1049734 FUN_01049734,,code
+0x1e3,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,72,INSTALL EASY,0x1049734,0x1049734 FUN_01049734,,code
+0xf8,INSTALL EASY,menu item name,MAIN MENU > UTILITIES > INSTALLS,72,INSTALL EASY,0x1049734,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 106,observed
+0x1e4,INSTALL MEDIUM,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,73,INSTALL MEDIUM,0x1049bec,0x1049bec FUN_01049bec,,code
+0x1e5,MEDIUM SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,73,INSTALL MEDIUM,0x1049bec,0x1049bec FUN_01049bec,,code
+0x1e6,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,73,INSTALL MEDIUM,0x1049bec,0x1049bec FUN_01049bec,,code
+0x1e7,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,73,INSTALL MEDIUM,0x1049bec,0x1049bec FUN_01049bec,,code
+0xf9,INSTALL MEDIUM,menu item name,MAIN MENU > UTILITIES > INSTALLS,73,INSTALL MEDIUM,0x1049bec,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 108,observed
+0x1e8,INSTALL HARD,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,74,INSTALL HARD,0x1049b6c,0x1049b6c FUN_01049b6c,,code
+0x1e9,HARD SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,74,INSTALL HARD,0x1049b6c,0x1049b6c FUN_01049b6c,,code
+0x1ea,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,74,INSTALL HARD,0x1049b6c,0x1049b6c FUN_01049b6c,,code
+0x1eb,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,74,INSTALL HARD,0x1049b6c,0x1049b6c FUN_01049b6c,,code
+0xfa,INSTALL HARD,menu item name,MAIN MENU > UTILITIES > INSTALLS,74,INSTALL HARD,0x1049b6c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 110,observed
+0x1ec,INSTALL EXTRA HARD,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,75,INSTALL EXTRA HARD,0x1049c6c,0x1049c6c FUN_01049c6c,,code
+0x1ed,EXTRA HARD SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,75,INSTALL EXTRA HARD,0x1049c6c,0x1049c6c FUN_01049c6c,,code
+0x1ee,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,75,INSTALL EXTRA HARD,0x1049c6c,0x1049c6c FUN_01049c6c,,code
+0x1ef,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,75,INSTALL EXTRA HARD,0x1049c6c,0x1049c6c FUN_01049c6c,,code
+0xfb,INSTALL EXTRA HARD,menu item name,MAIN MENU > UTILITIES > INSTALLS,75,INSTALL EXTRA HARD,0x1049c6c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 112,observed
+0x1f0,INSTALL DIRECTOR'S CUT,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,76,INSTALL DIRECTOR'S CUT,0x10496f4,0x10496f4 FUN_010496f4,,code
+0x1f1,DIRECTOR'S CUT SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,76,INSTALL DIRECTOR'S CUT,0x10496f4,0x10496f4 FUN_010496f4,,code
+0x1f2,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,76,INSTALL DIRECTOR'S CUT,0x10496f4,0x10496f4 FUN_010496f4,,code
+0x1f3,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,76,INSTALL DIRECTOR'S CUT,0x10496f4,0x10496f4 FUN_010496f4,,code
+0xfc,INSTALL DIRECTOR'S CUT,menu item name,MAIN MENU > UTILITIES > INSTALLS,76,INSTALL DIRECTOR'S CUT,0x10496f4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 120,observed
+0x1f4,INSTALL HOME PLAY,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,77,INSTALL HOME PLAY,0x1049bac,0x1049bac FUN_01049bac,,code
+0x1f5,HOME PLAY SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,77,INSTALL HOME PLAY,0x1049bac,0x1049bac FUN_01049bac,,code
+0x1f6,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,77,INSTALL HOME PLAY,0x1049bac,0x1049bac FUN_01049bac,,code
+0x1f7,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,77,INSTALL HOME PLAY,0x1049bac,0x1049bac FUN_01049bac,,code
+0xfd,INSTALL HOME PLAY,menu item name,MAIN MENU > UTILITIES > INSTALLS,77,INSTALL HOME PLAY,0x1049bac,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 122,observed
+0x1f8,INSTALL FACTORY,text_draw_msg_fit,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=10,,code
+0x1f9,FACTORY SETTINGS,text_draw_msg_fit,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=10,,code
+0x1fa,INSTALLED,text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=0x12,,code
+0x1fc,PRESS 'SELECT' TO INSTALL,text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=0x15,,code
+0x1fd,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=0x1b,,code
+0x1fe,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,0x1049774 FUN_01049774 y=0x1b,,code
+0xfe,INSTALL FACTORY,menu item name,MAIN MENU > UTILITIES > INSTALLS,78,INSTALL FACTORY,0x1049774,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 128,observed
+0xff,RETURN TO UTILITIES MENU,menu item name,MAIN MENU > UTILITIES > INSTALLS,79,RETURN TO UTILITIES MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x100,EXIT SERVICE MENU,menu item name,MAIN MENU > UTILITIES > INSTALLS,80,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x101,DISPLAY HELP SCREEN,menu item name,MAIN MENU > UTILITIES > INSTALLS,81,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x102,RESET COIN AUDITS,menu item name,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 130,observed
+0x143,RESET COIN AUDITS,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=10,,code
+0x144,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=0x15,,code
+0x145,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=0x1b,,code
+0x146,RESET COIN AUDITS,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=10,,code
+0x147,COMPLETE,text_draw_msg,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=0x12,,code
+0x148,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,82,RESET COIN AUDITS,0x104b3e4,0x104b3e4 FUN_0104b3e4 y=0x1b,,code
+0x103,RESET GAME AUDITS,menu item name,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 132,observed
+0x149,RESET GAME AUDITS,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=10,,code
+0x14a,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=0x15,,code
+0x14b,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=0x1b,,code
+0x14c,RESET GAME AUDITS,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=10,,code
+0x14d,COMPLETE,text_draw_msg,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=0x12,,code
+0x14e,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,83,RESET GAME AUDITS,0x104b244,0x104b244 FUN_0104b244 y=0x1b,,code
+0x104,RESET CREDITS,menu item name,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 138,observed
+0x14f,RESET CREDITS,text_draw_msg,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,0x104b584 FUN_0104b584 y=8,,code
+0x150,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,0x104b584 FUN_0104b584 y=0x17,,code
+0x151,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,0x104b584 FUN_0104b584 y=0x1d,,code
+0x152,RESET CREDITS COMPLETE,text_draw_msg,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,0x104b584 FUN_0104b584 y=8,,code
+0x153,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,84,RESET CREDITS,0x104b584,0x104b584 FUN_0104b584 y=0x1b,,code
+0x105,RESET FACTORY SETTINGS,menu item name,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 140,observed
+0x13a,FACTORY RESET,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=10,,code
+0x13b,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=0x15,,code
+0x13c,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=0x1b,,code
+0x13d,FACTORY RESET,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=10,,code
+0x13e,COMPLETE,text_draw_msg,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=0x12,,code
+0x13f,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,85,RESET FACTORY SETTINGS,0x104b728,0x104b728 FUN_0104b728 y=0x1b,,code
+0x106,RETURN TO UTILITIES MENU,menu item name,MAIN MENU > UTILITIES > RESETS,86,RETURN TO UTILITIES MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x107,EXIT SERVICE MENU,menu item name,MAIN MENU > UTILITIES > RESETS,87,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x108,DISPLAY HELP SCREEN,menu item name,MAIN MENU > UTILITIES > RESETS,88,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x109,UPDATE GAME CODE,menu item name,SERIAL,89,UPDATE GAME CODE,0x104b8c0,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 162,observed
+0x18c,GAME CODE UPDATE,text_draw_msg,SERIAL,89,UPDATE GAME CODE,0x104b8c0,0x104b8c0 FUN_0104b8c0 y=4,,code
+0x10a,RETURN TO UTILITIES MENU,menu item name,SERIAL,90,RETURN TO UTILITIES MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x10b,EXIT SERVICE MENU,menu item name,SERIAL,91,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x10c,DISPLAY HELP SCREEN,menu item name,SERIAL,92,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x10d,UPDATE GAME CODE,menu item name,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 142,observed
+0x18d,GAME CODE UPDATE,text_draw_msg_fit,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,0x104ef44 FUN_0104ef44 y=4,,code
+0x1bb,SET DIP-SWITCH #8 TO 'ON',text_draw_msg,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,0x104ef44 FUN_0104ef44 y=0x15,,code
+0x1bc,PRESS 'SELECT' TO REBOOT,text_draw_msg,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,0x104ef44 FUN_0104ef44 y=0x15,,code
+0x1bd,OR POWER-CYCLE GAME,text_draw_msg,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,0x104ef44 FUN_0104ef44 y=0x1b,,code
+0x1be,REBOOTING . . .,text_draw_msg,MAIN MENU > UTILITIES > USB,93,UPDATE GAME CODE,0x104ef44,0x104ef44 FUN_0104ef44 y=0x16,,code
+,,dynamic: msg_id,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e6fc FUN_0104e6fc,,code
+,,dynamic: uVar5,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=uVar6,,code
+0x10e,BACKUP TO USB MEMORY STICK,menu item name,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 144,observed
+0x16e,GAME CODE BACKUP,text_draw_msg_fit,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=4,,code
+0x16f,INSERT USB MEMORY STICK,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0xf,,code
+0x170,OR,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x15,,code
+0x171,PRESS 'BACK' TO EXIT,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x1b,,code
+0x172,USB DEVICE NOT RECOGNIZED,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0xc,,code
+0x173,INSERT NEW USB MEMORY STICK,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x13,,code
+0x174,OR,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x19,,code
+0x175,PRESS 'BACK' TO EXIT,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x1f,,code
+0x176,SCANNING FILE SYSTEM,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x13,,code
+0x178,CHECKING FREE SPACE,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x13,,code
+0x17a,INSUFFICIENT SPACE LEFT,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0xd,,code
+0x17b,ON USB MEMORY STICK,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x13,,code
+0x17c,FOR BACKUP,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x19,,code
+0x181,PRESS 'SELECT' TO SAVE IMAGE,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x13,,code
+0x182,OR,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x19,,code
+0x187,"%,lu/%,lu",text_printf_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x15,,code
+0x189,GAME CODE IMAGE,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=10,,code
+0x18a,SAVED,text_draw_msg,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x12,,code
+0x18b,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x104e7bc FUN_0104e7bc y=0x1b,,code
+0xac,%c%x-%x,msg_get,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x6cd4 FUN_00006cd4,,code
+0xad,%c%x-%02x,msg_get,MAIN MENU > UTILITIES > USB,94,BACKUP TO USB MEMORY STICK,0x104e7bc,0x6cd4 FUN_00006cd4,,code
+0x10f,RETURN TO UTILITIES MENU,menu item name,MAIN MENU > UTILITIES > USB,95,RETURN TO UTILITIES MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x110,EXIT SERVICE MENU,menu item name,MAIN MENU > UTILITIES > USB,96,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x111,DISPLAY HELP SCREEN,menu item name,MAIN MENU > UTILITIES > USB,97,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x32f,GO TO REDEMPTION MENU,menu item name,MAIN MENU,98,GO TO REDEMPTION MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),"submenu; icon image 10; shown only if 0x10088ac: the game function always returns 1, so always shown",observed
+0x330,GO TO TOURNAMENT MENU,menu item name,MAIN MENU,99,GO TO TOURNAMENT MENU,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),"submenu; icon image 8; shown only if 0x283c8: 0x54a0() != 0 (tournament support, valid country record)",observed
+,,dynamic: msg_id,MAIN MENU > DIAGNOSTICS,100,BALL TROUGH TEST,0x10402c0,0xd8e4 FUN_0000d8e4,,code
+0x331,BALL TROUGH TEST,menu item name,MAIN MENU > DIAGNOSTICS,100,BALL TROUGH TEST,0x10402c0,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 28,observed
+0x3ae,TROUGH TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS,100,BALL TROUGH TEST,0x10402c0,0x10402c0 FUN_010402c0 y=4,,code
+0x3af,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS,100,BALL TROUGH TEST,0x10402c0,0x10402c0 FUN_010402c0 y=4,,code
+0x332,KNOCKER TEST,menu item name,MAIN MENU > DIAGNOSTICS,101,KNOCKER TEST,0x10405ec,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 32,observed
+0x3aa,KNOCKER TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS,101,KNOCKER TEST,0x10405ec,0x10405ec FUN_010405ec y=8,,code
+0x3ab,PRESS 'SELECT' TO ACTIVATE,text_draw_msg_fit,MAIN MENU > DIAGNOSTICS,101,KNOCKER TEST,0x10405ec,0x10405ec FUN_010405ec y=0xf,,code
+0x3ac,KNOCKER,text_draw_msg,MAIN MENU > DIAGNOSTICS,101,KNOCKER TEST,0x10405ec,0x10405ec FUN_010405ec y=0x16,,code
+0x3ad,ACTIVATING KNOCKER,text_draw_msg,MAIN MENU > DIAGNOSTICS,101,KNOCKER TEST,0x10405ec,0x10405ec FUN_010405ec y=0x1d,,code
+0x333,INSTALL 3-BALL,menu item name,MAIN MENU > UTILITIES > INSTALLS,102,INSTALL 3-BALL,0x1040720,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 114,observed
+0x373,INSTALL 3-BALL,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,102,INSTALL 3-BALL,0x1040720,0x1040720 FUN_01040720,,code
+0x374,3-BALL SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,102,INSTALL 3-BALL,0x1040720,0x1040720 FUN_01040720,,code
+0x375,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,102,INSTALL 3-BALL,0x1040720,0x1040720 FUN_01040720,,code
+0x376,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,102,INSTALL 3-BALL,0x1040720,0x1040720 FUN_01040720,,code
+0x334,INSTALL 5-BALL,menu item name,MAIN MENU > UTILITIES > INSTALLS,103,INSTALL 5-BALL,0x1040764,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 116,observed
+0x377,INSTALL 5-BALL,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,103,INSTALL 5-BALL,0x1040764,0x1040764 FUN_01040764,,code
+0x378,5-BALL SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,103,INSTALL 5-BALL,0x1040764,0x1040764 FUN_01040764,,code
+0x379,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,103,INSTALL 5-BALL,0x1040764,0x1040764 FUN_01040764,,code
+0x37a,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,103,INSTALL 5-BALL,0x1040764,0x1040764 FUN_01040764,,code
+0x335,INSTALL COMPETITION,menu item name,MAIN MENU > UTILITIES > INSTALLS,104,INSTALL COMPETITION,0x10407ec,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 118,observed
+0x37b,INSTALL COMPETITION,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,104,INSTALL COMPETITION,0x10407ec,0x10407ec FUN_010407ec,,code
+0x37c,COMPETITION SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,104,INSTALL COMPETITION,0x10407ec,0x10407ec FUN_010407ec,,code
+0x37d,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,104,INSTALL COMPETITION,0x10407ec,0x10407ec FUN_010407ec,,code
+0x37e,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,104,INSTALL COMPETITION,0x10407ec,0x10407ec FUN_010407ec,,code
+0x336,INSTALL NOVELTY,menu item name,MAIN MENU > UTILITIES > INSTALLS,105,INSTALL NOVELTY,0x1040830,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 124,observed
+0x37f,INSTALL NOVELTY,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,105,INSTALL NOVELTY,0x1040830,0x1040830 FUN_01040830,,code
+0x380,NOVELTY SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,105,INSTALL NOVELTY,0x1040830,0x1040830 FUN_01040830,,code
+0x381,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,105,INSTALL NOVELTY,0x1040830,0x1040830 FUN_01040830,,code
+0x382,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,105,INSTALL NOVELTY,0x1040830,0x1040830 FUN_01040830,,code
+0x337,INSTALL ADD-A-BALL,menu item name,MAIN MENU > UTILITIES > INSTALLS,106,INSTALL ADD-A-BALL,0x10407a8,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 126,observed
+0x383,INSTALL ADD-A-BALL,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,106,INSTALL ADD-A-BALL,0x10407a8,0x10407a8 FUN_010407a8,,code
+0x384,ADD-A-BALL SETTINGS,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,106,INSTALL ADD-A-BALL,0x10407a8,0x10407a8 FUN_010407a8,,code
+0x385,INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,106,INSTALL ADD-A-BALL,0x10407a8,0x10407a8 FUN_010407a8,,code
+0x386,NOT INSTALLED,"install screen text: msg passed to 0x1049910 (args 3-6, drawn at y=9/10/0x12 and status line)",MAIN MENU > UTILITIES > INSTALLS,106,INSTALL ADD-A-BALL,0x10407a8,0x10407a8 FUN_010407a8,,code
+,,dynamic: local_a8,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c,,code
+,,dynamic: uVar1,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=0x1f,,code
+,,dynamic: param_5,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x9ff8 FUN_00009ff8,,code
+0x338,SET CUSTOM PRICING,menu item name,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 94,observed
+0x4df,CUSTOM PRICING,text_draw_msg,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=4,,code
+0x4e0,INSTALL,text_draw_msg,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=local_1bc,,code
+0x4e1,%d,msg_get,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c,,code
+0x4e2, CREDIT%P1//S/% AT:,msg_get,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c,,code
+0x4e6,CUSTOM PRICING,text_draw_msg,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=10,,code
+0x4e7,INSTALLED,text_draw_msg,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=0x12,,code
+0x4e8,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES,107,SET CUSTOM PRICING,0x10457c4,0x1044f7c FUN_01044f7c y=0x1b,,code
+0x339,RESET GRAND CHAMPION,menu item name,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 134,observed
+0x349,RESET GRAND CHAMPION,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=10,,code
+0x34a,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=0x15,,code
+0x34b,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=0x1b,,code
+0x34c,GRAND CHAMPION SCORES,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=10,,code
+0x34d,RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=0x12,,code
+0x34e,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,108,RESET GRAND CHAMPION,0x104196c,0x104196c FUN_0104196c y=0x1b,,code
+0x33a,RESET HIGH SCORES,menu item name,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 136,observed
+0x34f,RESET HIGH SCORES,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=10,,code
+0x350,PRESS 'SELECT' TO RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=0x15,,code
+0x351,PRESS 'BACK' TO CANCEL,text_draw_msg,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=0x1b,,code
+0x352,HIGH SCORES,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=10,,code
+0x353,RESET,text_draw_msg,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=0x12,,code
+0x354,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,MAIN MENU > UTILITIES > RESETS,109,RESET HIGH SCORES,0x1041b10,0x1041b10 FUN_01041b10 y=0x1b,,code
+,,dynamic: (short)piVar3[1],MAIN MENU > TOURNAMENT,110,START TOURNAMENT,0x1044cf8,0x1044cf8 FUN_01044cf8 y=iVar2,,code
+0x33b,START TOURNAMENT,menu item name,MAIN MENU > TOURNAMENT,110,START TOURNAMENT,0x1044cf8,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 146; shown only if 0x28480: tournament type not 3/4 (no tournament running),observed
+0x3f8,START TOURNAMENT,text_draw_msg,MAIN MENU > TOURNAMENT,110,START TOURNAMENT,0x1044cf8,0x1044cf8 FUN_01044cf8 y=4,,code
+0x3fb,PRESS 'SELECT' TO BEGIN,text_draw_msg,MAIN MENU > TOURNAMENT,110,START TOURNAMENT,0x1044cf8,0x1044cf8 FUN_01044cf8 y=0x1f,,code
+0x33c,STOP TOURNAMENT,menu item name,(not in any runtime menu),111,STOP TOURNAMENT,0x1042204,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 148; shown only if 0x28464: tournament type 3 or 4 (running),code
+0x4b5,STOP TOURNAMENT,text_draw_msg,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=10,,code
+0x4b6,ARE YOU SURE?,text_draw_msg,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=0x12,,code
+0x4b7,PRESS 'SELECT' TO CONFIRM,text_draw_msg_fit,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=0x1b,,code
+0x4b8,TOURNAMENT,text_draw_msg,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=10,,code
+0x4b9,STOPPED,text_draw_msg,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=0x12,,code
+0x4ba,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,,111,STOP TOURNAMENT,0x1042204,0x1042204 FUN_01042204 y=0x1b,,code
+,,dynamic: (ushort)((iVar9 + (uVar7 & 0xffff)) * 0x10000 >> 0x10),,112,VIEW TOURNAMENT DATA,0x10420ac,0x1041cb4 FUN_01041cb4,,code
+,,dynamic: DAT_00030e96,,112,VIEW TOURNAMENT DATA,0x10420ac,0x1041cb4 FUN_01041cb4,,code
+,,dynamic: uVar3,,112,VIEW TOURNAMENT DATA,0x10420ac,0x10420ac FUN_010420ac y=0x13,,code
+0x33d,VIEW TOURNAMENT DATA,menu item name,(not in any runtime menu),112,VIEW TOURNAMENT DATA,0x10420ac,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 150; shown only if 0x2843c: tournament record +0x31 != 0 (data exists),code
+0x4d4,%d%P1/ST/ND/RD/TH/% PLACE,msg_get,,112,VIEW TOURNAMENT DATA,0x10420ac,0x1041cb4 FUN_01041cb4,,code
+0x4d5,BUMP 'N' WIN,msg_get,,112,VIEW TOURNAMENT DATA,0x10420ac,0x1041cb4 FUN_01041cb4,,code
+0x4d6, - ,msg_get,,112,VIEW TOURNAMENT DATA,0x10420ac,0x1041cb4 FUN_01041cb4,,code
+0x33e,SIGN MESSAGES A-B,menu item name,MAIN MENU > TOURNAMENT,113,SIGN MESSAGES A-B,0x1044f04,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 152,observed
+0x33f,RETURN TO MAIN MENU,menu item name,MAIN MENU > TOURNAMENT,114,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x340,EXIT SERVICE MENU,menu item name,MAIN MENU > TOURNAMENT,115,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x341,DISPLAY HELP SCREEN,menu item name,MAIN MENU > TOURNAMENT,116,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x342,INSTALL REDEMPTION SYSTEM,menu item name,MAIN MENU > REDEMPTION,117,INSTALL REDEMPTION SYSTEM,0x10417ac,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 154; shown only if 0x2840c: 0x1b348() == 0 (no redemption system installed),observed
+0x343,CHANGE REDEMPTION SETTINGS,menu item name,(not in any runtime menu),118,CHANGE REDEMPTION SETTINGS,0x10417a4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 156; shown only if 0x283f4: 0x1b348() != 0 (installed),code
+0x344,UNINSTALL REDEMPTION SYSTEM,menu item name,(not in any runtime menu),119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 158; shown only if 0x28424: 0x1b348() != 0 (installed),code
+0x3e2,UNINSTALL REDEMPTION,text_draw_msg,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=10,,code
+0x3e3,ARE YOU SURE?,text_draw_msg,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=0x12,,code
+0x3e4,PRESS 'SELECT' TO CONFIRM,text_draw_msg_fit,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=0x1b,,code
+0x3e5,REDEMPTION,text_draw_msg,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=10,,code
+0x3e6,UNINSTALLED,text_draw_msg,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=0x12,,code
+0x3e7,PRESS 'SELECT' TO CONTINUE,text_draw_msg_fit,,119,UNINSTALL REDEMPTION SYSTEM,0x10417b4,0x10417b4 FUN_010417b4 y=0x1b,,code
+0x345,VIEW REDEMPTION DATA,menu item name,(not in any runtime menu),120,VIEW REDEMPTION DATA,0x10414e4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 160; shown only if 0x283dc: 0x1b348() != 0 (installed),code
+0x3e9,REDEMPTION DATA,text_draw_msg,,120,VIEW REDEMPTION DATA,0x10414e4,0x10414e4 FUN_010414e4 y=4,,code
+0x3f7,USE -/+ TO VIEW OR 'BACK' TO EXIT,text_draw_msg,,120,VIEW REDEMPTION DATA,0x10414e4,0x10414e4 FUN_010414e4 y=0x1d,,code
+0x346,RETURN TO MAIN MENU,menu item name,MAIN MENU > REDEMPTION,121,RETURN TO MAIN MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x347,EXIT SERVICE MENU,menu item name,MAIN MENU > REDEMPTION,122,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x348,DISPLAY HELP SCREEN,menu item name,MAIN MENU > REDEMPTION,123,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+0x503,FEATURE AUDITS,menu item name,MAIN MENU > AUDITS,124,FEATURE AUDITS,0x1005ce4,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 1430,observed
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 69 MEGATRON M.B. VIRTUAL LOCK value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 84 DISABLE ORBIT CONTROL GATE value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 85 DISABLE OPTIMUS PRIME MOTOR value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 86 RESET WIZARD AT BALL START value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 87 SAVE OPTIMUS PRIME PROGRESS value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 88 SAVE MEGATRON PROGRESS value 0,code
+0x2,NO,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 89 AUTOFIRE AFTER LOCK value 0,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 69 MEGATRON M.B. VIRTUAL LOCK value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 84 DISABLE ORBIT CONTROL GATE value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 85 DISABLE OPTIMUS PRIME MOTOR value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 86 RESET WIZARD AT BALL START value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 87 SAVE OPTIMUS PRIME PROGRESS value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 88 SAVE MEGATRON PROGRESS value 1,code
+0x3,YES,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 89 AUTOFIRE AFTER LOCK value 1,code
+0x309,CREDIT,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 91 COMBO CHAMPION AWARD value 0,code
+0x309,CREDIT,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 94 BEST COMBO CHAMPION AWARD value 0,code
+0x30a,TICKET,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 91 COMBO CHAMPION AWARD value 1,code
+0x30a,TICKET,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 94 BEST COMBO CHAMPION AWARD value 1,code
+0x30b,TOKEN,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 91 COMBO CHAMPION AWARD value 2,code
+0x30b,TOKEN,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 94 BEST COMBO CHAMPION AWARD value 2,code
+0x310,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 67 OPTIMUS DIFFICULTY value 0,code
+0x310,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 68 MEGATRON M.B. LOCK DIFFICULTY value 0,code
+0x310,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 70 BUMBLEBEE LETTER DIFFICULTY value 0,code
+0x311,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 67 OPTIMUS DIFFICULTY value 1,code
+0x311,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 68 MEGATRON M.B. LOCK DIFFICULTY value 1,code
+0x311,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 70 BUMBLEBEE LETTER DIFFICULTY value 1,code
+0x312,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 67 OPTIMUS DIFFICULTY value 2,code
+0x312,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 68 MEGATRON M.B. LOCK DIFFICULTY value 2,code
+0x312,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 70 BUMBLEBEE LETTER DIFFICULTY value 2,code
+0x313,EXTRA EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 66 MODE START DIFFICULTY value 0,code
+0x313,EXTRA EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 71 ORBIT DIFFICULTY value 0,code
+0x313,EXTRA EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY value 0,code
+0x314,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 66 MODE START DIFFICULTY value 1,code
+0x314,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 71 ORBIT DIFFICULTY value 1,code
+0x314,EASY,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY value 1,code
+0x315,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 66 MODE START DIFFICULTY value 2,code
+0x315,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 71 ORBIT DIFFICULTY value 2,code
+0x315,MEDIUM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY value 2,code
+0x316,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 66 MODE START DIFFICULTY value 3,code
+0x316,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 71 ORBIT DIFFICULTY value 3,code
+0x316,HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY value 3,code
+0x317,EXTRA HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 66 MODE START DIFFICULTY value 4,code
+0x317,EXTRA HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 71 ORBIT DIFFICULTY value 4,code
+0x317,EXTRA HARD,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY value 4,code
+0x505,FEATURE ADJUSTMENTS,menu item name,MAIN MENU > ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1005d18,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 1430,observed
+0x511,NONE,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 96 SHAKER MOTOR (OPTIONAL) value 0,code
+0x512,MINIMAL USE,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 96 SHAKER MOTOR (OPTIONAL) value 1,code
+0x513,MODERATE USE,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 96 SHAKER MOTOR (OPTIONAL) value 2,code
+0x514,MAXIMAL USE,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 96 SHAKER MOTOR (OPTIONAL) value 3,code
+0x68a,RANDOM,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 65 TRANSFORMERS SELECT value 0,code
+0x68b,AUTOBOT,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 65 TRANSFORMERS SELECT value 1,code
+0x68c,DECEPTICON,adjustment value label,ADJUSTMENTS,125,FEATURE ADJUSTMENTS,0x1045c08,"0x76c msg-list formatter (via 0x1045c08, y=0x16)",adj 65 TRANSFORMERS SELECT value 2,code
+0x507,GAME-SPECIFIC TESTS,menu item name,MAIN MENU > DIAGNOSTICS,126,GAME-SPECIFIC TESTS,0x10459d8,service menu renderer (item table 0x40e3c40 +0xc),submenu; icon image 1430,observed
+0x50b,OPTIMUS PRIME MOTOR TEST,menu item name,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,service menu renderer (item table 0x40e3c40 +0xc),screen; icon image 1432,observed
+0x50c,OPTIMUS PRIME MOTOR TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,0x1025844 FUN_01025844 y=4,,code
+0x50d,50V / 20V DISABLED,text_draw_msg,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,0x1025844 FUN_01025844 y=4,,code
+0x50e,USE -/+ OR 'SELECT' TO TEST,text_draw_msg,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,0x1025844 FUN_01025844 y=0x1e,,code
+0x50f,MOVING TO SWITCH %s,text_printf_msg,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,0x1025844 FUN_01025844 y=0x1e,,code
+0x510,MOVE TO SWITCH %s: FAILED,text_printf_msg,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,127,OPTIMUS PRIME MOTOR TEST,0x1025844,0x1025844 FUN_01025844 y=0x18,,code
+0x508,RETURN TO DIAGNOSTICS MENU,menu item name,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,128,RETURN TO DIAGNOSTICS MENU,0x1045a78,service menu renderer (item table 0x40e3c40 +0xc),back; icon image 14,observed
+0x509,EXIT SERVICE MENU,menu item name,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,129,EXIT SERVICE MENU,0x1045ac0,service menu renderer (item table 0x40e3c40 +0xc),exit; icon image 16,observed
+0x50a,DISPLAY HELP SCREEN,menu item name,MAIN MENU > DIAGNOSTICS > GAME-SPECIFIC TESTS,130,DISPLAY HELP SCREEN,0x1045a74,service menu renderer (item table 0x40e3c40 +0xc),help; icon image 18,observed
+,,dynamic: local_74,service menu shell,,,0x103f960,0x103f47c FUN_0103f47c y=local_6c,,code
+,,dynamic: msg_id,service menu shell,,,0x103f960,0x103f888 FUN_0103f888 y=0x1e,,code
+,,dynamic: msg_id,service menu shell,,,0x103f960,0x103f960 deff_003_transformers y=0x1f,,code
+,,dynamic: uVar6,service menu shell,,,0x103f960,0x103f960 deff_003_transformers y=0x1f,,code
+0x24a,TECHNICIAN ALERT - (%d/%d),text_printf_msg,service menu shell,,,0x103f960,0x103f960 deff_003_transformers y=4,,code
+0x24b,NO,text_draw_msg,service menu shell,,,0x103f960,0x103f960 deff_003_transformers y=0xe,,code
+0x24c,TECHNICIAN ALERTS,text_draw_msg,service menu shell,,,0x103f960,0x103f960 deff_003_transformers y=0x17,,code
+0x38d,U.S.A.,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 0,code
+0x38e,AUSTRIA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 1,code
+0x38f,BELGIUM,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 2,code
+0x390,CANADA 1,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 3,code
+0x391,NETHERLANDS,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 4,code
+0x392,FINLAND,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 5,code
+0x393,FRANCE,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 6,code
+0x394,GERMANY,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 7,code
+0x395,ITALY,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 8,code
+0x396,DENMARK,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 9,code
+0x397,NORWAY 1,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 10,code
+0x398,SWEDEN,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 11,code
+0x399,SWITZERLAND,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 12,code
+0x39a,AUSTRALIA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 13,code
+0x39b,U.K.,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 14,code
+0x39c,GREECE,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 15,code
+0x39d,NEW ZEALAND,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 16,code
+0x39e,PORTUGAL,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 17,code
+0x39f,SPAIN,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 18,code
+0x3a0,CHUCK-E-CHEESE,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 19,code
+0x3a1,SOUTH AFRICA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 20,code
+0x3a2,JAPAN,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 21,code
+0x3a3,CROATIA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 22,code
+0x3a4,MIDDLE EAST,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 23,code
+0x3a5,TAIWAN,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 24,code
+0x3a6,RUSSIA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 25,code
+0x3a7,CANADA 2,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 26,code
+0x3a8,LITHUANIA,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 27,code
+0x3a9,NORWAY 2,country name (country record +0x14),boot / country check,,,,country table 0x040ceca4 +0x14,country 28,code
+0xae,SERVICE MENU,msg_get,service menu shell,,,0x103f960,0x103f888 FUN_0103f888,,code

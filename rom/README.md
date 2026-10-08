@@ -32,7 +32,8 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball: points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
 | `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
-| `rom_data/settings/` | `adjustments.csv` (99: NVRAM slot, default, min, max, step, name, display type), `audits.csv` (167) |
+| `rom_data/settings/` | `adjustments.csv` (98: NVRAM slot, defaults, range, menu, labels, country overrides, readers), `audits.csv` (166: menu, formula, incremented_by), `pricing.json`/`.csv` (68 presets), `presets.csv`, `service_texts.csv`, `menus_runtime.json`; see its README |
+| `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory USA defaults observed in the emulator |
 | `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
 | `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
 | `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
