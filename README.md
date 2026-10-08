@@ -4,6 +4,20 @@ The Stern Transformers Pro game (ROM `tf_180`, v1.80) rebuilt on the [Mission Pi
 0.80 with the Godot media controller (GMC), from the ROM extraction in [rom/](rom/README.md). The goal is the ROM's
 game exactly; departures are listed in [docs/rom_differences.md](docs/rom_differences.md).
 
+## Install (Windows, one line)
+
+PowerShell or cmd. It installs what is missing (Git, Python 3.11), clones this repository into
+`%USERPROFILE%\Transformers-MPF` and runs `scripts\setup.py` (Godot, MPF, GMC, the media). With `-Vpx` (and
+`-Table <your .vpx>`) it also sets up Visual Pinball X ([docs/vpx.md](docs/vpx.md)):
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/vpx-bridge-d47e04/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
+```
+
+Without VPX: `powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/vpx-bridge-d47e04/scripts/install/install_prereqs_windows.ps1 | iex"`. Options:
+`-NoMonitor`, `-DryRun` (the plan only), `-Yes` (no questions); `$env:TF_DIR` / `$env:TF_BRANCH` before the line
+change the folder and branch. Safe to run again: it updates the clone and redoes only what changed.
+
 ## Run it
 
 ```

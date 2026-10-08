@@ -265,6 +265,9 @@ def main(argv=None):
         s.godot_import()
         if not args.skip_media and not s.dry:
             tc.write_media_stamp()          # scripts/run.py regenerates when this no longer matches
+    if args.vpx:
+        s.say("Visual Pinball X (docs/vpx.md): register the bridge once, as Administrator: "
+              "`python scripts/vpx_bridge.py --register`, then `python scripts/vpx_table.py <table.vpx>`.")
     s.say("Done. Run `python scripts/run.py` (Godot + MPF), or `python scripts/render_check.py` without a screen.")
     return 0
 
