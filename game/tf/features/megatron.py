@@ -33,7 +33,7 @@ leff 72, sound 0xe4, audit 0x7b); after 10 the center lane scores 3 double jackp
 audit 0x7d, requirement 0 completed) and the jackpots start over.
 End: down to one ball the running flag goes (music back), 218 ticks later the total (A deff 74 + leff 67, D deff
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
-Not modelled: the shaker (no data yet), task 0x57, adj 69 virtual lock, the insert lamps of each phase.
+Not modelled: task 0x57, adj 69 virtual lock, the insert lamps of each phase.
 """
 from tf.features import Feature
 
@@ -337,6 +337,7 @@ class Megatron(Feature):
         for side in self.sides.values():
             os_.deff_rule((lambda s: lambda: s.active)(side), side.bg, music=side.music, priority=0x60)
             os_.lamp_rule((lambda s: lambda: s.active)(side), leff=side.rule_leff, order=0x0100cee0 + side.flag)
+        self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
 
     def player_first_ball(self):
         pd = self.pd
@@ -421,6 +422,19 @@ class Megatron(Feature):
         self.pending += 1
         back_door = os_.now - self.back_door_at < BACK_DOOR_S
         os_.after(SETTLE_TICKS, lambda: self._handle(back_door))
+
+    def _keep_check(self, **kwargs):
+        """[0x0100a1f8]: the device keeps no ball while a multiball (any_multiball_running 0x01006704) or the
+        side mode (flag 0x3c) runs, so the locked balls go back into play; the lock count stays. Timed battles,
+        double and fast scoring keep them. The kicks use the multiball release spacing (inferred)."""
+        os_ = self.os
+        if not self.locked_held or not os_.game or not (os_.any_multiball() or os_.flag(0x3c)):
+            return
+        held, self.locked_held = self.locked_held, 0
+        os_.game.balls_in_play += held
+        for i in range(held):
+            os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT),
+                                            RELEASE_COILS[min(i, len(RELEASE_COILS) - 1)])
 
     def sw_13(self):
         self.back_door_at = self.os.now

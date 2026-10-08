@@ -24,6 +24,7 @@ is 0x00028168 here, 0x0002fd60 on Tron) until the ROM extraction maps tf_180's O
 The game's own numbers (music, speech, lamps) are in GAME below, from tf_180's tables where known; None means
 not known yet, and the call is skipped.
 """
+import csv
 import os
 import random
 import re
@@ -120,30 +121,26 @@ def adjustment_defaults(settings_path):
     return {n: tuple(v) for n, v in out.items()}
 
 
-# shaker_run(strength, min_setting): strength 1/2/3 runs the motor (coil 8) 200/384/1024 ms (Tron's OS table
-# 0x040d3998; tf_180's is not read yet)
+# shaker(pattern, min_level) [0x010307a0 -> 0x0103070c]: pattern 1/2/3 runs the motor (coil 8) 200/384/1024 ms
+# (table 0x040c7620); rom/rules/modes/shaker.md
 SHAKER_MS = {1: 200, 2: 384, 3: 1024}
-SHAKER_ADJ = 96              # adjustment 96 SHAKER MOTOR (OPTIONAL): 0 none .. 3 (tf_180 adjustments table)
+SHAKER_ADJ = 96              # adjustment 96 SHAKER MOTOR (OPTIONAL): 0 none, 1 minimal, 2 moderate, 3 maximal
 
 
-def shaker_table(shaker_path):
-    """Read the shaker_run calls from the asset package's shaker.yaml:
-    -> ({deff id: (strength, min_setting)}, {switch handler event: (strength, min_setting)})."""
-    deffs, handlers = {}, {}
-    if not os.path.exists(shaker_path):
-        return deffs, handlers
-    with open(shaker_path, encoding="utf-8") as f:
-        for line in f:
-            m = re.match(r"\s+(\w+)\{settings\.shaker_motor>=(\d)\}: shaker_strength_(\d)\s*(?:# effect (\d+))?",
-                         line)
-            if not m:
-                continue
-            entry = (int(m.group(3)), int(m.group(2)))
-            if m.group(4):
-                deffs[int(m.group(4))] = entry
-            else:
-                handlers[m.group(1)] = entry
-    return deffs, handlers
+def shaker_table(shaker_csv):
+    """{deff id: (pattern, min level)} from rom/rom_data/io/shaker.csv (rows "deff_NNN 0x..."; the fast-scoring
+    award's call, FUN_01004644, is made by tf/features/twobank.py)."""
+    deffs = {}
+    if not os.path.exists(shaker_csv):
+        return deffs
+    with open(shaker_csv, encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            deff = re.match(r"deff_(\d+)", row["rom_function"])
+            pattern = re.search(r"pattern (\d)", row["on_ms_or_pattern"])
+            level = re.match(r"adj 96 (>=|=) (\d)", row["condition"])
+            if deff and pattern and level:
+                deffs[int(deff.group(1))] = (int(pattern.group(1)), int(level.group(2)))
+    return deffs
 
 
 def sample_lengths(base):
@@ -265,8 +262,8 @@ class TfOS(CustomCode):
         self.game_seconds = 0.0     # validated play time of the running game
         self.replayed = False       # a replay was awarded in this game (DAT_0003817e)
         self._coindoor_save = False  # the running multiball save is the coin door ball saver's (adj 41)
-        self.shaker_deffs, self.shaker_handlers = shaker_table(os.path.join(
-            self.machine.machine_path, "..", "rom", "mpf_package", "config", "shaker.yaml"))
+        self.shaker_deffs = shaker_table(os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "io",
+                                                      "shaker.csv"))
         self.machine.tf = self
 
         ev = self.machine.events
@@ -677,14 +674,15 @@ class TfOS(CustomCode):
         return bool(self.state & ST_TILT)
 
     def shaker_run(self, strength, min_setting):
-        """shaker_run(strength, min_setting): run the shaker motor (coil 8) when adjustment 86 is at least
-        min_setting, never while tilted or in game over (gf_state & 0x310). Returns True when it ran."""
-        if self.adj[SHAKER_ADJ] < min_setting or self.state & 0x310 or not self.game:
+        """shaker(pattern, min_level) [0x010307a0]: run the shaker motor (coil 8) when adjustment 96 is not 0 and
+        at least min_level, never while tilted or in game over (gf_state & 0x310). A run already going for at
+        least as long is not cut short [0x0103070c]. Returns True when it ran."""
+        if not self.adj[SHAKER_ADJ] or self.adj[SHAKER_ADJ] < min_setting or self.state & 0x310 or not self.game:
             return False
         ms = SHAKER_MS.get(strength, SHAKER_MS[1])
         now = self.machine.clock.get_time()
         if now + ms / 1000.0 <= getattr(self, "_shaker_until", 0):
-            return True             # a new run only replaces a shorter one (assets/mpf_package/config/shows/shaker_*)
+            return True             # a new run only replaces a shorter one [0x0103070c]
         self._shaker_until = now + ms / 1000.0
         coil = self.machine.coils.get("c_shaker_motor_optional")
         if coil is not None:
@@ -699,7 +697,7 @@ class TfOS(CustomCode):
         return True
 
     def shaker_deff(self, deff_id):
-        """The display effects that call shaker_run (shaker.yaml, by effect number). The call is in the
+        """The display effects that call the shaker (shaker.csv, by effect number). The call is in the
         deff's own function, which runs once the deff has the display: a deff replaced in the same tick
         (e.g. by a higher priority one) does not run it."""
         if deff_id in self.shaker_deffs:
@@ -707,11 +705,6 @@ class TfOS(CustomCode):
                 if self.display.running(deff_id):
                     self.shaker_run(*self.shaker_deffs[deff_id])
             self.machine.clock.schedule_once(run, 0)
-
-    def shaker_handler(self, event):
-        """A switch handler's shaker_run (the package's shaker.yaml, by handler event)."""
-        if event in self.shaker_handlers:
-            self.shaker_run(*self.shaker_handlers[event])
 
     @property
     def in_play(self):

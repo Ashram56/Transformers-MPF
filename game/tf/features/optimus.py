@@ -13,7 +13,7 @@ n = left + 1, leff 178, sound 0x2aa (leff 177 when none is left); the last hit 2
 multiball with the center lane's multiplier.
 Multiball: multiball_start(3 if no ball is in play else in play + 2, save 625, grace 187); adj 87 restores the
 saved phase / remaining / lit shots, NO resets them (and the super base); 250,000 x the center multiplier; flag 0x14
-cleared (no timed mode); flag 0x1f (A) / 0x22 (D), 0x49; audit 0x6c / 0x70; wizard requirement 5 collected; the
+cleared (no other multiball); flag 0x1f (A) / 0x22 (D), 0x49; audit 0x6c / 0x70; wizard requirement 5 collected; the
 intro (A deff 57 + leff 45, D deff 63 + leff 53) when the battle's speech ends (observed 1.32 s / 3.52 s), then
 the background (A deff 58 + music 0x32 + leff 46, D deff 64 + music 0x35 + leff 54).
 J = min(150,000 + 100,000 x supers, 500,000), DJ = min(2 J, 1,000,000), both x the shot's multiplier; super =
@@ -120,7 +120,7 @@ class Side:
         points = 250000 * mult
         os_.score_add(points)
         self.total = points
-        if not os_.timed_mode_running():
+        if not os_.any_multiball():               # tested before this side's flag is set [0x01027994]
             os_.flag_clear(ADD_BALL_FLAG)
         os_.flag_set(self.flag)
         os_.flag_set(MB_FLAG)

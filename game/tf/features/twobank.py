@@ -11,8 +11,9 @@
 - Fast scoring: fast_value = 10,000 + 5,000 x starts before (cap 50,000); deff 132 0.9 s later (sound 0x289,
   leff 158), background deff 133 "ALL TARGETS = n" with music 0x027, leffs 159 / 160. The countdown, adj 81
   counts of 66 ticks, holds while a show or deff 132 is up (observed: first count 5.1 s after the start).
-  Every playfield switch scores fast_value (one award per tick, task 0x5b), and deff 134 (sound 0x28d,
-  leff 164) when deff 132 is not up [0x01004644]. Switches 50 / 37: the first hit of each this cycle adds
+  Every playfield switch scores fast_value (one award per tick, task 0x5b); unless deff 132 is up or about to
+  show (task 0x70): sound 0x28d, leff 164, a 200 ms shake (MAXIMAL), and deff 134 when it is not up and no
+  multiball runs [0x01004644]. Switches 50 / 37: the first hit of each this cycle adds
   1,000 to fast_value (cap 50,000, deff 135); both hit: +10 counts (cap 90), deff 136, cycle reset.
   One count after 0 the switches keep scoring 250 ticks, then deff 137 "FAST SCORING TOTAL" (sound 0x290, leff 165); also
   at the end of a ball while it runs. ADD MORE TIME adds adj 81 counts (cap 90).
@@ -33,6 +34,7 @@ FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF =
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
 TASK, AWARD_TASK = "fast_scoring", 0x5b
+AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_data/io/shaker.csv)
 
 
 class TwoBank(Feature):
@@ -43,6 +45,7 @@ class TwoBank(Feature):
         super().__init__(os_)
         self.running = False            # fast scoring (countdown or its 250-tick tail)
         self.counting = False
+        self.intro_pending = False      # task 0x70: the start show not on yet
         self.value = self.count = self.total = 0
         self.groups = 0
         self.awards = 0
@@ -115,10 +118,12 @@ class TwoBank(Feature):
         self.total = START_POINTS
         self.started_now = True                 # the starting hit scores no all-targets award (observed)
         os_.request_refresh()
+        self.intro_pending = True               # task 0x70 until deff 132 shows
         os_.after(SHOW_TICKS, self._show)
         os_.task_start(TASK, COUNT_TICKS, self._tick)
 
     def _show(self):
+        self.intro_pending = False
         if self.running:
             self.os.deff_start(FS_DEFF, values=[self.value])    # sound 0x289 and leff 158 come with it
 
@@ -184,10 +189,12 @@ class TwoBank(Feature):
         self.awards -= 1
         os_.score_add(self.value)
         self.total += self.value
-        if not os_.display.running(FS_DEFF):
-            os_.deff_start(FS_AWARD_DEFF, values=[self.value])
+        if not os_.display.running(FS_DEFF) and not self.intro_pending:                       # task 0x70
+            if not os_.display.running(FS_AWARD_DEFF) and not os_.any_multiball():
+                os_.deff_start(FS_AWARD_DEFF, values=[self.value])
             os_.sound(FS_AWARD_SOUND)
             os_.leff_start(FS_AWARD_LEFF)
+            os_.shaker_run(*AWARD_SHAKER)       # read from adj 96 directly: MAXIMAL only
         if self.awards:
             os_.task_start(AWARD_TASK, 1, self._award)
 
