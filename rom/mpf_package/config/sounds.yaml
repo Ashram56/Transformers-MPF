@@ -1,0 +1,4096 @@
+#config_version=6
+# Generated from the Stern Transformers Pro v1.80 ROM (PinMAME set tf_180). See ../README.md.
+# One entry per decoded ROM sample (mono WAV, the file header carries its rate: most speech 12 kHz,
+# everything else 24 kHz). Music with an intro and a looped body has loop_start_at and loops: -1, from the
+# ROM's stream script (label before the body, jump back after it).
+sounds:
+  snd_0009:
+    file: 0009.wav
+    track: sfx
+  snd_000a:
+    file: 000a.wav
+    track: sfx
+  snd_000b:
+    file: 000b.wav
+    track: sfx
+  snd_000c:
+    file: 000c.wav
+    track: sfx
+  snd_000d:
+    file: 000d.wav
+    track: sfx
+  snd_000e:
+    file: 000e.wav
+    track: sfx
+  snd_000f:
+    file: 000f.wav
+    track: sfx
+  snd_0010:
+    file: 0010.wav
+    track: sfx
+  snd_0011:
+    file: 0011.wav
+    track: sfx
+  snd_0012:
+    file: 0012.wav
+    track: sfx
+  snd_0013:
+    file: 0013.wav
+    track: sfx
+  snd_0014:
+    file: 0014.wav
+    track: sfx
+  snd_0015:
+    file: 0015.wav
+    track: sfx
+  snd_0016:
+    file: 0016.wav
+    track: sfx
+  snd_0017:
+    file: 0017.wav
+    track: sfx
+  snd_0018:
+    file: 0018.wav
+    track: sfx
+  snd_0019:
+    file: 0019.wav
+    track: sfx
+  snd_001a:
+    file: 001a.wav
+    track: sfx
+  snd_001b:
+    file: 001b.wav
+    track: sfx
+  snd_001c:
+    file: 001c.wav
+    track: sfx
+  snd_001d:
+    file: 001d.wav
+    track: sfx
+  snd_001e:
+    file: 001e.wav
+    track: sfx
+  snd_001f:
+    file: 001f.wav
+    track: sfx
+  snd_0020:
+    file: 0020.wav
+    track: sfx
+  snd_0021:
+    file: 0021.wav
+    track: sfx
+  snd_0022:
+    file: 0022.wav
+    track: sfx
+  snd_0023:
+    file: 0023.wav
+    track: sfx
+  snd_0024:
+    file: 0024.wav
+    track: sfx
+  snd_0025:
+    file: 0025.wav
+    track: sfx
+  snd_0026:
+    file: 0026.wav
+    track: sfx
+  snd_0027:
+    file: 0027.wav
+    track: sfx
+  snd_0028:
+    file: 0028.wav
+    track: sfx
+  snd_0029:
+    file: 0029.wav
+    track: sfx
+  snd_002a:
+    file: 002a.wav
+    track: sfx
+  snd_002b:
+    file: 002b.wav
+    track: sfx
+  snd_002c:
+    file: 002c.wav
+    track: sfx
+  snd_002d:
+    file: 002d.wav
+    track: sfx
+  snd_002e:
+    file: 002e.wav
+    track: sfx
+  snd_002f:
+    file: 002f.wav
+    track: sfx
+  snd_0030:
+    file: 0030.wav
+    track: sfx
+  snd_0031:
+    file: 0031.wav
+    track: sfx
+  snd_0032:
+    file: 0032.wav
+    track: sfx
+  snd_0033:
+    file: 0033.wav
+    track: sfx
+  snd_0034:
+    file: 0034.wav
+    track: sfx
+  snd_0035:
+    file: 0035.wav
+    track: sfx
+  snd_0036:
+    file: 0036.wav
+    track: sfx
+  snd_0037:
+    file: 0037.wav
+    track: sfx
+  snd_0038:
+    file: 0038.wav
+    track: sfx
+  snd_0039:
+    file: 0039.wav
+    track: sfx
+  snd_003a:
+    file: 003a.wav
+    track: sfx
+  snd_003b:
+    file: 003b.wav
+    track: sfx
+  snd_003c:
+    file: 003c.wav
+    track: sfx
+  snd_003d:
+    file: 003d.wav
+    track: sfx
+  snd_003e:
+    file: 003e.wav
+    track: sfx
+  snd_003f:
+    file: 003f.wav
+    track: sfx
+  snd_0040:
+    file: 0040.wav
+    track: sfx
+  snd_0041:
+    file: 0041.wav
+    track: sfx
+  snd_0042:
+    file: 0042.wav
+    track: sfx
+  snd_0043:
+    file: 0043.wav
+    track: sfx
+  snd_0044:
+    file: 0044.wav
+    track: sfx
+  snd_0045:
+    file: 0045.wav
+    track: sfx
+  snd_0046:
+    file: 0046.wav
+    track: sfx
+  snd_0047:
+    file: 0047.wav
+    track: sfx
+  snd_0048:
+    file: 0048.wav
+    track: sfx
+  snd_0049:
+    file: 0049.wav
+    track: sfx
+  snd_004a:
+    file: 004a.wav
+    track: sfx
+  snd_004b:
+    file: 004b.wav
+    track: sfx
+  snd_004c:
+    file: 004c.wav
+    track: sfx
+  snd_004d:
+    file: 004d.wav
+    track: sfx
+  snd_004e:
+    file: 004e.wav
+    track: sfx
+  snd_004f:
+    file: 004f.wav
+    track: sfx
+  snd_0050:
+    file: 0050.wav
+    track: sfx
+  snd_0051:
+    file: 0051.wav
+    track: sfx
+  snd_0052:
+    file: 0052.wav
+    track: sfx
+  snd_0053:
+    file: 0053.wav
+    track: sfx
+  snd_0054:
+    file: 0054.wav
+    track: sfx
+  snd_0055:
+    file: 0055.wav
+    track: sfx
+  snd_0056:
+    file: 0056.wav
+    track: sfx
+  snd_0057:
+    file: 0057.wav
+    track: sfx
+  snd_0058:
+    file: 0058.wav
+    track: sfx
+  snd_0059:
+    file: 0059.wav
+    track: sfx
+  snd_005a:
+    file: 005a.wav
+    track: sfx
+  snd_005b:
+    file: 005b.wav
+    track: sfx
+  snd_005c:
+    file: 005c.wav
+    track: sfx
+  snd_005d:
+    file: 005d.wav
+    track: sfx
+  snd_005e:
+    file: 005e.wav
+    track: sfx
+  snd_005f:
+    file: 005f.wav
+    track: sfx
+  snd_0060:
+    file: 0060.wav
+    track: sfx
+  snd_0061:
+    file: 0061.wav
+    track: sfx
+  snd_0062:
+    file: 0062.wav
+    track: sfx
+  snd_0063:
+    file: 0063.wav
+    track: sfx
+  snd_0064:
+    file: 0064.wav
+    track: sfx
+  snd_0065:
+    file: 0065.wav
+    track: sfx
+  snd_0066:
+    file: 0066.wav
+    track: sfx
+  snd_0067:
+    file: 0067.wav
+    track: sfx
+  snd_0068:
+    file: 0068.wav
+    track: sfx
+  snd_0069:
+    file: 0069.wav
+    track: sfx
+  snd_006a:
+    file: 006a.wav
+    track: sfx
+  snd_006b:
+    file: 006b.wav
+    track: sfx
+  snd_006c:
+    file: 006c.wav
+    track: sfx
+  snd_006d:
+    file: 006d.wav
+    track: sfx
+  snd_006e:
+    file: 006e.wav
+    track: sfx
+  snd_006f:
+    file: 006f.wav
+    track: sfx
+  snd_0070:
+    file: 0070.wav
+    track: sfx
+  snd_0071:
+    file: 0071.wav
+    track: sfx
+  snd_0072:
+    file: 0072.wav
+    track: sfx
+  snd_0073:
+    file: 0073.wav
+    track: sfx
+  snd_0074:
+    file: 0074.wav
+    track: sfx
+  snd_0075:
+    file: 0075.wav
+    track: sfx
+  snd_0076:
+    file: 0076.wav
+    track: sfx
+  snd_0077:
+    file: 0077.wav
+    track: sfx
+  snd_0078:
+    file: 0078.wav
+    track: sfx
+  snd_0079:
+    file: 0079.wav
+    track: sfx
+  snd_007a:
+    file: 007a.wav
+    track: sfx
+  snd_007b:
+    file: 007b.wav
+    track: sfx
+  snd_007c:
+    file: 007c.wav
+    track: sfx
+  snd_007d:
+    file: 007d.wav
+    track: sfx
+  snd_007e:
+    file: 007e.wav
+    track: sfx
+  snd_007f:
+    file: 007f.wav
+    track: sfx
+  snd_0080:
+    file: 0080.wav
+    track: sfx
+  snd_0081:
+    file: 0081.wav
+    track: sfx
+  snd_0082:
+    file: 0082.wav
+    track: sfx
+  snd_0083:
+    file: 0083.wav
+    track: sfx
+  snd_0084:
+    file: 0084.wav
+    track: sfx
+  snd_0085:
+    file: 0085.wav
+    track: sfx
+  snd_0086:
+    file: 0086.wav
+    track: sfx
+  snd_0087:
+    file: 0087.wav
+    track: sfx
+  snd_0088:
+    file: 0088.wav
+    track: sfx
+  snd_0089:
+    file: 0089.wav
+    track: sfx
+  snd_008a:
+    file: 008a.wav
+    track: sfx
+  snd_008b:
+    file: 008b.wav
+    track: sfx
+  snd_008c:
+    file: 008c.wav
+    track: sfx
+  snd_008d:
+    file: 008d.wav
+    track: sfx
+  snd_008e:
+    file: 008e.wav
+    track: sfx
+  snd_008f:
+    file: 008f.wav
+    track: sfx
+  snd_0090:
+    file: 0090.wav
+    track: sfx
+  snd_0091:
+    file: 0091.wav
+    track: sfx
+  snd_0092:
+    file: 0092.wav
+    track: sfx
+  snd_0093:
+    file: 0093.wav
+    track: sfx
+  snd_0094:
+    file: 0094.wav
+    track: sfx
+  snd_0095:
+    file: 0095.wav
+    track: sfx
+  snd_0096:
+    file: 0096.wav
+    track: sfx
+  snd_0097:
+    file: 0097.wav
+    track: sfx
+  snd_0098:
+    file: 0098.wav
+    track: sfx
+  snd_0099:
+    file: 0099.wav
+    track: sfx
+  snd_009a:
+    file: 009a.wav
+    track: sfx
+  snd_009b:
+    file: 009b.wav
+    track: sfx
+  snd_009c:
+    file: 009c.wav
+    track: sfx
+  snd_009d:
+    file: 009d.wav
+    track: sfx
+  snd_009e:
+    file: 009e.wav
+    track: sfx
+  snd_009f:
+    file: 009f.wav
+    track: sfx
+  snd_00a0:
+    file: 00a0.wav
+    track: sfx
+  snd_00a1:
+    file: 00a1.wav
+    track: sfx
+  snd_00a2:
+    file: 00a2.wav
+    track: sfx
+  snd_00a3:
+    file: 00a3.wav
+    track: sfx
+  snd_00a4:
+    file: 00a4.wav
+    track: sfx
+  snd_00a5:
+    file: 00a5.wav
+    track: sfx
+  snd_00a6:
+    file: 00a6.wav
+    track: sfx
+  snd_00a7:
+    file: 00a7.wav
+    track: sfx
+  snd_00a8:
+    file: 00a8.wav
+    track: sfx
+  snd_00a9:
+    file: 00a9.wav
+    track: sfx
+  snd_00aa:
+    file: 00aa.wav
+    track: sfx
+  snd_00ab:
+    file: 00ab.wav
+    track: sfx
+  snd_00ac:
+    file: 00ac.wav
+    track: sfx
+  snd_00ad:
+    file: 00ad.wav
+    track: sfx
+  snd_00ae:
+    file: 00ae.wav
+    track: sfx
+  snd_00af:
+    file: 00af.wav
+    track: sfx
+  snd_00b0:
+    file: 00b0.wav
+    track: sfx
+  snd_00b1:
+    file: 00b1.wav
+    track: sfx
+  snd_00b2:
+    file: 00b2.wav
+    track: sfx
+  snd_00b3:
+    file: 00b3.wav
+    track: sfx
+  snd_00b4:
+    file: 00b4.wav
+    track: sfx
+  snd_00b5:
+    file: 00b5.wav
+    track: sfx
+  snd_00b6:
+    file: 00b6.wav
+    track: sfx
+  snd_00b7:
+    file: 00b7.wav
+    track: sfx
+  snd_00b8:
+    file: 00b8.wav
+    track: sfx
+  snd_00b9:
+    file: 00b9.wav
+    track: sfx
+  snd_00ba:
+    file: 00ba.wav
+    track: sfx
+  snd_00bb:
+    file: 00bb.wav
+    track: sfx
+  snd_00bc:
+    file: 00bc.wav
+    track: sfx
+  snd_00bd:
+    file: 00bd.wav
+    track: sfx
+  snd_00be:
+    file: 00be.wav
+    track: sfx
+  snd_00bf:
+    file: 00bf.wav
+    track: sfx
+  snd_00c0:
+    file: 00c0.wav
+    track: sfx
+  snd_00c1:
+    file: 00c1.wav
+    track: sfx
+  snd_00c2:
+    file: 00c2.wav
+    track: sfx
+  snd_00c3:
+    file: 00c3.wav
+    track: sfx
+  snd_00c4:
+    file: 00c4.wav
+    track: sfx
+  snd_00c5:
+    file: 00c5.wav
+    track: sfx
+  snd_00c6:
+    file: 00c6.wav
+    track: sfx
+  snd_00c7:
+    file: 00c7.wav
+    track: sfx
+  snd_00c8:
+    file: 00c8.wav
+    track: sfx
+  snd_00c9:
+    file: 00c9.wav
+    track: sfx
+  snd_00ca:
+    file: 00ca.wav
+    track: sfx
+  snd_00cb:
+    file: 00cb.wav
+    track: sfx
+  snd_00cc:
+    file: 00cc.wav
+    track: sfx
+  snd_00cd:
+    file: 00cd.wav
+    track: sfx
+  snd_00ce:
+    file: 00ce.wav
+    track: sfx
+  snd_00cf:
+    file: 00cf.wav
+    track: sfx
+  snd_00d0:
+    file: 00d0.wav
+    track: sfx
+  snd_00d1:
+    file: 00d1.wav
+    track: sfx
+  snd_00d2:
+    file: 00d2.wav
+    track: sfx
+  snd_00d3:
+    file: 00d3.wav
+    track: sfx
+  snd_00d4:
+    file: 00d4.wav
+    track: sfx
+  snd_00d5:
+    file: 00d5.wav
+    track: sfx
+  snd_00d6:
+    file: 00d6.wav
+    track: sfx
+  snd_00d7:
+    file: 00d7.wav
+    track: sfx
+  snd_00d8:
+    file: 00d8.wav
+    track: sfx
+  snd_00d9:
+    file: 00d9.wav
+    track: sfx
+  snd_00da:
+    file: 00da.wav
+    track: sfx
+  snd_00db:
+    file: 00db.wav
+    track: sfx
+  snd_00dc:
+    file: 00dc.wav
+    track: sfx
+  snd_00dd:
+    file: 00dd.wav
+    track: sfx
+  snd_00de:
+    file: 00de.wav
+    track: sfx
+  snd_00df:
+    file: 00df.wav
+    track: sfx
+  snd_00e0:
+    file: 00e0.wav
+    track: sfx
+  snd_00e1:
+    file: 00e1.wav
+    track: sfx
+  snd_00e2:
+    file: 00e2.wav
+    track: sfx
+  snd_00e3:
+    file: 00e3.wav
+    track: sfx
+  snd_00e4:
+    file: 00e4.wav
+    track: sfx
+  snd_00e5:
+    file: 00e5.wav
+    track: sfx
+  snd_00e6:
+    file: 00e6.wav
+    track: sfx
+  snd_00e7:
+    file: 00e7.wav
+    track: sfx
+  snd_00e8:
+    file: 00e8.wav
+    track: sfx
+  snd_00e9:
+    file: 00e9.wav
+    track: sfx
+  snd_00ea:
+    file: 00ea.wav
+    track: sfx
+  snd_00eb:
+    file: 00eb.wav
+    track: sfx
+  snd_00ec:
+    file: 00ec.wav
+    track: sfx
+  snd_00ed:
+    file: 00ed.wav
+    track: sfx
+  snd_00ee:
+    file: 00ee.wav
+    track: sfx
+  snd_00ef:
+    file: 00ef.wav
+    track: sfx
+  snd_00f0:
+    file: 00f0.wav
+    track: sfx
+  snd_00f1:
+    file: 00f1.wav
+    track: sfx
+  snd_00f2:
+    file: 00f2.wav
+    track: sfx
+  snd_00f3:
+    file: 00f3.wav
+    track: sfx
+  snd_00f4:
+    file: 00f4.wav
+    track: sfx
+  snd_00f5:
+    file: 00f5.wav
+    track: sfx
+  snd_00f6:
+    file: 00f6.wav
+    track: voice
+  snd_00f7:
+    file: 00f7.wav
+    track: voice
+  snd_00f8:
+    file: 00f8.wav
+    track: voice
+  snd_00f9:
+    file: 00f9.wav
+    track: voice
+  snd_00fa:
+    file: 00fa.wav
+    track: voice
+  snd_00fb:
+    file: 00fb.wav
+    track: voice
+  snd_00fc:
+    file: 00fc.wav
+    track: voice
+  snd_00fd:
+    file: 00fd.wav
+    track: voice
+  snd_00fe:
+    file: 00fe.wav
+    track: voice
+  snd_00ff:
+    file: 00ff.wav
+    track: voice
+  snd_0100:
+    file: 0100.wav
+    track: voice
+  snd_0101:
+    file: 0101.wav
+    track: voice
+  snd_0102:
+    file: 0102.wav
+    track: voice
+  snd_0103:
+    file: 0103.wav
+    track: voice
+  snd_0104:
+    file: 0104.wav
+    track: voice
+  snd_0105:
+    file: 0105.wav
+    track: voice
+  snd_0106:
+    file: 0106.wav
+    track: voice
+  snd_0107:
+    file: 0107.wav
+    track: voice
+  snd_0108:
+    file: 0108.wav
+    track: voice
+  snd_0109:
+    file: 0109.wav
+    track: voice
+  snd_010a:
+    file: 010a.wav
+    track: voice
+  snd_010b:
+    file: 010b.wav
+    track: voice
+  snd_010c:
+    file: 010c.wav
+    track: voice
+  snd_010d:
+    file: 010d.wav
+    track: voice
+  snd_010e:
+    file: 010e.wav
+    track: voice
+  snd_010f:
+    file: 010f.wav
+    track: voice
+  snd_0110:
+    file: 0110.wav
+    track: voice
+  snd_0111:
+    file: 0111.wav
+    track: voice
+  snd_0112:
+    file: 0112.wav
+    track: voice
+  snd_0113:
+    file: 0113.wav
+    track: voice
+  snd_0114:
+    file: 0114.wav
+    track: voice
+  snd_0115:
+    file: 0115.wav
+    track: voice
+  snd_0116:
+    file: 0116.wav
+    track: voice
+  snd_0117:
+    file: 0117.wav
+    track: voice
+  snd_0118:
+    file: 0118.wav
+    track: voice
+  snd_0119:
+    file: 0119.wav
+    track: voice
+  snd_011a:
+    file: 011a.wav
+    track: voice
+  snd_011b:
+    file: 011b.wav
+    track: voice
+  snd_011c:
+    file: 011c.wav
+    track: voice
+  snd_011d:
+    file: 011d.wav
+    track: voice
+  snd_011e:
+    file: 011e.wav
+    track: voice
+  snd_011f:
+    file: 011f.wav
+    track: voice
+  snd_0120:
+    file: 0120.wav
+    track: voice
+  snd_0121:
+    file: 0121.wav
+    track: voice
+  snd_0122:
+    file: 0122.wav
+    track: voice
+  snd_0123:
+    file: 0123.wav
+    track: voice
+  snd_0124:
+    file: 0124.wav
+    track: voice
+  snd_0125:
+    file: 0125.wav
+    track: voice
+  snd_0126:
+    file: 0126.wav
+    track: voice
+  snd_0127:
+    file: 0127.wav
+    track: voice
+  snd_0128:
+    file: 0128.wav
+    track: voice
+  snd_0129:
+    file: 0129.wav
+    track: voice
+  snd_012a:
+    file: 012a.wav
+    track: voice
+  snd_012b:
+    file: 012b.wav
+    track: voice
+  snd_012c:
+    file: 012c.wav
+    track: voice
+  snd_012d:
+    file: 012d.wav
+    track: voice
+  snd_012e:
+    file: 012e.wav
+    track: voice
+  snd_012f:
+    file: 012f.wav
+    track: voice
+  snd_0130:
+    file: 0130.wav
+    track: voice
+  snd_0131:
+    file: 0131.wav
+    track: voice
+  snd_0132:
+    file: 0132.wav
+    track: voice
+  snd_0133:
+    file: 0133.wav
+    track: voice
+  snd_0134:
+    file: 0134.wav
+    track: voice
+  snd_0135:
+    file: 0135.wav
+    track: voice
+  snd_0136:
+    file: 0136.wav
+    track: voice
+  snd_0137:
+    file: 0137.wav
+    track: voice
+  snd_0138:
+    file: 0138.wav
+    track: voice
+  snd_0139:
+    file: 0139.wav
+    track: voice
+  snd_013a:
+    file: 013a.wav
+    track: voice
+  snd_013b:
+    file: 013b.wav
+    track: voice
+  snd_013c:
+    file: 013c.wav
+    track: voice
+  snd_013d:
+    file: 013d.wav
+    track: voice
+  snd_013e:
+    file: 013e.wav
+    track: voice
+  snd_013f:
+    file: 013f.wav
+    track: voice
+  snd_0140:
+    file: 0140.wav
+    track: voice
+  snd_0141:
+    file: 0141.wav
+    track: voice
+  snd_0142:
+    file: 0142.wav
+    track: voice
+  snd_0143:
+    file: 0143.wav
+    track: voice
+  snd_0144:
+    file: 0144.wav
+    track: voice
+  snd_0145:
+    file: 0145.wav
+    track: voice
+  snd_0146:
+    file: 0146.wav
+    track: voice
+  snd_0147:
+    file: 0147.wav
+    track: voice
+  snd_0148:
+    file: 0148.wav
+    track: voice
+  snd_0149:
+    file: 0149.wav
+    track: voice
+  snd_014a:
+    file: 014a.wav
+    track: voice
+  snd_014b:
+    file: 014b.wav
+    track: voice
+  snd_014c:
+    file: 014c.wav
+    track: voice
+  snd_014d:
+    file: 014d.wav
+    track: voice
+  snd_014e:
+    file: 014e.wav
+    track: voice
+  snd_014f:
+    file: 014f.wav
+    track: voice
+  snd_0150:
+    file: 0150.wav
+    track: voice
+  snd_0151:
+    file: 0151.wav
+    track: voice
+  snd_0152:
+    file: 0152.wav
+    track: voice
+  snd_0153:
+    file: 0153.wav
+    track: voice
+  snd_0154:
+    file: 0154.wav
+    track: voice
+  snd_0155:
+    file: 0155.wav
+    track: voice
+  snd_0156:
+    file: 0156.wav
+    track: voice
+  snd_0157:
+    file: 0157.wav
+    track: voice
+  snd_0158:
+    file: 0158.wav
+    track: voice
+  snd_0159:
+    file: 0159.wav
+    track: voice
+  snd_015a:
+    file: 015a.wav
+    track: voice
+  snd_015b:
+    file: 015b.wav
+    track: voice
+  snd_015c:
+    file: 015c.wav
+    track: voice
+  snd_015d:
+    file: 015d.wav
+    track: voice
+  snd_015e:
+    file: 015e.wav
+    track: voice
+  snd_015f:
+    file: 015f.wav
+    track: voice
+  snd_0160:
+    file: 0160.wav
+    track: voice
+  snd_0161:
+    file: 0161.wav
+    track: voice
+  snd_0162:
+    file: 0162.wav
+    track: voice
+  snd_0163:
+    file: 0163.wav
+    track: voice
+  snd_0164:
+    file: 0164.wav
+    track: voice
+  snd_0165:
+    file: 0165.wav
+    track: voice
+  snd_0166:
+    file: 0166.wav
+    track: voice
+  snd_0167:
+    file: 0167.wav
+    track: voice
+  snd_0168:
+    file: 0168.wav
+    track: voice
+  snd_0169:
+    file: 0169.wav
+    track: voice
+  snd_016a:
+    file: 016a.wav
+    track: voice
+  snd_016b:
+    file: 016b.wav
+    track: voice
+  snd_016c:
+    file: 016c.wav
+    track: voice
+  snd_016d:
+    file: 016d.wav
+    track: voice
+  snd_016e:
+    file: 016e.wav
+    track: voice
+  snd_016f:
+    file: 016f.wav
+    track: voice
+  snd_0170:
+    file: 0170.wav
+    track: voice
+  snd_0171:
+    file: 0171.wav
+    track: voice
+  snd_0172:
+    file: 0172.wav
+    track: voice
+  snd_0173:
+    file: 0173.wav
+    track: voice
+  snd_0174:
+    file: 0174.wav
+    track: voice
+  snd_0175:
+    file: 0175.wav
+    track: voice
+  snd_0176:
+    file: 0176.wav
+    track: voice
+  snd_0177:
+    file: 0177.wav
+    track: voice
+  snd_0178:
+    file: 0178.wav
+    track: voice
+  snd_0179:
+    file: 0179.wav
+    track: voice
+  snd_017a:
+    file: 017a.wav
+    track: voice
+  snd_017b:
+    file: 017b.wav
+    track: voice
+  snd_017c:
+    file: 017c.wav
+    track: voice
+  snd_017d:
+    file: 017d.wav
+    track: voice
+  snd_017e:
+    file: 017e.wav
+    track: voice
+  snd_017f:
+    file: 017f.wav
+    track: voice
+  snd_0180:
+    file: 0180.wav
+    track: voice
+  snd_0181:
+    file: 0181.wav
+    track: voice
+  snd_0182:
+    file: 0182.wav
+    track: voice
+  snd_0183:
+    file: 0183.wav
+    track: voice
+  snd_0184:
+    file: 0184.wav
+    track: voice
+  snd_0185:
+    file: 0185.wav
+    track: voice
+  snd_0186:
+    file: 0186.wav
+    track: voice
+  snd_0187:
+    file: 0187.wav
+    track: voice
+  snd_0188:
+    file: 0188.wav
+    track: voice
+  snd_0189:
+    file: 0189.wav
+    track: voice
+  snd_018a:
+    file: 018a.wav
+    track: voice
+  snd_018b:
+    file: 018b.wav
+    track: voice
+  snd_018c:
+    file: 018c.wav
+    track: voice
+  snd_018d:
+    file: 018d.wav
+    track: voice
+  snd_018e:
+    file: 018e.wav
+    track: voice
+  snd_018f:
+    file: 018f.wav
+    track: voice
+  snd_0190:
+    file: 0190.wav
+    track: voice
+  snd_0191:
+    file: 0191.wav
+    track: voice
+  snd_0192:
+    file: 0192.wav
+    track: voice
+  snd_0193:
+    file: 0193.wav
+    track: voice
+  snd_0194:
+    file: 0194.wav
+    track: voice
+  snd_0195:
+    file: 0195.wav
+    track: voice
+  snd_0196:
+    file: 0196.wav
+    track: voice
+  snd_0197:
+    file: 0197.wav
+    track: voice
+  snd_0198:
+    file: 0198.wav
+    track: voice
+  snd_0199:
+    file: 0199.wav
+    track: voice
+  snd_019a:
+    file: 019a.wav
+    track: voice
+  snd_019b:
+    file: 019b.wav
+    track: voice
+  snd_019c:
+    file: 019c.wav
+    track: voice
+  snd_019d:
+    file: 019d.wav
+    track: voice
+  snd_019e:
+    file: 019e.wav
+    track: voice
+  snd_019f:
+    file: 019f.wav
+    track: voice
+  snd_01a0:
+    file: 01a0.wav
+    track: voice
+  snd_01a1:
+    file: 01a1.wav
+    track: voice
+  snd_01a2:
+    file: 01a2.wav
+    track: voice
+  snd_01a3:
+    file: 01a3.wav
+    track: voice
+  snd_01a4:
+    file: 01a4.wav
+    track: voice
+  snd_01a5:
+    file: 01a5.wav
+    track: voice
+  snd_01a6:
+    file: 01a6.wav
+    track: voice
+  snd_01a7:
+    file: 01a7.wav
+    track: voice
+  snd_01a8:
+    file: 01a8.wav
+    track: voice
+  snd_01a9:
+    file: 01a9.wav
+    track: voice
+  snd_01aa:
+    file: 01aa.wav
+    track: voice
+  snd_01ab:
+    file: 01ab.wav
+    track: voice
+  snd_01ac:
+    file: 01ac.wav
+    track: voice
+  snd_01ad:
+    file: 01ad.wav
+    track: voice
+  snd_01ae:
+    file: 01ae.wav
+    track: voice
+  snd_01af:
+    file: 01af.wav
+    track: voice
+  snd_01b0:
+    file: 01b0.wav
+    track: voice
+  snd_01b1:
+    file: 01b1.wav
+    track: voice
+  snd_01b2:
+    file: 01b2.wav
+    track: voice
+  snd_01b3:
+    file: 01b3.wav
+    track: voice
+  snd_01b4:
+    file: 01b4.wav
+    track: voice
+  snd_01b5:
+    file: 01b5.wav
+    track: voice
+  snd_01b6:
+    file: 01b6.wav
+    track: voice
+  snd_01b7:
+    file: 01b7.wav
+    track: voice
+  snd_01b8:
+    file: 01b8.wav
+    track: voice
+  snd_01b9:
+    file: 01b9.wav
+    track: voice
+  snd_01ba:
+    file: 01ba.wav
+    track: voice
+  snd_01bb:
+    file: 01bb.wav
+    track: voice
+  snd_01bc:
+    file: 01bc.wav
+    track: voice
+  snd_01bd:
+    file: 01bd.wav
+    track: voice
+  snd_01be:
+    file: 01be.wav
+    track: voice
+  snd_01bf:
+    file: 01bf.wav
+    track: voice
+  snd_01c0:
+    file: 01c0.wav
+    track: voice
+  snd_01c1:
+    file: 01c1.wav
+    track: voice
+  snd_01c2:
+    file: 01c2.wav
+    track: voice
+  snd_01c3:
+    file: 01c3.wav
+    track: voice
+  snd_01c4:
+    file: 01c4.wav
+    track: voice
+  snd_01c5:
+    file: 01c5.wav
+    track: voice
+  snd_01c6:
+    file: 01c6.wav
+    track: voice
+  snd_01c7:
+    file: 01c7.wav
+    track: voice
+  snd_01c8:
+    file: 01c8.wav
+    track: voice
+  snd_01c9:
+    file: 01c9.wav
+    track: voice
+  snd_01ca:
+    file: 01ca.wav
+    track: voice
+  snd_01cb:
+    file: 01cb.wav
+    track: voice
+  snd_01cc:
+    file: 01cc.wav
+    track: voice
+  snd_01cd:
+    file: 01cd.wav
+    track: voice
+  snd_01ce:
+    file: 01ce.wav
+    track: voice
+  snd_01cf:
+    file: 01cf.wav
+    track: voice
+  snd_01d0:
+    file: 01d0.wav
+    track: voice
+  snd_01d1:
+    file: 01d1.wav
+    track: voice
+  snd_01d2:
+    file: 01d2.wav
+    track: voice
+  snd_01d3:
+    file: 01d3.wav
+    track: voice
+  snd_01d4:
+    file: 01d4.wav
+    track: voice
+  snd_01d5:
+    file: 01d5.wav
+    track: voice
+  snd_01d6:
+    file: 01d6.wav
+    track: voice
+  snd_01d7:
+    file: 01d7.wav
+    track: voice
+  snd_01d8:
+    file: 01d8.wav
+    track: voice
+  snd_01d9:
+    file: 01d9.wav
+    track: voice
+  snd_01da:
+    file: 01da.wav
+    track: voice
+  snd_01db:
+    file: 01db.wav
+    track: voice
+  snd_01dc:
+    file: 01dc.wav
+    track: voice
+  snd_01dd:
+    file: 01dd.wav
+    track: voice
+  snd_01de:
+    file: 01de.wav
+    track: voice
+  snd_01df:
+    file: 01df.wav
+    track: voice
+  snd_01e0:
+    file: 01e0.wav
+    track: voice
+  snd_01e1:
+    file: 01e1.wav
+    track: voice
+  snd_01e2:
+    file: 01e2.wav
+    track: voice
+  snd_01e3:
+    file: 01e3.wav
+    track: voice
+  snd_01e4:
+    file: 01e4.wav
+    track: voice
+  snd_01e5:
+    file: 01e5.wav
+    track: voice
+  snd_01e6:
+    file: 01e6.wav
+    track: voice
+  snd_01e7:
+    file: 01e7.wav
+    track: voice
+  snd_01e8:
+    file: 01e8.wav
+    track: voice
+  snd_01e9:
+    file: 01e9.wav
+    track: voice
+  snd_01ea:
+    file: 01ea.wav
+    track: voice
+  snd_01eb:
+    file: 01eb.wav
+    track: voice
+  snd_01ec:
+    file: 01ec.wav
+    track: voice
+  snd_01ed:
+    file: 01ed.wav
+    track: voice
+  snd_01ee:
+    file: 01ee.wav
+    track: voice
+  snd_01ef:
+    file: 01ef.wav
+    track: voice
+  snd_01f0:
+    file: 01f0.wav
+    track: voice
+  snd_01f1:
+    file: 01f1.wav
+    track: voice
+  snd_01f2:
+    file: 01f2.wav
+    track: voice
+  snd_01f3:
+    file: 01f3.wav
+    track: voice
+  snd_01f4:
+    file: 01f4.wav
+    track: voice
+  snd_01f5:
+    file: 01f5.wav
+    track: voice
+  snd_01f6:
+    file: 01f6.wav
+    track: voice
+  snd_01f7:
+    file: 01f7.wav
+    track: voice
+  snd_01f8:
+    file: 01f8.wav
+    track: voice
+  snd_01f9:
+    file: 01f9.wav
+    track: voice
+  snd_01fa:
+    file: 01fa.wav
+    track: voice
+  snd_01fb:
+    file: 01fb.wav
+    track: voice
+  snd_01fc:
+    file: 01fc.wav
+    track: voice
+  snd_01fd:
+    file: 01fd.wav
+    track: voice
+  snd_01fe:
+    file: 01fe.wav
+    track: voice
+  snd_01ff:
+    file: 01ff.wav
+    track: voice
+  snd_0200:
+    file: 0200.wav
+    track: voice
+  snd_0201:
+    file: 0201.wav
+    track: voice
+  snd_0202:
+    file: 0202.wav
+    track: voice
+  snd_0203:
+    file: 0203.wav
+    track: voice
+  snd_0204:
+    file: 0204.wav
+    track: voice
+  snd_0205:
+    file: 0205.wav
+    track: voice
+  snd_0206:
+    file: 0206.wav
+    track: voice
+  snd_0207:
+    file: 0207.wav
+    track: voice
+  snd_0208:
+    file: 0208.wav
+    track: voice
+  snd_0209:
+    file: 0209.wav
+    track: voice
+  snd_020a:
+    file: 020a.wav
+    track: voice
+  snd_020b:
+    file: 020b.wav
+    track: voice
+  snd_020c:
+    file: 020c.wav
+    track: voice
+  snd_020d:
+    file: 020d.wav
+    track: voice
+  snd_020e:
+    file: 020e.wav
+    track: voice
+  snd_020f:
+    file: 020f.wav
+    track: voice
+  snd_0210:
+    file: 0210.wav
+    track: voice
+  snd_0211:
+    file: 0211.wav
+    track: voice
+  snd_0212:
+    file: 0212.wav
+    track: voice
+  snd_0213:
+    file: 0213.wav
+    track: voice
+  snd_0214:
+    file: 0214.wav
+    track: voice
+  snd_0215:
+    file: 0215.wav
+    track: voice
+  snd_0216:
+    file: 0216.wav
+    track: voice
+  snd_0217:
+    file: 0217.wav
+    track: voice
+  snd_0218:
+    file: 0218.wav
+    track: voice
+  snd_0219:
+    file: 0219.wav
+    track: voice
+  snd_021a:
+    file: 021a.wav
+    track: voice
+  snd_021b:
+    file: 021b.wav
+    track: voice
+  snd_021c:
+    file: 021c.wav
+    track: voice
+  snd_021d:
+    file: 021d.wav
+    track: voice
+  snd_021e:
+    file: 021e.wav
+    track: voice
+  snd_021f:
+    file: 021f.wav
+    track: voice
+  snd_0220:
+    file: 0220.wav
+    track: voice
+  snd_0221:
+    file: 0221.wav
+    track: voice
+  snd_0222:
+    file: 0222.wav
+    track: voice
+  snd_0223:
+    file: 0223.wav
+    track: voice
+  snd_0224:
+    file: 0224.wav
+    track: voice
+  snd_0225:
+    file: 0225.wav
+    track: voice
+  snd_0226:
+    file: 0226.wav
+    track: voice
+  snd_0227:
+    file: 0227.wav
+    track: voice
+  snd_0228:
+    file: 0228.wav
+    track: voice
+  snd_0229:
+    file: 0229.wav
+    track: voice
+  snd_022a:
+    file: 022a.wav
+    track: voice
+  snd_022b:
+    file: 022b.wav
+    track: voice
+  snd_022c:
+    file: 022c.wav
+    track: voice
+  snd_022d:
+    file: 022d.wav
+    track: voice
+  snd_022e:
+    file: 022e.wav
+    track: voice
+  snd_022f:
+    file: 022f.wav
+    track: voice
+  snd_0230:
+    file: 0230.wav
+    track: voice
+  snd_0231:
+    file: 0231.wav
+    track: voice
+  snd_0232:
+    file: 0232.wav
+    track: voice
+  snd_0233:
+    file: 0233.wav
+    track: voice
+  snd_0234:
+    file: 0234.wav
+    track: voice
+  snd_0235:
+    file: 0235.wav
+    track: voice
+  snd_0236:
+    file: 0236.wav
+    track: voice
+  snd_0237:
+    file: 0237.wav
+    track: voice
+  snd_0238:
+    file: 0238.wav
+    track: voice
+  snd_0239:
+    file: 0239.wav
+    track: voice
+  snd_023a:
+    file: 023a.wav
+    track: voice
+  snd_023b:
+    file: 023b.wav
+    track: voice
+  snd_023c:
+    file: 023c.wav
+    track: voice
+  snd_023d:
+    file: 023d.wav
+    track: voice
+  snd_023e:
+    file: 023e.wav
+    track: voice
+  snd_023f:
+    file: 023f.wav
+    track: voice
+  snd_0240:
+    file: 0240.wav
+    track: voice
+  snd_0241:
+    file: 0241.wav
+    track: voice
+  snd_0242:
+    file: 0242.wav
+    track: voice
+  snd_0243:
+    file: 0243.wav
+    track: voice
+  snd_0244:
+    file: 0244.wav
+    track: voice
+  snd_0245:
+    file: 0245.wav
+    track: voice
+  snd_0246:
+    file: 0246.wav
+    track: voice
+  snd_0247:
+    file: 0247.wav
+    track: voice
+  snd_0248:
+    file: 0248.wav
+    track: voice
+  snd_0249:
+    file: 0249.wav
+    track: voice
+  snd_024a:
+    file: 024a.wav
+    track: voice
+  snd_024b:
+    file: 024b.wav
+    track: voice
+  snd_024c:
+    file: 024c.wav
+    track: voice
+  snd_024d:
+    file: 024d.wav
+    track: voice
+  snd_024e:
+    file: 024e.wav
+    track: voice
+  snd_024f:
+    file: 024f.wav
+    track: voice
+  snd_0250:
+    file: 0250.wav
+    track: voice
+  snd_0251:
+    file: 0251.wav
+    track: voice
+  snd_0252:
+    file: 0252.wav
+    track: voice
+  snd_0253:
+    file: 0253.wav
+    track: voice
+  snd_0254:
+    file: 0254.wav
+    track: voice
+  snd_0255:
+    file: 0255.wav
+    track: voice
+  snd_0256:
+    file: 0256.wav
+    track: voice
+  snd_0257:
+    file: 0257.wav
+    track: voice
+  snd_0258:
+    file: 0258.wav
+    track: voice
+  snd_0259:
+    file: 0259.wav
+    track: voice
+  snd_025a:
+    file: 025a.wav
+    track: voice
+  snd_025b:
+    file: 025b.wav
+    track: voice
+  snd_025c:
+    file: 025c.wav
+    track: voice
+  snd_025d:
+    file: 025d.wav
+    track: voice
+  snd_025e:
+    file: 025e.wav
+    track: voice
+  snd_025f:
+    file: 025f.wav
+    track: voice
+  snd_0260:
+    file: 0260.wav
+    track: voice
+  snd_0261:
+    file: 0261.wav
+    track: voice
+  snd_0262:
+    file: 0262.wav
+    track: voice
+  snd_0263:
+    file: 0263.wav
+    track: voice
+  snd_0264:
+    file: 0264.wav
+    track: voice
+  snd_0265:
+    file: 0265.wav
+    track: voice
+  snd_0266:
+    file: 0266.wav
+    track: voice
+  snd_0267:
+    file: 0267.wav
+    track: voice
+  snd_0268:
+    file: 0268.wav
+    track: voice
+  snd_0269:
+    file: 0269.wav
+    track: voice
+  snd_026a:
+    file: 026a.wav
+    track: voice
+  snd_026b:
+    file: 026b.wav
+    track: voice
+  snd_026c:
+    file: 026c.wav
+    track: voice
+  snd_026d:
+    file: 026d.wav
+    track: voice
+  snd_026e:
+    file: 026e.wav
+    track: voice
+  snd_026f:
+    file: 026f.wav
+    track: voice
+  snd_0270:
+    file: 0270.wav
+    track: voice
+  snd_0271:
+    file: 0271.wav
+    track: voice
+  snd_0272:
+    file: 0272.wav
+    track: voice
+  snd_0273:
+    file: 0273.wav
+    track: voice
+  snd_0274:
+    file: 0274.wav
+    track: voice
+  snd_0275:
+    file: 0275.wav
+    track: voice
+  snd_0276:
+    file: 0276.wav
+    track: voice
+  snd_0277:
+    file: 0277.wav
+    track: voice
+  snd_0278:
+    file: 0278.wav
+    track: voice
+  snd_0279:
+    file: 0279.wav
+    track: voice
+  snd_027a:
+    file: 027a.wav
+    track: voice
+  snd_027b:
+    file: 027b.wav
+    track: voice
+  snd_027c:
+    file: 027c.wav
+    track: voice
+  snd_027d:
+    file: 027d.wav
+    track: voice
+  snd_027e:
+    file: 027e.wav
+    track: voice
+  snd_027f:
+    file: 027f.wav
+    track: voice
+  snd_0280:
+    file: 0280.wav
+    track: voice
+  snd_0281:
+    file: 0281.wav
+    track: voice
+  snd_0282:
+    file: 0282.wav
+    track: voice
+  snd_0283:
+    file: 0283.wav
+    track: music
+    loops: -1
+    loop_start_at: 3.21s
+  snd_0284:
+    file: 0284.wav
+    track: music
+  snd_0285:
+    file: 0285.wav
+    track: music
+    loops: -1
+    loop_start_at: 3.5759s
+  snd_0286:
+    file: 0286.wav
+    track: music
+    loops: -1
+    loop_start_at: 5.4236s
+  snd_0287:
+    file: 0287.wav
+    track: music
+    loops: -1
+    loop_start_at: 7.0442s
+  snd_0288:
+    file: 0288.wav
+    track: music
+  snd_0289:
+    file: 0289.wav
+    track: music
+    loops: -1
+    loop_start_at: 2.0039s
+  snd_028a:
+    file: 028a.wav
+    track: music
+  snd_028b:
+    file: 028b.wav
+    track: music
+    loops: -1
+    loop_start_at: 0.9299s
+  snd_028c:
+    file: 028c.wav
+    track: music
+  snd_028d:
+    file: 028d.wav
+    track: music
+  snd_028e:
+    file: 028e.wav
+    track: music
+    loops: -1
+    loop_start_at: 3.4144s
+  snd_028f:
+    file: 028f.wav
+    track: music
+  snd_0290:
+    file: 0290.wav
+    track: music
+  snd_0291:
+    file: 0291.wav
+    track: music
+    loops: -1
+    loop_start_at: 9.3057s
+  snd_0292:
+    file: 0292.wav
+    track: music
+    loops: -1
+    loop_start_at: 7.8085s
+  snd_0293:
+    file: 0293.wav
+    track: music
+    loops: -1
+    loop_start_at: 3.5762s
+  snd_0294:
+    file: 0294.wav
+    track: music
+    loops: -1
+    loop_start_at: 9.2082s
+  snd_0295:
+    file: 0295.wav
+    track: music
+    loops: -1
+    loop_start_at: 7.9151s
+  snd_0296:
+    file: 0296.wav
+    track: music
+    loops: -1
+    loop_start_at: 5.3409s
+  snd_0297:
+    file: 0297.wav
+    track: music
+  snd_0298:
+    file: 0298.wav
+    track: music
+    loops: -1
+    loop_start_at: 22.1519s
+  snd_0299:
+    file: 0299.wav
+    track: music
+  snd_029a:
+    file: 029a.wav
+    track: music
+    loops: -1
+    loop_start_at: 0.4412s
+  snd_029b:
+    file: 029b.wav
+    track: music
+sound_pools:
+  call_009:
+    type: random_force_all
+    sounds: snd_0009
+  call_00a:
+    type: random_force_all
+    sounds: snd_000a
+  call_00b:
+    type: random_force_all
+    sounds: snd_000b
+  call_00c:
+    type: random_force_all
+    sounds: snd_000c
+  call_00d:
+    type: random_force_all
+    sounds: snd_000d
+  call_00e:
+    type: random_force_all
+    sounds: snd_000e
+  call_00f:
+    type: random_force_all
+    sounds: snd_000f
+  call_010:
+    type: random_force_all
+    sounds: snd_0010
+  call_011:
+    type: random_force_all
+    sounds: snd_0016
+  call_012:
+    type: random_force_all
+    sounds: snd_0017
+  call_013:
+    type: random_force_all
+    sounds: snd_0018
+  call_014:
+    type: random_force_all
+    sounds: snd_0019
+  call_015:
+    type: random_force_all
+    sounds: snd_0011
+  call_016:
+    type: random_force_all
+    sounds: snd_0012
+  call_017:
+    type: random_force_all
+    sounds: snd_000c
+  call_018:
+    type: random_force_all
+    sounds: snd_0014
+  call_019:
+    type: random_force_all
+    sounds: snd_0015
+  call_01a:
+    type: random_force_all
+    sounds: snd_028b
+  call_01b:
+    type: random_force_all
+    sounds: snd_0289
+  call_01c:
+    type: random_force_all
+    sounds: snd_028a
+  call_01d:
+    type: random_force_all
+    sounds: snd_0288
+  call_01e:
+    type: random_force_all
+    sounds: snd_0298
+  call_01f:
+    type: random_force_all
+    sounds: snd_0299
+  call_020:
+    type: random_force_all
+    sounds: snd_0286
+  call_021:
+    type: random_force_all
+    sounds: snd_0287
+  call_022:
+    type: random_force_all
+    sounds: snd_000c
+  call_023:
+    type: random_force_all
+    sounds: snd_0290
+  call_024:
+    type: random_force_all
+    sounds: snd_028f
+  call_025:
+    type: random_force_all
+    sounds: snd_028e
+  call_026:
+    type: random_force_all
+    sounds: snd_0283
+  call_027:
+    type: random_force_all
+    sounds: snd_028d
+  call_028:
+    type: random_force_all
+    sounds: snd_0295
+  call_029:
+    type: random_force_all
+    sounds: snd_0285
+  call_02a:
+    type: random_force_all
+    sounds: snd_0297
+  call_02b:
+    type: random_force_all
+    sounds: snd_0291
+  call_02c:
+    type: random_force_all
+    sounds: snd_029a
+  call_02d:
+    type: random_force_all
+    sounds: snd_0296
+  call_02e:
+    type: random_force_all
+    sounds: snd_0293
+  call_02f:
+    type: random_force_all
+    sounds: snd_0290
+  call_030:
+    type: random_force_all
+    sounds: snd_000c
+  call_031:
+    type: random_force_all
+    sounds: snd_028c
+  call_032:
+    type: random_force_all
+    sounds: snd_0294
+  call_033:
+    type: random_force_all
+    sounds: snd_000c
+  call_034:
+    type: random_force_all
+    sounds: snd_0284
+  call_035:
+    type: random_force_all
+    sounds: snd_0294
+  call_036:
+    type: random_force_all
+    sounds: snd_000c
+  call_037:
+    type: random_force_all
+    sounds: snd_000c
+  call_038:
+    type: random_force_all
+    sounds: snd_0292
+  call_039:
+    type: random_force_all
+    sounds: snd_000c
+  call_03a:
+    type: random_force_all
+    sounds: snd_000c
+  call_03b:
+    type: random_force_all
+    sounds: snd_0292
+  call_03c:
+    type: random_force_all
+    sounds: snd_029b
+  call_03d:
+    type: random_force_all
+    sounds: snd_029b
+  call_03e:
+    type: random_force_all
+    sounds: snd_00af
+  call_03f:
+    type: random_force_all
+    sounds: snd_00e9
+  call_040:
+    type: random_force_all
+    sounds: snd_01ca
+  call_041:
+    type: random_force_all
+    sounds: snd_01c0
+  call_042:
+    type: random_force_all
+    sounds: snd_00e6
+  call_043:
+    type: random_force_all
+    sounds: snd_00e7
+  call_044:
+    type: random_force_all
+    sounds: snd_00e7
+  call_045:
+    type: random_force_all
+    sounds: snd_015c
+  call_046:
+    type: random_force_all
+    sounds: snd_000c
+  call_047:
+    type: random_force_all
+    sounds: snd_000c
+  call_048:
+    type: random_force_all
+    sounds: snd_0202, snd_0202, snd_0203, snd_0204
+  call_049:
+    type: random_force_all
+    sounds: snd_000c
+  call_04a:
+    type: random_force_all
+    sounds: snd_0205
+  call_04b:
+    type: random_force_all
+    sounds: snd_000c
+  call_04c:
+    type: random_force_all
+    sounds: snd_000c
+  call_04d:
+    type: random_force_all
+    sounds: snd_000c
+  call_04e:
+    type: random_force_all
+    sounds: snd_000c
+  call_04f:
+    type: random_force_all
+    sounds: snd_000c
+  call_050:
+    type: random_force_all
+    sounds: snd_000c
+  call_051:
+    type: random_force_all
+    sounds: snd_000c
+  call_052:
+    type: random_force_all
+    sounds: snd_000c
+  call_053:
+    type: random_force_all
+    sounds: snd_01c1
+  call_054:
+    type: random_force_all
+    sounds: snd_000c
+  call_055:
+    type: random_force_all
+    sounds: snd_000c
+  call_056:
+    type: random_force_all
+    sounds: snd_008e, snd_008f
+  call_057:
+    type: random_force_all
+    sounds: snd_01a6, snd_0265, snd_01ef
+  call_058:
+    type: random_force_all
+    sounds: snd_0138, snd_0140, snd_0159, snd_015a
+  call_059:
+    type: random_force_all
+    sounds: snd_006d
+  call_05a:
+    type: random_force_all
+    sounds: snd_01f5
+  call_05b:
+    type: random_force_all
+    sounds: snd_009d
+  call_05c:
+    type: random_force_all
+    sounds: snd_000c
+  call_05d:
+    type: random_force_all
+    sounds: snd_000c
+  call_05e:
+    type: random_force_all
+    sounds: snd_000c
+  call_05f:
+    type: random_force_all
+    sounds: snd_023b
+  call_060:
+    type: random_force_all
+    sounds: snd_00b6
+  call_061:
+    type: random_force_all
+    sounds: snd_01d7
+  call_062:
+    type: random_force_all
+    sounds: snd_0048
+  call_063:
+    type: random_force_all
+    sounds: snd_0206
+  call_064:
+    type: random_force_all
+    sounds: snd_0047
+  call_065:
+    type: random_force_all
+    sounds: snd_0207
+  call_066:
+    type: random_force_all
+    sounds: snd_0046
+  call_067:
+    type: random_force_all
+    sounds: snd_01d8
+  call_068:
+    type: random_force_all
+    sounds: snd_0045
+  call_069:
+    type: random_force_all
+    sounds: snd_01cf
+  call_06a:
+    type: random_force_all
+    sounds: snd_01ce
+  call_06b:
+    type: random_force_all
+    sounds: snd_01d9
+  call_06c:
+    type: random_force_all
+    sounds: snd_01d9
+  call_06d:
+    type: random_force_all
+    sounds: snd_020c
+  call_06e:
+    type: random_force_all
+    sounds: snd_01d0
+  call_06f:
+    type: random_force_all
+    sounds: snd_000c
+  call_070:
+    type: random_force_all
+    sounds: snd_0045
+  call_071:
+    type: random_force_all
+    sounds: snd_000c
+  call_072:
+    type: random_force_all
+    sounds: snd_000c
+  call_073:
+    type: random_force_all
+    sounds: snd_000c
+  call_074:
+    type: random_force_all
+    sounds: snd_000c
+  call_075:
+    type: random_force_all
+    sounds: snd_000c
+  call_076:
+    type: random_force_all
+    sounds: snd_000c
+  call_077:
+    type: random_force_all
+    sounds: snd_000c
+  call_078:
+    type: random_force_all
+    sounds: snd_000c
+  call_079:
+    type: random_force_all
+    sounds: snd_000c
+  call_07a:
+    type: random_force_all
+    sounds: snd_000c
+  call_07b:
+    type: random_force_all
+    sounds: snd_000c
+  call_07c:
+    type: random_force_all
+    sounds: snd_000c
+  call_07d:
+    type: random_force_all
+    sounds: snd_00bf
+  call_07e:
+    type: random_force_all
+    sounds: snd_000c
+  call_07f:
+    type: random_force_all
+    sounds: snd_0064, snd_0065, snd_0062, snd_0063, snd_0060, snd_0061
+  call_080:
+    type: random_force_all
+    sounds: snd_00d0
+  call_081:
+    type: random_force_all
+    sounds: snd_007c
+  call_082:
+    type: random_force_all
+    sounds: snd_00d4
+  call_083:
+    type: random_force_all
+    sounds: snd_0044
+  call_084:
+    type: random_force_all
+    sounds: snd_006b, snd_006a, snd_0069, snd_0068, snd_0067, snd_0066
+  call_085:
+    type: random_force_all
+    sounds: snd_0078
+  call_086:
+    type: random_force_all
+    sounds: snd_0080
+  call_087:
+    type: random_force_all
+    sounds: snd_0071
+  call_088:
+    type: random_force_all
+    sounds: snd_007e
+  call_089:
+    type: random_force_all
+    sounds: snd_007d
+  call_08a:
+    type: random_force_all
+    sounds: snd_0078
+  call_08b:
+    type: random_force_all
+    sounds: snd_0073
+  call_08c:
+    type: random_force_all
+    sounds: snd_00e1
+  call_08d:
+    type: random_force_all
+    sounds: snd_00d4
+  call_08e:
+    type: random_force_all
+    sounds: snd_007a
+  call_08f:
+    type: random_force_all
+    sounds: snd_0043
+  call_090:
+    type: random_force_all
+    sounds: snd_00b6
+  call_091:
+    type: random_force_all
+    sounds: snd_00e3
+  call_092:
+    type: random_force_all
+    sounds: snd_000c
+  call_093:
+    type: random_force_all
+    sounds: snd_0137
+  call_094:
+    type: random_force_all
+    sounds: snd_01e3
+  call_095:
+    type: random_force_all
+    sounds: snd_01e4
+  call_096:
+    type: random_force_all
+    sounds: snd_01db
+  call_097:
+    type: random_force_all
+    sounds: snd_01e2
+  call_098:
+    type: random_force_all
+    sounds: snd_01e1
+  call_099:
+    type: random_force_all
+    sounds: snd_01da
+  call_09a:
+    type: random_force_all
+    sounds: snd_01e3
+  call_09b:
+    type: random_force_all
+    sounds: snd_01e4
+  call_09c:
+    type: random_force_all
+    sounds: snd_01db
+  call_09d:
+    type: random_force_all
+    sounds: snd_01e2
+  call_09e:
+    type: random_force_all
+    sounds: snd_01e1
+  call_09f:
+    type: random_force_all
+    sounds: snd_01da
+  call_0a0:
+    type: random_force_all
+    sounds: snd_01cc
+  call_0a1:
+    type: random_force_all
+    sounds: snd_01dc, snd_01dd, snd_01de
+  call_0a2:
+    type: random_force_all
+    sounds: snd_000c
+  call_0a3:
+    type: random_force_all
+    sounds: snd_000c
+  call_0a4:
+    type: random_force_all
+    sounds: snd_000c
+  call_0a5:
+    type: random_force_all
+    sounds: snd_0064, snd_0065, snd_0062, snd_0063, snd_0060, snd_0061
+  call_0a6:
+    type: random_force_all
+    sounds: snd_0084
+  call_0a7:
+    type: random_force_all
+    sounds: snd_00e1
+  call_0a8:
+    type: random_force_all
+    sounds: snd_00d4
+  call_0a9:
+    type: random_force_all
+    sounds: snd_0078
+  call_0aa:
+    type: random_force_all
+    sounds: snd_006b, snd_006a, snd_0069, snd_0068, snd_0067, snd_0066
+  call_0ab:
+    type: random_force_all
+    sounds: snd_006c
+  call_0ac:
+    type: random_force_all
+    sounds: snd_0077
+  call_0ad:
+    type: random_force_all
+    sounds: snd_0078
+  call_0ae:
+    type: random_force_all
+    sounds: snd_00e3
+  call_0af:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b0:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b1:
+    type: random_force_all
+    sounds: snd_01be, snd_01c1, snd_01b7, snd_01b2, snd_01ba, snd_01c2, snd_01c5
+  call_0b2:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b3:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b4:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b5:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b6:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b7:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b8:
+    type: random_force_all
+    sounds: snd_000c
+  call_0b9:
+    type: random_force_all
+    sounds: snd_000c
+  call_0ba:
+    type: random_force_all
+    sounds: snd_000c
+  call_0bb:
+    type: random_force_all
+    sounds: snd_000c
+  call_0bc:
+    type: random_force_all
+    sounds: snd_000c
+  call_0bd:
+    type: random_force_all
+    sounds: snd_000c
+  call_0be:
+    type: random_force_all
+    sounds: snd_000c
+  call_0bf:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c0:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c1:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c2:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c3:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c4:
+    type: random_force_all
+    sounds: snd_021d, snd_0219, snd_0232, snd_0233, snd_0235, snd_0236
+  call_0c5:
+    type: random_force_all
+    sounds: snd_0222, snd_0223
+  call_0c6:
+    type: random_force_all
+    sounds: snd_000c
+  call_0c7:
+    type: random_force_all
+    sounds: snd_00d0
+  call_0c8:
+    type: random_force_all
+    sounds: snd_01b9
+  call_0c9:
+    type: random_force_all
+    sounds: snd_01bb
+  call_0ca:
+    type: random_force_all
+    sounds: snd_0036, snd_0037, snd_0038, snd_0039
+  call_0cb:
+    type: random_force_all
+    sounds: snd_0074
+  call_0cc:
+    type: random_force_all
+    sounds: snd_00d0
+  call_0cd:
+    type: random_force_all
+    sounds: snd_007a
+  call_0ce:
+    type: random_force_all
+    sounds: snd_0072
+  call_0cf:
+    type: random_force_all
+    sounds: snd_0073
+  call_0d0:
+    type: random_force_all
+    sounds: snd_0074
+  call_0d1:
+    type: random_force_all
+    sounds: snd_01fe, snd_01ff, snd_01fa, snd_01fb, snd_01fc, snd_01fd, snd_0200, snd_0201
+  call_0d2:
+    type: random_force_all
+    sounds: snd_0034, snd_0035
+  call_0d3:
+    type: random_force_all
+    sounds: snd_0073
+  call_0d4:
+    type: random_force_all
+    sounds: snd_0073
+  call_0d5:
+    type: random_force_all
+    sounds: snd_0072
+  call_0d6:
+    type: random_force_all
+    sounds: snd_007a
+  call_0d7:
+    type: random_force_all
+    sounds: snd_00c3
+  call_0d8:
+    type: random_force_all
+    sounds: snd_0150, snd_0151, snd_0152, snd_0157, snd_0177, snd_0178, snd_0266
+  call_0d9:
+    type: random_force_all
+    sounds: snd_0033
+  call_0da:
+    type: random_force_all
+    sounds: snd_00c5
+  call_0db:
+    type: random_force_all
+    sounds: snd_00d4
+  call_0dc:
+    type: random_force_all
+    sounds: snd_00a4
+  call_0dd:
+    type: random_force_all
+    sounds: snd_0179
+  call_0de:
+    type: random_force_all
+    sounds: snd_002c
+  call_0df:
+    type: random_force_all
+    sounds: snd_000c
+  call_0e0:
+    type: random_force_all
+    sounds: snd_000c
+  call_0e1:
+    type: random_force_all
+    sounds: snd_000c
+  call_0e2:
+    type: random_force_all
+    sounds: snd_000c
+  call_0e3:
+    type: random_force_all
+    sounds: snd_01b2
+  call_0e4:
+    type: random_force_all
+    sounds: snd_009f, snd_00a0, snd_00a1, snd_00a2, snd_00a3
+  call_0e5:
+    type: random_force_all
+    sounds: snd_00d4
+  call_0e6:
+    type: random_force_all
+    sounds: snd_00d8
+  call_0e7:
+    type: random_force_all
+    sounds: snd_00d5
+  call_0e8:
+    type: random_force_all
+    sounds: snd_0073
+  call_0e9:
+    type: random_force_all
+    sounds: snd_0074
+  call_0ea:
+    type: random_force_all
+    sounds: snd_00d5
+  call_0eb:
+    type: random_force_all
+    sounds: snd_007b
+  call_0ec:
+    type: random_force_all
+    sounds: snd_00f1
+  call_0ed:
+    type: random_force_all
+    sounds: snd_007e
+  call_0ee:
+    type: random_force_all
+    sounds: snd_00d7
+  call_0ef:
+    type: random_force_all
+    sounds: snd_00d4
+  call_0f0:
+    type: random_force_all
+    sounds: snd_00d7
+  call_0f1:
+    type: random_force_all
+    sounds: snd_00e1
+  call_0f2:
+    type: random_force_all
+    sounds: snd_00d4
+  call_0f3:
+    type: random_force_all
+    sounds: snd_00d5
+  call_0f4:
+    type: random_force_all
+    sounds: snd_015d, snd_0230, snd_0231
+  call_0f5:
+    type: random_force_all
+    sounds: snd_015d, snd_0226, snd_01b4, snd_01b5, snd_0229, snd_0234, snd_014f, snd_0275, snd_000c, snd_000c
+  call_0f6:
+    type: random_force_all
+    sounds: snd_01b6
+  call_0f7:
+    type: random_force_all
+    sounds: snd_009f, snd_00a0, snd_00a1, snd_00a2, snd_00a3
+  call_0f8:
+    type: random_force_all
+    sounds: snd_014a
+  call_0f9:
+    type: random_force_all
+    sounds: snd_006c
+  call_0fa:
+    type: random_force_all
+    sounds: snd_0078
+  call_0fb:
+    type: random_force_all
+    sounds: snd_0158
+  call_0fc:
+    type: random_force_all
+    sounds: snd_002c
+  call_0fd:
+    type: random_force_all
+    sounds: snd_000c
+  call_0fe:
+    type: random_force_all
+    sounds: snd_000c
+  call_0ff:
+    type: random_force_all
+    sounds: snd_000c
+  call_100:
+    type: random_force_all
+    sounds: snd_000c
+  call_101:
+    type: random_force_all
+    sounds: snd_000c
+  call_102:
+    type: random_force_all
+    sounds: snd_000c
+  call_103:
+    type: random_force_all
+    sounds: snd_000c
+  call_104:
+    type: random_force_all
+    sounds: snd_000c
+  call_105:
+    type: random_force_all
+    sounds: snd_000c
+  call_106:
+    type: random_force_all
+    sounds: snd_000c
+  call_107:
+    type: random_force_all
+    sounds: snd_000c
+  call_108:
+    type: random_force_all
+    sounds: snd_000c
+  call_109:
+    type: random_force_all
+    sounds: snd_000c
+  call_10a:
+    type: random_force_all
+    sounds: snd_000c
+  call_10b:
+    type: random_force_all
+    sounds: snd_000c
+  call_10c:
+    type: random_force_all
+    sounds: snd_000c
+  call_10d:
+    type: random_force_all
+    sounds: snd_000c
+  call_10e:
+    type: random_force_all
+    sounds: snd_000c
+  call_10f:
+    type: random_force_all
+    sounds: snd_000c
+  call_110:
+    type: random_force_all
+    sounds: snd_000c
+  call_111:
+    type: random_force_all
+    sounds: snd_000c
+  call_112:
+    type: random_force_all
+    sounds: snd_000c
+  call_113:
+    type: random_force_all
+    sounds: snd_000c
+  call_114:
+    type: random_force_all
+    sounds: snd_000c
+  call_115:
+    type: random_force_all
+    sounds: snd_000c
+  call_116:
+    type: random_force_all
+    sounds: snd_000c
+  call_117:
+    type: random_force_all
+    sounds: snd_000c
+  call_118:
+    type: random_force_all
+    sounds: snd_000c
+  call_119:
+    type: random_force_all
+    sounds: snd_01a6
+  call_11a:
+    type: random_force_all
+    sounds: snd_0255
+  call_11b:
+    type: random_force_all
+    sounds: snd_005e
+  call_11c:
+    type: random_force_all
+    sounds: snd_000c
+  call_11d:
+    type: random_force_all
+    sounds: snd_000c
+  call_11e:
+    type: random_force_all
+    sounds: snd_0238
+  call_11f:
+    type: random_force_all
+    sounds: snd_0217
+  call_120:
+    type: random_force_all
+    sounds: snd_023a
+  call_121:
+    type: random_force_all
+    sounds: snd_0239
+  call_122:
+    type: random_force_all
+    sounds: snd_000c
+  call_123:
+    type: random_force_all
+    sounds: snd_000c
+  call_124:
+    type: random_force_all
+    sounds: snd_020d
+  call_125:
+    type: random_force_all
+    sounds: snd_020a
+  call_126:
+    type: random_force_all
+    sounds: snd_0209
+  call_127:
+    type: random_force_all
+    sounds: snd_01d6
+  call_128:
+    type: random_force_all
+    sounds: snd_005f
+  call_129:
+    type: random_force_all
+    sounds: snd_000c
+  call_12a:
+    type: random_force_all
+    sounds: snd_0256
+  call_12b:
+    type: random_force_all
+    sounds: snd_0264
+  call_12c:
+    type: random_force_all
+    sounds: snd_00e3
+  call_12d:
+    type: random_force_all
+    sounds: snd_005e
+  call_12e:
+    type: random_force_all
+    sounds: snd_0270
+  call_12f:
+    type: random_force_all
+    sounds: snd_0278
+  call_130:
+    type: random_force_all
+    sounds: snd_026b
+  call_131:
+    type: random_force_all
+    sounds: snd_005f
+  call_132:
+    type: random_force_all
+    sounds: snd_0274, snd_0262, snd_026c, snd_027b, snd_0271, snd_0282
+  call_133:
+    type: random_force_all
+    sounds: snd_026d
+  call_134:
+    type: random_force_all
+    sounds: snd_026f, snd_027d, snd_0274, snd_027c, snd_027b, snd_026e
+  call_135:
+    type: random_force_all
+    sounds: snd_000c
+  call_136:
+    type: random_force_all
+    sounds: snd_0263
+  call_137:
+    type: random_force_all
+    sounds: snd_0276
+  call_138:
+    type: random_force_all
+    sounds: snd_0251
+  call_139:
+    type: random_force_all
+    sounds: snd_0277
+  call_13a:
+    type: random_force_all
+    sounds: snd_00e3
+  call_13b:
+    type: random_force_all
+    sounds: snd_006f
+  call_13c:
+    type: random_force_all
+    sounds: snd_00bf
+  call_13d:
+    type: random_force_all
+    sounds: snd_0097, snd_0098, snd_0099
+  call_13e:
+    type: random_force_all
+    sounds: snd_008d
+  call_13f:
+    type: random_force_all
+    sounds: snd_017f, snd_0180, snd_0181, snd_0182, snd_0183
+  call_140:
+    type: random_force_all
+    sounds: snd_002e
+  call_141:
+    type: random_force_all
+    sounds: snd_002d
+  call_142:
+    type: random_force_all
+    sounds: snd_000c
+  call_143:
+    type: random_force_all
+    sounds: snd_000c
+  call_144:
+    type: random_force_all
+    sounds: snd_000c
+  call_145:
+    type: random_force_all
+    sounds: snd_0184, snd_010f, snd_0110, snd_0113, snd_0114, snd_0117
+  call_146:
+    type: random_force_all
+    sounds: snd_0111, snd_0112
+  call_147:
+    type: random_force_all
+    sounds: snd_0115, snd_0116
+  call_148:
+    type: random_force_all
+    sounds: snd_01ca, snd_0123, snd_010d, snd_010e, snd_0129, snd_0124, snd_0125, snd_0126, snd_0128
+  call_149:
+    type: random_force_all
+    sounds: snd_01ca, snd_0118, snd_0119, snd_011a, snd_011b, snd_011c, snd_011d
+  call_14a:
+    type: random_force_all
+    sounds: snd_010c, snd_0109, snd_019e, snd_019f, snd_01a0, snd_01a1
+  call_14b:
+    type: random_force_all
+    sounds: snd_010a
+  call_14c:
+    type: random_force_all
+    sounds: snd_0106, snd_0107, snd_01a2, snd_01a3, snd_01a4, snd_01a5
+  call_14d:
+    type: random_force_all
+    sounds: snd_0118, snd_0119, snd_011a, snd_011b, snd_011c, snd_011d
+  call_14e:
+    type: random_force_all
+    sounds: snd_0273, snd_0280, snd_027e, snd_0272, snd_027f, snd_027a, snd_0279
+  call_14f:
+    type: random_force_all
+    sounds: snd_000c
+  call_150:
+    type: random_force_all
+    sounds: snd_000c
+  call_151:
+    type: random_force_all
+    sounds: snd_000c
+  call_152:
+    type: random_force_all
+    sounds: snd_000c
+  call_153:
+    type: random_force_all
+    sounds: snd_000c
+  call_154:
+    type: random_force_all
+    sounds: snd_000c
+  call_155:
+    type: random_force_all
+    sounds: snd_000c
+  call_156:
+    type: random_force_all
+    sounds: snd_000c
+  call_157:
+    type: random_force_all
+    sounds: snd_00c7
+  call_158:
+    type: random_force_all
+    sounds: snd_00c6
+  call_159:
+    type: random_force_all
+    sounds: snd_00da, snd_00dc, snd_00dd, snd_00de, snd_00df, snd_00e0, snd_00e1, snd_00e2
+  call_15a:
+    type: random_force_all
+    sounds: snd_002a, snd_002b
+  call_15b:
+    type: random_force_all
+    sounds: snd_00d4, snd_00d6, snd_00d7, snd_00d8, snd_00d9
+  call_15c:
+    type: random_force_all
+    sounds: snd_0029, snd_0025
+  call_15d:
+    type: random_force_all
+    sounds: snd_0092, snd_0096, snd_0095, snd_0094, snd_0093
+  call_15e:
+    type: random_force_all
+    sounds: snd_000c
+  call_15f:
+    type: random_force_all
+    sounds: snd_000c
+  call_160:
+    type: random_force_all
+    sounds: snd_000c
+  call_161:
+    type: random_force_all
+    sounds: snd_00c2, snd_00c1, snd_00c0
+  call_162:
+    type: random_force_all
+    sounds: snd_024f
+  call_163:
+    type: random_force_all
+    sounds: snd_00c2
+  call_164:
+    type: random_force_all
+    sounds: snd_009e
+  call_165:
+    type: random_force_all
+    sounds: snd_0091
+  call_166:
+    type: random_force_all
+    sounds: snd_000c
+  call_167:
+    type: random_force_all
+    sounds: snd_0049
+  call_168:
+    type: random_force_all
+    sounds: snd_000c
+  call_169:
+    type: random_force_all
+    sounds: snd_00c9, snd_00ca
+  call_16a:
+    type: random_force_all
+    sounds: snd_00c8
+  call_16b:
+    type: random_force_all
+    sounds: snd_000c
+  call_16c:
+    type: random_force_all
+    sounds: snd_006e
+  call_16d:
+    type: random_force_all
+    sounds: snd_00e5
+  call_16e:
+    type: random_force_all
+    sounds: snd_000c
+  call_16f:
+    type: random_force_all
+    sounds: snd_000c
+  call_170:
+    type: random_force_all
+    sounds: snd_00cb, snd_00cc, snd_00a7, snd_00a8, snd_00ac
+  call_171:
+    type: random_force_all
+    sounds: snd_00cb, snd_00cc
+  call_172:
+    type: random_force_all
+    sounds: snd_00e4
+  call_173:
+    type: random_force_all
+    sounds: snd_0023, snd_0024
+  call_174:
+    type: random_force_all
+    sounds: snd_00eb, snd_00ec, snd_00ed, snd_00ee
+  call_175:
+    type: random_force_all
+    sounds: snd_0026, snd_0027, snd_0028
+  call_176:
+    type: random_force_all
+    sounds: snd_0022
+  call_177:
+    type: random_force_all
+    sounds: snd_0020, snd_0021
+  call_178:
+    type: random_force_all
+    sounds: snd_000c
+  call_179:
+    type: random_force_all
+    sounds: snd_000c
+  call_17a:
+    type: random_force_all
+    sounds: snd_000c
+  call_17b:
+    type: random_force_all
+    sounds: snd_000c
+  call_17c:
+    type: random_force_all
+    sounds: snd_000c
+  call_17d:
+    type: random_force_all
+    sounds: snd_000c
+  call_17e:
+    type: random_force_all
+    sounds: snd_000c
+  call_17f:
+    type: random_force_all
+    sounds: snd_00a9
+  call_180:
+    type: random_force_all
+    sounds: snd_021c
+  call_181:
+    type: random_force_all
+    sounds: snd_001e, snd_001f
+  call_182:
+    type: random_force_all
+    sounds: snd_00ab
+  call_183:
+    type: random_force_all
+    sounds: snd_00a9
+  call_184:
+    type: random_force_all
+    sounds: snd_00d2
+  call_185:
+    type: random_force_all
+    sounds: snd_00a6
+  call_186:
+    type: random_force_all
+    sounds: snd_00d5
+  call_187:
+    type: random_force_all
+    sounds: snd_00db
+  call_188:
+    type: random_force_all
+    sounds: snd_00d6
+  call_189:
+    type: random_force_all
+    sounds: snd_00aa
+  call_18a:
+    type: random_force_all
+    sounds: snd_00a5
+  call_18b:
+    type: random_force_all
+    sounds: snd_00ef
+  call_18c:
+    type: random_force_all
+    sounds: snd_00f4
+  call_18d:
+    type: random_force_all
+    sounds: snd_00a5
+  call_18e:
+    type: random_force_all
+    sounds: snd_021e, snd_020f, snd_023c, snd_0242, snd_0211, snd_021f, snd_0210, snd_022f, snd_0240, snd_023d, snd_023e, snd_023f, snd_0241, snd_0243
+  call_18f:
+    type: random_force_all
+    sounds: snd_021c
+  call_190:
+    type: random_force_all
+    sounds: snd_021a
+  call_191:
+    type: random_force_all
+    sounds: snd_0090
+  call_192:
+    type: random_force_all
+    sounds: snd_017a
+  call_193:
+    type: random_force_all
+    sounds: snd_00b0
+  call_194:
+    type: random_force_all
+    sounds: snd_0221
+  call_195:
+    type: random_force_all
+    sounds: snd_0055
+  call_196:
+    type: random_force_all
+    sounds: snd_00d2
+  call_197:
+    type: random_force_all
+    sounds: snd_00a4
+  call_198:
+    type: random_force_all
+    sounds: snd_007c
+  call_199:
+    type: random_force_all
+    sounds: snd_00d3
+  call_19a:
+    type: random_force_all
+    sounds: snd_00a4
+  call_19b:
+    type: random_force_all
+    sounds: snd_007c
+  call_19c:
+    type: random_force_all
+    sounds: snd_00d5
+  call_19d:
+    type: random_force_all
+    sounds: snd_00a4
+  call_19e:
+    type: random_force_all
+    sounds: snd_0076
+  call_19f:
+    type: random_force_all
+    sounds: snd_000c
+  call_1a0:
+    type: random_force_all
+    sounds: snd_000c
+  call_1a1:
+    type: random_force_all
+    sounds: snd_000c
+  call_1a2:
+    type: random_force_all
+    sounds: snd_00d1
+  call_1a3:
+    type: random_force_all
+    sounds: snd_00d2
+  call_1a4:
+    type: random_force_all
+    sounds: snd_0250, snd_0259, snd_025d, snd_0261, snd_025f, snd_025a, snd_025c, snd_025e, snd_025b, snd_0260, snd_0281
+  call_1a5:
+    type: random_force_all
+    sounds: snd_0090
+  call_1a6:
+    type: random_force_all
+    sounds: snd_0221
+  call_1a7:
+    type: random_force_all
+    sounds: snd_021a
+  call_1a8:
+    type: random_force_all
+    sounds: snd_0090
+  call_1a9:
+    type: random_force_all
+    sounds: snd_00ad
+  call_1aa:
+    type: random_force_all
+    sounds: snd_023a
+  call_1ab:
+    type: random_force_all
+    sounds: snd_009a
+  call_1ac:
+    type: random_force_all
+    sounds: snd_00ad
+  call_1ad:
+    type: random_force_all
+    sounds: snd_0087
+  call_1ae:
+    type: random_force_all
+    sounds: snd_0085
+  call_1af:
+    type: random_force_all
+    sounds: snd_00f5
+  call_1b0:
+    type: random_force_all
+    sounds: snd_0196, snd_019a
+  call_1b1:
+    type: random_force_all
+    sounds: snd_0198
+  call_1b2:
+    type: random_force_all
+    sounds: snd_0199
+  call_1b3:
+    type: random_force_all
+    sounds: snd_00d7
+  call_1b4:
+    type: random_force_all
+    sounds: snd_00df
+  call_1b5:
+    type: random_force_all
+    sounds: snd_00d9
+  call_1b6:
+    type: random_force_all
+    sounds: snd_00d4
+  call_1b7:
+    type: random_force_all
+    sounds: snd_0197
+  call_1b8:
+    type: random_force_all
+    sounds: snd_00d6
+  call_1b9:
+    type: random_force_all
+    sounds: snd_00c3
+  call_1ba:
+    type: random_force_all
+    sounds: snd_00d9
+  call_1bb:
+    type: random_force_all
+    sounds: snd_00e4
+  call_1bc:
+    type: random_force_all
+    sounds: snd_0185, snd_0186, snd_0189
+  call_1bd:
+    type: random_force_all
+    sounds: snd_00e4
+  call_1be:
+    type: random_force_all
+    sounds: snd_018e
+  call_1bf:
+    type: random_force_all
+    sounds: snd_00e4
+  call_1c0:
+    type: random_force_all
+    sounds: snd_00cb
+  call_1c1:
+    type: random_force_all
+    sounds: snd_0188, snd_018b, snd_0193
+  call_1c2:
+    type: random_force_all
+    sounds: snd_00e4
+  call_1c3:
+    type: random_force_all
+    sounds: snd_0185, snd_0186, snd_0188, snd_018a, snd_018c, snd_018e, snd_0193, snd_0194, snd_0196, snd_0197
+  call_1c4:
+    type: random_force_all
+    sounds: snd_000c, snd_0187, snd_0189, snd_018b, snd_018d, snd_000c, snd_000c, snd_0195, snd_019a, snd_000c
+  call_1c5:
+    type: random_force_all
+    sounds: snd_018f, snd_0190, snd_0191, snd_0192
+  call_1c6:
+    type: random_force_all
+    sounds: snd_00a4
+  call_1c7:
+    type: random_force_all
+    sounds: snd_00b3
+  call_1c8:
+    type: random_force_all
+    sounds: snd_00b2
+  call_1c9:
+    type: random_force_all
+    sounds: snd_023a
+  call_1ca:
+    type: random_force_all
+    sounds: snd_021a
+  call_1cb:
+    type: random_force_all
+    sounds: snd_0090
+  call_1cc:
+    type: random_force_all
+    sounds: snd_000c
+  call_1cd:
+    type: random_force_all
+    sounds: snd_00b1
+  call_1ce:
+    type: random_force_all
+    sounds: snd_00be
+  call_1cf:
+    type: random_force_all
+    sounds: snd_0239
+  call_1d0:
+    type: random_force_all
+    sounds: snd_015e
+  call_1d1:
+    type: random_force_all
+    sounds: snd_004a, snd_004b, snd_004c, snd_004d
+  call_1d2:
+    type: random_force_all
+    sounds: snd_0087
+  call_1d3:
+    type: random_force_all
+    sounds: snd_0086
+  call_1d4:
+    type: random_force_all
+    sounds: snd_0085
+  call_1d5:
+    type: random_force_all
+    sounds: snd_0084
+  call_1d6:
+    type: random_force_all
+    sounds: snd_0083
+  call_1d7:
+    type: random_force_all
+    sounds: snd_0082
+  call_1d8:
+    type: random_force_all
+    sounds: snd_0081
+  call_1d9:
+    type: random_force_all
+    sounds: snd_007f
+  call_1da:
+    type: random_force_all
+    sounds: snd_0079
+  call_1db:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1dc:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1dd:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1de:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1df:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1e0:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1e1:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1e2:
+    type: random_force_all
+    sounds: snd_0079
+  call_1e3:
+    type: random_force_all
+    sounds: snd_01b3, snd_016d, snd_016e, snd_016c, snd_016f, snd_00f7, snd_00f6, snd_0171, snd_0172, snd_0175
+  call_1e4:
+    type: random_force_all
+    sounds: snd_000c, snd_000c, snd_000c, snd_000c, snd_000c, snd_0170, snd_000c, snd_000c, snd_0173, snd_0176
+  call_1e5:
+    type: random_force_all
+    sounds: snd_0239
+  call_1e6:
+    type: random_force_all
+    sounds: snd_021a
+  call_1e7:
+    type: random_force_all
+    sounds: snd_0090
+  call_1e8:
+    type: random_force_all
+    sounds: snd_000c
+  call_1e9:
+    type: random_force_all
+    sounds: snd_00e8
+  call_1ea:
+    type: random_force_all
+    sounds: snd_00ec
+  call_1eb:
+    type: random_force_all
+    sounds: snd_00ec
+  call_1ec:
+    type: random_force_all
+    sounds: snd_00f2
+  call_1ed:
+    type: random_force_all
+    sounds: snd_020d
+  call_1ee:
+    type: random_force_all
+    sounds: snd_003d, snd_0041, snd_0040, snd_003f, snd_003e
+  call_1ef:
+    type: random_force_all
+    sounds: snd_00e8, snd_00e9, snd_00ea
+  call_1f0:
+    type: random_force_all
+    sounds: snd_00eb
+  call_1f1:
+    type: random_force_all
+    sounds: snd_00ea
+  call_1f2:
+    type: random_force_all
+    sounds: snd_019c
+  call_1f3:
+    type: random_force_all
+    sounds: snd_019d
+  call_1f4:
+    type: random_force_all
+    sounds: snd_00ec
+  call_1f5:
+    type: random_force_all
+    sounds: snd_00ed
+  call_1f6:
+    type: random_force_all
+    sounds: snd_00e8
+  call_1f7:
+    type: random_force_all
+    sounds: snd_00a4
+  call_1f8:
+    type: random_force_all
+    sounds: snd_00d0
+  call_1f9:
+    type: random_force_all
+    sounds: snd_00ee
+  call_1fb:
+    type: random_force_all
+    sounds: snd_00f5
+  call_1fc:
+    type: random_force_all
+    sounds: snd_020d
+  call_1fd:
+    type: random_force_all
+    sounds: snd_01cb
+  call_1fe:
+    type: random_force_all
+    sounds: snd_009e
+  call_1ff:
+    type: random_force_all
+    sounds: snd_000c
+  call_200:
+    type: random_force_all
+    sounds: snd_020a
+  call_201:
+    type: random_force_all
+    sounds: snd_00c2, snd_00c1, snd_00c0
+  call_202:
+    type: random_force_all
+    sounds: snd_00e9
+  call_203:
+    type: random_force_all
+    sounds: snd_00f5
+  call_204:
+    type: random_force_all
+    sounds: snd_00bf
+  call_205:
+    type: random_force_all
+    sounds: snd_00e9
+  call_206:
+    type: random_force_all
+    sounds: snd_00a4
+  call_207:
+    type: random_force_all
+    sounds: snd_00f5
+  call_208:
+    type: random_force_all
+    sounds: snd_0087
+  call_209:
+    type: random_force_all
+    sounds: snd_00e9
+  call_20a:
+    type: random_force_all
+    sounds: snd_00c4
+  call_20b:
+    type: random_force_all
+    sounds: snd_00e1
+  call_20c:
+    type: random_force_all
+    sounds: snd_00d4
+  call_20d:
+    type: random_force_all
+    sounds: snd_0073
+  call_20e:
+    type: random_force_all
+    sounds: snd_00d1
+  call_20f:
+    type: random_force_all
+    sounds: snd_007d
+  call_210:
+    type: random_force_all
+    sounds: snd_00d0
+  call_211:
+    type: random_force_all
+    sounds: snd_007a
+  call_212:
+    type: random_force_all
+    sounds: snd_007c
+  call_213:
+    type: random_force_all
+    sounds: snd_0080
+  call_214:
+    type: random_force_all
+    sounds: snd_0244, snd_0246, snd_0247, snd_0254, snd_0245, snd_000c, snd_000c, snd_0248, snd_0253, snd_0252
+  call_215:
+    type: random_force_all
+    sounds: snd_0056
+  call_216:
+    type: random_force_all
+    sounds: snd_020a
+  call_217:
+    type: random_force_all
+    sounds: snd_01cb
+  call_218:
+    type: random_force_all
+    sounds: snd_009e
+  call_219:
+    type: random_force_all
+    sounds: snd_000c
+  call_21a:
+    type: random_force_all
+    sounds: snd_0075
+  call_21b:
+    type: random_force_all
+    sounds: snd_0209
+  call_21c:
+    type: random_force_all
+    sounds: snd_003a, snd_003c
+  call_21d:
+    type: random_force_all
+    sounds: snd_007e
+  call_21e:
+    type: random_force_all
+    sounds: snd_00d8
+  call_21f:
+    type: random_force_all
+    sounds: snd_00d4
+  call_220:
+    type: random_force_all
+    sounds: snd_00b5
+  call_221:
+    type: random_force_all
+    sounds: snd_007e
+  call_222:
+    type: random_force_all
+    sounds: snd_00b4
+  call_223:
+    type: random_force_all
+    sounds: snd_0079
+  call_224:
+    type: random_force_all
+    sounds: snd_007c
+  call_225:
+    type: random_force_all
+    sounds: snd_00d0
+  call_226:
+    type: random_force_all
+    sounds: snd_00e1
+  call_227:
+    type: random_force_all
+    sounds: snd_00e1
+  call_228:
+    type: random_force_all
+    sounds: snd_0076
+  call_229:
+    type: random_force_all
+    sounds: snd_005b
+  call_22a:
+    type: random_force_all
+    sounds: snd_005d
+  call_22b:
+    type: random_force_all
+    sounds: snd_007e
+  call_22c:
+    type: random_force_all
+    sounds: snd_00d0
+  call_22d:
+    type: random_force_all
+    sounds: snd_007d
+  call_22e:
+    type: random_force_all
+    sounds: snd_0166, snd_0167, snd_0163, snd_015f, snd_0168, snd_0162, snd_0160, snd_0169, snd_016a, snd_0161, snd_013f
+  call_22f:
+    type: random_force_all
+    sounds: snd_00d4
+  call_230:
+    type: random_force_all
+    sounds: snd_0209
+  call_231:
+    type: random_force_all
+    sounds: snd_01cb
+  call_232:
+    type: random_force_all
+    sounds: snd_009e
+  call_233:
+    type: random_force_all
+    sounds: snd_000c
+  call_234:
+    type: random_force_all
+    sounds: snd_00c4
+  call_235:
+    type: random_force_all
+    sounds: snd_0208
+  call_236:
+    type: random_force_all
+    sounds: snd_0032
+  call_237:
+    type: random_force_all
+    sounds: snd_0212, snd_0141, snd_01b8, snd_0213, snd_0258, snd_000c, snd_0214, snd_0269, snd_0268, snd_0108, snd_026a
+  call_238:
+    type: random_force_all
+    sounds: snd_00c6
+  call_239:
+    type: random_force_all
+    sounds: snd_0076
+  call_23a:
+    type: random_force_all
+    sounds: snd_00d4
+  call_23b:
+    type: random_force_all
+    sounds: snd_00d6
+  call_23c:
+    type: random_force_all
+    sounds: snd_00da
+  call_23d:
+    type: random_force_all
+    sounds: snd_0076
+  call_23e:
+    type: random_force_all
+    sounds: snd_00d4
+  call_23f:
+    type: random_force_all
+    sounds: snd_00d7
+  call_240:
+    type: random_force_all
+    sounds: snd_00da
+  call_241:
+    type: random_force_all
+    sounds: snd_00d4
+  call_242:
+    type: random_force_all
+    sounds: snd_00e2
+  call_243:
+    type: random_force_all
+    sounds: snd_00d9
+  call_244:
+    type: random_force_all
+    sounds: snd_0076
+  call_245:
+    type: random_force_all
+    sounds: snd_00d4
+  call_246:
+    type: random_force_all
+    sounds: snd_0076
+  call_247:
+    type: random_force_all
+    sounds: snd_0073
+  call_248:
+    type: random_force_all
+    sounds: snd_00de
+  call_249:
+    type: random_force_all
+    sounds: snd_00d5
+  call_24a:
+    type: random_force_all
+    sounds: snd_00e2
+  call_24b:
+    type: random_force_all
+    sounds: snd_00de
+  call_24c:
+    type: random_force_all
+    sounds: snd_00d9
+  call_24d:
+    type: random_force_all
+    sounds: snd_00df
+  call_24e:
+    type: random_force_all
+    sounds: snd_00da
+  call_24f:
+    type: random_force_all
+    sounds: snd_00d6
+  call_250:
+    type: random_force_all
+    sounds: snd_00d5
+  call_251:
+    type: random_force_all
+    sounds: snd_00de
+  call_252:
+    type: random_force_all
+    sounds: snd_009e
+  call_253:
+    type: random_force_all
+    sounds: snd_0208
+  call_254:
+    type: random_force_all
+    sounds: snd_01cb
+  call_255:
+    type: random_force_all
+    sounds: snd_009e
+  call_256:
+    type: random_force_all
+    sounds: snd_000c
+  call_257:
+    type: random_force_all
+    sounds: snd_000c
+  call_258:
+    type: random_force_all
+    sounds: snd_000c
+  call_259:
+    type: random_force_all
+    sounds: snd_000c
+  call_25a:
+    type: random_force_all
+    sounds: snd_000c
+  call_25b:
+    type: random_force_all
+    sounds: snd_000c
+  call_25c:
+    type: random_force_all
+    sounds: snd_000c
+  call_25d:
+    type: random_force_all
+    sounds: snd_008a, snd_0089, snd_0088
+  call_25e:
+    type: random_force_all
+    sounds: snd_008b, snd_008c
+  call_25f:
+    type: random_force_all
+    sounds: snd_000c
+  call_260:
+    type: random_force_all
+    sounds: snd_00ae
+  call_261:
+    type: random_force_all
+    sounds: snd_000c
+  call_262:
+    type: random_force_all
+    sounds: snd_00cd, snd_00ce, snd_00cf
+  call_263:
+    type: random_force_all
+    sounds: snd_0051, snd_0052, snd_0053, snd_0054
+  call_264:
+    type: random_force_all
+    sounds: snd_0132, snd_0133, snd_0134, snd_0135, snd_0136, snd_0139, snd_013a, snd_013b, snd_013c, snd_013d, snd_013e, snd_013f, snd_015c, snd_016b
+  call_265:
+    type: random_force_all
+    sounds: snd_000c
+  call_266:
+    type: random_force_all
+    sounds: snd_00bc, snd_00bb, snd_00bd, snd_0056, snd_0057, snd_0058, snd_0059
+  call_267:
+    type: random_force_all
+    sounds: snd_000c
+  call_268:
+    type: random_force_all
+    sounds: snd_000c
+  call_269:
+    type: random_force_all
+    sounds: snd_000c
+  call_26a:
+    type: random_force_all
+    sounds: snd_000c
+  call_26b:
+    type: random_force_all
+    sounds: snd_00e8, snd_00e9, snd_00ea
+  call_26c:
+    type: random_force_all
+    sounds: snd_000c
+  call_26d:
+    type: random_force_all
+    sounds: snd_009b, snd_009c
+  call_26e:
+    type: random_force_all
+    sounds: snd_00c2, snd_00c1, snd_00c0
+  call_26f:
+    type: random_force_all
+    sounds: snd_024e
+  call_270:
+    type: random_force_all
+    sounds: snd_00c1
+  call_271:
+    type: random_force_all
+    sounds: snd_009e
+  call_272:
+    type: random_force_all
+    sounds: snd_004e, snd_004f
+  call_273:
+    type: random_force_all
+    sounds: snd_004e, snd_004f
+  call_274:
+    type: random_force_all
+    sounds: snd_000c
+  call_275:
+    type: random_force_all
+    sounds: snd_000c
+  call_276:
+    type: random_force_all
+    sounds: snd_000c
+  call_277:
+    type: random_force_all
+    sounds: snd_000c
+  call_278:
+    type: random_force_all
+    sounds: snd_000c
+  call_279:
+    type: random_force_all
+    sounds: snd_000c
+  call_27a:
+    type: random_force_all
+    sounds: snd_001a
+  call_27b:
+    type: random_force_all
+    sounds: snd_024b, snd_024a, snd_0249
+  call_27c:
+    type: random_force_all
+    sounds: snd_001c, snd_001d, snd_001b
+  call_27d:
+    type: random_force_all
+    sounds: snd_024b, snd_024a, snd_0249
+  call_27e:
+    type: random_force_all
+    sounds: snd_000c
+  call_27f:
+    type: random_force_all
+    sounds: snd_000c
+  call_280:
+    type: random_force_all
+    sounds: snd_000c
+  call_281:
+    type: random_force_all
+    sounds: snd_000c
+  call_282:
+    type: random_force_all
+    sounds: snd_000c
+  call_283:
+    type: random_force_all
+    sounds: snd_000c
+  call_284:
+    type: random_force_all
+    sounds: snd_000c
+  call_285:
+    type: random_force_all
+    sounds: snd_000c
+  call_286:
+    type: random_force_all
+    sounds: snd_000c
+  call_287:
+    type: random_force_all
+    sounds: snd_000c
+  call_288:
+    type: random_force_all
+    sounds: snd_000c
+  call_289:
+    type: random_force_all
+    sounds: snd_000c
+  call_28a:
+    type: random_force_all
+    sounds: snd_000c
+  call_28b:
+    type: random_force_all
+    sounds: snd_000c
+  call_28c:
+    type: random_force_all
+    sounds: snd_000c
+  call_28d:
+    type: random_force_all
+    sounds: snd_005a, snd_005b, snd_005c, snd_005d
+  call_28e:
+    type: random_force_all
+    sounds: snd_000c
+  call_28f:
+    type: random_force_all
+    sounds: snd_000c
+  call_290:
+    type: random_force_all
+    sounds: snd_00e3
+  call_291:
+    type: random_force_all
+    sounds: snd_000c
+  call_292:
+    type: random_force_all
+    sounds: snd_000c
+  call_293:
+    type: random_force_all
+    sounds: snd_0042
+  call_294:
+    type: random_force_all
+    sounds: snd_01a8, snd_01a9, snd_01aa, snd_01a7
+  call_295:
+    type: random_force_all
+    sounds: snd_01ac, snd_01ab, snd_01ad, snd_01b0
+  call_296:
+    type: random_force_all
+    sounds: snd_01b1, snd_01af, snd_01ae, snd_01b3
+  call_297:
+    type: random_force_all
+    sounds: snd_01c6, snd_01c7, snd_01c8, snd_01c9
+  call_298:
+    type: random_force_all
+    sounds: snd_0142, snd_0143, snd_0144, snd_0145
+  call_299:
+    type: random_force_all
+    sounds: snd_0146, snd_0147, snd_0149, snd_0148
+  call_29a:
+    type: random_force_all
+    sounds: snd_002f
+  call_29b:
+    type: random_force_all
+    sounds: snd_000c
+  call_29c:
+    type: random_force_all
+    sounds: snd_0030
+  call_29d:
+    type: random_force_all
+    sounds: snd_000c
+  call_29e:
+    type: random_force_all
+    sounds: snd_000c
+  call_29f:
+    type: random_force_all
+    sounds: snd_0031
+  call_2a0:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a1:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a2:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a3:
+    type: random_force_all
+    sounds: snd_00f1, snd_00f2
+  call_2a4:
+    type: random_force_all
+    sounds: snd_0050
+  call_2a5:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a6:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a7:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a8:
+    type: random_force_all
+    sounds: snd_000c
+  call_2a9:
+    type: random_force_all
+    sounds: snd_000c
+  call_2aa:
+    type: random_force_all
+    sounds: snd_00d9
+  call_2ab:
+    type: random_force_all
+    sounds: snd_00c5
+  call_2ac:
+    type: random_force_all
+    sounds: snd_01e6, snd_01f2
+  call_2ad:
+    type: random_force_all
+    sounds: snd_000c
+  call_2ae:
+    type: random_force_all
+    sounds: snd_000c
+  call_2af:
+    type: random_force_all
+    sounds: snd_000c
+  call_2b0:
+    type: random_force_all
+    sounds: snd_000c
+  call_2b1:
+    type: random_force_all
+    sounds: snd_011e, snd_011f, snd_0120, snd_0121, snd_0122, snd_0127, snd_012a, snd_012b, snd_012c, snd_012d, snd_012e, snd_012f, snd_0130, snd_0131
+  call_2b2:
+    type: random_force_all
+    sounds: snd_01f0, snd_01f1, snd_01e5, snd_01f6, snd_01f7, snd_01f8, snd_01f9
+  call_2b3:
+    type: random_force_all
+    sounds: snd_01f4, snd_01e7, snd_01ed
+  call_2b4:
+    type: random_force_all
+    sounds: snd_01ee
+  call_2b5:
+    type: random_force_all
+    sounds: snd_0155, snd_01ba, snd_01c3, snd_0227, snd_0257, snd_01ec, snd_022a, snd_022b, snd_022d, snd_022e
+  call_2b6:
+    type: random_force_all
+    sounds: snd_0156, snd_01bc, snd_01c4, snd_01df, snd_01e0, snd_022c, snd_01eb, snd_01e8, snd_01e9, snd_01ea
+  call_2b7:
+    type: random_force_all
+    sounds: snd_000c
+  call_2b8:
+    type: random_force_all
+    sounds: snd_000c
+  call_2b9:
+    type: random_force_all
+    sounds: snd_000c
+  call_2ba:
+    type: random_force_all
+    sounds: snd_000c, snd_000c, snd_000c, snd_000c, snd_000c, snd_000c
+  call_2bb:
+    type: random_force_all
+    sounds: snd_000c
+  call_2bc:
+    type: random_force_all
+    sounds: snd_000c
+  call_2bd:
+    type: random_force_all
+    sounds: snd_015b
+  call_2be:
+    type: random_force_all
+    sounds: snd_015e
+  call_2bf:
+    type: random_force_all
+    sounds: snd_00a4, snd_00d8, snd_00d7, snd_00d9, snd_00d4, snd_00d5, snd_00d2, snd_00d3

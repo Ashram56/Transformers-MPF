@@ -1,0 +1,367 @@
+{
+ "rom": {
+  "file": "tf_180.bin",
+  "size": 30560052,
+  "sha1": "62e1328e8462680694157aca266055d57347e904",
+  "crc32": "0b6e3a4f",
+  "pinmame_set": "tf_180",
+  "game": "Transformers (Pro), Stern 2011, code V1.80 (README: March 14, 2013)",
+  "pinmame_flags": "SAM_GAME_AUXSOL12 (12-transistor aux driver board 520-5326-02 on CSTB/DSTB), SAM_2COL",
+  "pinmame_lamp_types": "lamp 58 Megatron and 60-62 bumpers as strobed LEDs; solenoids 17-21, 23, 25-28, 31-32 as #89 bulbs (src/wpc/sam.c)",
+  "other_sets": "LE is a separate image (tf_180h, SHA1 feec42b0...); this extraction covers the Pro only"
+ },
+ "memory_map": {
+  "os": "0x00000000-0x00034057 (reset copies it to SRAM at 0x300000; copy loop 0x84-0x9c, verify 0xa0-0xc4)",
+  "ram": "0x00034058-0x000fffff (initial values = ROM bytes at the same offset; bss cleared from 0x34058 by 0x2fd80 at 0x148)",
+  "game": "0x01000000-0x0106f08f = file 0x40000-0xaf08f (copied at boot by 0x2fd48 at 0x160, verified by 0x2fd08)",
+  "data": "0x04000000-0x047fffff = first 8 MB of the file; banked pointers (p>>24)*0x800000 + (p & 0xffffff)",
+  "resource_block": "file 0x30e74: images end 0x12d640?, 0x12d624, font count 27, font table 0x123478, image count 10212, image table 0x123694, sample count 668, sample directory 0x120048",
+  "audio": "ADPCM streams file 0xbdca4c-0x1d1a663, stream scripts 0x1d1a664-end (bank 3)"
+ },
+ "registry": [
+  {
+   "registry_entry": "0x30b00",
+   "address": "0x040ca7a4",
+   "count": 36,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b0c",
+   "address": "0x040cb20c",
+   "count": 99,
+   "record_size": 32,
+   "name": "adjustments",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30b18",
+   "address": "0x040cbe6c",
+   "count": 159,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b24",
+   "address": "0x040cc5e0",
+   "count": 7,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b30",
+   "address": "0x040cd5a4",
+   "count": 167,
+   "record_size": 16,
+   "name": "audits",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30b3c",
+   "address": "0x040ce024",
+   "count": 2,
+   "record_size": 40,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b48",
+   "address": "0x040ce3d4",
+   "count": 36,
+   "record_size": 28,
+   "name": "coils",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30b54",
+   "address": "0x040ce7c4",
+   "count": 156,
+   "record_size": 8,
+   "name": "deffs",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30b60",
+   "address": "0x040ceca4",
+   "count": 29,
+   "record_size": 32,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b6c",
+   "address": "0x040cf044",
+   "count": 12,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b78",
+   "address": "0x040cf0bc",
+   "count": 6,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b84",
+   "address": "0x040cf104",
+   "count": 213,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b90",
+   "address": "0x040cf458",
+   "count": 78,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30b9c",
+   "address": "0x040cf590",
+   "count": 2,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30ba8",
+   "address": "0x040cf65c",
+   "count": 62,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bb4",
+   "address": "0x040cf758",
+   "count": 1,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bc0",
+   "address": "0x040cf75c",
+   "count": 3,
+   "record_size": 20,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bcc",
+   "address": "0x040cf948",
+   "count": 18,
+   "record_size": 32,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bd8",
+   "address": "0x040cfc48",
+   "count": 6,
+   "record_size": 36,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bf0",
+   "address": "0x040cfd20",
+   "count": 14,
+   "record_size": 16,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30bfc",
+   "address": "0x040cfe00",
+   "count": 179,
+   "record_size": 12,
+   "name": "leffs",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30c08",
+   "address": "0x040d0dfc",
+   "count": 81,
+   "record_size": 12,
+   "name": "lamps",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30c14",
+   "address": "0x040d11c8",
+   "count": 11,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c20",
+   "address": "0x040d1220",
+   "count": 9,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c2c",
+   "address": "0x040d1510",
+   "count": 148,
+   "record_size": 4,
+   "name": "lamp_groups",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30c38",
+   "address": "0x040d1764",
+   "count": 1,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c44",
+   "address": "0x040d17fc",
+   "count": 5,
+   "record_size": 36,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c50",
+   "address": "0x040d18b8",
+   "count": 2,
+   "record_size": 4,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c5c",
+   "address": "0x040dc0f0",
+   "count": 1794,
+   "record_size": 4,
+   "name": "messages",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30c68",
+   "address": "0x040dde30",
+   "count": 13,
+   "record_size": 24,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c74",
+   "address": "0x040ddf80",
+   "count": 1,
+   "record_size": 36,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c80",
+   "address": "0x040ddfa4",
+   "count": 1,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c8c",
+   "address": "0x040ddfb0",
+   "count": 4,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30c98",
+   "address": "0x040ddfe0",
+   "count": 3,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30ca4",
+   "address": "0x040dee08",
+   "count": 705,
+   "record_size": 20,
+   "name": "sound_calls",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30cb0",
+   "address": "0x040e251c",
+   "count": 1,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30cbc",
+   "address": "0x040e25d0",
+   "count": 7,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30cc8",
+   "address": "0x040e2c20",
+   "count": 65,
+   "record_size": 32,
+   "name": "switches",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30cd4",
+   "address": "0x040e3740",
+   "count": 32,
+   "record_size": 32,
+   "name": "dedicated_switches",
+   "tag": "code"
+  },
+  {
+   "registry_entry": "0x30ce0",
+   "address": "0x040e3bb8",
+   "count": 5,
+   "record_size": 8,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30cec",
+   "address": "0x040e3c10",
+   "count": 2,
+   "record_size": 24,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30cf8",
+   "address": "0x040e3c40",
+   "count": 131,
+   "record_size": 20,
+   "name": "",
+   "tag": ""
+  },
+  {
+   "registry_entry": "0x30d04",
+   "address": "0x040e4794",
+   "count": 18,
+   "record_size": 12,
+   "name": "",
+   "tag": ""
+  }
+ ]
+}

@@ -1,0 +1,127 @@
+#config_version=6
+# Generated from the Stern Transformers Pro v1.80 ROM (PinMAME set tf_180). See ../README.md.
+# Lamp matrix: numbers as in the ROM's lamp test (1-80; unnamed "LAMP #n" entries are not used).
+# PinMAME drives lamp 58 (Megatron) and 60-62 (bumpers) as strobed LEDs.
+lights:
+  l_start_button:
+    number: 1   # START BUTTON
+  l_tournament_start_button:
+    number: 2   # TOURNAMENT START BUTTON
+  l_roll_out:
+    number: 3   # ROLL OUT
+  l_devastator:
+    number: 4   # DEVASTATOR
+  l_blackout:
+    number: 5   # BLACKOUT
+  l_shockwave:
+    number: 6   # SHOCKWAVE
+  l_starscream:
+    number: 7   # STARSCREAM
+  l_left_outlane:
+    number: 8   # LEFT OUTLANE
+  l_left_return_lane:
+    number: 9   # LEFT RETURN LANE
+  l_right_return_lane:
+    number: 10   # RIGHT RETURN LANE
+  l_right_outlane:
+    number: 11   # RIGHT OUTLANE
+  l_allspark_x:
+    number: 12   # ALLSPARK (X)
+  l_allspark_purple:
+    number: 13   # ALLSPARK (PURPLE)
+  l_allspark_red:
+    number: 14   # ALLSPARK (RED)
+  l_allspark_orange:
+    number: 15   # ALLSPARK (ORANGE)
+  l_left_orbit_x:
+    number: 16   # LEFT ORBIT (X)
+  l_left_orbit_purple:
+    number: 17   # LEFT ORBIT (PURPLE)
+  l_left_orbit_red:
+    number: 18   # LEFT ORBIT (RED)
+  l_left_orbit_orange:
+    number: 19   # LEFT ORBIT (ORANGE)
+  l_right_2_bank_target_bot:
+    number: 20   # RIGHT 2 BANK TARGET (BOT)
+  l_right_2_bank_target_top:
+    number: 21   # RIGHT 2 BANK TARGET (TOP)
+  l_optimus_prime:
+    number: 22   # OPTIMUS PRIME
+  l_bumblebee:
+    number: 23   # BUMBLEBEE
+  l_ironhide:
+    number: 24   # IRONHIDE
+  l_mudflap_skids:
+    number: 25   # MUDFLAP / SKIDS
+  l_ratchet:
+    number: 26   # RATCHET
+  l_megatron:
+    number: 27   # MEGATRON
+  l_sentinel_prime:
+    number: 28   # SENTINEL PRIME
+  l_challenge_megatron:
+    number: 29   # CHALLENGE MEGATRON
+  l_bumblebee_captive_ball:
+    number: 30   # BUMBLEBEE (CAPTIVE BALL)
+  l_right_ramp_x:
+    number: 31   # RIGHT RAMP (X)
+  l_right_ramp_purple:
+    number: 32   # RIGHT RAMP (PURPLE)
+  l_right_ramp_red:
+    number: 33   # RIGHT RAMP (RED)
+  l_right_ramp_orange:
+    number: 34   # RIGHT RAMP (ORANGE)
+  l_energon_right:
+    number: 35   # ENERGON (RIGHT)
+  l_right_orbit_x:
+    number: 36   # RIGHT ORBIT (X)
+  l_right_orbit_purple:
+    number: 37   # RIGHT ORBIT (PURPLE)
+  l_right_orbit_red:
+    number: 38   # RIGHT ORBIT (RED)
+  l_right_orbit_orange:
+    number: 39   # RIGHT ORBIT (ORANGE)
+  l_center_lane_orange:
+    number: 40   # CENTER LANE (ORANGE)
+  l_center_lane_red:
+    number: 41   # CENTER LANE (RED)
+  l_center_lane_purple:
+    number: 42   # CENTER LANE (PURPLE)
+  l_center_lane_x:
+    number: 43   # CENTER LANE (X)
+  l_left_ramp_orange:
+    number: 44   # LEFT RAMP (ORANGE)
+  l_left_ramp_red:
+    number: 45   # LEFT RAMP (RED)
+  l_left_ramp_purple:
+    number: 46   # LEFT RAMP (PURPLE)
+  l_left_ramp_x:
+    number: 47   # LEFT RAMP (X)
+  l_energon_left:
+    number: 48   # ENERGON (LEFT)
+  l_top_lane_red_bot:
+    number: 49   # TOP LANE (RED/BOT)
+  l_top_lane_purple_bot:
+    number: 50   # TOP LANE (PURPLE/BOT)
+  l_top_lane_purple_top:
+    number: 51   # TOP LANE (PURPLE/TOP)
+  l_top_lane_red_top:
+    number: 52   # TOP LANE (RED/TOP)
+  l_special:
+    number: 53   # SPECIAL
+  l_energon_center:
+    number: 54   # ENERGON (CENTER)
+  l_extra_ball:
+    number: 55   # EXTRA BALL
+  l_megatron_bottom:
+    number: 57   # MEGATRON (BOTTOM)
+  l_megatron_top:
+    number: 58   # MEGATRON (TOP)
+  l_optimus_prime_challenge:
+    number: 59   # OPTIMUS PRIME CHALLENGE
+  l_top_bumper:
+    number: 60   # TOP BUMPER
+  l_right_bumper:
+    number: 61   # RIGHT BUMPER
+  l_bottom_bumper:
+    number: 62   # BOTTOM BUMPER

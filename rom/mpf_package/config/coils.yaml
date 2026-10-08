@@ -1,0 +1,70 @@
+#config_version=6
+# Generated from the Stern Transformers Pro v1.80 ROM (PinMAME set tf_180). See ../README.md.
+# number: the SAM driver number (1-32 on the IO board, 33-35 aux bus ticket outputs). FLASH: entries are
+# flashers. Motors (8 shaker, 30 Optimus Prime motor) are held outputs. Pulse/hold times from the ROM come
+# later (rom_data/io coil timing); until then MPF defaults apply.
+coils:
+  c_trough_up_kicker:
+    number: 1   # TROUGH UP-KICKER
+  c_auto_launch:
+    number: 2   # AUTO LAUNCH
+  c_megatron_lockup:
+    number: 3   # MEGATRON LOCKUP
+  c_orbit_control_gate:
+    number: 5   # ORBIT CONTROL GATE
+  c_shaker_motor_optional:
+    number: 8   # SHAKER MOTOR (OPTIONAL)
+    default_hold_power: 1.0   # motor: held on, not pulsed
+  c_top_pop_bumper:
+    number: 9   # TOP POP BUMPER
+  c_right_pop_bumper:
+    number: 10   # RIGHT POP BUMPER
+  c_bottom_pop_bumper:
+    number: 11   # BOTTOM POP BUMPER
+  c_optimus_prime:
+    number: 12   # OPTIMUS PRIME
+  c_left_slingshot:
+    number: 13   # LEFT SLINGSHOT
+  c_right_slingshot:
+    number: 14   # RIGHT SLINGSHOT
+  c_left_flipper:
+    number: 15   # LEFT FLIPPER
+  c_right_flipper:
+    number: 16   # RIGHT FLIPPER
+  c_flash_decepticon:
+    number: 17   # FLASH: DECEPTICON
+  c_flash_left_ramp:
+    number: 18   # FLASH: LEFT RAMP
+  c_flash_right_side:
+    number: 19   # FLASH: RIGHT SIDE
+  c_flash_bumblebee:
+    number: 20   # FLASH: BUMBLEBEE
+  c_flash_pop_bumper:
+    number: 21   # FLASH: POP BUMPER
+  c_left_eject:
+    number: 22   # LEFT EJECT
+  c_flash_right_ramp:
+    number: 23   # FLASH: RIGHT RAMP
+  c_optional_coil:
+    number: 24   # OPTIONAL COIL
+  c_flash_center_lane_arrow:
+    number: 25   # FLASH: CENTER LANE ARROW
+  c_flash_slingshot_left:
+    number: 26   # FLASH: SLINGSHOT (LEFT)
+  c_flash_slingshot_right:
+    number: 27   # FLASH: SLINGSHOT (RIGHT)
+  c_flash_megatron:
+    number: 28   # FLASH: MEGATRON
+  c_optimus_prime_motor:
+    number: 30   # OPTIMUS PRIME MOTOR
+    default_hold_power: 1.0   # motor: held on, not pulsed
+  c_flash_optimus_prime:
+    number: 31   # FLASH: OPTIMUS PRIME
+  c_flash_allspark:
+    number: 32   # FLASH: ALLSPARK
+  c_aux_1_ticket_advance:
+    number: 33   # AUX 1: TICKET ADVANCE
+  c_aux_2_ticket_meter:
+    number: 34   # AUX 2: TICKET METER
+  c_aux_3_ticket_enable:
+    number: 35   # AUX 3: TICKET ENABLE

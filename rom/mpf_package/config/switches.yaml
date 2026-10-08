@@ -1,0 +1,127 @@
+#config_version=6
+# Generated from the Stern Transformers Pro v1.80 ROM (PinMAME set tf_180). See ../README.md.
+# number: the SAM switch number (Stern numbering, matrix 1-64, dedicated 129-160). Replace with your
+# platform's address. PinMAME numbers are the same for the matrix; dedicated ones are in the comment.
+switches:
+  s_bumblebee_target:
+    number: 1   # BUMBLEBEE TARGET
+  s_energon_left:
+    number: 2   # ENERGON (LEFT)
+  s_left_eject:
+    number: 3   # LEFT EJECT
+  s_l_ramp_entrance:
+    number: 4   # L. RAMP ENTRANCE
+  s_left_orbit_bottom:
+    number: 5   # LEFT ORBIT (BOTTOM)
+  s_left_orbit_top:
+    number: 6   # LEFT ORBIT (TOP)
+  s_right_top_lane:
+    number: 7   # RIGHT TOP LANE
+  s_left_top_lane:
+    number: 8   # LEFT TOP LANE
+  s_l_ramp_exit:
+    number: 10   # L. RAMP EXIT
+  s_center_lane:
+    number: 11   # CENTER LANE
+  s_right_orbit:
+    number: 12   # RIGHT ORBIT
+  s_megatron_back_door:
+    number: 13   # MEGATRON BACK DOOR
+  s_r_ramp_exit:
+    number: 14   # R. RAMP EXIT
+  s_tournament_start:
+    number: 15   # TOURNAMENT START
+  s_start_button:
+    number: 16   # START BUTTON
+  s_trough_4_l:
+    number: 18   # TROUGH #4 (L)
+  s_trough_3:
+    number: 19   # TROUGH #3
+  s_trough_2:
+    number: 20   # TROUGH #2
+  s_trough_1_r:
+    number: 21   # TROUGH #1 (R)
+  s_trough_jam:
+    number: 22   # TROUGH JAM
+  s_shooter_lane:
+    number: 23   # SHOOTER LANE
+  s_left_outlane:
+    number: 24   # LEFT OUTLANE
+  s_left_return_lane:
+    number: 25   # LEFT RETURN LANE
+  s_left_slingshot:
+    number: 26   # LEFT SLINGSHOT
+  s_right_slingshot:
+    number: 27   # RIGHT SLINGSHOT
+  s_right_return_lane:
+    number: 28   # RIGHT RETURN LANE
+  s_right_outlane:
+    number: 29   # RIGHT OUTLANE
+  s_top_bumper:
+    number: 30   # TOP BUMPER
+  s_right_bumper:
+    number: 31   # RIGHT BUMPER
+  s_bottom_bumper:
+    number: 32   # BOTTOM BUMPER
+  s_right_orbit_spinner:
+    number: 34   # RIGHT ORBIT SPINNER
+  s_r_ramp_entrance:
+    number: 35   # R. RAMP ENTRANCE
+  s_r_2_bank_target_bot:
+    number: 37   # R. 2 BANK TARGET-BOT
+  s_megatron_lock_4:
+    number: 38   # MEGATRON LOCK #4
+  s_megatron_lock_3:
+    number: 39   # MEGATRON LOCK #3
+  s_megatron_lock_2:
+    number: 40   # MEGATRON LOCK #2
+  s_m_tron_lock_1_back:
+    number: 41   # M.TRON LOCK #1-BACK
+  s_megatron_jam:
+    number: 42   # MEGATRON JAM
+  s_optimus_prime_up:
+    number: 43   # OPTIMUS PRIME UP
+  s_optimus_prime_down:
+    number: 44   # OPTIMUS PRIME DOWN
+  s_captive_ball:
+    number: 45   # CAPTIVE BALL
+  s_energon_right:
+    number: 46   # ENERGON (RIGHT)
+  s_energon_center:
+    number: 49   # ENERGON (CENTER)
+  s_r_2_bank_target_top:
+    number: 50   # R. 2 BANK TARGET-TOP
+  s_optimus_prime:
+    number: 51   # OPTIMUS PRIME
+  s_left_coin_slot:
+    number: 129   # D1 LEFT COIN SLOT, PinMAME 65
+  s_center_coin_slot:
+    number: 130   # D2 CENTER COIN SLOT, PinMAME 66
+  s_right_coin_slot:
+    number: 131   # D3 RIGHT COIN SLOT, PinMAME 67
+  s_fourth_coin_slot:
+    number: 132   # D4 FOURTH COIN SLOT, PinMAME 68
+  s_fifth_coin_slot:
+    number: 133   # D5 FIFTH COIN SLOT, PinMAME 69
+  s_l_flipper_button:
+    number: 137   # D9 L. FLIPPER BUTTON, PinMAME 84
+  s_left_flipper_e_o_s:
+    number: 138   # D10 LEFT FLIPPER E.O.S., PinMAME 83
+  s_r_flipper_button:
+    number: 139   # D11 R. FLIPPER BUTTON, PinMAME 82
+  s_right_flipper_e_o_s:
+    number: 140   # D12 RIGHT FLIPPER E.O.S., PinMAME 81
+  s_tilt_pendulum:
+    number: 145   # D17 TILT PENDULUM, PinMAME -7
+  s_slam_tilt:
+    number: 146   # D18 SLAM TILT, PinMAME -6
+  s_ticket_notch:
+    number: 147   # D19 TICKET NOTCH, PinMAME -5
+  s_back:
+    number: 149   # D21 BACK, PinMAME -3
+  s_minus:
+    number: 150   # D22 MINUS, PinMAME -2
+  s_plus:
+    number: 151   # D23 PLUS, PinMAME -1
+  s_select:
+    number: 152   # D24 SELECT, PinMAME 0
