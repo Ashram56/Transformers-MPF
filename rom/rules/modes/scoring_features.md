@@ -95,7 +95,10 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
 - When L reaches 9: double scoring starts, bb_completions + 1, letters restart at 1 after the first word
   (completions 1), 0 after that (code [0x010017fc]; observed restart 1).
 - **Double scoring** [0x010039a0]: playfield multiplier = 2 (OS 0x0001cce0), deff 129 "DOUBLE / SCORING" then
-  "ALL SCORES / DOUBLED / FOR n SECONDS" (sound 0x27a, ticks 0x27b), leff 156, audit 105; background deff 130
+  "ALL SCORES / DOUBLED / FOR n SECONDS" (sound 0x27a, ticks 0x27b), leff 156. The 0x27b ticks are four
+  plays: one from deff 129 at +0.33 s, then three at +1.43, +2.41 and +3.43 s after deff 129 starts played by the
+  OS delayed-sound queue (caller 0x255b8 in 0x254b4: 8 slots at 0x38368, each with a call and a countdown; the
+  call is played when its countdown reaches 0) (observed scoring.jsonl t 60.31-63.41), audit 105; background deff 130
   "DOUBLE SCORING / n / ALL SCORES X 2" with music 0x026 and leff 157. Every scoring switch plays 0x27c +
   0x27d [0x01003a64]. Countdown: adj 80 steps of 11 × 6 = 66 ticks (observed 1.07 s each); sound 0x285 at 10,
   0x284..0x280 at 5..1, 0x286 at the end [0x010038dc]; the countdown pauses while 0x0100683c says the ball is
@@ -114,14 +117,18 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
     5 + 2 × fs_starts (observed 9), audit 106 (observed t 124.71).
 - **Fast scoring**: fast_value = 10,000 + 5,000 × previous starts (cap 50,000), timer adj 81 counts of 66
   ticks (observed 25 counts t 130.71 → 156.22), deff 132 "FAST SCORING / ALL TARGETS SCORE n POINTS" queued
-  (0.9 s), background deff 133 "ALL TARGETS=n" with music 0x027, leff 158/159/160.
+  (0.9 s), background deff 133 "ALL TARGETS=n" with music 0x027, leff 158/159/160. Sound 0x291 plays once
+  about 10 s after the start (observed t 134.83 = start + 10.1 s; caller 0x10041b0 in 0x0100415c, which calls
+  0x010049a8; the trigger was not decoded).
   - Every switch handler calls 0x010047b8: one all-targets award of fast_value per hit (queued, task 0x5b,
     one per tick), deff 134 when deff 132 is not up, sound 0x28d, leff 164 [0x01004644]
     (observed sw2, sw46, sw49: +10,000 each).
   - sw50 / sw37 during fast scoring: the first hit of each this cycle raises fast_value by 1,000 (cap 50,000,
     deff 135 "ALL / TARGETS / value") [0x01004520]; when both are hit (groups = 7): time +10 counts (cap 90),
     deff 136 "TIME / EXTENDED", groups reset [0x010047b8] [0x0100457c].
-  - End: countdown 0 → task 0xae waits 250 ticks (4.1 s) during which switches still score fast_value
+  - End: the countdown reaches 0 and switches keep scoring for that last count, then task 0xae waits 250
+    ticks (4.1 s) during which switches still score fast_value (MPF port observed 0 at t 148.22, deff 137 at
+    153.46 in its run)
     (observed sw26 at t 160.41 +10,000), then deff 137 "FAST SCORING / TOTAL: n" (sound 0x290, leff 165)
     [0x01004220] [0x01004950].
   - ADD MORE TIME award adds adj 81 (cap 90) [0x0100457c]. Tilt and end of ball stop it (event 0x65 / 0x1d

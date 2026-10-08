@@ -97,8 +97,10 @@ sound 0x048, num_players 2).
 ### 4.3 Valid playfield (OS, same rule as Tron) [0x0000e264 hooks 0x6b/0x6c]
 The switch descriptor's top byte (`flags_0x0c` in `rom_data/io/switches.csv`): **0x20 = force** (one hit
 validates): 7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34; **0x10 = valid** (3 different needed): 1, 2, 4, 5, 6,
-13, 35, 37, 46, 49, 50; slingshots, pops (0x04) and the eject/lock/trough switches do not count (inferred from
-the flag pattern, matching Tron's 0x2000/0x1000 bits). Observed: one sling then drain → re-served for a manual
+13, 35, 37, 46, 49, 50. **Slingshots and pops (0x04) also count as valid** (observed in basic.jsonl: sw26,
+sw27 then pop 30 validate, music 0x01f starts; correction from the MPF port, the first version of this spec said
+they did not). The eject/lock/trough switches do not count (inferred from the flag pattern). The skill-shot end
+count (obj 0x31400) does exclude slings and pops (below). Observed: one sling then drain → re-served for a manual
 plunge, same player and ball, no bonus, no ball save (t 25.25 → 26.44 drain → 27.61 eject); sw7 or sw12
 alone validates (t 18.78, 30.57).
 
