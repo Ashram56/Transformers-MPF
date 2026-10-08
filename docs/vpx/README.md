@@ -6,7 +6,7 @@ JPSalas' VPX table; simulates the Pro, PinMAME set `tf_180`).
 
 ```
 python scripts/vpx_extract.py "Transformers Pro (Stern 2011) v.2.4.vpx" out
-python scripts/vpx_map.py out --mech 43:opr,44:opr
+python scripts/vpx_map.py out --names rom/mpf_package/config/{switches,lights,coils}.yaml --mech 43:opr,44:opr
 ```
 
 (scripts from Ashram56/Tron-Legacy-MPF; this table needed the cvpmTrough, InitSaucer, VPW StandupTarget,
@@ -25,9 +25,8 @@ SolModCallback flasher and collection-aware vpmMapLights patterns added there.)
 The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project's files
 (`/mnt/project-files/vpx_extraction/`), not here: the script is the table authors' work.
 
-**Names are placeholders** (`s_NN_<vpx>`, `l_NN_<vpx>`, `f_NN_<vpx>`) carrying the SAM number: the ROM
-extraction's MPF config was not available yet. Rerun `vpx_map.py out --names switches.yaml lights.yaml coils.yaml
---mech 43:opr,44:opr` when it is, or rename by number.
+**Names are the ROM extraction's MPF config names** (`rom/mpf_package/config/` on branch
+`claude/rom-extraction-uayj13`), joined by number: every placed device has one, no placeholders left.
 
 ## Run values (to check a rerun)
 
@@ -36,19 +35,20 @@ extraction's MPF config was not available yet. Rerun `vpx_map.py out --names swi
 - Switches (42): 1-8, 10-14, 18-32, 34, 35, 37-41, 43-46, 49-51.
   - Trough 18-21 (cvpmTrough) stacked at `BallRelease`; 22 is its own `sw22` trigger.
   - 38-41 Megatron lock (`bsKickerMegaTron`), stacked at `KickerMegaTron`. 3 is the left saucer `sw3`.
-  - 43, 44: Optimus Prime ramp position switches, set by a motor timer (no object): placed at `opr` with
-    `--mech` (inferred: 44 at the top of the motor travel, 43 at the bottom).
-  - 23 is the shooter lane, 15/16 the flipper buttons (cabinet, not placed), -7 the tilt.
-- Lamps (61): 1-62 without 56 (no object in the table). Lamps 1 and 2 (`li1`, `li2`) sit **below the
-  playfield** (y 1.03, apron or cabinet buttons): MPF Monitor puts them off the picture.
+  - 43, 44: Optimus Prime up/down (`s_optimus_prime_up`, `s_optimus_prime_down`), set by a motor timer
+    (no object): placed at `opr` with `--mech`.
+  - 23 is the shooter lane; 15/16 the tournament and start buttons (cabinet, not placed); -7 the tilt.
+- Lamps (61): 1-62 without 56, which the ROM's lamp list doesn't use either. Lamps 1 and 2 (start and
+  tournament buttons) sit **below the playfield** (y 1.03): MPF Monitor puts them off the picture.
 - Flashers (12, solenoid numbers): 17, 18, 19, 20, 21, 23, 25, 26, 27, 28, 31, 32. Six are Flupper domes
-  (`Flasherlight1-6`). The script comments call 26 "Slingshot (Left)" and 27 "Slingshot (Right)", but sub 26
-  flashes dome 1, which sits on the right, and 27 dome 2 on the left: the positions follow the objects.
+  (`Flasherlight1-6`). The ROM names 26 "Flash: Slingshot (Left)" and 27 "(Right)", but the table's sub for
+  26 flashes dome 1, which sits on the right, and 27 dome 2 on the left: the positions follow the table.
 - Overlay checked by eye: lamp and switch markers sit on their inserts, rollovers and targets.
 
 ## For the owner
 
-1. Lamp 56 has no object in the table, and lamps 1-2 are below the playfield: keep, move or drop them in MPF
-   Monitor.
-2. Flippers, autofires (slings, pops), ball devices and plain coils have no VPX object and are not in
-   `monitor.yaml` yet: the recreation agent adds them near their parts once the config names exist.
+1. Lamps 1-2 (start and tournament buttons) are below the playfield: keep, move or drop them in MPF Monitor.
+2. Flashers 26 and 27 (slingshot domes) are on the opposite sides from their ROM names: swap them in
+   MPF Monitor if the real machine has them the other way round.
+3. Flippers, autofires (slings, pops), ball devices and plain coils have no VPX object and are not in
+   `monitor.yaml` yet: the recreation agent adds them near their parts.
