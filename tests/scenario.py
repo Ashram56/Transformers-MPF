@@ -26,7 +26,6 @@ COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN
 # its ms (reference traces: hit + wait 1 = 1.17-1.18 s)
 SETTLE = 0.1
 TROUGH_SWITCHES = (18, 19, 20, 21)  # tron_ref's 4-ball trough
-VUK_HIT = 0.05                      # tron_ref closes sw11 for 50 ms (whatever ms says), then settles
 # tron_ref's step_to() runs the emulator in 5 ms slices and stops at the first slice past the target, so
 # each switch phase of a hit lasts about 6.5 ms longer (fit over the reference traces; plain waits do not
 # drift: clu_hurryup's 51 waits stay on time).
@@ -39,8 +38,8 @@ BUTTONS = {"left": "s_l_flipper_button", "right": "s_r_flipper_button", "tilt": 
 
 
 def switch_name(num):
-    from tf.switches import SW
-    return SW[int(num)]
+    from tf.switches import SW, HOLES
+    return SW.get(int(num)) or HOLES[int(num)]
 
 
 def forced_picks(name):
@@ -216,9 +215,9 @@ class ScenarioRun(TfTestCase):
         for i in range(3 * n):
             if i:
                 self.wait(COIN_GAP)
-            self.sw("s_coin", 1)
+            self.sw("s_right_coin_slot", 1)
             self.wait(0.01)
-            self.sw("s_coin", 0)
+            self.sw("s_right_coin_slot", 0)
         self.wait(START_AFTER_COIN - 0.01)
         for _ in range(n):
             self.sw("s_start_button", 1)
@@ -235,15 +234,15 @@ class ScenarioRun(TfTestCase):
         self.wait(float(s))                            # plain waits do not drift (see STEP_OVERSHOOT)
 
     def cmd_hit(self, sw, ms="60"):
+        from tf.switches import HOLES
         name = switch_name(sw)
         self.log("switch", sw=int(sw))
-        self.sw(name, 1 if int(sw) != 41 else 0)
-        if int(sw) == 11:                             # the VUK holds the ball until coil 4 fires
-            self.wait(VUK_HIT + STEP_OVERSHOOT)
+        self.sw(name, 1)
+        if int(sw) in HOLES:                          # the ball stays in the hole until its coil ejects it
             self.wait(SETTLE + STEP_OVERSHOOT)
             return
         self.wait(float(ms) / 1000 + STEP_OVERSHOOT)
-        self.sw(name, 0 if int(sw) != 41 else 1)
+        self.sw(name, 0)
         self.wait(SETTLE + STEP_OVERSHOOT)
 
     def cmd_hold(self, sw):

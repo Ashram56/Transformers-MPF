@@ -77,8 +77,8 @@ class LiveScenario:
         for i in range(3 * n):
             if i:
                 t += COIN_GAP
-            self.sw("s_coin", 1, t)
-            self.sw("s_coin", 0, t + 0.01)
+            self.sw("s_right_coin_slot", 1, t)
+            self.sw("s_right_coin_slot", 0, t + 0.01)
         t += START_AFTER_COIN
         for _ in range(n):
             self.sw("s_start_button", 1, t)
@@ -90,11 +90,12 @@ class LiveScenario:
         self.t += float(s)
 
     def cmd_hit(self, sw, ms="60"):
-        from tf.switches import SW
-        name, num = SW[int(sw)], int(sw)
-        self.sw(name, 1 if num != 41 else 0)
-        if num != 11:
-            self.sw(name, 0 if num != 41 else 1, float(ms) / 1000)
+        from tf.switches import SW, HOLES
+        num = int(sw)
+        name = SW.get(num) or HOLES[num]
+        self.sw(name, 1)
+        if num not in HOLES:                        # the ball stays in a hole until its coil ejects it
+            self.sw(name, 0, float(ms) / 1000)
         self.t += float(ms) / 1000 + SETTLE
 
     def cmd_hold(self, sw):
