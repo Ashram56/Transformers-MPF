@@ -70,6 +70,8 @@ KICK_ONE_COIL = 0.61
 RELEASE = (((0.0, 0x13b, 23), (0.016, 0x13c, 24), (0.017, 0x13d, 25)), ((0.242, 0x13b, None), (0.419, 0x13d, 25),
            (0.500, 0x13c, 24)), ((0.820, 0x13d, 25),), ((1.221, 0x13d, 25),))
 RELEASE_COILS = (0.13, 0.61, 0.93, 1.33)
+EJECT_OVER_TICKS = 66       # a kick's eject is over (the multiball end that waited for it: optimus_autobot.jsonl
+                            # kick 72.45 s, end 73.53 s; inferred as the device's eject check)
 RELEASE_AFTER_INTRO = 0.07
 # deffs the package has no length for: (seconds, leffs, sounds) observed in traces/megatron_decepticon.jsonl
 # (lengths inferred: the next effect comes several seconds later)
@@ -321,7 +323,7 @@ class Decepticon(Side):
 class Megatron(Feature):
     name = "megatron"
     HOOKS = ("player_first_ball", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
-             "ball_end", "tilt", "megatron_running", "lock_lit", "wizard_reset")
+             "ball_end", "tilt", "megatron_running", "lock_lit", "wizard_reset", "device_kicking")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -332,6 +334,7 @@ class Megatron(Feature):
         self.in_device = 0          # balls the device holds (locked or waiting for their handler / kickout)
         self.pending = 0            # entered balls not handled yet (still counted in play)
         self.locked_held = 0        # locked balls (not in play)
+        self.kicking = 0            # balls waiting for their kick (_kick)
         sc = self.machine.switch_controller
         for name in SWITCHES:
             if name in self.machine.switches:
@@ -463,7 +466,11 @@ class Megatron(Feature):
             self.locked_held += 1
             os_.after(SERVE_TICKS, self._serve)
         else:
+            self.kicking += 1
             self._kick()
+
+    def device_kicking(self):
+        return self.kicking > 0 or None
 
     def rule(self):
         """The shot-6 rules (multiballs first), else the lock [0x0100b130]."""
@@ -544,7 +551,13 @@ class Megatron(Feature):
             return
         for at, sound, leff in KICK_ONE:
             self._media_at(at, sound, leff)
-        os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT), KICK_ONE_COIL)
+        os_.machine.clock.schedule_once(lambda: self._kicked(), KICK_ONE_COIL)
+
+    def _kicked(self):
+        self.machine.events.post(RELEASE_EVENT)
+        self.kicking = max(self.kicking - 1, 0)
+        if not self.kicking:
+            self.os.after(EJECT_OVER_TICKS, self.os.device_ejected)
 
     def _serve(self):
         """AUTOFIRE AFTER LOCK (adj 89): a new ball from the trough, launched."""

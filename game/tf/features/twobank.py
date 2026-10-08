@@ -15,8 +15,12 @@
   show (task 0x70): sound 0x28d, leff 164, a 200 ms shake (MAXIMAL), and deff 134 when it is not up and no
   multiball runs [0x01004644]. Switches 50 / 37: the first hit of each this cycle adds
   1,000 to fast_value (cap 50,000, deff 135); both hit: +10 counts (cap 90), deff 136, cycle reset.
-  One count after 0 the switches keep scoring 250 ticks, then deff 137 "FAST SCORING TOTAL" (sound 0x290, leff 165); also
-  at the end of a ball while it runs. ADD MORE TIME adds adj 81 counts (cap 90).
+  One count after 0 the switches keep scoring 250 ticks, then the total task 0x88 [0x01004950] (a ball-end-wait
+  task) shows deff 137 "FAST SCORING TOTAL" (2.65 s, sound 0x290 and leff 165 from its code) when the display is
+  free. Task 0xad, started with the mode, is still running after that (observed: scoring.jsonl, task 0x88 again at
+  the drain, 155.11 s), so the end of that ball [0x010049a8] shows the total once more, after the first one, and the
+  bonus waits for it (deff 137 at 153.46 and 156.10 s, bonus 158.76 s). What else task 0xad keeps running after the
+  total (the awards [0x010047b8] test the same tasks) is not traced: here only the ball-end total. ADD MORE TIME adds adj 81 counts (cap 90).
 """
 from tf.features import Feature
 
@@ -30,16 +34,19 @@ READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
 FIRST_LEFT = 7
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
+FS_DEFF_S, TICK_S = 3.97, 0.01626     # deff 132's length (the capture), one tick
 FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF = 132, 133, 134, 135, 136, 137
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
-TASK, AWARD_TASK = "fast_scoring", 0x5b
+TASK, AWARD_TASK, TOTAL_TASK = "fast_scoring", 0x5b, 0x88
+TOTAL_SECONDS = 2.65                 # deff 137 (no capture; scoring.jsonl 153.46 -> 156.10 -> 158.76 s)
 AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_data/io/shaker.csv)
 
 
 class TwoBank(Feature):
     name = "twobank"
-    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
+    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
+             "timed_mode", "add_time")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -50,6 +57,10 @@ class TwoBank(Feature):
         self.groups = 0
         self.awards = 0
         self.last_hit = -1.0
+        self.lingering = False          # task 0xad after the total (see above)
+        self.total_at = None            # when deff 137 last started
+        self.end_wait = 0.0
+        os_.display.set_media(FS_TOTAL_DEFF, TOTAL_SECONDS, (FS_TOTAL_LEFF,), ((0.0, FS_TOTAL_SOUND),))
         for leff in READY_LEFFS:
             os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff, order=0x0102e9c0)
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x80)
@@ -114,12 +125,14 @@ class TwoBank(Feature):
         pd.twobank_left = min(5 + 2 * (pd.fs_starts + 1), 12)
         os_.audit(START_AUDIT)
         self.running = self.counting = True
+        self.lingering = False
         self.count = os_.adj[81]
         self.groups = 0
         self.total = START_POINTS
         self.started_now = True                 # the starting hit scores no all-targets award (observed)
         os_.request_refresh()
         self.intro_pending = True               # task 0x70 until deff 132 shows
+        os_.ball_search_reload()                # FUN_01006350 reloads the search at call, show start and show end
         os_.after(SHOW_TICKS, self._show)
         os_.task_start(TASK, COUNT_TICKS, self._tick)
 
@@ -127,6 +140,8 @@ class TwoBank(Feature):
         self.intro_pending = False
         if self.running:
             self.os.deff_start(FS_DEFF, values=[self.value])    # sound 0x289 and leff 158 come with it
+            self.os.ball_search_reload()
+            self.os.after(int(FS_DEFF_S / TICK_S), self.os.ball_search_reload)
 
     def _tick(self):
         os_ = self.os
@@ -143,11 +158,15 @@ class TwoBank(Feature):
         os_.task_start(TASK, TAIL_TICKS, self._end)
 
     def _end(self):
-        os_ = self.os
         self.stop()
-        os_.deff_start(FS_TOTAL_DEFF, values=[self.total])
-        os_.sound(FS_TOTAL_SOUND, in_deff=FS_TOTAL_DEFF)
-        os_.leff_start(FS_TOTAL_LEFF)
+        self.lingering = True
+        self._show_total()
+
+    def _show_total(self):
+        """Task 0x88 [0x01004950]: deff 137 with the total once the display is free."""
+        if self.total and not self.os.state & 0x310:
+            self.os.display.when_idle(TOTAL_TASK, FS_TOTAL_DEFF, values=[self.total],
+                                      on_start=lambda: setattr(self, "total_at", self.os.now))
 
     def stop(self):
         self.os.task_kill(TASK)
@@ -200,14 +219,29 @@ class TwoBank(Feature):
             os_.task_start(AWARD_TASK, 1, self._award)
 
     def ball_end(self):
-        if self.running:
+        """[0x010049a8]: while the mode's tasks run, they stop and the total shows (again)."""
+        self.end_wait = 0.0
+        if self.running or self.lingering:
             self.stop()
-            self.os.deff_start(FS_TOTAL_DEFF, values=[self.total])
-            self.os.sound(FS_TOTAL_SOUND, in_deff=FS_TOTAL_DEFF)
-            self.os.leff_start(FS_TOTAL_LEFF)
+            self.lingering = False
+            if not self.os.tilted and self.total:
+                # the ball end clears the display, but the ROM's deff 137 plays out first (scoring.jsonl 153.46 -> 156.10)
+                showing = self.total_at is not None and self.os.now < self.total_at + TOTAL_SECONDS
+                left = max(0.0, self.total_at + TOTAL_SECONDS - self.os.now) if showing else 0.0
+                self.end_wait = left + TOTAL_SECONDS
+                if left:
+                    from tf.os_layer import TICK
+                    self.os.after(round(left / TICK), self._show_total)
+                else:
+                    self._show_total()
+
+    def ball_end_wait(self):
+        from tf.os_layer import TICK
+        return round(self.end_wait / TICK) if self.end_wait else None
 
     def tilt(self):
         self.stop()
+        self.lingering = False
 
     def scoring_boost(self):
         return self.running or None

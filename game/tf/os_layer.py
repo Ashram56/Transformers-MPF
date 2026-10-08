@@ -250,9 +250,11 @@ class TfOS(CustomCode):
         self._new_game_ball = False
         self._search_handle = None
         self._search_at = 0.0
+        self._search_paused = None      # countdown seconds left while a flipper button is held
         self.ball_search_count = 0
         self.ball_held = False       # a ball sits in a device the rules hold (not in play) waiting for its kickout
         self.ball_validated = False  # the playfield was validated on this ball (the play music)
+        self._mb_end_deferred = False
         self.device_ejecting = False    # a held ball's eject not yet confirmed by a playfield switch (no ball search)
         self.device_busy = False        # a held ball released, eject not yet confirmed by the ball device
         self.device_released_at = -999.0    # when a held ball was last kicked out
@@ -298,6 +300,9 @@ class TfOS(CustomCode):
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob)
         sw.add_switch_handler("s_l_flipper_button", lambda: self._flipper_launch(1))
         sw.add_switch_handler("s_r_flipper_button", lambda: self._flipper_launch(2))
+        for name in ("s_l_flipper_button", "s_r_flipper_button"):
+            sw.add_switch_handler(name, self._search_hold)
+            sw.add_switch_handler(name, self._search_hold, state=0)
         sw.add_switch_handler("s_shooter_lane", self._shooter_left, state=0)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_opened)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_closed, state=0)
@@ -814,6 +819,17 @@ class TfOS(CustomCode):
         return self.task_running(0x34) or self.task_running(0x35) or (
             self.task_running(MB_TASK) and bool(self._mb_save[0]))
 
+    def _mb_end(self):
+        self._mb_end_deferred = False
+        self.kill_mb_save()
+        self.hook("multiball_end")                   # fewer than 2 balls in play
+
+    def device_ejected(self):
+        """A device's eject is over: a multiball end that waited for it comes now."""
+        if self._mb_end_deferred and self.game and self.balls_in_play() - (1 if self.ball_held else 0) < 2:
+            self._mb_end()
+        self._mb_end_deferred = False
+
     def kill_mb_save(self):
         if self.task_kill(0x34):
             self.leff_stop(13)
@@ -1214,10 +1230,15 @@ class TfOS(CustomCode):
                     self._mb_request(start_save=False)
                 return {"balls": 0}
             self.hook("ball_drained", balls)
-            # trough entry (0x0101bbc0 case 0xe): installed - balls in devices (a held ball counts) < 2
+            # trough entry (trough device callback [0x0100a0a4] case 0xe): installed - balls in devices (a held
+            # ball counts) < 2 -> the multiballs end [0x0100aa44]. While the Megatron lock still holds a ball it
+            # is about to kick, the end comes once that eject is over (hook device_kicking; observed:
+            # optimus_autobot.jsonl, last drain 71.16 s, the super's ball kicked 72.45 s, end 73.53 s)
             if self.balls_in_play() - balls - (1 if self.ball_held else 0) < 2:
-                self.kill_mb_save()
-                self.hook("multiball_end")           # 0x0101bcec: fewer than 2 balls in play
+                if self.hook("device_kicking"):
+                    self._mb_end_deferred = True
+                else:
+                    self._mb_end()
             return {"balls": balls}
         if self.tilted:
             return {"balls": balls}
@@ -1247,12 +1268,32 @@ class TfOS(CustomCode):
         switch, every score, a show deff). It only ever grows (the larger of what is left and `seconds`),
         and it does not count down while a search runs (ball_search_tick [0x00019c58])."""
         fire = self.now + (seconds * SECOND + self.task_ticks_left("search_run")) * TICK
+        if self._search_paused is not None:
+            self._search_paused = max(self._search_paused, fire - self.now)
+            return
         if self._search_handle:
             if self._search_at >= fire:
                 return
             self.machine.clock.unschedule(self._search_handle)
         self._search_at = fire
         self._search_handle = self.machine.clock.schedule_once(self._ball_search, fire - self.now)
+
+    def _search_hold(self):
+        """The countdown does not run while a flipper button is held (ball_search_tick: the held-buttons byte
+        0x31621 of the instant-info code [0x0001914c]; observed: coils.jsonl, buttons held 19.32-21.32 and
+        21.90-23.90 s, search 31.27 s, 14.1 s after the last switch)."""
+        sc = self.machine.switch_controller
+        held = any(name in self.machine.switches and sc.is_active(self.machine.switches[name])
+                   for name in ("s_l_flipper_button", "s_r_flipper_button"))
+        if held and self._search_paused is None and self._search_handle and self.game \
+                and not self.state & 0x211:
+            self.machine.clock.unschedule(self._search_handle)
+            self._search_handle = None
+            self._search_paused = max(0.0, self._search_at - self.now)
+        elif not held and self._search_paused is not None:
+            left, self._search_paused = self._search_paused, None
+            self._search_at = self.now + left
+            self._search_handle = self.machine.clock.schedule_once(self._ball_search, left)
 
     def _ball_search(self):
         self._search_handle = None
@@ -1709,6 +1750,7 @@ class TfOS(CustomCode):
     def _game_ended(self, **kwargs):
         self.state = ST_ATTRACT
         self.tasks_kill_all()
+        self._search_paused = None
         if self._search_handle:
             self.machine.clock.unschedule(self._search_handle)
             self._search_handle = None

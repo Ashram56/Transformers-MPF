@@ -43,6 +43,9 @@ WINDOW_TASK = 0x92
 AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
+# deff 50 [0x01023c5c] (its capture has one frame and no length): 53 frames of 3 ticks then 10 more, sound 0x05b,
+# then 0x05c at frame 40 for 2X (0x05d for 3X) (observed: switches.jsonl 133.93 s, 0x05c 1.96 s, next deff 2.78 s)
+MULT_SECONDS, MULT_SOUND_2X, MULT_SOUND_2X_AT = 2.78, 0x05c, 1.96
 HOLD_FLAG = 0x16
 ROVE_TASK, ROVE_TICKS, ROVE_LEFF, ROVE_BLINK = 0xb6, 46, 39, 3
 X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58 + 0x12, entries 1-6)
@@ -50,7 +53,7 @@ X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58
 
 class Combos(Feature):
     name = "combos"
-    HOOKS = ("player_first_ball", "ball_start", "switch", "shot_mult_light", "ball_end", "tilt", "combo_shot")
+    HOOKS = ("player_first_ball", "ball_start", "switch", "sw_51", "shot_mult_light", "ball_end", "tilt", "combo_shot")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -61,6 +64,7 @@ class Combos(Feature):
                       order=0x01023928)
         self.rove = self.rove_prev = 0          # roving 3X index (1-6 = shot + 1) and the one it just left
         self.rove_dir = -1
+        os_.display.set_media(MULT_DEFF, MULT_SECONDS, (), ((0.0, MULT_SOUND), (MULT_SOUND_2X_AT, MULT_SOUND_2X)))
         os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
         os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
 
@@ -138,12 +142,7 @@ class Combos(Feature):
             os_.score_add(mult * (100000 + 25000 * self.way))
             os_.leff_start(AWARD_LEFF)
             os_.audit(AWARD_AUDIT)
-        if pd.get("mult_lit") and pd.shot_mult[index] < 2:
-            pd.shot_mult[index] = 2
-            pd.mult_lit = False
-            os_.deff_start(MULT_DEFF)                   # its sound 0x05b comes with it
-            os_.leff_start(MULT_LEFF)
-            os_.request_refresh()
+        self._mult(index)
         restart = not os_.task_running(WINDOW_TASK)
         os_.task_kill(WINDOW_TASK)
         if os_.any_multiball():
@@ -154,6 +153,25 @@ class Combos(Feature):
         os_.task_start(WINDOW_TASK, STEP_TICKS, self._step)
         if restart:
             os_.request_refresh()
+
+    def _mult(self, index):
+        """[0x010237ac]: a lit shot multiplier goes to the shot if it is below 2X."""
+        os_ = self.os
+        pd = self.pd
+        if pd.get("mult_lit") and pd.shot_mult[index] < 2:
+            pd.shot_mult[index] = 2
+            pd.mult_lit = False
+            os_.deff_start(MULT_DEFF)                   # its sound 0x05b comes with it
+            os_.leff_start(MULT_LEFF)
+            os_.request_refresh()
+
+    def sw_51(self):
+        """The Optimus handler [0x01033d3c] gives the center lane's multiplier slot (not a combo shot), unless
+        task 0x54 (the previous hit) or 0x4e runs (observed: switches.jsonl 133.93 s, deff 50 on the Optimus)."""
+        os_ = self.os
+        if os_.game and os_.in_play and not os_.tilted and not os_.task_running(0x54) \
+                and not os_.task_running(0x4e):
+            self._mult(3)
 
     def _step(self):
         """[0x01002b5c]: combo_ticks - 7 every 7 ticks, not while the left eject's device task runs (a held

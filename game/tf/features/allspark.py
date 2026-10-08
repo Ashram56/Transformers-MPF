@@ -28,6 +28,7 @@ WARN_TRIES = 0x3a9
 WARN_SOUND, WARN_LEFF = 0x157, 21
 EJECT_SOUND, EJECT_LEFF = 0x158, 22
 RELEASE_EVENT = "tf_hold_release"
+EJECT_COIL, EJECT_LOG_MS = 22, 130         # the device pulses c_left_eject; traces log it on 130 ms (observed)
 ENTER_AUDIT = 0x45
 POINTS = 5070
 BANKED_LEFF = 40
@@ -130,8 +131,8 @@ class Allspark(Feature):
             os_.leff_start(EJECT_LEFF)
         os_.ball_held = False
         os_.device_released_at = os_.now
-        os_.device_ejecting = True
-        os_.ball_search_reload()
+        os_.device_ejecting = True              # no reload here: wizard_multiball searches 10 s after the award
+        os_.lamps.coil_log(EJECT_COIL, EJECT_LOG_MS)
         self.machine.events.post(RELEASE_EVENT)
 
     def _eject_success(self, **kwargs):
