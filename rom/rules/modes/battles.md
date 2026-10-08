@@ -228,14 +228,16 @@ kills the run at once.
   25,000; 41.17 right ramp 137,500; ss_lit 3 -> 6 -> 12 -> 24 -> 48.
 
 ### 5.2 Shockwave (Decepticon 2) [0x0101e400, 0x0101e5d4]
-- Shots left 11. Value = min(200,000 + 6,250 C, 500,000) + 25,000 x hits.
+- Shots left 11. Value = min(200,000 + 25,000 C, 500,000) + 25,000 x hits [0x0101e3c8: base 0x30d40 + C x 0x186a
+  words = 25,000 per completion; Ghidra shows it as pointer arithmetic, scale 4].
 - Phases: 1 Allspark only (0x01) -> 2 right ramp only (0x10) -> 3 all six (0x3f) -> from then on all six except
   the shot just hit.
 - Observed (traces/battle_shockwave.jsonl): Allspark 200,000; right ramp 225,000; left orbit 250,000; left ramp
   275,000; left ramp again (unlit) 25,000; completing center 300,000; total deff 99 at 55.15.
 
 ### 5.3 Blackout (Decepticon 3) [0x0101caa4, 0x0101cc6c, 0x0101c910]
-- Shots left 11. Value = min(200,000 + 12,500 C, 500,000) + 50,000 x hits.
+- Shots left 11. Value = min(200,000 + 50,000 C, 500,000) + 50,000 x hits [base 0x0101ca6c: 0x30d40 + C x 0x30d4
+  words x 4].
 - Two groups: A = Allspark, left orbit, left ramp (0x01, 0x02, 0x04); B = center, right ramp, right orbit (0x08,
   0x10, 0x20). After an even number of lit hits a random shot of A not used yet in this run is added to the
   used-A set and **the whole used-A set is lit**; after an odd number, the same with B. When a group is used up,
@@ -270,7 +272,7 @@ Two phases, the phase is kept per player:
   target 4,418,300 (= 5 x 750,000 + 668,300), completed; total deff 111 at 59.73.
 
 ### 5.6 Ironhide (Autobot 2) [0x0101adc8, 0x0101afbc, 0x0101ab5c]
-- Shots left 10. Value = min(200,000 + 12,500 C, 500,000) + 50,000 x hits.
+- Shots left 10. Value = min(200,000 + 50,000 C, 500,000) + 50,000 x hits [base 0x0101ad90, scale 4 as Blackout].
 - Levels (kept per player) with patterns 0x040c6b3c: 1 = 0x08 (center), 2 = 0x14 (left + right ramp), 3 = 0x2a
   (left orbit, center, right orbit), 4 = 0x36 (orbits + ramps). A lit hit unlights the shot (saved per player);
   when the pattern is cleared the level goes up one (4 stays 4), the new pattern is lit and the timer restarts at
@@ -283,19 +285,30 @@ Two phases, the phase is kept per player:
   ticks)`; sets flag 0x1e (running), clears 0x1d; clears flag 0x14 when no timed mode runs (so ADD-A-BALL can be
   awarded). Intro deff 116 from task 0x6e.
 - All six main shots lit; a lit hit unlights it; when all six are made they all relight.
-- Value = min(200,000 + 12,500 x (hits this run + C), 500,000). Shots left 11; when it reaches 0 it is reset to 11.
+- Value = min(200,000 + 50,000 x (hits this run + C), 500,000) [0x010190e0, hits 0x35058 counted before the
+  value is read, so the first hit of a run is 250,000 with C = 0 - observed]. Shots left 11; when it reaches 0 it is
+  reset to 11.
 - The first time shots left reaches 0 in the run (flag 0x1d clear) the battle is **completed** (flag 0x1d set,
   wizard item, audit, total) but the multiball and the battle continue.
 - Ends when the multiball is down to one ball [0x01019550 clears flag 0x1e and starts task 0xa9 (a short grace,
   LAB_01019504) whose end shows the total]; an ADD-A-BALL during the grace revives it [0x01019594].
-- Observed: see traces/battle_mudflap.jsonl.
+- Observed (traces/battle_mudflap.jsonl, poked battle_lit 0x40, shots left poked to 1 at 44.07): 4 mode-start hits
+  start it at 27.34 (100,000 start award, audit 0x65 started); intro deff 117 from 32.72; hits at 37.52 left orbit
+  250,000, 39.71 left ramp 300,000, 41.90 right ramp 350,000, 44.09 right orbit 400,000 = completion (audit 102,
+  battle_completed 0x40, mf_left back to 11, deff 118 "COMPLETED") - the multiball keeps running; 46.27 left ramp
+  (already made) 25,000 [0x0101946c]; drain to one ball at 48.46 -> sound 0x230 at 49.20, total deff 119 at 52.17
+  (sound 0x232). After the end the next mode-start hit is 20,000 (54.60: started count 1).
 
 ### 5.8 Ratchet (Autobot 4) [0x01012318, 0x01012508]
 - Shots left 11. Value = min(100,000 + 50,000 C, 500,000) + 50,000 x hits, **doubled** for the "double" shot =
   the lowest-numbered lit shot (Allspark first).
 - Lit mask kept per player (0x3f at reset); a lit hit unlights it; all six made -> all relit; the double shot is
   recomputed after every hit [0x01012178].
-- Observed: see traces/battle_ratchet.jsonl.
+- Observed (traces/battle_ratchet.jsonl, poked battle_lit 0x80): started at 27.33; intro deff 121 at 31.09; 34.51
+  left orbit 100,000 (not the double: Allspark was); 37.52 Allspark 300,000 (= 2 x 150,000, double); 40.96 left ramp
+  400,000 (= 2 x 200,000, the new double); 43.15 right ramp 250,000; 45.41 left ramp again (unlit) 25,000
+  [0x0101272c]; drain at 47.63 ends it: total deff 123 at 48.17 (sound 0x255), then bonus.
+  ra_lit 63 -> 61 -> 60 -> 56 -> 40. Ramps also scored combos (150,000-225,000, caller 0x01002fec) on top.
 
 ## 6. How it ends
 | End | What happens |
@@ -313,7 +326,7 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
 ## 7. Media
 | Battle | Intro deff (task) | Background deff + music (music-table entry) | Hit deff | Total deff (task) | Rule leff (while running) | Hit sound call | Intro sounds | Total sounds |
 |---|---|---|---|---|---|---|---|---|
-| Starscream | 92 "STARSCREAM BATTLE" (0x68) | 93 + 0x28 (12) | 94 | 95 "STARSCREAM / TOTAL:" (0x87? see note) | 106 | 0x181 | 0x17f, 0x180 | 0x191, 0x192 |
+| Starscream | 92 "STARSCREAM BATTLE" (0x68) | 93 + 0x28 (12) | 94 | 95 "STARSCREAM / TOTAL:" (task from 0x01017d40) | 106 | 0x181 | 0x17f, 0x180 | 0x191, 0x192 |
 | Shockwave | 96 (0x69) | 97 + 0x29 (16) | 98 | 99 | 110 | 0x195 | 0x193, 0x194 | 0x1a8 |
 | Blackout | 100 (0x6a) | 101 + 0x2a (15) | 102 | 103 | 114 | 0x1ab | 0x1a9, 0x1aa | 0x1cb |
 | Devastator | 104 (0x6b) | 105 + 0x2b (11) | 106 | 107 | 118 | 0x1d1 | 0x1cd, 0x1ce, 0x1cf | 0x1e7 |
