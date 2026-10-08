@@ -5,25 +5,2323 @@
  "priority": 196,
  "background": false,
  "capture": "fg1",
- "forced_at_s": 80.3098,
- "ended_ms": 0.0,
- "window_ms": 300.8,
+ "forced_at_s": 86.8293,
+ "ended_ms": 1321.1,
+ "window_ms": 1351.0,
  "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
- "frames": [],
- "pages": [],
- "sounds": [],
- "leffs": [],
+ "frames": [
+  {
+   "i": 0,
+   "t_ms": 20.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 1,
+   "t_ms": 70.7,
+   "dur_ms": 33
+  },
+  {
+   "i": 2,
+   "t_ms": 104.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 3,
+   "t_ms": 154.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 4,
+   "t_ms": 204.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 5,
+   "t_ms": 254.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 6,
+   "t_ms": 304.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 7,
+   "t_ms": 354.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 8,
+   "t_ms": 404.0,
+   "dur_ms": 33
+  },
+  {
+   "i": 9,
+   "t_ms": 437.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 10,
+   "t_ms": 487.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 11,
+   "t_ms": 537.4,
+   "dur_ms": 67
+  },
+  {
+   "i": 12,
+   "t_ms": 604.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 13,
+   "t_ms": 654.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 14,
+   "t_ms": 704.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 15,
+   "t_ms": 754.0,
+   "dur_ms": 50
+  },
+  {
+   "i": 16,
+   "t_ms": 804.0,
+   "dur_ms": 33
+  },
+  {
+   "i": 17,
+   "t_ms": 837.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 18,
+   "t_ms": 887.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 19,
+   "t_ms": 937.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 20,
+   "t_ms": 987.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 21,
+   "t_ms": 1037.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 22,
+   "t_ms": 1087.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 23,
+   "t_ms": 1137.4,
+   "dur_ms": 50
+  },
+  {
+   "i": 24,
+   "t_ms": 1187.4,
+   "dur_ms": 33
+  },
+  {
+   "i": 25,
+   "t_ms": 1220.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 26,
+   "t_ms": 1270.7,
+   "dur_ms": 50
+  },
+  {
+   "i": 27,
+   "t_ms": 1320.7,
+   "dur_ms": 50
+  }
+ ],
+ "pages": [
+  {
+   "t_ms": 2.2,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 2.0,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 50.1,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 48.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 49.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 49.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 49.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 98.5,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 97.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 97.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 97.5,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 98.1,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 98.3,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 146.6,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 145.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 145.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 145.7,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 146.4,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 194.9,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 193.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 193.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 193.8,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 194.5,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 194.7,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 243.0,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 242.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 242.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 242.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 242.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 291.5,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 290.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 290.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 290.5,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 291.1,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 291.4,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 339.6,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 338.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 338.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 338.7,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 339.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 388.1,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 386.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 387.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 387.1,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 387.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 388.0,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 435.9,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 434.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 435.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 435.1,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 435.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 484.4,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 483.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 483.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 483.4,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 484.0,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 484.3,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 532.6,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 531.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 531.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 531.7,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 532.4,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 581.0,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 579.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 579.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 580.0,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 580.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 580.8,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 629.0,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 628.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 628.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 628.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 628.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 677.4,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 676.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 676.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 676.4,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 676.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 677.2,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 725.6,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 724.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 724.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 724.7,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 725.3,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 774.2,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 772.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 773.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 773.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 773.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 774.0,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 822.1,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 820.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 821.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 821.1,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 821.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 870.4,
+   "fg": 12,
+   "bg": 13,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 869.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 869.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 869.4,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 870.0,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 870.2,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 12,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 918.4,
+   "fg": 14,
+   "bg": 15,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 917.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 917.6,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 917.6,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 918.2,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 967.0,
+   "fg": 16,
+   "bg": 17,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 965.7,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 965.8,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 966.0,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 966.6,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 966.8,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 16,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1015.1,
+   "fg": 0,
+   "bg": 1,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1014.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1014.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1014.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1014.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 0,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 1063.4,
+   "fg": 2,
+   "bg": 3,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1062.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1062.3,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1062.3,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1062.9,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 1063.2,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 2,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1111.5,
+   "fg": 4,
+   "bg": 5,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1110.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1110.5,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1110.7,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1111.2,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 4,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 1160.1,
+   "fg": 6,
+   "bg": 7,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1158.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1158.9,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1159.1,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1159.7,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 1159.9,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 6,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1208.1,
+   "fg": 8,
+   "bg": 9,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1207.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1207.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1207.2,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1207.8,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 8,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    }
+   ]
+  },
+  {
+   "t_ms": 1256.5,
+   "fg": 10,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1255.2,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117984,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1255.4,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1255.5,
+     "str": "WIZARD MULTIBALL",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 11,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037820,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1521,
+     "source": "WIZARD MULTIBALL"
+    },
+    {
+     "t_ms": 1256.1,
+     "str": "TOTAL:",
+     "font": 1,
+     "flags": 2,
+     "x": 84,
+     "y": 17,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037844,
+     "helper": "text_draw_msg_page",
+     "msg_id": 1522,
+     "source": "TOTAL:"
+    },
+    {
+     "t_ms": 1256.4,
+     "str": "00",
+     "font": 13,
+     "flags": 2,
+     "x": 84,
+     "y": 26,
+     "color": 0,
+     "width": -1,
+     "page": 10,
+     "call_site": 1037884,
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1305.2,
+   "fg": 14,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1305.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117960,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1305.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 14,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  },
+  {
+   "t_ms": 1321.1,
+   "fg": 15,
+   "bg": 11,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 1321.0,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 36,
+     "color": 17117960,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f2ec",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    },
+    {
+     "t_ms": 1321.1,
+     "str": "00",
+     "font": 0,
+     "flags": 4,
+     "x": 38,
+     "y": 5,
+     "color": 0,
+     "width": -1,
+     "page": 15,
+     "call_site": "102f36c",
+     "helper": "text_printf_msg_page",
+     "msg_id": 1282,
+     "source": "%,02lu"
+    }
+   ]
+  }
+ ],
+ "sounds": [
+  {
+   "t_ms": 0.4,
+   "call": "0x13a",
+   "via": "SNDPLAY",
+   "deff": 90,
+   "lr": "10377f0"
+  }
+ ],
+ "leffs": [
+  {
+   "t_ms": 0.4,
+   "leff": 91,
+   "lr": "10377e4"
+  }
+ ],
  "events": [
   {
    "t_ms": 0.0,
+   "event": 33
+  },
+  {
+   "t_ms": 0.1,
+   "event": 73
+  },
+  {
+   "t_ms": 0.1,
+   "event": 27
+  },
+  {
+   "t_ms": 0.4,
+   "event": 87
+  },
+  {
+   "t_ms": 0.4,
+   "event": 89
+  },
+  {
+   "t_ms": 2.2,
    "event": 74
   },
   {
-   "t_ms": 10.0,
+   "t_ms": 15.9,
    "event": 32
   },
   {
-   "t_ms": 10.5,
+   "t_ms": 16.4,
    "event": 33
   },
   {
@@ -31,239 +2329,1123 @@
    "event": 74
   },
   {
-   "t_ms": 26.5,
+   "t_ms": 31.8,
    "event": 32
   },
   {
-   "t_ms": 27.0,
+   "t_ms": 32.4,
    "event": 33
   },
   {
-   "t_ms": 32.8,
-   "event": 74
-  },
-  {
-   "t_ms": 42.6,
-   "event": 32
-  },
-  {
-   "t_ms": 43.1,
-   "event": 33
-  },
-  {
-   "t_ms": 48.7,
-   "event": 74
-  },
-  {
-   "t_ms": 58.8,
-   "event": 32
-  },
-  {
-   "t_ms": 59.3,
-   "event": 33
-  },
-  {
-   "t_ms": 64.9,
-   "event": 74
-  },
-  {
-   "t_ms": 75.0,
-   "event": 32
-  },
-  {
-   "t_ms": 75.5,
-   "event": 33
-  },
-  {
-   "t_ms": 75.5,
+   "t_ms": 32.4,
    "event": 10
   },
   {
-   "t_ms": 75.5,
+   "t_ms": 32.4,
    "event": 11
   },
   {
-   "t_ms": 81.3,
+   "t_ms": 32.4,
    "event": 74
   },
   {
-   "t_ms": 91.0,
+   "t_ms": 47.8,
    "event": 32
   },
   {
-   "t_ms": 91.5,
+   "t_ms": 48.4,
    "event": 33
   },
   {
-   "t_ms": 97.2,
+   "t_ms": 50.1,
    "event": 74
   },
   {
-   "t_ms": 107.3,
+   "t_ms": 64.0,
    "event": 32
   },
   {
-   "t_ms": 107.8,
+   "t_ms": 64.6,
    "event": 33
   },
   {
-   "t_ms": 113.5,
+   "t_ms": 64.6,
    "event": 74
   },
   {
-   "t_ms": 123.3,
+   "t_ms": 80.0,
    "event": 32
   },
   {
-   "t_ms": 123.8,
+   "t_ms": 80.6,
    "event": 33
   },
   {
-   "t_ms": 129.4,
+   "t_ms": 80.6,
    "event": 74
   },
   {
-   "t_ms": 139.5,
+   "t_ms": 96.0,
    "event": 32
   },
   {
-   "t_ms": 140.1,
+   "t_ms": 96.6,
    "event": 33
   },
   {
-   "t_ms": 145.8,
+   "t_ms": 98.5,
    "event": 74
   },
   {
-   "t_ms": 156.1,
+   "t_ms": 112.3,
    "event": 32
   },
   {
-   "t_ms": 156.6,
+   "t_ms": 112.9,
    "event": 33
   },
   {
-   "t_ms": 162.2,
+   "t_ms": 113.0,
    "event": 74
   },
   {
-   "t_ms": 172.1,
+   "t_ms": 128.3,
    "event": 32
   },
   {
-   "t_ms": 172.6,
+   "t_ms": 128.9,
    "event": 33
   },
   {
-   "t_ms": 172.6,
+   "t_ms": 128.9,
    "event": 10
   },
   {
-   "t_ms": 172.6,
+   "t_ms": 128.9,
    "event": 11
   },
   {
-   "t_ms": 178.2,
+   "t_ms": 129.2,
    "event": 74
   },
   {
-   "t_ms": 188.0,
+   "t_ms": 144.4,
    "event": 32
   },
   {
-   "t_ms": 188.5,
+   "t_ms": 144.9,
    "event": 33
   },
   {
-   "t_ms": 194.2,
+   "t_ms": 146.7,
    "event": 74
   },
   {
-   "t_ms": 204.0,
+   "t_ms": 160.6,
    "event": 32
   },
   {
-   "t_ms": 204.5,
+   "t_ms": 161.1,
    "event": 33
   },
   {
-   "t_ms": 210.2,
+   "t_ms": 161.2,
    "event": 74
   },
   {
-   "t_ms": 220.0,
+   "t_ms": 176.6,
    "event": 32
   },
   {
-   "t_ms": 220.5,
+   "t_ms": 177.1,
    "event": 33
   },
   {
-   "t_ms": 226.3,
+   "t_ms": 177.1,
    "event": 74
   },
   {
-   "t_ms": 236.0,
+   "t_ms": 192.5,
    "event": 32
   },
   {
-   "t_ms": 236.5,
+   "t_ms": 193.1,
    "event": 33
   },
   {
-   "t_ms": 242.3,
+   "t_ms": 194.9,
    "event": 74
   },
   {
-   "t_ms": 252.0,
+   "t_ms": 208.8,
    "event": 32
   },
   {
-   "t_ms": 252.5,
+   "t_ms": 209.3,
    "event": 33
   },
   {
-   "t_ms": 258.3,
+   "t_ms": 209.4,
    "event": 74
   },
   {
-   "t_ms": 268.0,
+   "t_ms": 224.8,
    "event": 32
   },
   {
-   "t_ms": 268.5,
+   "t_ms": 225.4,
    "event": 33
   },
   {
-   "t_ms": 268.5,
+   "t_ms": 225.4,
    "event": 10
   },
   {
-   "t_ms": 268.5,
+   "t_ms": 225.4,
    "event": 11
   },
   {
-   "t_ms": 274.5,
+   "t_ms": 225.5,
    "event": 74
   },
   {
-   "t_ms": 284.3,
+   "t_ms": 240.8,
    "event": 32
   },
   {
-   "t_ms": 284.8,
+   "t_ms": 241.4,
    "event": 33
   },
   {
-   "t_ms": 290.6,
+   "t_ms": 243.0,
    "event": 74
   },
   {
-   "t_ms": 300.3,
+   "t_ms": 257.1,
    "event": 32
   },
   {
-   "t_ms": 300.8,
+   "t_ms": 257.7,
+   "event": 33
+  },
+  {
+   "t_ms": 257.9,
+   "event": 74
+  },
+  {
+   "t_ms": 273.1,
+   "event": 32
+  },
+  {
+   "t_ms": 273.7,
+   "event": 33
+  },
+  {
+   "t_ms": 273.7,
+   "event": 74
+  },
+  {
+   "t_ms": 289.1,
+   "event": 32
+  },
+  {
+   "t_ms": 289.6,
+   "event": 33
+  },
+  {
+   "t_ms": 291.6,
+   "event": 74
+  },
+  {
+   "t_ms": 305.3,
+   "event": 32
+  },
+  {
+   "t_ms": 305.9,
+   "event": 33
+  },
+  {
+   "t_ms": 305.9,
+   "event": 74
+  },
+  {
+   "t_ms": 321.3,
+   "event": 32
+  },
+  {
+   "t_ms": 321.8,
+   "event": 33
+  },
+  {
+   "t_ms": 321.9,
+   "event": 10
+  },
+  {
+   "t_ms": 321.9,
+   "event": 11
+  },
+  {
+   "t_ms": 321.9,
+   "event": 74
+  },
+  {
+   "t_ms": 337.3,
+   "event": 32
+  },
+  {
+   "t_ms": 337.8,
+   "event": 33
+  },
+  {
+   "t_ms": 339.6,
+   "event": 74
+  },
+  {
+   "t_ms": 353.5,
+   "event": 32
+  },
+  {
+   "t_ms": 354.2,
+   "event": 33
+  },
+  {
+   "t_ms": 354.2,
+   "event": 74
+  },
+  {
+   "t_ms": 369.5,
+   "event": 32
+  },
+  {
+   "t_ms": 370.2,
+   "event": 33
+  },
+  {
+   "t_ms": 370.2,
+   "event": 74
+  },
+  {
+   "t_ms": 385.6,
+   "event": 32
+  },
+  {
+   "t_ms": 386.2,
+   "event": 33
+  },
+  {
+   "t_ms": 388.2,
+   "event": 74
+  },
+  {
+   "t_ms": 401.9,
+   "event": 32
+  },
+  {
+   "t_ms": 402.4,
+   "event": 33
+  },
+  {
+   "t_ms": 402.4,
+   "event": 74
+  },
+  {
+   "t_ms": 417.8,
+   "event": 32
+  },
+  {
+   "t_ms": 418.4,
+   "event": 33
+  },
+  {
+   "t_ms": 418.4,
+   "event": 73
+  },
+  {
+   "t_ms": 418.4,
+   "event": 10
+  },
+  {
+   "t_ms": 418.4,
+   "event": 11
+  },
+  {
+   "t_ms": 418.4,
+   "event": 74
+  },
+  {
+   "t_ms": 433.8,
+   "event": 32
+  },
+  {
+   "t_ms": 434.3,
+   "event": 33
+  },
+  {
+   "t_ms": 435.9,
+   "event": 74
+  },
+  {
+   "t_ms": 450.0,
+   "event": 32
+  },
+  {
+   "t_ms": 450.6,
+   "event": 33
+  },
+  {
+   "t_ms": 450.6,
+   "event": 74
+  },
+  {
+   "t_ms": 466.0,
+   "event": 32
+  },
+  {
+   "t_ms": 466.7,
+   "event": 33
+  },
+  {
+   "t_ms": 466.7,
+   "event": 74
+  },
+  {
+   "t_ms": 482.0,
+   "event": 32
+  },
+  {
+   "t_ms": 482.7,
+   "event": 33
+  },
+  {
+   "t_ms": 484.5,
+   "event": 74
+  },
+  {
+   "t_ms": 498.3,
+   "event": 32
+  },
+  {
+   "t_ms": 498.9,
+   "event": 33
+  },
+  {
+   "t_ms": 498.9,
+   "event": 74
+  },
+  {
+   "t_ms": 514.4,
+   "event": 32
+  },
+  {
+   "t_ms": 514.9,
+   "event": 33
+  },
+  {
+   "t_ms": 514.9,
+   "event": 10
+  },
+  {
+   "t_ms": 514.9,
+   "event": 11
+  },
+  {
+   "t_ms": 515.2,
+   "event": 74
+  },
+  {
+   "t_ms": 530.3,
+   "event": 32
+  },
+  {
+   "t_ms": 530.9,
+   "event": 33
+  },
+  {
+   "t_ms": 532.6,
+   "event": 74
+  },
+  {
+   "t_ms": 546.6,
+   "event": 32
+  },
+  {
+   "t_ms": 547.1,
+   "event": 33
+  },
+  {
+   "t_ms": 547.1,
+   "event": 74
+  },
+  {
+   "t_ms": 562.5,
+   "event": 32
+  },
+  {
+   "t_ms": 563.1,
+   "event": 33
+  },
+  {
+   "t_ms": 563.1,
+   "event": 74
+  },
+  {
+   "t_ms": 578.5,
+   "event": 32
+  },
+  {
+   "t_ms": 579.1,
+   "event": 33
+  },
+  {
+   "t_ms": 581.0,
+   "event": 74
+  },
+  {
+   "t_ms": 594.8,
+   "event": 32
+  },
+  {
+   "t_ms": 595.3,
+   "event": 33
+  },
+  {
+   "t_ms": 595.4,
+   "event": 74
+  },
+  {
+   "t_ms": 610.8,
+   "event": 32
+  },
+  {
+   "t_ms": 611.6,
+   "event": 33
+  },
+  {
+   "t_ms": 611.6,
+   "event": 10
+  },
+  {
+   "t_ms": 611.6,
+   "event": 11
+  },
+  {
+   "t_ms": 611.7,
+   "event": 74
+  },
+  {
+   "t_ms": 626.8,
+   "event": 32
+  },
+  {
+   "t_ms": 627.4,
+   "event": 33
+  },
+  {
+   "t_ms": 629.0,
+   "event": 74
+  },
+  {
+   "t_ms": 643.1,
+   "event": 32
+  },
+  {
+   "t_ms": 643.7,
+   "event": 33
+  },
+  {
+   "t_ms": 643.9,
+   "event": 74
+  },
+  {
+   "t_ms": 659.1,
+   "event": 32
+  },
+  {
+   "t_ms": 659.7,
+   "event": 33
+  },
+  {
+   "t_ms": 659.7,
+   "event": 74
+  },
+  {
+   "t_ms": 675.1,
+   "event": 32
+  },
+  {
+   "t_ms": 675.6,
+   "event": 33
+  },
+  {
+   "t_ms": 677.4,
+   "event": 74
+  },
+  {
+   "t_ms": 691.3,
+   "event": 32
+  },
+  {
+   "t_ms": 691.8,
+   "event": 33
+  },
+  {
+   "t_ms": 691.9,
+   "event": 74
+  },
+  {
+   "t_ms": 707.3,
+   "event": 32
+  },
+  {
+   "t_ms": 707.8,
+   "event": 33
+  },
+  {
+   "t_ms": 707.8,
+   "event": 10
+  },
+  {
+   "t_ms": 707.8,
+   "event": 11
+  },
+  {
+   "t_ms": 707.9,
+   "event": 74
+  },
+  {
+   "t_ms": 723.3,
+   "event": 32
+  },
+  {
+   "t_ms": 723.8,
+   "event": 33
+  },
+  {
+   "t_ms": 725.6,
+   "event": 74
+  },
+  {
+   "t_ms": 739.5,
+   "event": 32
+  },
+  {
+   "t_ms": 740.2,
+   "event": 33
+  },
+  {
+   "t_ms": 740.2,
+   "event": 74
+  },
+  {
+   "t_ms": 755.5,
+   "event": 32
+  },
+  {
+   "t_ms": 756.2,
+   "event": 33
+  },
+  {
+   "t_ms": 756.2,
+   "event": 74
+  },
+  {
+   "t_ms": 771.6,
+   "event": 32
+  },
+  {
+   "t_ms": 772.2,
+   "event": 33
+  },
+  {
+   "t_ms": 774.2,
+   "event": 74
+  },
+  {
+   "t_ms": 787.8,
+   "event": 32
+  },
+  {
+   "t_ms": 788.4,
+   "event": 33
+  },
+  {
+   "t_ms": 788.4,
+   "event": 74
+  },
+  {
+   "t_ms": 803.8,
+   "event": 32
+  },
+  {
+   "t_ms": 804.4,
+   "event": 33
+  },
+  {
+   "t_ms": 804.4,
+   "event": 10
+  },
+  {
+   "t_ms": 804.4,
+   "event": 11
+  },
+  {
+   "t_ms": 804.4,
+   "event": 74
+  },
+  {
+   "t_ms": 819.8,
+   "event": 32
+  },
+  {
+   "t_ms": 820.3,
+   "event": 33
+  },
+  {
+   "t_ms": 822.1,
+   "event": 74
+  },
+  {
+   "t_ms": 836.0,
+   "event": 32
+  },
+  {
+   "t_ms": 836.6,
+   "event": 33
+  },
+  {
+   "t_ms": 836.6,
+   "event": 74
+  },
+  {
+   "t_ms": 852.0,
+   "event": 32
+  },
+  {
+   "t_ms": 852.7,
+   "event": 33
+  },
+  {
+   "t_ms": 852.7,
+   "event": 74
+  },
+  {
+   "t_ms": 868.0,
+   "event": 32
+  },
+  {
+   "t_ms": 868.7,
+   "event": 33
+  },
+  {
+   "t_ms": 870.4,
+   "event": 74
+  },
+  {
+   "t_ms": 884.4,
+   "event": 32
+  },
+  {
+   "t_ms": 884.9,
+   "event": 33
+  },
+  {
+   "t_ms": 884.9,
+   "event": 74
+  },
+  {
+   "t_ms": 900.4,
+   "event": 32
+  },
+  {
+   "t_ms": 900.9,
+   "event": 33
+  },
+  {
+   "t_ms": 900.9,
+   "event": 10
+  },
+  {
+   "t_ms": 900.9,
+   "event": 11
+  },
+  {
+   "t_ms": 901.2,
+   "event": 74
+  },
+  {
+   "t_ms": 916.3,
+   "event": 32
+  },
+  {
+   "t_ms": 916.9,
+   "event": 33
+  },
+  {
+   "t_ms": 918.4,
+   "event": 74
+  },
+  {
+   "t_ms": 932.5,
+   "event": 32
+  },
+  {
+   "t_ms": 933.1,
+   "event": 33
+  },
+  {
+   "t_ms": 933.1,
+   "event": 74
+  },
+  {
+   "t_ms": 948.5,
+   "event": 32
+  },
+  {
+   "t_ms": 949.1,
+   "event": 33
+  },
+  {
+   "t_ms": 949.1,
+   "event": 74
+  },
+  {
+   "t_ms": 964.5,
+   "event": 32
+  },
+  {
+   "t_ms": 965.1,
+   "event": 33
+  },
+  {
+   "t_ms": 967.0,
+   "event": 74
+  },
+  {
+   "t_ms": 980.8,
+   "event": 32
+  },
+  {
+   "t_ms": 981.4,
+   "event": 33
+  },
+  {
+   "t_ms": 981.4,
+   "event": 74
+  },
+  {
+   "t_ms": 996.8,
+   "event": 32
+  },
+  {
+   "t_ms": 997.4,
+   "event": 33
+  },
+  {
+   "t_ms": 997.4,
+   "event": 10
+  },
+  {
+   "t_ms": 997.4,
+   "event": 11
+  },
+  {
+   "t_ms": 997.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1012.9,
+   "event": 32
+  },
+  {
+   "t_ms": 1013.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1015.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1029.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1029.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1029.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1045.1,
+   "event": 32
+  },
+  {
+   "t_ms": 1045.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1045.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1061.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1061.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1063.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1077.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1077.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1077.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1093.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1093.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1093.8,
+   "event": 10
+  },
+  {
+   "t_ms": 1093.8,
+   "event": 11
+  },
+  {
+   "t_ms": 1094.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1109.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1109.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1111.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1125.5,
+   "event": 32
+  },
+  {
+   "t_ms": 1126.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1126.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1141.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1142.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1142.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1157.6,
+   "event": 32
+  },
+  {
+   "t_ms": 1158.2,
+   "event": 33
+  },
+  {
+   "t_ms": 1160.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1173.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1174.4,
+   "event": 33
+  },
+  {
+   "t_ms": 1174.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1189.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1190.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1190.4,
+   "event": 10
+  },
+  {
+   "t_ms": 1190.4,
+   "event": 11
+  },
+  {
+   "t_ms": 1190.4,
+   "event": 74
+  },
+  {
+   "t_ms": 1205.8,
+   "event": 32
+  },
+  {
+   "t_ms": 1206.3,
+   "event": 33
+  },
+  {
+   "t_ms": 1208.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1222.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1222.6,
+   "event": 33
+  },
+  {
+   "t_ms": 1222.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1238.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1238.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1238.7,
+   "event": 74
+  },
+  {
+   "t_ms": 1254.0,
+   "event": 32
+  },
+  {
+   "t_ms": 1254.7,
+   "event": 33
+  },
+  {
+   "t_ms": 1256.5,
+   "event": 74
+  },
+  {
+   "t_ms": 1270.4,
+   "event": 32
+  },
+  {
+   "t_ms": 1270.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1270.9,
+   "event": 74
+  },
+  {
+   "t_ms": 1286.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1286.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1286.9,
+   "event": 10
+  },
+  {
+   "t_ms": 1286.9,
+   "event": 11
+  },
+  {
+   "t_ms": 1287.3,
+   "event": 74
+  },
+  {
+   "t_ms": 1302.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1302.9,
+   "event": 33
+  },
+  {
+   "t_ms": 1305.2,
+   "event": 74
+  },
+  {
+   "t_ms": 1318.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1318.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1321.1,
+   "event": 74
+  },
+  {
+   "t_ms": 1334.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1334.8,
+   "event": 33
+  },
+  {
+   "t_ms": 1334.9,
+   "event": 73
+  },
+  {
+   "t_ms": 1335.0,
+   "event": 73
+  },
+  {
+   "t_ms": 1335.0,
+   "event": 74
+  },
+  {
+   "t_ms": 1350.3,
+   "event": 32
+  },
+  {
+   "t_ms": 1350.3,
+   "event": 27
+  },
+  {
+   "t_ms": 1351.0,
    "event": 33
   }
  ]

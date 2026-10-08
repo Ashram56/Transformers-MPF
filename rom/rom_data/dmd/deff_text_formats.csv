@@ -1,0 +1,662 @@
+deff,function,helper,font,flags,x,y,msg_id,text
+2,0x1040050 deff_002,text_draw_msg_fit,0x40c9c20,2,0x40,0x1f,151,USE -/+ TO ADJUST VOLUME
+2,0x1040050 deff_002,text_printf_msg,0xc,2,0x40,10,150,VOLUME %d
+3,0x103f960 deff_003_transformers,text_printf_msg,2,2,0x40,4,586,TECHNICIAN ALERT - (%d/%d)
+3,0x103f960 deff_003_transformers,text_draw_msg_page,8,2,0x40,0xe,587,NO
+3,0x103f960 deff_003_transformers,text_draw_msg_page,8,2,0x40,0x17,588,TECHNICIAN ALERTS
+3,0x103f960 deff_003_transformers,text_draw_msg_page,0,2,0x40,0x1f,uVar6,(message id computed at run time)
+3,0x103f960 deff_003_transformers,text_draw_msg_fit,0x40c9c08,2,0x40,0x1f,msg_id,(message id computed at run time)
+3,0x103f960 deff_003_transformers,text_printf_page,2,2,0x40,5,,(&DAT_040c9c04)
+3,0x103f960 deff_003_transformers,text_draw_str_page,2,1,0,0xb,,(auStack_a4)
+3,0x103f960 deff_003_transformers,text_draw_str_page,2,2,0x40,0xb,,(auStack_90)
+3,0x103f960 deff_003_transformers,text_draw_str_page,2,4,0x7f,0xb,,(auStack_7c)
+3,0x103f47c FUN_0103f47c,text_draw_msg_page,2,2,local_70,local_6c,local_74,(message id computed at run time)
+3,0x103f47c FUN_0103f47c,text_draw_msg_page,2,2,local_70,local_6c,local_74,(message id computed at run time)
+3,0x103f888 FUN_0103f888,text_draw_str_fit_page,&DAT_040c9c14,2,0x40,0x17,,(auStack_3c)
+3,0x103f888 FUN_0103f888,text_draw_msg_fit,0x40c9c08,2,0x40,0x1e,msg_id,(message id computed at run time)
+4,0x103ee10 deff_004_50v_20v_disabled,text_draw_msg_page,8,2,0x40,9,467,50V / 20V DISABLED
+4,0x103ee10 deff_004_50v_20v_disabled,text_draw_msg_page,8,2,0x40,9,467,50V / 20V DISABLED
+4,0x103ed60 FUN_0103ed60,text_draw_msg_page,uVar1,2,0x40,0x10,468,CLOSE COIN DOOR
+4,0x103ed60 FUN_0103ed60,text_draw_msg_page,uVar1,2,0x40,0x16,469,OR PULL INTERLOCK SWITCH
+4,0x103ed60 FUN_0103ed60,text_draw_msg_page,uVar1,2,0x40,0x1c,470,TO RESTORE POWER
+5,0x103ef30 deff_005,text_printf_page,dmd_work_page_fg,uVar14,1,0,,(&DAT_040c9be4)
+5,0x103ef30 deff_005,text_draw_str_page,uVar14,4,0x7f,uVar12,,(auStack_34)
+5,0x103ef30 deff_005,text_draw_msg_page,2,2,0x40,0x15,uVar8,(message id computed at run time)
+5,0x103ef30 deff_005,text_draw_msg_page,2,2,0x40,0x15,uVar8,(message id computed at run time)
+5,0x103ef30 deff_005,text_draw_str_page,uVar14,2,0x40,uVar8,,(pcVar16)
+6,0x103f3ec deff_006,text_printf_msg,8,2,0x40,0xc,609,%06d
+6,0x103f3ec deff_006,text_printf_msg,8,2,0x40,0x19,610,%d HZ
+7,0x103ebd0 deff_007_this_machine_will_not,text_draw_msg_page,2,2,0x40,7,611,THIS MACHINE WILL NOT
+7,0x103ebd0 deff_007_this_machine_will_not,text_draw_msg_page,2,2,0x40,0xe,612,OPERATE IN THIS COUNTRY
+7,0x103ebd0 deff_007_this_machine_will_not,text_draw_msg_page,2,2,0x40,0x15,613,PLEASE
+7,0x103ebd0 deff_007_this_machine_will_not,text_draw_msg_page,2,2,0x40,0x1c,614,CONTACT YOUR DISTRIBUTOR
+9,0x103ec9c deff_009,text_printf_page,0xf,2,0x40,0x15,,%u/%u - %u
+10,0x1000000 deff_017_insert_coins,text_draw_str_page,font,2,0x54,iVar8,,(auStack_44)
+10,0x1000000 deff_017_insert_coins,text_draw_msg_page,font,2,0x54,iVar8 + iVar2 + uVar5,uVar6,(message id computed at run time)
+11,0x103c714 deff_011_locating_pinballs,text_draw_msg_page,uVar1,2,0x40,0xd,810,LOCATING PINBALLS
+11,0x103c714 deff_011_locating_pinballs,text_draw_msg_page,uVar1,2,0x40,0x19,811,PLEASE WAIT...
+12,0x103c3e8 deff_012_operator_alert,text_draw_msg_page,uVar3,2,0x40,iVar6 + uVar4,903,OPERATOR ALERT!
+12,0x103c3e8 deff_012_operator_alert,text_printf_msg,6,2,0x40,y,904,%s
+12,0x103c3e8 deff_012_operator_alert,text_draw_msg_page,uVar3,2,0x40,y + iVar6 + uVar4,905,DEVICE MALFUNCTION
+13,0x103c508 deff_013,text_draw_msg_page,0xc,2,0x40,0xd,812,PINBALL MISSING
+13,0x103c508 deff_013,text_draw_msg_page,0xc,2,0x40,0x19,813,PLEASE WAIT...
+14,0x103d828 FUN_0103d828,text_printf_page,uVar11,2,0x40,0x1e,,(uVar1)
+14,0x103d828 FUN_0103d828,text_draw_str_page,2,2,0x40,0x1e,,(auStack_68)
+14,0x103d828 FUN_0103d828,text_draw_str_page,(short)puVar10[1],*(undefined1 *)((int)puVar10 + 6),puVar10[2],puVar10[3],,(auStack_44)
+15,0x1000000 deff_017_insert_coins,text_draw_str_page,font,2,0x54,iVar8,,(auStack_44)
+15,0x1000000 deff_017_insert_coins,text_draw_msg_page,font,2,0x54,iVar8 + iVar2 + uVar5,uVar6,(message id computed at run time)
+16,0x103de04 deff_016_tournament_game,text_draw_msg_page,local_24,2,0x40,iVar7 * 2,1232,TOURNAMENT GAME
+16,0x103de04 deff_016_tournament_game,text_printf_msg,local_24,1,uVar6,iVar7 + 1,1230,%d CREDIT%P1//S/% FOR A
+16,0x103de04 deff_016_tournament_game,text_printf_msg,local_24,1,(uVar6 + uVar4) - uVar5,iVar7 + 1,1231,CREDIT%P1//S/% FOR A
+17,0x1000000 deff_017_insert_coins,text_draw_str_page,font,2,0x54,iVar8,,(auStack_44)
+17,0x1000000 deff_017_insert_coins,text_draw_msg_page,font,2,0x54,iVar8 + iVar2 + uVar5,uVar6,(message id computed at run time)
+18,0x103dff0 deff_018_bump_n_win,text_draw_str_fit_page,&DAT_040c9500,2,0x40,8,,(pcVar3)
+18,0x103dff0 deff_018_bump_n_win,text_draw_msg_page,0xc,2,0x40,iVar9 + (uint,1214,BUMP 'N' WIN SCORE
+18,0x103dff0 deff_018_bump_n_win,text_printf_msg,0xf,2,0x40,iVar5 + iVar9 * 2 + 1,DAT_00030e96,(message id computed at run time)
+19,0x102f724 FUN_0102f724,text_draw_str_page,0,4,0x7f,0x1e,,(auStack_40)
+19,0x102f6d4 FUN_0102f6d4,text_printf_msg,0,1,0x2a,0x1e,797,BALL %d
+19,0x102f8a0 FUN_0102f8a0,text_draw_str_page,0,2,0x54,0x1e,,(local_5c)
+19,0x102f770 FUN_0102f770,text_draw_str_page,0,2,0x54,0x1e,,(local_54)
+19,0x102fa40 FUN_0102fa40,text_printf_msg,*(uint *)(iVar3 + 4),2,0x54,*(int *,1282,"%,02lu"
+19,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+19,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+19,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+19,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+19,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+20,0x1007fa0 deff_020_ball_saved,text_draw_msg_page,0xf,2,0x40,0xf,808,BALL SAVED
+20,0x1007fa0 deff_020_ball_saved,text_draw_msg_page,2,2,0x40,0x19,809,KEEP SHOOTING
+21,0x103dcfc deff_021_tilt,text_draw_msg_page,0xf,2,0x40,(uint,793,TILT
+23,0x103dd78 deff_023_danger,text_draw_msg_page,0xf,2,0x40,(uint,792,DANGER
+24,0x103dc88 deff_024_slam_tilt,text_draw_msg_page,0xf,2,0x40,(uint,807,SLAM TILT
+25,0x10014b8 deff_025_bonus,text_draw_msg_fit,0x40c5c00,2,0x54,0xf,1330,TOTAL BONUS
+25,0x10014b8 deff_025_bonus,text_printf_msg,0xd,2,0x54,0x1a,1282,"%,02lu"
+26,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+26,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+26,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+26,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+26,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+30,0x10088b4 deff_030,text_printf_msg,0xd,2,0x2b,0xf,1303,%u
+30,0x10088b4 deff_030,text_printf_msg,0xd,2,0x2b,0x19,1304,TICKET%P1//S/%
+31,0x103ce90 deff_031_enter_initials,text_printf_msg,font,2,0x40,y,867,PLAYER %d
+31,0x103ce90 deff_031_enter_initials,text_draw_msg_page,font,2,0x40,iVar2,868,ENTER INITIALS
+31,0x103ce90 deff_031_enter_initials,text_draw_msg_page,font,2,0x40,iVar2,868,ENTER INITIALS
+32,0x103c840 deff_032_i_x_d_h_t,text_printf_msg_fit_page,&DAT_040c9484,2,0x40,4,869,PLAYER %d - ENTER INITIALS
+32,0x103c840 deff_032_i_x_d_h_t,text_draw_str_fit_page,&DAT_040c94b0,2,0x40,10,,(uVar7)
+32,0x103c840 deff_032_i_x_d_h_t,text_printf_msg,2,1,0,0x15,870,%u
+32,0x103c840 deff_032_i_x_d_h_t,text_printf_msg,2,4,0x7f,0x15,870,%u
+32,0x103c840 deff_032_i_x_d_h_t,text_draw_str_page,0xe,1,(int)((uint)bVar1 * -6 + 0x81) / 2,0x15,,(local_34[0])
+33,0x103d0e4 deff_033,text_printf_msg,2,2,0x40,6,879,PLAYER %d
+33,0x103d0e4 deff_033,text_printf_msg,2,2,0x40,6,*(short *)(task_current + 0x38) + 0x370,(message id computed at run time)
+33,0x103cfd4 FUN_0103cfd4,text_draw_str_fit_page,&DAT_040c94d4,2,0x40,0xc,,(uVar1)
+33,0x103cfd4 FUN_0103cfd4,text_draw_str_page,0xf,2,0x40,0x17,,(*param_1)
+33,0x103cfd4 FUN_0103cfd4,text_printf_msg,4,2,0x40,0x1d,DAT_00030e96,(message id computed at run time)
+33,0x103cfd4 FUN_0103cfd4,text_draw_str_page,4,2,0x40,0x1d,,(auStack_58)
+34,0x103ea20 deff_034_sorry,text_draw_msg_page,font,2,0x40,iVar3 + -1,1216,"SORRY,"
+34,0x103ea20 deff_034_sorry,text_draw_msg_page,font,2,0x40,iVar2,1217,YOU DID NOT QUALIFY
+34,0x103ea20 deff_034_sorry,text_draw_msg_page,font,2,0x40,iVar3 * 3 + -1,1218,PLEASE TRY AGAIN!
+34,0x103ea20 deff_034_sorry,text_draw_msg_page,font,2,0x40,iVar3 + -1,1216,"SORRY,"
+34,0x103ea20 deff_034_sorry,text_draw_msg_page,font,2,0x40,iVar2,1217,YOU DID NOT QUALIFY
+35,0x103e208 deff_035,text_draw_msg_fit,0x40c950c,2,0x40,0x18,1220,YOU QUALIFIED!
+35,0x103e208 deff_035,text_printf_msg,font,2,0x40,0xe,1219,PLAYER %d
+35,0x103e208 deff_035,text_draw_msg_page,font,2,0x40,0x18,1220,YOU QUALIFIED!
+36,0x103e460 deff_036_invalid,text_printf_msg,2,2,0x40,4,*(ushort *)(iVar10 + 0x1c),(message id computed at run time)
+36,0x103e460 deff_036_invalid,text_printf_msg,2,2,0x40,10,1223,%P1/FIRST/SECOND/THIRD/FOURTH/FIFTH//% PLACE
+36,0x103e460 deff_036_invalid,text_draw_str_page,0xe,1,(int)((uint)bVar1 * -6 + 0x81) / 2,0x15,,(auStack_4c)
+37,0x103e8f8 FUN_0103e8f8,text_printf_msg,0xc,2,0x40,0xf,1224,PLAYER %d
+37,0x103e8f8 FUN_0103e8f8,text_printf_msg,2,2,0x40,0x17,1225,YOU ARE IN %P1/1ST/2ND/3RD/4TH/5TH//% PLACE!
+38,0x100807c FUN_0100807c,text_printf_msg,0,4,0x26,iVar2,1282,"%,02lu"
+38,0x100807c FUN_0100807c,text_printf_msg,0,4,0x26,iVar2,1282,"%,02lu"
+39,0x103d240 deff_039_competition_mode,text_draw_msg_page,0xc,2,0x40,0xb,1275,COMPETITION MODE
+39,0x103d240 deff_039_competition_mode,text_draw_msg_page,0xc,2,0x40,0x14,1276,READY
+39,0x103d240 deff_039_competition_mode,text_draw_msg_page,2,2,0x40,0x1b,1277,PRESS START NOW
+39,0x103d240 deff_039_competition_mode,text_printf_msg,0xc,1,2,0x1d,1278,%d
+39,0x103d240 deff_039_competition_mode,text_printf_msg,0xc,4,0x7d,0x1d,1278,%d
+40,0x1034198 deff_040_use_flippers_to,text_draw_msg_page,uVar3,2,0x54,0x1e,local_3c + 0x686,(message id computed at run time)
+40,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+40,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+40,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+40,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+40,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+41,0x1034424 deff_041_decepticon,text_draw_msg_page,2,2,0x54,5,1668,TRANSFORMER
+41,0x1034424 deff_041_decepticon,text_draw_msg_page,uVar4,2,0x54,0x12,1666,AUTOBOT
+41,0x1034424 deff_041_decepticon,text_draw_msg_page,uVar4,2,0x54,0x12,1667,DECEPTICON
+41,0x1034424 deff_041_decepticon,text_draw_msg_page,0,2,0x54,0x1e,1669,TRANSFORMER SELECTED
+42,0x1031aa4 deff_042,text_draw_msg_page,3,2,0x54,6,1537,HANDS FREE
+42,0x1031aa4 deff_042,text_draw_msg_page,0xd,2,0x54,0xf,1538,SKILL SHOT
+42,0x1031aa4 deff_042,text_printf_msg_fit_page,&DAT_040c765c,2,0x54,0x1d,1282,"%,02lu"
+42,0x1031aa4 deff_042,text_draw_msg_fit,0x40c765c,2,0x54,0xd,1538,SKILL SHOT
+42,0x1031aa4 deff_042,text_printf_msg_fit_page,&DAT_040c765c,2,0x54,0x1b,1282,"%,02lu"
+43,0x1031d8c deff_043_super_skill_shot,text_draw_msg_page,7,2,0x55,0xb,1541,SUPER SKILL SHOT
+43,0x1031d8c deff_043_super_skill_shot,text_printf_msg_fit_page,&DAT_040c765c,2,0x55,0x1a,1282,"%,02lu"
+44,0x102de6c deff_044_multipliers,text_printf_msg,0x10,2,0x62,0xe,1334,%uX
+44,0x102de6c deff_044_multipliers,text_printf_msg,0,2,0x62,iVar7,1338,MULTIPLIER%P1//S/%
+44,0x102de6c deff_044_multipliers,text_printf_msg,0,2,0x62,iVar7 + 7,1339,LIT
+44,0x102de6c deff_044_multipliers,text_printf_msg,0x10,1,0x2a,0xe,1334,%uX
+44,0x102de6c deff_044_multipliers,text_printf_msg,1,1,0x2a,iVar7,1338,MULTIPLIER%P1//S/%
+44,0x102de6c deff_044_multipliers,text_printf_msg,1,1,0x2a,iVar7 + 7,1339,LIT
+45,0x102e568 deff_045,text_draw_msg_fit,0x40c7554,1,0x29,8,1534,OPTIMUS LANES
+45,0x102e568 deff_045,text_draw_msg_fit,0x40c7554,1,0x29,0x13,1535,COMPLETED
+45,0x102e568 deff_045,text_printf_msg,uVar2,1,0x29,0x1e,1536,%dX BONUS
+45,0x102e568 deff_045,text_draw_msg_fit,0x40c7554,2,0x62,8,1530,MEGATRON LANES
+45,0x102e568 deff_045,text_draw_msg_fit,0x40c7554,2,0x62,0x13,1531,COMPLETED
+45,0x102e568 deff_045,text_printf_msg,uVar2,2,0x62,0x1e,1532,%dX BONUS
+47,0x102c678 deff_047_pops_grow,text_draw_msg_fit,0x40c74e8,2,0x54,0xc,1528,POPS GROW
+47,0x102c678 deff_047_pops_grow,text_printf_msg,0x10,2,0x54,0x19,1529,"%,02lu"
+48,0x1003354 deff_048,text_printf_msg_fit_page,&DAT_040c5d04,2,0x54,0xd,uVar1,(message id computed at run time)
+48,0x1003354 deff_048,text_printf_msg,0x10,2,0x54,0x1b,1282,"%,02lu"
+48,0x1003354 deff_048,text_printf_msg_fit_page,&DAT_040c5d04,2,0x54,10,uVar1,(message id computed at run time)
+48,0x1003354 deff_048,text_printf_msg,0x10,2,0x54,0x16,1282,"%,02lu"
+48,0x1003354 deff_048,text_printf_msg,3,2,0x54,0x1e,1751,"SUPER COMBO +%,02lu"
+48,0x1003354 deff_048,text_printf_msg,0x10,2,0x54,0x15,1752,%d COMBO%P1//S/%
+48,0x1003354 deff_048,text_printf_msg,0xd,2,0x54,0xf,1752,%d COMBO%P1//S/%
+48,0x1003354 deff_048,text_printf_msg,3,2,0x54,0x19,*(ushort *)(puVar5 + 4),(message id computed at run time)
+48,0x1003354 deff_048,text_printf_msg,0xd,2,0x54,0xf,1752,%d COMBO%P1//S/%
+48,0x1003354 deff_048,text_draw_msg_page,3,2,0x54,0x19,*(undefined2 *)(puVar5 + 6),(message id computed at run time)
+48,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+48,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+48,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+48,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+48,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+49,0x1023b10 deff_049_multipliers_lit,text_printf_msg,0xc,2,0x55,0xe,1334,%uX
+49,0x1023b10 deff_049_multipliers_lit,text_printf_msg_fit_page,&DAT_040c6fe4,2,0x54,0x18,1335,MULTIPLIER%P1//S/% LIT
+49,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+49,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+49,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+49,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+49,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+50,0x1023c5c deff_050,text_draw_msg_page,3,1,0x2c,8,*(undefined2 *)(iVar2 + 0xc),(message id computed at run time)
+50,0x1023c5c deff_050,text_draw_msg_page,3,1,0x2c,0xe,*(undefined2 *)(iVar2 + 0xe),(message id computed at run time)
+50,0x1023c5c deff_050,text_printf_msg,0x10,1,0x2c,0x1c,*(ushort *)(iVar2 + 0x10),(message id computed at run time)
+51,0x1024080 deff_051,text_draw_msg_page,0x10,2,0x54,0xd,1358,ALLSPARK
+51,0x1024080 deff_051,text_draw_msg_page,0x10,2,0x54,0x1b,1359,LIT
+51,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+51,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+51,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+51,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+51,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+52,0x1024524 deff_052_special,text_printf_page,3,2,0x55,(uVar6 * (uVar1 + 1,,(s)
+53,0x1007bb4 deff_053_extra,text_draw_msg_page,uVar5,2,0x54,0xb,1312,EXTRA
+53,0x1007bb4 deff_053_extra,text_draw_msg_page,uVar5,2,0x54,0x14,1313,BALL
+53,0x1007bb4 deff_053_extra,text_draw_msg_page,uVar5,2,0x54,0x1d,1314,IS LIT
+55,0x1008578 deff_055_special,text_draw_msg_page,0xd,2,0x54,0xe,1325,SPECIAL
+55,0x1008578 deff_055_special,text_draw_msg_page,0xd,2,0x54,0x1a,1326,IS LIT
+57,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+57,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+57,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+57,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+57,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,6,1365,OPTIMUS PRIME
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0xc,1366,MULTIBALL
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0x13,1369,SHOOT
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0x19,1370,FLASHING
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0x1f,1371,SHOTS
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0x16,1372,SHOOT
+58,0x10283c8 deff_058_optimus_prime,text_draw_msg_page,1,2,0x4b,0x1c,1373,MEGATRON
+58,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+58,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+58,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+58,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+58,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+59,0x1028950 deff_059,text_draw_msg_page,0xd,2,0x54,0xd,1375,JACKPOT
+59,0x1028950 deff_059,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+60,0x1028da0 deff_060,text_draw_msg_page,uVar4,2,0x54,0xd,1376,DOUBLE JACKPOT
+60,0x1028da0 deff_060,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+61,0x1029014 deff_061,text_draw_msg_page,0xb,2,0x54,0xd,1377,SUPER JACKPOT
+61,0x1029014 deff_061,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+62,0x1029218 deff_062,text_draw_msg_page,3,2,0x54,7,1378,OPTIMUS PRIME
+62,0x1029218 deff_062,text_draw_msg_page,3,2,0x54,0xd,1379,MULTIBALL
+62,0x1029218 deff_062,text_draw_msg_page,3,2,0x54,0x13,1380,TOTAL:
+62,0x1029218 deff_062,text_printf_msg,0xd,2,0x54,0x1d,1282,"%,02lu"
+62,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+62,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+62,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+62,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+62,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+63,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+63,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+63,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+63,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+63,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,6,1385,OPTIMUS PRIME
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0xc,1386,MULTIBALL
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x13,1389,SHOOT
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x19,1390,FLASHING
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x1f,1391,SHOTS
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x13,1392,SHOOT
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x19,1393,OPTIMUS
+64,0x102a4e8 deff_064_optimus_prime,text_draw_msg_page,1,2,0x4b,0x1f,1394,TARGET
+64,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+64,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+64,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+64,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+64,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+65,0x102aa70 deff_065_jackpot,text_draw_msg_page,0xd,2,0x54,0xd,1395,JACKPOT
+65,0x102aa70 deff_065_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+66,0x102ad30 deff_066_double_jackpot,text_draw_msg_page,uVar5,2,0x54,0xd,1396,DOUBLE JACKPOT
+66,0x102ad30 deff_066_double_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+67,0x102af98 deff_067_super_jackpot,text_draw_msg_page,0xb,2,0x54,0xd,1397,SUPER JACKPOT
+67,0x102af98 deff_067_super_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+68,0x102b18c deff_068_optimus_prime,text_draw_msg_page,2,2,0x54,7,1398,OPTIMUS PRIME
+68,0x102b18c deff_068_optimus_prime,text_draw_msg_page,2,2,0x54,0xd,1399,MULTIBALL
+68,0x102b18c deff_068_optimus_prime,text_draw_msg_page,2,2,0x54,0x13,1400,TOTAL:
+68,0x102b18c deff_068_optimus_prime,text_printf_msg,0xd,2,0x54,0x1d,1282,"%,02lu"
+68,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+68,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+68,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+68,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+68,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+69,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+69,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+69,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+69,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+69,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,8,1405,MEGATRON
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0xe,1406,MULTIBALL
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0x16,1407,SHOOT FLASHING
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0x1c,uVar2,(message id computed at run time)
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0x16,1409,SHOOT FLASHING
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0x16,1411,SHOOT
+70,0x100cd04 deff_070_megatron,text_draw_msg_page,1,2,99,0x1c,1412,MEGATRON
+70,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+70,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+70,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+70,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+70,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+71,0x100d214 deff_071_jackpot,text_draw_msg_page,0xd,2,0x54,0xd,1413,JACKPOT
+71,0x100d214 deff_071_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+72,0x100d550 deff_072_double_jackpot,text_draw_msg_page,uVar5,2,0x54,0xd,1414,DOUBLE JACKPOT
+72,0x100d550 deff_072_double_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+73,0x100d7bc deff_073_super_jackpot,text_draw_msg_page,0xb,2,0x54,0xd,1415,SUPER JACKPOT
+73,0x100d7bc deff_073_super_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+74,0x100d97c deff_074_megatron,text_draw_msg_page,3,2,99,7,1416,MEGATRON
+74,0x100d97c deff_074_megatron,text_draw_msg_page,3,2,99,0xd,1417,MULTIBALL
+74,0x100d97c deff_074_megatron,text_draw_msg_page,3,2,99,0x13,1418,TOTAL:
+74,0x100d97c deff_074_megatron,text_printf_msg_fit_page,&DAT_040c64b0,2,99,0x1c,1282,"%,02lu"
+74,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+74,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+74,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+74,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+74,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+75,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+75,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+75,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+75,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+75,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,99,8,1423,MEGATRON
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,99,0xe,1424,MULTIBALL
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,99,0x16,1425,SHOOT FLASHING
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,99,0x1c,uVar1,(message id computed at run time)
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,99,0x16,1427,SHOOT FLASHING
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,0x61,0x16,1429,SHOOT
+76,0x100ebd0 deff_076_megatron,text_draw_msg_page,1,2,0x61,0x1c,1430,OPTIMUS PRIME
+76,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+76,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+76,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+76,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+76,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+77,0x100f3b4 deff_077_jackpot,text_draw_msg_page,0xd,2,0x54,0xd,1431,JACKPOT
+77,0x100f3b4 deff_077_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+77,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+77,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+77,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+77,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+77,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+78,0x100f6dc deff_078_double_jackpot,text_draw_msg_page,uVar5,2,0x54,0xd,1432,DOUBLE JACKPOT
+78,0x100f6dc deff_078_double_jackpot,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+79,0x100f958 deff_079,text_draw_msg_page,0xb,2,0x54,0xd,1433,SUPER JACKPOT
+79,0x100f958 deff_079,text_printf_msg,0x12,2,0x54,0x1b,1282,"%,02lu"
+80,0x100fb18 deff_080_megatron,text_draw_msg_page,3,2,99,7,1434,MEGATRON
+80,0x100fb18 deff_080_megatron,text_draw_msg_page,3,2,99,0xd,1435,MULTIBALL
+80,0x100fb18 deff_080_megatron,text_draw_msg_page,3,2,99,0x13,1436,TOTAL:
+80,0x100fb18 deff_080_megatron,text_printf_msg_fit_page,&DAT_040c66b4,2,99,0x1c,1282,"%,02lu"
+80,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+80,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+80,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+80,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+80,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+81,0x1010544 deff_081_complete_all_shots,text_draw_msg_page,1,2,0x54,10,1477,COMPLETE ALL SHOTS
+81,0x1010544 deff_081_complete_all_shots,text_draw_msg_page,1,2,0x54,0x11,1478,FOR
+81,0x1010544 deff_081_complete_all_shots,text_draw_msg_page,uVar3,2,0x54,0x1b,1479,SUPER JACKPOT
+81,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+81,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+81,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+81,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+81,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+82,0x10107e8 deff_082,text_draw_msg_page,1,2,0x54,8,uVar2,(message id computed at run time)
+82,0x10107e8 deff_082,text_printf_msg,1,2,0x54,0x17,1482,"NEXT SHOT = %,02lu"
+82,0x10107e8 deff_082,text_printf_msg,1,2,0x54,0x1d,1483,"SUPER = %,02lu"
+82,0x10107e8 deff_082,text_draw_msg_page,1,2,0x54,0x11,1484,SUPER LIT
+82,0x10107e8 deff_082,text_draw_msg_page,1,2,0x54,0x17,1485,SHOOT THE ALLSPARK
+82,0x10107e8 deff_082,text_printf_msg,1,2,0x54,0x1d,1486,"SUPER = %,02lu"
+82,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+82,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+82,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+82,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+82,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+83,0x1011750 deff_083,text_draw_msg_page,3,2,uVar9,6,uVar6,(message id computed at run time)
+83,0x1011750 deff_083,text_printf_msg,9,2,x,0x1d,1282,"%,02lu"
+83,0x1011750 deff_083,text_printf_msg,0x12,2,0x54,0x14,1282,"%,02lu"
+84,0x1011a54 deff_084_all_hail_megatron,text_draw_msg_page,1,2,0x54,8,1501,ALL HAIL MEGATRON
+84,0x1011a54 deff_084_all_hail_megatron,text_draw_msg_page,1,2,0x54,0xe,1502,COMPLETED
+84,0x1011a54 deff_084_all_hail_megatron,text_draw_msg_page,1,2,0x54,8,1499,AUTOBOTS ROLL OUT
+84,0x1011a54 deff_084_all_hail_megatron,text_draw_msg_page,1,2,0x54,0xe,1500,COMPLETED
+84,0x1011a54 deff_084_all_hail_megatron,text_printf_msg,0x12,2,0x54,0x1c,1282,"%,02lu"
+84,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+84,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+84,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+84,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+84,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+85,0x1011d88 deff_085,text_draw_msg_page,1,2,0x54,0xb,uVar2,(message id computed at run time)
+85,0x1011d88 deff_085,text_draw_msg_page,1,2,0x54,0x11,uVar2,(message id computed at run time)
+85,0x1011d88 deff_085,text_printf_msg,0xd,2,0x54,0x1a,1282,"%,02lu"
+85,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+85,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+85,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+85,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+85,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+86,0x10369b0 deff_086_battle,text_draw_msg_page,1,2,0x54,0xb,1507,BATTLE
+86,0x10369b0 deff_086_battle,text_draw_msg_page,1,2,0x54,0x12,1508,FOR
+86,0x10369b0 deff_086_battle,text_draw_msg_page,0xb,2,0x54,0x1c,1509,CYBERTRON
+86,0x10369b0 deff_086_battle,text_draw_msg_page,1,2,0x54,10,1510,COMPLETE ALL SHOTS
+86,0x10369b0 deff_086_battle,text_draw_msg_page,1,2,0x54,0x11,1511,FOR
+86,0x10369b0 deff_086_battle,text_draw_msg_page,0xb,2,0x54,0x1b,1512,SUPER JACKPOT
+86,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+86,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+86,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+86,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+86,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+87,0x1036d50 deff_087_next_shot_500_000,text_printf_msg,1,2,0x54,0x1f,1514,"NEXT SHOT = %,02lu"
+87,0x1036d50 deff_087_next_shot_500_000,text_draw_msg_page,1,2,0x54,0x19,1517,SHOOT THE ALLSPARK
+87,0x1036d50 deff_087_next_shot_500_000,text_printf_msg,1,2,0x54,0x1f,1518,"SUPER = %,02lu"
+87,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+87,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+87,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+87,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+87,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+88,0x1037258 deff_088,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+89,0x10374dc deff_089_super_wizard,text_draw_msg_page,1,2,0x54,8,1519,SUPER WIZARD
+89,0x10374dc deff_089_super_wizard,text_draw_msg_page,1,2,0x54,0xe,1520,JACKPOT
+89,0x10374dc deff_089_super_wizard,text_printf_msg_fit_page,&DAT_040c7b44,2,0x54,0x1c,1282,"%,02lu"
+90,0x10377a4 deff_090_wizard_multiball,text_draw_msg_page,1,2,0x54,0xb,1521,WIZARD MULTIBALL
+90,0x10377a4 deff_090_wizard_multiball,text_draw_msg_page,1,2,0x54,0x11,1522,TOTAL:
+90,0x10377a4 deff_090_wizard_multiball,text_printf_msg,0xd,2,0x54,0x1a,1282,"%,02lu"
+90,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+90,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+90,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+90,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+90,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+92,0x10185e0 deff_092_starscream,text_draw_msg_page,0x10,4,0x7f,0xe,1557,STARSCREAM
+92,0x10185e0 deff_092_starscream,text_draw_msg_page,0x10,4,0x7f,0x1c,1558,BATTLE
+93,0x1018720 deff_093,text_draw_msg_page,1,2,0x62,6,1562,STARSCREAM
+93,0x1018720 deff_093,text_printf_msg,0x10,2,0x62,0x15,1563,%u
+93,0x1018720 deff_093,text_draw_msg_page,1,2,0x62,0x20,1564,SHOOT LIT SHOT
+93,0x1018720 deff_093,text_printf_msg,1,2,0x62,0x20,1565,SHOOT %u SHOT%P1//S/%
+94,0x10189a8 deff_094,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+94,0x10189a8 deff_094,text_draw_msg_page,0xd,2,0x54,0xd,1463,STARSCREAM
+94,0x10189a8 deff_094,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+94,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+94,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+94,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+94,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+94,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+95,0x1018d38 deff_095,text_draw_msg_page,7,2,0x62,0xb,1568,STARSCREAM
+95,0x1018d38 deff_095,text_draw_msg_page,3,2,0x62,0x12,1569,TOTAL:
+95,0x1018d38 deff_095,text_printf_msg_fit_page,&DAT_040c6a84,2,0x62,0x1c,1282,"%,02lu"
+96,0x101f274 deff_096,text_draw_msg_page,0x10,4,0x7f,0xe,1570,SHOCKWAVE
+96,0x101f274 deff_096,text_draw_msg_page,0x10,4,0x7f,0x1c,1571,BATTLE
+97,0x101f3b4 deff_097_shockwave,text_draw_msg_page,1,2,0x62,6,1575,SHOCKWAVE
+97,0x101f3b4 deff_097_shockwave,text_printf_msg,0x10,2,0x62,0x15,1576,%u
+97,0x101f3b4 deff_097_shockwave,text_draw_msg_page,1,2,0x62,0x20,1577,SHOOT LIT SHOT
+97,0x101f3b4 deff_097_shockwave,text_printf_msg,1,2,0x62,0x20,1578,SHOOT %u SHOT%P1//S/%
+98,0x101f6c8 deff_098,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+98,0x101f6c8 deff_098,text_draw_msg_page,0xd,2,0x54,0xd,1464,SHOCKWAVE
+98,0x101f6c8 deff_098,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+98,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+98,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+98,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+98,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+98,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+99,0x101fa48 deff_099,text_draw_msg_page,7,2,0x62,0xb,1581,SHOCKWAVE
+99,0x101fa48 deff_099,text_draw_msg_page,3,2,0x62,0x12,1582,TOTAL:
+99,0x101fa48 deff_099,text_printf_msg_fit_page,&DAT_040c6cf0,2,0x62,0x1c,1282,"%,02lu"
+100,0x101d768 deff_100_blackout,text_draw_msg_page,0x10,4,0x7f,0xe,1583,BLACKOUT
+100,0x101d768 deff_100_blackout,text_draw_msg_page,0x10,4,0x7f,0x1c,1584,BATTLE
+101,0x101d8ac deff_101_blackout,text_draw_msg_page,1,2,0x65,6,1588,BLACKOUT
+101,0x101d8ac deff_101_blackout,text_printf_msg,0x10,2,0x65,0x15,1589,%u
+101,0x101d8ac deff_101_blackout,text_draw_msg_page,1,2,0x65,0x20,1590,SHOOT LIT SHOT
+101,0x101d8ac deff_101_blackout,text_printf_msg,1,2,0x65,0x20,1591,SHOOT %u SHOT%P1//S/%
+102,0x101dc18 deff_102,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+102,0x101dc18 deff_102,text_draw_msg_page,0xd,2,0x54,0xd,1465,BLACKOUT
+102,0x101dc18 deff_102,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+102,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+102,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+102,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+102,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+102,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+103,0x101dfb4 deff_103_blackout,text_draw_msg_page,7,2,0x62,0xb,1594,BLACKOUT
+103,0x101dfb4 deff_103_blackout,text_draw_msg_page,3,2,0x62,0x12,1595,TOTAL:
+103,0x101dfb4 deff_103_blackout,text_printf_msg_fit_page,&DAT_040c6c64,2,0x62,0x1c,1282,"%,02lu"
+104,0x1016c24 deff_104_devastator,text_draw_msg_page,0x10,4,0x7f,0xe,1596,DEVASTATOR
+104,0x1016c24 deff_104_devastator,text_draw_msg_page,0x10,4,0x7f,0x1c,1597,BATTLE
+105,0x1016d7c deff_105_devastator,text_draw_msg_page,1,2,0x65,6,1601,DEVASTATOR
+105,0x1016d7c deff_105_devastator,text_printf_msg,0x10,2,0x65,0x15,1602,%u
+105,0x1016d7c deff_105_devastator,text_draw_msg_page,1,2,0x65,0x20,1605,SHOOT R. ORBIT
+105,0x1016d7c deff_105_devastator,text_draw_msg_page,1,2,0x65,0x20,1603,SHOOT LIT SHOT
+105,0x1016d7c deff_105_devastator,text_printf_msg,1,2,0x65,0x20,1604,SHOOT %u SHOT%P1//S/%
+106,0x10170b8 deff_106,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+106,0x10170b8 deff_106,text_draw_msg_page,0xd,2,0x54,0xd,1466,DEVASTATOR
+106,0x10170b8 deff_106,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+106,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+106,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+106,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+106,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+106,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+107,0x1017460 deff_107_devastator,text_draw_msg_page,7,2,0x62,0xb,1608,DEVASTATOR
+107,0x1017460 deff_107_devastator,text_draw_msg_page,uVar4,2,0x62,0x12,1609,TOTAL:
+107,0x1017460 deff_107_devastator,text_printf_msg_fit_page,&DAT_040c69c0,2,0x62,0x1c,1282,"%,02lu"
+108,0x101504c deff_108_bumblebee,text_draw_msg_page,0x10,4,0x7f,0xe,1610,BUMBLEBEE
+108,0x101504c deff_108_bumblebee,text_draw_msg_page,0x10,4,0x7f,0x1c,1611,BATTLE
+109,0x1015184 deff_109,text_draw_msg_page,1,2,0x47,6,1615,BUMBLEBEE
+109,0x1015184 deff_109,text_printf_msg,0x10,2,0x47,0x13,1282,"%,02lu"
+109,0x1015184 deff_109,text_printf_msg,1,2,0x47,0x1a,1620,"BEE = %,02lu"
+109,0x1015184 deff_109,text_draw_msg_page,1,2,0x47,0x20,1617,SHOOT LIT SHOT
+109,0x1015184 deff_109,text_printf_msg,0x10,2,0x47,0x13,1282,"%,02lu"
+109,0x1015184 deff_109,text_draw_msg_page,1,2,0x47,0x19,1618,SHOOT CAMARO
+109,0x1015184 deff_109,text_printf_msg,1,2,0x47,0x1f,1619,"FOR %,02lu"
+110,0x101555c deff_110,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+110,0x101555c deff_110,text_draw_msg_page,0xd,2,0x54,0xd,1468,BUMBLEBEE
+110,0x101555c deff_110,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+110,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+110,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+110,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+110,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+110,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+111,0x10158a4 deff_111,text_draw_msg_page,7,2,0x47,0xb,1623,BUMBLEBEE
+111,0x10158a4 deff_111,text_draw_msg_page,3,2,0x47,0x12,1624,TOTAL:
+111,0x10158a4 deff_111,text_printf_msg_fit_page,&DAT_040c68fc,2,0x47,0x1c,1282,"%,02lu"
+112,0x101be20 deff_112_ironhide,text_draw_msg_page,0x10,4,0x7f,0xe,1625,IRONHIDE
+112,0x101be20 deff_112_ironhide,text_draw_msg_page,0x10,4,0x7f,0x1c,1626,BATTLE
+113,0x101bf60 deff_113_ironhide,text_draw_msg_page,1,2,0x47,6,1630,IRONHIDE
+113,0x101bf60 deff_113_ironhide,text_printf_msg,0x10,2,0x47,0x15,1631,%u
+113,0x101bf60 deff_113_ironhide,text_draw_msg_page,1,2,0x47,0x20,1632,SHOOT LIT SHOT
+113,0x101bf60 deff_113_ironhide,text_printf_msg,1,2,0x47,0x20,1633,SHOOT %u SHOT%P1//S/%
+114,0x101c208 deff_114,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+114,0x101c208 deff_114,text_draw_msg_page,0xd,2,0x54,0xd,1469,IRONHIDE
+114,0x101c208 deff_114,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+114,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+114,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+114,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+114,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+114,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+115,0x101c590 deff_115_ironhide,text_draw_msg_page,7,2,0x47,0xb,1636,IRONHIDE
+115,0x101c590 deff_115_ironhide,text_draw_msg_page,3,2,0x47,0x12,1637,TOTAL:
+115,0x101c590 deff_115_ironhide,text_printf_msg_fit_page,&DAT_040c6bc4,2,0x47,0x1c,1282,"%,02lu"
+116,0x101a104 deff_116_mudflap,text_draw_msg_page,0x10,4,0x7f,0xe,1638,MUDFLAP
+116,0x101a104 deff_116_mudflap,text_draw_msg_page,0x10,4,0x7f,0x1c,1639,& SKIDS
+117,0x101a248 deff_117,text_draw_msg_page,1,2,0x4d,6,1643,MUDFLAP
+117,0x101a248 deff_117,text_draw_msg_page,1,2,0x4d,0xc,1644,&
+117,0x101a248 deff_117,text_draw_msg_page,1,2,0x4d,0x12,1645,SKIDS
+117,0x101a248 deff_117,text_draw_msg_page,1,2,uVar3,0x20,1647,SHOOT LIT SHOT
+117,0x101a248 deff_117,text_printf_msg,1,2,0x4d,0x20,1648,SHOOT %u SHOT%P1//S/%
+118,0x101a538 deff_118,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+118,0x101a538 deff_118,text_draw_msg_page,0xd,2,0x54,10,1471,MUDFLAP
+118,0x101a538 deff_118,text_draw_msg_page,0xd,2,0x54,0x13,1472,& SKIDS
+118,0x101a538 deff_118,text_draw_msg_page,0xd,2,0x54,0x1e,1476,COMPLETED
+118,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+118,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+118,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+118,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+118,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+119,0x101a8dc deff_119,text_draw_msg_page,7,2,0x48,0xb,1651,MUDFLAP & SKIDS
+119,0x101a8dc deff_119,text_draw_msg_fit,0x40c6b30,2,0x48,0x12,1652,TOTAL
+119,0x101a8dc deff_119,text_printf_msg_fit_page,&DAT_040c6b20,2,0x48,0x1c,1282,"%,02lu"
+120,0x1013628 deff_120_ratchet,text_draw_msg_page,0x10,4,0x7f,0xe,1653,RATCHET
+120,0x1013628 deff_120_ratchet,text_draw_msg_page,0x10,4,0x7f,0x1c,1654,BATTLE
+121,0x101376c deff_121_ratchet,text_draw_msg_page,1,2,0x4b,6,1658,RATCHET
+121,0x101376c deff_121_ratchet,text_printf_msg,0x10,2,0x4b,0x15,1659,%u
+121,0x101376c deff_121_ratchet,text_draw_msg_page,1,2,0x4b,0x20,1660,SHOOT LIT SHOT
+121,0x101376c deff_121_ratchet,text_printf_msg,1,2,0x4b,0x20,1661,SHOOT %u SHOT%P1//S/%
+122,0x1013a1c deff_122,text_printf_msg,0x12,2,0x54,0x16,1282,"%,02lu"
+122,0x1013a1c deff_122,text_draw_msg_page,0xd,2,0x54,0xd,1473,RATCHET
+122,0x1013a1c deff_122,text_draw_msg_page,0xd,2,0x54,0x19,1476,COMPLETED
+122,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+122,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+122,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+122,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+122,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+123,0x1013d9c deff_123_ratchet,text_draw_msg_page,7,2,0x47,0xb,1664,RATCHET
+123,0x1013d9c deff_123_ratchet,text_draw_msg_page,3,2,0x47,0x12,1665,TOTAL
+123,0x1013d9c deff_123_ratchet,text_printf_msg_fit_page,&DAT_040c6848,2,0x47,0x1c,1282,"%,02lu"
+124,0x1030b94 deff_124,text_draw_msg_page,0x10,2,0x54,0xd,1358,ALLSPARK
+124,0x1030b94 deff_124,text_draw_msg_page,0x10,2,0x54,0x1b,1359,LIT
+124,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+124,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+124,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+124,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+124,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+125,0x1031038 deff_125,text_draw_msg_page,0x10,2,0x54,0xd,1358,ALLSPARK
+125,0x1031038 deff_125,text_draw_msg_page,0x10,2,0x54,0x1b,1359,LIT
+125,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+125,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+125,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+125,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+125,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+126,0x102eaec deff_126_0_more,text_printf_msg,font,flags,iVar2,0xd,1677,%u MORE
+126,0x102eaec deff_126_0_more,text_draw_msg_page,1,flags,iVar2,0x14,1678,FOR
+126,0x102eaec deff_126_0_more,text_draw_msg_page,1,flags,iVar2,0x1b,1679,FAST SCORING
+126,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+126,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+126,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+126,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+126,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+127,0x10018fc deff_127_bumblebee_grows,text_draw_msg_fit,0x40c5c3c,2,0x54,8,1680,BUMBLEBEE GROWS
+127,0x10018fc deff_127_bumblebee_grows,text_printf_msg,0x10,2,0x54,0x15,1681,"%,02lu"
+128,0x1001f90 FUN_01001f90,text_draw_msg_page,2,2,0x54,5,1683,SPELL
+128,0x1001f90 FUN_01001f90,text_draw_msg_page,uVar3,2,0x54,0x17,1684,FOR DOUBLE SCORING
+128,0x1001b38 FUN_01001b38,text_draw_msg_page,2,2,0x54,5,1683,SPELL
+128,0x1001b38 FUN_01001b38,text_draw_msg_page,uVar3,2,0x54,0x17,1684,FOR DOUBLE SCORING
+129,0x1003c5c deff_129,text_draw_msg_page,0x10,2,0x55,0xe,1687,DOUBLE
+129,0x1003c5c deff_129,text_draw_msg_page,0x10,2,0x55,0x1c,1688,SCORING
+129,0x1003b40 FUN_01003b40,text_draw_msg_page,font_00,2,0x54,(iVar4 - uVar2,1689,ALL SCORES
+129,0x1003b40 FUN_01003b40,text_draw_msg_page,font,2,0x54,iVar4,1690,DOUBLED
+129,0x1003b40 FUN_01003b40,text_printf_msg,font_00,2,0x54,iVar4 + (uint,1691,FOR %u SECOND%P1//S/%
+130,0x1003e14 deff_130_double_scoring,text_draw_msg_page,1,2,0x55,6,1692,DOUBLE SCORING
+130,0x1003e14 deff_130_double_scoring,text_printf_msg,0x12,2,0x55,0x16,1693,%u
+130,0x1003e14 deff_130_double_scoring,text_draw_msg_page,1,2,0x55,0x1f,1694,ALL SCORES X 2
+131,0x1004ba8 deff_131_fast,text_draw_msg_page,uVar3,2,0x54,8,1697,FAST
+131,0x1004ba8 deff_131_fast,text_draw_msg_page,uVar3,2,0x54,0xf,1698,SCORING
+131,0x1004ba8 deff_131_fast,text_draw_msg_page,0x10,2,0x54,0x1c,1699,READY
+132,0x1004de8 deff_132_fast,text_draw_msg_page,uVar2,2,0x54,0xe,1700,FAST
+132,0x1004de8 deff_132_fast,text_draw_msg_page,uVar2,2,0x54,0x1b,1701,SCORING
+132,0x1004cb8 FUN_01004cb8,text_draw_msg_page,font_00,2,0x54,(iVar4 - uVar2,1702,ALL TARGETS
+132,0x1004cb8 FUN_01004cb8,text_draw_msg_page,font,2,0x54,iVar4,1703,SCORE
+132,0x1004cb8 FUN_01004cb8,text_printf_msg,font_00,2,0x54,iVar4 + (uint,1704,"%,02lu POINTS"
+133,0x1004ff4 deff_133_all_targets_00,text_printf_msg,1,1,0x2a,6,1706,%u
+133,0x1004ff4 deff_133_all_targets_00,text_printf_msg,1,4,0x7f,6,1706,%u
+133,0x1004ff4 deff_133_all_targets_00,text_printf_msg,0,2,0x55,0x1f,1707,"ALL TARGETS=%,02lu"
+134,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+134,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+134,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+134,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+134,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+135,0x10054f8 deff_135,text_draw_msg_page,0x10,2,0x54,10,1712,ALL
+135,0x10054f8 deff_135,text_draw_msg_page,0x10,2,0x54,0x15,1713,TARGETS
+135,0x10054f8 deff_135,text_printf_msg,0x10,2,0x54,0x20,1714,"%,02lu"
+136,0x1005648 deff_136_all_targets_00,text_printf_msg,1,1,0x2a,6,1706,%u
+136,0x1005648 deff_136_all_targets_00,text_printf_msg,1,4,0x7f,6,1706,%u
+136,0x1005648 deff_136_all_targets_00,text_printf_msg,0,2,0x55,0x1f,1707,"ALL TARGETS=%,02lu"
+136,0x1005648 deff_136_all_targets_00,text_draw_msg_page,uVar4,2,0x54,0xb,1715,TIME
+136,0x1005648 deff_136_all_targets_00,text_draw_msg_page,uVar4,2,0x54,0x17,1716,EXTENDED
+137,0x1005910 deff_137,text_draw_msg_page,7,2,0x54,10,1717,FAST SCORING
+137,0x1005910 deff_137,text_draw_msg_page,uVar2,2,0x54,0x11,1718,TOTAL:
+137,0x1005910 deff_137,text_printf_msg_fit_page,&DAT_040c5e6c,2,0x54,0x1d,1282,"%,02lu"
+138,0x100b2f0 deff_138,text_printf_msg,0xc,2,0x54,0xb,1719,%u MORE
+138,0x100b2f0 deff_138,text_printf_msg,font,2,0x54,0x13,1720,TARGET COMPLETION%P1//S/%
+138,0x100b2f0 deff_138,text_draw_msg_page,font,2,0x54,0x1b,1721,TO LIGHT LOCK
+138,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+138,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+138,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+138,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+138,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+139,0x100b468 deff_139,text_draw_msg_page,0x10,2,0x54,0xf,1723,LOCK
+139,0x100b468 deff_139,text_draw_msg_page,0x10,2,0x54,0x1b,1724,IS LIT
+140,0x100b7f0 deff_140_locked,text_printf_msg,0x10,2,0x54,0xf,1725,BALL %d
+140,0x100b7f0 deff_140_locked,text_draw_msg_page,0x10,2,0x54,0x1b,1726,LOCKED
+141,0x1025f18 deff_141_0_more,text_printf_msg,font,2,0x54,10,1728,%u MORE
+141,0x1025f18 deff_141_0_more,text_draw_msg_page,font,2,0x54,0x14,1729,TO ACCESS
+141,0x1025f18 deff_141_0_more,text_draw_msg_page,font,2,0x54,0x1e,1730,OPTIMUS
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,9,1731,HUNT
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,0x14,1732,FOR
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,0x1f,1733,DECEPTICONS
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,9,1734,DESTROY
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,0x14,1735,OPTIMUS
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,0x1f,1736,PRIME
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,9,1731,HUNT
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,0x14,1732,FOR
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,1,0x29,0x1f,1733,DECEPTICONS
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,9,1734,DESTROY
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,0x14,1735,OPTIMUS
+142,0x10269d8 deff_142_destroy,text_draw_msg_page,0xb,2,0x54,0x1f,1736,PRIME
+143,0x1026ec0 deff_143_optimus_battle,text_draw_msg_page,1,2,0x54,6,1737,OPTIMUS BATTLE!
+143,0x1026ec0 deff_143_optimus_battle,text_draw_msg_page,1,2,0x54,0x1f,1738,SHOOT OPTIMUS
+144,0x102712c deff_144_more_to_start,text_printf_msg,0x10,2,0x54,0xd,1742,%d
+144,0x102712c deff_144_more_to_start,text_draw_msg_page,3,2,0x54,0x15,1743,MORE TO START
+144,0x102712c deff_144_more_to_start,text_draw_msg_fit,0x40c716c,2,0x54,0x1d,1744,OPTIMUS MULTIBALL
+145,0x1032344 deff_145_right_spinner,text_draw_msg_page,2,2,0x54,7,1763,RIGHT SPINNER =
+145,0x1032344 deff_145_right_spinner,text_printf_msg,2,2,0x54,0xf,1764,"%,02lu"
+145,0x1032344 deff_145_right_spinner,text_printf_msg,0xf,2,0x54,0x1c,1282,"%,02lu"
+146,0x103267c deff_146_super,text_draw_msg_page,0x10,2,0x54,10,1765,SUPER
+146,0x103267c deff_146_super,text_draw_msg_page,0x10,2,0x54,0x15,1766,SPINNER
+146,0x103267c deff_146_super,text_draw_msg_page,0x10,2,0x54,0x20,1767,LIT
+147,0x10329c8 deff_147,text_draw_msg_page,0,2,0x54,4,1768,SUPER SPINNER
+147,0x10329c8 deff_147,text_printf_msg,0xf,2,0x54,0xf,1769,%u
+147,0x10329c8 deff_147,text_printf_msg,0,2,0x54,0x15,1770,HIT%P1//S/% REMAINING
+147,0x10329c8 deff_147,text_printf_msg,0xc,2,0x54,0x1e,1282,"%,02lu"
+148,0x1032ba0 deff_148,text_draw_msg_page,0,2,0x54,10,1771,SUPER SPINNER
+148,0x1032ba0 deff_148,text_draw_msg_page,0xf,2,0x54,0x19,1772,COMPLETED
+149,0x102d3e0 deff_149_super,text_draw_msg_page,0x10,2,0x55,10,1773,SUPER
+149,0x102d3e0 deff_149_super,text_draw_msg_page,0x10,2,0x55,0x15,1774,POP BUMPERS
+149,0x102d3e0 deff_149_super,text_draw_msg_page,0x10,2,0x55,0x20,1775,LIT
+150,0x102d770 deff_150_super_pop_bumpers,text_draw_msg_page,0,2,0x54,4,1776,SUPER POP BUMPERS
+150,0x102d770 deff_150_super_pop_bumpers,text_printf_msg,0xf,2,0x54,0xf,1777,%u
+150,0x102d770 deff_150_super_pop_bumpers,text_printf_msg,0,2,0x54,0x15,1778,HIT%P1//S/% REMAINING
+150,0x102d770 deff_150_super_pop_bumpers,text_printf_msg,0xc,2,0x54,0x1e,1282,"%,02lu"
+151,0x102d950 deff_151_super_pop_bumpers,text_draw_msg_page,0,2,0x54,10,1779,SUPER POP BUMPERS
+151,0x102d950 deff_151_super_pop_bumpers,text_draw_msg_page,0xf,2,0x54,0x19,1780,COMPLETED
+152,0x1006e30 deff_152,text_printf_msg,5,1,0,0x1f,1791,%u
+152,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar5,1282,"%,02lu"
+152,0x102f200 FUN_0102f200,text_printf_msg,0,4,0x26,iVar7,1282,"%,02lu"
+152,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1745,%d-WAY
+152,0x102f200 FUN_0102f200,text_printf_msg,1,4,0x27,uVar3,1746,COMBO
+152,0x102f200 FUN_0102f200,text_printf_msg,1,4,iVar5,iVar7,1747,%d COMBO%P1//S/%
+153,0x10070a8 deff_153,text_draw_msg_page,0xb,2,0x40,10,1781,BAH-WEEP
+153,0x10070a8 deff_153,text_draw_msg_page,0xb,2,0x40,0x13,1782,GRAAAAAGNAH-WHEEP
+153,0x10070a8 deff_153,text_draw_msg_page,0xb,2,0x40,0x1c,1783,NI NI-BONG
+154,0x100728c deff_154,text_draw_msg_page,0xb,2,0x40,10,1787,WHAT DOES
+154,0x100728c deff_154,text_draw_msg_page,0xb,2,0x40,0x13,1788,MICHAEL BAY
+154,0x100728c deff_154,text_draw_msg_page,0xb,2,0x40,0x1c,1789,LOVE?...
+154,0x100728c deff_154,text_draw_msg_page,0x11,2,0x40,0x14,1790,EXPLOSIONS!!!
+154,0x100728c deff_154,text_draw_msg_page,0x11,2,0x40,0x14,1790,EXPLOSIONS!!!
+155,0x10071a8 deff_155_nice_to,text_draw_msg_page,0xb,2,0x40,10,1784,NICE TO
+155,0x10071a8 deff_155_nice_to,text_draw_msg_page,0xb,2,0x40,0x13,1785,SEE YOU AGAIN
+155,0x10071a8 deff_155_nice_to,text_draw_msg_page,0xb,2,0x40,0x1c,1786,MIKE KYZIVAT

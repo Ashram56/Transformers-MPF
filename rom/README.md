@@ -35,7 +35,8 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rom_data/settings/` | `adjustments.csv` (99: NVRAM slot, default, min, max, step, name, display type), `audits.csv` (167) |
 | `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
 | `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
-| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events) |
+| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
+| `rom_data/dmd/deff_text_formats.csv` | Static list of the text each effect can draw, read from the decompile (helper, font, flags, x, y, message id, text or printf format), for effects that print live values or did not render |
 | `mpf_package/config/` | MPF v6 config: `switches.yaml`, `coils.yaml`, `lights.yaml`, `sounds.yaml` (659 sounds, 694 pools, one per sound call) |
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
 | `mpf_package/media/sounds/{speech,sfx,music}/XXXX.wav` | Every sample, file name = ROM sample id |
@@ -70,7 +71,10 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
   `task_sleep` hook in a started game (`tools/emu/tracer.cpp`). 153 of 155 rendered; 8 and 22 are stubs. About 35
   end within 0.3 s when forced because they read game state (mode scores, shots lit) and need live play to show.
   Every image the effects draw goes through `bitmap_draw` and every glyph through `text_draw_str`, so
-  `timing.json` lists those two and leaves out the blits under them.
+  `timing.json` lists those two and leaves out the blits under them. The tracer also hooks the seven text helpers
+  (0x21660, 0x215ac, 0x217b4, 0x2174c message id; 0x21838, 0x21a78, 0x21b4c string or format), so 95% of text
+  draws carry the format behind them (e.g. `%,02lu`, `VOLUME %d`). Effects 48, 95, 129 and 135 keep the earlier
+  capture without sources (they did not render in the re-run).
 - **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
   status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
   GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.

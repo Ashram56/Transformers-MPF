@@ -5,9 +5,9 @@
  "priority": 194,
  "background": false,
  "capture": "fg0",
- "forced_at_s": 88.9719,
+ "forced_at_s": 69.088,
  "ended_ms": 0.0,
- "window_ms": 302.4,
+ "window_ms": 302.3,
  "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
  "frames": [],
  "pages": [],
@@ -19,15 +19,23 @@
    "event": 74
   },
   {
-   "t_ms": 10.2,
+   "t_ms": 10.4,
    "event": 32
   },
   {
-   "t_ms": 10.7,
+   "t_ms": 10.9,
    "event": 33
   },
   {
-   "t_ms": 16.3,
+   "t_ms": 10.9,
+   "event": 10
+  },
+  {
+   "t_ms": 10.9,
+   "event": 11
+  },
+  {
+   "t_ms": 16.4,
    "event": 74
   },
   {
@@ -35,19 +43,19 @@
    "event": 32
   },
   {
-   "t_ms": 26.9,
+   "t_ms": 26.8,
    "event": 33
   },
   {
-   "t_ms": 32.5,
+   "t_ms": 32.4,
    "event": 74
   },
   {
-   "t_ms": 42.7,
+   "t_ms": 42.6,
    "event": 32
   },
   {
-   "t_ms": 43.2,
+   "t_ms": 43.1,
    "event": 33
   },
   {
@@ -55,11 +63,11 @@
    "event": 74
   },
   {
-   "t_ms": 58.9,
+   "t_ms": 58.8,
    "event": 32
   },
   {
-   "t_ms": 59.4,
+   "t_ms": 59.3,
    "event": 33
   },
   {
@@ -67,63 +75,63 @@
    "event": 74
   },
   {
-   "t_ms": 75.2,
+   "t_ms": 75.1,
    "event": 32
   },
   {
-   "t_ms": 75.7,
+   "t_ms": 75.6,
    "event": 33
   },
   {
-   "t_ms": 75.7,
+   "t_ms": 81.1,
+   "event": 74
+  },
+  {
+   "t_ms": 91.3,
+   "event": 32
+  },
+  {
+   "t_ms": 91.8,
+   "event": 33
+  },
+  {
+   "t_ms": 97.4,
+   "event": 74
+  },
+  {
+   "t_ms": 107.6,
+   "event": 32
+  },
+  {
+   "t_ms": 108.1,
+   "event": 33
+  },
+  {
+   "t_ms": 108.1,
    "event": 10
   },
   {
-   "t_ms": 75.7,
+   "t_ms": 108.1,
    "event": 11
   },
   {
-   "t_ms": 81.3,
+   "t_ms": 113.7,
    "event": 74
   },
   {
-   "t_ms": 91.7,
+   "t_ms": 123.6,
    "event": 32
   },
   {
-   "t_ms": 92.2,
+   "t_ms": 124.0,
    "event": 33
   },
   {
-   "t_ms": 97.6,
+   "t_ms": 128.9,
    "event": 74
   },
   {
-   "t_ms": 107.9,
-   "event": 32
-  },
-  {
-   "t_ms": 108.5,
-   "event": 33
-  },
-  {
-   "t_ms": 114.0,
-   "event": 74
-  },
-  {
-   "t_ms": 123.9,
-   "event": 32
-  },
-  {
-   "t_ms": 124.4,
-   "event": 33
-  },
-  {
-   "t_ms": 129.2,
-   "event": 74
-  },
-  {
-   "t_ms": 139.9,
+   "t_ms": 139.8,
    "event": 32
   },
   {
@@ -131,95 +139,95 @@
    "event": 33
   },
   {
-   "t_ms": 145.2,
+   "t_ms": 145.1,
    "event": 74
   },
   {
-   "t_ms": 156.2,
+   "t_ms": 156.1,
    "event": 32
   },
   {
-   "t_ms": 156.6,
+   "t_ms": 156.5,
    "event": 33
   },
   {
-   "t_ms": 161.5,
+   "t_ms": 161.3,
    "event": 74
   },
   {
-   "t_ms": 172.4,
+   "t_ms": 172.3,
    "event": 32
   },
   {
-   "t_ms": 172.9,
+   "t_ms": 172.8,
    "event": 33
   },
   {
-   "t_ms": 172.9,
+   "t_ms": 177.7,
+   "event": 74
+  },
+  {
+   "t_ms": 188.6,
+   "event": 32
+  },
+  {
+   "t_ms": 189.1,
+   "event": 33
+  },
+  {
+   "t_ms": 193.9,
+   "event": 74
+  },
+  {
+   "t_ms": 204.8,
+   "event": 32
+  },
+  {
+   "t_ms": 205.3,
+   "event": 33
+  },
+  {
+   "t_ms": 205.3,
    "event": 10
   },
   {
-   "t_ms": 172.9,
+   "t_ms": 205.3,
    "event": 11
-  },
-  {
-   "t_ms": 177.8,
-   "event": 74
-  },
-  {
-   "t_ms": 188.4,
-   "event": 32
-  },
-  {
-   "t_ms": 188.9,
-   "event": 33
-  },
-  {
-   "t_ms": 193.7,
-   "event": 74
-  },
-  {
-   "t_ms": 204.7,
-   "event": 32
-  },
-  {
-   "t_ms": 205.1,
-   "event": 33
   },
   {
    "t_ms": 210.1,
    "event": 74
   },
   {
-   "t_ms": 220.9,
+   "t_ms": 220.8,
    "event": 32
   },
   {
-   "t_ms": 221.4,
+   "t_ms": 221.2,
    "event": 33
   },
   {
-   "t_ms": 226.2,
+   "t_ms": 226.0,
    "event": 74
   },
   {
-   "t_ms": 237.2,
+   "t_ms": 237.1,
    "event": 32
   },
   {
-   "t_ms": 237.7,
+   "t_ms": 237.5,
    "event": 33
   },
   {
-   "t_ms": 242.6,
+   "t_ms": 242.3,
    "event": 74
   },
   {
-   "t_ms": 253.4,
+   "t_ms": 253.3,
    "event": 32
   },
   {
-   "t_ms": 253.9,
+   "t_ms": 253.7,
    "event": 33
   },
   {
@@ -227,31 +235,23 @@
    "event": 74
   },
   {
-   "t_ms": 269.7,
+   "t_ms": 269.3,
    "event": 32
   },
   {
-   "t_ms": 270.1,
+   "t_ms": 269.7,
    "event": 33
   },
   {
-   "t_ms": 270.1,
-   "event": 10
-  },
-  {
-   "t_ms": 270.1,
-   "event": 11
-  },
-  {
-   "t_ms": 275.0,
+   "t_ms": 274.6,
    "event": 74
   },
   {
-   "t_ms": 285.7,
+   "t_ms": 285.6,
    "event": 32
   },
   {
-   "t_ms": 286.1,
+   "t_ms": 286.0,
    "event": 33
   },
   {
@@ -259,12 +259,20 @@
    "event": 74
   },
   {
-   "t_ms": 301.9,
+   "t_ms": 301.8,
    "event": 32
   },
   {
-   "t_ms": 302.3,
+   "t_ms": 302.2,
    "event": 33
+  },
+  {
+   "t_ms": 302.3,
+   "event": 10
+  },
+  {
+   "t_ms": 302.3,
+   "event": 11
   }
  ]
 }
