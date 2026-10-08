@@ -48,7 +48,7 @@ The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project
 ## For the owner
 
 1. Lamps 1-2 (start and tournament buttons) are below the playfield: keep, move or drop them in MPF Monitor.
-3. Flashers 26 and 27 (slingshot domes) are on the opposite sides from their ROM names: swap them in
+2. Flashers 26 and 27 (slingshot domes) are on the opposite sides from their ROM names: swap them in
    MPF Monitor if the real machine has them the other way round.
-2. Flippers, autofires (slings, pops), ball devices and plain coils have no VPX object and are not in
-   `monitor.yaml` yet: the recreation agent adds them near their parts once the config names exist.
+3. Flippers, autofires (slings, pops), ball devices and plain coils have no VPX object and are not in
+   `monitor.yaml` yet: the recreation agent adds them near their parts.
