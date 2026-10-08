@@ -4,7 +4,7 @@
     python scripts/render_check.py [seconds] [scenario]     (default 15 s, attract only)
 
 Output in captures/: frames/*.png, dmd_latest.png (128x32), dmd_latest_x8.png (1024x256 preview), godot.log,
-mpf.log and live_trace.jsonl. With a scenario (assets/rules/traces/<name>.txt) MPF plays it in real time on the
+mpf.log and live_trace.jsonl. With a scenario (rom/rules/traces/<name>.txt) MPF plays it in real time on the
 smart_virtual platform, so the rules drive the display and sounds as in a game.
 
 Godot's --headless mode uses a dummy renderer that draws nothing, so Godot gets a real window: under Xvfb on

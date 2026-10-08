@@ -55,9 +55,10 @@ class TwoBank(Feature):
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x80)
         for leff in FS_RULE_LEFFS:
             os_.lamp_rule(lambda: self.running, leff=leff, order=0x01004394)
-        os_.deff_live((FS_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF), lambda: {"values": [self.value]})
-        # deff 133: the countdown on both sides ("%u" at x 42 and 127), then "ALL TARGETS=%,02lu"
-        os_.deff_live((FS_BG_DEFF,), lambda: {"values": [self.count, self.count, self.value]})
+        os_.deff_live((FS_DEFF, FS_VALUE_DEFF), lambda: {"values": [self.value]})
+        # deffs 133 / 134 / 136: the countdown on both sides (RAM 0x34c3c) ("%u" at x 42 and 127), then "ALL TARGETS=%,02lu"
+        os_.deff_live((FS_BG_DEFF, FS_AWARD_DEFF, FS_TIME_DEFF),
+                      lambda: {"values": [self.count, self.count, self.value]})
         os_.deff_live((FS_TOTAL_DEFF,), lambda: {"values": [self.total]})
 
     def ready(self):

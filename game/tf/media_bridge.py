@@ -141,6 +141,9 @@ class MediaBridge:
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
         if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
             passed["values"] = format_values(info["values"], args.get("values") or [])
+            for slot, text in zip(info["values"], passed["values"]):
+                if text is None:
+                    self.note_missing(deff_id, "slot", slot)
         if not info["text"]:
             return dict(self.panel_args(info), **passed)
         if deff_id in TEXT_ARGS:
@@ -155,12 +158,21 @@ class MediaBridge:
             n = sum(1 for spec in SPEC.findall(line) if not spec.startswith("P"))   # %P picks by the last number
             if n and len(values) < n:              # value not reported by the rules: leave the line blank
                 out["line{}".format(i)] = ""
-                self.missing.append((deff_id, i, line))
+                self.note_missing(deff_id, i, line)
                 values = []
                 continue
             out["line{}".format(i)] = format_rom_text(line, values[:n])
             values = values[n:]
         return out
+
+    def note_missing(self, deff_id, where, text):
+        """A printf text the rules gave no value for (the capture's string shows). TF_MISSING_VALUES=<file>
+        appends them there, one per line, to list what the rules still have to pass."""
+        self.missing.append((deff_id, where, text))
+        path = os.environ.get("TF_MISSING_VALUES")
+        if path:
+            with open(path, "a", encoding="utf-8") as f:
+                f.write("{}\t{}\t{}\n".format(deff_id, where, text))
 
     def deff_start(self, deff_id, priority, **args):
         info = self.data["deffs"].get(deff_id) if self.data else None

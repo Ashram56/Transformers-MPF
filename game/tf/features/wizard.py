@@ -77,6 +77,11 @@ class Wizard(Feature):
         self.wmb_counts = [0] * 6
         os_.deff_rule(lambda: self.side_running, SIDE_BG, music=SIDE_MUSIC, priority=0x70)
         os_.deff_rule(lambda: self.wmb_running, WMB_BG, music=WMB_MUSIC, priority=0x70)
+        # NEXT SHOT = 500,000 + 50,000 x shots made [0x01010100 / 0x01036534]; SUPER = the super's base
+        # (RAM 0x34eac) [deff 82 0x010107e8, deff 87 0x01036d50]
+        os_.deff_live((SIDE_BG,), lambda: {"values": [SIDE_POINTS + SIDE_STEP * sum(self.side_counts),
+                                                      self.side_sum]})
+        os_.deff_live((WMB_BG,), lambda: {"values": [WMB_POINTS + WMB_STEP * sum(self.wmb_counts)]})
         os_.lamp_rule(lambda: self.side_running, leff=SIDE_RULE_LEFF, order=0x01010958)
         os_.lamp_rule(lambda: self.side_running and self.side_super_lit(), leff=SIDE_LIT_LEFF, order=0x01010959)
         os_.lamp_rule(lambda: self.wmb_running, leff=WMB_RULE_LEFF, order=0x01037018)
@@ -246,7 +251,7 @@ class Wizard(Feature):
         self.side_total += points
         os_.audit(SIDE_DONE_AUDIT)
         sounds = SIDE_DONE_SOUNDS.get(side, SIDE_DONE_SOUNDS[DECEPTICON])
-        os_.show(SIDE_DONE_TASK, SIDE_DONE_DEFF, sounds=[(0, (lambda c: lambda: os_.sound(c, in_deff=SIDE_DONE_DEFF))(c))
+        os_.show(SIDE_DONE_TASK, SIDE_DONE_DEFF, values=[points], sounds=[(0, (lambda c: lambda: os_.sound(c, in_deff=SIDE_DONE_DEFF))(c))
                                                          for c in sounds],
                  on_start=lambda: os_.deff_media(SIDE_DONE_DEFF, SIDE_DONE_LEFF))
         self.side_end(show_total=True)

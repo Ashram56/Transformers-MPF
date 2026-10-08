@@ -128,12 +128,53 @@ def panel_level(timing, frames):
     return max(1, round(top / 17)) if top else 15
 
 
-def value_texts(timing, frames):
+def fit_formats():
+    """{(deff, x, y): (format, [font ids])} of the ROM's fit-font printf texts (text_printf_msg_fit_page: the first
+    font of the list in which the text fits the width), from rom_data/dmd/deff_text_formats.csv."""
+    import csv
+    out = {}
+    path = os.path.join(ROOT, "rom", "rom_data", "dmd", "deff_text_formats.csv")
+    if not os.path.exists(path):
+        return out
+    with open(path, encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            if "fit" not in r["helper"] or "%" not in r["text"] or not r["font_list"]:
+                continue
+            try:
+                key = (int(r["deff"]), int(r["x"], 0), int(r["y"], 0))
+            except ValueError:
+                continue
+            out[key] = (r["text"], [int(n) for n in r["font_list"].split()])
+    return out
+
+
+def page_texts(deff_id, texts, fits):
+    """A page's text records, a fit-font text as one record: the drawn one (its font the list's pick) with the
+    format ("source"), the font list ("fl") and the width it had to fit ("w") of the fit call before it."""
+    out, skip = [], False
+    for i, t in enumerate(texts):
+        if skip:
+            skip = False
+            continue
+        if t["font"] > 255 and t.get("width", -1) > 0 and i + 1 < len(texts):
+            fmt = fits.get((deff_id, t["x"], t["y"]))
+            drawn = texts[i + 1]
+            skip = True
+            if fmt and drawn["str"] == t["str"]:
+                out.append(dict(drawn, source=t.get("source") or fmt[0], fl=fmt[1], w=t["width"],
+                                call_site=str(t.get("call_site", t.get("lr", "")))))
+            continue
+        out.append(t)
+    return out
+
+
+def value_texts(timing, frames, deff_id=None, fits=None):
     """The deff's texts printed from a printf format (A's text records: "source" holds the ROM's format, e.g.
     "%,02lu"), the status panel's aside: [slot], and per frame the slots it shows. A frame shows the texts of
     the last page composed before it; a slot counts for a frame only where the frame's dots are exactly the
     captured string drawn in its font (texts still moving or blinking stay baked in the frame). Those dots are
-    cleared from the frame (they were drawn over the page) and the slide draws the slot's text live."""
+    cleared from the frame (they were drawn over the page) and the slide draws the slot's text live. A fit-font
+    text's slot also has "fl" and "w": the slide picks the font for the live text as the ROM does."""
     import bisect
     import gen_fonts
     fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
@@ -145,7 +186,7 @@ def value_texts(timing, frames):
     for (img, _), rec in zip(frames, timing.get("frames") or []):
         shown = []
         k = bisect.bisect_right(starts, rec["t_ms"]) - 1
-        for t in pages[k]["texts"] if k >= 0 else []:
+        for t in page_texts(deff_id, pages[k]["texts"], fits or {}) if k >= 0 else []:
             if "%" not in str(t.get("source", "")) or t.get("call_site") in PANEL_CALLS or t["font"] not in fonts:
                 continue
             canvas = [[None] * 128 for _ in range(32)]
@@ -159,6 +200,8 @@ def value_texts(timing, frames):
                 keys[key] = len(slots)
                 slots.append({"t": t["str"], "f": t["font"], "x": t["x"], "y": t["y"], "a": t["flags"],
                               "source": t["source"]})
+                if "fl" in t:
+                    slots[-1].update(fl=t["fl"], w=t["w"])
             for x, y, _ in lit:
                 px[x, y] = (0, 0, 0, 255)
             shown.append(keys[key])
@@ -229,6 +272,7 @@ def build_deffs(only_data):
     from PIL import ImageDraw
     import fsutil
     rows = deff_rows()
+    fits = fit_formats()
     out = {}
     if not only_data:
         fsutil.clear_dir(os.path.join(GAME, "slides", "deffs"))
@@ -244,7 +288,7 @@ def build_deffs(only_data):
         frames = capture_frames(folder, timing)
         panel = panel_level(timing, frames)
         loop = rows.get(deff_id, {}).get("background_loop") == "yes"
-        slots, per_frame = value_texts(timing, frames)
+        slots, per_frame = value_texts(timing, frames, deff_id, fits)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
                         "panel": panel, "args": [], "values": [v["source"] for v in slots]}
         if only_data:

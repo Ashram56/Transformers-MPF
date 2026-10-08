@@ -1,6 +1,7 @@
 extends "res://tf/rom_screen.gd"
 ## The printf texts of a captured display effect (scripts/gen_media.py value_texts), drawn live over its frames.
-## metadata "slots": [{"t", "f", "x", "y", "a", "source"}], the texts with the capture's string; metadata
+## metadata "slots": [{"t", "f", "x", "y", "a", "source"}], the texts with the capture's string (a fit-font text
+## also has "fl", its font list, and "w", the width to fit: text_printf_msg_fit_page); metadata
 ## "frames": per animation frame of the sibling "Anim", the slots that frame shows (their dots are cleared
 ## from the frame). The event arg `values` (tf/media_bridge.py) holds the formatted text per slot; a slot the
 ## rules gave no value for keeps the capture's string.
@@ -39,5 +40,17 @@ func _redraw() -> void:
 			var t = s["t"]
 			if int(i) < _texts.size() and _texts[int(i)] != null:
 				t = _texts[int(i)]
-			items.append({"t": t, "f": s["f"], "x": s["x"], "y": s["y"], "a": s["a"]})
+			items.append({"t": t, "f": _font(s, str(t)), "x": s["x"], "y": s["y"], "a": s["a"]})
 	_draw_items(items)
+
+
+## text_printf_msg_fit_page: the first font of the list in which the text fits the width, else the last.
+static func _font(slot: Dictionary, text: String) -> int:
+	if not slot.has("fl"):
+		return int(slot["f"])
+	var fonts: Array = slot["fl"]
+	for f in fonts:
+		var m := RomFonts.font_metrics(int(f))
+		if not m.is_empty() and RomFonts.rom_width(m, text) <= int(slot["w"]):
+			return int(f)
+	return int(fonts[-1]) if fonts.size() else int(slot["f"])

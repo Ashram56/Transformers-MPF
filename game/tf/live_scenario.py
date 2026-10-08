@@ -1,4 +1,4 @@
-"""Plays a tron_ref scenario (assets/rules/traces/<name>.txt) in real time on a running machine.
+"""Plays a tron_ref scenario (rom/rules/traces/<name>.txt) in real time on a running machine.
 
 Used for live render checks with the Godot media controller: `TF_LIVE_SCENARIO=<name> mpf game . -c config,hw_virtual -t -X`
 (the smart_virtual platform moves the balls). The commands mirror tests/scenario.py, which runs the same
@@ -43,7 +43,7 @@ class LiveScenario:
         self.os.random.seed(RANDOM_SEED)                # a scenario replays the same random choices
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
         path = self.name if self.name.endswith(".txt") else os.path.join(
-            self.machine.machine_path, "..", "assets", "rules", "traces", self.name + ".txt")   # or a script file
+            self.machine.machine_path, "..", "rom", "rules", "traces", self.name + ".txt")   # or a script file
         self.t = 2.0                                   # let the media controller settle
         with open(path, encoding="utf-8") as f:
             for line in f:
