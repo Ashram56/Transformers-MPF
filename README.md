@@ -20,7 +20,7 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 
 | Area | State |
 |---|---|
-| OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code) |
+| OS (ball handling, validation, ball save, tilt, end of ball, match, credits, adjustments, audits) | Ported from the Tron recreation; tf_180's deff, leff, sound call, adjustment and audit tables match Tron's numbering (code); the 98 adjustments, 166 audits and service menu from the ROM extraction's settings package; the 68 pricing presets (rom/rom_data/settings/pricing.json) |
 | Devices | ROM names and numbers (rom/mpf_package); trough, shooter lane, left eject, Megatron lock |
 | Display | ROM fonts (all 27); one slide per captured display effect (128, the ROM's frames and timing) with the live status panel (100 effects); score display drawn from its captured draw calls; printf texts in 59 effects drawn live from their ROM formats (tf/deff_values.gd) |
 | Sound | every ROM sample, one pool per sound call; music intros play once and the body loops; base music by side (Autobot / Decepticon), coin, tilt, launch, ball save and drain sounds as traced; each deff plays its captured sounds |

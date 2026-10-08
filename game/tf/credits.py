@@ -15,21 +15,39 @@ Coin task FUN_00004a50, one per coin switch closure [0x00004cb4]:
   "CREDITS n a/b" (units since the last credit over the units of the ladder step that gives the next one;
   attract capture: "CREDITS 1/3" after one coin).
 This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS; the
-addresses are Tron's). Pricing tables are ROM data not read yet for tf_180: every country uses Tron's USA 10
-table (a right-slot coin is one unit, every 3rd unit a credit; inferred). CUSTOM (64) uses the operator's SET
-CUSTOM PRICING values (machine vars custom_coin_units, custom_units_per_credit).
+addresses are Tron's; the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
+pricing presets come from pricing.json; CUSTOM (68) uses the operator's SET CUSTOM PRICING values (machine vars
+custom_coin_units, custom_units_per_credit; interim, the ROM's custom ladder editor is not modelled).
 """
+import json
+import os
 
-# switch -> (slot index 0-4, coin audit counter): the five coin slots D1-D5 and the counters of audits 5-9
-# COINS THROUGH LEFT / RIGHT / CENTER / FOURTH / FIFTH SLOT (tf_180 audit table: counters 2, 4, 3, 5, 6)
-SLOTS = {"s_left_coin_slot": (0, 2), "s_right_coin_slot": (1, 4), "s_center_coin_slot": (2, 3),
+# coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots (observed, keys 3-6 of PinMAME)
+SLOTS = {"s_left_coin_slot": (0, 2), "s_center_coin_slot": (1, 3), "s_right_coin_slot": (2, 4),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
 CREDIT_SOUND, COIN_SOUND = 0x043, 0x042   # observed (traces/sounds.jsonl): 0x043 on the coin that completes a credit, 0x042 on the others
 METER_AUDIT, PAID_CREDITS_AUDIT, SERVICE_CREDITS_AUDIT = 7, 1, 0x24
-# The pricing tables are ROM data not read yet for tf_180: every GAME PRICING value uses Tron's USA 10 table
-# (inferred; tf_180's factory default is adj 28 = 66)
-USA_10 = {"units": {1: 1}, "ladder": (0, 0, 1)}
-CUSTOM = 64
+# The 68 pricing presets (rom/rom_data/settings/pricing.json, by adj 28 value; code, checked in the emulator
+# for USA 10): units per slot of the preset's coin door and the credit ladder. Factory default 66 = USA 10.
+PRICING_JSON = os.path.join(os.path.dirname(__file__), "..", "..", "rom", "rom_data", "settings", "pricing.json")
+USA_10 = {"units": {0: 1, 1: 4, 2: 1, 3: 1}, "ladder": (0, 0, 1, 0, 0, 1, 0, 1)}
+CUSTOM = 68
+_PRESETS = None
+
+
+def presets():
+    """adj 28 value -> (units per slot, ladder), from pricing.json (USA 10 alone without the extraction)."""
+    global _PRESETS
+    if _PRESETS is None:
+        _PRESETS = {66: (USA_10["units"], USA_10["ladder"])}
+        if os.path.exists(PRICING_JSON):
+            with open(PRICING_JSON, encoding="utf-8") as f:
+                for p in json.load(f)["presets"]:
+                    units = {i: n for i, n in enumerate(p["slot_units"]) if n}
+                    _PRESETS[int(p["adj_value"])] = (units, tuple(p["ladder"]))
+    return _PRESETS
+
+
 FREE_GAME_UNLIMITED = 10              # adj 25 FREE GAME LIMIT: 10 = UNLIMITED, 0 = NO FREE GAMES
 DELAY_OFF = 61                        # adj 62 COIN INPUT DELAY: 61 = OFF
 
@@ -56,7 +74,7 @@ class Credits:
             var = self.machine.variables.get_machine_var
             per_credit = max(1, int(var("custom_units_per_credit") or 3))
             return {1: max(1, int(var("custom_coin_units") or 1))}, (0,) * (per_credit - 1) + (1,)
-        return USA_10["units"], USA_10["ladder"]
+        return presets().get(self.os.adj[28], presets()[66])
 
     def slots(self):
         """The coin switches this machine has."""
@@ -84,6 +102,8 @@ class Credits:
         os_.audit(audit)
         units_table, ladder = self.pricing()
         units = units_table.get(slot, 0)
+        if not units:                               # coin_task 0x3f00: a slot without units counts nothing more
+            return
         os_.audit(METER_AUDIT, units)
         credited = False
         for _ in range(units):

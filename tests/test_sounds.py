@@ -83,3 +83,18 @@ class TestSounds(TfTestCase):
             self.hit_and_release_switch("s_right_coin_slot")
             self.advance_time_and_run(2)
         self.assertEqual([0x042, 0x042, 0x043], self.sounds())   # the third coin completes a credit (trace)
+
+    def test_usa_10_pricing(self):
+        """pricing.json verification_log (emulator): 3 quarters = 1 credit; $1 on the center slot then shows
+        CREDITS 2 1/2; a quarter on the right slot gives credit 3."""
+        self.tf.adj.override(34, 0)
+        for _ in range(3):
+            self.hit_and_release_switch("s_left_coin_slot")
+            self.advance_time_and_run(1)
+        self.assertEqual(1, self.tf.credit_model.credits)
+        self.hit_and_release_switch("s_center_coin_slot")
+        self.advance_time_and_run(1)
+        self.assertEqual("CREDITS 2 1/2", self.tf.credit_model.text())
+        self.hit_and_release_switch("s_right_coin_slot")
+        self.advance_time_and_run(1)
+        self.assertEqual(3, self.tf.credit_model.credits)

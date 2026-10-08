@@ -12,5 +12,5 @@ extraction delivers the data.
 | Bonus | 670 x count + held, x multiplier | the formula and the deff's timing; no shot adds count or multiplier yet | interim |
 | Lamp effects | leff shows | the 111 captured shows play at the ROM priority with their flasher pulses; the 67 leffs the ROM draws from game state (tag `code` in rom/rom_data/io/lamp_effects.csv, e.g. 14 ball save, 97 / 100 lanes) draw nothing until their features draw them | interim, until each feature draws its leff |
 | Side choice (task 200) | each player's choice? | runs on each player's first ball (one-player traces only) | inferred |
-| Pricing | the ROM's pricing tables | Tron's USA 25c pricing | interim (inferred) |
+| Custom pricing | SET CUSTOM PRICING edits a coin door and a ladder of up to 100 steps (NVRAM 0x2110808) | one units-per-coin and one units-per-credit value; the 68 presets are the ROM's (pricing.json) | interim |
 | Service menu in a game | suspends the game task | asks END GAME? (Tron recreation, MPF timers cannot be suspended) | MPF limit |
