@@ -1,43 +1,43 @@
 number,mpf_name,vpx,type,x,y,nx,ny,note
-1,s_01_sw1,sw1,Wall,664.7,318.8,0.6982,0.1473,hit
-2,s_02_sw2,sw2,HitTarget,317.3,871.7,0.3333,0.4028,hit
-3,s_03_sw3,sw3,Kicker,68.2,1034.4,0.0716,0.478,saucer bsSaucer
-4,s_04_sw4,sw4,Trigger,221.4,813.7,0.2326,0.376,hit
-5,s_05_sw5,sw5,Trigger,58.6,545.4,0.0616,0.252,hit
-6,s_06_sw6,sw6,Trigger,81.7,123.2,0.0858,0.0569,hit
-7,s_07_sw7,sw7,Trigger,289.3,195.3,0.3039,0.0902,hit
-8,s_08_sw8,sw8,Trigger,203.3,173.7,0.2135,0.0803,hit
-10,s_10_sw10,sw10,Trigger,54.7,632.4,0.0574,0.2922,hit
-11,s_11_sw11,sw11,Trigger,542.5,218.5,0.5698,0.101,hit
-12,s_12_sw12,sw12,Trigger,854.1,213.7,0.8971,0.0987,hit
-13,s_13_sw13,sw13,Trigger,372.2,491.6,0.3909,0.2272,hit
-14,s_14_sw14,sw14,Trigger,896.7,156.0,0.9419,0.0721,hit
-18,s_18_ballrelease,BallRelease,Kicker,820.1,1841.2,0.8614,0.8508,ball stack bsTrough slot 4
-19,s_19_ballrelease,BallRelease,Kicker,820.1,1841.2,0.8614,0.8568,ball stack bsTrough slot 3
-20,s_20_ballrelease,BallRelease,Kicker,820.1,1841.2,0.8614,0.8628,ball stack bsTrough slot 2
-21,s_21_ballrelease,BallRelease,Kicker,820.1,1841.2,0.8614,0.8688,ball stack bsTrough slot 1
-22,s_22_sw22,sw22,Trigger,839.3,1838.7,0.8816,0.8497,hit
-23,s_23_sw23,sw23,Trigger,900.1,1913.9,0.9455,0.8844,hit
-24,s_24_sw24,sw24,Trigger,53.4,1640.0,0.0561,0.7579,hit
-25,s_25_sw25,sw25,Trigger,126.7,1600.3,0.1331,0.7395,hit
-26,s_26_leftslingshot,LeftSlingshot,Wall,222.5,1578.4,0.2337,0.7294,slingshot
-27,s_27_rightslingshot,RightSlingshot,Wall,648.3,1580.3,0.681,0.7302,slingshot
-28,s_28_sw28,sw28,Trigger,740.3,1603.9,0.7776,0.7412,hit
-29,s_29_sw29,sw29,Trigger,813.5,1643.4,0.8545,0.7594,hit
-30,s_30_bumper1,Bumper1,Bumper,150.6,299.3,0.1582,0.1383,hit
-31,s_31_bumper2,Bumper2,Bumper,287.3,416.3,0.3017,0.1924,hit
-32,s_32_bumper3,Bumper3,Bumper,149.4,504.9,0.1569,0.2333,hit
-34,s_34_sw34,sw34,Spinner,795.1,889.9,0.8351,0.4112,spin
-35,s_35_sw35,sw35,Trigger,736.3,553.7,0.7735,0.2559,hit
-37,s_37_sw37,sw37,HitTarget,787.2,1251.1,0.8269,0.5781,hit
-38,s_38_kickermegatron,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3111,ball stack bsKickerMegaTron slot 4
-39,s_39_kickermegatron,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3171,ball stack bsKickerMegaTron slot 3
-40,s_40_kickermegatron,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3231,ball stack bsKickerMegaTron slot 2
-41,s_41_kickermegatron,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3291,ball stack bsKickerMegaTron slot 1
-43,s_43_opr,opr,Primitive,507.7,493.9,0.5333,0.2282,mechanism (placed by hand)
-44,s_44_opr,opr,Primitive,507.7,493.9,0.5333,0.2342,mechanism (placed by hand)
-45,s_45_sw45,sw45,Trigger,648.8,506.5,0.6816,0.2341,hit
-46,s_46_sw46,sw46,HitTarget,770.8,777.0,0.8096,0.3591,hit
-49,s_49_sw49,sw49,HitTarget,434.9,827.2,0.4569,0.3822,hit
-50,s_50_sw50,sw50,HitTarget,778.3,1174.0,0.8175,0.5425,hit
-51,s_51_sw51,sw51,Wall,508.8,300.7,0.5345,0.139,hit
+1,s_bumblebee_target,sw1,Wall,664.7,318.8,0.6982,0.1473,hit
+2,s_energon_left,sw2,HitTarget,317.3,871.7,0.3333,0.4028,hit
+3,s_left_eject,sw3,Kicker,68.2,1034.4,0.0716,0.478,saucer bsSaucer
+4,s_l_ramp_entrance,sw4,Trigger,221.4,813.7,0.2326,0.376,hit
+5,s_left_orbit_bottom,sw5,Trigger,58.6,545.4,0.0616,0.252,hit
+6,s_left_orbit_top,sw6,Trigger,81.7,123.2,0.0858,0.0569,hit
+7,s_right_top_lane,sw7,Trigger,289.3,195.3,0.3039,0.0902,hit
+8,s_left_top_lane,sw8,Trigger,203.3,173.7,0.2135,0.0803,hit
+10,s_l_ramp_exit,sw10,Trigger,54.7,632.4,0.0574,0.2922,hit
+11,s_center_lane,sw11,Trigger,542.5,218.5,0.5698,0.101,hit
+12,s_right_orbit,sw12,Trigger,854.1,213.7,0.8971,0.0987,hit
+13,s_megatron_back_door,sw13,Trigger,372.2,491.6,0.3909,0.2272,hit
+14,s_r_ramp_exit,sw14,Trigger,896.7,156.0,0.9419,0.0721,hit
+18,s_trough_4_l,BallRelease,Kicker,820.1,1841.2,0.8614,0.8508,ball stack bsTrough slot 4
+19,s_trough_3,BallRelease,Kicker,820.1,1841.2,0.8614,0.8568,ball stack bsTrough slot 3
+20,s_trough_2,BallRelease,Kicker,820.1,1841.2,0.8614,0.8628,ball stack bsTrough slot 2
+21,s_trough_1_r,BallRelease,Kicker,820.1,1841.2,0.8614,0.8688,ball stack bsTrough slot 1
+22,s_trough_jam,sw22,Trigger,839.3,1838.7,0.8816,0.8497,hit
+23,s_shooter_lane,sw23,Trigger,900.1,1913.9,0.9455,0.8844,hit
+24,s_left_outlane,sw24,Trigger,53.4,1640.0,0.0561,0.7579,hit
+25,s_left_return_lane,sw25,Trigger,126.7,1600.3,0.1331,0.7395,hit
+26,s_left_slingshot,LeftSlingshot,Wall,222.5,1578.4,0.2337,0.7294,slingshot
+27,s_right_slingshot,RightSlingshot,Wall,648.3,1580.3,0.681,0.7302,slingshot
+28,s_right_return_lane,sw28,Trigger,740.3,1603.9,0.7776,0.7412,hit
+29,s_right_outlane,sw29,Trigger,813.5,1643.4,0.8545,0.7594,hit
+30,s_top_bumper,Bumper1,Bumper,150.6,299.3,0.1582,0.1383,hit
+31,s_right_bumper,Bumper2,Bumper,287.3,416.3,0.3017,0.1924,hit
+32,s_bottom_bumper,Bumper3,Bumper,149.4,504.9,0.1569,0.2333,hit
+34,s_right_orbit_spinner,sw34,Spinner,795.1,889.9,0.8351,0.4112,spin
+35,s_r_ramp_entrance,sw35,Trigger,736.3,553.7,0.7735,0.2559,hit
+37,s_r_2_bank_target_bot,sw37,HitTarget,787.2,1251.1,0.8269,0.5781,hit
+38,s_megatron_lock_4,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3111,ball stack bsKickerMegaTron slot 4
+39,s_megatron_lock_3,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3171,ball stack bsKickerMegaTron slot 3
+40,s_megatron_lock_2,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3231,ball stack bsKickerMegaTron slot 2
+41,s_m_tron_lock_1_back,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3291,ball stack bsKickerMegaTron slot 1
+43,s_optimus_prime_up,opr,Primitive,507.7,493.9,0.5333,0.2282,mechanism (placed by hand)
+44,s_optimus_prime_down,opr,Primitive,507.7,493.9,0.5333,0.2342,mechanism (placed by hand)
+45,s_captive_ball,sw45,Trigger,648.8,506.5,0.6816,0.2341,hit
+46,s_energon_right,sw46,HitTarget,770.8,777.0,0.8096,0.3591,hit
+49,s_energon_center,sw49,HitTarget,434.9,827.2,0.4569,0.3822,hit
+50,s_r_2_bank_target_top,sw50,HitTarget,778.3,1174.0,0.8175,0.5425,hit
+51,s_optimus_prime,sw51,Wall,508.8,300.7,0.5345,0.139,hit
