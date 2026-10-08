@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Compare a rebuild trace with the ROM reference trace for one scenario.
+
+Wraps assets/rules/tools/trace/trace_compare.py. Before comparing it drops events that are not rules
+behaviour: OS bookkeeping audits (time played, 59-64), and sounds played from inside a display effect
+(in_deff != 0; those belong to the effect's media show, checked separately), and, unless --strict, the
+score display deff 19 (and its tube show 10) and the mode background deffs that the deff rules restart
+behind other effects (ROM caller 0x19944, rebuild "rule": 1).
+
+"lamp" in --events adds the lamp comparison of scripts/lamp_state.py (steady lamp states at every mark
+and every second, outside the lamps a running leff draws); it prints the differing lamps.
+"coil" adds the flasher / shaker comparison of scripts/coil_state.py (bursts of each flasher and the
+shaker matched by start time); it prints the coils with missing or extra bursts.
+
+Usage: scripts/trace_check.py <scenario> [--events score,deff_start,...] [--tol 0.25]
+"""
+import argparse
+import json
+import os
+import subprocess
+import sys
+import tempfile
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+REF = os.path.join(ROOT, "assets", "rules", "traces")
+CAND = os.path.join(ROOT, "captures", "traces")
+COMPARE = os.path.join(ROOT, "assets", "rules", "tools", "trace", "trace_compare.py")
+DEFAULT = "score,deff_start,sound,leff_start,tube_show_start,audit,multiball_start,mark,lamp,coil"
+OS_AUDITS = {59, 60, 61, 62, 63, 64}
+
+
+STRICT = False
+
+
+def keep(e):
+    if not STRICT and e.get("ev") == "deff_start" and e.get("id") == 19:
+        return False            # score display re-asserted by the deff rules (display housekeeping)
+    if not STRICT and e.get("ev") == "deff_start" and (e.get("caller") == "0x19944" or e.get("rule")):
+        return False            # mode background deffs (re)started by the deff rules [0x000198a8], same reason
+    if not STRICT and e.get("ev") == "tube_show_start" and e.get("id") == 10:
+        return False            # the tube show deff 19 starts with itself
+    if e.get("ev") == "sound" and e.get("caller") == "0x2c97c":
+        return False            # sound driver internals (0x02f / 0x0bd music ducking), not snd_play calls
+    if e.get("ev") == "audit" and e.get("id") in OS_AUDITS:
+        return False
+    if e.get("ev") == "sound" and e.get("in_deff", 0) != 0:
+        return False
+    return True
+
+
+def filtered(path, tmp):
+    """Copy of the trace without non-rules events and without anything before "ready"."""
+    out = os.path.join(tmp, os.path.basename(path))
+    evs = [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
+    t0 = next((e["t"] for e in evs if e.get("ev") == "ready"), None)
+    with open(out, "w", encoding="utf-8") as g:
+        for e in evs:
+            if (t0 is None or e["t"] >= t0) and keep(e):
+                g.write(json.dumps(e) + "\n")
+    return out
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("scenario")
+    ap.add_argument("--events", default=DEFAULT)
+    ap.add_argument("--tol", default="0.25")
+    ap.add_argument("--strict", action="store_true", help="also compare the deff 19 / tube 10 refreshes")
+    a = ap.parse_args()
+    global STRICT
+    STRICT = a.strict
+    with tempfile.TemporaryDirectory() as tmp:
+        ref = filtered(os.path.join(REF, a.scenario + ".jsonl"), os.path.join(tmp, "r") if os.makedirs(
+            os.path.join(tmp, "r")) is None else tmp)
+        os.makedirs(os.path.join(tmp, "c"))
+        cand = filtered(os.path.join(CAND, a.scenario + ".jsonl"), os.path.join(tmp, "c"))
+        kinds = [k for k in a.events.split(",") if k not in ("lamp", "coil")]
+        rc = 0
+        if kinds:
+            sys.stdout.flush()
+            rc = subprocess.run([sys.executable, COMPARE, ref, cand, "--tol", a.tol, "--events",
+                                 ",".join(kinds)]).returncode
+        if "lamp" in a.events.split(","):
+            sys.stdout.flush()
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            import lamp_state
+            good, total, _ = lamp_state.compare(os.path.join(REF, a.scenario + ".jsonl"),
+                                                os.path.join(CAND, a.scenario + ".jsonl"))
+            if good == total:
+                print("{:16s} OK   {} samples".format("lamp", total))
+            else:
+                print("{:16s} DIFF {}/{} samples match".format("lamp", good, total))
+                rc = rc or 1
+        if "coil" in a.events.split(","):
+            sys.stdout.flush()
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            import coil_state
+            good, total, _ = coil_state.compare(os.path.join(REF, a.scenario + ".jsonl"),
+                                                os.path.join(CAND, a.scenario + ".jsonl"))
+            if good == total:
+                print("{:16s} OK   {} bursts".format("coil", total))
+            else:
+                print("{:16s} DIFF {}/{} bursts match".format("coil", good, total))
+                rc = rc or 1
+        return rc
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -2,3 +2,24 @@
 *.bin
 tf_*.zip
 __pycache__/
+
+# Game build (scripts/setup.py): toolchain and generated files
+.godot/
+.venv/
+/tools/
+game/addons/mpf-gmc/
+game/logs/
+game/.godot/
+game/audits/
+game/data/
+captures/
+game/config/rom/
+game/sounds/
+game/media/
+game/slides/deffs/
+game/tf/media_data.json
+game/fonts/
+/game/monitor/logs/
+/game/monitor/settings.ini
+/game/monitor/settings.ini.lock
+.cache/

@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""INTERIM: tables of tf_180 the game needs before the ROM extraction delivers them (agent A, deliverables 3, 4
+and 6): the adjustments and audits (rom/mpf_package/service_menu.json, config/settings.yaml), and the display and
+lamp effect tables (priorities and flags; A's deff and leff tables replace them).
+
+Needs the ROM image (never committed) and rom/tools/rom.py:
+    TF_ROM=/path/to/tf_180.bin python scripts/interim_tables.py
+
+Writes game/config/interim/service_menu.json (adjustments and audits in the asset package's format) and
+game/config/interim/settings.yaml (MPF settings, same format as the package's), game/config/interim/deffs.csv and
+leffs.csv. scripts/gen_config.py, tf/settings.py and tf/display.py use the asset package's files when they exist
+and these otherwise.
+
+What is read [code]:
+- adjustments table 0x040cb20c (99 records of 32 bytes): u32 NVRAM address, default, min, max, step, ?, name
+  (24-byte name record, English first), display type (the formatter id). Ids are the table index.
+- audits table 0x040cd5a4 (167 records of 16 bytes): u32 formatter function (0 = a plain counter), name, u16
+  display kind, u16 counter id, u32 flags. Ids are the table index.
+- deff table 0x040ce7c4 (156 records of 8 bytes): u32 function, u16 flags, u8 priority, u8 ?.
+- leff table 0x040cfe00 (179 records of 12 bytes): u32 function, u32 flags, u32 (priority << 16 | lamp group?).
+What is inferred (A's tables replace it): a deff with flag 0x0001 is a background effect (Tron's background
+deffs 1, 19 and 21 have it, and the same deffs here); the value labels (only display type 9 is labelled, NO / YES as on
+Tron); the menu of each adjustment (1-64 standard, 65+ feature: the SAM standard set ends at 64 on Tron too)
+and of each audit (1-13 earnings, 14-72 standard, 73+ feature); the menu order (the adjustment number).
+"""
+import json
+import os
+import struct
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(ROOT, "rom", "tools"))
+OUT = os.path.join(ROOT, "game", "config", "interim")
+ADJ_TABLE, ADJ_COUNT, ADJ_SIZE = 0x040cb20c, 99, 32
+AUDIT_TABLE, AUDIT_COUNT, AUDIT_SIZE = 0x040cd5a4, 167, 16
+DEFF_TABLE, DEFF_COUNT, DEFF_SIZE = 0x040ce7c4, 156, 8
+LEFF_TABLE, LEFF_COUNT, LEFF_SIZE = 0x040cfe00, 179, 12
+STANDARD_LAST = 64
+LABELS = {9: {"0": "NO", "1": "YES"}}
+
+
+def slug(name):
+    out = "".join(c.lower() if c.isalnum() else "_" for c in name)
+    while "__" in out:
+        out = out.replace("__", "_")
+    return out.strip("_")
+
+
+def read():
+    from rom import ROM, foff, name_table        # noqa: E402 (rom/tools, needs TF_ROM)
+    adjustments, audits = [], []
+    for i in range(1, ADJ_COUNT):
+        nv, default, lo, hi, step, _, name, dtype = struct.unpack_from("<8I", ROM, foff(ADJ_TABLE + ADJ_SIZE * i))
+        to_signed = lambda v: v - (1 << 32) if v >= 1 << 31 else v      # noqa: E731
+        adjustments.append({"id": i, "name": name_table(name, 24, 1)[0], "default": to_signed(default),
+                            "min": to_signed(lo), "max": to_signed(hi), "step": step or 1, "display_type": dtype,
+                            "group": "standard" if i <= STANDARD_LAST else "feature",
+                            "labels": LABELS.get(dtype, {}), "menu_order": i,
+                            "nvram": "0x{:x}".format(nv), "tag": "code (labels and menu inferred)"})
+    for i in range(1, AUDIT_COUNT):
+        fn, name, kind, counter, _ = struct.unpack_from("<IIHHI", ROM, foff(AUDIT_TABLE + AUDIT_SIZE * i))
+        menu = "earnings" if i <= 13 else "standard" if i <= 72 else "feature"
+        audits.append({"id": i, "name": name_table(name, 24, 1)[0], "menu": menu,
+                       "counter": counter if not fn else None, "computed": bool(fn),
+                       "formatter": "0x{:x}".format(fn) if fn else None, "kind": kind,
+                       "tag": "code (menu inferred)"})
+    deffs, leffs = [], []
+    for i in range(1, DEFF_COUNT):
+        fn, flags, prio, extra = struct.unpack_from("<IHBB", ROM, foff(DEFF_TABLE + DEFF_SIZE * i))
+        deffs.append({"deff": i, "function": "0x{:08x}".format(fn), "priority": prio, "flags": "0x{:04x}".format(flags),
+                      "byte_7": extra, "background": "yes" if flags & 1 else ""})
+    for i in range(1, LEFF_COUNT):
+        fn, flags, word = struct.unpack_from("<III", ROM, foff(LEFF_TABLE + LEFF_SIZE * i))
+        leffs.append({"leff": i, "function": "0x{:08x}".format(fn), "flags": "0x{:04x}".format(flags),
+                      "priority": (word >> 16) & 0xff, "low_word": word & 0xffff})
+    return adjustments, audits, deffs, leffs
+
+
+def write_csv(path, rows):
+    import csv
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+
+
+def settings_yaml(adjustments):
+    lines = ["#config_version=6",
+             "# INTERIM, generated by scripts/interim_tables.py from the tf_180 adjustments table 0x040cb20c, until the",
+             "# ROM extraction's settings.yaml exists. Keys are the ROM names in snake case.",
+             "settings:"]
+    seen = set()
+    for a in adjustments:
+        key = slug(a["name"])
+        if key in seen:                    # MUSIC VOLUME is listed twice (adj 9 and 97)
+            key = "{}_{}".format(key, a["id"])
+        seen.add(key)
+        a["key"] = key
+        lines.append("  {}:   # adj {}, ROM range {}..{} step {}".format(key, a["id"], a["min"], a["max"], a["step"]))
+        lines.append("    label: \"{}\"".format(a["name"]))
+        lines.append("    values:")
+        values = list(range(a["min"], a["max"] + 1, a["step"]))
+        if len(values) > 40:                # long ranges (scores, ids): the ends and the default
+            values = sorted({a["min"], a["default"], a["max"]})
+        for v in values:
+            lines.append("      {}: \"{}\"".format(v, a["labels"].get(str(v), v)))
+        lines += ["    default: {}".format(a["default"]), "    key_type: int", "    sort: {}".format(a["menu_order"]),
+                  "    setting_type: {}".format(a["group"])]
+    return "\n".join(lines) + "\n"
+
+
+def main():
+    adjustments, audits, deffs, leffs = read()
+    os.makedirs(OUT, exist_ok=True)
+    yaml_text = settings_yaml(adjustments)
+    data = {"source": "INTERIM: scripts/interim_tables.py, read from tf_180 (see its docstring)",
+            "menus": {}, "adjustments": adjustments, "audits": audits, "install_presets": {}}
+    with open(os.path.join(OUT, "service_menu.json"), "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, indent=1)
+        f.write("\n")
+    with open(os.path.join(OUT, "settings.yaml"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(yaml_text)
+    write_csv(os.path.join(OUT, "deffs.csv"), deffs)
+    write_csv(os.path.join(OUT, "leffs.csv"), leffs)
+    print("{} adjustments, {} audits, {} deffs, {} leffs -> {}".format(len(adjustments), len(audits), len(deffs),
+                                                                       len(leffs), OUT))
+
+
+if __name__ == "__main__":
+    main()

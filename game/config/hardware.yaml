@@ -1,0 +1,51 @@
+#config_version=6
+
+# What the package's device list leaves to the machine config: the tags MPF needs on a few switches, and the
+# ball devices. Dedicated switches use SAM's own numbering, "D<n>" (1-24, PinMAME src/wpc/sam.c); the package
+# numbers them 128 + n and scripts/gen_config.py converts them. docs/hardware.md has the list.
+
+switches:
+  s_start_button:     # matrix switch 16
+    tags: start
+  # Coin door buttons, D21-D24 (BACK, MINUS, PLUS, SELECT: the ROM's dedicated switch table, PinMAME's input port).
+  s_back:
+    tags: service_esc
+  s_minus:
+    tags: service_down
+  s_plus:
+    tags: service_up
+  s_select:
+    tags: service_enter
+  # Active while the coin door is open. SAM reads the door through the IO board's interlock status bits, not a
+  # switch input; D20 is SAM's spare dedicated input (NOT USED in the ROM's table), so a P-ROC machine needs a
+  # door switch wired there (docs/hardware.md).
+  s_coin_door_open:
+    number: D20
+
+playfields:
+  playfield:
+    default_source_device: bd_shooter_lane
+    tags: default
+
+ball_devices:
+  bd_trough:
+    ball_switches: s_trough_1_r, s_trough_2, s_trough_3, s_trough_4_l
+    jam_switch: s_trough_jam
+    eject_coil: c_trough_up_kicker
+    eject_targets: bd_shooter_lane
+    tags: trough, home, drain
+    debug: false
+  bd_shooter_lane:        # manual plunger, and the auto launch (coil 2) for the balls the game serves itself
+    ball_switches: s_shooter_lane
+    eject_coil: c_auto_launch
+    mechanical_eject: true
+    eject_timeouts: 1s
+  bd_left_eject:          # left eject saucer (switch 3, coil 22)
+    ball_switches: s_left_eject
+    eject_coil: c_left_eject
+    eject_timeouts: 2s
+  bd_megatron:            # Megatron lock: lock #1 (back) to #4 and the jam switch, kicked out by coil 3
+    ball_switches: s_m_tron_lock_1_back, s_megatron_lock_2, s_megatron_lock_3, s_megatron_lock_4
+    jam_switch: s_megatron_jam
+    eject_coil: c_megatron_lockup
+    eject_timeouts: 2s

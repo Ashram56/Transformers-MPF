@@ -1,0 +1,37 @@
+#config_version=6
+
+# Stern Transformers Pro v1.80 (tf_180), MPF machine config.
+# Switch, coil and light numbers are the ROM's SAM numbers from the ROM extraction's package (rom/mpf_package,
+# generated into config/rom/ by scripts/gen_config.py). This file is platform neutral: a hardware overlay is
+# picked at launch (docs/hardware.md):
+#   mpf game . -c config,hw_virtual   smart_virtual platform (balls move, trough starts full), MPF Monitor
+# The unit tests and tests/scenario.py load this file alone and force smart_virtual themselves.
+# The rules themselves run in Python (game/tf/), see tf/os_layer.py.
+
+config:
+  - rom/switches.yaml
+  - rom/coils.yaml
+  - rom/coil_times.yaml   # the ROM's coil drive times (empty until the ROM extraction decodes them)
+  - rom/lights.yaml
+  - rom/settings.yaml   # the operator adjustments as MPF settings (persisted machine vars)
+  - hardware.yaml
+
+modes:
+  - attract
+  - game
+
+custom_code: tf.os_layer.TfOS
+
+game:
+  balls_per_game: machine.balls_per_game   # adj 31 BALLS PER GAME (tf/settings.py keeps the var set)
+  max_players: 4
+
+mpf:
+  paths:
+    tf_audits: data/tf_audits.yaml    # the ROM's audit counters (tf/settings.py)
+    tf_credits: data/tf_credits.yaml  # credits and the pricing unit counter (tf/credits.py)
+    tf_high_scores: data/tf_high_scores.yaml  # high-score table (tf/features/high_scores.py)
+
+machine:
+  balls_installed: 4
+  min_balls: 1
