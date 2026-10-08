@@ -1,0 +1,35 @@
+# coil timing: every switch-driven coil, flipper hold, then ball search with no switch activity
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 2
+mark slings
+hit 26
+wait 0.5
+hit 27
+wait 0.5
+mark pops
+hit 30
+wait 0.5
+hit 31
+wait 0.5
+hit 32
+wait 0.5
+mark eject
+hit 3
+wait 3
+mark optimus
+hit 51
+wait 2
+hit 12
+wait 2
+mark flippers
+button left 2000
+wait 0.5
+button right 2000
+wait 0.5
+mark ball_search
+wait 45
+drain left
+wait 10
