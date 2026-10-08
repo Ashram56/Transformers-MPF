@@ -42,7 +42,8 @@ HOLD_TICKS_BY_DEFF = {}
 # A show task whose end the deferred rules refresh waits for (Tron: the Flynn's Arcade show 0x97); none here yet
 RULES_HOLD_SHOW = None
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-PKG = os.path.join(ROOT, "rom", "mpf_package")
+ROM = os.path.join(ROOT, "rom")
+PKG = os.path.join(ROM, "mpf_package")
 INTERIM = os.path.join(ROOT, "game", "config", "interim")
 
 
@@ -489,8 +490,8 @@ UNCLAIMED = set()    # leffs that pulse a flasher themselves without owning it (
 
 
 class Leffs:
-    """Flasher ownership of lamp-matrix effects (the package's lamp_effects.csv: flashers, priority; until it is
-    delivered, the priorities of game/config/interim/leffs.csv and no flashers).
+    """Flasher ownership of lamp-matrix effects (rom/rom_data/io/lamp_effects.csv: coils pulsed, priority, length;
+    without it, the priorities of game/config/interim/leffs.csv and no flashers).
 
     Lamps are drawn in priority layers, so they never conflict (leff 99 starts under leff 52), but a
     leff start is refused while a running leff with a higher priority uses one of its flashers (a
@@ -502,14 +503,14 @@ class Leffs:
     def __init__(self, os_):
         self.os = os_
         self.info = {}
-        path = os.path.join(PKG, "lamp_effects.csv")
-        if os.path.exists(path):
-            with open(path, encoding="utf-8") as f:
-                for row in csv.DictReader(f):
-                    outputs = frozenset(row["flashers"].split()) if int(row["leff"]) not in UNCLAIMED else frozenset()
-                    length = float(row["length_ms"]) / 1000 if row["loops"] == "0" and row["length_ms"] else None
-                    self.info[int(row["leff"])] = (outputs, int(row["priority"] or 0), length)
-        else:
+        from tf.lamps import leff_rows     # noqa: PLC0415 (lamps imports the OS layer)
+        rows = leff_rows(ROM)
+        for row in rows:
+            leff_id = int(row["leff"])
+            outputs = frozenset(row["coils_pulsed"].split()) if leff_id not in UNCLAIMED else frozenset()
+            length = float(row["run_ms"]) / 1000 if row["loops"] != "yes" and row["run_ms"] else None
+            self.info[leff_id] = (outputs, int(row["priority"] or 0), length)
+        if not rows:
             with open(os.path.join(INTERIM, "leffs.csv"), encoding="utf-8") as f:
                 for row in csv.DictReader(f):
                     self.info[int(row["leff"])] = (frozenset(), int(row["priority"]), None)

@@ -25,7 +25,8 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 | Display | ROM fonts (all 27); one slide per captured display effect (113, the ROM's frames and timing) with the live status panel; score display drawn from its captured draw calls. Values inside other effects are still the capture's |
 | Sound | every ROM sample, one pool per sound call; music intros play once and the body loops; base music by side (Autobot / Decepticon), coin, tilt, launch, ball save and drain sounds as traced; each deff plays its captured sounds |
 | Coils | the pulse and hold times measured in the emulator (rom/mpf_package/config/coils.yaml) |
-| Rules, scoring, lamp shows | waiting on the ROM extraction's specs; `scripts/trace_check.py basic` matches the reference up to the first scoring switch |
+| Lamp shows | every captured leff (111 shows in rom/mpf_package/config/shows) plays at its ROM priority with its flasher pulses; leffs the ROM draws from game state (67, no show) draw nothing yet. `trace_check.py basic`: lamps 46/47 samples, flashers 3/7 bursts |
+| Rules, scoring | switch handlers, slings, pops, side choice and bonus as traced; feature rules wait on the ROM extraction's specs; `scripts/trace_check.py basic` matches up to the second pop hit |
 | Hardware | virtual (desktop + MPF Monitor) by default; P-ROC numbers generated (game/config/rom/proc_numbers.yaml); VPX bridge is agent D's |
 
 Interim tables read from the ROM until the package carries them: `game/config/interim/` (scripts/interim_tables.py,

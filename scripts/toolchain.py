@@ -150,8 +150,9 @@ def godot_command(*args):
 # game/tf/media_data.json; all git-ignored) are made from: a change to any of these after a pull leaves
 # the workspace showing the old display effects until they are generated and imported again.
 MEDIA_INPUTS = [os.path.join("scripts", n) for n in ("gen_config.py", "gen_media.py", "gen_fonts.py")] \
-    + [os.path.join("rom", "mpf_package", n) for n in ("event_map.csv", "lamp_effects.csv", "mpf_names.json")] \
-    + [os.path.join("rom", "mpf_package", "config", "sounds.yaml"), os.path.join("rom", "rom_data", "fonts.json"),
+    + [os.path.join("rom", "mpf_package", n) for n in ("event_map.csv", "mpf_names.json")] \
+    + [os.path.join("rom", "rom_data", "io", "lamp_effects.csv"),
+       os.path.join("rom", "mpf_package", "config", "sounds.yaml"), os.path.join("rom", "rom_data", "fonts.json"),
        os.path.join("rom", "rom_data", "dmd", "images.csv"), os.path.join("game", "config", "interim", "deffs.csv")]
 MEDIA_STAMP = os.path.join(GAME, "media", ".generated")
 

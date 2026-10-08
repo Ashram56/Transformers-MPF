@@ -36,3 +36,13 @@ class TestSwitchScores(TfTestCase):
         self.hit_and_release_switch("s_left_slingshot")
         self.advance_time_and_run(0.5)
         self.assertIn(41, [e["id"] for e in self.tf.trace.of("deff_start")])
+
+    def test_pop_runs_its_lamp_effect(self):
+        """A pop starts leff 26, whose captured show pulses the pop bumper flasher (lampfx_026.yaml)."""
+        self.start_ball()
+        coils = self.tf.lamps.coil_numbers
+        self.hit("s_top_bumper")
+        self.assertIn(26, [e["id"] for e in self.tf.trace.of("leff_start")])
+        pulsed = {e["coil"] for e in self.tf.trace.of("coil") if e["on"]}
+        self.assertIn(coils["c_flash_pop_bumper"], pulsed)
+        self.assertTrue(self.tf.lamps.leff_info[1][0] == "lampfx_001" and self.tf.lamps.leff_info[1][1] == -1)

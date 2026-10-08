@@ -37,7 +37,7 @@ def load(pkg):
                        if int(str(s.get("deff", deff_id))) == deff_id]
         info.leffs = [int(e["leff"]) for e in data.get("leffs") or []]
     path = os.path.join(pkg, "lamp_effects.csv")
-    if not os.path.exists(path):
+    if not os.path.exists(path):        # Tron's package table; tf_180's deffs list their leffs in timing.json
         return table
     with open(path, encoding="utf-8") as f:
         for row in csv.DictReader(f):
