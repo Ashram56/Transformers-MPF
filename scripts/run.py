@@ -7,10 +7,11 @@
     python scripts/run.py --seconds 20             # stop everything after 20 s
     python scripts/run.py --no-free-play           # factory pricing: coins needed (virtual defaults to free play)
     python scripts/run.py --dmd-size 1024x256      # DMD window size (the 128x32 dots, scaled)
+    python scripts/run.py --hw vpx                 # Visual Pinball X plays the table (docs/vpx.md); MPF waits for it
 
 Godot's log goes to game/logs/godot.log. MPF runs in this terminal; quitting it (Ctrl+C or Esc in its text UI)
 stops Godot and MPF Monitor too. On Linux without a display, Godot runs under Xvfb (xvfb-run).
-The real machine (P-ROC) and Visual Pinball X overlays come later (the VPX bridge agent adds hw_vpx).
+The real machine (P-ROC) overlay comes later.
 """
 import argparse
 import errno
@@ -163,10 +164,10 @@ def dmd_args(gargs, size=None):
 
 
 def mpf_args(hw, scenario=None, text_ui=False, free_play=None):
-    """free_play: add config/free_play.yaml (START without a coin); default on for the virtual machine, off for
-    scenarios (the ROM traces insert a coin)."""
+    """free_play: add config/free_play.yaml (START without a coin); default on for the virtual machine and VPX,
+    off for scenarios (the ROM traces insert a coin)."""
     if free_play is None:
-        free_play = hw == "virtual" and not scenario
+        free_play = hw in ("virtual", "vpx") and not scenario
     configs = ["config", "hw_" + hw] + (["free_play"] if free_play else [])
     args = ["game", ".", "-c", ",".join(configs)]
     if not text_ui:
@@ -229,6 +230,9 @@ def run(hw="virtual", *, monitor=False, scenario=None, seconds=None, text_ui=Fal
         margs = mpf_args(hw, scenario, text_ui, free_play)
         print("Starting MPF: mpf " + " ".join(margs), flush=True)
         mpf = spawn(tc.mpf_command() + margs, log=mpf_log, cwd=tc.GAME, env=env)
+        if hw == "vpx":
+            print("MPF waits for the Visual Pinball X table (TransformersMPF.Controller) on port {}: start the "
+                  "table now (docs/vpx.md)".format(tc.MONITOR_PORT), flush=True)
         if monitor:
             ensure_monitor()
             monitor_settings()
@@ -261,8 +265,9 @@ def run(hw="virtual", *, monitor=False, scenario=None, seconds=None, text_ui=Fal
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    p.add_argument("--hw", choices=["virtual"], default="virtual",
-                   help="hardware overlay: game/config/hw_<hw>.yaml (default virtual)")
+    p.add_argument("--hw", choices=["virtual", "vpx"], default="virtual",
+                   help="hardware overlay: game/config/hw_<hw>.yaml (default virtual; vpx: Visual Pinball X, "
+                        "docs/vpx.md)")
     p.add_argument("--monitor", action="store_true", help="also start MPF Monitor (layout in game/monitor/)")
     p.add_argument("--scenario", help="play rom/rules/traces/NAME.txt (or a script file *.txt) in real time "
                                       "(smart_virtual)")
@@ -272,7 +277,7 @@ def main(argv=None):
                    help="MPF's text UI (default: on in a terminal without --seconds)")
     p.add_argument("--no-text-ui", dest="text_ui", action="store_false")
     p.add_argument("--free-play", dest="free_play", action="store_true", default=None,
-                   help="START without a coin (default with --hw virtual and no --scenario)")
+                   help="START without a coin (default with --hw virtual or vpx and no --scenario)")
     p.add_argument("--no-free-play", dest="free_play", action="store_false",
                    help="the factory pricing: insert coins (key 5 in the DMD window, or a coin slot in MPF Monitor)")
     p.add_argument("--dmd-size", metavar="WxH", help="DMD window size, for example 1024x256 (the default)")
