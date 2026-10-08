@@ -64,9 +64,10 @@ class Bonus(Feature):
                   for t, c in (captured.sounds if captured else [])]
         pd = self.pd
         subtotal = UNIT * pd.get("bonus_count", 0) + pd.get("bonus_held", HELD)
-        # deff 25 prints "1X" (a constant 1, fit font [0x01001170]) over the value, then the total (which values:
-        # inferred); the 2X.. pages of a higher multiplier are not in the capture
-        os_.deff_start(25, sounds=sounds, total=total, values=[1, subtotal, total])
+        # deff 25's slots by call site: "1X" (a constant 1, fit font [0x01001170]) over the count value [0x010011a4],
+        # the multiplier [0x01001358] over multiplier x value [0x01001388], the total [0x01001484] [0x0100161c];
+        # the 2X.. counting pages of a higher multiplier are not in the capture
+        os_.deff_start(25, sounds=sounds, total=total, values=[1, subtotal, pd.get("bonus_x", 1), total, total, total])
         os_.after(BONUS_TICKS, lambda: done(total))
 
 

@@ -193,7 +193,9 @@ class Allspark(Feature):
             return
         item = pick + 1
         sound = ITEM_SOUND.get(item, ITEM_SOUND_OTHER)
-        os_.show(AWARD_TASK, AWARD_DEFF, values=[pd.get("bonus_x", 1) + (1 if item == 4 else 0)], sounds=[
+        # the item pages' printf slots: "%iX BONUS" and "POPS SCORE %,02lu" (the value the award sets, inferred)
+        pop_next = min(pd.get("pop_base", 3000) + 1000, 20000)
+        os_.show(AWARD_TASK, AWARD_DEFF, values=[pd.get("bonus_x", 1) + (1 if item == 4 else 0), pop_next], sounds=[
             (0.0, lambda: os_.sound(AWARD_SOUNDS[0], in_deff=AWARD_DEFF)),
             (ITEM_SOUND_AT, lambda: os_.sound(sound, in_deff=AWARD_DEFF)),
             (END_SOUND_AT, lambda: os_.sound(AWARD_SOUNDS[1], in_deff=AWARD_DEFF))])

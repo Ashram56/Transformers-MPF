@@ -172,7 +172,8 @@ def value_texts(timing, frames, deff_id=None, fits=None):
     """The deff's texts printed from a printf format (A's text records: "source" holds the ROM's format, e.g.
     "%,02lu"), the status panel's aside: [slot], and per frame the slots it shows. A frame shows the texts of
     the last page composed before it; a slot counts for a frame only where the frame's dots are exactly the
-    captured string drawn in its font (texts still moving or blinking stay baked in the frame). Those dots are
+    captured string drawn in its font (texts still moving or blinking stay baked in the frame); pages that hold
+    only the status panel's rows do not count as compositions. Those dots are
     cleared from the frame (they were drawn over the page) and the slide draws the slot's text live. A fit-font
     text's slot also has "fl" and "w": the slide picks the font for the live text as the ROM does."""
     import bisect
@@ -180,7 +181,8 @@ def value_texts(timing, frames, deff_id=None, fits=None):
     fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
                                                      encoding="utf-8"))["fonts"]}
     get = gen_fonts.load_images()
-    pages = timing.get("pages") or []
+    # the status panel recomposes its own rows every frame: a page with only those keeps the deff's last page
+    pages = [p for p in timing.get("pages") or [] if any(t.get("call_site") not in PANEL_CALLS for t in p["texts"])]
     starts = [p["t_ms"] for p in pages]
     slots, keys, per_frame = [], {}, []
     for (img, _), rec in zip(frames, timing.get("frames") or []):

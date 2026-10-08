@@ -36,11 +36,25 @@ class LiveScenario:
         self.started = False
         self.machine.events.add_handler("mode_attract_started", self._start, priority=1)
 
+    def _forced(self):
+        if self.name.endswith(".txt"):
+            return {}
+        import sys
+        root = os.path.abspath(os.path.join(self.machine.machine_path, ".."))
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        try:
+            from tests.scenario import forced_picks
+            return forced_picks(self.name)
+        except Exception:       # noqa: BLE001 (a checkout without the tests)
+            return {}
+
     def _start(self, **kwargs):
         if self.started:
             return
         self.started = True
         self.os.random.seed(RANDOM_SEED)                # a scenario replays the same random choices
+        self.os.forced.update(self._forced())           # and the reference run's picks, as tests/scenario.py
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
         path = self.name if self.name.endswith(".txt") else os.path.join(
             self.machine.machine_path, "..", "rom", "rules", "traces", self.name + ".txt")   # or a script file

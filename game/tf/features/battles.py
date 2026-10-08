@@ -542,10 +542,13 @@ class Bumblebee(Battle):
         return self.active and self.pd.get("bb_phase", 1) == 2
 
     def background_values(self):
+        """Deff 109's captured page is phase 2's: "%,02lu" the timer (RAM 0x34f7c) over "SHOOT CAMARO / FOR %,02lu"
+        the award (0x34f74). Phase 1's page (value 0x34f70, "BEE = " award) is not in the capture: its value and
+        award go in the same two slots."""
+        award = self.DIRECT_JACKPOT if getattr(self, "direct", False) else getattr(self, "jackpot", 0)
         if self.os.game and self.pd.get("bb_phase", 1) == 2:
-            return {"values": [self.jackpot if not getattr(self, "direct", False) else self.DIRECT_JACKPOT,
-                               self.jackpot if not getattr(self, "direct", False) else self.DIRECT_JACKPOT]}
-        return {"values": [getattr(self, "current", 0), getattr(self, "current", 0)]}
+            return {"values": [self.seconds, award]}
+        return {"values": [getattr(self, "current", 0), award]}
 
 
 class Ironhide(Battle):
