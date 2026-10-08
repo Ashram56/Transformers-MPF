@@ -46442,7 +46442,7 @@ bool FUN_01002afc(void)
 {
   char cVar1;
   
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   return cVar1 == '\0';
 }
 
@@ -47578,7 +47578,7 @@ bool FUN_010042a4(void)
   char cVar1;
   
   cVar1 = FUN_0100462c();
-  if (((cVar1 == '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) &&
+  if (((cVar1 == '\0') && (cVar1 = any_multiball_running(), cVar1 == '\0')) &&
      (cVar1 = FUN_0100ff6c(), cVar1 == '\0')) {
     cVar1 = FUN_00005b58(0x3f);
     return cVar1 != '\0';
@@ -47595,7 +47595,7 @@ bool FUN_010042ec(void)
   char cVar1;
   
   cVar1 = FUN_0100462c();
-  if (((cVar1 == '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) &&
+  if (((cVar1 == '\0') && (cVar1 = any_multiball_running(), cVar1 == '\0')) &&
      (cVar1 = FUN_0100ff6c(), cVar1 == '\0')) {
     cVar1 = FUN_00005b58(0x3f);
     return cVar1 == '\0';
@@ -47793,7 +47793,7 @@ uint FUN_01004644(void)
     uVar4 = task_running(0x70);
     if ((uVar4 & 0xff) == 0) {
       cVar1 = FUN_00020a90(0x86);
-      if ((cVar1 == '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) {
+      if ((cVar1 == '\0') && (cVar1 = any_multiball_running(), cVar1 == '\0')) {
         deff_start(0x86,0,0);
         DAT_00034c68 = 0;
         DAT_00034c6a = 0;
@@ -49360,9 +49360,9 @@ LAB_010066ac:
 }
 
 
-// ==== 01006704 any_timed_mode_running
+// ==== 01006704 any_multiball_running
 
-undefined4 any_timed_mode_running(void)
+undefined4 any_multiball_running(void)
 
 {
   char cVar1;
@@ -49400,9 +49400,9 @@ undefined4 FUN_01006760(void)
 }
 
 
-// ==== 010067bc FUN_010067bc
+// ==== 010067bc any_timed_mode_running
 
-undefined4 FUN_010067bc(void)
+undefined4 any_timed_mode_running(void)
 
 {
   char cVar1;
@@ -49653,7 +49653,7 @@ undefined4 FUN_01006ae0(ushort param_1,ushort param_2)
   uVar4 = (uint)param_1;
   cVar1 = FUN_00005b58(param_2);
   if ((((cVar1 == '\0') && (DAT_00034d1c < 2)) && (uVar3 = task_running(0x96), (uVar3 & 0xff) == 0))
-     && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) {
+     && (cVar1 = any_multiball_running(), cVar1 == '\0')) {
     cVar1 = FUN_0001aae4();
     cVar2 = FUN_0001aacc();
     if (cVar1 != cVar2) {
@@ -52365,7 +52365,7 @@ uint FUN_0100a1f8(void)
   
   uVar2 = FUN_0103a3c0(4);
   uVar8 = 0;
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   if (((cVar1 == '\0') && (cVar1 = FUN_0100ff6c(), cVar1 == '\0')) &&
      (uVar3 = task_running(0x4f), (uVar3 & 0xff) == 0)) {
     iVar4 = FUN_0100ae4c();
@@ -57172,10 +57172,10 @@ undefined4 zuse_qualify_enabled(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   if (((cVar1 == '\0') && (cVar1 = FUN_01035db4(), cVar1 != '\0')) &&
      (cVar1 = FUN_0100ff58(), cVar1 == '\0')) {
-    cVar1 = FUN_010067bc();
+    cVar1 = any_timed_mode_running();
     uVar2 = 0;
     if (cVar1 == '\0') {
       uVar2 = 1;
@@ -63134,7 +63134,7 @@ char FUN_01019150(void)
     DAT_0003506a = 0;
     game_flag_set(0x1e);
     game_flag_clear(0x1d);
-    cVar2 = any_timed_mode_running();
+    cVar2 = any_multiball_running();
     if (cVar2 == '\0') {
       game_flag_clear(0x14);
     }
@@ -69266,7 +69266,7 @@ undefined4 clu_start_allowed(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   if ((((cVar1 == '\0') && (cVar1 = FUN_01022f64(), cVar1 == '\0')) &&
       (cVar1 = FUN_0100ff6c(), cVar1 == '\0')) && (cVar1 = zuse_qualify_enabled(), cVar1 == '\0')) {
     cVar1 = FUN_010363b4();
@@ -70727,7 +70727,7 @@ uint FUN_01024ad4(short param_1)
   uint uVar2;
   
   uVar2 = 0;
-  cVar1 = FUN_010067bc();
+  cVar1 = any_timed_mode_running();
   if ((cVar1 != '\0') && (cVar1 = FUN_00005b58(0x13), cVar1 == '\0')) {
     uVar2 = param_1 * 0x10000 + 0x3e80000 >> 0x10;
   }
@@ -70753,7 +70753,7 @@ byte FUN_01024b14(void)
   byte bVar11;
   
   bVar11 = 0;
-  cVar1 = FUN_010067bc();
+  cVar1 = any_timed_mode_running();
   if (cVar1 != '\0') {
     cVar1 = FUN_00005b58(0x13);
     if (cVar1 == '\0') {
@@ -70947,8 +70947,8 @@ undefined4 FUN_0102523c(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
-  if ((((cVar1 == '\0') && (cVar1 = FUN_010067bc(), cVar1 == '\0')) &&
+  cVar1 = any_multiball_running();
+  if ((((cVar1 == '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) &&
       (cVar1 = FUN_0100ff6c(), cVar1 == '\0')) && (cVar1 = FUN_00005b58(0x49), cVar1 == '\0')) {
     cVar1 = FUN_00005b58(0x48);
     uVar2 = 0;
@@ -72847,7 +72847,7 @@ char FUN_01027994(uint param_1)
     }
     DAT_00035308 = 0;
     DAT_00035304 = score_add((param_1 & 0xff) * 250000);
-    cVar2 = any_timed_mode_running();
+    cVar2 = any_multiball_running();
     if (cVar2 == '\0') {
       game_flag_clear(0x14);
     }
@@ -74541,7 +74541,7 @@ char FUN_01029a08(uint param_1)
     DAT_00035368 = 0;
     DAT_00035380 = 0;
     DAT_0003537c = score_add((param_1 & 0xff) * 250000);
-    cVar2 = any_timed_mode_running();
+    cVar2 = any_multiball_running();
     if (cVar2 == '\0') {
       game_flag_clear(0x14);
     }
@@ -76769,7 +76769,7 @@ undefined4 FUN_0102c878(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   if (cVar1 == '\0') {
     cVar1 = FUN_0100ff6c();
     uVar2 = 0;
@@ -77494,7 +77494,7 @@ undefined4 portal_mb_can_start(void)
   
   uVar2 = 0;
   cVar1 = FUN_0102c8a4();
-  if (((cVar1 != '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) &&
+  if (((cVar1 != '\0') && (cVar1 = any_multiball_running(), cVar1 == '\0')) &&
      (cVar1 = FUN_01022f64(), cVar1 == '\0')) {
     cVar1 = FUN_0100ff6c();
     uVar2 = 0;
@@ -78486,8 +78486,8 @@ undefined4 FUN_0102e95c(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
-  if ((cVar1 == '\0') && (cVar1 = FUN_010067bc(), cVar1 == '\0')) {
+  cVar1 = any_multiball_running();
+  if ((cVar1 == '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) {
     cVar1 = FUN_0102e930();
     uVar2 = 0;
     if (cVar1 != '\0') {
@@ -78507,9 +78507,9 @@ undefined4 FUN_0102e994(void)
   undefined4 uVar2;
   
   uVar2 = 0;
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   if (cVar1 == '\0') {
-    cVar1 = FUN_010067bc();
+    cVar1 = any_timed_mode_running();
     uVar2 = 0;
     if (cVar1 == '\0') {
       uVar2 = 1;
@@ -79905,7 +79905,7 @@ bool FUN_0103096c(void)
 {
   char cVar1;
   
-  cVar1 = any_timed_mode_running();
+  cVar1 = any_multiball_running();
   return cVar1 == '\0';
 }
 
@@ -82532,7 +82532,7 @@ int FUN_01033354(void)
       if (iVar5 == 0) {
         FUN_0000ff00(7,0xbb,0,0);
         FUN_01033244();
-        cVar4 = any_timed_mode_running();
+        cVar4 = any_multiball_running();
         if ((((cVar4 != '\0') || (cVar4 = FUN_01022f64(), cVar4 != '\0')) ||
             (cVar4 = FUN_0100ff6c(), cVar4 != '\0')) || (cVar4 = FUN_0102c8a4(), cVar4 == '\0')) {
           cVar4 = FUN_0102bd08(&DAT_00035384);
@@ -85940,7 +85940,7 @@ undefined4 FUN_010363b4(void)
   
   uVar2 = 0;
   cVar1 = items_all_collected();
-  if ((cVar1 != '\0') && (cVar1 = any_timed_mode_running(), cVar1 == '\0')) {
+  if ((cVar1 != '\0') && (cVar1 = any_multiball_running(), cVar1 == '\0')) {
     cVar1 = FUN_0100ff6c();
     uVar2 = 0;
     if (cVar1 == '\0') {
@@ -85982,7 +85982,7 @@ char FUN_010363ec(void)
         puVar5 = puVar5 + 5;
       } while (uVar3 < 6);
       DAT_00035aa4 = 0;
-      cVar1 = any_timed_mode_running();
+      cVar1 = any_multiball_running();
       if (cVar1 == '\0') {
         game_flag_clear(0x14);
       }
