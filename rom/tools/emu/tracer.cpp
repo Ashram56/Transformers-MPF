@@ -51,6 +51,13 @@ static void hook(unsigned pc, unsigned* r){
   case A_TEXT: case A_TEXT_FIT: { unsigned tk,d,f; curdeff(tk,d,f); char buf[160]; int k=0; for(;k<159;k++){ unsigned ch=PinmameArmRead8(r[0]+k); if(!ch) break; buf[k]=(ch=='\n')?'|':(ch<32||ch>126?'?':ch);} buf[k]=0;
     unsigned sp=r[13]; fprintf(LOG,"%.4f TEXT %x page=%d font=%u flags=%u x=%d y=%d color=%d w=%d deff=%u task=%x lr=%x str=\"%s\"\n",emu(),pc,(int)((r[1]-0x1080000)/0x1000),r[2],r[3]&0xff,(int)PinmameArmRead32(sp),(int)PinmameArmRead32(sp+4),(int)PinmameArmRead32(sp+8),pc==A_TEXT_FIT?(int)PinmameArmRead32(sp+12):-1,d,tk,r[14],buf); break; }
   case A_LEFF_START: fprintf(LOG,"%.4f LEFF id=%u lr=%x\n",emu(),r[0],r[14]); break;
+  // text helpers called by effect code: log the message id or the format string, and the effect's own call site
+  case 0x21660: case 0x215ac: case 0x217b4: case 0x2174c: case 0x21838: case 0x21a78: case 0x21b4c: {
+    unsigned tk,d,f; curdeff(tk,d,f); if(!d) break;
+    int isMsg = pc==0x21660||pc==0x215ac||pc==0x217b4||pc==0x2174c;
+    if(isMsg){ fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x msg=%u\n",emu(),pc,d,tk,r[14],r[0]&0xffff); break; }
+    char buf[160]; int k=0; for(;k<159;k++){ unsigned ch=PinmameArmRead8(r[0]+k); if(!ch) break; buf[k]=(ch=='\n')?'|':(ch=='"'?'\'':(ch<32||ch>126?'?':ch));} buf[k]=0;
+    fprintf(LOG,"%.4f TXTSRC fn=%x deff=%u task=%x lr=%x str=\"%s\"\n",emu(),pc,d,tk,r[14],buf); break; }
   case A_EVENT: fprintf(LOG,"%.4f EVENT %u\n",emu(),r[0]); break;
   case A_AUDIT: fprintf(LOG,"%.4f AUDIT %u lr=%x\n",emu(),r[0],r[14]); break;
   }

@@ -107,7 +107,7 @@ static void hook(unsigned pc, unsigned* r) {
   case 0xc3c: emit("\"ev\":\"audit\",\"id\":%u,\"n\":%d,\"caller\":\"0x%x\"", r[0] & 0xffff, (int)r[1], r[14]); break;
   case 0x5a88: emit("\"ev\":\"flag_set\",\"flag\":%u,\"caller\":\"0x%x\"", r[0] & 0xffff, r[14]); break;
   case 0x5a38: emit("\"ev\":\"flag_clear\",\"flag\":%u,\"caller\":\"0x%x\"", r[0] & 0xffff, r[14]); break;
-  case 0x1caf0: emit("\"ev\":\"score_add\",\"points\":%d,\"multiplier\":%u,\"player\":%u,\"caller\":\"0x%x\"", (int)r[0], r8(RAM_PF_MULT), r8(RAM_CUR_PLAYER), r[14]); break;
+  // score_add 0x1caf0 tail-calls score_add_player 0x1cb0c(player, points): hook only the latter, lr is the real caller
   case 0x1cb0c: emit("\"ev\":\"score_add\",\"points\":%d,\"multiplier\":%u,\"player\":%u,\"caller\":\"0x%x\"", (int)r[1], r8(RAM_PF_MULT), r[0] & 0xff, r[14]); break;
   case 0x6e50: if (logEvents) emit("\"ev\":\"event\",\"id\":%u,\"caller\":\"0x%x\"", r[0] & 0xffff, r[14]); break;
   case 0x103aec0: emit("\"ev\":\"multiball_start\",\"balls\":%u,\"save_ticks\":%u,\"grace_ticks\":%u,\"caller\":\"0x%x\"", r[0] & 0xff, r[2], r[3], r[14]); break;

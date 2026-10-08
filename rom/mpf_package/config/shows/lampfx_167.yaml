@@ -1,0 +1,18 @@
+#show_version=6
+# ROM lamp effect (leff) 167, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 530 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 260ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 48
+- duration: 130ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 48
+- duration: 140ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 48

@@ -1,0 +1,575 @@
+#show_version=6
+# ROM lamp effect (leff) 56, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 8347 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 81ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 82ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 82ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 81ms
+  coils:
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 82ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 162ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 48
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_left:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_slingshot_right:
+      action: pulse
+      pulse_ms: 64
+- duration: 113ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_bumblebee:
+      action: pulse
+      pulse_ms: 64
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 64
+- duration: 123ms
+  coils:
+    c_flash_center_lane_arrow:
+      action: pulse
+      pulse_ms: 64
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 64

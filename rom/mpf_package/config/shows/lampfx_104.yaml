@@ -1,0 +1,9 @@
+#show_version=6
+# ROM lamp effect (leff) 104, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 130 ms).
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 65ms
+  lights:
+    l_starscream: "000000"
+- duration: 65ms
+  lights:
+    l_starscream: "ffffff"

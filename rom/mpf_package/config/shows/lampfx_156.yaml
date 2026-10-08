@@ -1,0 +1,41 @@
+#show_version=6
+# ROM lamp effect (leff) 156, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 335 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 10ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 32
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 32
+- duration: 33ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 32ms
+  lights:
+    l_bumblebee_captive_ball: "000000"
+- duration: 33ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 32ms
+  lights:
+    l_bumblebee_captive_ball: "000000"
+- duration: 33ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 32ms
+  lights:
+    l_bumblebee_captive_ball: "000000"
+- duration: 33ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 32ms
+  lights:
+    l_bumblebee_captive_ball: "000000"
+- duration: 33ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 32ms
+  lights:
+    l_bumblebee_captive_ball: "000000"

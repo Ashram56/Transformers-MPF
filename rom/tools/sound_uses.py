@@ -4,10 +4,10 @@ call sites), plus the music table read in the emulator (bg_entry events).
 Usage: sound_uses.py ROMDIR DEFFS_DIR OUT_CSV MUSIC_CSV trace.jsonl..."""
 import sys, os, re, csv, json, glob, bisect, collections
 
-ROLES = {  # identified from the traces and the music table; tag says how. Side = u8 at 0x02112107+player, 1 = Autobot (inferred: the default side plays the Decepticon calls and shows deff 41 DECEPTICON)
+ROLES = {  # identified from the traces and the music table; tag says how. Side = u8 at 0x02112107+player: 1 = Autobot, 2 = Decepticon (code: deff 41 draws AUTOBOT when 1)
     0x042: ('coin inserted', 'observed: every coin'),
     0x043: ('credit added', 'observed: on the coin that completes a credit'),
-    0x01a: ('music: choose your side, Autobot selected', 'code: music table entry 0x34cd4 (deff 40)'),
+    0x01a: ('music: choose your side, Autobot selected', 'code: music table entry 0x34cd4 (deff 40); observed after a flipper press'),
     0x01b: ('music: choose your side, Decepticon selected', 'code: music table entry 0x34cd4 (deff 40); observed at game start'),
     0x01c: ('music: ball start, Autobot', 'code: music table entry 0x34cd4 (deff 19)'),
     0x01d: ('music: ball start, Decepticon', 'code: music table entry 0x34cd4 (deff 19); observed at each ball start'),
@@ -15,7 +15,18 @@ ROLES = {  # identified from the traces and the music table; tag says how. Side 
     0x01f: ('music: main play, Decepticon', 'code: music table fallback entry 0x34cec; observed after the first award or ball save'),
     0x031: ('music: battle ready, Autobot', 'code: music table, replaces 0x1c/0x1e when the battle can progress'),
     0x034: ('music: battle ready, Decepticon', 'code: music table, replaces 0x1d/0x1f when the battle can progress'),
-    0x020: ('music: end of ball bonus', 'observed in deff 25 (bonus)'),
+    0x020: ('music: end of ball bonus, Decepticon', 'observed in deff 25 (bonus); code: 0x21 when Autobot'),
+    0x021: ('music: end of ball bonus, Autobot', 'code: deff 25 plays 0x21 when the side is Autobot, 0x20 otherwise'),
+    0x057: ('side confirmed: Autobot', 'code: deff 41'),
+    0x058: ('side confirmed: Decepticon', 'code: deff 41; observed'),
+    0x257: ('side choice: flipper toggles the side', 'observed: either flipper on the choose-side screen'),
+    0x15a: ('slingshot', 'observed: switches 26 and 27'),
+    0x15c: ('pop bumper', 'observed: switches 30-32'),
+    0x076: ('bonus: multiplier count finished', 'code: deff 25'),
+    0x077: ('bonus: first value shown (1)', 'code + observed: deff 25'),
+    0x078: ('bonus: first value shown (2)', 'code + observed: deff 25'),
+    0x079: ('bonus: before total', 'code + observed: deff 25'),
+    0x07a: ('bonus: total bonus', 'code + observed: deff 25'),
     0x056: ('ball launched from the shooter lane', 'observed on every plunge and auto launch'),
     0x016: ('tilt warning sound', 'observed: tilt bob, warning'),
     0x052: ('tilt warning, second sound', 'observed: 0.5 s after 0x016'),
@@ -57,7 +68,7 @@ def main(romdir, ddir, out, music_out, *traces):
     for p in glob.glob(os.path.join(ddir, 'deff_*/timing.json')):
         d = json.load(open(p))
         for s in d['sounds']:
-            if isinstance(s['call'], int) and s.get('deff') == d['deff']: in_deff[s['call']].add(d['deff'])
+            if s.get('deff') == d['deff']: in_deff[int(s['call'], 16) if isinstance(s['call'], str) else s['call']].add(d['deff'])
     cols = ['call', 'role', 'role_tag', 'kinds', 'samples', 'durations_s', 'heard_in_scenarios', 'in_deffs', 'code_call_sites', 'trace_callers']
     with open(out, 'w', newline='') as f:
         w = csv.DictWriter(f, cols, lineterminator='\n'); w.writeheader()

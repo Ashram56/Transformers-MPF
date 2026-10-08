@@ -4976,7 +4976,6 @@
 {"t":15.4003,"ev":"task_start","task":"0x4","fn":"0x1033104","caller":"0xde38"}
 {"t":15.4007,"ev":"sound","call":"0x15a","in_deff":0,"caller":"0x1033194"}
 {"t":15.4008,"ev":"score_add","points":440,"multiplier":1,"player":1,"caller":"0x103319c"}
-{"t":15.4008,"ev":"score_add","points":440,"multiplier":1,"player":1,"caller":"0x103319c"}
 {"t":15.4011,"ev":"flag_clear","flag":9,"caller":"0x1cc1c"}
 {"t":15.4011,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.4032,"ev":"score","player":1,"delta":440,"total":440}
@@ -5006,7 +5005,6 @@
 {"t":15.5658,"ev":"switch","sw":27}
 {"t":15.5796,"ev":"task_start","task":"0x4","fn":"0x10331a4","caller":"0xde38"}
 {"t":15.5802,"ev":"sound","call":"0x15a","in_deff":0,"caller":"0x1033234"}
-{"t":15.5803,"ev":"score_add","points":440,"multiplier":1,"player":1,"caller":"0x103323c"}
 {"t":15.5803,"ev":"score_add","points":440,"multiplier":1,"player":1,"caller":"0x103323c"}
 {"t":15.5808,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.5808,"ev":"score","player":1,"delta":440,"total":880}
@@ -5067,7 +5065,6 @@
 {"t":15.7619,"ev":"audit","id":73,"n":1,"caller":"0x1033050"}
 {"t":15.7622,"ev":"sound","call":"0x15c","in_deff":0,"caller":"0x102c858"}
 {"t":15.7622,"ev":"score_add","points":3000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
-{"t":15.7622,"ev":"score_add","points":3000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
 {"t":15.7627,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.7629,"ev":"deff_start","id":46,"caller":"0x102c9e4"}
 {"t":15.7629,"ev":"task_start","task":"0x2","fn":"0x102d004","caller":"0x206c0"}
@@ -5076,7 +5073,6 @@
 {"t":15.7631,"ev":"task_start","task":"0x3","fn":"0x102d108","caller":"0x7d8c"}
 {"t":15.7632,"ev":"leff_start","id":27,"caller":"0x102cb80"}
 {"t":15.7632,"ev":"task_start","task":"0x3","fn":"0x102d138","caller":"0x7d8c"}
-{"t":15.7632,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
 {"t":15.7632,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
 {"t":15.7637,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.7639,"ev":"task_start","task":"0x56","fn":"0xab9c","caller":"0xac0c"}
@@ -5108,12 +5104,10 @@
 {"t":15.9256,"ev":"leff_start","id":28,"caller":"0x102cb80"}
 {"t":15.9256,"ev":"task_start","task":"0x3","fn":"0x102d138","caller":"0x7d8c"}
 {"t":15.9258,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
-{"t":15.9258,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
 {"t":15.9261,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.9261,"ev":"task_start","task":"0x56","fn":"0xab9c","caller":"0xac0c"}
 {"t":15.9261,"ev":"task_start","task":"0x56","fn":"0xab9c","caller":"0xac0c"}
 {"t":15.9263,"ev":"sound","call":"0x15c","in_deff":0,"caller":"0x102c858"}
-{"t":15.9264,"ev":"score_add","points":4000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
 {"t":15.9264,"ev":"score_add","points":4000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
 {"t":15.9268,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":15.9268,"ev":"score","player":1,"delta":4170,"total":8220}
@@ -5162,12 +5156,10 @@
 {"t":16.0883,"ev":"leff_start","id":29,"caller":"0x102cb80"}
 {"t":16.0883,"ev":"task_start","task":"0x3","fn":"0x102d138","caller":"0x7d8c"}
 {"t":16.0885,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
-{"t":16.0885,"ev":"score_add","points":170,"multiplier":1,"player":1,"caller":"0x1033074"}
 {"t":16.0888,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":16.0888,"ev":"task_start","task":"0x56","fn":"0xab9c","caller":"0xac0c"}
 {"t":16.0889,"ev":"task_start","task":"0x56","fn":"0xab9c","caller":"0xac0c"}
 {"t":16.0890,"ev":"sound","call":"0x15c","in_deff":0,"caller":"0x102c858"}
-{"t":16.0892,"ev":"score_add","points":5000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
 {"t":16.0892,"ev":"score_add","points":5000,"multiplier":1,"player":1,"caller":"0x102c9c4"}
 {"t":16.0895,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":16.0895,"ev":"score","player":1,"delta":5170,"total":13390}
@@ -5187,11 +5179,9 @@
 {"t":16.2502,"ev":"task_start","task":"0x4","fn":"0x1033adc","caller":"0xde38"}
 {"t":16.2510,"ev":"audit","id":71,"n":1,"caller":"0x1033aec"}
 {"t":16.2514,"ev":"score_add","points":20000,"multiplier":1,"player":1,"caller":"0x1001aac"}
-{"t":16.2514,"ev":"score_add","points":20000,"multiplier":1,"player":1,"caller":"0x1001aac"}
 {"t":16.2517,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":16.2517,"ev":"deff_start","id":128,"caller":"0x1001adc"}
 {"t":16.2522,"ev":"task_start","task":"0x2","fn":"0x10023e8","caller":"0x206c0"}
-{"t":16.2522,"ev":"score_add","points":30,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":16.2522,"ev":"score_add","points":30,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":16.2526,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":16.2527,"ev":"score","player":1,"delta":20030,"total":33420}
@@ -5656,10 +5646,8 @@
 {"t":20.1470,"ev":"task_start","task":"0x3","fn":"0x102dda4","caller":"0x7d8c"}
 {"t":20.1470,"ev":"sound","call":"0x169","in_deff":0,"caller":"0x102dc00"}
 {"t":20.1471,"ev":"score_add","points":2500,"multiplier":1,"player":1,"caller":"0x102dc0c"}
-{"t":20.1471,"ev":"score_add","points":2500,"multiplier":1,"player":1,"caller":"0x102dc0c"}
 {"t":20.1474,"ev":"flag_clear","flag":9,"caller":"0x1cc1c"}
 {"t":20.1474,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
-{"t":20.1474,"ev":"score_add","points":100000,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":20.1474,"ev":"score_add","points":100000,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":20.1477,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":20.1478,"ev":"sound","call":"0x05e","in_deff":20,"caller":"0x1007fb0"}
@@ -6635,9 +6623,7 @@
 {"t":30.3427,"ev":"task_start","task":"0x3","fn":"0x102e4a0","caller":"0x7d8c"}
 {"t":30.3428,"ev":"sound","call":"0x16d","in_deff":0,"caller":"0x102e2f4"}
 {"t":30.3428,"ev":"score_add","points":2500,"multiplier":1,"player":1,"caller":"0x102e300"}
-{"t":30.3428,"ev":"score_add","points":2500,"multiplier":1,"player":1,"caller":"0x102e300"}
 {"t":30.3432,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
-{"t":30.3432,"ev":"score_add","points":100000,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":30.3432,"ev":"score_add","points":100000,"multiplier":1,"player":1,"caller":"0x14f38"}
 {"t":30.3435,"ev":"flag_clear","flag":8,"caller":"0x103dc04"}
 {"t":30.3458,"ev":"score","player":1,"delta":102500,"total":238420}

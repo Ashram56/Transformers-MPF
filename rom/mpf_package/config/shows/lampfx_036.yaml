@@ -1,0 +1,147 @@
+#show_version=6
+# ROM lamp effect (leff) 36, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 595 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 33ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 32ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 33ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 32ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 33ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 32ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 32ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 33ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 32ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 33ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 32ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 33ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 32ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 33ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 33ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 32ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"
+- duration: 32ms
+  lights:
+    l_allspark_x: "ffffff"
+    l_center_lane_x: "ffffff"
+    l_left_orbit_x: "ffffff"
+    l_left_ramp_x: "ffffff"
+    l_right_orbit_x: "ffffff"
+    l_right_ramp_x: "ffffff"
+- duration: 43ms
+  lights:
+    l_allspark_x: "000000"
+    l_center_lane_x: "000000"
+    l_left_orbit_x: "000000"
+    l_left_ramp_x: "000000"
+    l_right_orbit_x: "000000"
+    l_right_ramp_x: "000000"

@@ -48,7 +48,13 @@ def main(ddir, din, dout, libidx, csvp):
             leff_in[d] = sorted({lit(m.group(1)) for m in re.finditer(r'\bleff_start\((0x[0-9a-f]+|\d+)\)', body)})
     # rename: table functions get this ROM's ids; names carried over from Tron for other addresses are dropped
     ren = {}
+    OS_NAMES = {0x215ac: 'text_draw_msg_page', 0x217b4: 'text_printf_msg_fit_page', 0x21838: 'text_draw_str_page',
+                0x21a78: 'text_printf_page', 0x21b4c: 'text_draw_str_fit_page', 0x1caf0: 'score_add', 0x1cb0c: 'score_add_player',
+                0x1aa40: 'current_player', 0x1a94c: 'num_players', 0x103aec0: 'multiball_start', 0x20be4: 'deff_stop',
+                0x178b0: 'bg_entry_eval', 0x73cc: 'lamp_compositor_tick', 0x1033e30: 'player_side', 0x1033e84: 'side_choice_running'}
     for a, n, _ in F:
+        if a in OS_NAMES and n != OS_NAMES[a]: ren[n] = OS_NAMES[a]
+        if a in OS_NAMES: continue
         if a in deff_fn: ren[n] = names[deff_fn[a]][0]
         elif a in leff_fn: ren[n] = 'leff_%03d' % leff_fn[a]
         elif re.match(r'(deff|leff)_\d', n): ren[n] = 'FUN_%08x' % a
@@ -69,7 +75,7 @@ def main(ddir, din, dout, libidx, csvp):
             w.writerow(dict(deff=i, name=names[i][0], priority=u8(a + 6), background_loop='yes' if fl & 1 else '', flags='0x%x' % fl,
                             rom_text=' / '.join(names[i][1][:10]), animation_frames=len(k['frames']) if k else 0, run_ms=run,
                             rendered_in_emulation='yes' if k and len(k['pages']) else 'no',
-                            sounds_heard=' '.join('0x%03x@%dms' % (s['call'], s['t_ms']) for s in (k or {}).get('sounds', [])[:12] if isinstance(s['call'], int)),
+                            sounds_heard=' '.join('%s@%dms' % (s['call'], s['t_ms']) for s in (k or {}).get('sounds', [])[:12] if s.get('deff') == i),
                             sounds_in_code=' '.join('0x%03x' % s for s in snd_in.get(i, [])),
                             lamp_effects_heard=' '.join(str(l['leff']) for l in (k or {}).get('leffs', [])[:12]),
                             lamp_effects_in_code=' '.join(map(str, leff_in.get(i, []))),

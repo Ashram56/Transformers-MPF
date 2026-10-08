@@ -1,0 +1,11 @@
+#show_version=6
+# ROM lamp effect (leff) 114, captured in the emulator (tools/emu/lfx.cpp). sets this lamp state and holds it until stopped.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 12009ms
+  lights:
+    l_allspark_orange: "000000"
+    l_center_lane_orange: "000000"
+    l_left_orbit_orange: "000000"
+    l_left_ramp_orange: "000000"
+    l_right_orbit_orange: "000000"
+    l_right_ramp_orange: "000000"

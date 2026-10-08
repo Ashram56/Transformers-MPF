@@ -1,0 +1,13 @@
+#show_version=6
+# ROM lamp effect (leff) 92, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 163 ms); lead-in of 81 ms left out.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 81ms
+  lights:
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+    l_top_lane_red_bot: "000000"
+    l_top_lane_red_top: "000000"
+- duration: 82ms
+  lights:
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"

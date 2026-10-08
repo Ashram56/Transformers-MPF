@@ -1,0 +1,83 @@
+#show_version=6
+# ROM lamp effect (leff) 21, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1575 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 97ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 98ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
+- duration: 113ms
+  coils:
+    c_flash_allspark:
+      action: pulse
+      pulse_ms: 48
