@@ -1,0 +1,63 @@
+# Optimus Prime battle and Optimus multiball, Decepticon side (default), factory settings, no pokes:
+# 4 center-lane shots open the battle, 4 Optimus hits start the multiball, jackpots, double jackpots, super, end
+start 1
+wait 3
+plunge
+wait 2
+mark access
+hit 11
+wait 2
+hit 11
+wait 2
+hit 11
+wait 2
+mark battle_start
+hit 11
+wait 4
+mark battle_hits
+hit 51
+wait 2
+hit 51
+wait 2
+hit 51
+wait 2
+mark mb_start
+hit 51
+wait 6
+mark jackpot1
+hit 5
+wait 2
+mark double1
+hit 51
+wait 2
+hit 10
+wait 2
+mark center_quirk
+hit 11
+wait 2
+hit 51
+wait 2
+hit 11
+wait 2
+hit 51
+wait 2
+hit 14
+wait 2
+hit 51
+wait 2
+hit 12
+wait 2
+hit 51
+wait 2
+hit 3
+wait 3
+hit 51
+wait 2
+mark super
+hit 51
+wait 3
+mark drains
+drain
+wait 1
+drain
+wait 6

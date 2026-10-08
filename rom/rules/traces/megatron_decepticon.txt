@@ -1,0 +1,69 @@
+# Megatron multiball, Decepticon side (default), factory settings, no pokes:
+# lock 4 balls, 10 jackpots, 3 double jackpots, super jackpot, end, relight lock
+start 1
+wait 3
+plunge
+wait 2
+mark lock1
+hit 41
+wait 4
+mark lock2
+hit 40
+wait 4
+mark lock3
+hit 39
+wait 4
+mark lock4
+hit 38
+wait 9
+mark phase1
+hit 5
+wait 1.5
+hit 10
+wait 1.5
+hit 11
+wait 1.5
+hit 14
+wait 1.5
+hit 12
+wait 1.5
+hit 3
+wait 3
+mark lock_shot_in_mb
+hit 38
+wait 3
+hit 5
+wait 1.5
+hit 10
+wait 1.5
+hit 14
+wait 2
+mark phase2
+hit 11
+wait 2
+hit 11
+wait 2
+hit 11
+wait 4
+mark phase3
+hit 51
+wait 4
+mark drains
+drain
+wait 1
+drain
+wait 1
+drain
+wait 8
+mark relight
+hit 38
+wait 4
+hit 2
+wait 1
+hit 46
+wait 1
+hit 49
+wait 4
+mark lock_after
+hit 38
+wait 5

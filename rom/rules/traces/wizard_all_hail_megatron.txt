@@ -1,0 +1,48 @@
+# All Hail Megatron (Decepticon side wizard mode), factory settings.
+# POKES: the five Decepticon requirements (0-4) are marked completed in NVRAM (byte 1 of 0x0211210c + 16*req = 1, byte 0 = 1) to qualify the mode.
+start 1
+wait 3
+plunge
+wait 2
+mark poke_requirements
+poke 211210c 257 4
+poke 211211c 257 4
+poke 211212c 257 4
+poke 211213c 257 4
+poke 211214c 257 4
+wait 1
+mark start_ahm
+hit 3
+wait 8
+mark shots
+hit 3
+wait 4
+hit 5
+wait 3.5
+hit 10
+wait 2
+hit 11
+wait 3.5
+hit 12
+wait 2
+hit 14
+wait 2
+hit 3
+wait 4
+hit 5
+wait 3.5
+hit 10
+wait 2
+hit 11
+wait 3.5
+hit 12
+wait 2
+mark last_shot
+hit 14
+wait 3
+mark super
+hit 3
+wait 12
+mark drain
+drain
+wait 6
