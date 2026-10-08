@@ -25,7 +25,7 @@ D: a lit shot J (deff 65, leff 56, sound 0xa5, audit 0x71), removed, Optimus lit
 sound 0xaa, audit 0x72); the center lane in that phase scores J again (the ROM's quirk); none left: the super at
 Optimus (leff 55; deff 67, leff 58, sound 0xab, audit 0x73). A super: requirement 5 completed, all shots relit.
 End: down to one ball the running flag goes, 218 ticks later the total (A deff 62 + leff 51, D deff 68 + leff 59).
-Not modelled: the Optimus motor (coil 30) and target coil 12, the chained speech of deff 144.
+The figure's motor and hit kicker are tf/features/optimus_mech.py. Not modelled: the chained speech of deff 144.
 """
 from tf.features import Feature
 from tf.lamps import shot_blink

@@ -10,7 +10,8 @@ switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
 - BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
 - slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
 - pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
-Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add). The features behind the
+Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add) except sw 6's (0x010332e4 returns
+without it; observed: traces/combos.jsonl last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
 switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
 rom/rules/modes/).
 """
@@ -44,6 +45,7 @@ SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
 # switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
 # traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
+NO_BONUS = {6}
 # handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
 DELAY = {51: 5}
 
@@ -79,7 +81,8 @@ class SwitchLayer:
             os_.ball_save_try(OUTLANES[num])
         if num in SW_AUDIT and not os_.tilted:
             os_.audit(SW_AUDIT[num])
-        os_.hook("bonus_add")
+        if num not in NO_BONUS:
+            os_.hook("bonus_add")
         os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
         if os_.tilted:

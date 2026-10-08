@@ -69,6 +69,14 @@ BALL_SEARCH_RUN_TICKS = 297     # a search that finds no ball: the coils cycle, 
 BALL_SEARCH_TICKS = 104     # search task 0x2b; a drain during it ends the ball after it
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
+# the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate
+# (observed, the same in every search: traces/game_flow.jsonl 32.65 / 102.01 / 126.13 / 150.45 s,
+# megatron_decepticon.jsonl 68.99 s; pulses 64 ms, the pops' search time; rom_data/io/coils.csv ballsearch_fn)
+BALL_SEARCH_SWEEP = ((1, ("c_optimus_prime",)), (6, ("c_top_pop_bumper",)), (7, ("c_megatron_lockup", "c_left_eject")),
+                     (11, ("c_right_pop_bumper",)), (14, ("c_auto_launch",)), (16, ("c_bottom_pop_bumper",)),
+                     (21, ("c_left_slingshot",)), (26, ("c_right_slingshot",)))
+BALL_SEARCH_GATE = (32, 91)         # orbit gate (coil 5) held 1.48 s
+BALL_SEARCH_MOTOR_TICKS = 33        # hook "ball_search_motor": the Optimus motor runs to its time limit
 LOST_BALL_SEARCH = 5        # ball_search_start(5) with adj 63 LOST BALL RECOVERY: a lost ball is fed [0x0001f79c]
 COINDOOR_SAVE_TICKS, COINDOOR_GRACE_TICKS = 0x138, 0xbb     # coin door opened in play, adj 41 [0x0001ff74]
 POWER_OFF_DEFF = 4          # "50V / 20V DISABLED / CLOSE COIN DOOR ..." while the door is open
@@ -1265,9 +1273,50 @@ class TfOS(CustomCode):
             # bonus_skip 15.35 -> 15.93)
             self.after(BALL_SEARCH_EVENT_TICKS, lambda: self.task_running(0x2b) and self.request_refresh())
             self.audit(0x25)
+            self._search_sweep()
             self.hook("ball_search")
             self.machine.events.post("tf_ball_search", count=self.ball_search_count)
         self.ball_search_reload(15 if self.tilted else 10)
+
+    def _search_sweep(self):
+        """The coils a search fires, in the ROM's order and timing (BALL_SEARCH_SWEEP); none once the search has
+        ended (a switch found the ball)."""
+        def fire(names):
+            if self.task_running(0x2b):
+                for name in names:
+                    self.lamps.flasher(name, 64)
+        for ticks, names in BALL_SEARCH_SWEEP:
+            self.after(ticks, lambda names=names: fire(names))
+        self.after(BALL_SEARCH_MOTOR_TICKS, lambda: self.task_running(0x2b) and self.hook("ball_search_motor"))
+        gate_at, gate_ticks = BALL_SEARCH_GATE
+        self.after(gate_at, lambda: self.task_running("search_run") and self.hold_coil("c_orbit_control_gate", 5,
+                                                                                       gate_ticks))
+
+    def hold_coil(self, name, num, ticks):
+        """Hold a driver on for `ticks` (the orbit gate), logged like the traces; a hold while held extends it."""
+        coil = self.machine.coils.get(name) if hasattr(self.machine, "coils") else None
+        if coil is None:
+            return
+        held = getattr(self, "_held", None)
+        if held is None:
+            held = self._held = {}
+        until = self.now + ticks * TICK
+        if name in held:
+            held[name] = max(held[name], until)
+            return
+        coil.enable()
+        self.trace.log("coil", coil=num, on=1)
+        held[name] = until
+
+        def off():
+            left = held.get(name, 0) - self.now
+            if left > 0.001:
+                self.machine.clock.schedule_once(off, left)
+                return
+            held.pop(name, None)
+            coil.disable()
+            self.trace.log("coil", coil=num, on=0)
+        self.machine.clock.schedule_once(off, ticks * TICK)
 
     def _lost_ball_feed(self):
         """ball_search_start(5) with adj 63 LOST BALL RECOVERY [0x0001f79c]: the balls missing from the

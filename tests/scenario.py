@@ -128,7 +128,42 @@ def forced_vars(evs):
             out.setdefault("allspark", []).append(value - 1)
     if audited and "allspark" not in out:
         out["allspark"] = audited
+    if "mode_start" not in out:
+        picks = mode_start_from_scores(evs)
+        if picks:
+            out["mode_start"] = picks
     return out
+
+
+MS_SHOT_AUDIT = {65: 1, 67: 2, 68: 3, 66: 4}     # shot audits (battles.SHOT_AUDIT) -> mode-start shot
+
+
+def mode_start_from_scores(evs):
+    """Mode-start relight picks of a trace without the watched lit mask: replay the factory mask (0x1e, minimum 3,
+    4 hits) over the mode-start scores (score_add caller 0x10200e0, shot from its audit 65-68); a scored shot that
+    is not lit is the oldest pending relight. Picks not revealed stay None (free)."""
+    lit, hits, picks, pending = 0x1e, 0, [], []
+    for i, e in enumerate(evs):
+        if e.get("ev") != "score_add" or e.get("caller") != "0x10200e0":
+            continue
+        shot = next((MS_SHOT_AUDIT[a["id"]] for a in evs[max(0, i - 6):i]
+                     if a.get("ev") == "audit" and a.get("id") in MS_SHOT_AUDIT and e["t"] - a["t"] < 0.05), None)
+        if shot is None:
+            return []                       # a shot this replay cannot place: leave every pick free
+        if not lit & (1 << shot):
+            if not pending:
+                return []
+            picks[pending.pop(0)] = shot
+            lit |= 1 << shot
+        hits += 1
+        if hits >= 4:
+            lit, hits, pending = 0x1e, 0, []
+            continue
+        lit &= ~(1 << shot)
+        if bin(lit).count("1") < 3:
+            pending.append(len(picks))
+            picks.append(None)
+    return picks
 
 
 def forced_samples(evs):

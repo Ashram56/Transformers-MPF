@@ -43,11 +43,15 @@ SHOT_SWITCHES = {5: LEFT_ORBIT, 6: LEFT_ORBIT, 10: LEFT_RAMP, 11: CENTER, 51: CE
                  12: RIGHT_ORBIT, 1: BEE}
 SHOT_AUDIT = {LEFT_ORBIT: 65, RIGHT_ORBIT: 66, LEFT_RAMP: 67, RIGHT_RAMP: 68}
 ORANGE = {ALLSPARK: 15, LEFT_ORBIT: 19, LEFT_RAMP: 44, CENTER: 40, RIGHT_RAMP: 34, RIGHT_ORBIT: 39, BEE: 30}
-# Left orbit (switch tokens 7 / 8 [0x01033354, 0x010332e4], observed in traces/switches.jsonl 32.7-39.2 s): a
-# switch repeated within ORBIT_REPEAT_S is ignored (sw 5 or sw 6 again 2.18 s later: nothing); sw 6 2.18 s
-# after sw 5 is a new shot. The two switches of one pass count once (ORBIT_PASS_S). Both times are inferred.
-ORBIT_REPEAT_S = 3.0
-ORBIT_PASS_S = 1.0
+# Left orbit, switch-timeout token 7 (187 units) [0x01033354 sw 5, 0x010332e4 sw 6]: with the token down, sw 5 or
+# sw 6 counts the shot and sets it; with it up, sw 5 clears it and sw 6 sets it again, neither counts; sw 12 clears
+# it [0x01033530]. Its length is observed between 2.18 s (switches.jsonl: sw 5 and sw 6 again 2.17-2.18 s later,
+# not counted) and 2.35 s (combos.jsonl: sw 6 every 2.35-2.37 s, each counted), so about 12 ms per unit (inferred).
+ORBIT_TOKEN_S = 2.26
+# A left orbit that counts holds the orbit control gate (coil 5) open 91 ticks (1.48-1.52 s), so the ball goes round
+# (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
+# the ignored repeats leave it shut)
+GATE_TICKS = 91
 CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 0x54, inferred time)
 # sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
 # a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
@@ -709,6 +713,7 @@ class Battles(Feature):
         super().__init__(os_)
         self.battles = [cls(self) for cls in BATTLES]
         self.left_orbit_at = {5: -10.0, 6: -10.0}
+        self.orbit_token = 0.0          # token 7 runs until then
         self.center_at = self.lane_at = -10.0
         self.launched_at = self.back_door_at = self.right_at = -10.0
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._launched, state=0)
@@ -937,10 +942,12 @@ class Battles(Feature):
 
     def _left_orbit(self, num):
         now = self.os.now
-        same, other = self.left_orbit_at[num], self.left_orbit_at[11 - num]
         self.left_orbit_at[num] = now
-        if now - same < ORBIT_REPEAT_S or now - other < ORBIT_PASS_S:
+        if now < self.orbit_token:
+            self.orbit_token = now + ORBIT_TOKEN_S if num == 6 else 0.0
             return
+        self.orbit_token = now + ORBIT_TOKEN_S
+        self.os.hold_coil("c_orbit_control_gate", 5, GATE_TICKS)
         self.shot(LEFT_ORBIT)
 
     def sw_5(self):
@@ -968,6 +975,7 @@ class Battles(Feature):
 
     def sw_12(self):
         now = self.os.now
+        self.orbit_token = 0.0
         last = max(list(self.left_orbit_at.values()) + [self.back_door_at, self.lane_at, self.launched_at])
         if now - last < RIGHT_IGNORE_S or now - self.right_at < RIGHT_REPEAT_S:
             return
