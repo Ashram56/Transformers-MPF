@@ -26,8 +26,8 @@ public class TfSetup extends GhidraScript {
     byte[] rom = Files.readAllBytes(Path.of(System.getenv("TF_ROM")));
     Memory mem = currentProgram.getMemory();
     for (MemoryBlock b : mem.getBlocks()) { b.setWrite(false); b.setExecute(false); b.setName("FLASH"); }
-    blk("OS", 0, rom, 0, 0x34058, true, false);
-    blk("RAM", 0x34058, rom, 0x34058, 0xcbfa8, false, true);
+    blk("OS", 0, rom, 0, 0x30aa0, true, false);
+    blk("RAM", 0x30aa0, rom, 0x30aa0, 0xcf560, false, true);
     blk("GAME", 0x01000000, rom, 0x40000, 0x100000, true, false);
     MemoryBlock nv = mem.createUninitializedBlock("NVRAM", toAddr(0x02100000), 0x20000, false); nv.setWrite(true);
     MemoryBlock io = mem.createUninitializedBlock("IO", toAddr(0x02400000), 0x1000, false); io.setWrite(true); io.setVolatile(true);
@@ -41,7 +41,7 @@ public class TfSetup extends GhidraScript {
     SymbolTable st = currentProgram.getSymbolTable();
     Listing lst = currentProgram.getListing();
     int made = 0;
-    for (String l : Files.readAllLines(Path.of(W + "seeds.tsv"))) {
+    for (String l : Files.readAllLines(Path.of(W + "seeds_named.tsv"))) {
       String[] p = l.split("\t", -1);
       long a = Long.parseLong(p[0], 16);
       Address ad = toAddr(a);

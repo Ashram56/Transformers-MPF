@@ -7,7 +7,7 @@ OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
 def hx(v, w=0): return ('0x%0' + str(w) + 'x') % v if w else '0x%x' % v
 def wcsv(fn, rows):
     with open(os.path.join(OUT, fn), 'w', newline='') as f:
-        w = csv.DictWriter(f, list(rows[0])); w.writeheader(); w.writerows(rows)
+        w = csv.DictWriter(f, list(rows[0]), lineterminator='\n'); w.writeheader(); w.writerows(rows)
 # ---- switches: 32 B records, index = switch number (record 0 unused)
 def sw_row(a, num, ded=None):
     h, p4, nm, f0c = struct.unpack_from('<4I', ROM, foff(a))

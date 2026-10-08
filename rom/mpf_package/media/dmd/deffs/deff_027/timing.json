@@ -1,0 +1,325 @@
+{
+ "deff": 27,
+ "fn": "0x103d1e8",
+ "flags": 6,
+ "priority": 16,
+ "background": false,
+ "capture": "fg1",
+ "forced_at_s": 37.7459,
+ "ended_ms": 1.2,
+ "window_ms": 306.9,
+ "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
+ "frames": [
+  {
+   "i": 0,
+   "t_ms": 20.8,
+   "dur_ms": 50
+  }
+ ],
+ "pages": [
+  {
+   "t_ms": 1.2,
+   "fg": 17,
+   "bg": 0,
+   "images": [],
+   "texts": [
+    {
+     "t_ms": 0.6,
+     "str": "INSTANT INFO",
+     "font": 67933284,
+     "flags": 2,
+     "x": 64,
+     "y": 20,
+     "color": 0,
+     "width": 118,
+     "page": 17,
+     "lr": "217a4"
+    },
+    {
+     "t_ms": 0.7,
+     "str": "INSTANT INFO",
+     "font": 15,
+     "flags": 2,
+     "x": 64,
+     "y": 20,
+     "color": 0,
+     "width": -1,
+     "page": 17,
+     "lr": "21c7c"
+    }
+   ]
+  }
+ ],
+ "sounds": [],
+ "leffs": [],
+ "events": [
+  {
+   "t_ms": 0.0,
+   "event": 73
+  },
+  {
+   "t_ms": 0.0,
+   "event": 27
+  },
+  {
+   "t_ms": 1.2,
+   "event": 74
+  },
+  {
+   "t_ms": 15.7,
+   "event": 32
+  },
+  {
+   "t_ms": 16.2,
+   "event": 73
+  },
+  {
+   "t_ms": 16.2,
+   "event": 33
+  },
+  {
+   "t_ms": 16.2,
+   "event": 74
+  },
+  {
+   "t_ms": 31.7,
+   "event": 32
+  },
+  {
+   "t_ms": 31.7,
+   "event": 27
+  },
+  {
+   "t_ms": 32.2,
+   "event": 33
+  },
+  {
+   "t_ms": 38.0,
+   "event": 74
+  },
+  {
+   "t_ms": 47.9,
+   "event": 32
+  },
+  {
+   "t_ms": 48.4,
+   "event": 33
+  },
+  {
+   "t_ms": 54.1,
+   "event": 74
+  },
+  {
+   "t_ms": 63.9,
+   "event": 32
+  },
+  {
+   "t_ms": 64.4,
+   "event": 33
+  },
+  {
+   "t_ms": 70.1,
+   "event": 74
+  },
+  {
+   "t_ms": 80.2,
+   "event": 32
+  },
+  {
+   "t_ms": 80.7,
+   "event": 33
+  },
+  {
+   "t_ms": 80.7,
+   "event": 10
+  },
+  {
+   "t_ms": 80.7,
+   "event": 11
+  },
+  {
+   "t_ms": 86.6,
+   "event": 74
+  },
+  {
+   "t_ms": 96.5,
+   "event": 32
+  },
+  {
+   "t_ms": 97.0,
+   "event": 33
+  },
+  {
+   "t_ms": 102.6,
+   "event": 74
+  },
+  {
+   "t_ms": 112.7,
+   "event": 32
+  },
+  {
+   "t_ms": 113.2,
+   "event": 33
+  },
+  {
+   "t_ms": 118.8,
+   "event": 74
+  },
+  {
+   "t_ms": 128.7,
+   "event": 32
+  },
+  {
+   "t_ms": 129.2,
+   "event": 33
+  },
+  {
+   "t_ms": 134.8,
+   "event": 74
+  },
+  {
+   "t_ms": 144.9,
+   "event": 32
+  },
+  {
+   "t_ms": 145.4,
+   "event": 33
+  },
+  {
+   "t_ms": 151.0,
+   "event": 74
+  },
+  {
+   "t_ms": 160.9,
+   "event": 32
+  },
+  {
+   "t_ms": 161.4,
+   "event": 33
+  },
+  {
+   "t_ms": 167.2,
+   "event": 74
+  },
+  {
+   "t_ms": 176.9,
+   "event": 32
+  },
+  {
+   "t_ms": 177.4,
+   "event": 33
+  },
+  {
+   "t_ms": 177.4,
+   "event": 10
+  },
+  {
+   "t_ms": 177.4,
+   "event": 11
+  },
+  {
+   "t_ms": 183.2,
+   "event": 74
+  },
+  {
+   "t_ms": 192.9,
+   "event": 32
+  },
+  {
+   "t_ms": 193.5,
+   "event": 33
+  },
+  {
+   "t_ms": 199.1,
+   "event": 74
+  },
+  {
+   "t_ms": 209.2,
+   "event": 32
+  },
+  {
+   "t_ms": 209.7,
+   "event": 33
+  },
+  {
+   "t_ms": 215.5,
+   "event": 74
+  },
+  {
+   "t_ms": 225.7,
+   "event": 32
+  },
+  {
+   "t_ms": 226.2,
+   "event": 33
+  },
+  {
+   "t_ms": 231.9,
+   "event": 74
+  },
+  {
+   "t_ms": 242.0,
+   "event": 32
+  },
+  {
+   "t_ms": 242.5,
+   "event": 33
+  },
+  {
+   "t_ms": 248.2,
+   "event": 74
+  },
+  {
+   "t_ms": 257.9,
+   "event": 32
+  },
+  {
+   "t_ms": 258.4,
+   "event": 33
+  },
+  {
+   "t_ms": 264.1,
+   "event": 74
+  },
+  {
+   "t_ms": 274.2,
+   "event": 32
+  },
+  {
+   "t_ms": 274.7,
+   "event": 33
+  },
+  {
+   "t_ms": 274.7,
+   "event": 10
+  },
+  {
+   "t_ms": 274.7,
+   "event": 11
+  },
+  {
+   "t_ms": 280.4,
+   "event": 74
+  },
+  {
+   "t_ms": 290.2,
+   "event": 32
+  },
+  {
+   "t_ms": 290.7,
+   "event": 33
+  },
+  {
+   "t_ms": 296.3,
+   "event": 74
+  },
+  {
+   "t_ms": 306.4,
+   "event": 32
+  },
+  {
+   "t_ms": 306.9,
+   "event": 33
+  }
+ ]
+}

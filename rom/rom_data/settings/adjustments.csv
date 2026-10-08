@@ -1,0 +1,99 @@
+adj,name,default_table,min,max,step,field_0x14,display_type,nvram,desc_addr,tag
+1,COIL PULSE POWER,2,0,2,1,1,1,0x2102008,0x40cb22c,code (table); default may be overridden by country install lists
+2,CUSTOM MESSAGE,1,0,2,1,1,3,0x2102010,0x40cb24c,code (table); default may be overridden by country install lists
+3,TIME FORMAT,0,0,1,1,1,10,0x2102018,0x40cb26c,code (table); default may be overridden by country install lists
+4,FAST BOOT,1,0,1,1,1,9,0x2102020,0x40cb28c,code (table); default may be overridden by country install lists
+5,FLASH LAMP POWER,2,0,2,1,1,7,0x2102028,0x40cb2ac,code (table); default may be overridden by country install lists
+6,GAME ID,0,0,9999,1,10,4,0x2102030,0x40cb2cc,code (table); default may be overridden by country install lists
+7,LANGUAGE,0,0,4,1,1,8,0x2102038,0x40cb2ec,code (table); default may be overridden by country install lists
+8,LOCATION ID,0,0,9999,1,10,4,0x2102040,0x40cb30c,code (table); default may be overridden by country install lists
+9,MUSIC VOLUME,1,1,15,1,1,4,0x2102048,0x40cb32c,code (table); default may be overridden by country install lists
+10,PLAYER LANGUAGE SELECT,0,0,1,1,1,9,0x2102050,0x40cb34c,code (table); default may be overridden by country install lists
+11,REPLAY TYPE,3,0,3,1,1,24,0x2102058,0x40cb36c,code (table); default may be overridden by country install lists
+12,REPLAY PERCENTAGE,10,1,50,1,1,6,0x2102060,0x40cb38c,code (table); default may be overridden by country install lists
+13,REPLAY AWARD,0,0,3,1,1,23,0x2102068,0x40cb3ac,code (table); default may be overridden by country install lists
+14,REPLAY LEVELS,1,1,4,1,1,4,0x2102070,0x40cb3cc,code (table); default may be overridden by country install lists
+15,AUTO REPLAY START,20000000,5000000,150000000,1000000,1,25,0x2102078,0x40cb3ec,code (table); default may be overridden by country install lists
+16,DYNAMIC REPLAY START,60000000,5000000,150000000,1000000,1,25,0x2102080,0x40cb40c,code (table); default may be overridden by country install lists
+17,REPLAY LEVEL #1,15000000,5000000,150000000,1000000,1,25,0x2102088,0x40cb42c,code (table); default may be overridden by country install lists
+18,REPLAY LEVEL #2,30000000,5000000,300000000,1000000,1,25,0x2102090,0x40cb44c,code (table); default may be overridden by country install lists
+19,REPLAY LEVEL #3,45000000,5000000,450000000,1000000,1,25,0x2102098,0x40cb46c,code (table); default may be overridden by country install lists
+20,REPLAY LEVEL #4,60000000,5000000,600000000,1000000,1,25,0x21020a0,0x40cb48c,code (table); default may be overridden by country install lists
+21,REPLAY BOOST,1,0,1,1,1,9,0x21020a8,0x40cb4ac,code (table); default may be overridden by country install lists
+22,SPECIAL LIMIT,1,0,6,1,1,27,0x21020b0,0x40cb4cc,code (table); default may be overridden by country install lists
+23,SPECIAL AWARD,0,0,4,1,1,26,0x21020b8,0x40cb4ec,code (table); default may be overridden by country install lists
+24,SPECIAL PERCENTAGE,10,1,50,1,1,6,0x21020c0,0x40cb50c,code (table); default may be overridden by country install lists
+25,FREE GAME LIMIT,5,0,10,1,1,14,0x21020c8,0x40cb52c,code (table); default may be overridden by country install lists
+26,EXTRA BALL LIMIT,5,0,10,1,1,12,0x21020d0,0x40cb54c,code (table); default may be overridden by country install lists
+27,EXTRA BALL PERCENTAGE,25,1,50,1,1,6,0x21020d8,0x40cb56c,code (table); default may be overridden by country install lists
+28,GAME PRICING,66,0,68,1,1,15,0x21020e0,0x40cb58c,code (table); default may be overridden by country install lists
+29,MATCH AWARD,0,0,2,1,1,19,0x21020e8,0x40cb5ac,code (table); default may be overridden by country install lists
+30,MATCH PERCENTAGE,9,0,11,1,1,20,0x21020f0,0x40cb5cc,code (table); default may be overridden by country install lists
+31,BALLS PER GAME,3,1,10,1,1,4,0x21020f8,0x40cb5ec,code (table); default may be overridden by country install lists
+32,TILT WARNINGS,2,0,3,1,1,4,0x2102100,0x40cb60c,code (table); default may be overridden by country install lists
+33,CREDIT LIMIT,30,4,50,1,1,4,0x2102108,0x40cb62c,code (table); default may be overridden by country install lists
+34,FREE PLAY,0,0,1,1,1,9,0x2102110,0x40cb64c,code (table); default may be overridden by country install lists
+35,KNOCKER VOLUME,2,0,2,1,1,18,0x2102118,0x40cb66c,code (table); default may be overridden by country install lists
+36,GAME RESTART,1,0,1,1,1,9,0x2102120,0x40cb68c,code (table); default may be overridden by country install lists
+37,BILL VALIDATOR,0,0,1,1,1,9,0x2102128,0x40cb6ac,code (table); default may be overridden by country install lists
+38,BALL SAVE TIME,5,0,16,1,1,11,0x2102130,0x40cb6cc,code (table); default may be overridden by country install lists
+39,TIMED PLUNGER,0,0,60,1,1,28,0x2102138,0x40cb6ec,code (table); default may be overridden by country install lists
+40,FLIPPER BALL LAUNCH,0,0,4,1,1,13,0x2102140,0x40cb70c,code (table); default may be overridden by country install lists
+41,COINDOOR BALL SAVER,0,0,1,1,1,9,0x2102148,0x40cb72c,code (table); default may be overridden by country install lists
+42,COMPETITION MODE,0,0,1,1,1,9,0x2102150,0x40cb74c,code (table); default may be overridden by country install lists
+43,CONSOLATION BALL,1,0,1,1,1,9,0x2102158,0x40cb76c,code (table); default may be overridden by country install lists
+44,Q24 OPTION,0,0,2,1,1,21,0x2102160,0x40cb78c,code (table); default may be overridden by country install lists
+45,TICKET DISPENSER,0,0,4,1,1,22,0x2102168,0x40cb7ac,code (table); default may be overridden by country install lists
+46,PLAYER COMPETITION,1,0,1,1,1,9,0x2102170,0x40cb7cc,code (table); default may be overridden by country install lists
+47,TEAM SCORES,0,0,1,1,1,9,0x2102178,0x40cb7ec,code (table); default may be overridden by country install lists
+48,ALLOW HIGH SCORES,1,0,1,1,1,9,0x2102180,0x40cb80c,code (table); default may be overridden by country install lists
+49,GRAND CHAMPION SCORE,75000000,1000000,1000000000,1000000,1000000,25,0x2102188,0x40cb82c,code (table); default may be overridden by country install lists
+50,HIGH SCORE #1,55000000,1000000,1000000000,1000000,1000000,25,0x2102190,0x40cb84c,code (table); default may be overridden by country install lists
+51,HIGH SCORE #2,40000000,1000000,1000000000,1000000,1000000,25,0x2102198,0x40cb86c,code (table); default may be overridden by country install lists
+52,HIGH SCORE #3,30000000,1000000,1000000000,1000000,1000000,25,0x21021a0,0x40cb88c,code (table); default may be overridden by country install lists
+53,HIGH SCORE #4,25000000,1000000,1000000000,1000000,1000000,25,0x21021a8,0x40cb8ac,code (table); default may be overridden by country install lists
+54,HIGH SCORE AWARD,0,0,2,1,1,16,0x21021b0,0x40cb8cc,code (table); default may be overridden by country install lists
+55,GRAND CHAMPION AWARDS,1,0,5,1,1,4,0x21021b8,0x40cb8ec,code (table); default may be overridden by country install lists
+56,HIGH SCORE #1 AWARDS,1,0,3,1,1,4,0x21021c0,0x40cb90c,code (table); default may be overridden by country install lists
+57,HIGH SCORE #2 AWARDS,0,0,2,1,1,4,0x21021c8,0x40cb92c,code (table); default may be overridden by country install lists
+58,HIGH SCORE #3 AWARDS,0,0,1,1,1,4,0x21021d0,0x40cb94c,code (table); default may be overridden by country install lists
+59,HIGH SCORE #4 AWARDS,0,0,1,1,1,4,0x21021d8,0x40cb96c,code (table); default may be overridden by country install lists
+60,HSTD INITIALS,0,0,1,1,1,17,0x21021e0,0x40cb98c,code (table); default may be overridden by country install lists
+61,HSTD RESET COUNT,2000,0,9900,100,1,5,0x21021e8,0x40cb9ac,code (table); default may be overridden by country install lists
+62,COIN INPUT DELAY,30,30,61,1,1,2,0x21021f0,0x40cb9cc,code (table); default may be overridden by country install lists
+63,LOST BALL RECOVERY,1,0,1,1,1,9,0x21021f8,0x40cb9ec,code (table); default may be overridden by country install lists
+64,COIN DOOR DISABLE TILT,0,0,1,1,1,9,0x2102200,0x40cba0c,code (table); default may be overridden by country install lists
+65,TRANSFORMERS SELECT,0,0,2,1,1,33,0x2102208,0x40cba2c,code (table); default may be overridden by country install lists
+66,MODE START DIFFICULTY,3,0,4,1,1,31,0x2102210,0x40cba4c,code (table); default may be overridden by country install lists
+67,OPTIMUS DIFFICULTY,1,0,2,1,1,30,0x2102218,0x40cba6c,code (table); default may be overridden by country install lists
+68,MEGATRON M.B. LOCK DIFFICULTY,0,0,2,1,1,30,0x2102220,0x40cba8c,code (table); default may be overridden by country install lists
+69,MEGATRON M.B. VIRTUAL LOCK,0,0,1,1,1,9,0x2102228,0x40cbaac,code (table); default may be overridden by country install lists
+70,BUMBLEBEE LETTER DIFFICULTY,0,0,2,1,1,30,0x2102230,0x40cbacc,code (table); default may be overridden by country install lists
+71,ORBIT DIFFICULTY,2,0,4,1,1,31,0x2102238,0x40cbaec,code (table); default may be overridden by country install lists
+72,STARSCREAM TIMER,45,30,60,1,1,4,0x2102240,0x40cbb0c,code (table); default may be overridden by country install lists
+73,SHOCKWAVE TIMER,45,30,60,1,1,4,0x2102248,0x40cbb2c,code (table); default may be overridden by country install lists
+74,BLACKOUT TIMER,45,30,60,1,1,4,0x2102250,0x40cbb4c,code (table); default may be overridden by country install lists
+75,DEVASTATOR TIMER,20,10,30,1,1,4,0x2102258,0x40cbb6c,code (table); default may be overridden by country install lists
+76,BUMBLEBEE TIMER,15,5,30,1,1,4,0x2102260,0x40cbb8c,code (table); default may be overridden by country install lists
+77,IRONHIDE TIMER,25,15,35,1,1,4,0x2102268,0x40cbbac,code (table); default may be overridden by country install lists
+78,MUDFLAP/SKIDS TIMER,15,5,30,1,1,4,0x2102270,0x40cbbcc,code (table); default may be overridden by country install lists
+79,RATCHET TIMER,45,20,60,1,1,4,0x2102278,0x40cbbec,code (table); default may be overridden by country install lists
+80,DOUBLE SCORING TIMER,40,10,60,1,1,4,0x2102280,0x40cbc0c,code (table); default may be overridden by country install lists
+81,FAST SCORING TIMER,25,10,60,1,1,4,0x2102288,0x40cbc2c,code (table); default may be overridden by country install lists
+82,MUDFLAP/SKIDS TARGET DIFFICULTY,1,0,4,1,1,31,0x2102290,0x40cbc4c,code (table); default may be overridden by country install lists
+83,BONUS EXTRA BALL AT,5,0,10,1,1,34,0x2102298,0x40cbc6c,code (table); default may be overridden by country install lists
+84,DISABLE ORBIT CONTROL GATE,0,0,1,1,1,9,0x21022a0,0x40cbc8c,code (table); default may be overridden by country install lists
+85,DISABLE OPTIMUS PRIME MOTOR,0,0,1,1,1,9,0x21022a8,0x40cbcac,code (table); default may be overridden by country install lists
+86,RESET WIZARD AT BALL START,0,0,1,1,1,9,0x21022b0,0x40cbccc,code (table); default may be overridden by country install lists
+87,SAVE OPTIMUS PRIME PROGRESS,1,0,1,1,1,9,0x21022b8,0x40cbcec,code (table); default may be overridden by country install lists
+88,SAVE MEGATRON PROGRESS,1,0,1,1,1,9,0x21022c0,0x40cbd0c,code (table); default may be overridden by country install lists
+89,AUTOFIRE AFTER LOCK,1,0,1,1,1,9,0x21022c8,0x40cbd2c,code (table); default may be overridden by country install lists
+90,COMBO CHAMPION,20,1,50,1,1,25,0x21022d0,0x40cbd4c,code (table); default may be overridden by country install lists
+91,COMBO CHAMPION AWARD,0,0,2,1,1,16,0x21022d8,0x40cbd6c,code (table); default may be overridden by country install lists
+92,COMBO CHAMPION AWARDS,0,0,5,1,1,4,0x21022e0,0x40cbd8c,code (table); default may be overridden by country install lists
+93,BEST COMBO CHAMPION,327681,131073,655361,65536,1,35,0x21022e8,0x40cbdac,code (table); default may be overridden by country install lists
+94,BEST COMBO CHAMPION AWARD,0,0,2,1,1,16,0x21022f0,0x40cbdcc,code (table); default may be overridden by country install lists
+95,BEST COMBO CHAMPION AWARDS,0,0,5,1,1,4,0x21022f8,0x40cbdec,code (table); default may be overridden by country install lists
+96,SHAKER MOTOR (OPTIONAL),3,0,3,1,1,32,0x2102300,0x40cbe0c,code (table); default may be overridden by country install lists
+97,MUSIC VOLUME,0,-60,60,1,1,65540,0x2102308,0x40cbe2c,code (table); default may be overridden by country install lists
+98,SPEECH VOLUME,0,-60,60,1,1,65540,0x2102310,0x40cbe4c,code (table); default may be overridden by country install lists

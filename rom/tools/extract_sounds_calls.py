@@ -21,6 +21,6 @@ for i in range(705):
                      w_0x0c=f12, w_0x0e=f14, flags_0x10='0x%03x' % f16, w_0x12=f18, state_ram_0x00='0x%x' % r0,
                      state_ram_0x04='0x%x' % r1, list_addr='0x%x' % lp, desc_addr='0x%x' % a))
 with open(os.path.join(OUT, 'sound_calls.csv'), 'w', newline='') as f:
-    w = csv.DictWriter(f, list(rows[0])); w.writeheader(); w.writerows(rows)
+    w = csv.DictWriter(f, list(rows[0]), lineterminator='\n'); w.writeheader(); w.writerows(rows)
 used = set(int(x, 16) for r in rows for x in r['samples'].split())
 print('calls', len(rows), 'with samples', sum(1 for r in rows if r['n_samples']), 'samples used', len(used), 'unused', sorted(set(kinds) - used)[:40])

@@ -29,7 +29,9 @@ static void waitemu(double t){ while(emu()<t) std::this_thread::sleep_for(std::c
 static void press(int key,double dt=0.25){ keys[key]=1; waitemu(emu()+dt); keys[key]=0; waitemu(emu()+0.1); }
 static int start_pinmame(const char* set, void (*hook)(unsigned,unsigned*)){
   static PinmameConfig c = { PINMAME_AUDIO_FORMAT_INT16, 44100, "", OnState, OnDisplayAvailable, OnDisplayUpdated, NULL, NULL, NULL, NULL, NULL, NULL, IsKeyPressed, OnLog, NULL };
-  snprintf((char*)c.vpmPath,PINMAME_MAX_PATH,"%s/.pinmame/",getenv("HOME"));
+  // fresh vpm folder per run (own NVRAM = factory settings): set VPM_DIR to a temp dir holding roms/tf_180.zip
+  if(getenv("VPM_DIR")) snprintf((char*)c.vpmPath,PINMAME_MAX_PATH,"%s/",getenv("VPM_DIR"));
+  else snprintf((char*)c.vpmPath,PINMAME_MAX_PATH,"%s/.pinmame/",getenv("HOME"));
   PinmameSetConfig(&c); PinmameSetHandleKeyboard(1); PinmameSetHandleMechanics(0); PinmameSetDmdMode(PINMAME_DMD_MODE_RAW);
   if(hook) PinmameSetArmHook(hook);
   if(PinmameRun(set)!=PINMAME_STATUS_OK){ fprintf(stderr,"run fail\n"); return 1; }

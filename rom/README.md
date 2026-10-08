@@ -23,6 +23,12 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rom_data/io/` | `switches.csv` (64 matrix), `dedicated_switches.csv` (D1-D32 with PinMAME numbers), `coils.csv` (35, flags decoded, test/ball-search times, wire colours), `lamps.csv` (80) |
 | `rom_data/sound/` | `samples.csv` (668 directory entries: kind, rate, duration, ROM length check, loop point, stream offsets), `sound_calls.csv` (705 calls: sample list, raw fields) |
 | `rom_data/dmd/images.csv` | All 10,212 images: header fields and file offset |
+| `rom_data/dmd/deffs.csv` | The 155 display effects (deffs): function, flags, priority, background flag, capture summary |
+| `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
+| `rom_data/settings/` | `adjustments.csv` (99: NVRAM slot, default, min, max, step, name, display type), `audits.csv` (167) |
+| `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
+| `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
+| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events) |
 | `mpf_package/config/` | MPF v6 config: `switches.yaml`, `coils.yaml`, `lights.yaml`, `sounds.yaml` (659 sounds, 694 pools, one per sound call) |
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
 | `mpf_package/media/sounds/{speech,sfx,music}/XXXX.wav` | Every sample, file name = ROM sample id |
@@ -51,6 +57,16 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
   WAV with `loop_start_at`.
 - **Images (code).** Formats 0, 1, 3, 7, 9, 12 as on Tron. Most animations are 87x32 (drawn at x = 41 on Tron;
   assumed here until display effects are captured), 693 images are full 128x32.
+- **Display effects (code + observed).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
+  the 21 background effects (attract, status panel 40, mode backgrounds), bit 1 most foreground effects. The deff
+  id is the u16 at task+0x24 of the deff task. Effects were captured by calling `deff_start(id)` from the
+  `task_sleep` hook in a started game (`tools/emu/tracer.cpp`). 153 of 155 rendered; 8 and 22 are stubs. About 35
+  end within 0.3 s when forced because they read game state (mode scores, shots lit) and need live play to show.
+  Every image the effects draw goes through `bitmap_draw` and every glyph through `text_draw_str`, so
+  `timing.json` lists those two and leaves out the blits under them.
+- **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
+  status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
+  GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.
 - **IO (code).** Name tables use the Tron 24-byte, five-language records. Coil descriptor layout is the Tron one
   (flags, test fn, ball-search fn, name, test ms, ball-search ms, two wire colour message ids). Coil register map
   (1-8 SOL_B, 9-16 SOL_A, 17-24 SOL_C, 25-32 FLSH_LMP, 33-35 aux) is the SAM standard and not yet confirmed from
@@ -58,15 +74,15 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
 
 ## Status
 
-Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library.
+Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library, fonts,
+adjustments and audits, the decompile, the display effect captures and the event map.
 
-Next, in this order: Ghidra decompile and OS function map, display effect captures (per-effect frames, timing,
-sounds, text layout), coil pulse and hold times measured at 1 ms, lamp effects, fonts, settings and service menu,
-then rules specs with reference traces.
+Next, in this order: sound call meanings (music, speech, coin, tilt), coil pulse and hold times measured at 1 ms,
+lamp effects, rules specs with reference traces, pricing table and switch flags.
 
 Open items:
 1. Coil register map and the aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) need the
    IO pointer block read in the emulator.
-2. Animation frame times in `dmd_library` are a 50 ms placeholder until the effects are captured.
+2. 225 library animations keep a 50 ms placeholder frame time; about 35 effects need live play to capture.
 3. Meaning of the sound call fields at +0x0c..+0x13 (`flags_0x10` holds values like 0x1b0, 0x1ff) is not decoded.
 4. 60 samples are in no sound call; they may be played directly or be unused.
