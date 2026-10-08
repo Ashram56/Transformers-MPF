@@ -55,6 +55,10 @@ def format_rom_text(line, args):
     return SPEC.sub(sub, line)
 
 
+# Deffs drawn as ROM draw lists (tf/score_screen.py, interim layouts) while the package has no frames for them
+DRAWN = (19, 1)
+
+
 class MediaBridge:
 
     def __init__(self, os_):
@@ -141,6 +145,10 @@ class MediaBridge:
 
     def deff_start(self, deff_id, priority, **args):
         info = self.data["deffs"].get(deff_id) if self.data else None
+        if not info and deff_id in DRAWN:                # no captured frames yet: the interim draw list
+            self.drawn.add(deff_id)
+            self.text_show("rom_screen", [], priority, draw=self.drawn_screen(deff_id))
+            return
         if not info:
             return
         slide = info["slide"]
@@ -163,6 +171,16 @@ class MediaBridge:
             self._remove("rom_screen")
         elif info:
             self._remove(info["slide"])
+
+    def drawn_screen(self, deff_id):
+        """The interim screen of a deff in DRAWN (tf/score_screen.py)."""
+        from tf import score_screen
+        if deff_id == 19:
+            game = self.os.game
+            players = [p.score for p in game.player_list] if game else []
+            ball = game.player.ball if game and game.player else 1
+            return score_screen.score_draw(players, self.os.player_num or 1, ball, self.credits_text())
+        return score_screen.attract_draw(self.credits_text())
 
     def deff_draw(self, deff_id, priority, draw):
         """A running deff whose next screen its captured frames do not hold (deff 4 dims after 30 s): the ROM
@@ -256,6 +274,10 @@ class MediaBridge:
     def score_changed(self, *_):
         """Score flush (and every 0.25 s while a panel shows): refresh the score display and the
         status panel of the effects on screen."""
+        for deff_id in DRAWN:
+            if deff_id in self.drawn:
+                self._send("slides_play", {"rom_screen": {"action": "update", "key": "rom_screen", "expire": None}},
+                           need_data=False, draw=self.drawn_screen(deff_id))
         if not self.data:
             return
         args = None

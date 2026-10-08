@@ -21,6 +21,9 @@ SW = {  # SAM switch number -> MPF switch name (rom/mpf_package/config/switches.
     45: "s_captive_ball", 46: "s_energon_right", 49: "s_energon_center", 50: "s_r_2_bank_target_top",
     51: "s_optimus_prime",
 }
+# ball device switches: a ball hitting one stays there until the device's coil ejects it (hardware.yaml)
+HOLES = {3: "s_left_eject", 38: "s_megatron_lock_4", 39: "s_megatron_lock_3", 40: "s_megatron_lock_2",
+         41: "s_m_tron_lock_1_back"}
 NUM = {name: num for num, name in SW.items()}
 OUTLANES = {24: 1, 29: 2}       # switch -> drain side (ball_save_try: 1 left, 2 right)
 BASE_SCORE = {}                 # switch -> base points (from the rules specs, not delivered yet)
