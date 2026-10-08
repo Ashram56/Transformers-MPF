@@ -19,6 +19,21 @@ VPX table script --COM--> TransformersMPF.Controller --BCP 5051--> MPF (hw_vpx, 
 
 ## Set-up (Windows, once)
 
+**One line** (PowerShell or cmd; put your table's path after `-Table`). It installs what is missing (Git,
+Python 3.11), clones this repository into `%USERPROFILE%\Transformers-MPF`, runs `scripts\setup.py --vpx`
+(Godot, MPF, GMC, the media, olefile and pywin32), registers the bridge (Windows asks once for administrator
+rights) and writes the table's MPF script next to the table:
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/vpx-bridge-d47e04/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
+```
+
+Run again, it updates the clone (`git pull`) and redoes only what changed. `$env:TF_DIR` / `$env:TF_BRANCH` set
+before the line change the folder and branch (the default branch is this one, `claude/vpx-bridge-d47e04`, until
+the repository has a `main`). Without `-Table`, step 3 below writes the table's script later.
+
+By hand, the same steps:
+
 1. The workspace as usual (`python scripts\setup.py`), plus the bridge's packages:
    `python scripts\setup.py --vpx` (olefile and pywin32).
 2. Register the COM server, in a terminal opened **as Administrator**, in the repo folder:
@@ -97,10 +112,10 @@ Checked in the Linux workspace (VPX itself only runs on Windows):
   flippers enabled and the left flipper coil held with its button, and quit the game on Stop.
 - `scripts/vpx_table.py` on the v2.4 table: the loader and the End key line changed, the rest byte for byte.
 
-To check on Windows, in this order:
-1. `python scripts\vpx_bridge.py --check` with nothing running: it starts `run.py --hw vpx` and prints the same
-   lines as above.
-2. Register, write the `.vbs`, start `run.py --hw vpx`, start the table: no message box; MPF's console shows
+To check on Windows, in this order (from `%USERPROFILE%\Transformers-MPF` after the one-line set-up):
+1. `.venv\Scripts\python scripts\vpx_bridge.py --check` with nothing running: it starts `run.py --hw vpx` and
+   prints the same lines as above.
+2. `.venv\Scripts\python scripts\run.py --hw vpx`, then start the table in VPX: no message box; MPF's console shows
    the switches as VPX sets them; the trough holds 4 balls (MPF Monitor: `--monitor`); the GI is on.
 3. Coin `5`, START `1`: the DMD and sound start a game, the trough kicks a ball to the shooter lane, the plunger
    launches it (or the auto launch when the game serves the ball), the flippers work, and stop when the ball

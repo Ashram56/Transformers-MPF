@@ -113,7 +113,7 @@ class TestVpx(TfTestCase, MpfBcpTestCase):
         self.assertEqual(128, lamps[3])
         self.machine.lights["l_start_button"].off()
         self.advance_time_and_run(.1)
-        self.assertEqual({1: 0}, dict(self.vpx("changed_lamps")))
+        self.assertEqual(0, dict(self.vpx("changed_lamps")).get(1))     # the game's own lamps change too
         self.assertTrue(self.vpx("set_switch", number=86, value=True))      # swURFlip: no such switch, no error
         self.assertFalse(self.vpx("get_switch", number=86))
         self.assertTrue(self.vpx("get_switch", number=18))
