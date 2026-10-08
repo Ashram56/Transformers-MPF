@@ -1,0 +1,25 @@
+# one player: start, plunge, a few switches, drain, game over
+start 1
+wait 3
+plunge
+wait 1
+hit 26
+hit 27
+hit 30
+hit 31
+hit 32
+hit 1
+wait 1
+button left 300
+button right 300
+wait 2
+drain left
+wait 8
+plunge
+wait 2
+drain right
+wait 8
+plunge
+wait 2
+drain
+wait 15

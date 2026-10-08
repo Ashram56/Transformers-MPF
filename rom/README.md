@@ -24,6 +24,10 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rom_data/sound/` | `samples.csv` (668 directory entries: kind, rate, duration, ROM length check, loop point, stream offsets), `sound_calls.csv` (705 calls: sample list, raw fields) |
 | `rom_data/dmd/images.csv` | All 10,212 images: header fields and file offset |
 | `rom_data/dmd/deffs.csv` | The 155 display effects (deffs): function, flags, priority, background flag, capture summary |
+| `rom_data/io/coil_timing.csv` | Every coil's pulse, ball-search and hold times measured from the solenoid register writes in the emulator; `coils.csv` carries the `mpf_default_pulse_ms`, `mpf_default_hold_power` and `mpf_source` this gives, and `coils.yaml` uses them |
+| `rom_data/sound/sound_call_uses.csv` | Per sound call: role where identified (coin, credit, tilt, ball save, drain, launch, music), how it was identified, scenarios it was heard in, deffs that play it, code call sites |
+| `rom_data/sound/music_table.csv` | The ROM's background table: 18 prioritized entries, each a condition plus a background deff and its music call (base music per side, mode music) |
+| `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
 | `rom_data/settings/` | `adjustments.csv` (99: NVRAM slot, default, min, max, step, name, display type), `audits.csv` (167) |
 | `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
@@ -67,6 +71,18 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
 - **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
   status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
   GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.
+- **Coils (observed).** Timed from the 250 us solenoid register writes. Flippers: 40.5 ms then hold at 1 ms on
+  every 12 ms (duty 0.083). Pops 34 ms in play (64 ms in ball search and coil test), slings 67-68 ms, trough,
+  launch, eject and Optimus target 64-65 ms. The orbit gate (5) and the motors (8, 30) are held, not pulsed.
+  Coil 24 ("OPTIONAL COIL") fires 81 ms on every coin: it is the coin meter output (inferred).
+- **Music (code + observed).** Background deff and music come from an 18-entry priority table walked by
+  0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
+  player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
+  0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
+  entries. Which value is Autobot is inferred (1 = Autobot).
+- **Names in the decompile.** OS functions were named by matching Tron's decompile (same OS). Game-code
+  functions that matched a Tron game function keep Tron's name (for example `dbattle_can_progress`): the code
+  is alike but the meaning on Transformers can differ. Deff and leff functions are named from this ROM's tables.
 - **IO (code).** Name tables use the Tron 24-byte, five-language records. Coil descriptor layout is the Tron one
   (flags, test fn, ball-search fn, name, test ms, ball-search ms, two wire colour message ids). Coil register map
   (1-8 SOL_B, 9-16 SOL_A, 17-24 SOL_C, 25-32 FLSH_LMP, 33-35 aux) is the SAM standard and not yet confirmed from
@@ -77,12 +93,14 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
 Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library, fonts,
 adjustments and audits, the decompile, the display effect captures and the event map.
 
-Next, in this order: sound call meanings (music, speech, coin, tilt), coil pulse and hold times measured at 1 ms,
-lamp effects, rules specs with reference traces, pricing table and switch flags.
+Also delivered: coil timing, sound call roles and the music table, the reference tracer with three traces.
+
+Next, in this order: lamp effects as shows, settings in package format and the format string behind each
+text draw, rules specs per feature with traces, pricing table and switch flags.
 
 Open items:
-1. Coil register map and the aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) need the
-   IO pointer block read in the emulator.
+1. The aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) were not seen firing yet. The
+   coil register map is PinMAME's SAM map, and the measured pulses match each coil's role.
 2. 225 library animations keep a 50 ms placeholder frame time; about 35 effects need live play to capture.
 3. Meaning of the sound call fields at +0x0c..+0x13 (`flags_0x10` holds values like 0x1b0, 0x1ff) is not decoded.
 4. 60 samples are in no sound call; they may be played directly or be unused.
