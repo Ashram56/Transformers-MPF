@@ -92,9 +92,9 @@ Checked in the Linux workspace (VPX itself only runs on Windows):
   kicker, flippers enabled, flipper coils following the button, lamps 0-255, GI, unknown switches), a ball served,
   plunged and drained the way the table reports it, sling and bumper coils, the coin door, tilt, the script rewrite,
   and the bridge's lamp and GI values for both output modes.
-- `python scripts/vpx_bridge.py --check`, the bridge's own client without COM, against `mpf game . -c
-  config,hw_vpx,free_play` (with a stand-in for Godot): GI on, trough loaded, START, the trough kicker, the
-  flippers enabled, the left flipper coil held with its button.
+- `python scripts/vpx_bridge.py --check`, the bridge's own client without COM, with nothing running: it started
+  `run.py --hw vpx` (Godot and MPF), saw the GI on, loaded the trough, pressed START, saw the trough kicker, the
+  flippers enabled and the left flipper coil held with its button, and quit the game on Stop.
 - `scripts/vpx_table.py` on the v2.4 table: the loader and the End key line changed, the rest byte for byte.
 
 To check on Windows, in this order:
