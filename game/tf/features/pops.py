@@ -11,8 +11,12 @@ traces/scoring.jsonl).
   or with flag 0x3c ([0x0102c878] -> [0x01006704], the multiball flags, which the decompile names
   any_timed_mode_running); during a battle both happen (observed: traces/battle_devastator 43.86 / 45.04 s:
   3,000 then 4,000, deff 46 each time).
-- POPS GROW (left-eject award "POPS SCORE", deff 47) and super pop bumpers come with the left eject's award
-  bag (grow() is ready for it).
+- POPS GROW (left-eject award "POPS SCORE", deff 47): grow().
+- Super pop bumpers (left-eject award "SUPER POP BUMPERS LIT") [0x0102d31c]: value 50,000 + 10,000 x times lit
+  before (cap 100,000), hits 50 + 5 x times lit (cap 75), flag 0x4d, show task 0x64 with deff 149, audit 0x9d.
+  While lit an award [0x0102c8c8] scores the super value instead (no step), sound 0x163, leff 33, hits - 1:
+  deff 150 "n HITS REMAINING / burst total" unless it is showing; the last hit deff 151 (its arg the award) and
+  the flag goes. Code only (not traced); the count resets at the player's first ball [0x0102d244].
 """
 from tf.features import Feature
 
@@ -25,17 +29,24 @@ DEFF = 46
 LEFF = 26
 OWN_LEFF = {30: 27, 31: 28, 32: 29}
 KEEP_BASE = 0x40
+SUPER_TASK, SUPER_LIT_DEFF, SUPER_DEFF, SUPER_DONE_DEFF = 0x64, 149, 150, 151
+SUPER_SOUND, SUPER_LEFF, SUPER_AUDIT = 0x163, 33, 0x9d
 
 
 class Pops(Feature):
     name = "pops"
-    HOOKS = ("ball_start", "pop", "ball_end", "tilt")
+    HOOKS = ("player_first_ball", "ball_start", "pop", "ball_end", "tilt")
 
     def __init__(self, os_):
         super().__init__(os_)
         self.queue = []
         self.total = 0
+        self.super_total = 0
         os_.deff_live((DEFF,), lambda: {"values": [self.total]})
+        os_.deff_live((SUPER_DEFF,), lambda: {"values": [self.pd.get("super_pop_left", 0), self.super_total]})
+
+    def player_first_ball(self):
+        self.pd.super_pop_count = 0
 
     def ball_start(self):
         pd = self.pd
@@ -62,6 +73,10 @@ class Pops(Feature):
             return
         num = self.queue.pop(0)
         pd = self.pd
+        if pd.get("super_pops"):
+            self._super_award()
+            os_.task_start(TASK, 1 if self.queue else IDLE_TICKS, self._pay)
+            return
         busy = os_.any_multiball() or os_.flag(0x3c)       # [0x0102c878]
         os_.score_add(pd.pop_value)
         if not os_.display.running(DEFF):
@@ -90,6 +105,37 @@ class Pops(Feature):
         os_.score_add(pd.pop_value)
         os_.audit(0x4a)
         os_.deff_start(47, values=[pd.pop_value])       # sound 0x15e and leff 30 come with the deff
+
+    def light_super(self):
+        """[0x0102d31c] SUPER POP BUMPERS LIT (the left eject's award)."""
+        os_ = self.os
+        pd = self.pd
+        n = pd.get("super_pop_count", 0)
+        pd.super_pop_value = min(50000 + 10000 * n, 100000)
+        pd.super_pop_left = min(50 + 5 * n, 75)
+        pd.super_pops = True
+        os_.show(SUPER_TASK, SUPER_LIT_DEFF)
+        pd.super_pop_count = n + 1
+        os_.audit(SUPER_AUDIT)
+        os_.request_refresh()
+
+    def _super_award(self):
+        os_ = self.os
+        pd = self.pd
+        points = pd.get("super_pop_value", 50000)
+        os_.score_add(points)
+        if not os_.display.running(SUPER_DEFF):
+            self.super_total = 0
+        self.super_total += points
+        pd.super_pop_left = max(pd.get("super_pop_left", 1) - 1, 0)
+        if pd.super_pop_left == 0:
+            os_.deff_start(SUPER_DONE_DEFF, values=[points])
+            pd.super_pops = False
+            os_.request_refresh()
+        elif not os_.display.running(SUPER_DEFF):
+            os_.deff_start(SUPER_DEFF)
+        os_.leff_start(SUPER_LEFF)
+        os_.sound(SUPER_SOUND)
 
     def ball_end(self):
         self.queue = []

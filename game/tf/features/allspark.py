@@ -13,8 +13,7 @@ the last award; ADD-A-BALL only in a multiball and once, ADD MORE TIME only in a
 each +1000 when offered: they win), show task 0x5e with deff 52 (0x140, the item's 0x143 / 0x142 / 0x144,
 0x141), the item's audit 74 + item. Competition mode (adj 42) forces a fixed sequence (step 9 at game start:
 POPS first). Leff 40 pulses the Allspark flasher while one is banked.
-Not modelled yet: the wizard / Megatron / Optimus calls in the rule, and super spinner / super pops play
-(their "lit" states are kept: pd.super_spinner, pd.super_pops with leff 32).
+Super spinner and super pops play: tf/features/spinner.py, tf/features/pops.py (leff 32 while super pops is lit).
 """
 from tf.features import Feature
 
@@ -42,7 +41,7 @@ COMPETITION_ITEM = {0: 1, 1: 2, 2: 3, 3: 12, 4: 11, 5: 10, 6: 9, 7: 8, 8: 4, 9: 
 ITEM_AUDIT = 74                         # + item: MYSTERY: LIGHT SPECIAL (75) .. SUPER POPS LIT (86)
 ADD_BALL_FLAG, ADD_TIME_FLAG = 0x14, 0x13
 BONUS_HOLD, BONUS_X_HOLD = 0x4b, 0x4a
-SUPER_POPS_DEFF, SUPER_POPS_TASK, SUPER_POPS_LEFF, SUPER_POPS_AUDIT = 149, 0x5f, 32, 157
+SUPER_POPS_LEFF = 32
 
 
 class Allspark(Feature):
@@ -234,12 +233,10 @@ class Allspark(Feature):
             os_.flag_set(BONUS_X_HOLD)
         elif item == 10:
             os_.hook("shot_mult_light")
-        elif item == 11:
-            pd.super_spinner = True
-        elif item == 12:
-            pd.super_pops = True
-            os_.audit(SUPER_POPS_AUDIT)
-            os_.show(SUPER_POPS_TASK, SUPER_POPS_DEFF)
+        elif item in (11, 12):
+            feature = os_.features_by_name.get("spinner" if item == 11 else "pops")
+            if feature:
+                feature.light_super()
         os_.request_refresh()
 
 
