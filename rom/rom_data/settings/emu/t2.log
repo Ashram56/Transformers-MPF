@@ -1,0 +1,222 @@
+8.0057 ready dip0=0x80
+8.0057 mark PRICING_USA10
+8.0057 credits pos=-1 credits=0 chk=0x03
+8.0057 key 3
+8.0535 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+8.0536 coin_task_run slot=0 credsys=1
+8.4215 key 3
+8.4695 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+8.4696 coin_task_run slot=0 credsys=1
+8.5337 audit_add counter=2 n=1 lr=0x3fe4
+8.5337 audit_add counter=7 n=1 lr=0x4048
+8.5343 event_post 0x1a arg0=0x1 lr=0x4154
+8.8415 key 3
+8.8903 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+8.8923 coin_task_run slot=0 credsys=1
+8.9548 audit_add counter=2 n=1 lr=0x3fe4
+8.9549 audit_add counter=7 n=1 lr=0x4048
+8.9555 event_post 0x1a arg0=0x40c6101 lr=0x4154
+9.3780 audit_add counter=2 n=1 lr=0x3fe4
+9.3781 audit_add counter=7 n=1 lr=0x4048
+9.3787 audit_add counter=1 n=1 lr=0x40e0
+9.3787 event_post 0x19 arg0=0x101 lr=0x4108
+10.2711 credits pos=2 credits=1 chk=0xfc
+10.2883 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 1"
+10.2883 key 4
+10.3356 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+10.3372 coin_task_run slot=1 credsys=1
+10.8231 audit_add counter=3 n=1 lr=0x3fe4
+10.8232 audit_add counter=7 n=4 lr=0x4048
+10.8239 audit_add counter=1 n=1 lr=0x40e0
+10.8239 event_post 0x19 arg0=0x101 lr=0x4108
+11.7164 credits pos=6 credits=2 chk=0xf7
+11.7327 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 2 1/2"
+11.7327 key 5
+11.7814 coin_task_create task=0x13 r1=131 slot=2 credsys=1 lr=0x14f38
+11.7836 coin_task_run slot=2 credsys=1
+12.2712 audit_add counter=4 n=1 lr=0x3fe4
+12.2713 audit_add counter=7 n=1 lr=0x4048
+12.2719 audit_add counter=1 n=1 lr=0x40e0
+12.2719 event_post 0x19 arg0=0x101 lr=0x4108
+13.1660 credits pos=7 credits=3 chk=0xf5
+13.1970 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 3"
+13.1970 key 6
+13.2454 coin_task_create task=0x13 r1=132 slot=3 credsys=1 lr=0x14f38
+13.2487 coin_task_run slot=3 credsys=1
+13.7365 audit_add counter=5 n=1 lr=0x3fe4
+13.7367 audit_add counter=7 n=1 lr=0x4048
+13.7373 event_post 0x1a arg0=0x1 lr=0x4154
+14.6300 credits pos=0 credits=3 chk=0xfc
+14.6464 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 3 1/3"
+14.6464 mark GERMANY2
+14.6950 adjset 28=24 -> adj_get=24
+14.6950 credits pos=-1 credits=3 chk=0x00
+14.7278 callstr 0x26a4c(257664,24,0,0) buf=r0 = 257664 "GERMANY 2"
+14.7278 key 4
+14.7743 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+14.7759 coin_task_run slot=1 credsys=1
+15.2621 audit_add counter=3 n=1 lr=0x3fe4
+15.2621 audit_add counter=7 n=10 lr=0x4048
+15.2630 audit_add counter=1 n=1 lr=0x40e0
+15.2631 event_post 0x19 arg0=0x101 lr=0x4108
+15.2637 audit_add counter=1 n=1 lr=0x40e0
+15.2637 event_post 0x19 arg0=0x101 lr=0x4108
+16.1554 credits pos=9 credits=5 chk=0xf1
+16.1716 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 5"
+16.1716 key 5
+16.2205 coin_task_create task=0x13 r1=131 slot=2 credsys=1 lr=0x14f38
+16.2225 coin_task_run slot=2 credsys=1
+16.7103 audit_add counter=4 n=1 lr=0x3fe4
+16.7104 audit_add counter=7 n=20 lr=0x4048
+16.7115 audit_add counter=1 n=1 lr=0x40e0
+16.7115 event_post 0x19 arg0=0x101 lr=0x4108
+16.7122 audit_add counter=1 n=2 lr=0x40e0
+16.7122 event_post 0x19 arg0=0x201 lr=0x4108
+16.7128 audit_add counter=1 n=1 lr=0x40e0
+16.7129 event_post 0x19 arg0=0x101 lr=0x4108
+16.7135 audit_add counter=1 n=1 lr=0x40e0
+16.7136 event_post 0x19 arg0=0x101 lr=0x4108
+17.6024 credits pos=9 credits=10 chk=0xec
+17.6187 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 10"
+17.6187 key 3
+17.6836 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+17.6870 coin_task_run slot=0 credsys=1
+18.1746 audit_add counter=2 n=1 lr=0x3fe4
+18.1746 audit_add counter=7 n=5 lr=0x4048
+18.1757 audit_add counter=1 n=1 lr=0x40e0
+18.1758 event_post 0x19 arg0=0x101 lr=0x4108
+19.0499 credits pos=14 credits=11 chk=0xe6
+19.0661 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 11"
+19.0661 mark EURO3
+19.0987 adjset 28=13 -> adj_get=13
+19.0987 credits pos=-1 credits=11 chk=0xf8
+19.0987 key 3
+19.1474 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+19.1506 coin_task_run slot=0 credsys=1
+19.6378 audit_add counter=2 n=1 lr=0x3fe4
+19.6379 audit_add counter=7 n=5 lr=0x4048
+19.6389 audit_add counter=1 n=1 lr=0x40e0
+19.6390 event_post 0x19 arg0=0x101 lr=0x4108
+20.5293 credits pos=4 credits=12 chk=0xef
+20.5456 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 12"
+20.5456 key 3
+20.5945 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+20.5968 coin_task_run slot=0 credsys=1
+21.0847 audit_add counter=2 n=1 lr=0x3fe4
+21.0848 audit_add counter=7 n=5 lr=0x4048
+21.0858 audit_add counter=1 n=2 lr=0x40e0
+21.0859 event_post 0x19 arg0=0x201 lr=0x4108
+21.9767 credits pos=9 credits=14 chk=0xe8
+21.9929 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 14"
+21.9929 key 4
+22.0416 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+22.0436 coin_task_run slot=1 credsys=1
+22.5310 audit_add counter=3 n=1 lr=0x3fe4
+22.5311 audit_add counter=7 n=10 lr=0x4048
+22.5321 audit_add counter=1 n=1 lr=0x40e0
+22.5322 event_post 0x19 arg0=0x101 lr=0x4108
+22.5329 audit_add counter=1 n=2 lr=0x40e0
+22.5329 event_post 0x19 arg0=0x201 lr=0x4108
+23.4236 credits pos=9 credits=17 chk=0xe5
+23.4398 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 17"
+23.4398 mark FREEPLAY
+23.4724 adjset 34=1 -> adj_get=1
+23.4887 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "FREE PLAY"
+23.5215 adjset 34=0 -> adj_get=0
+23.5215 mark CREDITLIMIT
+23.5376 call 0x4338(1,0,0,0) = -253 (0xffffff03)
+23.5376 credits pos=-1 credits=0 chk=0x03
+23.5701 adjset 28=66 -> adj_get=66
+23.6027 adjset 33=4 -> adj_get=4
+23.6027 key 4
+23.6514 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+23.6534 coin_task_run slot=1 credsys=1
+24.1410 audit_add counter=3 n=1 lr=0x3fe4
+24.1411 audit_add counter=7 n=4 lr=0x4048
+24.1419 audit_add counter=1 n=1 lr=0x40e0
+24.1420 event_post 0x19 arg0=0x1000101 lr=0x4108
+25.0341 key 4
+25.0992 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+25.1012 coin_task_run slot=1 credsys=1
+25.5883 audit_add counter=3 n=1 lr=0x3fe4
+25.5884 audit_add counter=7 n=4 lr=0x4048
+25.5890 audit_add counter=1 n=1 lr=0x40e0
+25.5890 event_post 0x19 arg0=0x1000101 lr=0x4108
+25.5893 audit_add counter=1 n=1 lr=0x40e0
+25.5894 event_post 0x19 arg0=0x1000101 lr=0x4108
+26.4642 credits pos=7 credits=3 chk=0xf5
+26.4642 key 4
+26.5129 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+26.5149 coin_task_run slot=1 credsys=1
+27.0026 audit_add counter=3 n=1 lr=0x3fe4
+27.0026 audit_add counter=7 n=4 lr=0x4048
+27.0035 audit_add counter=1 n=1 lr=0x40e0
+27.0036 event_post 0x19 arg0=0x1000101 lr=0x4108
+27.8941 credits pos=3 credits=4 chk=0xf8
+27.9104 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 4 1/3"
+27.9104 key 4
+27.9592 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+27.9612 coin_task_run slot=1 credsys=1
+28.4490 audit_add counter=3 n=1 lr=0x3fe4
+28.4491 audit_add counter=7 n=4 lr=0x4048
+28.4498 audit_add counter=1 n=1 lr=0x40e0
+28.4498 event_post 0x19 arg0=0x1000001 lr=0x4108
+28.4502 audit_add counter=1 n=1 lr=0x40e0
+28.4502 event_post 0x19 arg0=0x1000001 lr=0x4108
+29.3417 credits pos=7 credits=4 chk=0xf4
+29.3579 callstr 0x44a4(1,257664,0,0) buf=r1 = 1 "CREDITS 4"
+29.3904 adjset 33=30 -> adj_get=30
+29.3904 mark COINDELAY_OFF
+29.4229 adjset 62=61 -> adj_get=61
+29.4229 key 3
+29.4720 coin_task_create task=0x13 r1=129 slot=0 credsys=1 lr=0x14f38
+29.4742 coin_task_run slot=0 credsys=1
+29.4742 audit_add counter=2 n=1 lr=0x3fe4
+29.4742 audit_add counter=7 n=1 lr=0x4048
+29.4750 event_post 0x1a arg0=0x40c6101 lr=0x4154
+30.8528 credits pos=0 credits=4 chk=0xfb
+30.8850 adjset 62=30 -> adj_get=30
+30.8850 mark ADJ25
+30.9013 call 0x4338(1,0,0,0) = -253 (0xffffff03)
+30.9013 key 4
+30.9661 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+30.9678 coin_task_run slot=1 credsys=1
+31.4532 audit_add counter=3 n=1 lr=0x3fe4
+31.4532 audit_add counter=7 n=4 lr=0x4048
+31.4539 audit_add counter=1 n=1 lr=0x40e0
+31.4540 event_post 0x19 arg0=0x1000101 lr=0x4108
+32.3283 key 4
+32.3768 coin_task_create task=0x13 r1=130 slot=1 credsys=1 lr=0x14f38
+32.3789 coin_task_run slot=1 credsys=1
+32.8645 audit_add counter=3 n=1 lr=0x3fe4
+32.8646 audit_add counter=7 n=4 lr=0x4048
+32.8652 audit_add counter=1 n=1 lr=0x40e0
+32.8652 event_post 0x19 arg0=0x1000101 lr=0x4108
+32.8655 audit_add counter=1 n=1 lr=0x40e0
+32.8656 event_post 0x19 arg0=0x1000101 lr=0x4108
+33.7577 credits pos=7 credits=3 chk=0xf5
+33.7577 key 1
+33.8061 audit_add counter=17 n=1 lr=0x1a294
+38.1764 adjpoke 25=0
+38.1764 credits pos=7 credits=2 chk=0xf6
+38.1769 adj_get id=7 lr=0x10344b8
+38.1769 adj_get id=7 lr=0x10344c4
+38.1770 adj_get id=7 lr=0x98b0
+38.1777 adj_get id=7 lr=0x98b0
+38.1788 adj_get id=7 lr=0x98b0
+38.1789 adj_get id=7 lr=0x98b0
+38.1790 adj_get id=13 lr=0x1c45c
+38.1790 adj_get id=33 lr=0x3d7c
+38.1791 adj_get id=34 lr=0x4490
+38.1793 adj_get id=44 lr=0x1939c
+38.1793 adj_get id=11 lr=0x1c4ec
+38.1793 audit_add counter=10 n=1 lr=0x1c5ac
+38.1929 adj_get id=35 lr=0x194c4
+38.1930 adj_get id=7 lr=0x24b14
+38.1930 call 0x1c410(1,1,0,0) = 1 (0x1)
+40.2018 credits pos=7 credits=3 chk=0xf5
+40.2030 audit_add counter=11 n=1 lr=0x1c5ac
+40.2185 call 0x1c410(1,2,0,0) = 1 (0x1)
+42.2305 credits pos=7 credits=4 chk=0xf4
+42.2305 mark END
+42.4425 end
