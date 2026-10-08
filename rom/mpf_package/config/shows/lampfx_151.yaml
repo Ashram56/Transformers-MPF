@@ -1,0 +1,15 @@
+#show_version=6
+# ROM lamp effect (leff) 151, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 975 ms).
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 163ms
+  lights:
+    l_bumblebee_captive_ball: "000000"
+- duration: 325ms
+  lights:
+    l_bumblebee_captive_ball: "7f7f7f"
+- duration: 162ms
+  lights:
+    l_bumblebee_captive_ball: "ffffff"
+- duration: 325ms
+  lights:
+    l_bumblebee_captive_ball: "7f7f7f"

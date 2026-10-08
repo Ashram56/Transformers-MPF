@@ -1,0 +1,483 @@
+#show_version=6
+# ROM lamp effect (leff) 173, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 3139 ms.
+# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24
+- duration: 32ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 24
+- duration: 33ms
+  coils:
+    c_flash_decepticon:
+      action: pulse
+      pulse_ms: 24
+- duration: 42ms
+  coils:
+    c_flash_right_side:
+      action: pulse
+      pulse_ms: 24

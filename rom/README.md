@@ -27,6 +27,9 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `rom_data/io/coil_timing.csv` | Every coil's pulse, ball-search and hold times measured from the solenoid register writes in the emulator; `coils.csv` carries the `mpf_default_pulse_ms`, `mpf_default_hold_power` and `mpf_source` this gives, and `coils.yaml` uses them |
 | `rom_data/sound/sound_call_uses.csv` | Per sound call: role where identified (coin, credit, tilt, ball save, drain, launch, music), how it was identified, scenarios it was heard in, deffs that play it, code call sites |
 | `rom_data/sound/music_table.csv` | The ROM's background table: 18 prioritized entries, each a condition plus a background deff and its music call (base music per side, mode music) |
+| `rom_data/io/lamp_effects.csv`, `lamp_groups.json` | The 178 lamp effects (leffs): function, flags, lamp group, coil group, priority, how the capture ended, loop, show file, lamps and flashers used, who starts it; the 148 lamp groups |
+| `mpf_package/config/shows/lampfx_NNN.yaml` | 111 lamp effects as MPF shows, captured in the emulator (`tools/emu/lfx.cpp`); looping ones cut to one period |
+| `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball: points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
 | `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
 | `rom_data/settings/` | `adjustments.csv` (99: NVRAM slot, default, min, max, step, name, display type), `audits.csv` (167) |
@@ -80,6 +83,12 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
   0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
   entries. Which value is Autobot is inferred (1 = Autobot).
+- **Lamp effects (observed).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
+  on every lamp compositor tick (0x73cc), only the lamps the effect's own task owns (shared leff layer 0x36394 /
+  mask 0x363a8 and the layer list at 0x31480). 119 end by themselves, 59 run until stopped. 111 produce lamps or
+  flasher pulses; the other 67 draw from game state, need a lamp parameter from their caller, or were refused.
+- **Side choice (code + observed).** Side byte 0x02112107 + player: 1 = Autobot, 2 = Decepticon (default).
+  Either flipper toggles it on the choose-side screen; the plunge confirms it 31 ticks later (deff 41).
 - **Names in the decompile.** OS functions were named by matching Tron's decompile (same OS). Game-code
   functions that matched a Tron game function keep Tron's name (for example `dbattle_can_progress`): the code
   is alike but the meaning on Transformers can differ. Deff and leff functions are named from this ROM's tables.
@@ -93,10 +102,11 @@ Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observe
 Delivered: IO tables, all sounds with one pool per sound call, all images and the animation library, fonts,
 adjustments and audits, the decompile, the display effect captures and the event map.
 
-Also delivered: coil timing, sound call roles and the music table, the reference tracer with three traces.
+Also delivered: coil timing, sound call roles and the music table, the reference tracer with six traces, the
+lamp effects as shows, the switch handler spec with the side choice and the bonus.
 
-Next, in this order: lamp effects as shows, settings in package format and the format string behind each
-text draw, rules specs per feature with traces, pricing table and switch flags.
+Next, in this order: settings in package format with pricing, the format string behind each text draw, rules
+specs per mode with traces, switch flags.
 
 Open items:
 1. The aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) were not seen firing yet. The

@@ -20,6 +20,7 @@ def parse(line):
         d[m.group(1)] = v if m.group(3) is not None else (int(v) if re.fullmatch(r'-?\d+', v) else v)
     if kind in ('FORCE', 'EVENT', 'AUDIT') or kind == 'FORCE_END':
         d['id'] = int(rest.split()[0])
+    if 'call' in d: d['call'] = int(str(d['call']), 16)   # the tracer prints sound calls in hex
     if kind in ('DRAW', 'TEXT'):
         d['fn_addr'] = rest.split()[0]
     return t, kind, d
@@ -30,6 +31,8 @@ def deff_table():
         a = tables.rec('deffs', i); out[i] = dict(fn=u32(a), flags=u16(a + 4), prio=u8(a + 6))
     return out
 
+HELPERS = {0x21660: 'text_printf_msg_page', 0x215ac: 'text_draw_msg_page', 0x217b4: 'text_printf_msg_fit_page', 0x2174c: 'text_draw_msg_fit',
+           0x21838: 'text_draw_str_page', 0x21a78: 'text_printf_page', 0x21b4c: 'text_draw_str_fit_page'}
 PAL = np.array([[int(255 * k / 15), int(88 * k / 15), int(32 * k / 15)] for k in range(16)], np.uint8)
 def orange(a, scale):
     im = Image.fromarray(PAL[np.clip(a, 0, 15)])
@@ -69,15 +72,23 @@ def export(caps, outdir):
             for sc, fn in ((1, 'reference_capture.gif'), (4, 'reference_capture_x4.gif')):
                 ims = [orange(a, sc) for _, a in fr]
                 ims[0].save(os.path.join(d, fn), save_all=True, append_images=ims[1:], duration=durs, loop=0, optimize=False)
-        pages = []; pend_img = []; pend_txt = []
+        pages = []; pend_img = []; pend_txt = []; src = {}
         for t, k, e in b['mine']:
             if k == 'IMG': pend_img.append(dict(t_ms=ms(t), img=e.get('img'), page=e.get('page'), x=e.get('x'), y=e.get('y'), fn=e.get('fn'), lr=e.get('lr')))
-            elif k == 'TEXT': pend_txt.append(dict(t_ms=ms(t), str=e.get('str'), font=e.get('font'), flags=e.get('flags'), x=e.get('x'), y=e.get('y'), color=e.get('color'), width=e.get('w'), page=e.get('page'), lr=e.get('lr')))
+            elif k == 'TXTSRC': src[e.get('task')] = e
+            elif k == 'TEXT':
+                tx = dict(t_ms=ms(t), str=e.get('str'), font=e.get('font'), flags=e.get('flags'), x=e.get('x'), y=e.get('y'), color=e.get('color'), width=e.get('w'), page=e.get('page'))
+                so = src.pop(e.get('task'), None)
+                if so:   # what the effect code passed: a message id (format string in the ROM) or a string / format
+                    tx['call_site'] = so.get('lr'); tx['helper'] = HELPERS.get(int(str(so['fn']), 16), so['fn'])
+                    if 'msg' in so: tx['msg_id'] = so['msg']; tx['source'] = tables.msg(so['msg'])
+                    else: tx['source'] = so.get('str')
+                pend_txt.append(tx)
             elif k == 'SHOW':
                 pages.append(dict(t_ms=ms(t), fg=e.get('fg'), bg=e.get('bg'), images=pend_img, texts=pend_txt)); pend_img = []; pend_txt = []
         # blits (DRAW lines) are left out: every one comes from text_draw (glyphs, lr 0x219e0/0x21a10) or
         # bitmap_draw (lr 0x23d0c/0x23dc0), which are already listed as texts and images
-        snd = [dict(t_ms=ms(t), call=e.get('call'), via=k, deff=e.get('deff'), lr=e.get('lr')) for t, k, e in b['w'] if k in ('SNDPLAY',)]
+        snd = [dict(t_ms=ms(t), call='0x%03x' % e['call'], via=k, deff=e.get('deff'), lr=e.get('lr')) for t, k, e in b['w'] if k in ('SNDPLAY',)]
         lef = [dict(t_ms=ms(t), leff=e.get('id'), lr=e.get('lr')) for t, k, e in b['w'] if k == 'LEFF']
         evs = [dict(t_ms=ms(t), event=e['id']) for t, k, e in b['w'] if k == 'EVENT']
         T = tab.get(did, {})
@@ -92,7 +103,7 @@ def export(caps, outdir):
         imgs = sorted({x['img'] for p in pages for x in p['images'] if x.get('img') is not None})
         texts = sorted({x['str'] for p in pages for x in p['texts']})
         rows.append(dict(deff=did, fn=meta['fn'], flags='0x%x' % (T.get('flags') or 0), priority=T.get('prio'), background=int(meta['background']),
-                         capture=b['cap'], frames=len(fr), pages=len(pages), ended_ms=meta['ended_ms'], sounds=' '.join(str(s['call']) for s in snd),
+                         capture=b['cap'], frames=len(fr), pages=len(pages), ended_ms=meta['ended_ms'], sounds=' '.join(s['call'] for s in snd),
                          images=' '.join(map(str, imgs[:40])), texts=' | '.join(texts[:12])))
     return rows, tab
 
