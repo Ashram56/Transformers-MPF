@@ -1,0 +1,349 @@
+# MPF Monitor layout (x/y: fractions of playfield.png) from vpx_extract.py + vpx_map.py
+coil:
+  f_17_f17:   # coil 17 (f17)
+    x: 0.2245
+    y: 0.3742
+  f_18_flasherlight3:   # coil 18 (Flasherlight3)
+    x: 0.0772
+    y: 0.082
+  f_19_f19:   # coil 19 (f19)
+    x: 0.8607
+    y: 0.5114
+  f_20_f20:   # coil 20 (f20)
+    x: 0.7808
+    y: 0.1869
+  f_21_flasherlight5:   # coil 21 (Flasherlight5)
+    x: 0.1912
+    y: 0.1857
+  f_23_flasherlight4:   # coil 23 (Flasherlight4)
+    x: 0.7268
+    y: 0.0228
+  f_25_f25:   # coil 25 (f25)
+    x: 0.5383
+    y: 0.3002
+  f_26_flasherlight1:   # coil 26 (Flasherlight1)
+    x: 0.7301
+    y: 0.7201
+  f_27_flasherlight2:   # coil 27 (Flasherlight2)
+    x: 0.1839
+    y: 0.7288
+  f_28_f28:   # coil 28 (f28)
+    x: 0.3244
+    y: 0.3781
+  f_31_f31:   # coil 31 (f31)
+    x: 0.6276
+    y: 0.1363
+  f_32_flasherlight6:   # coil 32 (Flasherlight6)
+    x: 0.1199
+    y: 0.4704
+light:
+  l_01_li1:   # light 1 (li1)
+    x: 0.074
+    y: 1.0309
+  l_02_li2:   # light 2 (li2)
+    x: 0.0545
+    y: 1.0308
+  l_03_li3:   # light 3 (li3)
+    x: 0.4539
+    y: 0.8772
+  l_04_li4:   # light 4 (li4)
+    x: 0.3827
+    y: 0.792
+  l_05_li5:   # light 5 (li5)
+    x: 0.3827
+    y: 0.7429
+  l_06_li6:   # light 6 (li6)
+    x: 0.3827
+    y: 0.6936
+  l_07_li7:   # light 7 (li7)
+    x: 0.3827
+    y: 0.6446
+  l_08_li8:   # light 8 (li8)
+    x: 0.0531
+    y: 0.699
+  l_09_li9:   # light 9 (li9)
+    x: 0.137
+    y: 0.6781
+  l_10_li10:   # light 10 (li10)
+    x: 0.7756
+    y: 0.6808
+  l_11_li11:   # light 11 (li11)
+    x: 0.8533
+    y: 0.706
+  l_12_li12:   # light 12 (li12)
+    x: 0.2085
+    y: 0.6092
+  l_13_li13:   # light 13 (li13)
+    x: 0.1751
+    y: 0.577
+  l_14_li14:   # light 14 (li14)
+    x: 0.1471
+    y: 0.5498
+  l_15_li15:   # light 15 (li15)
+    x: 0.1189
+    y: 0.5233
+  l_16_li16:   # light 16 (li16)
+    x: 0.1803
+    y: 0.4468
+  l_17_li17:   # light 17 (li17)
+    x: 0.1586
+    y: 0.4123
+  l_18_li18:   # light 18 (li18)
+    x: 0.1387
+    y: 0.383
+  l_19_li19:   # light 19 (li19)
+    x: 0.1187
+    y: 0.3558
+  l_20_li20:   # light 20 (li20)
+    x: 0.7639
+    y: 0.6098
+  l_21_li21:   # light 21 (li21)
+    x: 0.7536
+    y: 0.5718
+  l_22_li22:   # light 22 (li22)
+    x: 0.5322
+    y: 0.5963
+  l_23_li23:   # light 23 (li23)
+    x: 0.5322
+    y: 0.6454
+  l_24_li24:   # light 24 (li24)
+    x: 0.5322
+    y: 0.6943
+  l_25_li25a:   # light 25 (li25a)
+    x: 0.5323
+    y: 0.7438
+  l_26_li26:   # light 26 (li26)
+    x: 0.5322
+    y: 0.7927
+  l_27_li27:   # light 27 (li27)
+    x: 0.3827
+    y: 0.5955
+  l_28_li28:   # light 28 (li28)
+    x: 0.457
+    y: 0.5574
+  l_29_li29:   # light 29 (li29)
+    x: 0.456
+    y: 0.4678
+  l_30_li30:   # light 30 (li30)
+    x: 0.6245
+    y: 0.3918
+  l_31_li31:   # light 31 (li31)
+    x: 0.6524
+    y: 0.4743
+  l_32_li32:   # light 32 (li32)
+    x: 0.6731
+    y: 0.4385
+  l_33_li33:   # light 33 (li33)
+    x: 0.6908
+    y: 0.4099
+  l_34_li34:   # light 34 (li34)
+    x: 0.7074
+    y: 0.3793
+  l_35_li35:   # light 35 (li35)
+    x: 0.7779
+    y: 0.3841
+  l_36_li36:   # light 36 (li36)
+    x: 0.7349
+    y: 0.523
+  l_37_li37:   # light 37 (li37)
+    x: 0.7618
+    y: 0.4889
+  l_38_li38:   # light 38 (li38)
+    x: 0.7849
+    y: 0.4615
+  l_39_li39:   # light 39 (li39)
+    x: 0.8065
+    y: 0.4322
+  l_40_li40:   # light 40 (li40)
+    x: 0.5381
+    y: 0.3363
+  l_41_li41:   # light 41 (li41)
+    x: 0.5392
+    y: 0.3665
+  l_42_li42:   # light 42 (li42)
+    x: 0.5378
+    y: 0.3965
+  l_43_li43:   # light 43 (li43)
+    x: 0.538
+    y: 0.432
+  l_44_li44:   # light 44 (li44)
+    x: 0.279
+    y: 0.4542
+  l_45_li45:   # light 45 (li45)
+    x: 0.2953
+    y: 0.4835
+  l_46_li46:   # light 46 (li46)
+    x: 0.3097
+    y: 0.5122
+  l_47_li47:   # light 47 (li47)
+    x: 0.3274
+    y: 0.5466
+  l_48_li48:   # light 48 (li48)
+    x: 0.3485
+    y: 0.4254
+  l_49_li49:   # light 49 (li49)
+    x: 0.302
+    y: 0.0609
+  l_50_li50:   # light 50 (li50)
+    x: 0.21
+    y: 0.0503
+  l_51_li51:   # light 51 (li51)
+    x: 0.2097
+    y: 0.0236
+  l_52_li52:   # light 52 (li52)
+    x: 0.3023
+    y: 0.033
+  l_53_li53:   # light 53 (li53)
+    x: 0.8537
+    y: 0.421
+  l_54_li54:   # light 54 (li54)
+    x: 0.4627
+    y: 0.406
+  l_55_li55:   # light 55 (li55)
+    x: 0.8066
+    y: 0.4137
+  l_57_li57:   # light 57 (li57)
+    x: 0.275
+    y: 0.3084
+  l_58_li58:   # light 58 (li58)
+    x: 0.3786
+    y: 0.3586
+  l_59_li59:   # light 59 (li59)
+    x: 0.5383
+    y: 0.3002
+  l_60_li60:   # light 60 (li60)
+    x: 0.1592
+    y: 0.1383
+  l_61_li61:   # light 61 (li61)
+    x: 0.3024
+    y: 0.1924
+  l_62_li62:   # light 62 (li62)
+    x: 0.1576
+    y: 0.234
+switch:
+  s_01_sw1:   # switch 1 (sw1)
+    x: 0.6982
+    y: 0.1473
+  s_02_sw2:   # switch 2 (sw2)
+    x: 0.3333
+    y: 0.4028
+  s_03_sw3:   # switch 3 (sw3)
+    x: 0.0716
+    y: 0.478
+  s_04_sw4:   # switch 4 (sw4)
+    x: 0.2326
+    y: 0.376
+  s_05_sw5:   # switch 5 (sw5)
+    x: 0.0616
+    y: 0.252
+  s_06_sw6:   # switch 6 (sw6)
+    x: 0.0858
+    y: 0.0569
+  s_07_sw7:   # switch 7 (sw7)
+    x: 0.3039
+    y: 0.0902
+  s_08_sw8:   # switch 8 (sw8)
+    x: 0.2135
+    y: 0.0803
+  s_10_sw10:   # switch 10 (sw10)
+    x: 0.0574
+    y: 0.2922
+  s_11_sw11:   # switch 11 (sw11)
+    x: 0.5698
+    y: 0.101
+  s_12_sw12:   # switch 12 (sw12)
+    x: 0.8971
+    y: 0.0987
+  s_13_sw13:   # switch 13 (sw13)
+    x: 0.3909
+    y: 0.2272
+  s_14_sw14:   # switch 14 (sw14)
+    x: 0.9419
+    y: 0.0721
+  s_18_ballrelease:   # switch 18 (BallRelease)
+    x: 0.8614
+    y: 0.8508
+  s_19_ballrelease:   # switch 19 (BallRelease)
+    x: 0.8614
+    y: 0.8568
+  s_20_ballrelease:   # switch 20 (BallRelease)
+    x: 0.8614
+    y: 0.8628
+  s_21_ballrelease:   # switch 21 (BallRelease)
+    x: 0.8614
+    y: 0.8688
+  s_22_sw22:   # switch 22 (sw22)
+    x: 0.8816
+    y: 0.8497
+  s_23_sw23:   # switch 23 (sw23)
+    x: 0.9455
+    y: 0.8844
+  s_24_sw24:   # switch 24 (sw24)
+    x: 0.0561
+    y: 0.7579
+  s_25_sw25:   # switch 25 (sw25)
+    x: 0.1331
+    y: 0.7395
+  s_26_leftslingshot:   # switch 26 (LeftSlingshot)
+    x: 0.2337
+    y: 0.7294
+  s_27_rightslingshot:   # switch 27 (RightSlingshot)
+    x: 0.681
+    y: 0.7302
+  s_28_sw28:   # switch 28 (sw28)
+    x: 0.7776
+    y: 0.7412
+  s_29_sw29:   # switch 29 (sw29)
+    x: 0.8545
+    y: 0.7594
+  s_30_bumper1:   # switch 30 (Bumper1)
+    x: 0.1582
+    y: 0.1383
+  s_31_bumper2:   # switch 31 (Bumper2)
+    x: 0.3017
+    y: 0.1924
+  s_32_bumper3:   # switch 32 (Bumper3)
+    x: 0.1569
+    y: 0.2333
+  s_34_sw34:   # switch 34 (sw34)
+    x: 0.8351
+    y: 0.4112
+  s_35_sw35:   # switch 35 (sw35)
+    x: 0.7735
+    y: 0.2559
+  s_37_sw37:   # switch 37 (sw37)
+    x: 0.8269
+    y: 0.5781
+  s_38_kickermegatron:   # switch 38 (KickerMegaTron)
+    x: 0.335
+    y: 0.3111
+  s_39_kickermegatron:   # switch 39 (KickerMegaTron)
+    x: 0.335
+    y: 0.3171
+  s_40_kickermegatron:   # switch 40 (KickerMegaTron)
+    x: 0.335
+    y: 0.3231
+  s_41_kickermegatron:   # switch 41 (KickerMegaTron)
+    x: 0.335
+    y: 0.3291
+  s_43_opr:   # switch 43 (opr)
+    x: 0.5333
+    y: 0.2282
+  s_44_opr:   # switch 44 (opr)
+    x: 0.5333
+    y: 0.2342
+  s_45_sw45:   # switch 45 (sw45)
+    x: 0.6816
+    y: 0.2341
+  s_46_sw46:   # switch 46 (sw46)
+    x: 0.8096
+    y: 0.3591
+  s_49_sw49:   # switch 49 (sw49)
+    x: 0.4569
+    y: 0.3822
+  s_50_sw50:   # switch 50 (sw50)
+    x: 0.8175
+    y: 0.5425
+  s_51_sw51:   # switch 51 (sw51)
+    x: 0.5345
+    y: 0.139
