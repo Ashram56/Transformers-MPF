@@ -1591,6 +1591,14 @@ class TfOS(CustomCode):
             self.flag_set(9)
         queue.clear()
 
+    def shot_mult(self, shot):
+        """[0x01023538]: shot `shot`'s multiplier (1X / 2X, 3X under the roving 3X: tf/features/combos.py)."""
+        combos = self.features_by_name.get("combos")
+        if combos:
+            return combos.shot_mult(shot)
+        mult = self.pd.get("shot_mult") if self.game else None
+        return mult[shot] if mult and shot < len(mult) else 1
+
     @property
     def features_by_name(self):
         return {f.name: f for f in self.features}

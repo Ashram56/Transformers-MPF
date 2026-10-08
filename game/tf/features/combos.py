@@ -16,14 +16,18 @@ any_timed_mode_running in the decompile) mask = all six minus the shot when it i
 the window restarts: 312 ticks (task 0x92, not counting while the
 left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (observed:
 traces/battle_starscream.jsonl, no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
-combo on every shot). NOT YET: the arrows of the allowed
-shots (leff 34's task [0x01003104], never logged as a leff start in the traces).
+combo on every shot). The arrows of the allowed shots (leff 34 [0x01003104]) are not drawn: 1.80 never runs
+that leff (no start in the code or the traces; the arrow lamps stay as the modes set them during a window).
 deff 48 (n-WAY COMBO) is never started in 1.80 (no starter; the status panel shows combos).
 
 Shot multipliers (per ball, 1X unless the shot's hold flag 0x16 + s is set):
 - lighting (own lanes complete, left-eject award): if a shot is below 2X, mult_lit and leff 37 run, deff 44;
 - the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38 (inferred: after its combo award).
-NOT YET: the roving 3X when all six are at 2X (task 0xb6, leff 39).
+- lighting with all six at 2X starts the roving 3X [0x010236e8] (task 0xb6, until the ball ends) [0x01023650]:
+  index 6 (the right orbit) moving to 2 and back every 92 ticks; the shot at the index is 3X, and for the
+  first 46 ticks after a move the shot it left too [0x01023538]. Leff 39 (rule while task 0xb6 runs) blinks
+  that shot's X lamp every 3 ticks [0x010239bc]. Code only (not traced).
+shot_mult(shot) is the multiplier every award uses (os_layer.shot_mult).
 The orbits are decided with the battle shots (tf/features/battles.py: left orbit sw5 / sw6 tokens, right orbit
 sw12 ignored after a left orbit pass, the center lane, a plunge or the back door, and within 187 ticks of the
 previous right orbit) and come here through hook combo_shot.
@@ -40,6 +44,8 @@ AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
 HOLD_FLAG = 0x16
+ROVE_TASK, ROVE_TICKS, ROVE_LEFF, ROVE_BLINK = 0xb6, 46, 39, 3
+X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58 + 0x12, entries 1-6)
 
 
 class Combos(Feature):
@@ -53,6 +59,51 @@ class Combos(Feature):
         self.mask = ALL
         os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF,
                       order=0x01023928)
+        self.rove = self.rove_prev = 0          # roving 3X index (1-6 = shot + 1) and the one it just left
+        self.rove_dir = -1
+        os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
+        os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
+
+    def shot_mult(self, shot):
+        """[0x01023538]: the shot's multiplier, 3 while the roving 3X is on it."""
+        if self.os.task_running(ROVE_TASK) and shot + 1 in (self.rove, self.rove_prev):
+            return 3
+        mult = self.pd.get("shot_mult")
+        return mult[shot] if mult and shot < len(mult) else 1
+
+    def _rove_start(self):
+        self.rove, self.rove_prev, self.rove_dir = 6, 0, -1
+        self.os.task_start(ROVE_TASK, ROVE_TICKS, self._rove_half)
+
+    def _rove_half(self):
+        """[0x01023650]: 46 ticks with the left shot still 3X, then 46 more before the next move."""
+        self.rove_prev = 0
+        self.os.task_start(ROVE_TASK, ROVE_TICKS, self._rove_move)
+
+    def _rove_move(self):
+        self.rove_prev = self.rove
+        if self.rove_dir < 1:
+            if self.rove < 2:
+                self.rove_dir, self.rove = 1, 2
+            else:
+                self.rove -= 1
+        elif self.rove < 6:
+            self.rove += 1
+        else:
+            self.rove_dir, self.rove = -1, 5
+        self.os.task_start(ROVE_TASK, ROVE_TICKS, self._rove_half)
+        self.os.request_refresh()
+
+    def _rove_leff(self, task):
+        """leff_039 [0x010239bc]: the X lamp of the roving index blinks (toggled every 3 ticks), the others are
+        left to the rules."""
+        lamp = X_LAMPS[self.rove - 1] if 1 <= self.rove <= 6 else None
+        for x in X_LAMPS:
+            if x != lamp:
+                task.release(x)
+        if lamp is not None:
+            task.toggle(lamp)
+        task.sleep(ROVE_BLINK, self._rove_leff)
 
     def combo_shot(self, index):
         self.shot(index)
@@ -82,8 +133,9 @@ class Combos(Feature):
         elif self.mask & bit:
             self.way += 1
             pd.combo_total = pd.get("combo_total", 0) + 1
-            pd.combo_best = max(pd.get("combo_best", 1), (self.way << 16) | pd.shot_mult[index])
-            os_.score_add(pd.shot_mult[index] * (100000 + 25000 * self.way))
+            mult = self.shot_mult(index)
+            pd.combo_best = max(pd.get("combo_best", 1), (self.way << 16) | mult)
+            os_.score_add(mult * (100000 + 25000 * self.way))
             os_.leff_start(AWARD_LEFF)
             os_.audit(AWARD_AUDIT)
         if pd.get("mult_lit") and pd.shot_mult[index] < 2:
@@ -119,17 +171,24 @@ class Combos(Feature):
         self.os.request_refresh()
 
     def shot_mult_light(self):
-        """[0x010236e8]: shot multipliers lit when a shot is below 2X (the roving 3X otherwise: not yet)."""
+        """[0x010236e8]: shot multipliers lit when a shot is below 2X, else the roving 3X starts (deff 44 shows
+        which, from the lanes' caller)."""
         os_ = self.os
         pd = self.pd
         below = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
         if below:
             pd.mult_lit = True
-            os_.deff_start(MULT_LIT_DEFF)
-            os_.request_refresh()
+        elif not os_.task_running(ROVE_TASK):
+            self._rove_start()
+        else:
+            return
+        os_.deff_start(MULT_LIT_DEFF)
+        os_.request_refresh()
 
     def ball_end(self):
         self.os.task_kill(WINDOW_TASK)
+        self.os.task_kill(ROVE_TASK)
+        self.rove = self.rove_prev = 0
         self.way = 0
 
     tilt = ball_end

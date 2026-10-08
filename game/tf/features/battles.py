@@ -226,8 +226,7 @@ class Battle:
     # ------------------------------------------------------------------ hits
 
     def multiplier(self, shot):
-        mult = self.pd.get("shot_mult")
-        return mult[shot] if mult and shot < len(mult) else 1
+        return self.os.shot_mult(shot)
 
     def is_lit(self, shot):
         return bool(self.lit & (1 << shot))
@@ -867,9 +866,8 @@ class Battles(Feature):
             return
         side = pd.get("side", DECEPTICON)
         value = min(10000 + 10000 * pd.get("battles_started_n", 0) + 5000 * pd.get("ms_hits", 0), 75000)
-        mult = pd.get("shot_mult")
         shot = MS_BATTLE_SHOT[ms]
-        os_.score_add(value * (mult[shot] if mult else 1))
+        os_.score_add(value * os_.shot_mult(shot))
         pd.ms_hits = pd.get("ms_hits", 0) + 1
         if pd.ms_hits < pd.get("ms_needed", MS_NEEDED):
             difficulty = os_.adj[66]

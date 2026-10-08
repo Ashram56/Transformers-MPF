@@ -99,8 +99,7 @@ class Side:
         self.put("lit", self.lit)
 
     def mult(self, shot):
-        m = self.pd.get("shot_mult")
-        return m[shot] if m and shot < len(m) else 1
+        return self.os.shot_mult(shot)
 
     def j(self):
         return min(150000 + 100000 * self.get("supers"), 500000)

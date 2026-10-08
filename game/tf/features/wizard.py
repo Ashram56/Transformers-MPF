@@ -171,8 +171,7 @@ class Wizard(Feature):
         return all(c >= SIDE_HITS for c in self.side_counts)
 
     def mult(self, shot):
-        m = self.pd.get("shot_mult")
-        return m[shot] if m and shot < len(m) else 1
+        return self.os.shot_mult(shot)
 
     # ------------------------------------------------------------------ the left eject
 

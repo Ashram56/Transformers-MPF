@@ -91,8 +91,7 @@ class Side:
         return self.os.pd
 
     def mult(self, shot):
-        m = self.pd.get("shot_mult")
-        return m[shot] if m and shot < len(m) else 1
+        return self.os.shot_mult(shot)
 
     def start(self):
         os_ = self.os
