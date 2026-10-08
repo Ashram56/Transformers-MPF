@@ -95,7 +95,8 @@ def build_sounds(only_data):
 
 DMD_COLOR = "Color(1, 0.45, 0.05, 1)"
 DEFFS = os.path.join(PKG, "media", "dmd", "deffs")
-PANEL_LR = "216cc"          # return address of the status panel's score draw in the captures' text records
+PANEL_LR = "216cc"          # return address of the status panel's score draw in older captures' text records
+PANEL_CALLS = ("102f2ec", "102f36c")    # call sites of the status panel's two score rows (text records)
 PANEL_WIDTH = 41            # columns 0-40: the panel and its separator
 
 
@@ -120,10 +121,49 @@ def panel_level(timing, frames):
     """The palette level the deff draws the status panel at (None: no panel). The capture's panel shows one
     player's score: its brightest dot in columns 0-38 is the level (deff 38 draws it dim)."""
     texts = [t for p in timing.get("pages") or [] for t in p["texts"]]
-    if not any(str(t.get("lr")) == PANEL_LR and t["x"] == 38 for t in texts):
+    if not any((str(t.get("lr")) == PANEL_LR or t.get("call_site") in PANEL_CALLS) and t["x"] == 38
+               for t in texts):
         return None
     top = max((img.crop((0, 0, PANEL_WIDTH - 2, 32)).getextrema()[0][1] for img, _ in frames), default=255)
     return max(1, round(top / 17)) if top else 15
+
+
+def value_texts(timing, frames):
+    """The deff's texts printed from a printf format (A's text records: "source" holds the ROM's format, e.g.
+    "%,02lu"), the status panel's aside: [slot], and per frame the slots it shows. A frame shows the texts of
+    the last page composed before it; a slot counts for a frame only where the frame's dots are exactly the
+    captured string drawn in its font (texts still moving or blinking stay baked in the frame). Those dots are
+    cleared from the frame (they were drawn over the page) and the slide draws the slot's text live."""
+    import bisect
+    import gen_fonts
+    fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
+                                                     encoding="utf-8"))["fonts"]}
+    get = gen_fonts.load_images()
+    pages = timing.get("pages") or []
+    starts = [p["t_ms"] for p in pages]
+    slots, keys, per_frame = [], {}, []
+    for (img, _), rec in zip(frames, timing.get("frames") or []):
+        shown = []
+        k = bisect.bisect_right(starts, rec["t_ms"]) - 1
+        for t in pages[k]["texts"] if k >= 0 else []:
+            if "%" not in str(t.get("source", "")) or t.get("call_site") in PANEL_CALLS or t["font"] not in fonts:
+                continue
+            canvas = [[None] * 128 for _ in range(32)]
+            gen_fonts.render(get, fonts[t["font"]], t["str"], t["x"], t["y"], t["flags"], canvas)
+            lit = [(x, y, v) for y, row in enumerate(canvas) for x, v in enumerate(row) if v]
+            px = img.load()
+            if not lit or any(round(px[x, y][0] / 17) != v for x, y, v in lit):
+                continue
+            key = (t.get("call_site"), t["font"], t["x"], t["y"], t["flags"], t["source"])
+            if key not in keys:
+                keys[key] = len(slots)
+                slots.append({"t": t["str"], "f": t["font"], "x": t["x"], "y": t["y"], "a": t["flags"],
+                              "source": t["source"]})
+            for x, y, _ in lit:
+                px[x, y] = (0, 0, 0, 255)
+            shown.append(keys[key])
+        per_frame.append(sorted(set(shown)))
+    return slots, per_frame
 
 
 def loop_period(frames):
@@ -135,7 +175,8 @@ def loop_period(frames):
     return next((p for p in range(1, n // 2 + 1) if all(h[i] == h[i + p] for i in range(n - p))), None)
 
 
-def write_slide(deff_id, frames, loop, folder_rel, panel):
+def write_slide(deff_id, frames, loop, folder_rel, panel, values=None):
+    """values: (slots, slots per frame) of value_texts, drawn by a "Values" node (tf/deff_values.gd)."""
     import hashlib
     name = "deff_{:03d}".format(deff_id)
     ext, entries, seen = [], [], {}
@@ -148,10 +189,14 @@ def write_slide(deff_id, frames, loop, folder_rel, panel):
             ext.append('[ext_resource type="Texture2D" path="res://{}/{}" id="{}"]'.format(folder_rel, fname,
                                                                                          seen[digest]))
         entries.append('{{"duration": {:.1f}, "texture": ExtResource("{}")}}'.format(ms, seen[digest]))
-    parts = ['[gd_scene load_steps={} format=3]'.format(len(ext) + 3 + (1 if panel is not None else 0)), '',
+    has_values = bool(values and values[0])
+    parts = ['[gd_scene load_steps={} format=3]'.format(len(ext) + 3 + (1 if panel is not None else 0)
+                                                        + (1 if has_values else 0)), '',
              '[ext_resource type="Script" path="res://addons/mpf-gmc/classes/mpf_slide.gd" id="slide"]']
     if panel is not None:
         parts.append('[ext_resource type="Script" path="res://tf/rom_screen.gd" id="screen"]')
+    if has_values:
+        parts.append('[ext_resource type="Script" path="res://tf/deff_values.gd" id="values"]')
     parts += ext
     parts += ['', '[sub_resource type="SpriteFrames" id="frames"]',
               'animations = [{{"frames": [{}], "loop": {}, "name": &"default", "speed": 1000.0}}]'.format(
@@ -165,6 +210,11 @@ def write_slide(deff_id, frames, loop, folder_rel, panel):
     if panel is not None:                      # the live status panel (tf/score_screen.py panel_draw)
         parts += ['', '[node name="Panel" type="Control" parent="."]', 'layout_mode = 0',
                   'offset_right = 128.0', 'offset_bottom = 32.0', 'script = ExtResource("screen")']
+    if has_values:                             # the printf texts, drawn live on the frames that show them
+        parts += ['', '[node name="Values" type="Control" parent="."]', 'layout_mode = 0',
+                  'offset_right = 128.0', 'offset_bottom = 32.0', 'script = ExtResource("values")',
+                  'metadata/slots = {}'.format(json.dumps(json.dumps(values[0]))),
+                  'metadata/frames = {}'.format(json.dumps(json.dumps(values[1])))]
     with open(os.path.join(GAME, "slides", "deffs", name + ".tscn"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(parts) + "\n")
     return name
@@ -194,8 +244,9 @@ def build_deffs(only_data):
         frames = capture_frames(folder, timing)
         panel = panel_level(timing, frames)
         loop = rows.get(deff_id, {}).get("background_loop") == "yes"
+        slots, per_frame = value_texts(timing, frames)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
-                        "panel": panel, "args": []}
+                        "panel": panel, "args": [], "values": [v["source"] for v in slots]}
         if only_data:
             continue
         if panel is not None:
@@ -204,9 +255,10 @@ def build_deffs(only_data):
         if loop:
             period = loop_period(frames)
             frames = frames[:period] if period else frames
+            per_frame = per_frame[:len(frames)]
         rel = "media/dmd/deff_{:03d}".format(deff_id)
         os.makedirs(os.path.join(GAME, rel), exist_ok=True)
-        write_slide(deff_id, frames, loop, rel, panel)
+        write_slide(deff_id, frames, loop, rel, panel, (slots, per_frame))
     return out
 
 

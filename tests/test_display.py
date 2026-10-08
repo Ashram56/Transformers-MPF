@@ -50,3 +50,14 @@ class TestFonts(unittest.TestCase):
         self.assertEqual(27, len(fonts))                       # tf_180 font table, file 0x123478
         self.assertEqual(",0123456789", "".join(sorted(fonts[23]["glyphs"])))
         self.assertEqual(18, fonts[23]["height"])
+
+
+class TestDeffValues(unittest.TestCase):
+    """Captured printf texts drawn live (scripts/gen_media.py value_texts, tf/deff_values.gd)."""
+
+    def test_format_values(self):
+        from tf.media_bridge import format_values
+        self.assertEqual(["3,170"], format_values(["%,02lu"], [3170]))
+        self.assertEqual(["2", "TICKETS"], format_values(["%u", "TICKET%P1//S/%"], [2]))
+        self.assertEqual(["1", "TICKET"], format_values(["%u", "TICKET%P1//S/%"], [1]))
+        self.assertEqual([None], format_values(["%,02lu"], []))

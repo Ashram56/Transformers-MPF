@@ -87,7 +87,7 @@ class SwitchLayer:
             os_.audit(POP_AUDIT)
             os_.score_add(POP_SCORE)
             os_.sound(POP_SOUND)
-            os_.deff_start(POP_DEFF)
+            os_.deff_start(POP_DEFF, values=[POP_SCORE + POP_EXTRA])    # the printed value: inferred
             os_.leff_start(POP_LEFF)
             os_.leff_start(POPS[num])
             os_.score_add(POP_EXTRA)

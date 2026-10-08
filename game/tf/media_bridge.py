@@ -23,11 +23,12 @@ SPEC = re.compile(r"%(P\d/[^%]*%|[-+ #0,]*\d*l?[dus])")
 TEXT_ARGS = {}
 
 
-def format_rom_text(line, args):
+def format_rom_text(line, args, last=None):
     """printf as the ROM's text_printf_msg uses it: %d %u %s, %,02lu (score with commas),
-    %P1/a/b/c/% (plural or ordinal pick by the previous number)."""
+    %P1/a/b/c/% (plural or ordinal pick by the previous number; `last`, a one-item list, carries that number
+    from one text of a screen to the next)."""
     args = list(args)
-    last = [0]
+    last = last if last is not None else [0]
 
     def sub(m):
         spec = m.group(1)
@@ -53,6 +54,22 @@ def format_rom_text(line, args):
             text = text.rjust(int(width), "0" if "0" in flags or width.startswith("0") else " ")
         return text
     return SPEC.sub(sub, line)
+
+
+def format_values(sources, values):
+    """The texts of a captured deff's printf slots (media_data "values": their ROM formats, in the order the
+    deff draws them) from `values`, the deff's arguments in the ROM's order; a slot whose values are missing
+    is None (the slide keeps the capture's string)."""
+    values, last, out = list(values), [0], []
+    for source in sources:
+        n = sum(1 for spec in SPEC.findall(source) if not spec.startswith("P"))
+        if len(values) < n:
+            out.append(None)
+            values = []
+            continue
+        out.append(format_rom_text(source, values[:n], last))
+        values = values[n:]
+    return out
 
 
 # Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
@@ -122,6 +139,8 @@ class MediaBridge:
         if live:                                       # values the deff reads from RAM, now (over the passed ones)
             args = dict(args, **live())
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
+        if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
+            passed["values"] = format_values(info["values"], args.get("values") or [])
         if not info["text"]:
             return dict(self.panel_args(info), **passed)
         if deff_id in TEXT_ARGS:

@@ -47,7 +47,10 @@ class Bonus(Feature):
         sounds = [(t, (lambda c: lambda: os_.sound(c, in_deff=25))(SIDE_SOUND.get(side, c) if c in (0x20, 0x21)
                                                                     else c))
                   for t, c in (captured.sounds if captured else [])]
-        os_.deff_start(25, sounds=sounds, total=total)
+        pd = self.pd
+        subtotal = UNIT * pd.get("bonus_count", 0) + pd.get("bonus_held", 0)
+        # deff 25 prints the value under the multiplier, then the total (which values: inferred)
+        os_.deff_start(25, sounds=sounds, total=total, values=[subtotal, total])
         os_.after(BONUS_TICKS, lambda: done(total))
 
 
