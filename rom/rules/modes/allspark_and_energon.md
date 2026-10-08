@@ -15,8 +15,9 @@ to `code/tf_decompiled.c` (headers `// ==== ADDR NAME`); OS helper names as in t
   Allspark is banked, one is spent and a **mystery award** is picked (deff 52): Light Special, Light Extra Ball,
   200,000, +1 bonus multiplier, Add-a-Ball, Add More Time, Pops score, Bonus Hold, Bonus X Hold, Shot
   Multiplier, Super Spinner, Super Pop Bumpers.
-- While a timed mode (battle, double/fast scoring) runs, Energon hits are worth only 5,000 and do not light
-  anything.
+- While a **multiball** runs (Mudflap & Skids, Optimus A/D, Megatron A/D or the wizard multiball:
+  `any_multiball_running` 0x01006704), Energon hits are worth only 5,000 and do not light anything. Timed modes
+  (the other seven battles, double / fast scoring) do **not** affect the Energon targets.
 
 ## 2. Settings (operator adjustments)
 | Adj # | ROM name | Default | Range | Effect |
@@ -46,7 +47,7 @@ value (1,110, from the switch table).
 ### 5.1 Energon hit [0x010309a4]
 | Trigger | Condition | Effect | Display | Sound | Lamp effect |
 |---|---|---|---|---|---|
-| sw 2 / 49 / 46 | a timed mode runs (`any_timed_mode_running`, e.g. any character battle, double or fast scoring) [0x0103096c] | 5,000; nothing lit | – | 0x25c | leff 139 |
+| sw 2 / 49 / 46 | a multiball runs (`any_multiball_running` 0x01006704: game flag 0x1e Mudflap & Skids, 0x1f / 0x22 Optimus A / D, 0x25 / 0x29 Megatron A / D, 0x3e wizard multiball) [0x0103096c] | 5,000; nothing lit | – | 0x25c | leff 139 |
 | same | task 0xb0 running (162 ms after a set) | nothing (not even 5,000) | – | – | – |
 | same | target already lit, set not complete | 10,000 | – | 0x25d | leff 141 |
 | same | target unlit and not the last one | light it; 75,000 | deff 124 (Energon picture; gets the lit-target mask and the new bit as parameters; its code also holds an "ALLSPARK / LIT" page) | 0x25e, then 0x25f about 1 s later (task 0x97, 0x01030984) | leff 140 |
@@ -116,8 +117,9 @@ deff 149 "SUPER POP BUMPERS"); 60.79 item 4 again (traces/allspark_energon.jsonl
   locked out together with the center lane by task 0x54; it is not a mode-start shot.
 - **Pop bumpers (sw 30-32)** [0x01032f8c]: advance the lit battle, move the Devastator rover, and pause running
   battle timers for 156 ticks.
-- **2-bank (sw 37, 50)** [0x0102e9c0]: fast scoring qualify (deff 126 "N MORE FOR FAST SCORING"); fast scoring is
-  a timed mode, so while it runs no battle can be qualified and Energon hits pay 5,000. No direct battle link.
+- **2-bank (sw 37, 50)** [0x0102e9c0]: fast scoring qualify (deff 126 "N MORE FOR FAST SCORING"). Fast scoring
+  is a timed mode; it does not change the Energon targets (only multiballs do) and does not block battle
+  qualifying (`clu_start_allowed` 0x01022ca8 tests multiballs, battles and flag 0x3c only). No direct battle link.
 
 ## 6. How it ends
 Energon sets and the Allspark bank persist for the whole game (per player, reset only at game start). An
@@ -128,7 +130,7 @@ unspent Allspark stays banked across balls.
 |---|---|---|---|
 | Energon target lit | deff 124 (priority 128) | 0x25e, 0x25f | leff 140 |
 | Energon lit target re-hit | – | 0x25d | leff 141 |
-| Energon during a timed mode | – | 0x25c | leff 139 |
+| Energon during a multiball | – | 0x25c | leff 139 |
 | Set complete | deff 125 "ALLSPARK / LIT" (priority 129) | 0x260; 0x13e, 0x13f (deff) | leff 142 |
 | Allspark banked | – | – | leff 40 rule (runs while allspark_lit > 0 [0x01024058, rule 0x01024f24]): pulses the Allspark flasher, coil 32 FLASH: ALLSPARK, continuously (observed) |
 | Allspark collected | deff 52 (award text cycling through all items, then the chosen one) | 0x140, then 0x143 (item 5) / 0x142 (item 6) / 0x144 (others), 0x141 | leff 41 |
@@ -144,7 +146,11 @@ own: the flasher coil 32 shows a banked Allspark. Inserts 12-15 ALLSPARK (X / PU
 multiplier, mode-start (purple Decepticon / red Autobot) and battle-shot (orange) arrows of shot 0.
 
 ## 9. Interactions
-- Timed modes (battles, double scoring, fast scoring) freeze the Energon targets at 5,000.
+- Multiballs (Mudflap & Skids, Optimus, Megatron, wizard multiball) freeze the Energon targets at 5,000
+  [0x0103096c -> 0x01006704]; the Energon lamp rule then drives all three inserts the same way (FUN_00007714, regardless of lit state)
+  [0x01030f80]. Timed battles, double and fast scoring leave them working normally (observed:
+  traces/switches.jsonl 128.67, sw 46 lights the right target for 75,000 with deff 124 while the Blackout battle,
+  task 0xa0 started 67.58, end task 0x82 at 140.18, is running).
 - A completed set also calls 0x0100af0c (Megatron multiball lock lighting; deff 139) - see the Megatron spec.
 - The mystery award can add time to battles (item 6) and balls to Mudflap & Skids (item 5).
 - The left eject waits for display-show tasks 0x5d-0x7e, so battle intros started by the Allspark hold the ball

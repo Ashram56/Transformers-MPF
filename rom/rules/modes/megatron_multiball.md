@@ -104,8 +104,9 @@ no Megatron/Optimus/AHM/wizard multiball is running [0x0100b0b8]:
    (verified in emulator: megatron_decepticon.jsonl 29.65 s; megatron_autobot.jsonl 36.88 s)
 
 Ball handling [0x0100a1f8]: the device keeps lit + locked balls, capped by its size (observed 3 =
-the 3 locked balls), and 0 when adj 69 = YES, the back-door task 0x4f runs, a timed mode runs or All Hail Megatron
-runs. Back door (switch 13) starts task 0x4f for 187 ticks (3.0 s); a lock entry during it is not held and skips
+the 3 locked balls), and 0 when adj 69 = YES, the back-door task 0x4f runs, a multiball runs (`any_multiball_running`
+0x01006704: Mudflap & Skids, Optimus A/D, Megatron A/D, wizard multiball) or All Hail Megatron runs (flag 0x3c,
+0x0100ff6c). Timed battles, double and fast scoring do not release the held balls. Back door (switch 13) starts task 0x4f for 187 ticks (3.0 s); a lock entry during it is not held and skips
 all shot handlers. The lock-entry handler waits while tasks 0x73/0x74/0x75 (lock deff, A intro, D intro) run, and
 the eject waits for deff 61 (Optimus super) [list 0x040c61f8 / 0x040c6200]. A ball re-entering about 1-2 s after an
 eject is ignored (observed; locks spaced 4 s worked on the default side, 6 s were used on the Autobot run).

@@ -70,9 +70,10 @@ group even when an Autobot player plays it.
   0x01029558, 0x0100bd1c, 0x0100dcc0) (verified in emulator: wizard_multiball.jsonl 40.94 s, req0 / req4 / req5 -> 0).
 
 ### 4.2 All Hail Megatron / Autobots Roll Out [0x0100fff0, gate 0x0100ff80]
-Qualifies when no timed mode runs, all 5 own-side requirements are completed (Decepticon r 0-4, Autobot r 5-9:
-byte 1 != 0) [0x01035db4], flag 0x3d is clear [0x0100ff58] and no character battle or other mode runs
-[0x010067bc]. Started by the **left eject (Allspark, sw 3)**; the eject handler tries, in this order: wizard
+Qualifies when no multiball runs (`any_multiball_running` 0x01006704: Mudflap & Skids, Optimus A/D, Megatron
+A/D, wizard multiball), all 5 own-side requirements are completed (Decepticon r 0-4, Autobot r 5-9: byte 1 != 0)
+[0x01035db4], flag 0x3d is clear [0x0100ff58] and no timed mode runs (`any_timed_mode_running` 0x010067bc: the
+seven timed battles, double or fast scoring) [0x0100ff80]. Started by the **left eject (Allspark, sw 3)**; the eject handler tries, in this order: wizard
 multiball hit, side-mode hit, side-mode start, wizard multiball start, Optimus / Megatron hits, battles
 [0x0100a788]. Start:
 - shot counters and super = 0; **1,000,000 x the Allspark shot multiplier**; flags 0x3c, 0x3d set; counter 0x7e
@@ -82,12 +83,14 @@ multiball hit, side-mode hit, side-mode start, wizard multiball start, Optimus /
   start 18.14 s, eject coil 22 at 24.35 s; wizard_multiball.jsonl start 19.37 s, coil 22 at 25.28 s).
 
 ### 4.3 Wizard Multiball [0x010363ec, gate 0x010363b4]
-Qualifies when all 11 requirements are completed [items_all_collected 0x01035d50], no timed mode runs and the side
-mode is not running. Started by the left eject. Because the side-mode start is tried first, with all 11 done and
+Qualifies when all 11 requirements are completed [items_all_collected 0x01035d50], no multiball runs
+(`any_multiball_running` 0x01006704) and the side mode is not running (flag 0x3c) [0x010363b4]. Timed battles,
+double and fast scoring do not block it. Started by the left eject. Because the side-mode start is tried first, with all 11 done and
 flag 0x3d clear the side mode starts instead; the wizard multiball needs the side mode already played.
 - `multiball_start(4 if none in play else in_play + 3, 0, ball save 937 ticks = 15.2 s, grace 312 ticks = 5.1 s)`
   (verified in emulator: wizard_multiball.jsonl 40.94 s).
-- shot counters and super = 0; flag 0x14 cleared (add-a-ball available again) when no timed mode; flag 0x3e set;
+- shot counters and super = 0; flag 0x14 cleared (add-a-ball available again) when no other multiball runs (tested before flag 0x3e is set;
+wizard_multiball.jsonl 40.94 flag 20 cleared by 0x1036484); flag 0x3e set;
   wizard-MB count += 1; **wizard reset** (4.1); flag 0x3d cleared; counter 0x97 (#159 WIZARD MULTIBALL STARTED);
   **1,000,000 x Allspark multiplier**; intro deff 86 "BATTLE FOR CYBERTRON / COMPLETE ALL SHOTS FOR SUPER
   JACKPOT" via task 0x7c (10.5 s); the ball stays in the eject about 11.5 s [0x010363ec] (verified in emulator:

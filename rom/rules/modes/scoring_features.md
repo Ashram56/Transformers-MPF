@@ -65,8 +65,10 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
   deff 46 (pop total) only if not already showing; leff 26 + leff 27/28/29 (top/right/bottom) [0x0102ca98].
 - Observed: 20 hits 0.16-0.18 s apart → 3,000, 4,000 ... 20,000, 20,000, 20,000; value back to 3,000 1.53 s
   after the last hit (t 25.90 → 27.43); hits 1.4-1.9 s apart → 3,000 each (t 28.06-31.53).
-- During a timed mode or a multiball (0x0102c878: any timed mode or 0x0100ff6c) the pop still scores
-  pop_value but the value does not step and deff 46 is not shown [0x0102c8c8] (code).
+- During a **multiball** or the side-complete mode (0x0102c878: `any_multiball_running` 0x01006704 or flag 0x3c
+  via 0x0100ff6c) the pop still scores pop_value but the value does not step and deff 46 is not shown
+  [0x0102c8c8] (code). Timed battles do not affect pops; double and fast scoring only change the sound to 0x15d
+  [0x0102c804, 0x0102c8c8: tests 0x010038b0 / 0x01004618].
 - **Pops grow**: left-eject award "POPS SCORE %,02lu" (award bag 0x040dde30, weight 150) → [0x0102c624]:
   pop_base += 1,000 (cap 20,000), pop_value = pop_base, score pop_value, audit 0x4a, deff 47 "POPS GROW /
   value" (sound 0x15e, leff 30). The base resets to 3,000 at the next ball (code; not traced).
@@ -108,8 +110,9 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
   back to 1 at 105.91 (2.0 s later). During it: sling 440 → 880, pop 3,170 → 6,340, Bumblebee 15,030 → 30,060.
 
 ### 4.4 2-bank and fast scoring [0x01033c00 (sw50) / 0x01033c40 (sw37) → 0x0102e9c0] [0x01004394]
-- Handler 30 points. If a timed mode or 0x010067bc is running: 5,000, sound 0x261, leff 143 only
-  (seen in switches.jsonl). Otherwise (one hit per 10 ticks, task 0xb1):
+- Handler 30 points. If a multiball (`any_multiball_running` 0x01006704) or a timed mode
+  (`any_timed_mode_running` 0x010067bc: the seven timed battles, double or fast scoring) runs [0x0102e994]:
+  5,000, sound 0x261, leff 143 only (seen in traces/switches.jsonl 119.94, sw 37 during the Blackout battle). Otherwise (one hit per 10 ticks, task 0xb1):
   - twobank_left > 0: −1, score 75,000, sound 0x263, leff 144, deff 126 "n MORE FOR FAST SCORING"
     (sounds 0x266, 0x264 near the end); when it reaches 0 deff 131 "FAST / SCORING / READY" (0x287, 0x288)
     and leff 147/148 flash the targets (observed t 112.89-123.52: 7 → 0, 75,000 each).
@@ -121,7 +124,8 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
   about 10 s after the start (observed t 134.83 = start + 10.1 s; caller 0x10041b0 in 0x0100415c, which calls
   0x010049a8; the trigger was not decoded).
   - Every switch handler calls 0x010047b8: one all-targets award of fast_value per hit (queued, task 0x5b,
-    one per tick), deff 134 when deff 132 is not up, sound 0x28d, leff 164 [0x01004644]
+    one per tick), deff 134 when deff 132 and deff 134 are not up and no multiball runs (0x01006704), sound 0x28d,
+    leff 164 [0x01004644]
     (observed sw2, sw46, sw49: +10,000 each).
   - sw50 / sw37 during fast scoring: the first hit of each this cycle raises fast_value by 1,000 (cap 50,000,
     deff 135 "ALL / TARGETS / value") [0x01004520]; when both are hit (groups = 7): time +10 counts (cap 90),
@@ -162,7 +166,8 @@ double scoring (lamp lists in `rom_data/io/lamp_effects.csv`).
 
 ## 9. Interactions
 - Double scoring multiplies every score_add, including mode jackpots and fast scoring awards; not the bonus.
-- Pops and 2-bank lose their extras during timed modes/multiballs (0x0102c878, 0x0102e994).
+- Pops lose their step and deff during multiballs / the side-complete mode (0x0102c878); the 2-bank pays only
+  5,000 during multiballs and timed modes (0x0102e994).
 - Super pops, super spinner, pops grow, extra time, bonus hold and shot multipliers come from the left eject
   random award bag at 0x040dde30 (owned by the eject/Allspark spec): names "SPECIAL LIT" (weight 1),
   "EXTRA BALL LIT" 5, "200,000" 200, "%iX BONUS MULTIPLIER" 150, "ADD-A-BALL" 300, "ADD MORE TIME" 250,

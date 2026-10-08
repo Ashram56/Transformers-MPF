@@ -47,8 +47,9 @@ last super (min 1,000,000). The multiball ends at one ball with an "OPTIMUS PRIM
 | opd_supers | 0x02111ff4 + (p-1) | per player, game | supers collected in D |
 | op_d_mb_since_super / op_d_sum | 0x02111ffc + (p-1) / 0x02112000 + 4(p-1) | as for A | super base |
 Game flags: 0x46 (70) Optimus battle running; 0x1f (31) Optimus A running; 0x22 (34) Optimus D running; 0x49 (73)
-set at the multiball start; 0x14 (20, add-a-ball used) cleared at the start when no timed mode runs, so ADD-A-BALL
-can be offered again [0x01027994, 0x01029a08] (verified in emulator: both traces).
+set at the multiball start; 0x14 (20, add-a-ball used) cleared at the start when no other multiball runs
+(`any_multiball_running` 0x01006704, tested before flag 0x1f / 0x22 is set), so ADD-A-BALL can be offered again
+[0x01027994, 0x01029a08] (verified in emulator: both traces; optimus_autobot.jsonl 34.93 flag 20 cleared).
 
 ## 4. How it starts
 ### 4.1 Access (center lane sw 11) [0x01025de4]
@@ -82,7 +83,7 @@ Only while the battle can progress (flag 0x46 and no Megatron / Optimus / AHM / 
 `multiball_start(balls = 3 if none in play else in_play + 2, 1, ball save 625 ticks = 10.2 s, grace 187 ticks =
 3.0 s)` (verified in emulator: both traces). Then: adj 87 YES restores phase / remaining / lit from the player's
 copies, NO resets them (all 6 shots, phase 1) and clears mb_since_super and sum; **250,000 x the center-lane
-multiplier**; flag 0x14 cleared (no timed mode); flag 0x1f (A) / 0x22 (D) set; intro task 0x71 (A) - deff 57
+multiplier**; flag 0x14 cleared (if no other multiball runs); flag 0x1f (A) / 0x22 (D) set; intro task 0x71 (A) - deff 57
 (A, 5.7 s) / deff 63 (D, 8.7 s), shown 1.3 s (A) / 3.5 s (D) after the start (observed); mb_since_super += 1;
 counter 0x6c (A, #116 OPTIMUS M.B.A. STARTED) / 0x70 (D, #120); wizard requirement 5 (Optimus multiball)
 collected: 0x01035af0(5,1), counter 0x86 (#142 WIZARD: REQ. 6 COLLECTED).
