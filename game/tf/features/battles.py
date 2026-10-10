@@ -261,7 +261,7 @@ class Battle:
         self.hits += 1
         left = self.pd.get(self.left_key, self.shots) - 1
         self.pd[self.left_key] = max(left, 0)
-        self.hit_media(points, completed=left <= 0)
+        self.hit_media(points, completed=left <= 0, left=max(left, 0))
         if left <= 0:
             self.complete()
 
@@ -269,10 +269,14 @@ class Battle:
         """The lit shots after a lit hit."""
         self.lit &= ~(1 << shot)
 
-    def hit_media(self, points, completed=False):
+    def hit_media(self, points, completed=False, left=None):
+        """left: the shots left after this hit, which picks the ROM's hit animation (index BASE - left, the hit
+        functions' task+0x34); the PuP map reads it with hit and completed."""
         os_ = self.os
         kwargs = {"run_seconds": self.completed_seconds} if completed else {}
-        os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # hit, completed: PuP
+        if left is not None:
+            kwargs["left"] = left
+        os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # PuP
         lengths = os_.sample_lengths(self.hit_sound)
         os_.sound(self.hit_sound, in_deff=self.hit_deff,
                   index=(self.hits - 1) % len(lengths) if lengths else None)
@@ -517,13 +521,14 @@ class Bumblebee(Battle):
         pd.bb_mask = pd.get("bb_mask", 0x3f) & ~(1 << shot)
         self.hits += 1
         self.mgr.pause()
+        left = bin(pd.bb_mask & 0x3f).count("1")      # [0x01014638]: index 7 - shots still lit
         if pd.bb_mask:
             self.lit = pd.bb_mask
-            self.hit_media(points)
+            self.hit_media(points, left=left)
             return
         pd.bb_phase = 2
         pd.bb_mask = self.lit = 0x40
-        self.hit_media(points)
+        self.hit_media(points, left=0)
         self.seconds = os_.adj[self.timer_adj]
         self.steps = 0
         self.waiting_intro = False
@@ -628,10 +633,11 @@ class Mudflap(Battle):
         self.hits += 1
         left = self.pd.get(self.left_key, self.shots) - 1
         first = left <= 0 and not os_.flag(self.COMPLETED_FLAG)
+        shown = max(left, 0)                            # the index uses the count before the wrap [0x01019294]
         if left <= 0:
             left = self.shots
         self.pd[self.left_key] = left
-        self.hit_media(points, completed=first)
+        self.hit_media(points, completed=first, left=shown)
         if first:
             os_.flag_set(self.COMPLETED_FLAG)
             pd = self.pd
@@ -640,8 +646,8 @@ class Mudflap(Battle):
             os_.audit(self.audit_completed)
             pd.battle_completed = pd.get("battle_completed", 0) | self.bit
 
-    def hit_media(self, points, completed=False):
-        Battle.hit_media(self, points)
+    def hit_media(self, points, completed=False, left=None):
+        Battle.hit_media(self, points, left=left)
 
     def multiball_end(self):
         """Down to one ball [0x01019550]: flag 0x1e off (music back), grace task 0xa9, then the total."""

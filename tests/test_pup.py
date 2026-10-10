@@ -83,17 +83,19 @@ class TestEngine(unittest.TestCase):
         self.assertIn(270, self.ids())             # Chosen - Decepticon - BG
         self.assertIn(349, self.ids())             # Decepticon main music (SetBG)
 
-    def test_battle_hits_by_number(self):
+    def test_battle_hits_by_shots_left(self):
+        """The ROM picks a battle hit's animation from the shots left after the hit (Blackout [0x0101cc6c]:
+        index 12 - left in table 0x040c6c34), so a battle restarted on a later ball goes on where it stopped."""
         self.engine.on_event("tf_deff_100")        # Blackout intro
         self.assertIn(28, self.ids())
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0)
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=10)
         self.assertEqual([29], self.ids())         # Blackout 1
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=3, completed=0)
-        self.assertEqual([31], self.ids())         # Blackout 3
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=3)
+        self.assertEqual([35], self.ids())         # restarted with 4 left: Blackout 7, not Blackout 1
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1)
+        self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1, left=0)
         self.assertEqual([38], self.ids())         # Blackout Completed
 
     def test_counted_jackpots(self):
