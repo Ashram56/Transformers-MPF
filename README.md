@@ -11,10 +11,10 @@ PowerShell or cmd. It installs what is missing (Git, Python 3.11), clones this r
 `-Table <your .vpx>`) it also sets up Visual Pinball X ([docs/vpx.md](docs/vpx.md)):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/vpx-bridge-d47e04/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/pup-pack/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
 ```
 
-Without VPX: `powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/vpx-bridge-d47e04/scripts/install/install_prereqs_windows.ps1 | iex"`. Options:
+Without VPX: `powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/pup-pack/scripts/install/install_prereqs_windows.ps1 | iex"`. Options:
 `-NoMonitor`, `-DryRun` (the plan only), `-Yes` (no questions); `$env:TF_DIR` / `$env:TF_BRANCH` before the line
 change the folder and branch. Safe to run again: it updates the clone and redoes only what changed.
 

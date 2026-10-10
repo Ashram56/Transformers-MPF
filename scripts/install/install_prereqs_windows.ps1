@@ -59,7 +59,7 @@ $Clone = -not ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot '..\setup.
 $Root = if (-not $Clone) { Split-Path -Parent (Split-Path -Parent $PSScriptRoot) }
         elseif ($env:TF_DIR) { $env:TF_DIR } else { Join-Path $HOME 'Transformers-MPF' }
 $RepoUrl = if ($env:TF_REPO) { $env:TF_REPO } else { 'https://github.com/Ashram56/Transformers-MPF.git' }
-$RepoBranch = if ($env:TF_BRANCH) { $env:TF_BRANCH } else { 'claude/vpx-bridge-d47e04' }
+$RepoBranch = if ($env:TF_BRANCH) { $env:TF_BRANCH } else { 'claude/pup-pack' }
 
 # The last Python 3.11 release with Windows installers (later 3.11 releases are source-only security fixes)
 $PyOrgVersion = '3.11.9'
