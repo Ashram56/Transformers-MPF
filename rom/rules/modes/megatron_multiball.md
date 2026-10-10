@@ -171,7 +171,7 @@ phase 2; 58.32 / 60.49 / 62.66 DJ 500,000 -> phase 3; 66.90 super 1,000,000 -> p
 | When | Display effect | Sound | Lamp effect |
 |---|---|---|---|
 | lock lit | 139 (LOCK IS LIT; no text captured) | 0x293 | 167 |
-| ball locked | 140 "BALL n LOCKED" | from table 0x040c62aa: 0x29a / 0x29c / 0x29f (lock 1/2/3), then speech 0x297 | 168 |
+| ball locked | 140 "BALL n LOCKED" | from table 0x040c62aa: 0x29a / 0x29c / 0x29f (lock 1/2/3), then the side's lock music: the per-player call Autobot 0x294-0x296 (RAM 0x02111d58) / Decepticon 0x297-0x299 (0x02111d68), first at the player's first ball [0x0100ab5c], next at every Megatron multiball [0x0100ad70] (observed: 0x297, then 0x298 after the multiball, megatron_decepticon.jsonl 94.66 s). The Decepticon animation also follows it: 0x297 first-round animations, else the "2nd" ones (tables 0x040c62b4 / 0x040c62c0) | 168 |
 | A start | 69 intro (6.4 s) then background 70 "MEGATRON MULTIBALL / SHOOT FLASHING SHOTS" | 0xc7, 0xc8, 0xc9; music 0x38 | 61, 62 |
 | A jackpot / double / super / total | 71 / 72 / 73 / 74 "MEGATRON MULTIBALL TOTAL:" | 0xca / 0xd2 / 0xd9.. / 0xde | |
 | D start | 75 intro (6.1 s) then background 76 | 0xe2, 0xe3; music 0x3b | 69, 70 |

@@ -56,9 +56,18 @@ class TestEngine(unittest.TestCase):
     def ids(self):
         return [c["trigger"] for c in self.sent]
 
-    def test_only_known_rows_unmapped(self):
-        # the Decepticon side's second-round lock videos (no game event tells the rounds apart yet)
-        self.assertEqual([208, 209, 210], [r.id for r in self.engine.unmapped])
+    def test_every_row_mapped(self):
+        self.assertEqual([], [r.id for r in self.engine.unmapped])
+
+    def test_decepticon_lock_rounds(self):
+        """deff 140 [0x0100b7f0]: the Decepticon lock animation follows the player's lock music call (0x297 the
+        first round, 0x298 / 0x299 after one or two Megatron multiballs)."""
+        self.engine.on_event("tf_deff_140", values=[1], state={"side": 2, "mtl_music_d": 0x297})
+        self.assertEqual([205], self.ids())        # Megatron - Decepticon - Ball 1 Locked
+        for call in (0x298, 0x299):
+            self.sent.clear()
+            self.engine.on_event("tf_deff_140", values=[3], state={"side": 2, "mtl_music_d": call})
+            self.assertEqual([210], self.ids())    # ... Ball 3 Locked - 2nd
 
     def test_overlay_at_start(self):
         self.engine.on_event("pup_boot")
@@ -135,6 +144,23 @@ class TestPupMachine(TfTestCase):
             fired = [r.id for c in fire.call_args_list for r in c.args[0]]
             side = self.tf.pd.get("side")
             self.assertIn(274 if side == 2 else 271, fired)
+
+    def test_lock_music_call_per_round(self):
+        """[0x0100ab5c / 0x0100ad70]: each side's lock music call starts at the player's first ball and moves on
+        at every Megatron multiball (megatron_decepticon.jsonl: 0x298 at the lock after the multiball)."""
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(2)
+        mt = self.tf.features_by_name["megatron"]
+        pd = self.tf.pd
+        self.assertEqual((0x294, 0x297), (pd.mtl_music_a, pd.mtl_music_d))
+        calls = []
+        for _ in range(3):
+            mt.next_lock_music()
+            calls.append((pd.mtl_music_a, pd.mtl_music_d))
+        self.assertEqual([(0x295, 0x298), (0x296, 0x299), (0x294, 0x297)], calls)
+        pd["side"] = 1
+        self.assertEqual(0x294, mt.lock_music())
 
     def test_rom_music_muted_when_pup_ready(self):
         bridge = self.tf.media

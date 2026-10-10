@@ -111,8 +111,10 @@ borderless=true
    `music` track) and stops the running ROM music; speech and effects still play. The pack's music then plays
    on its screen 4. A departure from the ROM, row in [rom_differences.md](rom_differences.md).
 
-Not mapped yet: the Decepticon side's second-round lock videos (rows 208-210, "Ball n Locked - 2nd": no game
-event tells the rounds apart). `tests/test_pup.py` covers the map, the engine and the music hand-over.
+Every row of the pack is mapped. The Decepticon side's second-round lock videos (rows 208-210, "Ball n Locked -
+2nd") follow the ROM: deff 140 picks its Decepticon animation from the player's lock music call, 0x297 in the first
+round, 0x298 / 0x299 after one or two Megatron multiballs (`state.mtl_music_d`, tf/features/megatron.py).
+`tests/test_pup.py` covers the map, the engine and the music hand-over.
 
 ## Hooks in the game's files
 

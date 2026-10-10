@@ -12,6 +12,7 @@
 #   {hit==n, completed==0/1}   battle hits (tf/features/battles.py hit_media)
 #   {values.0==n} {values.1==n} the effect's values (lock number, wizard shot)
 #   {state.side==1 / 2}        the player's side (1 Autobot, 2 Decepticon: [pup] state="tf.pd")
+#   {state.mtl_music_d==663}   the Decepticon lock music call (0x297-0x299, tf/features/megatron.py): the lock round
 #   {count==n}                 the n-th time since the counter's reset (counters: below)
 # "inferred" means the order (which video for which shot) is the pack's row order, not checked in play.
 # Synthetic events (pup_runtime/mode.py): pup_boot (PuP player ready), pup_power_up, pup_attract_cycle.
@@ -184,9 +185,9 @@ dmd:
   155: [tf_deff_65]   # Optimus - DecMB - JP4 (100%)
   156: [tf_deff_67]   # Optimus - DecMB - Mode Completed - SJ (100%)
   157: [tf_deff_62]   # hand: Optimus multiball (Autobot) total
-  158: ["tf_deff_140{values.0==1, state.side==1}"]   # hand: Megatron lock: ball 1 locked, Autobot
-  159: ["tf_deff_140{values.0==2, state.side==1}"]   # hand: Megatron lock: ball 2 locked, Autobot
-  160: ["tf_deff_140{values.0==3, state.side==1}"]   # hand: Megatron lock: ball 3 locked, Autobot
+  158: ["tf_deff_140{values.0==1, state.side==1}"]   # code: Megatron lock: ball 1 locked, Autobot [0x0100b7f0]
+  159: ["tf_deff_140{values.0==2, state.side==1}"]   # code: Megatron lock: ball 2 locked, Autobot [0x0100b7f0]
+  160: ["tf_deff_140{values.0==3, state.side==1}"]   # code: Megatron lock: ball 3 locked, Autobot [0x0100b7f0]
   161: [tf_deff_69]   # Megatron - Autobot - MB (100%)
   162: ["tf_deff_71{count==1}"]   # hand: Megatron multiball (Autobot) jackpot 1 (inferred: in jackpot order)
   163: ["tf_deff_71{count==2}"]   # hand: Megatron multiball (Autobot) jackpot 2 (inferred: in jackpot order)
@@ -197,12 +198,12 @@ dmd:
   168: ["tf_deff_72{count==4}"]   # hand: Megatron multiball (Autobot) double jackpot 4 (inferred)
   169: [tf_deff_73]   # Megatron - Autobot - MB - SJP Completed (100%)
   170: [tf_deff_74, tf_deff_80]   # Megatron - MB - End (100%)
-  171: ["tf_deff_140{values.0==1, state.side==2}"]   # hand: Megatron lock: ball 1 locked, Decepticon
-  172: ["tf_deff_140{values.0==2, state.side==2}"]   # hand: Megatron lock: ball 2 locked, Decepticon
-  173: ["tf_deff_140{values.0==3, state.side==2}"]   # hand: Megatron lock: ball 3 locked, Decepticon
-  # 174: no game event yet (Megatron - Decepticon - Ball 1 Locked - 2nd, best 100%)
-  # 175: no game event yet (Megatron - Decepticon - Ball 2 Locked - 2nd, best 100%)
-  # 176: no game event yet (Megatron - Decepticon - Ball 3 Locked - 2nd, best 100%)
+  171: ["tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 1 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  172: ["tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 2 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  173: ["tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 3 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  174: ["tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 1 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
+  175: ["tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 2 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
+  176: ["tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 3 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
   177: [tf_deff_75]   # Megatron - Decepticon - MB - Start (100%)
   178: ["tf_deff_77{count==1}"]   # hand: Megatron multiball (Decepticon) jackpot 1 (inferred: in jackpot order)
   179: ["tf_deff_77{count==2}"]   # hand: Megatron multiball (Decepticon) jackpot 2 (inferred: in jackpot order)
