@@ -34,6 +34,7 @@ number,mpf_name,vpx,type,x,y,nx,ny,note
 39,s_megatron_lock_3,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3171,ball stack bsKickerMegaTron slot 3
 40,s_megatron_lock_2,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3231,ball stack bsKickerMegaTron slot 2
 41,s_m_tron_lock_1_back,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3291,ball stack bsKickerMegaTron slot 1
+42,s_megatron_jam,KickerMegaTron,Kicker,318.9,673.2,0.335,0.3351,mechanism (placed by hand)
 43,s_optimus_prime_up,opr,Primitive,507.7,493.9,0.5333,0.2282,mechanism (placed by hand)
 44,s_optimus_prime_down,opr,Primitive,507.7,493.9,0.5333,0.2342,mechanism (placed by hand)
 45,s_captive_ball,sw45,Trigger,648.8,506.5,0.6816,0.2341,hit
@@ -41,3 +42,22 @@ number,mpf_name,vpx,type,x,y,nx,ny,note
 49,s_energon_center,sw49,HitTarget,434.9,827.2,0.4569,0.3822,hit
 50,s_r_2_bank_target_top,sw50,HitTarget,778.3,1174.0,0.8175,0.5425,hit
 51,s_optimus_prime,sw51,Wall,508.8,300.7,0.5345,0.139,hit
+15,s_tournament_start,,cabinet,,,0.05,0.985,no playfield object: cabinet strip
+16,s_start_button,,cabinet,,,0.15,0.985,no playfield object: cabinet strip
+129,s_left_coin_slot,,cabinet,,,0.25,0.985,no playfield object: cabinet strip
+130,s_center_coin_slot,,cabinet,,,0.35,0.985,no playfield object: cabinet strip
+131,s_right_coin_slot,,cabinet,,,0.45,0.985,no playfield object: cabinet strip
+132,s_fourth_coin_slot,,cabinet,,,0.55,0.985,no playfield object: cabinet strip
+133,s_fifth_coin_slot,,cabinet,,,0.65,0.985,no playfield object: cabinet strip
+137,s_l_flipper_button,,cabinet,,,0.75,0.985,no playfield object: cabinet strip
+138,s_left_flipper_e_o_s,,cabinet,,,0.85,0.985,no playfield object: cabinet strip
+139,s_r_flipper_button,,cabinet,,,0.05,0.955,no playfield object: cabinet strip
+140,s_right_flipper_e_o_s,,cabinet,,,0.15,0.955,no playfield object: cabinet strip
+145,s_tilt_pendulum,,cabinet,,,0.25,0.955,no playfield object: cabinet strip
+146,s_slam_tilt,,cabinet,,,0.35,0.955,no playfield object: cabinet strip
+147,s_ticket_notch,,cabinet,,,0.45,0.955,no playfield object: cabinet strip
+148,s_coin_door_open,,cabinet,,,0.55,0.955,no playfield object: cabinet strip
+149,s_back,,cabinet,,,0.65,0.955,no playfield object: cabinet strip
+150,s_minus,,cabinet,,,0.75,0.955,no playfield object: cabinet strip
+151,s_plus,,cabinet,,,0.85,0.955,no playfield object: cabinet strip
+152,s_select,,cabinet,,,0.05,0.925,no playfield object: cabinet strip
