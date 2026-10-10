@@ -1,6 +1,6 @@
 # VPX extraction: Transformers Pro (Stern 2011)
 
-Agent B of the master plan ([vpx_extraction.md](https://github.com/Ashram56/Tron-Legacy-MPF/blob/main/docs/agents/vpx_extraction.md)),
+Agent B of the master plan ([vpx_extraction.md](https://github.com/Ashram56/Stern-SAM-Decryption/blob/main/agents/vpx_extraction.md)),
 run 2026-10-08 on `Transformers Pro (Stern 2011) v.2.4.vpx` (VR-Hybrid mod by RobbyKingPin et al., based on
 JPSalas' VPX table; simulates the Pro, PinMAME set `tf_180`).
 

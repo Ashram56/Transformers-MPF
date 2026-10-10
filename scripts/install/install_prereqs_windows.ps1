@@ -36,7 +36,7 @@ Use the downloaded installers even when winget is there.
 .PARAMETER Yes
 No questions.
 #>
-[CmdletBinding()]
+[CmdletBinding(PositionalBinding = $false)]   # a stray setup argument must not bind to -Table
 param(
     [switch]$DryRun,
     [switch]$Monitor,
