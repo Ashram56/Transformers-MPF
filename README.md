@@ -21,13 +21,13 @@ takes a while.
 **Windows 10/11** (PowerShell or cmd):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/main/scripts/install/install_prereqs_windows.ps1 | iex"
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/main/scripts/install/install_prereqs_windows.ps1) -join [char]10))"
 ```
 
 **Windows with Visual Pinball X** (put your table's path after `-Table`; [docs/vpx.md](docs/vpx.md)):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/main/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/main/scripts/install/install_prereqs_windows.ps1) -join [char]10)) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
 ```
 
 **macOS 12+:**
@@ -63,7 +63,7 @@ You can change where the files go, and what is installed:
   `$env:TF_GITHUB_TOKEN = "github_pat_..."` first, macOS / Linux `TF_GITHUB_TOKEN=github_pat_... bash <(curl ...)`.
 - **Options:** on macOS and Linux they go after the line, for example `bash <(curl ...) --no-monitor` to leave
   MPF Monitor out, `--dry-run` to see the plan first, `--yes` for no questions. On Windows:
-  `powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm <the URL above>))) -NoMonitor"`
+  add them at the end of the line, for example `... -join [char]10)) -NoMonitor"`
   (also `-DryRun`, `-Yes`, `-Vpx`, `-Table`). `--proc` / `-Proc` installs the P-ROC driver only: the game has
   no P-ROC run yet ([docs/hardware.md](docs/hardware.md)).
 

@@ -51,7 +51,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-# Run from a clone, it sets up that clone. Run on its own (irm ... | iex, README "Install"), it first clones the
+# Run from a clone, it sets up that clone. Run on its own (& ([scriptblock]::Create((irm ...) -join [char]10)), README "Install"; not irm | iex,
+# which ran it line by line on the owner's Windows PowerShell: "the terminator #> is missing"), it first clones the
 # repository into $env:TF_DIR (default ~\Transformers-MPF, outside OneDrive), branch $env:TF_BRANCH, from
 # $env:TF_REPO; an existing clone gets a git pull (a clone of a branch since merged and deleted moves to main).
 $Clone = -not ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot '..\setup.py')))
