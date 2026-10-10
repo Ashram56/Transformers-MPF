@@ -17,6 +17,20 @@ MAP = settings.map_path(CFG)
 HAVE_PACK = os.path.exists(os.path.join(PACK, "triggers.pup"))
 
 
+def _rows():
+    """{capture n: the pack's first row that fires on it} from docs/pup_captures.md."""
+    out = {}
+    with open(os.path.join(ROOT, "docs", "pup_captures.md"), encoding="utf-8") as f:
+        for line in f:
+            cells = [c.strip() for c in line.split("|")]
+            if len(cells) > 3 and cells[1].isdigit() and cells[2][:1].isdigit():
+                out[int(cells[1])] = int(cells[2].split()[0])
+    return out
+
+
+ROW = _rows()
+
+
 class TestSettings(unittest.TestCase):
 
     def test_env_off(self):
@@ -56,9 +70,18 @@ class TestEngine(unittest.TestCase):
     def ids(self):
         return [c["trigger"] for c in self.sent]
 
-    def test_only_known_rows_unmapped(self):
-        # the Decepticon side's second-round lock videos (no game event tells the rounds apart yet)
-        self.assertEqual([208, 209, 210], [r.id for r in self.engine.unmapped])
+    def test_every_row_mapped(self):
+        self.assertEqual([], [r.id for r in self.engine.unmapped])
+
+    def test_decepticon_lock_rounds(self):
+        """deff 140 [0x0100b7f0]: the Decepticon lock animation follows the player's lock music call (0x297 the
+        first round, 0x298 / 0x299 after one or two Megatron multiballs)."""
+        self.engine.on_event("tf_deff_140", values=[1], state={"side": 2, "mtl_music_d": 0x297})
+        self.assertEqual([205], self.ids())        # Megatron - Decepticon - Ball 1 Locked
+        for call in (0x298, 0x299):
+            self.sent.clear()
+            self.engine.on_event("tf_deff_140", values=[3], state={"side": 2, "mtl_music_d": call})
+            self.assertEqual([210], self.ids())    # ... Ball 3 Locked - 2nd
 
     def test_overlay_at_start(self):
         self.engine.on_event("pup_boot")
@@ -74,25 +97,39 @@ class TestEngine(unittest.TestCase):
         self.assertIn(270, self.ids())             # Chosen - Decepticon - BG
         self.assertIn(349, self.ids())             # Decepticon main music (SetBG)
 
-    def test_battle_hits_by_number(self):
+    def test_battle_hits_by_shots_left(self):
+        """The ROM picks a battle hit's animation from the shots left after the hit (Blackout [0x0101cc6c]:
+        index 12 - left in table 0x040c6c34), so a battle restarted on a later ball goes on where it stopped."""
         self.engine.on_event("tf_deff_100")        # Blackout intro
         self.assertIn(28, self.ids())
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0)
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=10)
         self.assertEqual([29], self.ids())         # Blackout 1
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=3, completed=0)
-        self.assertEqual([31], self.ids())         # Blackout 3
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=3)
+        self.assertEqual([35], self.ids())         # restarted with 4 left: Blackout 7, not Blackout 1
         self.sent.clear()
-        self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1)
+        self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1, left=0)
         self.assertEqual([38], self.ids())         # Blackout Completed
 
-    def test_counted_jackpots(self):
-        self.engine.on_event("tf_deff_75")         # Megatron multiball, Decepticon intro
+    def test_jackpot_animations_from_the_rom(self):
+        """Jackpots show the animation the ROM picks, not one per jackpot in order: Optimus (Autobot) one enemy
+        per shot [0x01028950], Megatron (Decepticon) index 0 at the Megatron shot [0x0100e29c], else a draw."""
+        self.engine.on_event("tf_deff_59", values=[150000], anim=1)
+        self.assertEqual([ROW[129]], self.ids())   # left orbit: Blackout
         self.sent.clear()
-        self.engine.on_event("tf_deff_77", values=[100000])
-        self.engine.on_event("tf_deff_77", values=[125000])
-        self.assertEqual([214, 215], [i for i in self.ids() if i in (214, 215, 216)])
+        self.engine.on_event("tf_deff_77", values=[100000], anim=0)
+        self.assertEqual([ROW[179]], self.ids())
+        self.sent.clear()
+        self.engine.on_event("tf_deff_77", values=[100000], anim=2)
+        self.assertEqual([ROW[180]], self.ids())
+
+    def test_wizard_names_on_the_completing_hit(self):
+        """deff 83 [0x01010174]: the character's name (captures 186-200) shows on a wizard shot's second hit."""
+        self.engine.on_event("tf_deff_83", values=[500000, 0], anim=0, state={"side": 1})
+        self.assertEqual([], self.ids())
+        self.engine.on_event("tf_deff_83", values=[550000, 0], anim=6, state={"side": 1})
+        self.assertEqual([ROW[190]], self.ids())   # ARCEE
 
     def test_drain(self):
         self.engine.on_event("tf_deff_25", values=[])
@@ -135,6 +172,31 @@ class TestPupMachine(TfTestCase):
             fired = [r.id for c in fire.call_args_list for r in c.args[0]]
             side = self.tf.pd.get("side")
             self.assertIn(274 if side == 2 else 271, fired)
+
+    def test_lock_music_call_per_round(self):
+        """[0x0100ab5c / 0x0100ad70]: each side's lock music call starts at the player's first ball and moves on
+        at every Megatron multiball (megatron_decepticon.jsonl: 0x298 at the lock after the multiball)."""
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(2)
+        mt = self.tf.features_by_name["megatron"]
+        pd = self.tf.pd
+        self.assertEqual((0x294, 0x297), (pd.mtl_music_a, pd.mtl_music_d))
+        calls = []
+        for _ in range(3):
+            mt.next_lock_music()
+            calls.append((pd.mtl_music_a, pd.mtl_music_d))
+        self.assertEqual([(0x295, 0x298), (0x296, 0x299), (0x294, 0x297)], calls)
+        pd["side"] = 1
+        self.assertEqual(0x294, mt.lock_music())
+
+    def test_decepticon_jackpot_draw(self):
+        """[0x0100ddc8]: deff 77's lit-shot animations come without repeats until 1-8 are used."""
+        side = self.tf.features_by_name["megatron"].sides[2]
+        side.setup()
+        drawn = [side.draw() for _ in range(8)]
+        self.assertTrue(all(1 <= d <= 9 for d in drawn))
+        self.assertEqual(len(drawn), len(set(drawn)))
 
     def test_rom_music_muted_when_pup_ready(self):
         bridge = self.tf.media

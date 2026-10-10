@@ -9,21 +9,22 @@
 # Plain lines come from that match (score >= 90 %). Lines marked "hand" were set by hand: the ROM shows one
 # animation per shot, side or lock, but the package recorded only one variant per effect, so the captures of
 # the others match a library animation no effect is credited with; they are told apart by the event's arguments:
-#   {hit==n, completed==0/1}   battle hits (tf/features/battles.py hit_media)
-#   {values.0==n} {values.1==n} the effect's values (lock number, wizard shot)
+#   {left==n, completed==0/1}  battle hits: the shots left after the hit, which picks the ROM's animation
+#                              (index BASE - left in the battle's table; tf/features/battles.py hit_media)
+#   {values.0==n}              the effect's values (lock number)
+#   {anim==n}                  which of the deff's animations the ROM picks: the jackpot shot or a random draw, the
+#                              wizard shot (+ 6 on its completing hit): tf/features/optimus.py, megatron.py, wizard.py
 #   {state.side==1 / 2}        the player's side (1 Autobot, 2 Decepticon: [pup] state="tf.pd")
+#   {state.mtl_music_d==663}   the Decepticon lock music call (0x297-0x299, tf/features/megatron.py): the lock round
 #   {count==n}                 the n-th time since the counter's reset (counters: below)
-# "inferred" means the order (which video for which shot) is the pack's row order, not checked in play.
+# "code" lines were checked against the ROM: the deff's animation table and what selects in it (address given),
+# each entry's first image matched to the capture. "inferred" means the order is the pack's row order, unchecked.
+# Two captures of one animation (Blackout D26 / D28, Starscream D112 / D113, Optimus D148-D150) both map to it:
+# PinMAME fires the capture whose frame comes first; here both rows fire and their priorities decide.
 # Synthetic events (pup_runtime/mode.py): pup_boot (PuP player ready), pup_power_up, pup_attract_cycle.
 
 counters:
-  tf_deff_144: [tf_deff_142]     # Optimus battle hits since its start
-  tf_deff_59: [tf_deff_57]       # Optimus multiball (Autobot) jackpots since its intro
-  tf_deff_60: [tf_deff_57]       # ... double jackpots
-  tf_deff_65: [tf_deff_63]       # Optimus multiball (Decepticon) jackpots
-  tf_deff_71: [tf_deff_69]       # Megatron multiball (Autobot) jackpots
-  tf_deff_72: [tf_deff_69]       # ... double jackpots
-  tf_deff_77: [tf_deff_75]       # Megatron multiball (Decepticon) jackpots
+  tf_deff_144: [tf_deff_142]     # Optimus battle hits since its start: the ROM index DAT_00035294 [0x010262f0]
 
 dmd:
   0: [pup_boot]   # hand: D0 (PinUP Player started): the backglass overlay (row 246), when the PuP player is ready
@@ -49,196 +50,196 @@ dmd:
   20: [tf_deff_132]   # Fast Scoring - Active (100%)
   21: [tf_deff_137]   # hand: fast scoring total (FS_TOTAL_DEFF): music stop
   22: [tf_deff_100]   # hand: Blackout battle intro
-  23: ["tf_deff_102{hit==1, completed==0}"]   # hand: Blackout battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  24: ["tf_deff_102{hit==2, completed==0}"]   # hand: Blackout battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  25: ["tf_deff_102{hit==3, completed==0}"]   # hand: Blackout battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  26: ["tf_deff_102{hit==4, completed==0}"]   # hand: Blackout battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  27: ["tf_deff_102{hit==5, completed==0}"]   # hand: Blackout battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  28: ["tf_deff_102{hit==6, completed==0}"]   # hand: Blackout battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  29: ["tf_deff_102{hit==7, completed==0}"]   # hand: Blackout battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  30: ["tf_deff_102{hit==8, completed==0}"]   # hand: Blackout battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  31: ["tf_deff_102{hit==9, completed==0}"]   # hand: Blackout battle, lit shot 9 (inferred: the pack's shot videos in hit order)
-  32: ["tf_deff_102{completed==1}"]   # hand: Blackout battle completed (last lit shot)
+  23: ["tf_deff_102{left==10}"]   # code: Blackout hit, 10 left: idx 2 anim 0x730 [0x0101cc6c, 0x040c6c34]
+  24: ["tf_deff_102{left==9}", "tf_deff_102{left==5}"]   # code: Blackout hit, 9 or 5 left: idx 3/7 anim 0x70c (also the intro, deff 100); no pack row [0x0101cc6c, 0x040c6c34]
+  25: ["tf_deff_102{left==8}"]   # code: Blackout hit, 8 left: idx 4 anim 0x74d [0x0101cc6c, 0x040c6c34]
+  26: ["tf_deff_102{left==7}", "tf_deff_102{left==4}"]   # code: Blackout hit, 7 or 4 left: idx 5/8 anim 0x77d (frame 6; D28 fires first) [0x0101cc6c, 0x040c6c34]
+  27: ["tf_deff_102{left==6}"]   # code: Blackout hit, 6 left: idx 6 anim 0x764 [0x0101cc6c, 0x040c6c34]
+  28: ["tf_deff_102{left==7}", "tf_deff_102{left==4}"]   # code: Blackout hit, 7 or 4 left: idx 5/8 anim 0x77d (frame 1) [0x0101cc6c, 0x040c6c34]
+  29: ["tf_deff_102{left==3}"]   # code: Blackout hit, 3 left: idx 9 anim 0x59b [0x0101cc6c, 0x040c6c34]
+  30: ["tf_deff_102{left==2}"]   # code: Blackout hit, 2 left: idx 10 anim 0x5ff [0x0101cc6c, 0x040c6c34]
+  31: ["tf_deff_102{left==1}"]   # code: Blackout hit, 1 left: idx 11 anim 0x637 [0x0101cc6c, 0x040c6c34]
+  32: ["tf_deff_102{completed==1}"]   # code: Blackout completed: idx 1 anim 0x65c [0x0101cc6c, 0x040c6c34]
   33: [tf_deff_103]   # hand: Blackout battle total
   34: [tf_deff_108]   # hand: Bumblebee battle intro
-  35: ["tf_deff_110{hit==1, completed==0}"]   # hand: Bumblebee battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  36: ["tf_deff_110{hit==2, completed==0}"]   # hand: Bumblebee battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  37: ["tf_deff_110{hit==3, completed==0}"]   # hand: Bumblebee battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  38: ["tf_deff_110{hit==4, completed==0}"]   # hand: Bumblebee battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  39: ["tf_deff_110{hit==5, completed==0}"]   # hand: Bumblebee battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  40: ["tf_deff_110{hit==6, completed==0}"]   # hand: Bumblebee battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  41: ["tf_deff_110{completed==1}"]   # hand: Bumblebee battle completed (last lit shot)
+  35: ["tf_deff_110{left==5, completed==0}"]   # code: Bumblebee phase-1 shot, 5 still lit: idx 2 anim 0xfd5 [0x01014638, 0x040c68dc]
+  36: ["tf_deff_110{left==4, completed==0}"]   # code: Bumblebee phase-1 shot, 4 still lit: idx 3 anim 0x1003 [0x01014638, 0x040c68dc]
+  37: ["tf_deff_110{left==3, completed==0}"]   # code: Bumblebee phase-1 shot, 3 still lit: idx 4 anim 0x1017 [0x01014638, 0x040c68dc]
+  38: ["tf_deff_110{left==2, completed==0}"]   # code: Bumblebee phase-1 shot, 2 still lit: idx 5 anim 0x1032 [0x01014638, 0x040c68dc]
+  39: ["tf_deff_110{left==1, completed==0}"]   # code: Bumblebee phase-1 shot, 1 still lit: idx 6 anim 0x105a [0x01014638, 0x040c68dc]
+  40: ["tf_deff_110{left==0, completed==0}"]   # code: Bumblebee last phase-1 shot (phase 2 lit): idx 7 anim 0x1081 [0x01014638, 0x040c68dc]
+  41: ["tf_deff_110{completed==1}"]   # code: Bumblebee target hit, completed: idx 1 anim 0xf24 [0x01014638, 0x040c68dc]
   42: [tf_deff_111]   # hand: Bumblebee battle total
   43: [tf_deff_104]   # hand: Devastator battle intro
-  44: ["tf_deff_106{hit==1, completed==0}"]   # hand: Devastator battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  45: ["tf_deff_106{hit==2, completed==0}"]   # hand: Devastator battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  46: ["tf_deff_106{hit==3, completed==0}"]   # hand: Devastator battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  47: ["tf_deff_106{hit==4, completed==0}"]   # hand: Devastator battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  48: ["tf_deff_106{hit==5, completed==0}"]   # hand: Devastator battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  49: ["tf_deff_106{hit==6, completed==0}"]   # hand: Devastator battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  50: ["tf_deff_106{hit==7, completed==0}"]   # hand: Devastator battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  51: ["tf_deff_106{hit==8, completed==0}"]   # hand: Devastator battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  52: ["tf_deff_106{completed==1}"]   # hand: Devastator battle completed (last lit shot)
+  44: ["tf_deff_106{left==9}"]   # code: Devastator hit, 9 left: idx 2 anim 0x1daa [0x01015f8c, 0x040c6994]
+  45: ["tf_deff_106{left==8}"]   # code: Devastator hit, 8 left: idx 3 anim 0x1df1 [0x01015f8c, 0x040c6994]
+  46: ["tf_deff_106{left==7}"]   # code: Devastator hit, 7 left: idx 4 anim 0x1e02 [0x01015f8c, 0x040c6994]
+  47: ["tf_deff_106{left==6}", "tf_deff_106{left==5}"]   # code: Devastator hit, 6 or 5 left: idx 5/6 anim 0x1e1b [0x01015f8c, 0x040c6994]
+  48: ["tf_deff_106{left==4}"]   # code: Devastator hit, 4 left: idx 7 anim 0x1e49 [0x01015f8c, 0x040c6994]
+  49: ["tf_deff_106{left==3}"]   # code: Devastator hit, 3 left: idx 8 anim 0x1e68 [0x01015f8c, 0x040c6994]
+  50: ["tf_deff_106{left==2}"]   # code: Devastator hit, 2 left: idx 9 anim 0x1e7e [0x01015f8c, 0x040c6994]
+  51: ["tf_deff_106{left==1}"]   # code: Devastator hit, 1 left: idx 10 anim 0x1e97 [0x01015f8c, 0x040c6994]
+  52: ["tf_deff_106{completed==1}"]   # code: Devastator completed: idx 1 anim 0x1ef5 [0x01015f8c, 0x040c6994]
   53: [tf_deff_107]   # hand: Devastator battle total
   54: [tf_deff_112]   # hand: Ironhide battle intro
-  55: ["tf_deff_114{hit==1, completed==0}"]   # hand: Ironhide battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  56: ["tf_deff_114{hit==2, completed==0}"]   # hand: Ironhide battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  57: ["tf_deff_114{hit==3, completed==0}"]   # hand: Ironhide battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  58: ["tf_deff_114{hit==4, completed==0}"]   # hand: Ironhide battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  59: ["tf_deff_114{hit==5, completed==0}"]   # hand: Ironhide battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  60: ["tf_deff_114{hit==6, completed==0}"]   # hand: Ironhide battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  61: ["tf_deff_114{hit==7, completed==0}"]   # hand: Ironhide battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  62: ["tf_deff_114{hit==8, completed==0}"]   # hand: Ironhide battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  63: ["tf_deff_114{hit==9, completed==0}"]   # hand: Ironhide battle, lit shot 9 (inferred: the pack's shot videos in hit order)
-  64: ["tf_deff_114{completed==1}"]   # hand: Ironhide battle completed (last lit shot)
+  55: ["tf_deff_114{left==9}"]   # code: Ironhide hit, 9 left: idx 2 anim 0xd89 [0x0101afbc, 0x040c6b98]
+  56: ["tf_deff_114{left==8}"]   # code: Ironhide hit, 8 left: idx 3 anim 0xdee [0x0101afbc, 0x040c6b98]
+  57: ["tf_deff_114{left==7}"]   # code: Ironhide hit, 7 left: idx 4 anim 0xdff [0x0101afbc, 0x040c6b98]
+  58: ["tf_deff_114{left==6}"]   # code: Ironhide hit, 6 left: idx 5 anim 0xe2f [0x0101afbc, 0x040c6b98]
+  59: ["tf_deff_114{left==5}"]   # code: Ironhide hit, 5 left: idx 6 anim 0xe52 [0x0101afbc, 0x040c6b98]
+  60: ["tf_deff_114{left==4}"]   # code: Ironhide hit, 4 left: idx 7 anim 0xe69 [0x0101afbc, 0x040c6b98]
+  61: ["tf_deff_114{left==3}"]   # code: Ironhide hit, 3 left: idx 8 anim 0xe85 [0x0101afbc, 0x040c6b98]
+  62: ["tf_deff_114{left==2}"]   # code: Ironhide hit, 2 left: idx 9 anim 0xe9e [0x0101afbc, 0x040c6b98]
+  63: ["tf_deff_114{left==1}"]   # code: Ironhide hit, 1 left: idx 10 anim 0xeb2 [0x0101afbc, 0x040c6b98]
+  64: ["tf_deff_114{completed==1}"]   # code: Ironhide completed: idx 1 anim 0xeda [0x0101afbc, 0x040c6b98]
   65: [tf_deff_115]   # hand: Ironhide battle total
   66: [tf_deff_116]   # hand: Mudflap and Skids battle intro
-  67: ["tf_deff_118{hit==1, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  68: ["tf_deff_118{hit==2, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  69: ["tf_deff_118{hit==3, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  70: ["tf_deff_118{hit==4, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  71: ["tf_deff_118{hit==5, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  72: ["tf_deff_118{hit==6, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  73: ["tf_deff_118{hit==7, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  74: ["tf_deff_118{hit==8, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  75: ["tf_deff_118{hit==9, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 9 (inferred: the pack's shot videos in hit order)
-  76: ["tf_deff_118{hit==10, completed==0}"]   # hand: Mudflap and Skids battle, lit shot 10 (inferred: the pack's shot videos in hit order)
-  77: ["tf_deff_118{completed==1}"]   # hand: Mudflap and Skids battle completed (last lit shot)
+  67: ["tf_deff_118{left==10}"]   # code: Mudflap and Skids hit, 10 left: idx 2 anim 0x19e3 [0x01019294, 0x040c6aec]
+  68: ["tf_deff_118{left==9}"]   # code: Mudflap and Skids hit, 9 left: idx 3 anim 0x1a1a [0x01019294, 0x040c6aec]
+  69: ["tf_deff_118{left==8}"]   # code: Mudflap and Skids hit, 8 left: idx 4 anim 0x1a3d [0x01019294, 0x040c6aec]
+  70: ["tf_deff_118{left==7}"]   # code: Mudflap and Skids hit, 7 left: idx 5 anim 0x1a68 [0x01019294, 0x040c6aec]
+  71: ["tf_deff_118{left==6}"]   # code: Mudflap and Skids hit, 6 left: idx 6 anim 0x1a7f [0x01019294, 0x040c6aec]
+  72: ["tf_deff_118{left==5}"]   # code: Mudflap and Skids hit, 5 left: idx 7 anim 0x1ab2 [0x01019294, 0x040c6aec]
+  73: ["tf_deff_118{left==4}"]   # code: Mudflap and Skids hit, 4 left: idx 8 anim 0x1ada [0x01019294, 0x040c6aec]
+  74: ["tf_deff_118{left==3}"]   # code: Mudflap and Skids hit, 3 left: idx 9 anim 0x1afb [0x01019294, 0x040c6aec]
+  75: ["tf_deff_118{left==2}"]   # code: Mudflap and Skids hit, 2 left: idx 10 anim 0x1b37 [0x01019294, 0x040c6aec]
+  76: ["tf_deff_118{left==1}"]   # code: Mudflap and Skids hit, 1 left: idx 11 anim 0x1b80 [0x01019294, 0x040c6aec]
+  77: ["tf_deff_118{left==0}"]   # code: Mudflap and Skids, count reaches 0 (completed the first time, then every 11 shots): idx 1/12 anim 0x19bf [0x01019294, 0x040c6aec]
   78: [tf_deff_119]   # hand: Mudflap and Skids battle total
   79: [tf_deff_120]   # hand: Ratchet battle intro
-  80: ["tf_deff_122{hit==1, completed==0}"]   # hand: Ratchet battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  81: ["tf_deff_122{hit==2, completed==0}"]   # hand: Ratchet battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  82: ["tf_deff_122{hit==3, completed==0}"]   # hand: Ratchet battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  83: ["tf_deff_122{hit==4, completed==0}"]   # hand: Ratchet battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  84: ["tf_deff_122{hit==5, completed==0}"]   # hand: Ratchet battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  85: ["tf_deff_122{hit==6, completed==0}"]   # hand: Ratchet battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  86: ["tf_deff_122{hit==7, completed==0}"]   # hand: Ratchet battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  87: ["tf_deff_122{hit==8, completed==0}"]   # hand: Ratchet battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  88: ["tf_deff_122{hit==9, completed==0}"]   # hand: Ratchet battle, lit shot 9 (inferred: the pack's shot videos in hit order)
-  89: ["tf_deff_122{hit==10, completed==0}"]   # hand: Ratchet battle, lit shot 10 (inferred: the pack's shot videos in hit order)
-  90: ["tf_deff_122{completed==1}"]   # hand: Ratchet battle completed (last lit shot)
+  80: ["tf_deff_122{left==10}"]   # code: Ratchet hit, 10 left: idx 2 anim 0x1fb9 (white flash; D80 is an all-lit rectangle) [0x01012508, 0x040c6818]
+  81: ["tf_deff_122{left==1}"]   # code: Ratchet hit, 1 left: idx 11 anim 0x1f91 [0x01012508, 0x040c6818]
+  82: ["tf_deff_122{left==9}"]   # code: Ratchet hit, 9 left: idx 3 anim 0x2116 [0x01012508, 0x040c6818]
+  83: ["tf_deff_122{left==8}"]   # code: Ratchet hit, 8 left: idx 4 anim 0x202e [0x01012508, 0x040c6818]
+  84: ["tf_deff_122{left==7}"]   # code: Ratchet hit, 7 left: idx 5 anim 0x2067 [0x01012508, 0x040c6818]
+  85: ["tf_deff_122{left==6}"]   # code: Ratchet hit, 6 left: idx 6 anim 0x2134 [0x01012508, 0x040c6818]
+  86: ["tf_deff_122{left==5}"]   # code: Ratchet hit, 5 left: idx 7 anim 0x2174 [0x01012508, 0x040c6818]
+  87: ["tf_deff_122{left==4}"]   # code: Ratchet hit, 4 left: idx 8 anim 0x2094 [0x01012508, 0x040c6818]
+  88: ["tf_deff_122{left==3}"]   # code: Ratchet hit, 3 left: idx 9 anim 0x2196 [0x01012508, 0x040c6818]
+  89: ["tf_deff_122{left==2}"]   # code: Ratchet hit, 2 left: idx 10 anim 0x20ad [0x01012508, 0x040c6818]
+  90: ["tf_deff_122{completed==1}"]   # code: Ratchet completed: idx 1 anim 0x20dc [0x01012508, 0x040c6818]
   91: [tf_deff_123]   # hand: Ratchet battle total
   92: [tf_deff_96]   # hand: Shockwave battle intro
-  93: ["tf_deff_98{hit==1, completed==0}"]   # hand: Shockwave battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  94: ["tf_deff_98{hit==2, completed==0}"]   # hand: Shockwave battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  95: ["tf_deff_98{hit==3, completed==0}"]   # hand: Shockwave battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  96: ["tf_deff_98{hit==4, completed==0}"]   # hand: Shockwave battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  97: ["tf_deff_98{hit==5, completed==0}"]   # hand: Shockwave battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  98: ["tf_deff_98{hit==6, completed==0}"]   # hand: Shockwave battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  99: ["tf_deff_98{hit==7, completed==0}"]   # hand: Shockwave battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  100: ["tf_deff_98{hit==8, completed==0}"]   # hand: Shockwave battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  101: ["tf_deff_98{hit==9, completed==0}"]   # hand: Shockwave battle, lit shot 9 (inferred: the pack's shot videos in hit order)
-  102: ["tf_deff_98{hit==10, completed==0}"]   # hand: Shockwave battle, lit shot 10 (inferred: the pack's shot videos in hit order)
-  103: ["tf_deff_98{completed==1}"]   # hand: Shockwave battle completed (last lit shot)
+  93: ["tf_deff_98{left==10}"]   # code: Shockwave hit, 10 left: idx 2 anim 0xb5b [0x0101e5d4, 0x040c6cbc]
+  94: ["tf_deff_98{left==9}"]   # code: Shockwave hit, 9 left: idx 3 anim 0xb7a [0x0101e5d4, 0x040c6cbc]
+  95: ["tf_deff_98{left==8}"]   # code: Shockwave hit, 8 left: idx 4 anim 0xb9d [0x0101e5d4, 0x040c6cbc]
+  96: ["tf_deff_98{left==7}"]   # code: Shockwave hit, 7 left: idx 5 anim 0xaf6 [0x0101e5d4, 0x040c6cbc]
+  97: ["tf_deff_98{left==6}"]   # code: Shockwave hit, 6 left: idx 6 anim 0xb0e [0x0101e5d4, 0x040c6cbc]
+  98: ["tf_deff_98{left==5}"]   # code: Shockwave hit, 5 left: idx 7 anim 0xbdd [0x0101e5d4, 0x040c6cbc]
+  99: ["tf_deff_98{left==4}"]   # code: Shockwave hit, 4 left: idx 8 anim 0xc00 [0x0101e5d4, 0x040c6cbc]
+  100: ["tf_deff_98{left==3}"]   # code: Shockwave hit, 3 left: idx 9 anim 0xc28 [0x0101e5d4, 0x040c6cbc]
+  101: ["tf_deff_98{left==2}"]   # code: Shockwave hit, 2 left: idx 10 anim 0xc52 [0x0101e5d4, 0x040c6cbc]
+  102: ["tf_deff_98{left==1}"]   # code: Shockwave hit, 1 left: idx 11 anim 0xc8a [0x0101e5d4, 0x040c6cbc]
+  103: ["tf_deff_98{completed==1}"]   # code: Shockwave completed: idx 1 anim 0xce1 [0x0101e5d4, 0x040c6cbc]
   104: [tf_deff_99]   # hand: Shockwave battle total
   105: [tf_deff_92]   # hand: Starscream battle intro
-  106: ["tf_deff_94{hit==1, completed==0}"]   # hand: Starscream battle, lit shot 1 (inferred: the pack's shot videos in hit order)
-  107: ["tf_deff_94{hit==2, completed==0}"]   # hand: Starscream battle, lit shot 2 (inferred: the pack's shot videos in hit order)
-  108: ["tf_deff_94{hit==3, completed==0}"]   # hand: Starscream battle, lit shot 3 (inferred: the pack's shot videos in hit order)
-  109: ["tf_deff_94{hit==4, completed==0}"]   # hand: Starscream battle, lit shot 4 (inferred: the pack's shot videos in hit order)
-  110: ["tf_deff_94{hit==5, completed==0}"]   # hand: Starscream battle, lit shot 5 (inferred: the pack's shot videos in hit order)
-  111: ["tf_deff_94{hit==6, completed==0}"]   # hand: Starscream battle, lit shot 6 (inferred: the pack's shot videos in hit order)
-  112: ["tf_deff_94{hit==7, completed==0}"]   # hand: Starscream battle, lit shot 7 (inferred: the pack's shot videos in hit order)
-  113: ["tf_deff_94{hit==8, completed==0}"]   # hand: Starscream battle, lit shot 8 (inferred: the pack's shot videos in hit order)
-  114: ["tf_deff_94{completed==1}"]   # hand: Starscream battle completed (last lit shot)
+  106: ["tf_deff_94{left==9}"]   # code: Starscream hit, 9 left: idx 2 anim 0x856 [0x01017b24, 0x040c6a60]
+  107: ["tf_deff_94{left==8}"]   # code: Starscream hit, 8 left: idx 3 anim 0x977 [0x01017b24, 0x040c6a60]
+  108: ["tf_deff_94{left==7}"]   # code: Starscream hit, 7 left: idx 4 anim 0x998 [0x01017b24, 0x040c6a60]
+  109: ["tf_deff_94{left==6}"]   # code: Starscream hit, 6 left: idx 5 anim 0x9c4 [0x01017b24, 0x040c6a60]
+  110: ["tf_deff_94{left==5}"]   # code: Starscream hit, 5 left: idx 6 anim 0x9fc [0x01017b24, 0x040c6a60]
+  111: ["tf_deff_94{left==4}"]   # code: Starscream hit, 4 left: idx 7 anim 0xa20 [0x01017b24, 0x040c6a60]
+  112: ["tf_deff_94{left==3}", "tf_deff_94{left==2}", "tf_deff_94{left==1}"]   # code: Starscream hit, 3-1 left: idx 8 (cap) anim 0x8a8, frame 17 [0x01017b24, 0x040c6a60]
+  113: ["tf_deff_94{left==3}", "tf_deff_94{left==2}", "tf_deff_94{left==1}"]   # code: Starscream hit, 3-1 left: idx 8 (cap) anim 0x8a8, frame 11 (fires before D112) [0x01017b24, 0x040c6a60]
+  114: ["tf_deff_94{completed==1}"]   # code: Starscream completed: idx 1 anim 0x948 [0x01017b24, 0x040c6a60]
   115: [tf_deff_95]   # hand: Starscream battle total
   # 116: no game event yet (Allspark 1, best 43%)
   # 117: no game event yet (Allspark 2, best 44%)
   118: [tf_deff_52]   # Allspark - Award (100%)
   119: ["tf_deff_142{state.side==1}"]   # hand: Optimus battle start, Autobot side: Hunt for Decepticons
-  120: ["tf_deff_144{count==1, state.side==1}"]   # hand: Optimus battle hit 1, Autobot (inferred: in hit order)
-  121: ["tf_deff_144{count==2, state.side==1}"]   # hand: Optimus battle hit 2, Autobot (inferred: in hit order)
-  122: ["tf_deff_144{count==3, state.side==1}"]   # hand: Optimus battle hit 3, Autobot (inferred: in hit order)
-  123: ["tf_deff_144{count==4, state.side==1}"]   # hand: Optimus battle hit 4, Autobot (inferred: in hit order)
-  124: ["tf_deff_144{count==5, state.side==1}"]   # hand: Optimus battle hit 5, Autobot (inferred: in hit order)
-  125: ["tf_deff_144{count==6, state.side==1}"]   # hand: Optimus battle hit 6, Autobot (inferred: in hit order)
-  126: ["tf_deff_144{count==7, state.side==1}"]   # hand: Optimus battle hit 7, Autobot (inferred: in hit order)
-  127: ["tf_deff_144{count==8, state.side==1}"]   # hand: Optimus battle hit 8, Autobot (inferred: in hit order)
+  120: ["tf_deff_144{count==1, state.side==1}"]   # code: Optimus battle hit 1, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  121: ["tf_deff_144{count==2, state.side==1}"]   # code: Optimus battle hit 2, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  122: ["tf_deff_144{count==3, state.side==1}"]   # code: Optimus battle hit 3, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  123: ["tf_deff_144{count==4, state.side==1}"]   # code: Optimus battle hit 4, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  124: ["tf_deff_144{count==5, state.side==1}"]   # code: Optimus battle hit 5, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  125: ["tf_deff_144{count==6, state.side==1}"]   # code: Optimus battle hit 6, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  126: ["tf_deff_144{count==7, state.side==1}"]   # code: Optimus battle hit 7, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
+  127: ["tf_deff_144{count==8, state.side==1}"]   # code: Optimus battle hit 8, Autobot: index = hits since the start (DAT_00035294), table 0x040c70e0 [0x010262f0]
   128: [tf_deff_57]   # Optimus - AutoMB - Start (100%)
-  129: ["tf_deff_59{count==1}"]   # hand: Optimus multiball (Autobot) jackpot 1 (inferred: enemies in jackpot order)
-  130: ["tf_deff_60{count==1}"]   # hand: Optimus multiball (Autobot) double jackpot 1: enemy defeated (inferred)
-  131: ["tf_deff_59{count==2}"]   # hand: Optimus multiball (Autobot) jackpot 2 (inferred: enemies in jackpot order)
-  132: ["tf_deff_60{count==2}"]   # hand: Optimus multiball (Autobot) double jackpot 2: enemy defeated (inferred)
-  133: ["tf_deff_59{count==3}"]   # hand: Optimus multiball (Autobot) jackpot 3 (inferred: enemies in jackpot order)
-  134: ["tf_deff_60{count==3}"]   # hand: Optimus multiball (Autobot) double jackpot 3: enemy defeated (inferred)
-  135: ["tf_deff_59{count==4}"]   # hand: Optimus multiball (Autobot) jackpot 4 (inferred: enemies in jackpot order)
-  136: ["tf_deff_60{count==4}"]   # hand: Optimus multiball (Autobot) double jackpot 4: enemy defeated (inferred)
-  137: ["tf_deff_59{count==5}"]   # hand: Optimus multiball (Autobot) jackpot 5 (inferred: enemies in jackpot order)
-  138: ["tf_deff_60{count==5}"]   # hand: Optimus multiball (Autobot) double jackpot 5: enemy defeated (inferred)
-  139: ["tf_deff_59{count==6}"]   # hand: Optimus multiball (Autobot) jackpot 6 (inferred: enemies in jackpot order)
-  140: ["tf_deff_60{count==6}"]   # hand: Optimus multiball (Autobot) double jackpot 6: enemy defeated (inferred)
+  129: ["tf_deff_59{anim==1}"]   # code: Optimus MB (Autobot) jackpot, left orbit: Blackout; deff_059 table 0x040c732c[shot] [0x01028950], shot from FUN_01027b74 [0x01027b74]
+  130: ["tf_deff_60{anim==1}"]   # code: Optimus MB (Autobot) double jackpot, left orbit: Blackout defeated; deff_060 table 0x040c7344[shot] [0x01028da0]
+  131: ["tf_deff_59{anim==3}"]   # code: ... jackpot, center lane: Bonecrusher; [0x01028844] images 0x143e-0x1471
+  132: ["tf_deff_60{anim==3}"]   # code: ... double jackpot, center lane: Bonecrusher defeated; [0x01028c94] 0x148e-0x1506
+  133: ["tf_deff_59{anim==4}"]   # code: ... jackpot, right ramp: Demolisher; [0x010288a0] 0xd3e-0xd5c
+  134: ["tf_deff_60{anim==4}"]   # code: ... double jackpot, right ramp: Demolisher defeated; [0x01028cf0] 0xd5d-0xd88
+  135: ["tf_deff_59{anim==5}"]   # code: ... jackpot, right orbit: Fallen; [0x010288fc] 0x1406-0x1417
+  136: ["tf_deff_60{anim==5}"]   # code: ... double jackpot, right orbit: Fallen defeated; [0x01028d4c] 0x1418-0x143d
+  137: ["tf_deff_59{anim==0}"]   # code: ... jackpot, Allspark: Ravage; [0x0102873c] 0x1c34-0x1c48
+  138: ["tf_deff_60{anim==0}"]   # code: ... double jackpot, Allspark: Ravage defeated; [0x01028b34] 0x1c48-0x1c78
+  139: ["tf_deff_59{anim==2}"]   # code: ... jackpot, left ramp: Starscream; [0x010287e8] 0xa54-0xa77
+  140: ["tf_deff_60{anim==2}"]   # code: ... double jackpot, left ramp: Starscream defeated; [0x01028c38] 0xa78-0xa96
   141: [tf_deff_61]   # Optimus - AutoMB - Mode Completed - SJP (100%)
   142: ["tf_deff_142{state.side==2}"]   # hand: Optimus battle start, Decepticon side: Destroy Optimus
-  143: ["tf_deff_144{count==1, state.side==2}"]   # hand: Optimus battle hit 1, Decepticon (inferred: in hit order)
-  144: ["tf_deff_144{count==2, state.side==2}"]   # hand: Optimus battle hit 2, Decepticon (inferred: in hit order)
-  145: ["tf_deff_144{count==3, state.side==2}"]   # hand: Optimus battle hit 3, Decepticon (inferred: in hit order)
-  146: ["tf_deff_144{count==4, state.side==2}"]   # hand: Optimus battle hit 4, Decepticon (inferred: in hit order)
-  147: ["tf_deff_144{count==5, state.side==2}"]   # hand: Optimus battle hit 5, Decepticon (inferred: in hit order)
-  148: ["tf_deff_144{count==6, state.side==2}"]   # hand: Optimus battle hit 6, Decepticon (inferred: in hit order)
-  149: ["tf_deff_144{count==7, state.side==2}"]   # hand: Optimus battle hit 7, Decepticon (inferred: in hit order)
-  150: ["tf_deff_144{count==8, state.side==2}"]   # hand: Optimus battle hit 8, Decepticon (inferred: in hit order)
+  143: ["tf_deff_144{count==1, state.side==2}"]   # code: Optimus battle hit 1, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  144: ["tf_deff_144{count==2, state.side==2}"]   # code: Optimus battle hit 2, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  145: ["tf_deff_144{count==3, state.side==2}"]   # code: Optimus battle hit 3, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  146: ["tf_deff_144{count==4, state.side==2}"]   # code: Optimus battle hit 4, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  147: ["tf_deff_144{count==5, state.side==2}"]   # code: Optimus battle hit 5, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  148: ["tf_deff_144{count==6, state.side==2}"]   # code: Optimus battle hit 6, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  149: ["tf_deff_144{count==7, state.side==2}"]   # code: Optimus battle hit 7, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
+  150: ["tf_deff_144{count==8, state.side==2}"]   # code: Optimus battle hit 8, Decepticon: index = hits since the start (DAT_00035294), table 0x040c70c4 (capped at 6) [0x010262f0]
   151: [tf_deff_63]   # Optimus - DecMB - Start (100%)
-  152: [tf_deff_66]   # Optimus - DecMB - JP1 (100%)
-  153: ["tf_deff_65{count==2}"]   # hand: Optimus multiball (Decepticon) jackpot 2 (inferred)
-  154: ["tf_deff_65{count==3}"]   # hand: Optimus multiball (Decepticon) jackpot 3 (inferred)
+  152: ["tf_deff_66{anim==1}"]   # code: Optimus MB (Decepticon) double jackpot (Optimus hit), random variant 1; deff_066 random_below(3) -> table 0x040c749c [0x0102ad30], images 0x169c-0x16b2
+  153: ["tf_deff_66{anim==0}"]   # code: ... double jackpot, random variant 0; [0x0102ac7c] images 0x1655-0x1661
+  154: ["tf_deff_66{anim==2}"]   # code: ... double jackpot, random variant 2; [0x0102acec] images 0x16b3-0x16ca
   155: [tf_deff_65]   # Optimus - DecMB - JP4 (100%)
   156: [tf_deff_67]   # Optimus - DecMB - Mode Completed - SJ (100%)
   157: [tf_deff_62]   # hand: Optimus multiball (Autobot) total
-  158: ["tf_deff_140{values.0==1, state.side==1}"]   # hand: Megatron lock: ball 1 locked, Autobot
-  159: ["tf_deff_140{values.0==2, state.side==1}"]   # hand: Megatron lock: ball 2 locked, Autobot
-  160: ["tf_deff_140{values.0==3, state.side==1}"]   # hand: Megatron lock: ball 3 locked, Autobot
+  158: ["tf_deff_140{values.0==1, state.side==1}"]   # code: Megatron lock: ball 1 locked, Autobot [0x0100b7f0]
+  159: ["tf_deff_140{values.0==2, state.side==1}"]   # code: Megatron lock: ball 2 locked, Autobot [0x0100b7f0]
+  160: ["tf_deff_140{values.0==3, state.side==1}"]   # code: Megatron lock: ball 3 locked, Autobot [0x0100b7f0]
   161: [tf_deff_69]   # Megatron - Autobot - MB (100%)
-  162: ["tf_deff_71{count==1}"]   # hand: Megatron multiball (Autobot) jackpot 1 (inferred: in jackpot order)
-  163: ["tf_deff_71{count==2}"]   # hand: Megatron multiball (Autobot) jackpot 2 (inferred: in jackpot order)
-  164: ["tf_deff_71{count==3}"]   # hand: Megatron multiball (Autobot) jackpot 3 (inferred: in jackpot order)
-  165: ["tf_deff_72{count==1}"]   # hand: Megatron multiball (Autobot) double jackpot 1 (inferred)
-  166: ["tf_deff_72{count==2}"]   # hand: Megatron multiball (Autobot) double jackpot 2 (inferred)
-  167: ["tf_deff_72{count==3}"]   # hand: Megatron multiball (Autobot) double jackpot 3 (inferred)
-  168: ["tf_deff_72{count==4}"]   # hand: Megatron multiball (Autobot) double jackpot 4 (inferred)
+  162: ["tf_deff_71{anim==3}"]   # code: Megatron MB (Autobot) jackpot, random variant 3; deff_071 random_below(5) -> table 0x040c6474 [0x0100d214], images 0x12e7-0x130e
+  163: ["tf_deff_71{anim==0}"]   # code: ... jackpot, random variant 0; [0x0100d07c] 0x12a5-0x12bc
+  164: ["tf_deff_71{anim==1}"]   # code: ... jackpot, random variant 1; [0x0100d0d4] 0x12bd-0x12d3
+  165: ["tf_deff_72{anim==3}"]   # code: Megatron MB (Autobot) double jackpot, random variant 3 (also 168, 213); deff_072 random_below(4) -> table 0x040c64a0 [0x0100d550], images 0x1391-0x13aa
+  166: ["tf_deff_72{anim==2}"]   # code: ... double jackpot, random variant 2; [0x0100d4a8] 0x1365-0x1390
+  167: ["tf_deff_72{anim==0}"]   # code: ... double jackpot, random variant 0; [0x0100d40c] 0x1330-0x134f
+  168: ["tf_deff_72{anim==3}"]   # code: ... double jackpot, random variant 3 (frame 2 of 165's animation); [0x0100d4f8] 0x1391-0x13aa
   169: [tf_deff_73]   # Megatron - Autobot - MB - SJP Completed (100%)
   170: [tf_deff_74, tf_deff_80]   # Megatron - MB - End (100%)
-  171: ["tf_deff_140{values.0==1, state.side==2}"]   # hand: Megatron lock: ball 1 locked, Decepticon
-  172: ["tf_deff_140{values.0==2, state.side==2}"]   # hand: Megatron lock: ball 2 locked, Decepticon
-  173: ["tf_deff_140{values.0==3, state.side==2}"]   # hand: Megatron lock: ball 3 locked, Decepticon
-  # 174: no game event yet (Megatron - Decepticon - Ball 1 Locked - 2nd, best 100%)
-  # 175: no game event yet (Megatron - Decepticon - Ball 2 Locked - 2nd, best 100%)
-  # 176: no game event yet (Megatron - Decepticon - Ball 3 Locked - 2nd, best 100%)
+  171: ["tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 1 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  172: ["tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 2 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  173: ["tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==663}"]   # code: Megatron lock: ball 3 locked, Decepticon, lock music 0x297 (first round) [0x0100b7f0]
+  174: ["tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==1, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 1 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
+  175: ["tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==2, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 2 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
+  176: ["tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==664}", "tf_deff_140{values.0==3, state.side==2, state.mtl_music_d==665}"]   # code: Megatron lock: ball 3 locked, Decepticon, lock music 0x298 / 0x299 (after 1 or 2 Megatron multiballs, then the cycle restarts) [0x0100b7f0]
   177: [tf_deff_75]   # Megatron - Decepticon - MB - Start (100%)
-  178: ["tf_deff_77{count==1}"]   # hand: Megatron multiball (Decepticon) jackpot 1 (inferred: in jackpot order)
-  179: ["tf_deff_77{count==2}"]   # hand: Megatron multiball (Decepticon) jackpot 2 (inferred: in jackpot order)
-  180: ["tf_deff_77{count==3}"]   # hand: Megatron multiball (Decepticon) jackpot 3 (inferred: in jackpot order)
-  181: ["tf_deff_77{count==4}"]   # hand: Megatron multiball (Decepticon) jackpot 4 (inferred: in jackpot order)
-  182: ["tf_deff_77{count==5}"]   # hand: Megatron multiball (Decepticon) jackpot 5 (inferred: in jackpot order)
-  183: ["tf_deff_77{count==6}"]   # hand: Megatron multiball (Decepticon) jackpot 6 (inferred: in jackpot order)
+  178: ["tf_deff_77{anim==8}"]   # code: Megatron MB (Decepticon) jackpot, bag draw 8; deff_077 table 0x040c6674[+0x38] [0x0100f3b4], +0x38 from bag FUN_0100ddc8 [0x0100ddc8], images 0x1d69-0x1d80
+  179: ["tf_deff_77{anim==0}"]   # code: ... jackpot at Megatron (relights the shots); +0x38 = 0 for mask 0x40 [0x0100e29c], images 0x193c-0x199b
+  180: ["tf_deff_77{anim==2}"]   # code: ... jackpot, bag draw 2; [0x0100eff8] 0x1c95-0x1cb4
+  181: ["tf_deff_77{anim==3}"]   # code: ... jackpot, bag draw 3; [0x0100f050] 0x1cb5-0x1cfb
+  182: ["tf_deff_77{anim==6}"]   # code: ... jackpot, bag draw 6; [0x0100f198] 0x18bc-0x18fa
+  183: ["tf_deff_77{anim==4}"]   # code: ... jackpot, bag draw 4; [0x0100f0d4] 0x1cfc-0x1d40
   184: [tf_deff_79]   # hand: Megatron multiball (Decepticon) super jackpot
   185: ["tf_deff_81{state.side==1}"]   # hand: Autobots Roll Out start
-  186: ["tf_deff_83{values.1==0, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 0 (inferred: characters in shot order)
-  187: ["tf_deff_83{values.1==1, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 1 (inferred: characters in shot order)
-  188: ["tf_deff_83{values.1==2, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 2 (inferred: characters in shot order)
-  189: ["tf_deff_83{values.1==3, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 3 (inferred: characters in shot order)
-  190: ["tf_deff_83{values.1==4, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 4 (inferred: characters in shot order)
-  191: ["tf_deff_83{values.1==5, state.side==1}"]   # hand: Autobots Roll Out, wizard shot 5 (inferred: characters in shot order)
+  186: ["tf_deff_83{anim==11, state.side==1}"]   # code: Autobots Roll Out, right ramp completed: RATCHET; deff_083 idx = shot + 6 on the 2nd hit [0x01010174], table 0x040c67a0[11] [0x010116dc], msg 0x5d4 font 0x10
+  187: ["tf_deff_83{anim==10, state.side==1}"]   # code: ... right orbit completed: MUD & SKIDS; [0x010115f8] msg 0x5d3
+  188: ["tf_deff_83{anim==9, state.side==1}"]   # code: ... center lane completed: IRONHIDE; [0x01011584] msg 0x5d2
+  189: ["tf_deff_83{anim==8, state.side==1}"]   # code: ... left ramp completed: BUMBLEBEE; [0x01011530] msg 0x5d1
+  190: ["tf_deff_83{anim==6, state.side==1}"]   # code: ... Allspark completed: ARCEE; [0x0101144c] msg 0x5cf
+  191: ["tf_deff_83{anim==7, state.side==1}"]   # code: ... left orbit completed: SIDESWIPE; [0x010114c0] msg 0x5d0
   192: ["tf_deff_84{state.side==1}"]   # hand: Autobots Roll Out completed
   193: ["tf_deff_85{state.side==1}"]   # hand: Autobots Roll Out total (music stop)
   194: ["tf_deff_81{state.side==2}"]   # hand: All Hail Megatron start
-  195: ["tf_deff_83{values.1==0, state.side==2}"]   # hand: All Hail Megatron, wizard shot 0 (inferred: characters in shot order)
-  196: ["tf_deff_83{values.1==1, state.side==2}"]   # hand: All Hail Megatron, wizard shot 1 (inferred: characters in shot order)
-  197: ["tf_deff_83{values.1==2, state.side==2}"]   # hand: All Hail Megatron, wizard shot 2 (inferred: characters in shot order)
-  198: ["tf_deff_83{values.1==3, state.side==2}"]   # hand: All Hail Megatron, wizard shot 3 (inferred: characters in shot order)
-  199: ["tf_deff_83{values.1==4, state.side==2}"]   # hand: All Hail Megatron, wizard shot 4 (inferred: characters in shot order)
-  200: ["tf_deff_83{values.1==5, state.side==2}"]   # hand: All Hail Megatron, wizard shot 5 (inferred: characters in shot order)
+  195: ["tf_deff_83{anim==7, state.side==2}"]   # code: All Hail Megatron, left orbit completed: DEMOLISHER; table 0x040c6770[7] [0x01010de4] msg 0x5d6
+  196: ["tf_deff_83{anim==9, state.side==2}"]   # code: ... center lane completed: SHOCKWAVE; [0x01010f9c] msg 0x5d8
+  197: ["tf_deff_83{anim==6, state.side==2}"]   # code: ... Allspark completed: SOUNDWAVE; [0x01010d78] msg 0x5d5
+  198: ["tf_deff_83{anim==10, state.side==2}"]   # code: ... right orbit completed: BLACKOUT; [0x01011008] msg 0x5d9
+  199: ["tf_deff_83{anim==8, state.side==2}"]   # code: ... left ramp completed: STARSCREAM; [0x01010ec0] msg 0x5d7
+  200: ["tf_deff_83{anim==11, state.side==2}"]   # code: ... right ramp completed: DEVASTATOR; [0x01011078] msg 0x5da
   201: ["tf_deff_84{state.side==2}"]   # hand: All Hail Megatron completed
   202: ["tf_deff_85{state.side==2}"]   # hand: All Hail Megatron total (music stop)
   203: [tf_deff_86]   # Battle for Cybertron - Start (100%)
   205: ["tf_deff_88{state.side==1}"]   # hand: Battle for Cybertron jackpot, Autobot
   206: ["tf_deff_89{state.side==1}"]   # hand: Battle for Cybertron super jackpot, Autobot
   207: [tf_deff_90]   # Music - Battle For Cybertron - End (100%)
-  209: ["tf_deff_77{count==7}"]   # hand: Megatron multiball (Decepticon) jackpot 7 (inferred: in jackpot order)
-  210: ["tf_deff_77{count==8}"]   # hand: Megatron multiball (Decepticon) jackpot 8 (inferred: in jackpot order)
-  211: ["tf_deff_77{count==9}"]   # hand: Megatron multiball (Decepticon) jackpot 9 (inferred: in jackpot order)
-  212: [tf_deff_71]   # Megatron - Autobot - MB - JP1 (100%)
-  213: ["tf_deff_71{count==4}"]   # hand: Megatron multiball (Autobot) jackpot 4 (inferred: in jackpot order)
-  214: ["tf_deff_71{count==5}"]   # hand: Megatron multiball (Autobot) jackpot 5 (inferred: in jackpot order)
+  209: ["tf_deff_77{anim==5}"]   # code: ... jackpot, bag draw 5; [0x0100f13c] 0x10b3-0x10d9
+  210: ["tf_deff_77{anim==1}"]   # code: ... jackpot, bag draw 1; [0x0100efa8] 0x1c79-0x1c94
+  211: ["tf_deff_77{anim==7}"]   # code: ... jackpot, bag draw 7; [0x0100f1f4] 0x1d41-0x1d68
+  212: ["tf_deff_71{anim==4}"]   # code: ... jackpot, random variant 4; [0x0100d1c0] 0x130f-0x132f
+  213: ["tf_deff_72{anim==3}"]   # code: ... double jackpot, random variant 3 (same frame as 165); [0x0100d4f8] 0x1391-0x13aa
+  214: ["tf_deff_72{anim==1}"]   # code: ... double jackpot, random variant 1; [0x0100d45c] 0x1350-0x1364
   215: [tf_deff_75]   # Megatron MB Autobot - Start - Text (100%)
   216: [tf_deff_69]   # Megatron MB Dec - Start - Text (100%)
   219: [tf_deff_68]   # Optimus MB - Dec - Stop - Text (100%)

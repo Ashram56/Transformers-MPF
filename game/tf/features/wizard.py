@@ -69,7 +69,7 @@ UNCAPTURED = {WMB_HIT_DEFF: (2.55, (WMB_HIT_LEFF,), ((0.0, WMB_HIT_SOUND), (0.52
 
 class Wizard(Feature):
     name = "wizard"
-    HOOKS = ("player_first_ball", "wizard_req", "eject_modes", "mb_shot", "multiball_end", "add_ball", "ball_end",
+    HOOKS = ("player_first_ball", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
              "tilt", "side_mode_running")
 
     def __init__(self, os_):
@@ -217,6 +217,16 @@ class Wizard(Feature):
         elif self.side_running:
             self.side_hit(WIZ_SHOT[shot])
 
+    def wizard_shot(self, i):
+        """A wizard shot by its wizard index: the Megatron lock counts as shot 2 ([0x0100a31c] calls
+        0x010365c4(2) and 0x01010174(2) before its own rules)."""
+        if self.os.tilted:
+            return
+        if self.wmb_running:
+            self.wmb_hit(i)
+        elif self.side_running:
+            self.side_hit(i)
+
     # ------------------------------------------------------------------ side mode
 
     def side_start(self):
@@ -249,7 +259,10 @@ class Wizard(Feature):
         os_.score_add(points)
         self.side_sum += points
         self.side_total += points
-        os_.deff_start(SIDE_HIT_DEFF, values=[points, i])
+        # anim: the ROM's animation, the shot on its first hit, shot + 6 (the character's name) on the one
+        # that completes it [0x01010174]; the PuP map reads it
+        anim = i + 6 if self.side_counts[i] >= SIDE_HITS else i
+        os_.deff_start(SIDE_HIT_DEFF, values=[points, i], anim=anim)
         os_.audit(SIDE_AWARD_AUDIT)
         os_.deff_media(SIDE_HIT_DEFF, SIDE_HIT_LEFF, SIDE_HIT_SOUND)
         os_.request_refresh()
