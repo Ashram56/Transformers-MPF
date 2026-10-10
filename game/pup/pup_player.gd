@@ -36,11 +36,12 @@ var music_screen := -1
 var _next := {}                     # playlist -> next index (AlphaSort playlists)
 var _last := {}                     # playlist -> last pick (random playlists)
 var _audio_cache := {}
-## The native_video add-on (Windows and macOS): plays the pack's mp4s without conversion
-var native_video := ClassDB.class_exists("NativeVideoStream")
-## GDE GoZen (Linux): FFmpeg, plays the pack's mp4s without conversion; the screens then use gozen_player.gd
-var gozen := not native_video and ClassDB.class_exists("GoZenVideo") \
-	and ResourceLoader.exists("res://addons/gde_gozen/video_playback.gd")
+## Which add-on plays the pack's mp4s without conversion (_pick_video_player()), else Godot plays Theora copies:
+## - GDE GoZen (Linux and Windows): FFmpeg decoding on the GPU (Direct3D 11 Video / DXVA2 on Windows, the Jetson's
+##   decoder with libnvmpi); the screens then use gozen_player.gd;
+## - native_video (macOS, and Windows' fallback): [pup] video_player="native" or <env>_VIDEO_PLAYER=native.
+var native_video := false
+var gozen := false
 
 
 func _ready() -> void:
@@ -51,6 +52,7 @@ func _ready() -> void:
 	MPF.server.registered_handlers["pup_hello"] = [Callable(self, "_on_pup_hello")]
 	if not _load_config():
 		return
+	_pick_video_player()
 	var root := ProjectSettings.globalize_path("res://").path_join("..").simplify_path()
 	pack_dir = root.path_join(setting("pup", "pack_dir", "pup_pack"))
 	media_dir = root.path_join(setting("pup", "media_dir", "pup_media"))
@@ -74,6 +76,19 @@ func _load_config() -> bool:
 		if OS.get_environment(name).to_lower() in OFF:
 			return false
 	return bool(setting("pup", "enabled", false))
+
+
+func _pick_video_player() -> void:
+	var has_native := ClassDB.class_exists("NativeVideoStream")
+	var has_gozen := ClassDB.class_exists("GoZenVideo") \
+		and ResourceLoader.exists("res://addons/gde_gozen/video_playback.gd")
+	var prefix := str(setting("pup", "env", ""))
+	var want := OS.get_environment((prefix + "_" if prefix != "" else "") + "VIDEO_PLAYER").strip_edges().to_lower()
+	if want.is_empty():
+		want = str(setting("pup", "video_player", "")).strip_edges().to_lower()
+	gozen = has_gozen and not (want == "native" and has_native)
+	native_video = has_native and not gozen
+	print("PuP video player: %s" % ("GDE GoZen" if gozen else ("native_video" if native_video else "Godot (Theora)")))
 
 
 func setting(section: String, key: String, default = null):

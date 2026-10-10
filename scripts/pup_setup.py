@@ -82,7 +82,9 @@ def gozen(os_name=None, arch=None):
     the videos to Theora instead. Only where the game carries the add-on (pup_addons/gde_gozen)."""
     if os.environ.get(env("GOZEN"), "").strip().lower() in ("0", "false", "no", "off"):
         return False
-    return tc.host_os(os_name) == "linux" and tc.host_arch(arch) in ("x86_64", "arm64") and os.path.isdir(GOZEN_SRC)
+    host, cpu = tc.host_os(os_name), tc.host_arch(arch)
+    return ((host == "linux" and cpu in ("x86_64", "arm64")) or (host == "windows" and cpu == "x86_64")) \
+        and os.path.isdir(GOZEN_SRC)
 
 
 def install_native_video():
@@ -237,14 +239,14 @@ def setup(py=None, dry=False):
         return 0
     ensure_ffmpeg(py)
     native = native_video() or gozen()
-    if native_video():
-        install_native_video()
-    elif gozen():
-        install_gozen()
-    else:
-        for addon in (GOZEN_DST, NATIVE_DST):   # a loaded add-on would play the mp4s instead of the conversions
-            if os.path.isdir(addon):
-                fsutil.remove_dir(addon)
+    # Windows gets both: GoZen plays, native_video is one setting away ([pup] video_player, game/pup/pup_player.gd)
+    for wanted, install, addon in ((gozen(), install_gozen, GOZEN_DST),
+                                   (native_video(), install_native_video, NATIVE_DST)):
+        if wanted:
+            install()
+        elif os.path.isdir(addon):        # a loaded add-on would play the mp4s instead of the conversions
+            fsutil.remove_dir(addon)
+    if not native:
         say("   converting the pack's videos (the first time takes a while; later runs only redo changed files)")
     code = subprocess.run([py, os.path.join(tc.ROOT, "scripts", "gen_pup.py")] + (["--native"] if native else []),
                           cwd=tc.ROOT).returncode

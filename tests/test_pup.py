@@ -163,3 +163,18 @@ class TestPupMachine(TfTestCase):
         with mock.patch.object(self.pup.engine, "on_event") as on_event:
             self.advance_time_and_run(float(self.pup.pup.get("attract_cycle_seconds", 60)) + 1)
             self.assertIn("pup_attract_cycle", [c.args[0] for c in on_event.call_args_list])
+
+
+class TestVideoPlayers(unittest.TestCase):
+
+    def test_gozen_on_windows_and_linux_native_as_fallback(self):
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import pup_setup
+        with mock.patch.dict(os.environ, {"TF_GOZEN": "", "TF_NATIVE_VIDEO": ""}):
+            self.assertTrue(pup_setup.gozen("windows", "x86_64"))
+            self.assertTrue(pup_setup.gozen("linux", "arm64"))
+            self.assertFalse(pup_setup.gozen("macos", "arm64"))
+            self.assertTrue(pup_setup.native_video("windows"))      # installed too, the fallback
+        self.assertEqual("gozen", CFG["pup"]["video_player"])
+        for name in ("bin/libgozen.windows.template_release.x86_64.dll", "gozen.gdextension"):
+            self.assertTrue(os.path.exists(os.path.join(pup_setup.GOZEN_SRC, name)), name)

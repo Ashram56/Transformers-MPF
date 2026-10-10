@@ -31,9 +31,15 @@ with hardware decoding**, nothing is converted.
 
 | Platform | Video player |
 |---|---|
-| Windows, macOS | `native_video` (Media Foundation, AVFoundation), copied from `pup_addons/native_video` to `game/addons/` (Godot 4.6+, hence the game's Godot 4.6.3). A build with a heap fix: never replace it with the upstream zip |
-| Linux x86_64 / arm64 | GDE GoZen (FFmpeg; a Jetson's hardware decoder once libnvmpi is installed), from `pup_addons/gde_gozen` |
-| Anything else, or `TF_NATIVE_VIDEO=0` / `TF_GOZEN=0` | fallback: `scripts/gen_pup.py` converts the videos to Theora in `pup_media/tf_180/` (slow the first time) |
+| Windows x86_64 | GDE GoZen (FFmpeg), decoding on the GPU through Direct3D 11 Video, else DXVA2 (any GPU vendor, nothing to install); software when the GPU cannot. `native_video` (Media Foundation) is installed too as the fallback: `[pup] video_player="native"` or `TF_VIDEO_PLAYER=native` |
+| macOS | `native_video` (AVFoundation; Godot 4.6+, hence the game's Godot 4.6.3). A build with a heap fix: never replace it with the upstream zip |
+| Linux x86_64 / arm64 | GDE GoZen (a Jetson's hardware decoder once libnvmpi is installed) |
+| Anything else, or `TF_GOZEN=0` and `TF_NATIVE_VIDEO=0` | fallback: `scripts/gen_pup.py` converts the videos to Theora in `pup_media/tf_180/` (slow the first time) |
+
+The add-ons come from `pup_addons/` and are copied to `game/addons/` by setup. `python scripts/video_check.py`
+decodes a few of the pack's videos with GoZen, on the GPU and then in software, and prints the decoder and speed
+of each. The GoZen Windows build and why Windows uses it (the native player stuttered and drifted on Tron) are in
+Stern-SAM-Decryption `agents/pup_pack.md` section 6.
 
 `scripts/gen_pup.py --native` only lists the pack's files and their sizes in `pup_media/tf_180/manifest.json`
 (it reads the sizes with ffmpeg, installing `imageio-ffmpeg` in the venv when none is on the PATH).
