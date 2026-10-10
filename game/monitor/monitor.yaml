@@ -38,11 +38,11 @@ coil:
     y: 0.4704
 light:
   l_start_button:   # light 1 (li1)
-    x: 0.074
-    y: 1.0309
+    x: 0.05
+    y: 0.895
   l_tournament_start_button:   # light 2 (li2)
-    x: 0.0545
-    y: 1.0308
+    x: 0.15
+    y: 0.895
   l_roll_out:   # light 3 (li3)
     x: 0.4539
     y: 0.8772
@@ -326,6 +326,9 @@ switch:
   s_m_tron_lock_1_back:   # switch 41 (KickerMegaTron)
     x: 0.335
     y: 0.3291
+  s_megatron_jam:   # switch 42 (KickerMegaTron)
+    x: 0.335
+    y: 0.3351
   s_optimus_prime_up:   # switch 43 (opr)
     x: 0.5333
     y: 0.2282
@@ -347,3 +350,60 @@ switch:
   s_optimus_prime:   # switch 51 (sw51)
     x: 0.5345
     y: 0.139
+  s_tournament_start:   # switch 15 ()
+    x: 0.05
+    y: 0.985
+  s_start_button:   # switch 16 ()
+    x: 0.15
+    y: 0.985
+  s_left_coin_slot:   # switch 129 ()
+    x: 0.25
+    y: 0.985
+  s_center_coin_slot:   # switch 130 ()
+    x: 0.35
+    y: 0.985
+  s_right_coin_slot:   # switch 131 ()
+    x: 0.45
+    y: 0.985
+  s_fourth_coin_slot:   # switch 132 ()
+    x: 0.55
+    y: 0.985
+  s_fifth_coin_slot:   # switch 133 ()
+    x: 0.65
+    y: 0.985
+  s_l_flipper_button:   # switch 137 ()
+    x: 0.75
+    y: 0.985
+  s_left_flipper_e_o_s:   # switch 138 ()
+    x: 0.85
+    y: 0.985
+  s_r_flipper_button:   # switch 139 ()
+    x: 0.05
+    y: 0.955
+  s_right_flipper_e_o_s:   # switch 140 ()
+    x: 0.15
+    y: 0.955
+  s_tilt_pendulum:   # switch 145 ()
+    x: 0.25
+    y: 0.955
+  s_slam_tilt:   # switch 146 ()
+    x: 0.35
+    y: 0.955
+  s_ticket_notch:   # switch 147 ()
+    x: 0.45
+    y: 0.955
+  s_coin_door_open:   # switch 148 ()
+    x: 0.55
+    y: 0.955
+  s_back:   # switch 149 ()
+    x: 0.65
+    y: 0.955
+  s_minus:   # switch 150 ()
+    x: 0.75
+    y: 0.955
+  s_plus:   # switch 151 ()
+    x: 0.85
+    y: 0.955
+  s_select:   # switch 152 ()
+    x: 0.05
+    y: 0.925
