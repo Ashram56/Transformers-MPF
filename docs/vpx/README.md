@@ -39,7 +39,8 @@ The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project
   - 43, 44: Optimus Prime up/down (`s_optimus_prime_up`, `s_optimus_prime_down`), set by a motor timer
     (no object): placed at `opr` with `--mech`; 42 (Megatron jam, no object either) after the lock slots.
   - 23 is the shooter lane.
-- **Cabinet strip** (`--cabinet`, the bottom edge of the picture, by number): the 19 config switches with no
+- **Cabinet strip** (`--cabinet`, the bottom edge of the picture; left flipper button and EOS at the bottom-left
+  corner, right ones at the bottom-right, the rest by number): the 19 config switches with no
   playfield object: tournament and start buttons (15, 16), coin slots (D1-D5), flipper buttons and EOS
   (D9-D12), tilt, slam tilt, ticket notch (D17-D19), coin door open (D20, from `game/config/hardware.yaml`),
   BACK, MINUS, PLUS, SELECT (D21-D24). Lamps 1 and 2 (start and tournament buttons, below the playfield in
