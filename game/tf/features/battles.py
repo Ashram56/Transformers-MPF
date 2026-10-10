@@ -272,7 +272,7 @@ class Battle:
     def hit_media(self, points, completed=False):
         os_ = self.os
         kwargs = {"run_seconds": self.completed_seconds} if completed else {}
-        os_.deff_start(self.hit_deff, values=[points], **kwargs)
+        os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # hit, completed: PuP
         lengths = os_.sample_lengths(self.hit_sound)
         os_.sound(self.hit_sound, in_deff=self.hit_deff,
                   index=(self.hits - 1) % len(lengths) if lengths else None)

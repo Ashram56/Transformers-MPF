@@ -21,7 +21,7 @@ change the folder and branch. Safe to run again: it updates the clone and redoes
 ## Run it
 
 ```
-python scripts/setup.py          # venv with MPF, Godot 4.5.2, GMC, generated config and media
+python scripts/setup.py          # venv with MPF, Godot 4.6.3, GMC, generated config and media
 python scripts/run.py            # the DMD window and MPF on virtual hardware (free play)
 python scripts/run.py --monitor  # plus MPF Monitor with the playfield picture
 ```
@@ -29,6 +29,15 @@ python scripts/run.py --monitor  # plus MPF Monitor with the playfield picture
 Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge, `t` tilt, `d` coin door,
 `7 8 9 0` BACK MINUS PLUS SELECT. Tests: `.venv/bin/python -m pytest -q tests`. Display check:
 `.venv/bin/python scripts/render_check.py` (captures/dmd_latest_x8.png).
+
+## PuP Pack (optional): videos and music on three screens
+
+The game can play TerryRed's Transformers (Stern) PuP-Pack, the videos and music PinUP Player shows around the
+Visual Pinball table, at the same moments, on a backglass window (with the pack's crests, faces and text panel),
+the DMD in the pack's panel art and an optional topper; the pack's music replaces the ROM music. The pack is
+TerryRed's work: download it from the author's page. `setup.py` installs it from the private `pup_pack`
+submodule, or from the author's zip with `TF_PUP_ZIP=<zip>`; `TF_PUP=0` turns it off (the strict game).
+Screens, settings and how it works: [docs/pup.md](docs/pup.md).
 
 ## Status
 
@@ -41,6 +50,7 @@ Keys in the DMD window: `5` coin, `1` start, `z` / `/` flippers, `space` plunge,
 | Coils | the pulse and hold times measured in the emulator (rom/mpf_package/config/coils.yaml) |
 | Lamp shows | every captured leff (111 shows in rom/mpf_package/config/shows) plays at its ROM priority with its flasher pulses; leffs the ROM draws from game state (67, no show) draw nothing yet. `trace_check.py basic`: lamps 46/47 samples, flashers 3/7 bursts |
 | Rules, scoring | switch handlers, side choice, skill shots, pops, lanes, spinner, Bumblebee and double scoring, 2-bank and fast scoring, combos, shot multipliers, bonus, Energon targets, the Allspark (left eject) mystery award, mode-start shots, the eight character battles, the Megatron lock and multiball, the Optimus battle and multiball (Autobot and Decepticon rules), All Hail Megatron / Autobots Roll Out and the Wizard Multiball, the shaker motor by adj 96, the Optimus figure's motor and hit kicker, the orbit gate and the ball search's coil sweep (tf/features/, from rom/rules/modes/; shaker, Optimus and gate runs match every trace where the play matches). Scores, display effects and audits match the ROM, in order, in all 24 reference traces (`trace_check.py`; `combos` reads its mode-start relight picks from its mode-start scores); the timing differences left (0.3-0.9 s, speech-driven deff lengths, the Allspark warning, the bonus end in `allspark_energon`) are rows of docs/rom_differences.md. Every ball search and Optimus kicker run lands where the ROM's does |
+| PuP Pack | optional, TerryRed's pack on backglass, DMD and topper windows with its music ([docs/pup.md](docs/pup.md)); 210 of the 213 DMD captures its active rows use are mapped to game events |
 | Hardware | virtual (desktop + MPF Monitor) by default; P-ROC numbers generated (game/config/rom/proc_numbers.yaml); VPX bridge is agent D's |
 
 Interim tables read from the ROM until the package carries them: `game/config/interim/` (scripts/interim_tables.py,

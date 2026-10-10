@@ -15,6 +15,7 @@ config:
   - rom/lights.yaml
   - rom/settings.yaml   # the operator adjustments as MPF settings (persisted machine vars)
   - hardware.yaml
+  - pup.yaml            # PuP Pack (docs/pup.md)
 
 modes:
   - attract

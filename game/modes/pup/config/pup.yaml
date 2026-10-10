@@ -1,0 +1,8 @@
+#config_version=6
+
+# The PuP Pack glue (game/pup_runtime/mode.py, vendored from Stern-SAM-Decryption). Never started: its code
+# hooks the machine when the mode loads.
+mode:
+  code: pup_runtime.mode.PupMode
+  priority: 50
+  game_mode: false

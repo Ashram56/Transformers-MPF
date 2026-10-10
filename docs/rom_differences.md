@@ -26,3 +26,4 @@ extraction delivers the data.
 | Side choice (task 200) | each player's choice, starting side by adj 65 | runs on each player's first ball; adj 65 RANDOM uses the game's random generator (the ROM's source is not identified) | inferred |
 | Custom pricing | SET CUSTOM PRICING edits a coin door and a ladder of up to 100 steps (NVRAM 0x2110808) | one units-per-coin and one units-per-credit value; the 68 presets are the ROM's (pricing.json) | interim |
 | Service menu in a game | suspends the game task | asks END GAME? (Tron recreation, MPF timers cannot be suspended) | MPF limit |
+| Music with the PuP Pack (optional) | the ROM's music calls play its music | with the PuP Pack on (docs/pup.md, `[pup] ost_music`), the music calls (sound pools on the `music` track) are dropped once Godot's PuP player is ready and the pack's own music plays on its screen 4; speech and effects still play. The owner's choice (2026-10-10). PuP off (`TF_PUP=0`): the ROM's music | option (PuP) |
