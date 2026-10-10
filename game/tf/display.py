@@ -221,6 +221,15 @@ class Display:
                 self._start_rule(deff_id, on_start)
             self._pump()
 
+    def redraw(self, deff_id, **args):
+        """A running deff draws new state (deff 40 after a side change): the ROM's deff function keeps running and
+        draws the other screen, so there is no new start in the trace; the slide for the new state plays again
+        (tf/media_bridge.py deff_slide) and tf_deff_<id> is posted again, as the PuP Pack sees a new screen."""
+        if deff_id not in (self.bg, self.fg):
+            return
+        self.os.machine.events.post("tf_deff_{}".format(deff_id), **args)
+        self.os.media.deff_start(deff_id, self.prio.get(deff_id, 0), **args)
+
     def stop(self, deff_id):
         os_ = self.os
         os_.trace.log("deff_stop", id=deff_id)
