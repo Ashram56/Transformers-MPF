@@ -97,12 +97,15 @@ borderless=true
    `game/tf_pup/trigger_map.yaml` maps each `D<n>` to the effects whose frames contain that capture
    (`scripts/pup_captures.py` matches all 225 captures against every recorded frame and library animation;
    report in [pup_captures.md](pup_captures.md)).
-2. **Shots, sides and locks.** The ROM shows a different animation per battle shot, per side and per lock, but
-   the ROM extraction recorded one variant per effect, so those captures match a library animation no effect
-   is credited with. The map tells them apart by the event's arguments: the battle hit's number and whether it
-   completed the battle (`hit`, `completed`, posted by `tf/features/battles.py`), the lock number and the
-   wizard shot (`values`), the player's side (`state.side`, from the player's rule state) and counts since a
-   mode's intro (`counters:`). Which video goes with which shot follows the pack's row order (inferred).
+2. **Shots, sides and locks.** The ROM shows a different animation per battle shot, jackpot, side, lock and
+   wizard shot, but the ROM extraction recorded one variant per effect, so those captures match a library
+   animation no effect is credited with. Each was resolved from the ROM code: the deff's animation table, what
+   indexes it, and each entry's first image against the capture. The game posts that index and the map keys on
+   it: battle hits by the shots left after the hit (`left`, `tf/features/battles.py`; the ROM's index is
+   `BASE - left`, kept per player across restarts), jackpots and wizard shots by `anim` (the shot, the ROM's
+   random draw or no-repeat bag, the wizard shot + 6 on its completing hit: `optimus.py`, `megatron.py`,
+   `wizard.py`), the Decepticon locks by the player's lock music call (`state.mtl_music_d`), and the side
+   (`state.side`). Each map line names the ROM addresses. The DMD itself still shows the recorded variant.
 3. **MPF side** (`game/pup_runtime/`, loaded as the never-started mode `pup`): fires the rows of each event,
    applies their `RestSeconds` and sends them as BCP `pup_play` to Godot.
 4. **Godot side** (`game/pup/`, autoload `Pup`): the windows and the PinUP Player rules per screen

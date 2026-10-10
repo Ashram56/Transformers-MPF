@@ -249,7 +249,10 @@ class Wizard(Feature):
         os_.score_add(points)
         self.side_sum += points
         self.side_total += points
-        os_.deff_start(SIDE_HIT_DEFF, values=[points, i])
+        # anim: the ROM's animation, the shot on its first hit, shot + 6 (the character's name) on the one
+        # that completes it [0x01010174]; the PuP map reads it
+        anim = i + 6 if self.side_counts[i] >= SIDE_HITS else i
+        os_.deff_start(SIDE_HIT_DEFF, values=[points, i], anim=anim)
         os_.audit(SIDE_AWARD_AUDIT)
         os_.deff_media(SIDE_HIT_DEFF, SIDE_HIT_LEFF, SIDE_HIT_SOUND)
         os_.request_refresh()

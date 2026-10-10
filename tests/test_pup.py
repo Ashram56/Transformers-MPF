@@ -17,6 +17,20 @@ MAP = settings.map_path(CFG)
 HAVE_PACK = os.path.exists(os.path.join(PACK, "triggers.pup"))
 
 
+def _rows():
+    """{capture n: the pack's first row that fires on it} from docs/pup_captures.md."""
+    out = {}
+    with open(os.path.join(ROOT, "docs", "pup_captures.md"), encoding="utf-8") as f:
+        for line in f:
+            cells = [c.strip() for c in line.split("|")]
+            if len(cells) > 3 and cells[1].isdigit() and cells[2][:1].isdigit():
+                out[int(cells[1])] = int(cells[2].split()[0])
+    return out
+
+
+ROW = _rows()
+
+
 class TestSettings(unittest.TestCase):
 
     def test_env_off(self):
@@ -98,12 +112,24 @@ class TestEngine(unittest.TestCase):
         self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1, left=0)
         self.assertEqual([38], self.ids())         # Blackout Completed
 
-    def test_counted_jackpots(self):
-        self.engine.on_event("tf_deff_75")         # Megatron multiball, Decepticon intro
+    def test_jackpot_animations_from_the_rom(self):
+        """Jackpots show the animation the ROM picks, not one per jackpot in order: Optimus (Autobot) one enemy
+        per shot [0x01028950], Megatron (Decepticon) index 0 at the Megatron shot [0x0100e29c], else a draw."""
+        self.engine.on_event("tf_deff_59", values=[150000], anim=1)
+        self.assertEqual([ROW[129]], self.ids())   # left orbit: Blackout
         self.sent.clear()
-        self.engine.on_event("tf_deff_77", values=[100000])
-        self.engine.on_event("tf_deff_77", values=[125000])
-        self.assertEqual([214, 215], [i for i in self.ids() if i in (214, 215, 216)])
+        self.engine.on_event("tf_deff_77", values=[100000], anim=0)
+        self.assertEqual([ROW[179]], self.ids())
+        self.sent.clear()
+        self.engine.on_event("tf_deff_77", values=[100000], anim=2)
+        self.assertEqual([ROW[180]], self.ids())
+
+    def test_wizard_names_on_the_completing_hit(self):
+        """deff 83 [0x01010174]: the character's name (captures 186-200) shows on a wizard shot's second hit."""
+        self.engine.on_event("tf_deff_83", values=[500000, 0], anim=0, state={"side": 1})
+        self.assertEqual([], self.ids())
+        self.engine.on_event("tf_deff_83", values=[550000, 0], anim=6, state={"side": 1})
+        self.assertEqual([ROW[190]], self.ids())   # ARCEE
 
     def test_drain(self):
         self.engine.on_event("tf_deff_25", values=[])
@@ -163,6 +189,14 @@ class TestPupMachine(TfTestCase):
         self.assertEqual([(0x295, 0x298), (0x296, 0x299), (0x294, 0x297)], calls)
         pd["side"] = 1
         self.assertEqual(0x294, mt.lock_music())
+
+    def test_decepticon_jackpot_draw(self):
+        """[0x0100ddc8]: deff 77's lit-shot animations come without repeats until 1-8 are used."""
+        side = self.tf.features_by_name["megatron"].sides[2]
+        side.setup()
+        drawn = [side.draw() for _ in range(8)]
+        self.assertTrue(all(1 <= d <= 9 for d in drawn))
+        self.assertEqual(len(drawn), len(set(drawn)))
 
     def test_rom_music_muted_when_pup_ready(self):
         bridge = self.tf.media

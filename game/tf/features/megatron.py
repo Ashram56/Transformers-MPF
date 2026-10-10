@@ -35,8 +35,13 @@ End: down to one ball the running flag goes (music back), 218 ticks later the to
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
 Not modelled: task 0x57, adj 69 virtual lock. The rule leff (62 / 70) flashes the lit shots from the side's mask.
 """
+import random
+
 from tf.features import Feature
 from tf.lamps import shot_blink
+
+# the display effects' random animation picks: their own generator, so the rules' picks stay as they were
+VARIANTS = random.Random()
 
 ORDER = 38
 AUTOBOT, DECEPTICON = 1, 2
@@ -121,11 +126,13 @@ class Side:
     def setup(self):
         pass
 
-    def award(self, points, deff, leff, sound, audit):
+    def award(self, points, deff, leff, sound, audit, anim=None):
+        """anim: which of the deff's animations the ROM shows (the PuP map reads it; the display shows the
+        recorded one)."""
         os_ = self.os
         os_.score_add(points)
         self.total += points
-        os_.deff_start(deff, values=[points])
+        os_.deff_start(deff, values=[points], **({} if anim is None else {"anim": anim}))
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
         os_.request_refresh()
@@ -210,7 +217,7 @@ class Autobot(Side):
         pd = self.pd
         if shot == SHOT and self.phase == 1:
             points = self.j()
-            self.award(points, *self.JP)
+            self.award(points, *self.JP, anim=VARIANTS.randrange(5))   # deff 71: random_below(5) [0x0100d214]
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.jp += 1
             self.m = min(self.m + 1, 6)
@@ -220,7 +227,7 @@ class Autobot(Side):
                 self._super_lit()
         elif shot < 6 and self.phase == 2 and self.mask & (1 << shot):
             points = min(2 * self.j(), 1000000) * self.mult(shot)
-            self.award(points, *self.DJ)
+            self.award(points, *self.DJ, anim=VARIANTS.randrange(4))   # deff 72: random_below(4) [0x0100d550]
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.mask &= ~(1 << shot)
             self.jp += 1
@@ -278,19 +285,35 @@ class Decepticon(Side):
     def __init__(self, mgr):
         Side.__init__(self, mgr)
         self.phase, self.mask, self.jp, self.dj, self.supers = 1, 0x7f, 0, 0, 0
+        self.bag = 1
 
     def setup(self):
         self.phase, self.mask, self.jp, self.dj, self.supers = 1, 0x7f, 0, 0, 0
+        self.bag = 1                # deff 77's animations drawn this multiball [0x0100e0bc]
+
+    def draw(self):
+        """[0x0100ddc8]: deff 77's animation for a lit shot, 1-9 drawn without repeats from a random start
+        (the scan wraps over 1-8, so 9 comes only as the start; a full bag starts again)."""
+        if self.bag == 0x3ff:
+            self.bag = 1
+        start = i = VARIANTS.randrange(9) + 1
+        while True:
+            if not self.bag & (1 << i):
+                self.bag |= 1 << i
+                return i
+            i = 1 if i + 1 > 8 else i + 1
+            if i == start:
+                return i
 
     def shot(self, shot):
         if not self.active:
             return
         if self.phase == 1 and shot < 6 and self.mask & (1 << shot):
-            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP)
+            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP, anim=self.draw())
             self.mask &= ~(1 << shot)
             self._jackpot()
         elif self.phase == 1 and shot == SHOT:
-            self.award(100000, *self.JP)
+            self.award(100000, *self.JP, anim=0)          # the Megatron shot: deff 77 index 0 [0x0100e29c]
             self.mask = 0x7f
             self._jackpot()
         elif self.phase == 2 and shot == self.CENTER:
