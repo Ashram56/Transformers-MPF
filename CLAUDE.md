@@ -12,7 +12,7 @@ Game facts stay here; every game-agnostic learning goes back to Stern-SAM-Decryp
 | `game/monitor/`, `docs/vpx/` | B, VPX extraction | MPF Monitor layout and the table's device positions |
 | `game/`, `scripts/`, `tests/`, `docs/` | C, strict recreation | the game ([README.md](README.md)) |
 | `scripts/vpx_*.py`, `game/config/hw_vpx.yaml`, `game/tf/vpx_hardware.py`, `docs/vpx.md` | D, VPX bridge | Visual Pinball X plays with MPF instead of PinMAME |
-| `scripts/install/`, `scripts/setup.bat`, `scripts/setup.ps1` | F, packaging | the one-line installers (`setup.py` and `run.py` are shared with C) |
+| `scripts/install/`, `scripts/setup.bat`, `scripts/setup.ps1`, `scripts/setup_workspace.sh`, `tests/test_install.py`, `.github/workflows/test.yml`, `docs/requirements.md`, README "Install", "Play", "Settings" | F, packaging | the one-line installers on Windows, macOS and Linux, CI, the install docs (`setup.py` and `run.py` are shared with C) |
 | `game/pup.cfg`, `game/tf_pup/`, `game/modes/pup/`, `docs/pup.md`; copies: `game/pup_runtime/`, `game/pup/`, `scripts/pup_*.py`, `scripts/gen_pup.py` | G, PuP Pack | TerryRed's PuP Pack on three screens ([docs/pup.md](docs/pup.md)); the pack is the private `pup_pack` submodule (Ashram56/Transformers-PuP); the copies come from Stern-SAM-Decryption `tools/pup/runtime/` (never edit them here) |
 
 Never commit the ROM. Run `pytest -q tests` before pushing; `scripts/render_check.py` for display work.

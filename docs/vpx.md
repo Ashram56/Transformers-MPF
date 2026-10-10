@@ -25,12 +25,11 @@ Python 3.11), clones this repository into `%USERPROFILE%\Transformers-MPF`, runs
 rights) and writes the table's MPF script next to the table:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/claude/pup-pack/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Ashram56/Transformers-MPF/main/scripts/install/install_prereqs_windows.ps1))) -Vpx -Table 'C:\Visual Pinball\Tables\Transformers Pro (Stern 2011) v.2.4.vpx'"
 ```
 
 Run again, it updates the clone (`git pull`) and redoes only what changed. `$env:TF_DIR` / `$env:TF_BRANCH` set
-before the line change the folder and branch (the default branch is this one, `claude/pup-pack`, until
-the repository has a `main`). Without `-Table`, step 3 below writes the table's script later.
+before the line change the folder and branch (default `main`). Without `-Table`, step 3 below writes the table's script later.
 
 By hand, the same steps:
 

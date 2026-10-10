@@ -53,13 +53,12 @@ param(
 $ErrorActionPreference = 'Stop'
 # Run from a clone, it sets up that clone. Run on its own (irm ... | iex, README "Install"), it first clones the
 # repository into $env:TF_DIR (default ~\Transformers-MPF, outside OneDrive), branch $env:TF_BRANCH, from
-# $env:TF_REPO; an existing clone gets a git pull. The repository has no main branch yet: the default branch is
-# the one with the game and the VPX bridge.
+# $env:TF_REPO; an existing clone gets a git pull (a clone of a branch since merged and deleted moves to main).
 $Clone = -not ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot '..\setup.py')))
 $Root = if (-not $Clone) { Split-Path -Parent (Split-Path -Parent $PSScriptRoot) }
         elseif ($env:TF_DIR) { $env:TF_DIR } else { Join-Path $HOME 'Transformers-MPF' }
 $RepoUrl = if ($env:TF_REPO) { $env:TF_REPO } else { 'https://github.com/Ashram56/Transformers-MPF.git' }
-$RepoBranch = if ($env:TF_BRANCH) { $env:TF_BRANCH } else { 'claude/pup-pack' }
+$RepoBranch = if ($env:TF_BRANCH) { $env:TF_BRANCH } else { 'main' }
 
 # The last Python 3.11 release with Windows installers (later 3.11 releases are source-only security fixes)
 $PyOrgVersion = '3.11.9'
