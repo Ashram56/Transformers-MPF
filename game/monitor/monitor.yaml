@@ -351,38 +351,38 @@ switch:
     x: 0.5345
     y: 0.139
   s_tournament_start:   # switch 15 ()
-    x: 0.05
-    y: 0.985
-  s_start_button:   # switch 16 ()
-    x: 0.15
-    y: 0.985
-  s_left_coin_slot:   # switch 129 ()
     x: 0.25
     y: 0.985
-  s_center_coin_slot:   # switch 130 ()
+  s_start_button:   # switch 16 ()
     x: 0.35
     y: 0.985
-  s_right_coin_slot:   # switch 131 ()
+  s_left_coin_slot:   # switch 129 ()
     x: 0.45
     y: 0.985
-  s_fourth_coin_slot:   # switch 132 ()
+  s_center_coin_slot:   # switch 130 ()
     x: 0.55
     y: 0.985
-  s_fifth_coin_slot:   # switch 133 ()
+  s_right_coin_slot:   # switch 131 ()
     x: 0.65
     y: 0.985
-  s_l_flipper_button:   # switch 137 ()
-    x: 0.75
-    y: 0.985
-  s_left_flipper_e_o_s:   # switch 138 ()
-    x: 0.85
-    y: 0.985
-  s_r_flipper_button:   # switch 139 ()
+  s_fourth_coin_slot:   # switch 132 ()
     x: 0.05
     y: 0.955
-  s_right_flipper_e_o_s:   # switch 140 ()
+  s_fifth_coin_slot:   # switch 133 ()
     x: 0.15
     y: 0.955
+  s_l_flipper_button:   # switch 137 ()
+    x: 0.05
+    y: 0.985
+  s_left_flipper_e_o_s:   # switch 138 ()
+    x: 0.15
+    y: 0.985
+  s_r_flipper_button:   # switch 139 ()
+    x: 0.85
+    y: 0.985
+  s_right_flipper_e_o_s:   # switch 140 ()
+    x: 0.75
+    y: 0.985
   s_tilt_pendulum:   # switch 145 ()
     x: 0.25
     y: 0.955
