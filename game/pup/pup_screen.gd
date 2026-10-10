@@ -3,8 +3,8 @@ extends Control
 ## One PinUP Player screen (a layer of a PuP window, or the audio-only music screen), playing as PinUP
 ## Player does (vendored from Ashram56/Stern-SAM-Decryption tools/pup/runtime):
 ## - a play replaces what runs when its priority is >= the running one's, else it is dropped;
-## - Loop column: "Loop" loops the file, "SetBG" makes it the screen's background (it plays when nothing
-##   else does), "StopFile" stops that file, "StopPlayer" stops the screen, "SkipSamePrty" drops the play when
+## - Loop column: "Loop" loops the file, "SetBG" makes it the screen's background and plays it now when its
+##   priority is >= the running video's (else when that one ends), "StopFile" stops that file, "StopPlayer" stops the screen, "SkipSamePrty" drops the play when
 ##   the running video has the same priority;
 ## - when a video ends the background comes back; a pop-up layer (ForcePopBack) with no background hides;
 ## - a screen with CustomPos fills that box of its window (opts.box, fractions of the window);
@@ -120,7 +120,8 @@ func command(cmd: Dictionary) -> void:
 			return
 		"setbg":
 			bg = {"playlist": cmd.get("playlist", ""), "file": cmd.get("file", "")}
-			if fg == null:
+			if fg == null or priority >= int(fg.priority):
+				fg = null                   # plays now over a lower or equal priority video (a looping one too)
 				_play_bg()
 			return
 		"skipsameprty":
