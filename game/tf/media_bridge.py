@@ -94,6 +94,7 @@ class MediaBridge:
         self._refresh = None
         self.active = set()                        # deffs on screen that draw the status panel or live values
         self.started = {}                          # deff id -> the args of its last start
+        self.slides = {}                           # deff id -> the slide it plays (a side variant: deff_slide)
         # (deff, line, ROM text) of every printf line left blank because the rules gave no value for it
         # (tests/test_dmd_text.py: a value line drawn without its value shows a bare label, "RIGHT SPINNER =")
         self.missing = []
@@ -186,7 +187,11 @@ class MediaBridge:
             return
         if not info:
             return
-        slide = info["slide"]
+        slide = self.deff_slide(info)
+        old = self.slides.get(deff_id)
+        if old not in (None, slide):               # the other side's slide of the same deff (a side change)
+            self._remove(old)
+        self.slides[deff_id] = slide
         self.started[deff_id] = args
         if info.get("panel") is not None or deff_id in getattr(self.os, "deff_values", {}):
             self.active.add(deff_id)
@@ -198,6 +203,14 @@ class MediaBridge:
                    priority=priority, **self.deff_lines(deff_id, args))
         self._played(slide)
 
+    def deff_slide(self, info):
+        """The slide of a deff that draws the player's side (deff 40, 41: media_data "sides", scripts/gen_media.py
+        SIDE_VARIANTS) for the current player's side; else the deff's one slide."""
+        sides = info.get("sides")
+        if sides and self.os.game:
+            return sides.get(str(self.os.pd.get("side")), info["slide"])
+        return info["slide"]
+
     def deff_stop(self, deff_id):
         info = self.data["deffs"].get(deff_id) if self.data else None
         self.active.discard(deff_id)
@@ -208,7 +221,7 @@ class MediaBridge:
                 self._drawn_timer = None
             self._remove("rom_screen")
         elif info:
-            self._remove(info["slide"])
+            self._remove(self.slides.pop(deff_id, info["slide"]))
 
     def scores(self):
         game = self.os.game
@@ -239,9 +252,9 @@ class MediaBridge:
             return
         self.drawn.add(deff_id)
         self.text_show("rom_screen", [], priority, draw=draw)
-        self.shown.discard(info["slide"])
-        self._send("slides_play", {info["slide"]: {"action": "remove", "key": info["slide"], "expire": None}},
-                   need_data=False)
+        slide = self.slides.get(deff_id, info["slide"])
+        self.shown.discard(slide)
+        self._send("slides_play", {slide: {"action": "remove", "key": slide, "expire": None}}, need_data=False)
 
     def _played(self, slide):
         self.shown.add(slide)
@@ -313,8 +326,8 @@ class MediaBridge:
                 # another: they share the names line0, line1, ...)
                 mine.update({k: v for k, v in self.deff_lines(deff_id, self.started.get(deff_id, {})).items()
                              if k.startswith("line") or k in ("screen", "values")})
-            self._send("slides_play", {info["slide"]: {"action": "update", "key": info["slide"],
-                                                       "expire": None}}, **mine)
+            slide = self.slides.get(deff_id, info["slide"])
+            self._send("slides_play", {slide: {"action": "update", "key": slide, "expire": None}}, **mine)
 
     # ------------------------------------------------------------------ service menu
 

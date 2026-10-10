@@ -5,7 +5,9 @@
   default: Decepticon in traces/sounds and basic, Autobot for both players in game_flow); task 200 runs
   and the music table gives deff 40 with music 0x1a (Autobot) / 0x1b (Decepticon), with leffs 104, 92, 95.
 - Either flipper toggles the side (1 = Autobot, 2 = Decepticon), plays 0x257 and re-evaluates the music
-  (deff 40 function 0x1034198).
+  (deff 40 function 0x1034198), which then draws the chosen side's logo (image 0x2232 Autobot / 0x2234
+  Decepticon); deff 41 names it (message 0x682 AUTOBOT / 0x683 DECEPTICON). The captures are the Decepticon
+  side: scripts/gen_media.py makes the Autobot slides (SIDE_VARIANTS), tf/media_bridge.py picks them.
 - The shooter lane opening starts task 0xc9 (0x1033f18): 31 ticks later 0x1033f54 shows deff 41 with sound
   0x57 (Autobot) / 0x58 (Decepticon) and kills task 200. A playfield switch other than 12 (right orbit) ends the
   choice earlier (event hooks 0x6b/0x6c; the same ending is inferred).
@@ -80,6 +82,7 @@ class Side(Feature):
             self.os.hook("side_changed")             # the side's first battle is lit [0x01022d7c]
             self.os.sound(TOGGLE_SOUND, in_deff=CHOICE_DEFF)
             self.os.display.rules_refresh()
+            self.os.display.redraw(CHOICE_DEFF)      # the chosen side's logo, and the PuP Pack's D10 / D11
 
     def switch(self, num):
         if self.choosing and num != 12:

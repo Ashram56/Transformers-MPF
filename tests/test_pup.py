@@ -173,6 +173,22 @@ class TestPupMachine(TfTestCase):
             side = self.tf.pd.get("side")
             self.assertIn(274 if side == 2 else 271, fired)
 
+    def test_side_change_shows_on_the_pack(self):
+        """Each flipper press during the side choice shows the other side (deff 40 draws its logo [0x01034198]),
+        so the pack's D10 / D11 rows fire again: Choose - Autobot / Decepticon, the crests on and off."""
+        self.pup.ready = True
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(2)
+        for _ in range(2):
+            with mock.patch.object(self.pup.engine, "fire") as fire:
+                self.hit_and_release_switch("s_l_flipper_button")
+                self.advance_time_and_run(0.1)
+            fired = [r.id for c in fire.call_args_list for r in c.args[0]]
+            autobot = self.tf.pd.get("side") == 1
+            self.assertIn(249 if autobot else 252, fired)            # Choose - Autobot / Decepticon - BG
+            self.assertNotIn(252 if autobot else 249, fired)
+
     def test_lock_music_call_per_round(self):
         """[0x0100ab5c / 0x0100ad70]: each side's lock music call starts at the player's first ball and moves on
         at every Megatron multiball (megatron_decepticon.jsonl: 0x298 at the lock after the multiball)."""
