@@ -7,7 +7,7 @@ JPSalas' VPX table; simulates the Pro, PinMAME set `tf_180`).
 ```
 python tools/vpx/vpx_extract.py "Transformers Pro (Stern 2011) v.2.4.vpx" out
 python tools/vpx/vpx_map.py out --names rom/mpf_package/config/{switches,lights,coils}.yaml game/config/hardware.yaml \
-    --mech 43:opr,44:opr,42:kickermegatron --cabinet
+    --mech 43:opr,44:opr,42:kickermegatron --cabinet --device-size 0.035
 ```
 
 (tools in Ashram56/Stern-SAM-Decryption; this table needed the cvpmTrough, InitSaucer, VPW StandupTarget,
@@ -49,6 +49,9 @@ The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project
 - Flashers (12, solenoid numbers): 17, 18, 19, 20, 21, 23, 25, 26, 27, 28, 31, 32. Six are Flupper domes
   (`Flasherlight1-6`). The ROM names 26 "Flash: Slingshot (Left)" and 27 "(Right)", but the table's sub for
   26 flashes dome 1, which sits on the right, and 27 dome 2 on the left: the positions follow the table.
+- Markers are 0.035 of the picture width (`device_size`, MPF Monitor's default is 0.02, owner asked for bigger
+  ones on 2026-10-11); `--device-size` pushed apart the few that would overlap (bumper lamps on their switches,
+  the center lane arrow flasher on lamp 59, the trough and lock stacks).
 - Overlay checked by eye: lamp and switch markers sit on their inserts, rollovers and targets.
 
 ## For the owner
