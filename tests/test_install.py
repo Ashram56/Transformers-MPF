@@ -163,11 +163,13 @@ class TestShellScripts(unittest.TestCase):
                                    ({"TF_REPO": repo, "TF_PUP_REPO": missing, "TF_PUP_ZIP": "pack.zip"}, 0,
                                     "public: no token needed")):
                 with self.subTest(script=name, env=sorted(env)):
+                    # no system git config: Homebrew git's osxkeychain helper hangs in `git credential approve`
+                    # when HOME is a temporary folder with no keychain (macOS CI)
                     prog = 'DRY=0 YES=1; REPO_URL="$TF_REPO"\n' + funcs + "github_auth\n"
                     r = subprocess.run(["bash", "-c", prog], capture_output=True, text=True, timeout=60,
                                        env=dict({k: v for k, v in os.environ.items()
                                                  if k not in ("GITHUB_TOKEN", "GH_TOKEN", "TF_GITHUB_TOKEN")},
-                                                HOME=tmp, **env))
+                                                HOME=tmp, GIT_CONFIG_NOSYSTEM="1", **env))
                     self.assertEqual(code, r.returncode, r.stdout + r.stderr)
                     self.assertIn(out, r.stdout + r.stderr)
                     self.assertNotIn("secret-token-123", r.stdout + r.stderr)
