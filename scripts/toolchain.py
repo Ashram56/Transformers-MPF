@@ -177,6 +177,10 @@ def media_stale(root=ROOT):
     stamp = os.path.join(root, "game", "media", ".generated")
     if not os.path.exists(stamp):
         return "no stamp of a complete media generation and Godot import ({})".format(stamp)
+    if not os.path.isdir(os.path.join(root, "rom", "mpf_package", "media")):
+        # a prebuilt bundle (docs/bundle.md): the ROM extraction's images are not in it, so the media cannot be made again
+        # (gen_media.py stops on the first missing frame, after clearing game/media) and the fingerprint's inputs are partly absent
+        return None
     with open(stamp, encoding="utf-8") as f:
         if f.read().strip() != media_fingerprint(root):
             return "the generator scripts or the asset package changed since the media were generated"
