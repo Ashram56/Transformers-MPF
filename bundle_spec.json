@@ -7,9 +7,10 @@
     "scripts"
   ],
   "git_exclude": [
-    "game/addons/"
+    "game/addons/gde_gozen/"
   ],
   "copy": [
+    "game/addons/mpf-gmc",
     "game/config/rom",
     "game/sounds",
     "game/media",
