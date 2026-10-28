@@ -22,6 +22,8 @@ import toolchain as tc  # noqa: E402
 MARK = "# tf patch: partial BCP lines"
 # every edit carries "# tf patch" (MARK's start), so a file holds the patch when TAG is in it
 TAG = "# tf patch"
+# the platform's own patched GMC (MPF-Godot-Packaging, mpf_godot/gmc_patch.py) carries the same fixes under its tag: nothing to do
+PLATFORM_TAGS = ("# mpf-godot fix", "# tron patch")
 
 EDITS = [
     ("scripts/bcp_server.gd",
@@ -65,7 +67,7 @@ def patch(gmc_dir=None, quiet=False):
         if rel not in texts:
             with open(os.path.join(gmc_dir, *rel.split("/")), encoding="utf-8", newline="") as f:
                 texts[rel] = f.read()
-    if all(TAG in t for t in texts.values()):
+    if all(any(g in t for g in (TAG,) + PLATFORM_TAGS) for t in texts.values()):
         return "in place"
     for rel, old, new in EDITS:
         text = texts[rel]

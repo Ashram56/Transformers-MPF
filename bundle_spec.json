@@ -7,10 +7,9 @@
     "scripts"
   ],
   "git_exclude": [
-    "game/addons/gde_gozen/"
+    "game/addons/"
   ],
   "copy": [
-    "game/addons/mpf-gmc",
     "game/config/rom",
     "game/sounds",
     "game/media",
@@ -39,7 +38,8 @@
     "machine_vars.yaml"
   ],
   "platform_addons": [
-    "gde_gozen"
+    "gde_gozen",
+    "mpf-gmc"
   ],
   "precheck": [
     "python3",
