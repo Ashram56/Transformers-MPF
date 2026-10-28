@@ -1,0 +1,66 @@
+{
+  "name": "transformers-mpf",
+  "title": "Transformers Pro 1.80 (MPF)",
+  "version_from": "git",
+  "root": ".",
+  "target": "all",
+  "pack": [
+    {"path": "game", "kind": "tracked+generated"},
+    {"path": "scripts", "kind": "tracked"},
+    {"path": "rom/rules/traces", "kind": "tracked", "optional": true}
+  ],
+  "generated": [
+    "game/config/rom",
+    "game/sounds",
+    "game/media",
+    "game/fonts",
+    "game/slides/deffs",
+    "game/tf/media_data.json",
+    "game/.godot"
+  ],
+  "never": [
+    "game/data",
+    "game/audits",
+    "game/logs",
+    "game/pup.local.cfg",
+    "**/*.local.cfg",
+    "**/*.bin",
+    "tf_*.zip",
+    "pup_pack",
+    "pup_media",
+    "game/addons/gde_gozen",
+    "game/addons/native_video",
+    ".venv",
+    "tools",
+    "captures"
+  ],
+  "reimport": [
+    {"glob": "game/media/**/*.png", "note": "VRAM-compressed HD/effect frames: write the .import files again before the import (they are not tracked)"},
+    {"glob": "game/fonts/*.png"}
+  ],
+  "platform_addons": ["gde_gozen"],
+  "run": {
+    "cwd": "game",
+    "mpf": ["mpf", "game", "-t", "-c", "config.yaml"],
+    "godot": ["--path", "game"],
+    "command": "python scripts/run.py"
+  },
+  "options": "scripts/package/options.json",
+  "requires": {
+    "env": {"TF_PUP": "optional: 0 = strict ROM game (no PuP)", "TF_PUP_ZIP": "optional: TerryRed's pack zip (file or https URL)"}
+  },
+  "pup": {
+    "install": "python scripts/pup_setup.py --pup-zip {zip}",
+    "pack_dir": "pup_pack/tf_180",
+    "media_dir": "pup_media/tf_180",
+    "env": "TF_PUP_ZIP",
+    "needs": ["ffmpeg"]
+  },
+  "keep_on_update": [
+    "game/data",
+    "game/audits",
+    "game/pup.local.cfg",
+    "pup_pack",
+    "pup_media"
+  ]
+}

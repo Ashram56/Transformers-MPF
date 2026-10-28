@@ -1,0 +1,8 @@
+{
+  "options": [
+    {"id": "free_play", "type": "bool", "default": true, "group": "Play", "stored": "run.py --free-play / --no-free-play"},
+    {"id": "pup_enabled", "type": "bool", "default": true, "group": "PuP Pack", "stored": "game/pup.local.cfg [pup] enabled"},
+    {"id": "video_player", "type": "enum", "values": ["gozen", "native"], "default": "gozen", "group": "PuP Pack", "stored": "game/pup.local.cfg [pup] video_player"},
+    {"id": "dmd_size", "type": "string", "default": "1024x256", "group": "Display", "stored": "run.py --dmd-size"}
+  ]
+}
