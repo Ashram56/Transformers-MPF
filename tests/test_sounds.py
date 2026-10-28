@@ -42,6 +42,30 @@ class TestSounds(TfTestCase):
         self.assertTrue(self.tf.pf_valid)
         self.assertEqual(0x1f, self.sounds()[-1])               # main play music
 
+    def test_side_choice_shows_the_side(self):
+        """deff 40 draws the chosen side's logo and deff 41 its name [0x01034198, 0x01034424]: the Autobot side
+        plays the Autobot slides (scripts/gen_media.py SIDE_VARIANTS), with no new deff start in the trace."""
+        if not self.tf.media.data:
+            self.skipTest("media not generated (scripts/gen_media.py)")
+        sent = []
+        self.tf.media._send = lambda name, settings, **kw: sent.extend(
+            (s.get("action"), key) for key, s in settings.items())
+        self.tf.forced["side"] = [1]                              # random pick: Decepticon
+        self.start_game()
+        self.assertIn(("play", "deff_040"), sent)
+        starts = len(self.deffs())
+        sent.clear()
+        self.hit_and_release_switch("s_r_flipper_button")
+        self.advance_time_and_run(0.1)
+        self.assertEqual(1, self.tf.pd["side"])
+        self.assertIn(("play", "deff_040_side1"), sent)
+        self.assertIn(("remove", "deff_040"), sent)
+        self.assertEqual(starts, len(self.deffs()))
+        sent.clear()
+        self.release_switch_and_run("s_shooter_lane", 1)
+        self.assertIn(("play", "deff_041_side1"), sent)
+        self.assertIn(0x057, self.sounds())                       # AUTOBOT TRANSFORMER SELECTED
+
     def test_tilt_sounds(self):
         self.start_game()
         self.release_switch_and_run("s_shooter_lane", 2)

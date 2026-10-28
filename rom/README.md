@@ -1,9 +1,10 @@
 # Transformers Pro 1.80: ROM extraction
 
 Agent A (ROM extraction) of the master plan in
-[Tron-Legacy-MPF `docs/agents/README.md`](https://github.com/Ashram56/Tron-Legacy-MPF/blob/main/docs/agents/README.md),
-following [AGENTS.md](https://github.com/Ashram56/Tron-Legacy-LE-ROM-Decryption/blob/main/AGENTS.md) of the Tron
-extraction. Everything here was read from the ROM image; the image itself is copyrighted and is never committed.
+[Stern-SAM-Decryption `agents/README.md`](https://github.com/Ashram56/Stern-SAM-Decryption/blob/main/agents/README.md),
+following its agent file [`agents/rom_extraction.md`](https://github.com/Ashram56/Stern-SAM-Decryption/blob/main/agents/rom_extraction.md)
+(Tron Legacy is its worked example). Game-agnostic lessons from this ROM go back there per its
+CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game stay here. Everything here was read from the ROM image; the image itself is copyrighted and is never committed.
 
 ## The ROM
 
@@ -45,7 +46,7 @@ extraction. Everything here was read from the ROM image; the image itself is cop
 | `mpf_package/media/dmd_library/` | 274 full-height animations: `frames/*.png`, `animation.gif`, `animation_128x32.gif`, `index.json` |
 | `tools/` | The readers and exporters (Python), emulator probes (C++, libpinmame with the ARM hook), Ghidra scripts |
 
-Fact tags as in AGENTS.md: **code** (read from the ROM or its tables), **observed** (emulator), **inferred**.
+Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its tables), **observed** (emulator), **inferred**.
 
 ## What was found (and how, for the next ROM)
 

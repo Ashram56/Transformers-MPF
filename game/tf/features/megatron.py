@@ -35,8 +35,13 @@ End: down to one ball the running flag goes (music back), 218 ticks later the to
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
 Not modelled: task 0x57, adj 69 virtual lock. The rule leff (62 / 70) flashes the lit shots from the side's mask.
 """
+import random
+
 from tf.features import Feature
 from tf.lamps import shot_blink
+
+# the display effects' random animation picks: their own generator, so the rules' picks stay as they were
+VARIANTS = random.Random()
 
 ORDER = 38
 AUTOBOT, DECEPTICON = 1, 2
@@ -58,7 +63,11 @@ LIGHT_POINTS, COUNT_POINTS = 10000, 5000
 LIGHT_AUDIT, LIGHT_DEFF, LIGHT_LEFF, LIGHT_SOUND = 0x74, 139, 167, 0x293
 LOCK_POINTS, LOCK_AUDIT, LOCK_DEFF, LOCK_LEFF, LOCK_TASK = 25000, 0x75, 140, 168, 0x73
 LOCK_SOUNDS = (0x29a, 0x29c, 0x29f)
-LOCK_SPEECH, LOCK_SPEECH_AT = 0x297, 1.71
+# the lock music [0x0100b7f0]: the side's per-player call (Autobot 0x294-0x296, Decepticon 0x297-0x299), set at the
+# player's first ball [0x0100ab5c] and moved to the next at every Megatron multiball [0x0100ad70]
+# (megatron_decepticon.jsonl: 0x297 at the first three locks, 0x298 after the multiball, 94.66 s)
+LOCK_MUSIC = {AUTOBOT: (0x294, 0x297), DECEPTICON: (0x297, 0x29a)}   # first call, end of the cycle
+LOCK_SPEECH_AT = 1.71
 WIZARD_REQ = 0
 MB_BALLS, SAVE_TICKS, GRACE_TICKS = 4, 625, 187
 END_TICKS = 218
@@ -117,11 +126,13 @@ class Side:
     def setup(self):
         pass
 
-    def award(self, points, deff, leff, sound, audit):
+    def award(self, points, deff, leff, sound, audit, anim=None):
+        """anim: which of the deff's animations the ROM shows (the PuP map reads it; the display shows the
+        recorded one)."""
         os_ = self.os
         os_.score_add(points)
         self.total += points
-        os_.deff_start(deff, values=[points])
+        os_.deff_start(deff, values=[points], **({} if anim is None else {"anim": anim}))
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
         os_.request_refresh()
@@ -206,7 +217,7 @@ class Autobot(Side):
         pd = self.pd
         if shot == SHOT and self.phase == 1:
             points = self.j()
-            self.award(points, *self.JP)
+            self.award(points, *self.JP, anim=VARIANTS.randrange(5))   # deff 71: random_below(5) [0x0100d214]
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.jp += 1
             self.m = min(self.m + 1, 6)
@@ -216,7 +227,7 @@ class Autobot(Side):
                 self._super_lit()
         elif shot < 6 and self.phase == 2 and self.mask & (1 << shot):
             points = min(2 * self.j(), 1000000) * self.mult(shot)
-            self.award(points, *self.DJ)
+            self.award(points, *self.DJ, anim=VARIANTS.randrange(4))   # deff 72: random_below(4) [0x0100d550]
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.mask &= ~(1 << shot)
             self.jp += 1
@@ -274,19 +285,35 @@ class Decepticon(Side):
     def __init__(self, mgr):
         Side.__init__(self, mgr)
         self.phase, self.mask, self.jp, self.dj, self.supers = 1, 0x7f, 0, 0, 0
+        self.bag = 1
 
     def setup(self):
         self.phase, self.mask, self.jp, self.dj, self.supers = 1, 0x7f, 0, 0, 0
+        self.bag = 1                # deff 77's animations drawn this multiball [0x0100e0bc]
+
+    def draw(self):
+        """[0x0100ddc8]: deff 77's animation for a lit shot, 1-9 drawn without repeats from a random start
+        (the scan wraps over 1-8, so 9 comes only as the start; a full bag starts again)."""
+        if self.bag == 0x3ff:
+            self.bag = 1
+        start = i = VARIANTS.randrange(9) + 1
+        while True:
+            if not self.bag & (1 << i):
+                self.bag |= 1 << i
+                return i
+            i = 1 if i + 1 > 8 else i + 1
+            if i == start:
+                return i
 
     def shot(self, shot):
         if not self.active:
             return
         if self.phase == 1 and shot < 6 and self.mask & (1 << shot):
-            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP)
+            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP, anim=self.draw())
             self.mask &= ~(1 << shot)
             self._jackpot()
         elif self.phase == 1 and shot == SHOT:
-            self.award(100000, *self.JP)
+            self.award(100000, *self.JP, anim=0)          # the Megatron shot: deff 77 index 0 [0x0100e29c]
             self.mask = 0x7f
             self._jackpot()
         elif self.phase == 2 and shot == self.CENTER:
@@ -351,6 +378,7 @@ class Megatron(Feature):
     def player_first_ball(self):
         pd = self.pd
         pd.mtl_level = self.os.adj[68]
+        pd.mtl_music_a, pd.mtl_music_d = LOCK_MUSIC[AUTOBOT][0], LOCK_MUSIC[DECEPTICON][0]
         self.derive()
         pd.mt_since_super = pd.mt_sum = 0
         pd.mta_phase, pd.mta_mask, pd.mta_jp = 1, 0x40, 0
@@ -457,6 +485,7 @@ class Megatron(Feature):
             return
         keep = False
         if not back_door and os_.in_play and not os_.tilted:
+            os_.hook("wizard_shot", 2)              # [0x0100a31c]: the wizard modes' shot 2 first
             keep = self.rule()
         if not os_.tilted and os_.game:
             os_.base_score(ENTRY_POINTS)
@@ -493,12 +522,27 @@ class Megatron(Feature):
             # show task 0x73: it waits for the ball launch deff 41 (megatron_autobot.jsonl 10.71 s, 0.33 s on)
             os_.show(LOCK_TASK, LOCK_DEFF, values=[n], sounds=[
                 (0, lambda: os_.sound(LOCK_SOUNDS[min(n, 3) - 1], in_deff=LOCK_DEFF)),
-                (LOCK_SPEECH_AT, lambda: os_.sound(LOCK_SPEECH, in_deff=LOCK_DEFF))],
+                (LOCK_SPEECH_AT, lambda: os_.sound(self.lock_music(), in_deff=LOCK_DEFF))],
                 on_start=lambda: os_.deff_media(LOCK_DEFF, LOCK_LEFF))
             os_.request_refresh()
             return True
         self.start_multiball()
         return "multiball"
+
+    def lock_music(self):
+        """The lock music call of the player's side [0x0100b7f0]; the PuP map reads mtl_music_d too."""
+        pd = self.pd
+        if pd.get("side", DECEPTICON) == AUTOBOT:
+            return pd.get("mtl_music_a", LOCK_MUSIC[AUTOBOT][0])
+        return pd.get("mtl_music_d", LOCK_MUSIC[DECEPTICON][0])
+
+    def next_lock_music(self):
+        """[0x0100ad70]: both sides' calls move to the next of their three, at every Megatron multiball."""
+        pd = self.pd
+        for key, side in (("mtl_music_a", AUTOBOT), ("mtl_music_d", DECEPTICON)):
+            first, end = LOCK_MUSIC[side]
+            call = pd.get(key, first) + 1
+            pd[key] = call if call < end else first
 
     def start_multiball(self):
         os_ = self.os
@@ -510,6 +554,7 @@ class Megatron(Feature):
         os_.multiball_start(balls, save_ticks=SAVE_TICKS, grace_ticks=GRACE_TICKS)
         side = self.sides[pd.get("side", DECEPTICON)]
         pd.mtl_level = pd.get("mtl_level", 0) + 1
+        self.next_lock_music()
         self.derive()
         side.start()
         held = self.locked_held + 1

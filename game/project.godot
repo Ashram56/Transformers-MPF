@@ -6,12 +6,13 @@ config_version=5
 
 config/name="Transformers MPF"
 run/main_scene="res://slides/window.tscn"
-config/features=PackedStringArray("4.5", "Mobile")
+config/features=PackedStringArray("4.6", "Mobile")
 
 [autoload]
 
 MPF="*res://addons/mpf-gmc/mpf_gmc.gd"
 DmdCapture="*res://tools/dmd_capture.gd"
+Pup="*res://pup/pup_player.gd"
 
 [display]
 

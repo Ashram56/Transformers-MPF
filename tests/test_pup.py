@@ -1,0 +1,258 @@
+"""PuP Pack (docs/pup.md): the trigger map covers the pack, the engine fires its rows as PinUP Player does, and
+the game sends them to Godot and drops the ROM music only once Godot's PuP player is ready."""
+import csv
+import os
+import sys
+import unittest
+from unittest import mock
+
+from tests.tf_test import GAME, ROOT, TfTestCase
+
+sys.path.insert(0, GAME)
+from pup_runtime import engine, settings   # noqa: E402
+
+CFG = settings.load()
+PACK = settings.pack_dir(CFG)
+MAP = settings.map_path(CFG)
+HAVE_PACK = os.path.exists(os.path.join(PACK, "triggers.pup"))
+
+
+def _rows():
+    """{capture n: the pack's first row that fires on it} from docs/pup_captures.md."""
+    out = {}
+    with open(os.path.join(ROOT, "docs", "pup_captures.md"), encoding="utf-8") as f:
+        for line in f:
+            cells = [c.strip() for c in line.split("|")]
+            if len(cells) > 3 and cells[1].isdigit() and cells[2][:1].isdigit():
+                out[int(cells[1])] = int(cells[2].split()[0])
+    return out
+
+
+ROW = _rows()
+
+
+class TestSettings(unittest.TestCase):
+
+    def test_env_off(self):
+        with mock.patch.dict(os.environ, {"TF_PUP": "0"}):
+            self.assertFalse(settings.load()["pup"]["enabled"])
+        self.assertTrue(CFG["pup"]["enabled"])
+
+    def test_three_screens_and_pack_music(self):
+        pup = CFG["pup"]
+        self.assertEqual(["backglass", "dmd", "topper"], pup["windows"])
+        self.assertEqual([2, 11, 12, 13, 14, 15], CFG["backglass"]["layers"])
+        self.assertEqual([0], CFG["topper"]["layers"])
+        self.assertTrue(CFG["dmd"]["dmd"])
+        self.assertEqual(4, pup["music_screen"])
+        self.assertTrue(pup["ost_music"])          # the owner's choice: the pack's music, not the ROM's
+        self.assertEqual("tf.media", pup["bridge"])
+
+    def test_mapped_effects_exist(self):
+        """An effect renumbered upstream would leave PuP rows on dead events."""
+        with open(os.path.join(ROOT, "rom", "mpf_package", "event_map.csv"), encoding="utf-8") as f:
+            deffs = {int(row["deff"]) for row in csv.DictReader(f)}
+        trigger_map = engine.load_map(MAP)
+        names = [engine.parse_event(e)[0] for events in trigger_map["dmd"].values() for e in events]
+        names += list(trigger_map["counters"]) + [r for rs in trigger_map["counters"].values() for r in rs]
+        for name in names:
+            if name.startswith("tf_deff_"):
+                self.assertIn(int(name[len("tf_deff_"):]), deffs, name)
+
+
+@unittest.skipUnless(HAVE_PACK, "PuP Pack not checked out (git submodule update --init pup_pack)")
+class TestEngine(unittest.TestCase):
+
+    def setUp(self):
+        self.sent, self.t = [], [0.0]
+        self.engine = engine.build(PACK, MAP, self.sent.append, lambda: self.t[0])
+
+    def ids(self):
+        return [c["trigger"] for c in self.sent]
+
+    def test_every_row_mapped(self):
+        self.assertEqual([], [r.id for r in self.engine.unmapped])
+
+    def test_decepticon_lock_rounds(self):
+        """deff 140 [0x0100b7f0]: the Decepticon lock animation follows the player's lock music call (0x297 the
+        first round, 0x298 / 0x299 after one or two Megatron multiballs)."""
+        self.engine.on_event("tf_deff_140", values=[1], state={"side": 2, "mtl_music_d": 0x297})
+        self.assertEqual([205], self.ids())        # Megatron - Decepticon - Ball 1 Locked
+        for call in (0x298, 0x299):
+            self.sent.clear()
+            self.engine.on_event("tf_deff_140", values=[3], state={"side": 2, "mtl_music_d": call})
+            self.assertEqual([210], self.ids())    # ... Ball 3 Locked - 2nd
+
+    def test_overlay_at_start(self):
+        self.engine.on_event("pup_boot")
+        self.assertEqual([246], self.ids())        # D0: the backglass overlay picture
+
+    def test_side_choice(self):
+        self.engine.on_event("tf_deff_40", state={"side": 1})
+        self.assertIn(249, self.ids())             # Choose - Autobot - BG
+        self.assertNotIn(252, self.ids())
+        self.assertIn(366, self.ids())             # its music on screen 4
+        self.sent.clear()
+        self.engine.on_event("tf_deff_41", state={"side": 2})
+        self.assertIn(270, self.ids())             # Chosen - Decepticon - BG
+        self.assertIn(349, self.ids())             # Decepticon main music (SetBG)
+
+    def test_battle_hits_by_shots_left(self):
+        """The ROM picks a battle hit's animation from the shots left after the hit (Blackout [0x0101cc6c]:
+        index 12 - left in table 0x040c6c34), so a battle restarted on a later ball goes on where it stopped."""
+        self.engine.on_event("tf_deff_100")        # Blackout intro
+        self.assertIn(28, self.ids())
+        self.sent.clear()
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=10)
+        self.assertEqual([29], self.ids())         # Blackout 1
+        self.sent.clear()
+        self.engine.on_event("tf_deff_102", values=[100], hit=1, completed=0, left=3)
+        self.assertEqual([35], self.ids())         # restarted with 4 left: Blackout 7, not Blackout 1
+        self.sent.clear()
+        self.engine.on_event("tf_deff_102", values=[100], hit=11, completed=1, left=0)
+        self.assertEqual([38], self.ids())         # Blackout Completed
+
+    def test_jackpot_animations_from_the_rom(self):
+        """Jackpots show the animation the ROM picks, not one per jackpot in order: Optimus (Autobot) one enemy
+        per shot [0x01028950], Megatron (Decepticon) index 0 at the Megatron shot [0x0100e29c], else a draw."""
+        self.engine.on_event("tf_deff_59", values=[150000], anim=1)
+        self.assertEqual([ROW[129]], self.ids())   # left orbit: Blackout
+        self.sent.clear()
+        self.engine.on_event("tf_deff_77", values=[100000], anim=0)
+        self.assertEqual([ROW[179]], self.ids())
+        self.sent.clear()
+        self.engine.on_event("tf_deff_77", values=[100000], anim=2)
+        self.assertEqual([ROW[180]], self.ids())
+
+    def test_wizard_names_on_the_completing_hit(self):
+        """deff 83 [0x01010174]: the character's name (captures 186-200) shows on a wizard shot's second hit."""
+        self.engine.on_event("tf_deff_83", values=[500000, 0], anim=0, state={"side": 1})
+        self.assertEqual([], self.ids())
+        self.engine.on_event("tf_deff_83", values=[550000, 0], anim=6, state={"side": 1})
+        self.assertEqual([ROW[190]], self.ids())   # ARCEE
+
+    def test_drain(self):
+        self.engine.on_event("tf_deff_25", values=[])
+        self.assertTrue({3, 328, 329, 330, 367} <= set(self.ids()))
+
+
+class TestPupMachine(TfTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.pup = self.machine.modes["pup"]
+        if self.pup.engine is None:
+            self.skipTest("PuP Pack not checked out or PuP disabled")
+
+    def test_triggers_reach_godot_after_ready(self):
+        client = mock.Mock()
+        with mock.patch.object(self.machine.bcp, "interface") as iface, \
+                mock.patch.object(self.machine.bcp, "transport") as transport:
+            transport.get_named_client.return_value = client
+            self.machine.events.post("tf_deff_20")
+            self.advance_time_and_run(1)
+            self.assertFalse([c for c in iface.bcp_trigger_client.call_args_list
+                              if c.kwargs["name"] == "pup_play"])          # Godot not ready: nothing sent
+            self.machine.events.post("pup_ready")
+            self.advance_time_and_run(1)
+            self.machine.events.post("tf_deff_20")
+            self.advance_time_and_run(1)
+            plays = [c.kwargs for c in iface.bcp_trigger_client.call_args_list if c.kwargs["name"] == "pup_play"]
+            self.assertEqual("BallSaved", plays[-1]["playlist"])
+            self.assertIs(client, plays[-1]["client"])
+
+    def test_side_from_the_players_rule_state(self):
+        self.pup.ready = True                                     # as after Godot's pup_ready
+        with mock.patch.object(self.pup.engine, "fire") as fire:
+            self.fill_trough()
+            self.hit_and_release_switch("s_start_button")
+            self.advance_time_and_run(2)
+            self.machine.events.post("tf_deff_41")
+            self.advance_time_and_run(0.1)
+            fired = [r.id for c in fire.call_args_list for r in c.args[0]]
+            side = self.tf.pd.get("side")
+            self.assertIn(274 if side == 2 else 271, fired)
+
+    def test_side_change_shows_on_the_pack(self):
+        """Each flipper press during the side choice shows the other side (deff 40 draws its logo [0x01034198]),
+        so the pack's D10 / D11 rows fire again: Choose - Autobot / Decepticon, the crests on and off."""
+        self.pup.ready = True
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(2)
+        for _ in range(2):
+            with mock.patch.object(self.pup.engine, "fire") as fire:
+                self.hit_and_release_switch("s_l_flipper_button")
+                self.advance_time_and_run(0.1)
+            fired = [r.id for c in fire.call_args_list for r in c.args[0]]
+            autobot = self.tf.pd.get("side") == 1
+            self.assertIn(249 if autobot else 252, fired)            # Choose - Autobot / Decepticon - BG
+            self.assertNotIn(252 if autobot else 249, fired)
+
+    def test_lock_music_call_per_round(self):
+        """[0x0100ab5c / 0x0100ad70]: each side's lock music call starts at the player's first ball and moves on
+        at every Megatron multiball (megatron_decepticon.jsonl: 0x298 at the lock after the multiball)."""
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(2)
+        mt = self.tf.features_by_name["megatron"]
+        pd = self.tf.pd
+        self.assertEqual((0x294, 0x297), (pd.mtl_music_a, pd.mtl_music_d))
+        calls = []
+        for _ in range(3):
+            mt.next_lock_music()
+            calls.append((pd.mtl_music_a, pd.mtl_music_d))
+        self.assertEqual([(0x295, 0x298), (0x296, 0x299), (0x294, 0x297)], calls)
+        pd["side"] = 1
+        self.assertEqual(0x294, mt.lock_music())
+
+    def test_decepticon_jackpot_draw(self):
+        """[0x0100ddc8]: deff 77's lit-shot animations come without repeats until 1-8 are used."""
+        side = self.tf.features_by_name["megatron"].sides[2]
+        side.setup()
+        drawn = [side.draw() for _ in range(8)]
+        self.assertTrue(all(1 <= d <= 9 for d in drawn))
+        self.assertEqual(len(drawn), len(set(drawn)))
+
+    def test_rom_music_muted_when_pup_ready(self):
+        bridge = self.tf.media
+        if not bridge.data:
+            self.skipTest("media data not generated (scripts/gen_media.py)")
+        pools = bridge.data["pools"]
+        music = next(c for c, p in pools.items() if p["track"] == "music")
+        effect = next(c for c, p in pools.items() if p["track"] != "music" and c > 8)
+        with mock.patch.object(bridge, "connected", return_value=True), \
+                mock.patch.object(self.machine.bcp, "interface") as iface, \
+                mock.patch.object(self.machine.bcp, "transport"):
+            bridge.sound(music)                                  # before PuP: the ROM music plays
+            self.assertIsNotNone(bridge.music_key)
+            self.machine.events.post("pup_ready")
+            self.advance_time_and_run(0.1)
+            self.assertIsNone(bridge.music_key)                  # the running ROM music is stopped
+            iface.reset_mock()
+            bridge.sound(music)                                  # music call: dropped
+            bridge.sound(effect)                                 # a sound effect still plays
+            calls = [c.kwargs for c in iface.bcp_trigger_client.call_args_list if c.kwargs["name"] == "sounds_play"]
+            self.assertEqual(1, len(calls))
+            self.assertIsNone(bridge.music_key)
+
+    def test_attract_cycle(self):
+        self.pup.ready = True
+        with mock.patch.object(self.pup.engine, "on_event") as on_event:
+            self.advance_time_and_run(float(self.pup.pup.get("attract_cycle_seconds", 60)) + 1)
+            self.assertIn("pup_attract_cycle", [c.args[0] for c in on_event.call_args_list])
+
+
+class TestVideoPlayers(unittest.TestCase):
+
+    def test_gozen_on_windows_and_linux_native_as_fallback(self):
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import pup_setup
+        with mock.patch.dict(os.environ, {"TF_GOZEN": "", "TF_NATIVE_VIDEO": ""}):
+            self.assertTrue(pup_setup.gozen("windows", "x86_64"))
+            self.assertTrue(pup_setup.gozen("linux", "arm64"))
+            self.assertFalse(pup_setup.gozen("macos", "arm64"))
+            self.assertTrue(pup_setup.native_video("windows"))      # installed too, the fallback
+        self.assertEqual("gozen", CFG["pup"]["video_player"])
+        for name in ("bin/libgozen.windows.template_release.x86_64.dll", "gozen.gdextension"):
+            self.assertTrue(os.path.exists(os.path.join(pup_setup.GOZEN_SRC, name)), name)

@@ -7,7 +7,7 @@ JPSalas' VPX table; simulates the Pro, PinMAME set `tf_180`).
 ```
 python tools/vpx/vpx_extract.py "Transformers Pro (Stern 2011) v.2.4.vpx" out
 python tools/vpx/vpx_map.py out --names rom/mpf_package/config/{switches,lights,coils}.yaml game/config/hardware.yaml \
-    --mech 43:opr,44:opr,42:kickermegatron --cabinet
+    --mech 43:opr,44:opr,42:kickermegatron --cabinet --device-size 0.035
 ```
 
 (tools in Ashram56/Stern-SAM-Decryption; this table needed the cvpmTrough, InitSaucer, VPW StandupTarget,
@@ -39,7 +39,8 @@ The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project
   - 43, 44: Optimus Prime up/down (`s_optimus_prime_up`, `s_optimus_prime_down`), set by a motor timer
     (no object): placed at `opr` with `--mech`; 42 (Megatron jam, no object either) after the lock slots.
   - 23 is the shooter lane.
-- **Cabinet strip** (`--cabinet`, the bottom edge of the picture, by number): the 19 config switches with no
+- **Cabinet strip** (`--cabinet`, the bottom edge of the picture; left flipper button and EOS at the bottom-left
+  corner, right ones at the bottom-right, the rest by number): the 19 config switches with no
   playfield object: tournament and start buttons (15, 16), coin slots (D1-D5), flipper buttons and EOS
   (D9-D12), tilt, slam tilt, ticket notch (D17-D19), coin door open (D20, from `game/config/hardware.yaml`),
   BACK, MINUS, PLUS, SELECT (D21-D24). Lamps 1 and 2 (start and tournament buttons, below the playfield in
@@ -48,6 +49,9 @@ The table script (`script.vbs`, 4,891 lines) and `items.json` are in the project
 - Flashers (12, solenoid numbers): 17, 18, 19, 20, 21, 23, 25, 26, 27, 28, 31, 32. Six are Flupper domes
   (`Flasherlight1-6`). The ROM names 26 "Flash: Slingshot (Left)" and 27 "(Right)", but the table's sub for
   26 flashes dome 1, which sits on the right, and 27 dome 2 on the left: the positions follow the table.
+- Markers are 0.035 of the picture width (`device_size`, MPF Monitor's default is 0.02, owner asked for bigger
+  ones on 2026-10-11); `--device-size` pushed apart the few that would overlap (bumper lamps on their switches,
+  the center lane arrow flasher on lamp 59, the trough and lock stacks).
 - Overlay checked by eye: lamp and switch markers sit on their inserts, rollovers and targets.
 
 ## For the owner

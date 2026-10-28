@@ -1,8 +1,9 @@
 # MPF Monitor layout (x/y: fractions of playfield.png) from vpx_extract.py + vpx_map.py
+device_size: 0.035
 coil:
   c_flash_decepticon:   # coil 17 (f17)
-    x: 0.2245
-    y: 0.3742
+    x: 0.2113
+    y: 0.3713
   c_flash_left_ramp:   # coil 18 (Flasherlight3)
     x: 0.0772
     y: 0.082
@@ -19,7 +20,7 @@ coil:
     x: 0.7268
     y: 0.0228
   c_flash_center_lane_arrow:   # coil 25 (f25)
-    x: 0.5383
+    x: 0.5576
     y: 0.3002
   c_flash_slingshot_left:   # coil 26 (Flasherlight1)
     x: 0.7301
@@ -28,8 +29,8 @@ coil:
     x: 0.1839
     y: 0.7288
   c_flash_megatron:   # coil 28 (f28)
-    x: 0.3244
-    y: 0.3781
+    x: 0.3106
+    y: 0.3772
   c_flash_optimus_prime:   # coil 31 (f31)
     x: 0.6276
     y: 0.1363
@@ -194,14 +195,14 @@ light:
     x: 0.3023
     y: 0.033
   l_special:   # light 53 (li53)
-    x: 0.8537
-    y: 0.421
+    x: 0.8572
+    y: 0.4229
   l_energon_center:   # light 54 (li54)
     x: 0.4627
     y: 0.406
   l_extra_ball:   # light 55 (li55)
-    x: 0.8066
-    y: 0.4137
+    x: 0.8011
+    y: 0.4146
   l_megatron_bottom:   # light 57 (li57)
     x: 0.275
     y: 0.3084
@@ -209,17 +210,17 @@ light:
     x: 0.3786
     y: 0.3586
   l_optimus_prime_challenge:   # light 59 (li59)
-    x: 0.5383
+    x: 0.519
     y: 0.3002
   l_top_bumper:   # light 60 (li60)
-    x: 0.1592
+    x: 0.1781
     y: 0.1383
   l_right_bumper:   # light 61 (li61)
-    x: 0.3024
+    x: 0.3214
     y: 0.1924
   l_bottom_bumper:   # light 62 (li62)
-    x: 0.1576
-    y: 0.234
+    x: 0.165
+    y: 0.2414
 switch:
   s_bumblebee_target:   # switch 1 (sw1)
     x: 0.6982
@@ -231,8 +232,8 @@ switch:
     x: 0.0716
     y: 0.478
   s_l_ramp_entrance:   # switch 4 (sw4)
-    x: 0.2326
-    y: 0.376
+    x: 0.2458
+    y: 0.3789
   s_left_orbit_bottom:   # switch 5 (sw5)
     x: 0.0616
     y: 0.252
@@ -261,20 +262,20 @@ switch:
     x: 0.9419
     y: 0.0721
   s_trough_4_l:   # switch 18 (BallRelease)
-    x: 0.8614
-    y: 0.8508
+    x: 0.8523
+    y: 0.8512
   s_trough_3:   # switch 19 (BallRelease)
     x: 0.8614
-    y: 0.8568
+    y: 0.8677
   s_trough_2:   # switch 20 (BallRelease)
     x: 0.8614
-    y: 0.8628
+    y: 0.8847
   s_trough_1_r:   # switch 21 (BallRelease)
     x: 0.8614
-    y: 0.8688
+    y: 0.9017
   s_trough_jam:   # switch 22 (sw22)
-    x: 0.8816
-    y: 0.8497
+    x: 0.8907
+    y: 0.8492
   s_shooter_lane:   # switch 23 (sw23)
     x: 0.9455
     y: 0.8844
@@ -297,17 +298,17 @@ switch:
     x: 0.8545
     y: 0.7594
   s_top_bumper:   # switch 30 (Bumper1)
-    x: 0.1582
+    x: 0.1394
     y: 0.1383
   s_right_bumper:   # switch 31 (Bumper2)
-    x: 0.3017
+    x: 0.2827
     y: 0.1924
   s_bottom_bumper:   # switch 32 (Bumper3)
-    x: 0.1569
-    y: 0.2333
+    x: 0.1495
+    y: 0.2259
   s_right_orbit_spinner:   # switch 34 (sw34)
-    x: 0.8351
-    y: 0.4112
+    x: 0.8371
+    y: 0.4084
   s_r_ramp_entrance:   # switch 35 (sw35)
     x: 0.7735
     y: 0.2559
@@ -316,25 +317,25 @@ switch:
     y: 0.5781
   s_megatron_lock_4:   # switch 38 (KickerMegaTron)
     x: 0.335
-    y: 0.3111
+    y: 0.3109
   s_megatron_lock_3:   # switch 39 (KickerMegaTron)
     x: 0.335
-    y: 0.3171
+    y: 0.3279
   s_megatron_lock_2:   # switch 40 (KickerMegaTron)
     x: 0.335
-    y: 0.3231
+    y: 0.345
   s_m_tron_lock_1_back:   # switch 41 (KickerMegaTron)
     x: 0.335
-    y: 0.3291
+    y: 0.362
   s_megatron_jam:   # switch 42 (KickerMegaTron)
-    x: 0.335
-    y: 0.3351
+    x: 0.3488
+    y: 0.3798
   s_optimus_prime_up:   # switch 43 (opr)
     x: 0.5333
-    y: 0.2282
+    y: 0.2281
   s_optimus_prime_down:   # switch 44 (opr)
     x: 0.5333
-    y: 0.2342
+    y: 0.2452
   s_captive_ball:   # switch 45 (sw45)
     x: 0.6816
     y: 0.2341
@@ -351,38 +352,38 @@ switch:
     x: 0.5345
     y: 0.139
   s_tournament_start:   # switch 15 ()
-    x: 0.05
-    y: 0.985
-  s_start_button:   # switch 16 ()
-    x: 0.15
-    y: 0.985
-  s_left_coin_slot:   # switch 129 ()
     x: 0.25
     y: 0.985
-  s_center_coin_slot:   # switch 130 ()
+  s_start_button:   # switch 16 ()
     x: 0.35
     y: 0.985
-  s_right_coin_slot:   # switch 131 ()
+  s_left_coin_slot:   # switch 129 ()
     x: 0.45
     y: 0.985
-  s_fourth_coin_slot:   # switch 132 ()
+  s_center_coin_slot:   # switch 130 ()
     x: 0.55
     y: 0.985
-  s_fifth_coin_slot:   # switch 133 ()
+  s_right_coin_slot:   # switch 131 ()
     x: 0.65
     y: 0.985
-  s_l_flipper_button:   # switch 137 ()
-    x: 0.75
-    y: 0.985
-  s_left_flipper_e_o_s:   # switch 138 ()
-    x: 0.85
-    y: 0.985
-  s_r_flipper_button:   # switch 139 ()
+  s_fourth_coin_slot:   # switch 132 ()
     x: 0.05
     y: 0.955
-  s_right_flipper_e_o_s:   # switch 140 ()
+  s_fifth_coin_slot:   # switch 133 ()
     x: 0.15
     y: 0.955
+  s_l_flipper_button:   # switch 137 ()
+    x: 0.05
+    y: 0.985
+  s_left_flipper_e_o_s:   # switch 138 ()
+    x: 0.15
+    y: 0.985
+  s_r_flipper_button:   # switch 139 ()
+    x: 0.85
+    y: 0.985
+  s_right_flipper_e_o_s:   # switch 140 ()
+    x: 0.75
+    y: 0.985
   s_tilt_pendulum:   # switch 145 ()
     x: 0.25
     y: 0.955

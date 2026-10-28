@@ -10,7 +10,10 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/tf/media_data.json            sound pools (one per ROM sound call) and display effect facts for
                                      tf/media_bridge.py
 - game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each captured display effect
-- game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs)
+- game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs), plus deff_NNN_side1.tscn for
+                                     the effects that draw the player's side (SIDE_VARIANTS: the capture is the
+                                     Decepticon side, the Autobot one is made from it with the ROM's own image or
+                                     message)
 
 The score display (deff 19) is drawn live from its draw calls (tf/score_screen.py).
 
@@ -220,15 +223,69 @@ def loop_period(frames):
     return next((p for p in range(1, n // 2 + 1) if all(h[i] == h[i + p] for i in range(n - p))), None)
 
 
-def write_slide(deff_id, frames, loop, folder_rel, panel, values=None):
+# Effects that draw the player's side (1 Autobot, 2 Decepticon, byte 0x02112107 + player): every capture ran on
+# the Decepticon side, so the Autobot slide is the capture with the ROM's Autobot image or message in its place.
+# image: (Decepticon image, Autobot image, x, y, rows): deff 40 [0x01034198] draws 0x2234 (Decepticon) or 0x2232
+#        (Autobot) at 41, 0 on its background page; rows 25-31 are covered by the text band, so only rows 0-24
+#        show the image (observed: those rows of every frame are exactly image 8756). The one frame of 0x2233
+#        (both logos, drawn on the tick the side changes) is left out (inferred: 1 tick).
+# text: (font, x, y, flags, Decepticon text, Autobot text): deff 41 [0x01034424] draws message 0x683 DECEPTICON
+#       or 0x682 AUTOBOT, blinking; frames where the captured text is not exactly drawn stay as they are.
+SIDE_VARIANTS = {
+    40: {"image": (0x2234, 0x2232, 41, 0, 25)},
+    41: {"text": (16, 0x54, 0x12, 2, "DECEPTICON", "AUTOBOT")},
+}
+
+
+def side_frames(deff_id, frames):
+    """The Autobot side's frames of a SIDE_VARIANTS effect, made from the (Decepticon) capture's frames."""
+    import gen_fonts
+    spec = SIDE_VARIANTS[deff_id]
+    get = gen_fonts.load_images()
+    out = []
+    for img, ms in frames:
+        img = img.copy()
+        px = img.load()
+        if "image" in spec:
+            old, new, x0, y0, rows = spec["image"]
+            a, b = get(old), get(new)
+            level_of = lambda v: 0 if v == gen_fonts.TRANSPARENT else v
+            if all(px[x0 + x, y0 + y][0] == level_of(a[y][x]) * 17
+                   for y in range(rows) for x in range(len(a[0])) if x0 + x < 128):
+                for y in range(rows):
+                    for x, v in enumerate(b[y]):
+                        if x0 + x < 128:
+                            level = level_of(v) * 17
+                            px[x0 + x, y0 + y] = (level, level, level, 255)
+        if "text" in spec:
+            font_id, x, y, flags, old, new = spec["text"]
+            fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
+                                                             encoding="utf-8"))["fonts"]}
+            was = [[None] * 128 for _ in range(32)]
+            gen_fonts.render(get, fonts[font_id], old, x, y, flags, was)
+            lit = [(cx, cy, v) for cy, row in enumerate(was) for cx, v in enumerate(row) if v]
+            if lit and all(round(px[cx, cy][0] / 17) == v for cx, cy, v in lit):
+                for cx, cy, _ in lit:
+                    px[cx, cy] = (0, 0, 0, 255)
+                now = [[None] * 128 for _ in range(32)]
+                gen_fonts.render(get, fonts[font_id], new, x, y, flags, now)
+                for cy, row in enumerate(now):
+                    for cx, v in enumerate(row):
+                        if v is not None:
+                            px[cx, cy] = (v * 17, v * 17, v * 17, 255)
+        out.append((img, ms))
+    return out
+
+
+def write_slide(deff_id, frames, loop, folder_rel, panel, values=None, name=None):
     """values: (slots, slots per frame) of value_texts, drawn by a "Values" node (tf/deff_values.gd)."""
     import hashlib
-    name = "deff_{:03d}".format(deff_id)
+    name = name or "deff_{:03d}".format(deff_id)
     ext, entries, seen = [], [], {}
     for img, ms in frames:
         digest = hashlib.md5(img.tobytes()).hexdigest()
         if digest not in seen:
-            fname = "f{:03d}.png".format(len(seen))
+            fname = "{}f{:03d}.png".format(name[9:] + "_" if len(name) > 8 else "", len(seen))
             img.save(os.path.join(GAME, folder_rel, fname))
             seen[digest] = "t{}".format(len(seen))
             ext.append('[ext_resource type="Texture2D" path="res://{}/{}" id="{}"]'.format(folder_rel, fname,
@@ -293,6 +350,8 @@ def build_deffs(only_data):
         slots, per_frame = value_texts(timing, frames, deff_id, fits)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
                         "panel": panel, "args": [], "values": [v["source"] for v in slots]}
+        if deff_id in SIDE_VARIANTS:
+            out[deff_id]["sides"] = {"1": "deff_{:03d}_side1".format(deff_id)}
         if only_data:
             continue
         if panel is not None:
@@ -305,6 +364,9 @@ def build_deffs(only_data):
         rel = "media/dmd/deff_{:03d}".format(deff_id)
         os.makedirs(os.path.join(GAME, rel), exist_ok=True)
         write_slide(deff_id, frames, loop, rel, panel, (slots, per_frame))
+        if deff_id in SIDE_VARIANTS:
+            name = "deff_{:03d}_side1".format(deff_id)
+            write_slide(deff_id, side_frames(deff_id, frames), loop, rel, panel, (slots, per_frame), name=name)
     return out
 
 

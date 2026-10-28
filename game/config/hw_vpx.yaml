@@ -1,0 +1,116 @@
+#config_version=6
+
+# Hardware overlay for Visual Pinball X: the "Transformers Pro (Stern 2011)" table (v2.4, VR-Hybrid mod of
+# JPSalas' table) plays the ball, MPF runs the game in place of PinMAME, Godot draws the DMD and plays the sound.
+# Picked at launch on top of config.yaml:
+#   cd game && ../.venv/bin/mpf game . -c config,hw_vpx   (or: python scripts/run.py --hw vpx)
+# The table talks to MPF through the "TransformersMPF.Controller" COM object (scripts/vpx_bridge.py, Windows),
+# which stands in for VPinMAME.Controller and speaks MPF's virtual_pinball BCP commands on port 5051. MPF waits
+# at start-up until the table connects. docs/vpx.md has the set-up and the full device map.
+#
+# Numbers: the table uses PinMAME's numbering for Stern SAM, which is the ROM's own numbering for the matrix
+# switches (1-64), coils/flashers (1-32) and lamps (1-80), the numbers config.yaml already uses. Only the SAM
+# dedicated switches differ (D1-D24 in config.yaml; PinMAME's numbers are in rom/rom_data/io/dedicated_switches.csv
+# and sam.vbs: swLLFlip 84, swLRFlip 82, swTilt -7, swSlamTilt -6, swCoin1 65, coin door buttons -3..0); they are
+# renumbered below. tf/vpx_hardware.py adds what the platform lacks: solenoid and lamp values as VPinMAME reports
+# them, the GI string, the flipper "game on" output 33 the table's fast flips listen to, and tolerance for
+# switches MPF does not know.
+
+hardware:
+  platform: virtual_pinball
+
+custom_code: tf.os_layer.TfOS, tf.vpx_hardware.VpxHardware
+
+switches:
+  s_left_coin_slot:         # sam.vbs swCoin1 (keyInsertCoin1, key 5)
+    number: 65
+  s_center_coin_slot:       # swCoin2 (key 4)
+    number: 66
+  s_right_coin_slot:        # swCoin3 (key 3)
+    number: 67
+  s_fourth_coin_slot:       # PinMAME 68, 69: no key in sam.vbs
+    number: 68
+  s_fifth_coin_slot:
+    number: 69
+  s_l_flipper_button:       # sam.vbs swLLFlip (left flipper key)
+    number: 84
+  s_left_flipper_e_o_s:     # PinMAME 83, 81: the table sends no EOS
+    number: 83
+  s_r_flipper_button:       # sam.vbs swLRFlip (right flipper key)
+    number: 82
+  s_right_flipper_e_o_s:
+    number: 81
+  s_tilt_pendulum:          # sam.vbs swTilt; the table's vpmNudge.TiltSwitch = -7
+    number: -7
+  s_slam_tilt:              # sam.vbs swSlamTilt (keySlamDoorHit, Home)
+    number: -6
+  s_ticket_notch:
+    number: -5
+  s_back:                   # sam.vbs swCancel (keyCancel, key 7)
+    number: -3
+  s_minus:                  # swDown (keyDown, key 8)
+    number: -2
+  s_plus:                   # swUp (keyUp, key 9)
+    number: -1
+  s_select:                 # swEnter (keyEnter, key 0)
+    number: 0
+  s_coin_door_open:         # PinMAME toggles the door with its End key; sam.vbs has no switch for it, so the table
+    number: -4              # script that scripts/vpx_table.py writes toggles -4 (D20, as in hardware.yaml) with End
+
+coils:
+  # PinMAME's SAM solenoid 33 is the table's "flippers enabled" input (sam.vbs vpmFFlipsSAM, SolCallback(33));
+  # tf/vpx_hardware.py drives it, so the ticket outputs on the aux bus move out of its way.
+  c_aux_1_ticket_advance:
+    number: aux1
+  c_aux_2_ticket_meter:
+    number: aux2
+  c_aux_3_ticket_enable:
+    number: aux3
+  # Flipper rules need a hold; the table moves the flippers, so these only make the rule: 40 ms full power, then
+  # 1 ms on every 12 ms (Tron's SAM values, the same OS; tf_180's coil times are not decoded yet).
+  c_left_flipper:
+    default_pulse_ms: 40
+    default_hold_power: 0.083
+  c_right_flipper:
+    default_pulse_ms: 40
+    default_hold_power: 0.083
+
+# The table's own scripts move the flippers (the fast flips the table already uses with PinMAME): while MPF has
+# flipper rules on, solenoid 33 is on and the flipper keys flip at once; the rules go off at tilt and ball end
+# (tf/os_layer.py disables them), game over and in the service menu. VPX sends no EOS switches.
+flippers:
+  left_flipper:
+    main_coil: c_left_flipper
+    activation_switch: s_l_flipper_button
+    disable_events: ball_will_end, game_ending, game_ended, service_mode_entered, tf_tilt
+  right_flipper:
+    main_coil: c_right_flipper
+    activation_switch: s_r_flipper_button
+    disable_events: ball_will_end, game_ending, game_ended, service_mode_entered, tf_tilt
+
+# The table's slingshot and bumper objects kick the ball themselves, but its slingshot arms and sounds move only
+# when solenoids 13 and 14 fire (SolCallback solLSling / solRSling), as the SAM CPU fires them on the switch.
+autofire_coils:
+  left_slingshot:
+    coil: c_left_slingshot
+    switch: s_left_slingshot
+    disable_events: ball_will_end, service_mode_entered, tf_tilt
+  right_slingshot:
+    coil: c_right_slingshot
+    switch: s_right_slingshot
+    disable_events: ball_will_end, service_mode_entered, tf_tilt
+  top_bumper:
+    coil: c_top_pop_bumper
+    switch: s_top_bumper
+    disable_events: ball_will_end, service_mode_entered, tf_tilt
+  right_bumper:
+    coil: c_right_pop_bumper
+    switch: s_right_bumper
+    disable_events: ball_will_end, service_mode_entered, tf_tilt
+  bottom_bumper:
+    coil: c_bottom_pop_bumper
+    switch: s_bottom_bumper
+    disable_events: ball_will_end, service_mode_entered, tf_tilt
+
+# The table plays the ball: VPX moves it, so MPF's ball devices (hardware.yaml) count it from the table's own
+# trough (18-21, bsTrough starts with 4 balls), shooter lane (23), left eject (3) and Megatron lock (38-41).

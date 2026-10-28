@@ -27,8 +27,13 @@ Optimus (leff 55; deff 67, leff 58, sound 0xab, audit 0x73). A super: requiremen
 End: down to one ball the running flag goes, 218 ticks later the total (A deff 62 + leff 51, D deff 68 + leff 59).
 The figure's motor and hit kicker are tf/features/optimus_mech.py. Not modelled: the chained speech of deff 144.
 """
+import random
+
 from tf.features import Feature
 from tf.lamps import shot_blink
+
+# the display effects' random animation picks: their own generator, so the rules' picks stay as they were
+VARIANTS = random.Random()
 
 ORDER = 41
 AUTOBOT, DECEPTICON = 1, 2
@@ -146,24 +151,32 @@ class Side:
         # the intro replaces a lower priority deff at once (deff 144 still speaking in optimus_autobot.jsonl)
         os_.show(self.intro_task, self.intro, on_start=started, threshold=os_.display.prio.get(self.intro, 0))
 
-    def award(self, points, media):
+    def award(self, points, media, anim=None):
+        """anim: which of the deff's animations the ROM shows (the PuP map reads it; the display shows the
+        recorded one)."""
         os_ = self.os
         deff, leff, sound, audit = media
         os_.score_add(points)
         self.total += points
-        os_.deff_start(deff, values=[points])
+        os_.deff_start(deff, values=[points], **({} if anim is None else {"anim": anim}))
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
 
     def jackpot(self, shot):
         points = self.j() * self.mult(shot)
-        self.award(points, self.JP)
+        self.award(points, self.JP, self.jackpot_anim(shot))
         self.put("sum", self.get("sum") + points)
 
     def double(self, shot):
         points = self.dj() * self.mult(shot)
-        self.award(points, self.DJ)
+        self.award(points, self.DJ, self.double_anim(shot))
         self.put("sum", self.get("sum") + points)
+
+    def jackpot_anim(self, shot):
+        return None
+
+    def double_anim(self, shot):
+        return None
 
     def super(self):
         os_ = self.os
@@ -224,6 +237,12 @@ class Autobot(Side):
     DJ = (60, 49, 0x84, 0x6e)
     SUPER = (61, 50, 0x8f, 0x6f)
 
+    def jackpot_anim(self, shot):
+        return shot        # deff 59: one enemy per shot, table 0x040c732c[shot] [0x01028950], shot from [0x01027b74]
+
+    def double_anim(self, shot):
+        return shot        # deff 60: table 0x040c7344[shot] [0x01028da0]
+
     def shot(self, shot):
         """[0x01027b74]: shots 0-5, 6 the Megatron lock."""
         if not self.active:
@@ -254,6 +273,12 @@ class Decepticon(Side):
     JP = (65, 56, 0xa5, 0x71)
     DJ = (66, 57, 0xaa, 0x72)
     SUPER = (67, 58, 0xab, 0x73)
+
+    def jackpot_anim(self, shot):
+        return 0           # deff 65 indexes its table by task+0x38, which no caller sets [0x0102aa70]
+
+    def double_anim(self, shot):
+        return VARIANTS.randrange(3)   # deff 66: random_below(3), table 0x040c749c [0x0102ad30]
 
     def shot(self, shot):
         """[0x01029bf4]: shots 0-5 (the center lane from sw 11 only)."""
