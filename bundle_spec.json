@@ -73,5 +73,11 @@
     "game/pup.local.cfg",
     "pup_pack",
     "pup_media"
+  ],
+  "import_seed": [
+    {
+      "dir": "game/media/dmd",
+      "template": "scripts/package/dmd_frame.import.template"
+    }
   ]
 }

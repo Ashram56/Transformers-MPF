@@ -37,9 +37,12 @@ this repository or a bundle. `keep_on_update` protects cabinet data, the install
 
 Built on 2026-10-28 on Linux x86_64 with the platform at MPF-Godot-Packaging `main` (`GODOT=tools/godot/Godot_v4.6.3-stable_linux.x86_64
 PYTHONPATH=<platform checkout> python scripts/package/build_bundle.py`): 3,571 files staged, `xz -t` and `bundle.json`
-read back fine, 101 MB packed, no ROM, `.bin` (only Godot's own `game/.godot/uid_cache.bin`), `pup_pack`, `pup_media`,
-cabinet data or add-on binary in the archive. The game's frames are imported lossless (no VRAM compression is set in
-`game/project.godot`), so the archive holds no `.s3tc` / `.etc2` textures and `--target all` costs nothing extra today.
+read back fine, 102 MB packed, no ROM, `.bin` (only Godot's own `game/.godot/uid_cache.bin`), `pup_pack`, `pup_media`,
+cabinet data or add-on binary in the archive. The 2,367 effect frames the slides load (`game/media/dmd/**/f*.png`, untracked, so their `.import` files are not in the
+bundle) are seeded with `scripts/package/dmd_frame.import.template` (`compress/mode=2`, spec key `import_seed`, 5c):
+the archive holds 2,367 `.s3tc.ctex` and 2,367 `.etc2.ctex` (102 MB). Without the seed Godot's default import is lossless and
+the bundle carries no VRAM variant (the platform builder warns). `setup.py` itself still imports them lossless.
+VRAM compression is lossy: a DMD frame may show it (row in `docs/rom_differences.md`); the bundle was not played or compared by eye.
 
 Not checked: installing the archive on a real machine (the platform's setup page) and playing from it; the
 `rom/` files read at run time (`rom_data/io|sound|settings`, `mpf_package/config`, `event_map.csv`, `service_menu.json`,
