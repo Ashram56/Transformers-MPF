@@ -15,14 +15,15 @@ belong to the platform ([MPF-Godot-Packaging `platforms/game-bundles.md`](https:
 .venv/bin/python scripts/package/build_bundle.py --check-only
 ```
 
-The build stops on stale or missing generated media, on any `*.bin` or `*.local.cfg` under `game/`. Without the
-platform builder installed it prints the command to run by hand: `python -m mpf_godot bundle bundle_spec.json --target all`.
+The build stops on stale or missing generated media, on any `*.bin` (outside `game/.godot`) or `*.local.cfg` under `game/`. The platform builder
+must be importable (`PYTHONPATH=<MPF-Godot-Packaging checkout>`, with `GODOT=` unless `mpf_godot setup` ran). The script adds the
+128 `timing.json` paths to the spec for the build, because the builder copies named paths only.
 
 ## What is in it, what is not
 
 | In | Out (never) |
 |---|---|
-| `game/` (tracked files plus the generated config, sounds, media, fonts, deffs, Godot import), `scripts/`, the trace scenarios | the ROM and every `*.bin` / `tf_*.zip`, `game/data`, audits, logs, `*.local.cfg`, `.venv`, `tools/`, `captures/` |
+| `game/` (tracked files plus the generated config, sounds, media, fonts, deffs, Godot import), `scripts/`, the `rom/` tables and package files the game reads at run time, the trace scenarios | the ROM and every `*.bin` / `tf_*.zip`, `game/data`, audits, logs, `*.local.cfg`, `.venv`, `tools/`, `captures/` |
 | GDE GoZen: from the platform (`platform_addons`), no binary in this repository | the PuP Pack (`pup_pack`, `pup_media`) and `native_video` |
 
 ## The PuP Pack
@@ -32,9 +33,15 @@ TerryRed's pack is not in the bundle. `bundle.json` `pup.install` runs
 the videos are not converted). The private `pup_pack` submodule is only the owner's copy; none of its files go into
 this repository or a bundle. `keep_on_update` protects cabinet data, the installed pack and its media.
 
-## Not verified yet
+## Checked, and not checked
 
-`bundle_spec.json` was written from `agents/packaging.md` section 5c without access to the platform's example or
-schema: field names must be checked against `examples/bundle/bundle_spec.json` in MPF-Godot-Packaging. No real
-bundle was built (it needs Godot, the platform builder and a full `setup.py`), and `rom/` is assumed not to be read at
-run time except `rom/rules/traces` for `--scenario` (check with `strace -f -e trace=openat,stat`, as 5c advises).
+Built on 2026-10-28 on Linux x86_64 with the platform at MPF-Godot-Packaging `main` (`GODOT=tools/godot/Godot_v4.6.3-stable_linux.x86_64
+PYTHONPATH=<platform checkout> python scripts/package/build_bundle.py`): 3,571 files staged, `xz -t` and `bundle.json`
+read back fine, 101 MB packed, no ROM, `.bin` (only Godot's own `game/.godot/uid_cache.bin`), `pup_pack`, `pup_media`,
+cabinet data or add-on binary in the archive. The game's frames are imported lossless (no VRAM compression is set in
+`game/project.godot`), so the archive holds no `.s3tc` / `.etc2` textures and `--target all` costs nothing extra today.
+
+Not checked: installing the archive on a real machine (the platform's setup page) and playing from it; the
+`rom/` files read at run time (`rom_data/io|sound|settings`, `mpf_package/config`, `event_map.csv`, `service_menu.json`,
+`rom_images_all.zip`, the 128 `deff_*/timing.json`, the traces) come from reading the code, not from
+`strace -f -e trace=openat,stat`; `options.schema` has no settings tool yet, so the web page cannot write the options.

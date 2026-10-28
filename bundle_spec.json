@@ -1,64 +1,75 @@
 {
-  "name": "transformers-mpf",
-  "title": "Transformers Pro 1.80 (MPF)",
-  "version_from": "git",
-  "root": ".",
-  "target": "all",
-  "pack": [
-    {"path": "game", "kind": "tracked+generated"},
-    {"path": "scripts", "kind": "tracked"},
-    {"path": "rom/rules/traces", "kind": "tracked", "optional": true}
+  "id": "transformers-pro",
+  "name": "Transformers Pro 1.80 (Stern 2011), MPF recreation",
+  "game_dir": "game",
+  "git_tracked": [
+    "game",
+    "scripts"
   ],
-  "generated": [
+  "git_exclude": [
+    "game/addons/"
+  ],
+  "copy": [
     "game/config/rom",
     "game/sounds",
     "game/media",
     "game/fonts",
-    "game/slides/deffs",
-    "game/tf/media_data.json",
-    "game/.godot"
+    "rom/rom_data/io",
+    "rom/rom_data/sound",
+    "rom/rom_data/settings",
+    "rom/mpf_package/config",
+    "rom/mpf_package/event_map.csv",
+    "rom/mpf_package/service_menu.json",
+    "rom/mpf_package/media/rom_images_all.zip",
+    "rom/rules/traces"
   ],
   "never": [
     "game/data",
     "game/audits",
     "game/logs",
     "game/pup.local.cfg",
-    "**/*.local.cfg",
-    "**/*.bin",
-    "tf_*.zip",
     "pup_pack",
-    "pup_media",
-    "game/addons/gde_gozen",
-    "game/addons/native_video",
-    ".venv",
-    "tools",
-    "captures"
+    "pup_media"
   ],
-  "reimport": [
-    {"glob": "game/media/**/*.png", "note": "VRAM-compressed HD/effect frames: write the .import files again before the import (they are not tracked)"},
-    {"glob": "game/fonts/*.png"}
+  "never_names": [
+    "*.local.cfg",
+    "*.bin",
+    "tf_*.zip",
+    "machine_vars.yaml"
   ],
-  "platform_addons": ["gde_gozen"],
-  "run": {
-    "cwd": "game",
-    "mpf": ["mpf", "game", "-t", "-c", "config.yaml"],
-    "godot": ["--path", "game"],
-    "command": "python scripts/run.py"
-  },
-  "options": "scripts/package/options.json",
+  "platform_addons": [
+    "gde_gozen"
+  ],
+  "precheck": [
+    "python3",
+    "scripts/package/build_bundle.py",
+    "--check-only"
+  ],
   "requires": {
-    "env": {"TF_PUP": "optional: 0 = strict ROM game (no PuP)", "TF_PUP_ZIP": "optional: TerryRed's pack zip (file or https URL)"}
+    "python": ">=3.11",
+    "programs": [
+      "ffmpeg"
+    ],
+    "env": {
+      "TF_PUP": "optional: 0 = strict ROM game (no PuP)"
+    }
+  },
+  "run": {
+    "start": "python3 scripts/run.py",
+    "cwd": "."
+  },
+  "options": {
+    "schema": "scripts/package/options.json"
   },
   "pup": {
-    "install": "python scripts/pup_setup.py --pup-zip {zip}",
+    "install": "python3 scripts/pup_setup.py --pup-zip ZIP_PATH_OR_URL",
     "pack_dir": "pup_pack/tf_180",
-    "media_dir": "pup_media/tf_180",
-    "env": "TF_PUP_ZIP",
-    "needs": ["ffmpeg"]
+    "needs_restart": true
   },
   "keep_on_update": [
     "game/data",
     "game/audits",
+    "game/logs",
     "game/pup.local.cfg",
     "pup_pack",
     "pup_media"

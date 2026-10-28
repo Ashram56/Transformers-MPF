@@ -9,6 +9,8 @@ cabinet data, ROM or PuP Pack file is in the way, then call the platform builder
 (--target all: both texture formats, imported offline). Run after `python scripts/setup.py`.
 """
 import argparse
+import glob
+import json
 import os
 import subprocess
 import sys
@@ -32,7 +34,9 @@ def problems():
         if not os.path.isdir(os.path.join(ROOT, rel)):
             out.append(rel + " is missing (run `python scripts/setup.py`)")
     game = os.path.join(ROOT, "game")
-    for dirpath, _, names in os.walk(game):
+    for dirpath, dirs, names in os.walk(game):
+        if dirpath == game:
+            dirs[:] = [d for d in dirs if d != ".godot"]    # the import's own .bin caches are packed on purpose
         for n in names:
             if n.endswith((".bin", ".local.cfg")):
                 out.append("never in a bundle: " + os.path.relpath(os.path.join(dirpath, n), ROOT))
@@ -56,12 +60,23 @@ def main():
         import mpf_godot  # noqa: F401
     except ImportError:
         print("bundle: the platform builder is not installed. Install MPF-Godot-Packaging "
-              "(pip install git+https://github.com/Ashram56/MPF-Godot-Packaging) and run again, or run\n"
-              "  python -m mpf_godot bundle bundle_spec.json --target all", file=sys.stderr)
+              "(clone it, `python -m mpf_godot setup`, and run this script with its checkout on PYTHONPATH)", file=sys.stderr)
         return 2
-    cmd = [sys.executable, "-m", "mpf_godot", "bundle", SPEC, "--target", "all", "--out", a.out]
+    # game/tf/media_table.py reads rom/mpf_package/media/dmd/deffs/deff_*/timing.json at run time: the platform
+    # builder copies named paths only, so the spec for this build lists them (the frames are generated into game/media).
+    with open(SPEC, encoding="utf-8") as f:
+        spec = json.load(f)
+    spec["copy"] += sorted(os.path.relpath(p, ROOT).replace(os.sep, "/") for p in glob.glob(
+        os.path.join(ROOT, "rom", "mpf_package", "media", "dmd", "deffs", "deff_*", "timing.json")))
+    build_spec = os.path.join(ROOT, ".bundle_spec.build.json")
+    with open(build_spec, "w", encoding="utf-8") as f:
+        json.dump(spec, f, indent=1)
+    cmd = [sys.executable, "-m", "mpf_godot", "bundle", build_spec, "--target", "all", "--out", a.out]
     print("bundle: $ " + " ".join(cmd))
-    return subprocess.run(cmd, cwd=ROOT).returncode
+    try:
+        return subprocess.run(cmd, cwd=ROOT).returncode
+    finally:
+        os.remove(build_spec)
 
 
 if __name__ == "__main__":
