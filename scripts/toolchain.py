@@ -74,9 +74,10 @@ def host_arch(machine=None):
 # ---------------------------------------------------------------------- Python venv
 
 def venv_dir(root=ROOT):
-    """root/.venv, or $TF_VENV for this workspace when it is set."""
-    if os.environ.get("TF_VENV") and root == ROOT:
-        return os.environ["TF_VENV"]
+    """root/.venv, or $TF_VENV (else $MPF_GAME_VENV, the name the platform's game service sets) for this workspace."""
+    for name in ("TF_VENV", "MPF_GAME_VENV"):
+        if os.environ.get(name) and root == ROOT:
+            return os.environ[name]
     return os.path.join(root, ".venv")
 
 

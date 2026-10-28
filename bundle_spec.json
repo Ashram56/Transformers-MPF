@@ -51,7 +51,8 @@
       "ffmpeg"
     ],
     "env": {
-      "TF_PUP": "optional: 0 = strict ROM game (no PuP)"
+      "TF_PUP": "optional: 0 = strict ROM game (no PuP)",
+      "TF_VENV": "optional: the Python venv with MPF and the game's requirements (the platform sets MPF_GAME_VENV, read as well)"
     }
   },
   "run": {
