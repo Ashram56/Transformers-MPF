@@ -30,8 +30,9 @@ def problems():
     why = tc.media_stale(ROOT)
     if why:
         out.append("generated media: " + why + " (run `python scripts/setup.py`)")
-    for rel in ("game/config/rom", "game/sounds", "game/fonts"):
-        if not os.path.isdir(os.path.join(ROOT, rel)):
+    # git-ignored files the game needs at run time, made by setup.py; bundle_spec.json "copy" must list each one
+    for rel in ("game/config/rom", "game/sounds", "game/media", "game/fonts", "game/slides/deffs", "game/tf/media_data.json"):
+        if not os.path.exists(os.path.join(ROOT, rel)):
             out.append(rel + " is missing (run `python scripts/setup.py`)")
     game = os.path.join(ROOT, "game")
     for dirpath, dirs, names in os.walk(game):

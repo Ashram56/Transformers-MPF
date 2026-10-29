@@ -23,7 +23,7 @@ must be importable (`PYTHONPATH=<MPF-Godot-Packaging checkout>`, with `GODOT=` u
 
 | In | Out (never) |
 |---|---|
-| `game/` (tracked files plus the generated config, sounds, media, fonts, deffs, Godot import), `scripts/`, the `rom/` tables and package files the game reads at run time, the trace scenarios | the ROM and every `*.bin` / `tf_*.zip`, `game/data`, audits, logs, `*.local.cfg`, `.venv`, `tools/`, `captures/` |
+| `game/` (tracked files plus the generated config, sounds, media, fonts, `slides/deffs`, `tf/media_data.json`, Godot import), `scripts/`, the `rom/` tables and package files the game reads at run time, the trace scenarios | the ROM and every `*.bin` / `tf_*.zip`, `game/data`, audits, logs, `*.local.cfg`, `.venv`, `tools/`, `captures/` |
 | GDE GoZen: from the platform (`platform_addons`), no binary in this repository | the PuP Pack (`pup_pack`, `pup_media`) and `native_video` |
 
 ## The PuP Pack
@@ -36,7 +36,7 @@ this repository or a bundle. `keep_on_update` protects cabinet data, the install
 ## Checked, and not checked
 
 Built on 2026-10-28 on Linux x86_64 with the platform at MPF-Godot-Packaging `main` (`GODOT=tools/godot/Godot_v4.6.3-stable_linux.x86_64
-PYTHONPATH=<platform checkout> python scripts/package/build_bundle.py`): 3,571 files staged, `xz -t` and `bundle.json`
+PYTHONPATH=<platform checkout> python scripts/package/build_bundle.py`): 3,703 files staged, `xz -t` and `bundle.json`
 read back fine, 102 MB packed, no ROM, `.bin` (only Godot's own `game/.godot/uid_cache.bin`), `pup_pack`, `pup_media`,
 cabinet data or add-on binary in the archive. The 2,367 effect frames the slides load (`game/media/dmd/**/f*.png`, untracked, so their `.import` files are not in the
 bundle) are seeded with `scripts/package/dmd_frame.import.template` (`compress/mode=2`, spec key `import_seed`, 5c):
