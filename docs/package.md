@@ -16,5 +16,5 @@ are missing unless `copy` names them. Without `game/slides/deffs` and `game/tf/m
 animation for the 130 display effects and no sound pools; without `mpf-gmc` (platform add-on) Godot never connects to MPF
 and the DMD stays empty.
 
-The field names follow what the platform's builder reads today (`copy`, `git_tracked`, ...); the contract is versioned
-(`format`: 1) and will follow the platform's schema once it publishes one.
+The field names follow what the platform's builder reads today (`copy`, `git_tracked`, ...); the platform rejects keys it does not know
+(no `format` key), so the contract follows its list.

@@ -22,8 +22,7 @@ class PackageContract(unittest.TestCase):
         with open(CONTRACT, encoding="utf-8") as f:
             self.contract = json.load(f)
 
-    def test_format_and_identity(self):
-        self.assertEqual(self.contract["format"], 1)
+    def test_identity(self):
         self.assertTrue(self.contract["id"])
         self.assertIn("mpf-gmc", self.contract["platform_addons"])
 
