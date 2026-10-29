@@ -44,7 +44,7 @@ in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decrypt
 | `scripts/render_check.py` | Runs Godot + MPF headless and writes `captures/dmd_latest_x8.png` | for display work |
 | `scripts/vpx_table.py`, `vpx_bridge.py`, `game/tf/vpx_hardware.py`, `docs/vpx.md` | The VPX bridge (COM server `TransformersMPF.Controller`, BCP) | Windows only |
 | `scripts/install/`, `setup.bat`, `setup.ps1`, `setup_workspace.sh` | The one-line installers per OS | README "Install" |
-| `scripts/package/` | Game side of the prebuilt bundle (settings schema, import template); the bundle spec and builder are MPF-Godot-Packaging's (recipe `transformers-mpf`, `common/games/build_game_package.py`) | none |
+| `scripts/package/` | Game side of the prebuilt bundle (settings schema, import template); the package contract `game_package.json` and its completeness check are this game's; MPF-Godot-Packaging only turns the package into a bundle | none |
 | `tests/` | pytest: boot, switches, display, sounds, PuP, VPX, install; `tf_test.py` is the MPF test base, `scenario.py` replays traces | |
 | `.github/workflows/test.yml` | CI: setup + tests on Windows, macOS, Linux, render check on Linux | runs only on pushes to `main` |
 | `docs/` | `rom_differences.md`, `pup.md`, `pup_captures.md`, `vpx.md`, `vpx/`, `hardware.md`, `requirements.md` | |
