@@ -76,6 +76,12 @@ def native_video(os_name=None):
     return tc.host_os(os_name) in ("windows", "macos") and godot >= NATIVE_MIN_GODOT and os.path.isdir(NATIVE_SRC)
 
 
+def platform_gozen():
+    """True when game/addons/gde_gozen is already there with its extension file: a prebuilt bundle's `platform_addons`
+    (the platform installs its own GoZen build, none is kept in this repository). It is kept, not removed."""
+    return os.path.isfile(os.path.join(GOZEN_DST, "gozen.gdextension"))
+
+
 def gozen(os_name=None, arch=None):
     """True where the PuP plays the pack's mp4s with GDE GoZen (Linux x86_64 and arm64: FFmpeg, with the Jetson's
     hardware decoder when libnvmpi is installed, see pup_addons/gde_gozen/README.md). <env>_GOZEN=0 converts
@@ -84,7 +90,7 @@ def gozen(os_name=None, arch=None):
         return False
     host, cpu = tc.host_os(os_name), tc.host_arch(arch)
     return ((host == "linux" and cpu in ("x86_64", "arm64")) or (host == "windows" and cpu == "x86_64")) \
-        and os.path.isdir(GOZEN_SRC)
+        and (os.path.isdir(GOZEN_SRC) or platform_gozen())
 
 
 def install_native_video():
@@ -95,6 +101,9 @@ def install_native_video():
 
 def install_gozen():
     """Copies pup_addons/gde_gozen (GoZen built for this repo, see its README.md) to game/addons/."""
+    if not os.path.isdir(GOZEN_SRC):
+        say("   GDE GoZen add-on: the platform's, already in game/addons/gde_gozen (the pack's mp4s play without conversion)")
+        return
     say("   GDE GoZen add-on -> game/addons/gde_gozen (the pack's mp4s play without conversion)")
     fsutil.copy_tree(GOZEN_SRC, GOZEN_DST)
 

@@ -23,7 +23,10 @@
     "rom/mpf_package/event_map.csv",
     "rom/mpf_package/service_menu.json",
     "rom/mpf_package/media/rom_images_all.zip",
-    "rom/rules/traces"
+    "rom/rules/traces",
+    "rom/mpf_package/mpf_names.json",
+    "rom/rom_data/fonts.json",
+    "rom/rom_data/dmd/images.csv"
   ],
   "never": [
     "game/data",
@@ -40,7 +43,8 @@
     "machine_vars.yaml"
   ],
   "platform_addons": [
-    "gde_gozen"
+    "gde_gozen",
+    "mpf-gmc"
   ],
   "precheck": [
     "python3",
@@ -53,7 +57,8 @@
       "ffmpeg"
     ],
     "env": {
-      "TF_PUP": "optional: 0 = strict ROM game (no PuP)"
+      "TF_PUP": "optional: 0 = strict ROM game (no PuP)",
+      "TF_VENV": "optional: the Python venv with MPF and the game's requirements (the platform sets MPF_GAME_VENV, read as well)"
     }
   },
   "run": {

@@ -74,9 +74,10 @@ def host_arch(machine=None):
 # ---------------------------------------------------------------------- Python venv
 
 def venv_dir(root=ROOT):
-    """root/.venv, or $TF_VENV for this workspace when it is set."""
-    if os.environ.get("TF_VENV") and root == ROOT:
-        return os.environ["TF_VENV"]
+    """root/.venv, or $TF_VENV (else $MPF_GAME_VENV, the name the platform's game service sets) for this workspace."""
+    for name in ("TF_VENV", "MPF_GAME_VENV"):
+        if os.environ.get(name) and root == ROOT:
+            return os.environ[name]
     return os.path.join(root, ".venv")
 
 
@@ -176,6 +177,10 @@ def media_stale(root=ROOT):
     stamp = os.path.join(root, "game", "media", ".generated")
     if not os.path.exists(stamp):
         return "no stamp of a complete media generation and Godot import ({})".format(stamp)
+    if os.path.exists(os.path.join(root, "bundle.json")):
+        # a prebuilt bundle (docs/bundle.md): its bundle.json is there and the ROM extraction's frames are not, so the media cannot be made again
+        # (gen_media.py stops on the first missing frame, after clearing game/media) and the fingerprint's inputs are partly absent
+        return None
     with open(stamp, encoding="utf-8") as f:
         if f.read().strip() != media_fingerprint(root):
             return "the generator scripts or the asset package changed since the media were generated"
