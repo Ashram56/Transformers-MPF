@@ -168,6 +168,7 @@ tests on Windows, macOS and Linux, and the render check on Linux, for every push
 - [docs/requirements.md](docs/requirements.md): what a computer needs, per OS.
 - [docs/vpx.md](docs/vpx.md): Visual Pinball X played by MPF.
 - [docs/pup.md](docs/pup.md): the PuP Pack on three screens.
+- [docs/bundle.md](docs/bundle.md): the universal prebuilt bundle (nothing left to build on the target).
 - [docs/hardware.md](docs/hardware.md): virtual hardware and the P-ROC numbers.
 - [docs/rom_differences.md](docs/rom_differences.md): where the game differs from the ROM, and ROM quirks that are not bugs.
 - [rom/README.md](rom/README.md): the ROM extraction (tables, sounds, display effects, MPF package, tools). The
