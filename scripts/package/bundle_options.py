@@ -134,6 +134,18 @@ def cfg_write(path, section, key, text):
     os.replace(tmp, path)
 
 
+def apply_layout(opt, value, game):
+    """An option whose choice sets several cfg keys (target.apply): write them all. target.default_if_unset keys are only
+    written when absent, so a monitor the owner chose is kept."""
+    t = opt["target"]
+    path = cfg_path(t, game)
+    for section, key, text in t["apply"][value]:
+        cfg_write(path, section, key, text)
+    for section, key, text in t.get("default_if_unset", []) if value == "fullscreen" else []:
+        if cfg_read(path, section, key) is None:
+            cfg_write(path, section, key, text)
+
+
 def decode(text):
     if text is None:
         return None
@@ -174,7 +186,7 @@ def get_values(ids=None, game=GAME, schema=None):
         if opt is None:
             raise OptionError("unknown option " + oid)
         t = opt["target"]
-        if "cfg" in t:
+        if "cfg" in t and "apply" not in t:
             value = decode(cfg_read(cfg_path(t, game), t["section"], t["key"]))
             if value is not None and value != "":
                 out[oid] = value
@@ -192,9 +204,12 @@ def set_values(changes, game=GAME, schema=None):
             raise OptionError("unknown option " + oid)
         clean[oid] = convert(opts[oid], value)
     stored = store_read(game)
-    for oid, value in clean.items():
-        t = opts[oid]["target"]
-        if "cfg" in t:
+    for oid in sorted(clean, key=lambda o: "apply" not in opts[o]["target"]):     # a layout first: the monitors set with it win
+        t, value = opts[oid]["target"], clean[oid]
+        if "apply" in t:
+            apply_layout(opts[oid], value, game)
+            stored[oid] = value
+        elif "cfg" in t:
             cfg_write(cfg_path(t, game), t["section"], t["key"], json.dumps(value))
         else:
             stored[oid] = value
@@ -209,7 +224,13 @@ def unset_values(ids, game=GAME, schema=None):
         if oid not in opts:
             raise OptionError("unknown option " + oid)
         t = opts[oid]["target"]
-        if "cfg" in t:
+        if "apply" in t:
+            path = cfg_path(t, game)
+            if os.path.exists(path):
+                for section, key, _text in t["apply"]["stack"]:
+                    cfg_write(path, section, key, None)
+            stored.pop(oid, None)
+        elif "cfg" in t:
             path = cfg_path(t, game)
             if os.path.exists(path):
                 cfg_write(path, t["section"], t["key"], None)
@@ -225,7 +246,7 @@ def run_args(game=GAME, schema=None):
     args = []
     for opt in (schema or load_schema())["options"]:
         t = opt["target"]
-        if opt["id"] not in stored or "cfg" in t:
+        if opt["id"] not in stored or "cfg" in t or "apply" in t:
             continue
         value = stored[opt["id"]]
         if "arg" in t:

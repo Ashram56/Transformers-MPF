@@ -104,9 +104,18 @@ class Settings(unittest.TestCase):
         self.assertEqual(bo.run_args(game), ["--no-free-play", "--dmd-size", "512x128"])
         with open(os.path.join(game, "pup.local.cfg"), encoding="utf-8") as f:
             self.assertIn("; my cabinet", f.read())
+        bo.set_values({"pup.layout": "fullscreen"}, game)
+        cfg = open(os.path.join(game, "pup.local.cfg"), encoding="utf-8").read()
+        self.assertIn('layout="manual"', cfg)
+        self.assertEqual(bo.get_values(["pup.layout"], game), {"pup.layout": "fullscreen"})
+        self.assertEqual([bo.cfg_read(os.path.join(game, "pup.local.cfg"), s, k) for s, k in
+                          (("backglass", "fullscreen"), ("dmd", "fullscreen"), ("dmd", "screen"))], ["true", "true", "1"])   # screen 1 kept
+        bo.set_values({"pup.layout": "stack"}, game)
+        self.assertEqual(bo.cfg_read(os.path.join(game, "pup.local.cfg"), "pup", "layout"), '"stack"')
+        bo.unset_values(["pup.layout"], game)
         bo.unset_values(["free_play", "pup.enabled"], game)
         self.assertEqual(sorted(bo.get_values(game=game)), ["dmd_size", "pup.dmd.screen", "pup.topper.screen"])
-        for oid, bad in (("pup.video_volume", "200"), ("pup.layout", "split"), ("dmd_size", "big"), ("nope", "1")):
+        for oid, bad in (("pup.video_volume", "200"), ("pup.layout", "manual"), ("dmd_size", "big"), ("nope", "1")):
             with self.assertRaises(bo.OptionError):
                 bo.set_values({oid: bad}, game)
 
