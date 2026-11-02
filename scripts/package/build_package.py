@@ -32,8 +32,9 @@ def listed(contract):
 
 
 def missing(contract):
-    """Paths the contract lists that are not on disk."""
-    return [rel for rel in listed(contract) if not os.path.exists(os.path.join(ROOT, rel))]
+    """Paths the contract lists that are not on disk (`optional` ones may be absent: the PuP media without a pack)."""
+    optional = set(contract.get("optional", []))
+    return [rel for rel in listed(contract) if rel not in optional and not os.path.exists(os.path.join(ROOT, rel))]
 
 
 def problems(contract):

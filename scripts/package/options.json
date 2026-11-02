@@ -1,8 +1,36 @@
 {
+  "groups": [
+    {"id": "play", "label": "Play"},
+    {"id": "display", "label": "Display"},
+    {"id": "pup", "label": "PuP Pack (videos and music)"}
+  ],
   "options": [
-    {"id": "free_play", "type": "bool", "default": true, "group": "Play", "stored": "run.py --free-play / --no-free-play"},
-    {"id": "pup_enabled", "type": "bool", "default": true, "group": "PuP Pack", "stored": "game/pup.local.cfg [pup] enabled"},
-    {"id": "video_player", "type": "enum", "values": ["gozen", "native"], "default": "gozen", "group": "PuP Pack", "stored": "game/pup.local.cfg [pup] video_player"},
-    {"id": "dmd_size", "type": "string", "default": "1024x256", "group": "Display", "stored": "run.py --dmd-size"}
+    {"id": "free_play", "group": "play", "label": "Free play", "type": "bool", "default": true,
+     "help": "Off: the factory pricing, a coin is needed to start.",
+     "target": {"flag": "--free-play", "flag_off": "--no-free-play"}, "restart": true},
+    {"id": "dmd_size", "group": "display", "label": "DMD window size", "type": "size", "default": "1024x256",
+     "help": "The 128x32 dots scaled to this size, in pixels (WIDTHxHEIGHT).",
+     "target": {"arg": "--dmd-size"}, "restart": true},
+    {"id": "pup.enabled", "group": "pup", "label": "PuP videos and music", "type": "bool", "default": true,
+     "help": "Off: the strict ROM game, the ROM's music, no extra windows.",
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "enabled"}, "restart": true},
+    {"id": "pup.ost_music", "group": "pup", "label": "PuP music instead of the ROM's", "type": "bool", "default": true,
+     "help": "Off: the ROM's music, the videos still play.",
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "ost_music"}, "restart": true},
+    {"id": "pup.third_screen", "group": "pup", "label": "Topper screen", "type": "bool", "default": true,
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "third_screen"}, "restart": true},
+    {"id": "pup.video_volume", "group": "pup", "label": "Video volume", "type": "integer", "min": 0, "max": 100, "default": 100, "unit": "%",
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "video_volume"}, "restart": true},
+    {"id": "pup.music_volume", "group": "pup", "label": "Music volume", "type": "integer", "min": 0, "max": 100, "default": 100, "unit": "%",
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "music_volume"}, "restart": true},
+    {"id": "pup.layout", "group": "pup", "label": "Window layout", "type": "choice", "choices": ["stack", "manual"], "default": "stack",
+     "help": "stack: the windows one under the other on the backglass's monitor. manual: each window at its own monitor, position and size (pup.local.cfg).",
+     "target": {"cfg": "pup.local.cfg", "section": "pup", "key": "layout"}, "restart": true},
+    {"id": "pup.backglass.screen", "group": "pup", "label": "Backglass monitor", "type": "integer", "min": 0, "max": 7, "default": 0,
+     "target": {"cfg": "pup.local.cfg", "section": "backglass", "key": "screen"}, "restart": true},
+    {"id": "pup.dmd.screen", "group": "pup", "label": "DMD monitor", "type": "integer", "min": 0, "max": 7, "default": 0,
+     "target": {"cfg": "pup.local.cfg", "section": "dmd", "key": "screen"}, "restart": true},
+    {"id": "pup.topper.screen", "group": "pup", "label": "Topper monitor", "type": "integer", "min": 0, "max": 7, "default": 0,
+     "target": {"cfg": "pup.local.cfg", "section": "topper", "key": "screen"}, "restart": true}
   ]
 }
