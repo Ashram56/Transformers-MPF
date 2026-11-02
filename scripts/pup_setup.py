@@ -78,7 +78,7 @@ def native_video(os_name=None):
 
 def platform_gozen():
     """True when game/addons/gde_gozen is already there with its extension file: a prebuilt bundle's `platform_addons`
-    (the platform installs its own GoZen build, none is kept in this repository). It is kept, not removed."""
+    (the platform installs its own GoZen build, none is kept in the game's repository). It is kept, not removed."""
     return os.path.isfile(os.path.join(GOZEN_DST, "gozen.gdextension"))
 
 
