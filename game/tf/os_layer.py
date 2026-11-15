@@ -134,6 +134,21 @@ SHAKER_MS = {1: 200, 2: 384, 3: 1024}
 SHAKER_ADJ = 96              # adjustment 96 SHAKER MOTOR (OPTIONAL): 0 none, 1 minimal, 2 moderate, 3 maximal
 
 
+def game_flag_table(flags_csv):
+    """{flag: attributes} from rom/rom_data/io/game_flags.csv, the ROM's game flag table [0x040cf458]: bit 0x1 a
+    global flag (else per player), 0x2 reset at game start, 0x4 at every ball start, 0x8 at a tilt. A flag the
+    table does not list is per player and reset at game start (the feature flags' attributes)."""
+    table = {}
+    if os.path.exists(flags_csv):
+        with open(flags_csv, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                table[int(row["flag"])] = int(row["attr"])
+    return table
+
+
+FLAG_GLOBAL, FLAG_RESET_GAME, FLAG_RESET_BALL, FLAG_RESET_TILT = 1, 2, 4, 8
+
+
 def shaker_table(shaker_csv):
     """{deff id: (pattern, min level)} from rom/rom_data/io/shaker.csv (rows "deff_NNN 0x..."; the fast-scoring
     award's call, FUN_01004644, is made by tf/features/twobank.py)."""
@@ -213,7 +228,9 @@ class TfOS(CustomCode):
     def on_load(self):
         self.trace = Trace(self.machine)
         self.tasks = {}
-        self.flags = set()
+        self.flags = set()          # the game flags that are set, for the player at the ball
+        self.player_flags = [set() for _ in range(4)]   # each player's saved flags [0x0003630c]
+        self._flags_player = 0      # the player self.flags belongs to
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
         self.pokes = {}             # ROM RAM address -> setter(value), for the scenarios' "poke"
@@ -237,6 +254,7 @@ class TfOS(CustomCode):
         self.serve_type = 0
         self._mb_pending = 0
         self._mb_save = (0, 0)
+        self._save_owed = 0         # outlane-save replacements waiting for the outlane ball to drain
         self._mb_balls = 0          # balls requested from the running multiball task (rom_balls_in_play)
         self.rules = []
         self._refresh_pending = False
@@ -267,10 +285,13 @@ class TfOS(CustomCode):
         from tf.credits import Credits             # noqa: E402
         self.credit_model = Credits(self)                      # credits and pricing, persisted
         self._restart = False       # adj 36 GAME RESTART: the running game ends into a new one
+        self._before_first_ball = False     # a game started and its first ball has not (see _ball_drain)
         self._valid_at = None       # when the playfield was validated on this ball (play-time audits)
         self.game_seconds = 0.0     # validated play time of the running game
         self.replayed = False       # a replay was awarded in this game (DAT_0003817e)
         self._coindoor_save = False  # the running multiball save is the coin door ball saver's (adj 41)
+        self.flag_attr = game_flag_table(os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "io",
+                                                      "game_flags.csv"))
         self.shaker_deffs = shaker_table(os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "io",
                                                       "shaker.csv"))
         self.machine.tf = self
@@ -659,6 +680,24 @@ class TfOS(CustomCode):
     def flag(self, flag):
         return flag in self.flags
 
+    def _flags_reset(self, kind):
+        """FUN_00005870(kind): the flags whose attributes have `kind` go back to their default (0 for all of them
+        in tf_180). Not traced: the ROM writes the flag bytes directly, not through game_flag_clear."""
+        self.flags = {f for f in self.flags if not self.flag_attr.get(f, FLAG_RESET_GAME) & kind}
+
+    def _flags_to_player(self, num):
+        """The player change at the end of a ball [0x0001ac64]: the flags are saved to the leaving player's copy
+        [0x00005bb0] and the new player's are loaded, the global ones staying as they are [0x00005bf4]. So a flag
+        without attribute 0x1 (BONUS HOLD 0x4b, the extra ball of the wizard requirements 0x15, the side mode
+        played 0x3d, the shot multiplier holds 0x16+ ...) is each player's own."""
+        last = self._flags_player
+        if last and last != num:
+            self.player_flags[last - 1] = set(self.flags)
+            is_global = lambda f: self.flag_attr.get(f, FLAG_RESET_GAME) & FLAG_GLOBAL     # noqa: E731
+            self.flags = {f for f in self.flags if is_global(f)} | {
+                f for f in self.player_flags[num - 1] if not is_global(f)}
+        self._flags_player = num
+
     # ------------------------------------------------------------------ game state
 
     @property
@@ -757,6 +796,12 @@ class TfOS(CustomCode):
         self._mb_balls = max(target, self._mb_balls) if running else target
         add = target - self.balls_in_play()
         if add > 0:
+            # the ROM's multiball task launches at most what the trough holds [0x0103a87c] (a ball the Megatron
+            # lock keeps is not in the trough): a request MPF cannot serve would wait for the next drain
+            trough = self.machine.ball_devices["bd_trough"] if "bd_trough" in self.machine.ball_devices else None
+            if trough is not None:
+                add = min(add, max(trough.available_balls - self._mb_pending, 0))
+        if add > 0:
             self._mb_pending += add
             self.game.balls_in_play += add
         # the call recreates the multiball task, which starts leff 13 when it runs (one tick later)
@@ -800,10 +845,18 @@ class TfOS(CustomCode):
             return
         self._mb_launch()
 
+    def _mb_cancel(self):
+        """The launches still owed are dropped (tilt, end of ball): MPF's ball count, which had them, gives them
+        back, so that the ball ends when the balls really in play have drained."""
+        pending, self._mb_pending = self._mb_pending, 0
+        self.task_kill(MB_TASK)
+        game = self.machine.game
+        if pending > 0 and game and not self.state & ST_END_BALL:
+            game.balls_in_play = max(game.balls_in_play - pending, 0)
+
     def _mb_launch(self):
         if self._mb_pending <= 0 or not self.game or self.state & 0x214:
-            self._mb_pending = 0
-            self.task_kill(MB_TASK)
+            self._mb_cancel()
             return
         self._mb_pending -= 1
         self.machine.playfield.add_ball(balls=1, player_controlled=False)
@@ -1078,6 +1131,7 @@ class TfOS(CustomCode):
 
     def _game_starting(self, queue=None, **kwargs):
         self.state = 0
+        self._before_first_ball = True
         self.players = [PlayerData() for _ in range(4)]
         self.eb_lit = [0] * 4
         self.eb_collected = [0] * 4
@@ -1091,6 +1145,8 @@ class TfOS(CustomCode):
         self._valid_at = None
         self.shoot_again = False
         self.flags.clear()
+        self.player_flags = [set() for _ in range(4)]
+        self._flags_player = 0
         self.tasks_kill_all()
         self.credit_model.take(1)                         # FUN_00004e9c: the game's credit
         self.credit_model.free_games = 0
@@ -1112,6 +1168,9 @@ class TfOS(CustomCode):
     def _ball_starting(self, queue=None, **kwargs):
         player = self.game.player
         first_ball = player.ball == 1 and not self.shoot_again
+        self._before_first_ball = False
+        self._flags_to_player(player.number)
+        self._flags_reset(FLAG_RESET_BALL)           # ball_start [0x00005870(4)]: ADD-A-BALL 0x14, the mode flags
         self.state = 0
         self.pf_valid = False
         self._counting_seen = set()
@@ -1214,7 +1273,15 @@ class TfOS(CustomCode):
         """ball_drain relay: ball save and re-serve before the playfield is valid [0x0001dd90]."""
         if not balls or not self.game:
             return {"balls": balls}
+        if self._restart or self._before_first_ball:
+            # a game restarted with a ball still rolling (adj 36): MPF starts ball 1 once the playfield is
+            # empty, so this ball just goes home (no re-serve, no ball save) (docs/rom_differences.md "Game restart")
+            return {"balls": balls}
         self.device_ejecting = False
+        if self._save_owed and balls and not self.tilted:
+            # the replacement of an outlane save served with every ball in play: this drain is it (ball_save_try)
+            self._save_owed -= 1
+            return {"balls": balls - 1}
         if self._coindoor_save and self.mb_save_running() and not self.tilted:
             # the coin door ball saver's save (adj 41) re-serves even the last ball [0x0001ff74]
             self._mb_pending += balls
@@ -1329,8 +1396,9 @@ class TfOS(CustomCode):
             self.after(ticks, lambda names=names: fire(names))
         self.after(BALL_SEARCH_MOTOR_TICKS, lambda: self.task_running(0x2b) and self.hook("ball_search_motor"))
         gate_at, gate_ticks = BALL_SEARCH_GATE
-        self.after(gate_at, lambda: self.task_running("search_run") and self.hold_coil("c_orbit_control_gate", 5,
-                                                                                       gate_ticks))
+        # not with adj 84 DISABLE ORBIT CONTROL GATE [0x0102c0cc]
+        self.after(gate_at, lambda: self.task_running("search_run") and self.adj_value(84) != 1
+                   and self.hold_coil("c_orbit_control_gate", 5, gate_ticks))
 
     def hold_coil(self, name, num, ticks):
         """Hold a driver on for `ticks` (the orbit gate), logged like the traces; a hold while held extends it."""
@@ -1511,6 +1579,7 @@ class TfOS(CustomCode):
         self.ball_search_reload(15)
         self.audit(0x2a)
         self.kill_ball_save()
+        self._mb_cancel()                            # no launch on a tilted ball (multiball_start refuses: 0x214)
         self.machine.events.post("tf_tilt")
         self.hook("tilt")                            # event 0x65
         self.deff_start(21)
@@ -1543,11 +1612,10 @@ class TfOS(CustomCode):
         return False
 
     def light_special(self):
-        """special_light(0) [0x00024014]: special lit for the current player, lamp update; deff 81
-        "SPECIAL IS LIT" (the caller's display)."""
+        """The OS's special_light (Tron's [0x00024014]). Transformers lights its special through the game code
+        [0x01008528]: tf/features/awards.py."""
         self.specials_lit[self.player_num - 1] += 1
         self.special_lamp_update()
-        self.deff_start(81)
 
     def special_lamp_update(self):
         """FUN_00024298: the special insert (SPECIAL_LAMP) is on while the player has a special lit, off
@@ -1560,7 +1628,8 @@ class TfOS(CustomCode):
     def special_collect(self):
         """special_collect [0x00024218] + special_award [0x000240ac]: use one lit special and award it per
         adj 23 (0 credit, 3 points, 4 extra ball), or the over-limit points past the adj 22 limit. Returns
-        True when a special was lit. The outlane shows deff 82 and scores 100,000 itself."""
+        True when a special was lit. Transformers collects it at the right orbit [0x01008684], which shows deff 56
+        (tf/features/awards.py)."""
         p = self.player_num - 1
         if not self.specials_lit[p]:
             return False
@@ -1594,7 +1663,13 @@ class TfOS(CustomCode):
         if not self.ball_save or self.tilted:
             return False
         self.serve(2)
-        self.game.balls_in_play += 1                 # the outlane ball still drains later
+        # the outlane ball still drains later. With every known ball in play MPF caps the count: nothing is added,
+        # and the outlane ball's drain is then the replacement's serve (_ball_drain gives it back as a save)
+        game = self.game
+        if game.balls_in_play >= self.machine.ball_controller.num_balls_known:
+            self._save_owed += 1
+        else:
+            game.balls_in_play += 1
         self.after(SAVE_EJECT_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
         self.kill_ball_save()
         if self.deff_start(20):
@@ -1616,7 +1691,10 @@ class TfOS(CustomCode):
             return
         queue.wait()
         if self.task_running(0x2b):
-            self.after(self.task_ticks_left(0x2b), lambda: self._ball_ending_go(queue))
+            # a drain seen by the trough cuts the search short by the ticks it takes to post its events
+            # (inferred from battle_blackout.jsonl: drain 75.74 s, search 76.14 s, bonus 77.25 s = 68 of 104 ticks)
+            left = max(self.task_ticks_left(0x2b) - BALL_SEARCH_EVENT_TICKS, 0)
+            self.after(left, lambda: self._ball_ending_go(queue))
             return
         self._ball_ending_go(queue)
 
@@ -1625,7 +1703,7 @@ class TfOS(CustomCode):
         self.task_kill("search_run")                 # the search found the drained ball
         self.kill_ball_save()
         self.kill_mb_save()
-        self._mb_pending = 0
+        self._mb_pending = self._save_owed = 0
         self.task_kill(MB_TASK)
         self.display.clear()
         self.hook("ball_end")                        # event 0x1d: every mode stops
@@ -1677,7 +1755,7 @@ class TfOS(CustomCode):
         self.state &= ~(ST_TILT | ST_END_BALL)
         for flipper in self.machine.flippers.values():
             flipper.enable()
-        if self.game.player.extra_balls:
+        if self.game and self.game.player and self.game.player.extra_balls:
             self.shoot_again = True
             self.flag_set(9)
         queue.clear()
@@ -1749,7 +1827,8 @@ class TfOS(CustomCode):
 
     def _game_ended(self, **kwargs):
         self.state = ST_ATTRACT
-        self.tasks_kill_all()
+        self.state = ST_ATTRACT
+        self._save_owed = 0
         self._search_paused = None
         if self._search_handle:
             self.machine.clock.unschedule(self._search_handle)

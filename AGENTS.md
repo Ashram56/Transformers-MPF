@@ -45,6 +45,7 @@ in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decrypt
 | `scripts/vpx_table.py`, `vpx_bridge.py`, `game/tf/vpx_hardware.py`, `docs/vpx.md` | The VPX bridge (COM server `TransformersMPF.Controller`, BCP) | Windows only |
 | `scripts/install/`, `setup.bat`, `setup.ps1`, `setup_workspace.sh` | The one-line installers per OS | README "Install" |
 | `scripts/package/` | Game side of the prebuilt bundle (settings schema, import template); the package contract `game_package.json` and its completeness check are this game's; MPF-Godot-Packaging only turns the package into a bundle | none |
+| `tests/bench/`, `scripts/bench.py`, `docs/test_bench.md` | The rules test bench: per mode, adjustments, players, seeded stress games, traces | docs/test_bench.md |
 | `tests/` | pytest: boot, switches, display, sounds, PuP, VPX, install; `tf_test.py` is the MPF test base, `scenario.py` replays traces | |
 | `.github/workflows/test.yml` | CI: setup + tests on Windows, macOS, Linux, render check on Linux | runs only on pushes to `main` |
 | `docs/` | `rom_differences.md`, `pup.md`, `pup_captures.md`, `vpx.md`, `vpx/`, `hardware.md`, `requirements.md` | |
@@ -97,7 +98,12 @@ CI runs only on pushes to `main`, never on branches or pull requests: **you test
 .venv/bin/python scripts/render_check.py                 # display work: look at captures/dmd_latest_x8.png
 .venv/bin/python scripts/trace_check.py basic            # rules work: any scenario in rom/rules/traces/
 .venv/bin/python scripts/trace_check.py basic --events score,deff_start,lamp,coil
+.venv/bin/python scripts/bench.py                        # rules work: the rules test bench (about 3 minutes), docs/test_bench.md
+.venv/bin/python scripts/bench.py --quick                # the same without the stress games and the traces
 ```
+
+The bench (`tests/bench/`) is the reference for rules changes: add a test there for every rule you fix, and run
+`scripts/bench.py` (stress games included) before a pull request. `pytest -q tests` runs it too.
 
 The PuP tests skip without the `pup_pack` submodule (CI does not check it out). After a rules change run the
 trace checks of every scenario that covers the feature (the table in `rom/rules/traces/README.md` and the

@@ -15,7 +15,8 @@ megatron_decepticon.jsonl).
   up is still wanted (optimus_decepticon.jsonl: 14.95, 23.53, 31.81, 42.68, 51.36 s). The virtual platforms do the
   same here: the down switch starts closed and nothing else moves it, so the coil 30 runs match the traces.
 - Ball search: 33 ticks into each search the motor runs to its time limit (tf/os_layer.py BALL_SEARCH_SWEEP).
-- Adj 85 DISABLE OPTIMUS PRIME MOTOR is not read by the code (open question in the spec); not used.
+- Adj 85 DISABLE OPTIMUS PRIME MOTOR = YES: the motor is never run. The OS's mech code tests the mech's
+  "disabled by adjustment" id [0x00017120] (code; that the test skips every run is inferred).
 """
 from tf.features import Feature
 
@@ -25,6 +26,7 @@ MOTOR = "c_optimus_prime_motor"
 KICKER, KICKER_NUM, KICKER_MS = "c_optimus_prime", 12, 64
 MOTOR_NUM = 30
 SWITCH = {UP: "s_optimus_prime_up", DOWN: "s_optimus_prime_down"}
+MOTOR_OFF_ADJ = 85
 MOVE_S = 7.65                   # the motor's time limit when no position switch closes (observed in the simulator)
 HIT_TASK, HIT_DELAY, HIT_TAIL = 0x54, 15, 47
 
@@ -80,7 +82,8 @@ class OptimusMech(Feature):
 
     def _check(self, **kwargs):
         """[0x010253b8]: start a move when the wanted position is not the one the figure is at."""
-        if self.moving is not None or self.os.state & 0x300 or MOTOR not in self.machine.coils:
+        if self.moving is not None or self.os.state & 0x300 or MOTOR not in self.machine.coils \
+                or self.os.adj[MOTOR_OFF_ADJ] == 1:
             return
         want = self.wanted()
         if self.position() != want:
@@ -88,7 +91,7 @@ class OptimusMech(Feature):
 
     def ball_search_motor(self):
         """The ball search runs the motor too, to its time limit (observed in every search: 33 ticks in, 7.57 s)."""
-        if self.moving is None and MOTOR in self.machine.coils:
+        if self.moving is None and MOTOR in self.machine.coils and self.os.adj[MOTOR_OFF_ADJ] != 1:
             self._move("search")
 
     def _move(self, target):

@@ -52,6 +52,7 @@ ORBIT_TOKEN_S = 2.26
 # (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
 # the ignored repeats leave it shut)
 GATE_TICKS = 91
+GATE_OFF_ADJ = 84           # the gate's "disabled by adjustment" test [0x0102c0cc] (code; what skips the coil: inferred)
 CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 0x54, inferred time)
 # sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
 # a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
@@ -716,7 +717,7 @@ class Battles(Feature):
     HOOKS = ("player_first_ball", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
-             "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
+             "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset", "side_mode_started")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -770,9 +771,16 @@ class Battles(Feature):
         """[0x010359f4(2)]: 0x01022b88(0xff) and each battle's reset (the wizard multiball start)."""
         pd = self.pd
         pd.battle_started = pd.battle_completed = 0
+        self.side_changed()                         # [0x01022aa0]: the side's first battle is lit again
         for b in self.battles:
             b.reset()
         self.os.request_refresh()
+
+    def side_mode_started(self):
+        """[0x01022dbc], from the side mode's start [0x0100fff0]: the lit battle is the other side's first one
+        (Autobot: Starscream, Decepticon: Bumblebee). With flag 0x3d set by the same start, the mode-start shots
+        qualify again [0x0101fdac] and the other side's four battles can be played."""
+        self.pd.battle_lit = 0x01 if self.pd.get("side", DECEPTICON) == AUTOBOT else 0x10
 
     def ball_start(self):
         """The lit-battle rule's leff 104 is the first effect of every ball start (all traces: 104, then 92):
@@ -930,6 +938,13 @@ class Battles(Feature):
             return
         if shot in SHOT_AUDIT:
             os_.audit(SHOT_AUDIT[shot])
+        # the handlers' first call after the audit [0x010237ac]: a lit shot multiplier goes to this shot, so
+        # the shot's own awards already use it (left orbit 0x01033244, left ramp 0x01033824, center 0x01033b3c,
+        # right ramp, right orbit 0x01033488; the Optimus target gives the center's through its own hook)
+        if mb or shot != CENTER:
+            os_.hook("shot_first", shot)
+        if shot == RIGHT_ORBIT:
+            os_.hook("orbit_awards")                # special and extra ball collects (tf/features/awards.py)
         if mb:
             os_.hook("mb_shot", shot)               # the multiball and wizard shot rules
         self.battle_shot(shot)
@@ -956,7 +971,8 @@ class Battles(Feature):
             self.orbit_token = now + ORBIT_TOKEN_S if num == 6 else 0.0
             return
         self.orbit_token = now + ORBIT_TOKEN_S
-        self.os.hold_coil("c_orbit_control_gate", 5, GATE_TICKS)
+        if self.os.adj[GATE_OFF_ADJ] != 1:          # adj 84 DISABLE ORBIT CONTROL GATE [0x0102c0cc]
+            self.os.hold_coil("c_orbit_control_gate", 5, GATE_TICKS)
         self.shot(LEFT_ORBIT)
 
     def sw_5(self):

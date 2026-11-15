@@ -4,7 +4,9 @@ bonus = (670 x bonus_count + held_bonus) x bonus_mult, added with playfield mult
 - bonus_count (RAM 0x34b3c + 2(p-1)): 0 at ball start (event 0x13 hook 0x01000d58), +1 for every playfield
   switch handler through 0x1032d2c -> 0x01000dfc (tf/switches.py calls hook bonus_add);
 - held_bonus (0x2111ce0 + 4(p-1)): 125,000 at ball start unless BONUS HOLD (game flag 0x4b); with it, the end
-  of that ball stores 670 x count + held as the next ball's held bonus (0x01000f68; inferred end of ball);
+  of the ball stores 670 x count + held as the held bonus [0x01000f68] (not on a tilted ball). The flag is the
+  player's own and lasts the game (rom_data/io/game_flags.csv: per player, reset at game start only), so the
+  bonus keeps growing from ball to ball once held;
 - bonus_mult (0x2111cf0 + (p-1)): 1 at ball start unless BONUS X HOLD (flag 0x4a); +1 per call of 0x01000e44
   (hook bonus_x_add: the other side's lanes, the "%iX BONUS MULTIPLIER" award), cap 25.
 Checked against every reference trace's bonus (127,680 / 130,360 / 128,350 / 333,080 at 2X / 135,050).
@@ -33,9 +35,7 @@ class Bonus(Feature):
     def ball_start(self):
         """0x01000d58: count 0; held bonus and multiplier back unless held (flags 0x4b / 0x4a)."""
         pd = self.pd
-        if self.os.flag(BONUS_HOLD) and pd.get("bonus_count") is not None:
-            pd.bonus_held = UNIT * pd.get("bonus_count", 0) + pd.get("bonus_held", HELD)
-        else:
+        if not self.os.flag(BONUS_HOLD):
             pd.bonus_held = HELD
         if not self.os.flag(BONUS_X_HOLD):
             pd.bonus_x = 1
@@ -68,6 +68,8 @@ class Bonus(Feature):
         # the multiplier [0x01001358] over multiplier x value [0x01001388], the total [0x01001484] [0x0100161c];
         # the 2X.. counting pages of a higher multiplier are not in the capture
         os_.deff_start(25, sounds=sounds, total=total, values=[1, subtotal, pd.get("bonus_x", 1), total, total, total])
+        if os_.flag(BONUS_HOLD):                    # [0x01000f68]: held for the player's next ball
+            pd.bonus_held = subtotal
         os_.after(BONUS_TICKS, lambda: done(total))
 
 

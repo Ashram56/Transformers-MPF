@@ -20,6 +20,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SERVICE_JSON = os.path.join(ROOT, "rom", "mpf_package", "service_menu.json")
 INTERIM_JSON = os.path.join(ROOT, "game", "config", "interim", "service_menu.json")
 _DATA = None
+# adjustments the service menu does not list (owner's decision 2026-11-15): adj 46 PLAYER COMPETITION, which the
+# game does not model (docs/rom_differences.md); the ROM still keeps its value and default
+HIDDEN = (46,)
 
 
 def service_data():
@@ -107,7 +110,7 @@ class Adjustments:
 
     def menu(self, group):
         """Adjustment numbers of the STANDARD or FEATURE ADJUSTMENTS menu, in the ROM's menu order."""
-        rows = [a for a in self.info.values() if a["group"] == group]
+        rows = [a for a in self.info.values() if a["group"] == group and a["id"] not in HIDDEN]
         return [a["id"] for a in sorted(rows, key=lambda a: a["menu_order"])]
 
     def factory_reset(self):

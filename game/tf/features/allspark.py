@@ -41,6 +41,7 @@ BASE_WEIGHT = {1: 1, 2: 5, 3: 200, 4: 150, 5: 300, 6: 250, 7: 150, 8: 100, 9: 10
 COMPETITION_ITEM = {0: 1, 1: 2, 2: 3, 3: 12, 4: 11, 5: 10, 6: 9, 7: 8, 8: 4, 9: 7}
 ITEM_AUDIT = 74                         # + item: MYSTERY: LIGHT SPECIAL (75) .. SUPER POPS LIT (86)
 ADD_BALL_FLAG, ADD_TIME_FLAG = 0x14, 0x13
+ADD_BALL_SAVE, ADD_BALL_GRACE = 0x138, 0xbb
 BONUS_HOLD, BONUS_X_HOLD = 0x4b, 0x4a
 SUPER_POPS_LEFF = 32
 
@@ -89,6 +90,7 @@ class Allspark(Feature):
         """[0x0100a788] event 2, ball entered."""
         os_ = self.os
         os_.audit(ENTER_AUDIT)
+        os_.hook("shot_first", 0)                   # the shot multiplier, before every award [0x010237ac(1)]
         os_.hook("eject_modes")                     # the wizard modes' hits and starts first [0x0100a788]
         os_.hook("mb_shot", 0)
         os_.hook("battle_shot", 0)
@@ -211,18 +213,22 @@ class Allspark(Feature):
         os_ = self.os
         pd = self.pd
         if item == 1:
-            os_.specials_lit[os_.player_num - 1] += 1
-            os_.special_lamp_update()
+            os_.hook("special_light")               # [0x01008528] (tf/features/awards.py)
         elif item == 2:
-            os_.light_extra_ball()
+            os_.hook("eb_light")                    # [0x01007b40]
         elif item == 3:
             os_.score_add(200000)
         elif item == 4:
             os_.hook("bonus_x_add")
         elif item == 5:
-            os_.flag_set(ADD_BALL_FLAG)
-            os_.multiball_start(os_.rom_balls_in_play() + 1)
-            os_.hook("add_ball")
+            # [0x01024a60] -> [0x0103aff4]: multiball_start(balls_in_play() + 1, save 0x138, grace 0xbb). The ROM's
+            # count leaves out the ball this eject holds and its multiball task launches up to the count on the
+            # playfield [0x0103a87c]; multiball_start here counts the held ball, so it is added back.
+            held = 1 if os_.ball_held and os_.rom_balls_in_play() < os_.balls_in_play() else 0
+            if os_.multiball_start(os_.rom_balls_in_play() + held + 1, save_ticks=ADD_BALL_SAVE,
+                                   grace_ticks=ADD_BALL_GRACE):
+                os_.flag_set(ADD_BALL_FLAG)
+                os_.hook("add_ball")
         elif item == 6:
             os_.hook("add_time")
             os_.flag_set(ADD_TIME_FLAG)
