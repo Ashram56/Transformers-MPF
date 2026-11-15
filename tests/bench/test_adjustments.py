@@ -176,6 +176,13 @@ class TestMachine(BenchCase):
         self.wait(3)
         self.assertIsNotNone(self.game)
 
+    def test_adj_46_is_not_in_the_service_menu(self):
+        """Adj 46 PLAYER COMPETITION is hidden (tf/settings.py HIDDEN); the other standard adjustments stay."""
+        listed = self.tf.adj.menu("standard")
+        self.assertNotIn(46, listed)
+        self.assertIn(45, listed)
+        self.assertIn(47, listed)
+
     def test_adj_41_coin_door_ball_saver(self):
         """adj 41 COINDOOR BALL SAVER [0x0001ffac]: opening the door in play saves the ball that drains next."""
         for value, saved in ((0, False), (1, True)):
