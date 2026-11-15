@@ -22,7 +22,8 @@ deff 48 (n-WAY COMBO) is never started in 1.80 (no starter; the status panel sho
 
 Shot multipliers (per ball, 1X unless the shot's hold flag 0x16 + s is set):
 - lighting (own lanes complete, left-eject award): if a shot is below 2X, mult_lit and leff 37 run, deff 44;
-- the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38 (inferred: after its combo award).
+- the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38, first thing in the shot's handler after
+  its audit [0x010237ac], so that shot's mode-start, battle, jackpot and combo awards are already doubled.
 - lighting with all six at 2X starts the roving 3X [0x010236e8] (task 0xb6, until the ball ends) [0x01023650]:
   index 6 (the right orbit) moving to 2 and back every 92 ticks; the shot at the index is 3X, and for the
   first 46 ticks after a move the shot it left too [0x01023538]. Leff 39 (rule while task 0xb6 runs) blinks
@@ -53,7 +54,8 @@ X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58
 
 class Combos(Feature):
     name = "combos"
-    HOOKS = ("player_first_ball", "ball_start", "switch", "sw_51", "shot_mult_light", "ball_end", "tilt", "combo_shot")
+    HOOKS = ("player_first_ball", "ball_start", "switch", "sw_51", "shot_mult_light", "ball_end", "tilt", "combo_shot",
+             "shot_first")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -142,7 +144,6 @@ class Combos(Feature):
             os_.score_add(mult * (100000 + 25000 * self.way))
             os_.leff_start(AWARD_LEFF)
             os_.audit(AWARD_AUDIT)
-        self._mult(index)
         restart = not os_.task_running(WINDOW_TASK)
         os_.task_kill(WINDOW_TASK)
         if os_.any_multiball():
@@ -153,6 +154,12 @@ class Combos(Feature):
         os_.task_start(WINDOW_TASK, STEP_TICKS, self._step)
         if restart:
             os_.request_refresh()
+
+    def shot_first(self, index):
+        """The shot handlers call [0x010237ac] right after their audit, before any award (tf/features/battles.py
+        Battles.shot, tf/features/allspark.py): the awards of the shot that takes the multiplier are already 2X."""
+        if self.os.game and self.os.in_play and not self.os.tilted:
+            self._mult(index)
 
     def _mult(self, index):
         """[0x010237ac]: a lit shot multiplier goes to the shot if it is below 2X."""

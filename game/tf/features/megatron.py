@@ -33,7 +33,13 @@ leff 72, sound 0xe4, audit 0x7b); after 10 the center lane scores 3 double jackp
 audit 0x7d, requirement 0 completed) and the jackpots start over.
 End: down to one ball the running flag goes (music back), 218 ticks later the total (A deff 74 + leff 67, D deff
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
-Not modelled: task 0x57, adj 69 virtual lock. The rule leff (62 / 70) flashes the lit shots from the side's mask.
+Ball handling [0x0100a1f8] (run after every lock entry and at every rules refresh): the device keeps lit + locked
+balls of the player at the ball, at most 3 (its five switches less two), and none while a multiball or the side mode
+runs, within the back-door task, or with adj 69 MEGATRON M.B. VIRTUAL LOCK = YES; every ball above that is kicked
+out. So a lock counted while the device is full (another player's balls) or on adj 69 is a virtual lock: the ball
+comes back and no new one is served. The kept balls stay over balls and players (hardware.yaml: the hold does not
+reset at a ball end) and go home when the game ends (MPF needs them in the trough, docs/rom_differences.md).
+Not modelled: task 0x57. The rule leff (62 / 70) flashes the lit shots from the side's mask.
 """
 import random
 
@@ -52,6 +58,8 @@ RELEASE_EVENT = "tf_megatron_release"
 ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)), (0x40, (29,)))
 SHOT_LAMPS = {62: ARROWS, 70: ARROWS + ((0x80, (59,)),)}
 SETTLE_TICKS = 46
+KEEP_MAX = 3                # [0x0100a1f8]: the device's 5 switches (42 jam, 41-38) - 1, less one more
+VIRTUAL_LOCK_ADJ, AUTOFIRE_ADJ = 69, 89
 SERVE_TICKS = 155
 ENTRY_POINTS = 5120
 BACK_DOOR_S = 187 * 0.01626
@@ -349,7 +357,7 @@ class Decepticon(Side):
 
 class Megatron(Feature):
     name = "megatron"
-    HOOKS = ("player_first_ball", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
+    HOOKS = ("player_first_ball", "ball_start", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
              "ball_end", "tilt", "megatron_running", "lock_lit", "wizard_reset", "device_kicking")
 
     def __init__(self, os_):
@@ -374,6 +382,9 @@ class Megatron(Feature):
             os_.lamps.leff_code(side.rule_leff,
                                 shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.mask)(side)))
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
+        self.machine.events.add_handler("game_ended", self._game_ended)
+        self.machine.events.add_handler("ball_started", self._ball_started)
+        self.ball_live = False      # MPF has started the ball: its ball count can take the balls the lock gives back
 
     def player_first_ball(self):
         pd = self.pd
@@ -448,6 +459,21 @@ class Megatron(Feature):
             for _ in range(count - self.in_device):
                 self._entered()
         self.in_device = max(count, self.locked_held + self.pending)
+        if count < self.locked_held:
+            self.os.after(SETTLE_TICKS, self._left_check)
+
+    def _left_check(self):
+        """A kept ball left the device without the rules asking (the ball search pulses the lock's coil,
+        BALL_SEARCH_SWEEP in tf/os_layer.py): it is a ball in play again, as the ROM counts the balls from its
+        devices [0x0103a5ec]; the player's lock counts stay (the lock is "virtual" from then on)."""
+        os_ = self.os
+        lost = self.locked_held - self._count()
+        if lost <= 0 or self.pending or self.kicking:
+            return
+        self.locked_held -= lost
+        self.in_device = self._count()
+        if os_.game and not os_.state & 0x14:
+            os_.game.balls_in_play += lost
 
     def _entered(self):
         os_ = self.os
@@ -460,18 +486,46 @@ class Megatron(Feature):
         back_door = os_.now - self.back_door_at < BACK_DOOR_S
         os_.after(SETTLE_TICKS, lambda: self._handle(back_door))
 
-    def _keep_check(self, **kwargs):
-        """[0x0100a1f8]: the device keeps no ball while a multiball (any_multiball_running 0x01006704) or the
-        side mode (flag 0x3c) runs, so the locked balls go back into play; the lock count stays. Timed battles,
-        double and fast scoring keep them. The kicks use the multiball release spacing (inferred)."""
+    def keep(self):
+        """[0x0100a1f8]: how many balls the device keeps: lit + locked of the player at the ball, at most 3; none
+        while a multiball (any_multiball_running 0x01006704) or the side mode (flag 0x3c) runs, within the
+        back-door task 0x4f, or with adj 69 MEGATRON M.B. VIRTUAL LOCK = YES. Timed battles, double and fast
+        scoring keep them."""
         os_ = self.os
-        if not self.locked_held or not os_.game or not (os_.any_multiball() or os_.flag(0x3c)):
+        if not os_.game or os_.any_multiball() or os_.flag(0x3c) or os_.adj[VIRTUAL_LOCK_ADJ] == 1 \
+                or os_.now - self.back_door_at < BACK_DOOR_S:
+            return 0
+        pd = self.pd
+        return min(pd.get("mtl_lit", 0) + pd.get("mtl_locked", 0), KEEP_MAX)
+
+    def _keep_check(self, **kwargs):
+        """[0x0100a1f8] as a rule (list 1 of the rules refresh): the balls above keep() go back into play; the lock
+        counts stay. The kicks use the multiball release spacing (inferred). Not at the end of a ball."""
+        os_ = self.os
+        if not os_.game or not os_.in_play or not self.ball_live:
             return
-        held, self.locked_held = self.locked_held, 0
-        os_.game.balls_in_play += held
-        for i in range(held):
+        excess = self.locked_held - self.keep()
+        if excess <= 0:
+            return
+        self.locked_held -= excess
+        os_.game.balls_in_play += excess
+        for i in range(excess):
             os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT),
                                             RELEASE_COILS[min(i, len(RELEASE_COILS) - 1)])
+
+    def ball_start(self):
+        self.ball_live = False
+
+    def _ball_started(self, **kwargs):
+        """The player's ball is in play (MPF has set its ball count to 1): the device keeps this player's balls."""
+        self.ball_live = True
+        self._keep_check()
+
+    def _game_ended(self, **kwargs):
+        """The kept balls go home with the game (hardware.yaml releases them: MPF starts a game with every ball
+        in the trough)."""
+        self.locked_held = self.pending = self.kicking = 0
+        self.ball_live = False
 
     def sw_13(self):
         self.back_door_at = self.os.now
@@ -491,12 +545,19 @@ class Megatron(Feature):
             os_.base_score(ENTRY_POINTS)
         if keep == "multiball":
             return
-        if keep:
+        if keep and self.locked_held < self.keep():
             self.locked_held += 1
-            os_.after(SERVE_TICKS, self._serve)
-        else:
+            if self._trough_empty():
+                # nothing to serve (the other balls are in play: a kept ball the ball search kicked out): the
+                # locked ball leaves MPF's count now, the play goes on with the others
+                if not os_.state & 0x04:
+                    os_.game.balls_in_play = max(os_.game.balls_in_play - 1, 0)
+            else:
+                os_.after(SERVE_TICKS, self._serve)
+        else:                                       # not a lock, or a lock the device does not keep [0x0100a1f8]
             self.kicking += 1
             self._kick()
+            self._keep_check()
 
     def device_kicking(self):
         return self.kicking > 0 or None
@@ -604,12 +665,23 @@ class Megatron(Feature):
         if not self.kicking:
             self.os.after(EJECT_OVER_TICKS, self.os.device_ejected)
 
+    def _trough_empty(self):
+        trough = self.machine.ball_devices["bd_trough"] if "bd_trough" in self.machine.ball_devices else None
+        return trough is not None and trough.available_balls <= 0
+
     def _serve(self):
-        """AUTOFIRE AFTER LOCK (adj 89): a new ball from the trough, launched."""
+        """The ball served after a lock (serve type 5, event 0x0f hook [0x0100a074]): launched by the game with
+        adj 89 AUTOFIRE AFTER LOCK = YES, else left in the shooter lane for the player."""
         os_ = self.os
-        if not os_.game or os_.tilted:
+        if not os_.game:
             return
-        self.machine.playfield.add_ball(balls=1, player_controlled=False)
+        if os_.tilted or self._trough_empty():
+            # no serve on a tilted ball, nor with a trough emptied since the lock: the ball MPF still counts for
+            # it is given back, so the ball can end
+            if not os_.state & 0x04:
+                os_.game.balls_in_play = max(os_.game.balls_in_play - 1, 0)
+            return
+        self.machine.playfield.add_ball(balls=1, player_controlled=os_.adj[AUTOFIRE_ADJ] != 1)
 
     # ------------------------------------------------------------------ shots
 
@@ -632,6 +704,7 @@ class Megatron(Feature):
             side.add_ball()
 
     def ball_end(self):
+        self.ball_live = False
         for side in self.sides.values():
             if side.alive:
                 side.kill()

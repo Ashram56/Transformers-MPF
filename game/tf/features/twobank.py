@@ -6,8 +6,10 @@
   double and fast scoring): 5,000, sound 0x261, leff 143.
 - Else twobank_left > 0: - 1, 75,000, sound 0x263, leff 144, deff 126 "n MORE FOR FAST SCORING"; reaching 0
   shows deff 131 "FAST SCORING READY" instead and leffs 147 / 148 run while it is ready.
-- twobank_left = 0: fast scoring starts [0x01004394]: 100,000, starts + 1, twobank_left = 5 + 2 x starts (cap
-  12; observed 7 at the first ball, 9 after the first start), audit 106.
+- twobank_left = 0: fast scoring starts [0x01004394]: 100,000, audit 106; the 2-bank level + 1 and
+  twobank_left = 5 + 2 x level, at most 12 [0x0102e88c]. The level (0x2112090 + p-1) starts at adj 82
+  MUDFLAP/SKIDS TARGET DIFFICULTY at the player's first ball [0x0102e8f8] (EASY = 1: observed 7 at the first
+  ball, 9 after the first start).
 - Fast scoring: fast_value = 10,000 + 5,000 x starts before (cap 50,000); deff 132 0.9 s later (sound 0x289,
   leff 158), background deff 133 "ALL TARGETS = n" with music 0x027, leffs 159 / 160. The countdown, adj 81
   counts of 66 ticks, holds while a show or deff 132 is up (observed: first count 5.1 s after the start).
@@ -32,7 +34,8 @@ HIT = (75000, 0x263, 144)
 LEFT_DEFF, READY_DEFF = 126, 131
 READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
-FIRST_LEFT = 7
+FIRST_LEFT = 7                       # at the factory level (adj 82 EASY = 1)
+LEVEL_ADJ, LEFT_BASE, LEFT_STEP, LEFT_MAX = 82, 5, 2, 12
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
 FS_DEFF_S, TICK_S = 3.97, 0.01626     # deff 132's length (the capture), one tick
 FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF = 132, 133, 134, 135, 136, 137
@@ -76,8 +79,14 @@ class TwoBank(Feature):
         return bool(self.os.game) and self.pd.get("twobank_left", FIRST_LEFT) == 0
 
     def player_first_ball(self):
-        self.pd.twobank_left = FIRST_LEFT
+        """[0x0102e8f8]: the 2-bank level from adj 82, the hits to the first fast scoring from it [0x0102e88c]."""
+        self.pd.twobank_level = self.os.adj[LEVEL_ADJ]
+        self.pd.twobank_left = self.hits_for(self.pd.twobank_level)
         self.pd.fs_starts = 0
+
+    @staticmethod
+    def hits_for(level):
+        return min(LEFT_BASE + LEFT_STEP * level, LEFT_MAX)
 
     def sw_50(self):
         self._target(50)
@@ -122,7 +131,8 @@ class TwoBank(Feature):
         os_.score_add(START_POINTS)
         self.value = min(10000 + 5000 * pd.get("fs_starts", 0), 50000)
         pd.fs_starts = pd.get("fs_starts", 0) + 1
-        pd.twobank_left = min(5 + 2 * (pd.fs_starts + 1), 12)
+        pd.twobank_level = min(pd.get("twobank_level", 1) + 1, 255)
+        pd.twobank_left = self.hits_for(pd.twobank_level)
         os_.audit(START_AUDIT)
         self.running = self.counting = True
         self.lingering = False

@@ -316,7 +316,8 @@ class Decepticon(Side):
 class Optimus(Feature):
     name = "optimus"
     HOOKS = ("player_first_ball", "ball_start", "base_music", "sw_11", "sw_51", "mb_shot", "mb_shot_6",
-             "multiball_end", "add_ball", "ball_end", "tilt", "wizard_reset", "optimus_running")
+             "multiball_end", "add_ball", "ball_end", "tilt", "wizard_reset", "optimus_running",
+             "side_mode_started")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -359,6 +360,13 @@ class Optimus(Feature):
     def wizard_reset(self):
         for side in self.sides.values():
             side.reset()
+
+    def side_mode_started(self):
+        """[0x01025030(1)], from the side mode's start [0x0100fff0]: the access count back to 0 (flags 0x48 and
+        0x49 cleared, 0x48 set again)."""
+        self.pd.opt_access = 0
+        self.os.flag_clear(MB_FLAG)
+        self.os.flag_set(ACCESS_FLAG)
 
     # ------------------------------------------------------------------ gates
 

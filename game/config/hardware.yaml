@@ -65,3 +65,6 @@ ball_holds:
     enable_events: game_started
     disable_events: game_ended
     release_one_events: tf_megatron_release
+    # the locked balls stay over balls and players (the ROM's device keeps them [0x0100a1f8]); MPF's default reset
+    # at every ball start and end would kick them out. They go home when the game ends.
+    reset_events: machine_reset_phase_3, game_ended, service_mode_entered

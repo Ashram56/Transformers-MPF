@@ -1,0 +1,242 @@
+{
+ "allspark_energon": {
+  "audit": "OK 19 events",
+  "coil": "DIFF 129/151 bursts match",
+  "deff_start": "OK 19 events",
+  "lamp": "DIFF 73/74 samples match",
+  "leff_start": "DIFF at event #21 (reference has 40, candidate 34)",
+  "multiball_start": "OK 0 events",
+  "score": "DIFF at event #15 (reference has 16, candidate 16)",
+  "sound": "DIFF at event #17 (reference has 70, candidate 34)"
+ },
+ "basic": {
+  "audit": "OK 19 events",
+  "coil": "DIFF 4/9 bursts match",
+  "deff_start": "OK 9 events",
+  "lamp": "DIFF 46/47 samples match",
+  "leff_start": "OK 18 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 9 events",
+  "sound": "DIFF at event #14 (reference has 19, candidate 19)"
+ },
+ "battle_blackout": {
+  "audit": "DIFF at event #46 (reference has 47, candidate 47)",
+  "coil": "DIFF 140/157 bursts match",
+  "deff_start": "DIFF at event #18 (reference has 19, candidate 19)",
+  "lamp": "DIFF 76/77 samples match",
+  "leff_start": "DIFF at event #16 (reference has 44, candidate 42)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 18 events",
+  "sound": "DIFF at event #11 (reference has 23, candidate 1891)"
+ },
+ "battle_bumblebee": {
+  "audit": "OK 37 events",
+  "coil": "DIFF 222/232 bursts match",
+  "deff_start": "OK 20 events",
+  "lamp": "DIFF 72/73 samples match",
+  "leff_start": "DIFF at event #16 (reference has 39, candidate 38)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 14 events",
+  "sound": "DIFF at event #12 (reference has 18, candidate 952)"
+ },
+ "battle_devastator": {
+  "audit": "OK 34 events",
+  "coil": "DIFF 165/176 bursts match",
+  "deff_start": "OK 19 events",
+  "lamp": "DIFF 65/66 samples match",
+  "leff_start": "DIFF at event #18 (reference has 38, candidate 39)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 13 events",
+  "sound": "DIFF at event #10 (reference has 956, candidate 16)"
+ },
+ "battle_ironhide": {
+  "audit": "OK 31 events",
+  "coil": "DIFF 162/170 bursts match",
+  "deff_start": "OK 18 events",
+  "lamp": "DIFF 61/62 samples match",
+  "leff_start": "OK 32 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 11 events",
+  "sound": "DIFF at event #14 (reference has 16, candidate 15)"
+ },
+ "battle_mudflap": {
+  "audit": "OK 30 events",
+  "coil": "DIFF 135/145 bursts match",
+  "deff_start": "OK 16 events",
+  "lamp": "DIFF 60/61 samples match",
+  "leff_start": "OK 28 events",
+  "multiball_start": "OK 1 events",
+  "score": "OK 12 events",
+  "sound": "OK 15 events"
+ },
+ "battle_ratchet": {
+  "audit": "OK 31 events",
+  "coil": "DIFF 133/142 bursts match",
+  "deff_start": "OK 15 events",
+  "lamp": "DIFF 58/59 samples match",
+  "leff_start": "DIFF at event #18 (reference has 29, candidate 29)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 11 events",
+  "sound": "OK 950 events"
+ },
+ "battle_shockwave": {
+  "audit": "OK 32 events",
+  "coil": "DIFF 163/173 bursts match",
+  "deff_start": "OK 17 events",
+  "lamp": "DIFF 64/65 samples match",
+  "leff_start": "OK 33 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 12 events",
+  "sound": "DIFF at event #14 (reference has 16, candidate 15)"
+ },
+ "battle_starscream": {
+  "audit": "OK 31 events",
+  "coil": "DIFF 132/141 bursts match",
+  "deff_start": "OK 16 events",
+  "lamp": "DIFF 99/100 samples match",
+  "leff_start": "OK 30 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 11 events",
+  "sound": "OK 13 events"
+ },
+ "coils": {
+  "audit": "OK 23 events",
+  "coil": "DIFF 9/15 bursts match",
+  "deff_start": "OK 8 events",
+  "lamp": "DIFF 84/85 samples match",
+  "leff_start": "OK 20 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 10 events",
+  "sound": "DIFF at event #15 (reference has 19, candidate 17)"
+ },
+ "combos": {
+  "audit": "OK 44 events",
+  "coil": "DIFF 75/88 bursts match",
+  "deff_start": "OK 15 events",
+  "lamp": "DIFF 95/96 samples match",
+  "leff_start": "DIFF at event #33 (reference has 38, candidate 37)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 26 events",
+  "sound": "DIFF at event #14 (reference has 16, candidate 15)"
+ },
+ "game_flow": {
+  "audit": "OK 42 events",
+  "coil": "DIFF 67/88 bursts match",
+  "deff_start": "DIFF at event #13 (reference has 25, candidate 25)",
+  "lamp": "DIFF 172/210 samples match",
+  "leff_start": "DIFF at event #15 (reference has 37, candidate 37)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 18 events",
+  "sound": "OK 48 events"
+ },
+ "megatron_autobot": {
+  "audit": "OK 35 events",
+  "coil": "DIFF 320/517 bursts match",
+  "deff_start": "DIFF at event #5 (reference has 21, candidate 21)",
+  "lamp": "DIFF 95/96 samples match",
+  "leff_start": "DIFF at event #5 (reference has 42, candidate 42)",
+  "multiball_start": "OK 1 events",
+  "score": "OK 16 events",
+  "sound": "DIFF at event #8 (reference has 39, candidate 36)"
+ },
+ "megatron_decepticon": {
+  "audit": "OK 41 events",
+  "coil": "DIFF 466/583 bursts match",
+  "deff_start": "OK 29 events",
+  "lamp": "DIFF 99/100 samples match",
+  "leff_start": "DIFF at event #24 (reference has 52, candidate 52)",
+  "multiball_start": "OK 1 events",
+  "score": "OK 23 events",
+  "sound": "DIFF at event #9 (reference has 1024, candidate 39)"
+ },
+ "optimus_autobot": {
+  "audit": "OK 43 events",
+  "coil": "DIFF 409/516 bursts match",
+  "deff_start": "OK 27 events",
+  "lamp": "DIFF 84/85 samples match",
+  "leff_start": "DIFF at event #19 (reference has 48, candidate 45)",
+  "multiball_start": "OK 1 events",
+  "score": "OK 22 events",
+  "sound": "DIFF at event #12 (reference has 990, candidate 966)"
+ },
+ "optimus_decepticon": {
+  "audit": "OK 36 events",
+  "coil": "DIFF 402/499 bursts match",
+  "deff_start": "OK 28 events",
+  "lamp": "DIFF 79/80 samples match",
+  "leff_start": "DIFF at event #19 (reference has 43, candidate 42)",
+  "multiball_start": "OK 1 events",
+  "score": "OK 22 events",
+  "sound": "DIFF at event #10 (reference has 972, candidate 960)"
+ },
+ "scoring": {
+  "audit": "OK 57 events",
+  "coil": "DIFF 101/170 bursts match",
+  "deff_start": "OK 35 events",
+  "lamp": "DIFF 176/177 samples match",
+  "leff_start": "DIFF at event #85 (reference has 104, candidate 98)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 63 events",
+  "sound": "DIFF at event #64 (reference has 84, candidate 85)"
+ },
+ "side_left": {
+  "audit": "OK 11 events",
+  "coil": "OK 2 bursts",
+  "deff_start": "OK 5 events",
+  "lamp": "DIFF 17/18 samples match",
+  "leff_start": "OK 5 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 1 events",
+  "sound": "OK 9 events"
+ },
+ "side_right": {
+  "audit": "OK 11 events",
+  "coil": "OK 2 bursts",
+  "deff_start": "OK 5 events",
+  "lamp": "DIFF 17/18 samples match",
+  "leff_start": "OK 5 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 1 events",
+  "sound": "OK 9 events"
+ },
+ "sounds": {
+  "audit": "OK 20 events",
+  "coil": "DIFF 7/14 bursts match",
+  "deff_start": "OK 15 events",
+  "lamp": "OK 211 samples",
+  "leff_start": "OK 23 events",
+  "multiball_start": "OK 0 events",
+  "score": "OK 11 events",
+  "sound": "DIFF at event #12 (reference has 29, candidate 28)"
+ },
+ "switches": {
+  "audit": "OK 45 events",
+  "coil": "DIFF 89/117 bursts match",
+  "deff_start": "OK 30 events",
+  "lamp": "DIFF 202/203 samples match",
+  "leff_start": "DIFF at event #66 (reference has 72, candidate 69)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 61 events",
+  "sound": "DIFF at event #12 (reference has 87, candidate 52)"
+ },
+ "wizard_all_hail_megatron": {
+  "audit": "OK 52 events",
+  "coil": "DIFF 437/544 bursts match",
+  "deff_start": "DIFF at event #18 (reference has 22, candidate 22)",
+  "lamp": "DIFF 78/79 samples match",
+  "leff_start": "DIFF at event #40 (reference has 48, candidate 48)",
+  "multiball_start": "OK 0 events",
+  "score": "OK 15 events",
+  "sound": "DIFF at event #7 (reference has 984, candidate 957)"
+ },
+ "wizard_multiball": {
+  "audit": "OK 60 events",
+  "coil": "DIFF 613/742 bursts match",
+  "deff_start": "DIFF at event #8 (reference has 31, candidate 31)",
+  "lamp": "DIFF 124/125 samples match",
+  "leff_start": "DIFF at event #5 (reference has 56, candidate 57)",
+  "multiball_start": "OK 1 events",
+  "score": "OK 23 events",
+  "sound": "DIFF at event #8 (reference has 1908, candidate 969)"
+ }
+}

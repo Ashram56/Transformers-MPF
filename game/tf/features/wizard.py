@@ -11,11 +11,13 @@ The left eject (hook eject_modes, before its other rules) tries the wizard multi
 the side mode's start, the wizard multiball's start [0x0100a788]:
 - Side mode: own side's five completed (Decepticon 0-4, Autobot 5-9), flag 0x3d clear, no multiball or timed
   mode. 1,000,000 x the Allspark multiplier, flags 0x3c / 0x3d, audit 0x7e, requirement 10 collected and
-  completed, intro deff 81 (task 0x79, leff 78, sound 0x11a Decepticon / 0x119 Autobot), rule leff 79, background
+  completed, the lit battle moved to the other side's first one [0x01022dbc] (the only way to the other side's
+  battles: battles.md 4.1), the Optimus access restarted [0x01025030(1)], intro deff 81 (task 0x79, leff 78, sound 0x11a Decepticon / 0x119 Autobot), rule leff 79, background
   deff 82 + music 0x3c. Each main shot twice: (500,000 + 50,000 x shots made) x multiplier (deff 83, leff 81, sound
   0x11b, audit 0x7f); with all twelve made (leff 80) the Allspark scores the super = the shots' sum x multiplier
   (audit 0x80; deff 84, leff 82; total deff 85, leff 83) and the mode ends. A drain ends it with the total.
-- Wizard multiball: all 11 completed, side mode not running. multiball_start(4 / in play + 3, save 937, grace
+- Wizard multiball: all 11 completed, no multiball, side mode not running [0x010363b4] (a timed battle, double or
+  fast scoring does not block it). multiball_start(4 / in play + 3, save 937, grace
   312), flag 0x3e, wizard reset (requirements, battles, saved Megatron / Optimus progress), flag 0x3d cleared,
   audit 0x97, 1,000,000 x the Allspark multiplier, intro deff 86 (task 0x7c, leff 86), background deff 87 + music
   0x3d (rule leff 87). Each main shot three times: (500,000 + 50,000 x shots this round) x multiplier (deff 88, leff
@@ -32,6 +34,7 @@ AUTOBOT, DECEPTICON = 1, 2
 REQS = 11
 COLLECTED_AUDIT, COMPLETED_AUDIT = 0x81, 0x8c
 EB_FLAG = 0x15
+RESET_ADJ = 86
 SIDE_FLAG, SIDE_PLAYED_FLAG, WMB_FLAG, ADD_BALL_FLAG = 0x3c, 0x3d, 0x3e, 0x14
 SIDE_REQ = 10
 # battle shot ids (tf/features/battles.py) -> wizard shot index
@@ -69,7 +72,7 @@ UNCAPTURED = {WMB_HIT_DEFF: (2.55, (WMB_HIT_LEFF,), ((0.0, WMB_HIT_SOUND), (0.52
 
 class Wizard(Feature):
     name = "wizard"
-    HOOKS = ("player_first_ball", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
+    HOOKS = ("player_first_ball", "ball_start", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
              "tilt", "side_mode_running")
 
     def __init__(self, os_):
@@ -128,6 +131,14 @@ class Wizard(Feature):
         self.pd.wiz_req = [[0, 0] for _ in range(REQS)]
         self.pd.wmb_count = 0
 
+    def ball_start(self):
+        """Event 0x11 hook [0x010359d4]: with adj 86 RESET WIZARD AT BALL START = YES every requirement's collected
+        count goes back to 0 [0x010359f4(1)] (the completed ones stay): the extra ball of adj 83 then needs its
+        requirements collected within one ball."""
+        if self.os.adj[RESET_ADJ] == 1:
+            for req in self.reqs():
+                req[0] = 0
+
     def reqs(self):
         req = self.pd.get("wiz_req")
         if not req:
@@ -143,8 +154,8 @@ class Wizard(Feature):
             os_.audit(COLLECTED_AUDIT + r)
             started = sum(1 for x in req if x[0])
             if started == os_.adj[83] and not os_.flag(EB_FLAG):
-                os_.flag_set(EB_FLAG)
-                os_.light_extra_ball()
+                os_.flag_set(EB_FLAG)               # the player's own flag (rom_data/io/game_flags.csv)
+                os_.hook("eb_light")                # [0x01007b40] (tf/features/awards.py)
         else:
             req[r][1] = min(req[r][1] + 1, 255)
             os_.audit(COMPLETED_AUDIT + r)
@@ -174,7 +185,10 @@ class Wizard(Feature):
         return (not self.side_running and not os_.flag(SIDE_PLAYED_FLAG) and self.own_done() and self.quiet())
 
     def wmb_qualifies(self):
-        return not self.side_running and not self.wmb_running and self.all_done() and self.quiet()
+        """[0x010363b4]: all eleven completed, no multiball, the side mode not running. Timed battles, double and
+        fast scoring do not block it (they block the side mode [0x0100ff80])."""
+        return (not self.side_running and not self.wmb_running and self.all_done()
+                and not self.os.any_multiball())
 
     def side_mode_running(self):
         return self.side_running or None
@@ -244,6 +258,7 @@ class Wizard(Feature):
         os_.audit(SIDE_START_AUDIT)
         self.wizard_req(SIDE_REQ, 1)
         self.wizard_req(SIDE_REQ, 2)
+        os_.hook("side_mode_started")               # the other side's battles [0x01022dbc], Optimus [0x01025030(1)]
         sound = SIDE_INTRO_SOUND.get(side, 0x11a)
         os_.show(SIDE_INTRO_TASK, SIDE_INTRO, sounds=[(0, lambda: os_.sound(sound, in_deff=SIDE_INTRO))],
                  on_start=lambda: os_.deff_media(SIDE_INTRO, SIDE_INTRO_LEFF))
