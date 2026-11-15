@@ -160,7 +160,8 @@ You can also run the install line again. Both are safe to repeat; setup only red
 
 `.venv/bin/python -m pytest -q tests` (Windows: `.venv\Scripts\python -m pytest -q tests`). The display check:
 `.venv/bin/python scripts/render_check.py` (writes `captures/dmd_latest_x8.png`); the rules against the ROM's
-reference traces: `.venv/bin/python scripts/trace_check.py basic` (any trace in `rom/rules/traces/`). CI runs the
+reference traces: `.venv/bin/python scripts/trace_check.py basic` (any trace in `rom/rules/traces/`). The rules test bench (`scripts/bench.py`, [docs/test_bench.md](docs/test_bench.md)) plays every mode, the 98
+adjustments, several players and seeded random games against the rules read from the ROM. CI runs the
 tests on Windows, macOS and Linux, and the render check on Linux, for every push to `main`.
 
 ## More

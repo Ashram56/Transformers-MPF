@@ -254,6 +254,7 @@ class TfOS(CustomCode):
         self.serve_type = 0
         self._mb_pending = 0
         self._mb_save = (0, 0)
+        self._save_owed = 0         # outlane-save replacements waiting for the outlane ball to drain
         self._mb_balls = 0          # balls requested from the running multiball task (rom_balls_in_play)
         self.rules = []
         self._refresh_pending = False
@@ -1277,6 +1278,10 @@ class TfOS(CustomCode):
             # empty, so this ball just goes home (no re-serve, no ball save) (docs/rom_differences.md "Game restart")
             return {"balls": balls}
         self.device_ejecting = False
+        if self._save_owed and balls and not self.tilted:
+            # the replacement of an outlane save served with every ball in play: this drain is it (ball_save_try)
+            self._save_owed -= 1
+            return {"balls": balls - 1}
         if self._coindoor_save and self.mb_save_running() and not self.tilted:
             # the coin door ball saver's save (adj 41) re-serves even the last ball [0x0001ff74]
             self._mb_pending += balls
@@ -1658,7 +1663,13 @@ class TfOS(CustomCode):
         if not self.ball_save or self.tilted:
             return False
         self.serve(2)
-        self.game.balls_in_play += 1                 # the outlane ball still drains later
+        # the outlane ball still drains later. With every known ball in play MPF caps the count: nothing is added,
+        # and the outlane ball's drain is then the replacement's serve (_ball_drain gives it back as a save)
+        game = self.game
+        if game.balls_in_play >= self.machine.ball_controller.num_balls_known:
+            self._save_owed += 1
+        else:
+            game.balls_in_play += 1
         self.after(SAVE_EJECT_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
         self.kill_ball_save()
         if self.deff_start(20):
@@ -1689,7 +1700,7 @@ class TfOS(CustomCode):
         self.task_kill("search_run")                 # the search found the drained ball
         self.kill_ball_save()
         self.kill_mb_save()
-        self._mb_pending = 0
+        self._mb_pending = self._save_owed = 0
         self.task_kill(MB_TASK)
         self.display.clear()
         self.hook("ball_end")                        # event 0x1d: every mode stops
@@ -1813,7 +1824,8 @@ class TfOS(CustomCode):
 
     def _game_ended(self, **kwargs):
         self.state = ST_ATTRACT
-        self.tasks_kill_all()
+        self.state = ST_ATTRACT
+        self._save_owed = 0
         self._search_paused = None
         if self._search_handle:
             self.machine.clock.unschedule(self._search_handle)

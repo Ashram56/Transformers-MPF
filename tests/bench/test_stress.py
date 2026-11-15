@@ -68,6 +68,9 @@ class StressCase(BenchCase):
                 game = self.game                 # what the game looks like after the action, for the failure print
                 self.log[-1] += ("state {:#x}".format(self.tf.state), self.census(),
                                  game and game.balls_in_play, self.feature("megatron").locked_held,
+                                 "mbp {} held {} mpend {} kick {}".format(
+                                     self.tf._mb_pending, self.tf.ball_held, self.feature("megatron").pending,
+                                     self.feature("megatron").kicking),
                                  tuple(self.running_modes()) if game else ())
                 self.check(settled=False)
                 if rng.random() < 0.15:

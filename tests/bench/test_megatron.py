@@ -260,3 +260,35 @@ class TestLockTwoPlayers(BenchCase):
         self.check()
         self.end_game()
         self.check()
+
+
+class TestOutlaneSaveWithEveryBallInPlay(BenchCase):
+    PLAYERS = 2
+
+    def test_count_stays_exact(self):
+        """Stress seed 1105: the next player gets the three balls a back door shot releases from the lock, so all
+        four balls roll. An outlane save then cannot add a ball to MPF's count (capped at the balls it knows): the
+        outlane ball's drain is the replacement's serve [0x00019b34], and the lock still counts later."""
+        self.start_game()
+        self.assertTrue(self.end_ball())            # player 1's first ball is over
+        self.plunge()
+        self.settle()
+        for _ in range(3):                          # player 2 locks three
+            self.lock()
+        self.settle()
+        self.assertTrue(self.end_ball())            # player 1's second ball
+        self.plunge()
+        self.settle()
+        self.shoot("back_door")                     # the back door task keeps nothing [0x0100a1f8]: they come out
+        self.wait(12)
+        self.settle()
+        self.assertEqual(4, self.game.balls_in_play)
+        self.shoot("outlane_left")
+        self.drain(1)
+        self.wait(3)
+        self.settle()
+        self.check()
+        self.assertEqual(4, self.game.balls_in_play)
+        self.lock()
+        self.settle()
+        self.check()
