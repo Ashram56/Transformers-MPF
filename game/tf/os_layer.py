@@ -1691,7 +1691,10 @@ class TfOS(CustomCode):
             return
         queue.wait()
         if self.task_running(0x2b):
-            self.after(self.task_ticks_left(0x2b), lambda: self._ball_ending_go(queue))
+            # a drain seen by the trough cuts the search short by the ticks it takes to post its events
+            # (inferred from battle_blackout.jsonl: drain 75.74 s, search 76.14 s, bonus 77.25 s = 68 of 104 ticks)
+            left = max(self.task_ticks_left(0x2b) - BALL_SEARCH_EVENT_TICKS, 0)
+            self.after(left, lambda: self._ball_ending_go(queue))
             return
         self._ball_ending_go(queue)
 

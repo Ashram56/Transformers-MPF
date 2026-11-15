@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 from tests.bench import traces
 
 
-# known on main: the bonus 0.37 s late; one audit of battle_blackout out of order
-KNOWN = {("allspark_energon", "score"), ("battle_blackout", "audit")}
+# known on main: the bonus 0.37 s late
+KNOWN = {("allspark_energon", "score")}
 
 
 class TestReferenceTraces(unittest.TestCase):
