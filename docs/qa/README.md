@@ -95,7 +95,9 @@ line cites its routine and the QA id). The ball search's coil sweep is decoded f
 `rom/rom_data/io/ball_search_ops.json`: Optimus coil 0, top pop 5, left eject and Megatron lockup 6, right pop 10,
 bottom pop 15, slings 20 and 25 ticks, end 30; the game's `BALL_SEARCH_SWEEP` is the same, one tick later); still
 open there: the queued auto-launch's wait, the motor and gate from the event handlers. The serve and multiball
-tasks are not done yet.
+tasks are read from the code in `rom/rules/modes/ball_feed.md` (device settles 31 / 46 / 62 ticks from table
+0x040d17fc, the shooter task's 125 ticks, 6-tick polls); the game's Tron-derived `MB_EJECT_TICKS`,
+`MB_FIRST_EJECT_TICKS`, `SAVE_SERVE_TICKS` and `DEVICE_BUSY_TICKS` are for agent C to re-derive from it.
 
 ### Owner decisions
 
