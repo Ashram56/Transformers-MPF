@@ -16,7 +16,7 @@ game/tron/display.py, where the trace references below come from) and the same O
   task runs, mode clocks pause (and on Tron the VUK holds its ball).
 - Mode TOTAL tasks (when_idle, FUN_0100fd88) wait for no show and no foreground deff.
 - After an effect ends, and after a show ends, the deff rules re-assert the background deff (deff rule
-  0x000198a8): deff 19, or the deff of the true mode rule, restarts in the background during normal play.
+  0x000178b0): deff 19, or the deff of the true mode rule, restarts in the background during normal play.
 - Mode deff rules (lamp_rule_init list 2, os.deff_rule -> add_rule): on each rules refresh the true rule
   with the highest priority starts its background deff (even behind a show) when it changed, and its
   music call when that music is not already playing. With no mode rule true the score display rule runs
@@ -331,7 +331,7 @@ class Display:
             self._end_show()
         self._pump()
         if self.fg is None and self.bg is None:
-            # nothing left on the display: the deff rules [0x000198a8] put the background deff back (the
+            # nothing left on the display: the deff rules [0x000178b0] put the background deff back (the
             # score display, or the mode's), as after every effect (traces/flynns_arcade.jsonl 19.36 s,
             # end_of_line_multiball.jsonl 38.60 s: deff 19 as the effect in front ends)
             self.refresh()
@@ -381,7 +381,7 @@ class Display:
             on_start()
 
     def refresh(self):
-        """Deff rules [0x000198a8] after an effect ends: restart the background deff (deff 19 or a mode's)
+        """Deff rules [0x000178b0] after an effect ends: restart the background deff (deff 19 or a mode's)
         behind whatever runs, in normal play."""
         if self.os.in_play and self.bg is None and not self.show:
             deff_id, _, on_start = self.select()
@@ -471,7 +471,7 @@ class Display:
                 self._end_fg(stopped=True)
         self.shows.append(Show(task_id, deff_id, threshold, timeout, on_start, on_end, self.os.now, deff_args))
         self.os.ball_search_reload()
-        # FUN_0000c2b8 takes the first show task in the OS task list, i.e. the oldest one waiting
+        # FUN_0000b698 takes the first show task in the OS task list, i.e. the oldest one waiting
         # (traces/end_of_line_multiball.jsonl: task 0x87 deff 139, then 0x83 deff 133, then 0x97).
         # The show task first runs once its caller has finished (a deff the caller starts right after
         # queueing, e.g. deff 55 after the extra ball show 0x82, is on screen first).

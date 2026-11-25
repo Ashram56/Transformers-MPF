@@ -22,7 +22,7 @@ class GameOver(Feature):
         os_.deff_start(38, number=number, number_again=number)   # deff 38 prints the number (task + 0x34)
         forced = os_.forced.get("match")
         matched = 0
-        # match [0x0001b660]: adj 30 MATCH PERCENTAGE (11 = OFF). The number can match only while the
+        # match [0x00019668]: adj 30 MATCH PERCENTAGE (11 = OFF). The number can match only while the
         # machine's match rate (TOTAL MATCHES 0x0f x 100 / games 0x11, persistent audits) is below adj 30;
         # otherwise the ROM picks a number no player has.
         audits = os_.audits
@@ -41,7 +41,7 @@ class GameOver(Feature):
         for _ in range(matched):
             os_.audit(0x0f)
             if os_.adj_value(29) == 0:
-                os_.award_credit()                # FUN_00004cf0, then the knocker FUN_0001b370
+                os_.award_credit()                # FUN_000041a0, then the knocker FUN_00019378
                 os_.knock()
             else:
                 self.machine.events.post("tf_award_ticket" if os_.adj_value(29) == 1 else "tf_award_token")

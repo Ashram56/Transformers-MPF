@@ -1,8 +1,8 @@
 """Lamp matrix model: the ROM's game lamp image, flash mask, lamp-matrix effects (leffs) and flashers.
 
-The SAM OS keeps (read in Tron Legacy's decompile, Tron OS addresses; the same OS here):
-- the game image (Tron 0x3c204) that the rules write with lamp_on / lamp_off / lamp_on_solid / lamp_off_all /
-  lamp_toggle, plus the flash mask (Tron 0x3c218, lamp_bit_set): a lamp in the mask blinks while it is on;
+The SAM OS keeps (read in Tron Legacy's decompile, re-cited to tf_180; the same OS here):
+- the game image (RAM 0x36374, cleared by FUN_0000731c) that the rules write with lamp_on / lamp_off / lamp_on_solid / lamp_off_all /
+  lamp_toggle, plus the flash mask (RAM 0x36388, lamp_bit_set): a lamp in the mask blinks while it is on;
 - lamp override layers (lamp_layer_create(group, priority)): a mask of lamps and their own image,
   composited over the game image in priority order. The lamp-matrix effects (leff_start, tf_180 table
   0x040cfe00) draw through such layers while their task runs;
@@ -24,7 +24,7 @@ from tf.hw_numbers import rom_numbers
 from tf.os_layer import TICK
 
 LAMP_COUNT = 80
-FLASH_TICKS = 5             # compositor FUN_00007f68 inverts the flash phase every 5 passes (1/tick)
+FLASH_TICKS = 5             # compositor FUN_000073cc inverts the flash phase every 5 passes (1/tick)
 # The reference traces log the lamp outputs as libpinmame reports them: a lamp reads on while it was on
 # at any time in about the last 65 ms (a flashing insert: on ~146 ms, off ~16 ms; leff 14 blinking every
 # 10 ticks: on ~225 ms, off ~97 ms; anything toggled every 2 ticks reads solid). The trace applies that
@@ -269,8 +269,8 @@ class Lamps:
         self.os = os_
         self.machine = os_.machine
         self.clock = os_.machine.clock
-        self.image = set()          # game image 0x3c204: lamps on
-        self.flash = set()          # flash mask 0x3c218
+        self.image = set()          # game image 0x36374: lamps on
+        self.flash = set()          # flash mask 0x36388
         self.layers = []            # override layers, composited in (priority, creation) order
         self._seq = 0
         self.out = [0] * (LAMP_COUNT + 1)       # last output logged (filtered as libpinmame reports it)
@@ -313,12 +313,12 @@ class Lamps:
     # ------------------------------------------------------------------ game image (ROM names)
 
     def lamp_on(self, n):
-        """lamp_on(n, 0x3c204, 0xff): on; a lamp in the flash mask keeps flashing."""
+        """lamp_on(n, 0x36374, 0xff): on; a lamp in the flash mask keeps flashing."""
         self.image.add(n)
         self.changed()
 
     def lamp_off(self, n):
-        """lamp_off(n, 0x3c204, 0xff): off (the flash bit stays)."""
+        """lamp_off(n, 0x36374, 0xff): off (the flash bit stays)."""
         self.image.discard(n)
         self.changed()
 
@@ -335,7 +335,7 @@ class Lamps:
         self.changed()
 
     def lamp_flash(self, n):
-        """lamp_on + lamp_bit_set(n, 0x3c218) (FUN_01015094(n, 1)): flashing."""
+        """lamp_on + lamp_bit_set(n, 0x36388) (FUN_01015094(n, 1)): flashing."""
         self.image.add(n)
         self.flash.add(n)
         self.changed()
@@ -366,7 +366,7 @@ class Lamps:
         return 0 if n not in self.image else 2 if n in self.flash else 1
 
     def clear(self):
-        """FUN_00007eb8: game image, flash mask and leff images cleared (game start / end)."""
+        """FUN_0000731c: game image, flash mask and leff images cleared (game start / end)."""
         self.image.clear()
         self.flash.clear()
         self.changed()

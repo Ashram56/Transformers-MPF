@@ -1,4 +1,4 @@
-"""Slam tilt (game_flow.md 5.3, slam_tilt [0x00023e40], slam_reset_task [0x00023e18]).
+"""Slam tilt (game_flow.md 5.3, slam_tilt [0x0001d534], slam_reset_task [0x0001d50c]).
 
 The slam switch in a game: the game is lost. Flippers off, every mode stops (event 0x54), deff 24
 "SLAM TILT", leff 12, sound 0x018; task 0x39 then resets the machine after 218 + 93 ticks. The reset is
@@ -45,7 +45,7 @@ class SlamTilt(Feature):
         os_.ball_search_reload(15)
 
     def reset(self):
-        """thunk_FUN_00010ce8(0): the machine resets; the game in progress is gone."""
+        """thunk_FUN_000100d0(0): the machine resets; the game in progress is gone."""
         if self.machine.game:
             self.machine.game.end_game()
 

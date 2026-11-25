@@ -1,6 +1,6 @@
 """Attract mode: deff 1 (the attract pages) and leff 1 (the attract lamp show).
 
-Started at power-up and after every game (OS event 0x08, Tron [0x000015d4]): deff 1 and leff 1. On tf_180 both
+Started at power-up and after every game (OS event 0x08, attract_start [0x00000a84]): deff 1 and leff 1. On tf_180 both
 are in the deff and leff tables with Tron's priorities and flags (deff 1: priority 1, background; leff 1:
 priority 1); what leff 1 draws (game code 0x01009e78) comes with the ROM extraction's lamp effects, and the
 attract pages with its display effects. Tron's attract timings (power-up to deff 1: 0.992 s) are kept.

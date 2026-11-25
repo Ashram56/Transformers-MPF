@@ -41,6 +41,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | M4 | Optimus Decepticon super x the center lane multiplier | `0x01029bf4` |
 | M13 | the never-set grace flags 0x26 / 0x2a are no longer set | grep: only `game_flag_clear` |
 | P1 | BONUS HOLD and BONUS X HOLD last one ball; no held bonus stored when tilted | `0x01000d58`, `0x01000f68` |
+| F13 | the OS-layer files cite tf_180's routines, not Tron 1.74's: about 110 citations (bracketed addresses, `FUN_` names, RAM and the power table) re-cited by matching each Tron routine of Tron-Legacy-LE-ROM-Decryption `code/tron_game_decompiled_v2.c` against the tf_180 decompile (normalised bodies), ties settled by reading both; still marked Tron: `any_multiball_running` (Tron 0x0100f918) and the score-display music rules (Tron 0x0100f594 / 0x0100f5c8), no tf_180 match yet | e.g. serve_ball `0x0103b39c`, score_add `0x0001caf0`, multiball_start `0x0103aec0`, end of ball `0x00019e44`, slam `0x0001d534` |
 
 All 24 trace scenarios give the same comparison before and after these fixes (no trace reaches them).
 
@@ -50,7 +51,6 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F13 | `os_layer.py`, `display.py`, `lamps.py`, `credits.py`, `settings.py`, `high_scores.py`, `slam_tilt.py` cite Tron 1.74 OS addresses, wrong in tf_180 (rule 3: re-cite every one to the tf_180 routine) | high |
 | M5, P11 | center lane / Optimus lockout: only task 0x54 (started by sw 51) blocks sw 11; sw 51 blocked by 0x4e / 0x54 | medium |
 | F4, F5 | held plumb bob tilts after 124 ticks; the bob is taken in the end of ball and bonus | medium |
 | F6, F7 | deff equal priority needs flags & 3; hold tail per deff (1, 2, 10, 15, 41 ticks) | medium |

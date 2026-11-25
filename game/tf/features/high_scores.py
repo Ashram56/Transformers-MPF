@@ -1,20 +1,20 @@
 """High-score table and initials entry (game_flow.md 5.5; OS code, not a rules mode).
 
-Table [0x0001a554 / 0x0001a5c0]: one list of five entries, GRAND CHAMPION then HIGH SCORE #1-#4; an entry is a
+Table [0x0001855c / 0x000185c8]: one list of five entries, GRAND CHAMPION then HIGH SCORE #1-#4; an entry is a
 name and a score, kept in MPF's data file "tf_high_scores" like the ROM's NVRAM records.
-- Reset of an entry [0x0001a728]: the default name (3 initials, or the 10-letter name on adj 60) and the
+- Reset of an entry [0x00018730]: the default name (3 initials, or the 10-letter name on adj 60) and the
   score of its adjustment (adj 49 GRAND CHAMPION SCORE, adj 50-53 HIGH SCORE #1-#4). RESET GRAND CHAMPION
-  resets entry 0 (flag 1), RESET HIGH SCORES entries 1-4 (flag 2) [0x0001a9f4], RESET FACTORY SETTINGS
-  all [0x0001ab18].
-- adj 61 HSTD RESET COUNT [0x0001a4f0], at every game start while adj 48 = YES: a counter (reloaded from
+  resets entry 0 (flag 1), RESET HIGH SCORES entries 1-4 (flag 2) [0x000189fc], RESET FACTORY SETTINGS
+  all [0x00018b20].
+- adj 61 HSTD RESET COUNT [0x000184f8], at every game start while adj 48 = YES: a counter (reloaded from
   adj 61) counts the games down; at 0 the high scores (not the grand champion) are reset. 0 = OFF.
-Entry at game over, before match [high_score_entry 0x0001ad4c], only on adj 48 ALLOW HIGH SCORES = YES; gf_state
+Entry at game over, before match [high_score_entry 0x00018d54], only on adj 48 ALLOW HIGH SCORES = YES; gf_state
 0x40 is set meanwhile (START cannot start a game). For each entry in order, the best player of the game not
-yet placed whose score beats the entry's [0x0001ab68, ties go to the earlier player]:
+yet placed whose score beats the entry's [0x00018b70, ties go to the earlier player]:
 1. the player's initials (once per player and table; this game has one table): event 0x33, deff 31 "PLAYER n / ENTER INITIALS", events 0x34 / 0x35, deff 32 initials
    entry (below), event 0x36;
-2. [0x0001abfc] the entry and the ones below move down one place and the player's name and score go in
-   [0x0001a8c4]; the entry's award (adj 55-59 count, adj 54 kind: 0 credit with knocker, 1 ticket,
+2. [0x00018c04] the entry and the ones below move down one place and the player's name and score go in
+   [0x000188cc]; the entry's award (adj 55-59 count, adj 54 kind: 0 credit with knocker, 1 ticket,
    2 token) and audit 0x10 HIGH SCORE AWARDS by the count; event 0x37, deff 33 (the entry, name and score,
    with the award), event 0x38.
 Initials entry, deff 32 [0x010346e8], one frame per tick: the left / right flipper button picks the previous /
@@ -23,7 +23,7 @@ After the letters come three specials: BACK (deletes a letter), END and SPACE; o
 BACK and END can be picked, END at first. 3 initials (adj 60 = 0) or 10 letters. A 30 s countdown (63
 frames a second) restarts on every button; at its end 15 more seconds are shown, then the entry ends with
 what is entered (plus the letter under the cursor).
-This is Tron 1.74's OS model (the same SAM OS, Tron addresses). Not read yet for tf_180 (ROM data): the letter
+This is Tron 1.74's OS model (the same SAM OS), re-cited to tf_180's routines (QA F13). Not read yet for tf_180 (ROM data): the letter
 set, the default names and the sounds of the entry.
 """
 from tf.features import Feature
@@ -182,7 +182,7 @@ class HighScores(Feature):
         return self.os.adj
 
     def _loaded(self):
-        if self.entries is None:                    # no valid record: every entry is reset [0x0001b0b4]
+        if self.entries is None:                    # no valid record: every entry is reset [0x000190bc]
             self.entries = [None] * len(TITLES)
             self.reset(3)
         if self.count is None:
@@ -196,20 +196,20 @@ class HighScores(Feature):
         return DEFAULT_NAMES[i]
 
     def reset(self, mask):
-        """FUN_0001a9f4: reset the entries of the flag mask (1 grand champion, 2 high scores)."""
+        """FUN_000189fc: reset the entries of the flag mask (1 grand champion, 2 high scores)."""
         for i, flag in enumerate(FLAGS):
             if flag & mask:
                 self.entries[i] = {"name": self.default_name(i), "score": self.adj[SCORE_ADJ[i]]}
         self.save()
 
     def reset_all(self):
-        """FUN_0001ab18: every entry and the reset counter."""
+        """FUN_00018b20: every entry and the reset counter."""
         self.reset(3)
         self.count = self.adj[61]
         self.save()
 
     def game_started(self):
-        """FUN_0001a4f0: adj 61 HSTD RESET COUNT, counted down by every game while adj 48 = YES."""
+        """FUN_000184f8: adj 61 HSTD RESET COUNT, counted down by every game while adj 48 = YES."""
         if not self.adj[61] or self.adj[48] != 1:
             return
         if self.count < 1:
@@ -220,7 +220,7 @@ class HighScores(Feature):
         self.save()
 
     def table(self):
-        """(title, name, score) of each entry, or [] when high scores are off (FUN_0001a6c8)."""
+        """(title, name, score) of each entry, or [] when high scores are off (FUN_000186d0)."""
         if self.adj[48] != 1:
             return []
         return [(TITLES[i], e["name"], e["score"]) for i, e in enumerate(self.entries)]
@@ -240,7 +240,7 @@ class HighScores(Feature):
         self._next(0)
 
     def best(self, i):
-        """FUN_0001ab68: the best unplaced player beating entry i (ties: the earlier player), or 0."""
+        """FUN_00018b70: the best unplaced player beating entry i (ties: the earlier player), or 0."""
         best = 0
         for n, score in enumerate(self.scores, 1):
             if not self.placed[n - 1] and score > self.entries[i]["score"]:
@@ -280,7 +280,7 @@ class HighScores(Feature):
         self._deff(31, initials, player=player)
 
     def _place(self, i, player):
-        """FUN_0001abfc: the entry and the ones below move down, the award, deff 33."""
+        """FUN_00018c04: the entry and the ones below move down, the award, deff 33."""
         os_ = self.os
         self.entries[i + 1:] = self.entries[i:-1]
         self.entries[i] = {"name": self.names[player - 1], "score": self.scores[player - 1]}
@@ -291,7 +291,7 @@ class HighScores(Feature):
             if kind == 0:
                 os_.award_credit(count)
                 for _ in range(count):
-                    os_.knock()                     # FUN_0001b370(1, n)
+                    os_.knock()                     # FUN_00019378(1, n)
             elif kind == 1:
                 for _ in range(count):
                     self.machine.events.post("tf_award_ticket")

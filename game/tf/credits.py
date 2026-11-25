@@ -1,21 +1,21 @@
 """Credits and pricing as the ROM's OS does them (MPF's credits mode cannot: it has no pricing units, ladders
 or the ROM's coin task). The credit record is kept in MPF's data file "tf_credits" like the ROM's NVRAM.
 
-Coin task FUN_00004a50, one per coin switch closure [0x00004cb4]:
+Coin task FUN_00003f00, one per coin switch closure [0x00019c40]:
 - waits adj 62 COIN INPUT DELAY ticks (61 = OFF: no wait) and drops the coin when the coin is refused during
-  the wait (FUN_000049f8: the service menu runs, gf_state 0x100);
+  the wait (FUN_00003ea8: the service menu runs, gf_state 0x100);
 - audits the slot's coin counter (left 2, right 4, center 3, 4th 5, 5th 6);
-- the pricing entry of adj 28 GAME PRICING (FUN_0000498c) gives the slot's units; the meter and audit 7
+- the pricing entry of adj 28 GAME PRICING (FUN_00003e3c) gives the slot's units; the meter and audit 7
   METER CLICKS count the units;
 - each unit steps the unit counter (it wraps at the ladder length; -1 after a reset) and adds the credits of
-  the ladder at that step (FUN_00004890: never above adj 33 CREDIT LIMIT): audit 1 TOTAL PAID CREDITS by the
+  the ladder at that step (FUN_00003d40: never above adj 33 CREDIT LIMIT): audit 1 TOTAL PAID CREDITS by the
   ladder's credits, event 0x19 (a sound, flag 47); deff 10 per unit; event 0x1a (a sound) when no
   unit gave a credit.
-- The credit text (FUN_00004ff4): "FREE PLAY" on adj 34, else "CREDITS n", "CREDITS a/b" or
+- The credit text (FUN_000044a4): "FREE PLAY" on adj 34, else "CREDITS n", "CREDITS a/b" or
   "CREDITS n a/b" (units since the last credit over the units of the ladder step that gives the next one;
   attract capture: "CREDITS 1/3" after one coin).
-This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS; the
-addresses are Tron's; the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
+This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS), re-cited to
+tf_180's routines (QA F13); the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
 pricing presets come from pricing.json; CUSTOM (68) uses the operator's SET CUSTOM PRICING values (machine vars
 custom_coin_units, custom_units_per_credit; interim, the ROM's custom ladder editor is not modelled).
 """
@@ -84,7 +84,7 @@ class Credits:
         return self.os.adj[34] == 1
 
     def can_start(self, needed=1):
-        """FUN_000202a8 / start_button_handler: free play or enough credits."""
+        """FUN_00019988 / start_button_handler: free play or enough credits."""
         return self.free_play() or self.credits >= needed
 
     # ------------------------------------------------------------------ coins
@@ -123,7 +123,7 @@ class Credits:
     # ------------------------------------------------------------------ credits
 
     def add(self, n):
-        """FUN_00004890: add up to adj 33 CREDIT LIMIT; returns the credits added."""
+        """FUN_00003d40: add up to adj 33 CREDIT LIMIT; returns the credits added."""
         n = max(0, min(n, self.os.adj[33] - self.credits))
         if n:
             self.credits += n
@@ -132,7 +132,7 @@ class Credits:
         return n
 
     def take(self, n=1):
-        """FUN_00004e9c: take up to n credits (also on free play while credits remain)."""
+        """FUN_0000434c: take up to n credits (also on free play while credits remain)."""
         n = min(n, self.credits)
         if n:
             self.credits -= n
@@ -141,7 +141,7 @@ class Credits:
         return n
 
     def award(self, n=1):
-        """A free game (replay, special, match or high-score credit, FUN_00004cf0) within adj 25 FREE GAME
+        """A free game (replay, special, match or high-score credit, FUN_000041a0) within adj 25 FREE GAME
         LIMIT per game (inferred: the decompile has no reader of adj 25). Returns the credits added."""
         limit = self.os.adj[25]
         if limit != FREE_GAME_UNLIMITED:
@@ -151,25 +151,25 @@ class Credits:
         return n
 
     def service_credit(self):
-        """BACK outside the service menu [0x0000fc20 case 1]: one service credit, audit 0x24 SERVICE
+        """BACK outside the service menu [0x0000f008 case 1]: one service credit, audit 0x24 SERVICE
         CREDITS when it was added, deff 17."""
         if self.add(1):
             self.os.audit(SERVICE_CREDITS_AUDIT)
         self.os.deff_start(17, credits=self.text())
 
     def reset(self):
-        """RESET CREDITS (FUN_00004e88): no credits, unit counter -1."""
+        """RESET CREDITS (FUN_00004338): no credits, unit counter -1."""
         self.credits, self.counter = 0, -1
         self.save()
         self.changed()
 
     def changed(self):
-        """FUN_00020448 after every credit change: the start button lamp."""
+        """FUN_00019b28 after every credit change: the start button lamp."""
         self.machine.events.post("tf_credits_changed", credits=self.credits)
         self.os.start_button_lamp()
 
     def fraction(self):
-        """FUN_00004d48: (units since the last credit, units of the step that gives the next credit), or None."""
+        """FUN_000041f8: (units since the last credit, units of the step that gives the next credit), or None."""
         ladder = self.pricing()[1]
         p = self.counter
         if p < 0 or p >= len(ladder) or ladder[p]:
@@ -188,7 +188,7 @@ class Credits:
         return a, b
 
     def text(self):
-        """FUN_00004ff4: the credit text of the attract page and of deffs 10, 15 and 17."""
+        """FUN_000044a4: the credit text of the attract page and of deffs 10, 15 and 17."""
         if self.free_play():
             return "FREE PLAY"
         frac = self.fraction()
