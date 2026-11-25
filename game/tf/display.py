@@ -22,7 +22,8 @@ game/tron/display.py, where the trace references below come from) and the same O
   music call when that music is not already playing. With no mode rule true the score display rule runs
   with os.base_music() (Tron [0x0100f594 / 0x0100f5c8]). Every start of a rule's deff is traced with rule=1
   (Tron's ROM caller 0x19944).
-- A few deffs hold for 1 tick only (HOLD_TICKS_BY_DEFF, read from their code: none known on tf_180 yet).
+- Each decoded deff holds for its own tail (HOLD_TICKS_BY_DEFF: 1, 2 or 10 ticks, the ticks after its
+  deff_hold_frames priority 0x20 in agent A's op list, rom/rom_data/dmd/deff_ops/; QA F7); 10 for the others.
 
 Data: the deff priorities and background flags come from the ROM extraction's event_map.csv when it exists,
 else game/config/interim/deffs.csv (scripts/interim_tables.py, read from tf_180's deff table); the run lengths,
@@ -38,7 +39,6 @@ SHOW_TIMEOUT = 0xea6
 HOLD_TICKS = 10             # deffs end with deff_hold_frames(10, 0x20): priority 0x20 for the last 10 ticks
 HOLD_PRIORITY = 0x20
 # a few deffs hold for fewer ticks (read from their code: deff_hold_frames(1, 0x20))
-HOLD_TICKS_BY_DEFF = {}
 # A show task whose end the deferred rules refresh waits for (Tron: the Flynn's Arcade show 0x97); none here yet
 RULES_HOLD_SHOW = None
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -66,6 +66,27 @@ def deff_table():
             if row["background"] == "yes":
                 background.add(deff_id)
     return prio, background
+def deff_holds():
+    """Each decoded deff's hold tail [FUN_0103058c / FUN_0002108c(n, 0x20)]: the ticks from its last priority-0x20
+    op to its end (rom/rom_data/dmd/deff_ops/deff_NNN.json, agent A's op lists; QA F7). {} without them."""
+    holds = {}
+    folder = os.path.join(ROM, "rom_data", "dmd", "deff_ops")
+    if os.path.isdir(folder):
+        import json                         # noqa: PLC0415
+        for name in sorted(os.listdir(folder)):
+            if not name.endswith(".json"):
+                continue
+            with open(os.path.join(folder, name), encoding="utf-8") as f:
+                d = json.load(f)
+            prio = [o for o in d.get("ops", ()) if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
+            if prio and d.get("end_tick") is not None:
+                holds[d["deff"]] = d["end_tick"] - prio[-1]["t"]
+    return holds
+
+
+HOLD_TICKS_BY_DEFF = deff_holds()
+
+
 def deff_flags():
     """Each deff's flags word from tf_180's deff table 0x040ce7c4 (rom/rom_data/dmd/deffs.csv)."""
     flags = {}

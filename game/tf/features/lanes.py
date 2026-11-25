@@ -9,7 +9,7 @@ section 5; code [0x0102db28] [0x0102e208] + observed in traces/scoring.jsonl).
   0x169 / 0x16d. The 4th lamp completes the group: lamps cleared, completions + 1, 10,000, leff 99 / 102,
   sound 0x16a / 0x16e; the player's own side (Decepticon left, Autobot right) lights the shot multipliers
   (deff 44, tf/features/combos.py), the other side adds 1 to the bonus multiplier (deff 45 "%dX BONUS").
-- Each flipper press (not during the side choice, bonus, tilt or attract) moves the lit lamps of one group
+- Each flipper press (not during the bonus, tilt, service or attract; during the side choice too) moves the lit lamps of one group
   one position: left flipper 50 -> 51 -> 8 -> 9 -> 50, right flipper 52 -> 49 -> 10 -> 11 -> 52 (code; the
   direction was not traced).
 Inferred: the lamps are per player and kept from ball to ball (the spec has them as lamp state).
@@ -26,6 +26,7 @@ LIT = {"left": (1000, 0x168, 98), "right": (1000, 0x16c, 101)}
 NEW = {"left": (2500, 0x169, 97), "right": (2500, 0x16d, 100)}
 DONE = {"left": (10000, 0x16a, 99), "right": (10000, 0x16e, 102)}
 SHOT_MULT_DEFF, BONUS_X_DEFF = 44, 45
+ROTATE_KILL = {"left": (97, 99), "right": (100, 102)}
 
 
 class Lanes(Feature):
@@ -62,12 +63,15 @@ class Lanes(Feature):
                 else:
                     self.os.lamps.lamp_off(n)
 
-    def lane_award(self, num):
-        """The lane function of switch `num` (a made top-lane skill shot calls it twice)."""
+    def lane_award(self, num, lamp=None):
+        """The lane function of switch `num` (a made top-lane skill shot calls it again with `lamp`: 50 / 49,
+        FUN_0102db28(0x32) [0x010335d0] / FUN_0102e208(0x31) [0x0103361c]; QA P13)."""
         os_ = self.os
         if os_.tilted:
             return
         group, choices = LAMP[num]
+        if lamp is not None:
+            choices = (lamp,)
         lit = self.lit(group)
         lamp = next((n for n in choices if n not in lit), None)
         if lamp is None:
@@ -85,15 +89,19 @@ class Lanes(Feature):
         self.draw()
         if leff == DONE[group][2]:
             if SIDE_OF[group] == self.pd.get("side", DECEPTICON):
-                os_.hook("shot_mult_light")
+                os_.hook("shot_mult_light", True)
             else:
                 os_.hook("bonus_x_add")
                 os_.deff_start(BONUS_X_DEFF, values=[self.pd.get("bonus_x", 1)])
 
     def _flipper(self, group):
         os_ = self.os
-        if not os_.game or not os_.in_play or os_.state & 0x205 or os_.hook("side_choosing"):
+        # [0x01032d5c] / [0x01032dac]: only gf_state & 0x311 (bonus, attract, service, tilt) stops it, side choice
+        # included; the group's new-lamp and completion leffs are killed first (QA P14)
+        if not os_.game or os_.state & 0x311:
             return
+        for leff in ROTATE_KILL[group]:
+            os_.leff_stop(leff)
         order = GROUPS[group]
         key = "lanes_" + group
         self.pd[key] = {order[(order.index(n) + 1) % len(order)] for n in self.lit(group)}

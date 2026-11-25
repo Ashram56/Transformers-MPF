@@ -346,3 +346,117 @@ class TestOsFixes(QaCase):
         self.advance_time_and_run(2)
         ss.second()
         self.assertEqual((pair + 1) % 8, ss.pair)
+
+
+class TestLowFixes(QaCase):
+    def test_ball_save_length(self):
+        """ball_save_task [0x00017a28]: adj 38 = 5 saves 5 x 62 = 310 -> 52 sleeps of 6 = 312 ticks (QA F8)."""
+        self.start()
+        self.hit_and_release_switch("s_right_orbit_spinner")
+        self.advance_time_and_run(0.05)
+        self.tf._arm_ball_save()
+        start = self.tf.now
+        while self.tf.ball_save == "armed" and self.tf.now - start < 10:
+            self.advance_time_and_run(TICK)
+        self.assertAlmostEqual(312, round((self.tf.now - start) / TICK), delta=2)
+
+    def test_skill_shot_second_lane_lamp(self):
+        """The second lane award of a top-lane skill shot lights 50 / 49 [0x010335d0] / [0x0103361c] (QA P13)."""
+        self.start()
+        lanes = self.tf.features_by_name["lanes"]
+        lanes.lane_award(8, 50)
+        self.assertIn(50, lanes.lit("left"))
+        self.assertNotIn(51, lanes.lit("left"))
+
+    def test_spinner_sample_reset_each_ball(self):
+        """[0x01032484]: the spinner sound's sample index back to 0 at each ball (QA P17)."""
+        self.start()
+        spinner = self.tf.features_by_name["spinner"]
+        spinner.sample = 3
+        spinner.ball_start()
+        self.assertEqual(0, spinner.sample)
+
+    def test_lock_lit_rearms_every_player(self):
+        """[0x0100af0c]: DAT_02111d4c = DAT_02111d48 re-arms every player's count; deff 139 gets the locked
+        count (QA M10, M15)."""
+        self.start()
+        mt = self.tf.features_by_name["megatron"]
+        pd = self.tf.pd
+        pd.mtl_level, pd.mtl_need, pd.mtl_count, pd.mtl_lit, pd.mtl_locked = 3, 2, 1, 0, 1
+        mt.blocked = lambda: False
+        mt.lock_completion()
+        self.assertEqual((1, 2), (pd.mtl_lit, pd.mtl_count))
+        self.assertTrue(all(p.get("mtl_count") == p.get("mtl_need", 1) for p in self.tf.players))
+
+    def test_deff_hold_tails_from_op_lists(self):
+        """FUN_0103058c(n, 0x20): the hold is the ticks from the last priority-0x20 op to the deff's end (QA F7)."""
+        import json
+        import os
+        import tempfile
+        from tf import display
+        with tempfile.TemporaryDirectory() as rom:
+            os.makedirs(os.path.join(rom, "rom_data", "dmd", "deff_ops"))
+            with open(os.path.join(rom, "rom_data", "dmd", "deff_ops", "deff_092.json"), "w") as f:
+                json.dump({"deff": 92, "end_tick": 343, "ops": [{"t": 342, "op": "prio", "prio": 32}]}, f)
+            saved, display.ROM = display.ROM, rom
+            try:
+                self.assertEqual({92: 1}, display.deff_holds())
+            finally:
+                display.ROM = saved
+
+    def test_match_number_steps_past_the_players(self):
+        """[0x00019668]: with the match rate at or above adj 30 the number steps by 10 until no player has it (QA F9a)."""
+        self.start()
+        go = self.tf.features_by_name["match"]
+        self.tf.forced["match_number"] = [3]
+        self.tf.audits.add(0x11, 10)
+        self.tf.audits.add(0x0f, 10)
+        number, matched = go.number([1230, 40, 50])
+        self.assertEqual((60, 0), (number, matched))
+
+    def test_match_sounds_and_award_inside_deff_38(self):
+        """deff 38 [0x0100820c]: 0x072 at frame 60 when a player matched, the award after frame 68, then 0x074
+        (QA F9b)."""
+        from tf.features import game_over
+        self.start()
+        go = self.tf.features_by_name["match"]
+        self.tf.forced["match"] = [1]
+        go.run(lambda: None)
+        self.advance_time_and_run(61 * 5 * TICK)
+        calls = [e.get("call") for e in self.tf.trace.of("sound")]
+        self.assertIn(game_over.MATCHED_SOUND, [int(c, 16) if isinstance(c, str) else c for c in calls])
+        self.advance_time_and_run(8 * 5 * TICK)
+        calls = [int(c, 16) if isinstance(c, str) else c for c in (e.get("call") for e in self.tf.trace.of("sound"))]
+        self.assertIn(game_over.WIN_SOUND, calls)
+
+    def test_lane_completion_always_shows_deff_44(self):
+        """[0x0102db28]: an own-side lane completion starts deff 44 with FUN_010236e8's result, 0 while the roving
+        3X runs (QA P15)."""
+        self.start()
+        combos = self.tf.features_by_name["combos"]
+        self.tf.pd.shot_mult = [2] * 6
+        self.tf.pd.mult_lit = False
+        self.assertEqual(3, combos.shot_mult_light(True))
+        self.assertEqual(0, combos.shot_mult_light(True))
+        self.assertEqual(2, len([e for e in self.tf.trace.of("deff_start") if e.get("id") == 44][-2:]))
+
+    def test_lanes_rotate_during_the_side_choice(self):
+        """[0x01032d5c]: only gf_state & 0x311 stops the rotation (QA P14)."""
+        self.start()
+        lanes = self.tf.features_by_name["lanes"]
+        self.tf.pd.lanes_left = {50}
+        self.tf.hooks.setdefault("side_choosing", []).append(lambda: True)
+        lanes._flipper("left")
+        self.tf.hooks["side_choosing"].pop()
+        self.assertEqual({51}, lanes.lit("left"))
+        self.tf.state |= 0x01
+        lanes._flipper("left")
+        self.tf.state &= ~0x01
+        self.assertEqual({51}, lanes.lit("left"))
+
+    def test_tilt_and_multiball_validate_the_playfield(self):
+        """FUN_0000d8c4 from tilt() [0x0001db40] and the multiball task [0x0103aba4] (QA F12)."""
+        self.start()
+        self.assertFalse(self.tf.pf_valid)
+        self.tf._tilt()
+        self.assertTrue(self.tf.pf_valid and self.tf.flag(0x1c))

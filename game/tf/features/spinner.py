@@ -39,6 +39,7 @@ class Spinner(Feature):
 
     def ball_start(self):
         self.pd.spin_value = VALUE
+        self.sample = 0             # 0x26d's sample index, reset every ball (strh 0 to 0x3573c) [0x01032484] (QA P17)
 
     def sw_34(self):
         if self.os.tilted:

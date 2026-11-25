@@ -196,20 +196,26 @@ class Combos(Feature):
     def _window_end(self):
         self.os.request_refresh()
 
-    def shot_mult_light(self):
-        """[0x010236e8]: shot multipliers lit when a shot is below 2X, else the roving 3X starts (deff 44 shows
-        which, from the lanes' caller)."""
+    def shot_mult_light(self, lanes=False):
+        """[0x010236e8] with FUN_01023494: nothing (0) while a multiplier is lit or the roving 3X runs; else the
+        multipliers lit (2) when a shot is below 2X, or the roving 3X started (3). A lane completion [0x0102db28]
+        always starts deff 44 with that result (QA P15); the Allspark's item 10 shows it only when one happened."""
         os_ = self.os
         pd = self.pd
-        below = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
-        if below:
-            pd.mult_lit = True
-        elif not os_.task_running(ROVE_TASK):
-            self._rove_start()
-        else:
-            return
-        os_.deff_start(MULT_LIT_DEFF)
-        os_.request_refresh()
+        code = count = 0
+        if not pd.get("mult_lit") and not os_.task_running(ROVE_TASK):
+            count = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
+            if count:
+                code = 2
+                pd.mult_lit = True
+            else:
+                code, count = 3, 1
+                self._rove_start()
+        if lanes or code:
+            os_.deff_start(MULT_LIT_DEFF, values=[code, count])
+        if code:
+            os_.request_refresh()
+        return code
 
     def ball_end(self):
         self.os.task_kill(WINDOW_TASK)

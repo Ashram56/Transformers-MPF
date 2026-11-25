@@ -68,7 +68,7 @@ class Energon(Feature):
             return
         if (lit | bit) != ALL:
             pd.energon_lit = lit | bit
-            os_.deff_start(LIT_DEFF, values=[pd.energon_lit, bit])
+            os_.deff_start(LIT_DEFF, values=[lit, bit])     # arg0: the set before the new bit [0x010309a4] (QA P18)
             os_.leff_start(LIT_LEFF)
             os_.sound(LIT_SOUND)
             os_.task_start(SOUND_TASK, LIT_SOUND2_TICKS, lambda: os_.sound(LIT_SOUND2))

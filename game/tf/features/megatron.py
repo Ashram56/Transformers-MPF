@@ -6,7 +6,7 @@ Lock (per player): level = adj 68 at game start, +1 at each Megatron multiball; 
 level 0 -> 0 (all four lit at once), 1 -> 1, n -> min(n - 1, 5). An Energon set completion (hook
 lock_completion, [0x0100af0c]) counts when no Megatron / Optimus / side mode / wizard multiball runs, no lock is lit
 and lit + locked < 4: 5,000, or on the last one the lock is lit (level < 2: all four; else one, the counter re-armed;
-per player here, the ROM's re-arm copies every player's counter), audit 0x74, deff 139, leff 167, sound 0x293,
+the ROM's re-arm copies every player's counter, as here), audit 0x74, deff 139, leff 167, sound 0x293,
 10,000.
 
 Lock entry (switches 38-41, the ball device bd_megatron; its handler runs 46 ticks after the switch, observed
@@ -467,9 +467,12 @@ class Megatron(Feature):
             pd.mtl_lit = 4
         else:
             pd.mtl_lit = pd.get("mtl_lit", 0) + 1
-            pd.mtl_count = pd.get("mtl_need", 1)
+            # DAT_02111d4c = DAT_02111d48: the ROM's re-arm copies every player's count from their need (QA M10,
+            # a ROM quirk kept)
+            for player in os_.players:
+                player.mtl_count = player.get("mtl_need", 1)
         os_.audit(LIGHT_AUDIT)
-        os_.deff_start(LIGHT_DEFF)
+        os_.deff_start(LIGHT_DEFF, values=[pd.get("mtl_locked", 0)])     # +0x30 = the locked count (QA M15)
         os_.leff_start(LIGHT_LEFF)
         os_.sound(LIGHT_SOUND)
         os_.score_add(LIGHT_POINTS)

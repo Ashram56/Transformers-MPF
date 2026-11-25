@@ -21,12 +21,14 @@ SCRIPT_START_TIME = 2.745 - 1.896   # 'start' runs this long after the Start pre
 # the reference traces credit a coin 0.528 s after the script starts; the coin task waits adj 62 COIN INPUT
 # DELAY (30 ticks at factory settings) first, so the coin switch closes that much earlier, and START comes
 # 0.144 s after the credit
-COIN_DELAY = 30 * 0.01626           # in reference seconds, like every time below (REF_TICK)
-# The reference traces were recorded in PinMAME, whose ROM tick lasts 16.26 ms (observed); the game runs the
+COIN_DELAY = 30 * 0.01615           # in reference seconds, like every time below (REF_TICK)
+# The reference traces were recorded in PinMAME, whose ROM tick lasts about 16.15 ms (counted on code-timed spans:
+# battle_starscream's 44 battle seconds of 66 ticks [0x01017824] take 46.93 s; deff 92's 343 ticks 5.539 s;
+# 16.26 ms, measured earlier on mixed spans, drifted 0.3 s over a battle); the game runs the
 # code's 16 ms tick (64 x 250 us [0x000114b0], owner 2026-11-25). The replay counts reference time in ticks:
 # every wait below is in reference seconds and runs for TIME_SCALE as long in the game, and the game's trace
 # is written back in reference seconds (Trace.time_scale), so a ROM timer ends at the same reference time.
-REF_TICK = 0.01626
+REF_TICK = 0.01615
 TIME_SCALE = 0.016 / REF_TICK
 COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN_DELAY
 # every hit is followed by 100 ms settle; with STEP_OVERSHOOT on both phases a hit lasts ~173 ms past
