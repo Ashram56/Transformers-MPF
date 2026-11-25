@@ -428,3 +428,14 @@ class TestLowFixes(QaCase):
         self.advance_time_and_run(8 * 5 * TICK)
         calls = [int(c, 16) if isinstance(c, str) else c for c in (e.get("call") for e in self.tf.trace.of("sound"))]
         self.assertIn(game_over.WIN_SOUND, calls)
+
+    def test_lane_completion_always_shows_deff_44(self):
+        """[0x0102db28]: an own-side lane completion starts deff 44 with FUN_010236e8's result, 0 while the roving
+        3X runs (QA P15)."""
+        self.start()
+        combos = self.tf.features_by_name["combos"]
+        self.tf.pd.shot_mult = [2] * 6
+        self.tf.pd.mult_lit = False
+        self.assertEqual(3, combos.shot_mult_light(True))
+        self.assertEqual(0, combos.shot_mult_light(True))
+        self.assertEqual(2, len([e for e in self.tf.trace.of("deff_start") if e.get("id") == 44][-2:]))

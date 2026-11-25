@@ -88,7 +88,7 @@ class Lanes(Feature):
         self.draw()
         if leff == DONE[group][2]:
             if SIDE_OF[group] == self.pd.get("side", DECEPTICON):
-                os_.hook("shot_mult_light")
+                os_.hook("shot_mult_light", True)
             else:
                 os_.hook("bonus_x_add")
                 os_.deff_start(BONUS_X_DEFF, values=[self.pd.get("bonus_x", 1)])
