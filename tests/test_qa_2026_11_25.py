@@ -304,3 +304,25 @@ class TestOsFixes(QaCase):
         after = len([e for e in self.tf.trace.of("coil") if e.get("coil") == 28 and e.get("on")])
         self.assertGreaterEqual(after - before, 8)
         side.active = False
+
+    def test_add_a_ball_offered_in_the_first_156_end_ticks(self):
+        """FUN_01006760: a multiball flag or the end task under its first id (0xbb sleeps 156 ticks, then renames
+        itself 0xbc [0x0100c7e8]); the award is FUN_0103aff4(1, 0, 312, 187) [0x01024a60] (QA M7)."""
+        self.start()
+        side = self.tf.features_by_name["megatron"].sides[1]
+        allspark = self.tf.features_by_name["allspark"]
+        side.active = side.alive = True
+        self.tf.flag_set(side.flag)
+        side.multiball_end()
+        self.advance_time_and_run(100 * TICK)
+        self.assertTrue(self.tf.add_ball_open())
+        self.assertGreater(allspark.weights()[4], 0)
+        allspark.run(5)
+        mb = self.tf.trace.of("multiball_start")[-1]
+        self.assertEqual((312, 187), (mb.get("save_ticks"), mb.get("grace_ticks")))
+        self.assertTrue(side.active and self.tf.flag(0x14))
+        self.tf.flag_clear(0x14)
+        side.multiball_end()
+        self.advance_time_and_run(170 * TICK)
+        self.assertFalse(self.tf.add_ball_open())
+        self.assertEqual(0, allspark.weights()[4])

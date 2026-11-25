@@ -160,7 +160,7 @@ class Allspark(Feature):
         pd = self.pd
         last = pd.get("allspark_last", 0)
         w = dict(BASE_WEIGHT)
-        if not os_.any_multiball() or os_.flag(ADD_BALL_FLAG):
+        if not os_.add_ball_open() or os_.flag(ADD_BALL_FLAG):       # [0x01024a20] (QA M7)
             w[5] = 0
         else:
             w[5] += 1000
@@ -221,9 +221,12 @@ class Allspark(Feature):
         elif item == 4:
             os_.hook("bonus_x_add")
         elif item == 5:
-            os_.flag_set(ADD_BALL_FLAG)
-            os_.multiball_start(os_.rom_balls_in_play() + 1)
-            os_.hook("add_ball")
+            # [0x01024a60]: FUN_0103aff4(1, 0, 312, 187), ball save 312 and grace 187; flag 0x14 and the revives
+            # only when the multiball starts (QA M7)
+            if os_.add_ball_open() and not os_.flag(ADD_BALL_FLAG) and \
+                    os_.multiball_start(os_.rom_balls_in_play() + 1, save_ticks=0x138, grace_ticks=0xbb):
+                os_.flag_set(ADD_BALL_FLAG)
+                os_.hook("add_ball")
         elif item == 6:
             os_.hook("add_time")
             os_.flag_set(ADD_TIME_FLAG)

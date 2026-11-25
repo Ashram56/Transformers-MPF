@@ -69,7 +69,7 @@ UNCAPTURED = {WMB_HIT_DEFF: (2.55, (WMB_HIT_LEFF,), ((0.0, WMB_HIT_SOUND), (0.52
 
 class Wizard(Feature):
     name = "wizard"
-    HOOKS = ("player_first_ball", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
+    HOOKS = ("player_first_ball", "add_ball_open", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
              "tilt", "side_mode_running")
 
     def __init__(self, os_):
@@ -359,6 +359,10 @@ class Wizard(Feature):
             return
         os_.display.when_idle(WMB_TOTAL_TASK, WMB_TOTAL_DEFF, values=[self.wmb_total],
                               on_start=lambda: os_.deff_media(WMB_TOTAL_DEFF, WMB_TOTAL_LEFF))
+
+    def add_ball_open(self):
+        """End task 0xc5 [0x01036590]: its whole 312-tick sleep [0x01036768] (QA M7; WMB_TOTAL_TASK here)."""
+        return self.wmb_alive and not self.wmb_running and self.os.task_running(WMB_TOTAL_TASK)
 
     def add_ball(self):
         if self.wmb_alive and not self.wmb_running:

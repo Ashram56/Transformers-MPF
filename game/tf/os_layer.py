@@ -387,6 +387,12 @@ class TfOS(CustomCode):
     def has_hook(self, name):
         return bool(self.hooks.get(name))
 
+    def add_ball_open(self):
+        """FUN_01006760: a multiball flag is set or a multiball's end task runs its first 156 ticks (0xa9, 0xb7,
+        0xb9, 0xbb, 0xbf, 0xc5; the tasks rename themselves to 0xb8 / 0xba / 0xbc / 0xc0 for their last 62 ticks,
+        [0x0100c7e8]): ADD-A-BALL is offered (QA M7). Hook "add_ball_open" (every feature asked)."""
+        return any(self.flag(f) for f in MULTIBALL_FLAGS) or any(fn() for fn in self.hooks.get("add_ball_open", ()))
+
     def any_multiball(self):
         """A multiball runs: [0x01006704] (the decompile's any_timed_mode_running) tests the six multiball flags.
         It gates the Energon targets, the battle qualify (clu_start_allowed), the pops step and the combo window."""

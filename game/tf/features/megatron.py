@@ -71,6 +71,7 @@ LOCK_SPEECH_AT = 1.71
 WIZARD_REQ = 0
 MB_BALLS, SAVE_TICKS, GRACE_TICKS = 4, 625, 187
 END_TICKS = 218
+END_OFFER_TICKS = 0x9c     # the end task's first sleep before it renames itself [0x0100c7e8] (QA M7)
 
 # kickout sounds and leffs (offset s, sound, leff), then the coil (observed: 82.19 s handler, 82.81 s coil 3)
 KICK_ONE = ((0.0, 0x13b, 23), (0.243, 0x13b, None), (0.505, 0x13c, 24))
@@ -154,6 +155,11 @@ class Side:
             return
         os_.display.when_idle(self.total_task, self.total_deff, values=[self.total],
                               on_start=lambda: os_.deff_media(self.total_deff, self.total_leff))
+
+    def add_ball_open(self):
+        """The end task under its first id: its first 156 of END_TICKS (QA M7)."""
+        return self.alive and self.os.task_running(self.total_task) and \
+            self.os.task_ticks_left(self.total_task) > END_TICKS - END_OFFER_TICKS
 
     def add_ball(self):
         if self.alive and not self.active:
@@ -375,7 +381,7 @@ class Decepticon(Side):
 
 class Megatron(Feature):
     name = "megatron"
-    HOOKS = ("player_first_ball", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
+    HOOKS = ("player_first_ball", "add_ball_open", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
              "ball_end", "tilt", "megatron_running", "lock_lit", "wizard_reset", "device_kicking")
 
     def __init__(self, os_):
@@ -668,6 +674,9 @@ class Megatron(Feature):
     def add_ball(self):
         for side in self.sides.values():
             side.add_ball()
+
+    def add_ball_open(self):
+        return any(side.add_ball_open() for side in self.sides.values())
 
     def ball_end(self):
         for side in self.sides.values():

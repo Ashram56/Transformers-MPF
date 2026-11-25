@@ -712,7 +712,7 @@ BATTLES = (Starscream, Shockwave, Blackout, Devastator, Bumblebee, Ironhide, Mud
 
 class Battles(Feature):
     name = "battles"
-    HOOKS = ("player_first_ball", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
+    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
              "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
@@ -1024,6 +1024,10 @@ class Battles(Feature):
 
     def add_ball(self):
         self.battles[6].add_ball()
+
+    def add_ball_open(self):
+        """The battle multiball's end task 0xa9 [0x0101906c] (QA M7)."""
+        return self.os.task_running(self.battles[6].run_task)
 
     def multiball_end(self):
         self.battles[6].multiball_end()
