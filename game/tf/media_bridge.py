@@ -15,7 +15,7 @@ import re
 
 CONTEXT = "tf_media"
 SERVICE_PRIORITY = 1000         # the service slide covers every deff (ROM priorities are 0-255)
-TICK = 0.01626                                     # seconds per ROM tick (os_layer.TICK)
+TICK = 0.016                                     # seconds per ROM tick (os_layer.TICK)
 SPEC = re.compile(r"%(P\d/[^%]*%|[-+ #0,]*\d*l?[dus])")
 # The values of a deff's printf lines, in the ROM's argument order, for effects whose callers also pass
 # arguments the text does not print (the others: every argument not in the deff's "args", in call order).

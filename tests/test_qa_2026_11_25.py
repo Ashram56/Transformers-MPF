@@ -2,7 +2,7 @@
 ROM's behaviour at the address cited."""
 from tests.tf_test import TfTestCase
 
-TICK = 0.01626
+TICK = 0.016
 
 
 class QaCase(TfTestCase):

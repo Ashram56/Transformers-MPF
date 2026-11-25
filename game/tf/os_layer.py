@@ -3,7 +3,7 @@
 MPF owns the hardware: switches, ball devices, the trough, players and turn order. This layer adds
 the ROM's own semantics on top:
 
-- ROM tasks: named timers counted in 16.26 ms ticks (task ids are the ROM's, for cross-reference).
+- ROM tasks: named timers counted in 16 ms ticks (task ids are the ROM's, for cross-reference).
 - Game flags, audits, adjustments (operator settings by ROM number) and the trace log.
 - score_add (nothing while tilted or out of game), valid playfield, ball save, tilt, extra ball,
   the end-of-ball sequence with the bonus, and game over.
@@ -33,7 +33,7 @@ from mpf.core.custom_code import CustomCode
 
 from tf.trace import Trace
 
-TICK = 0.01626          # seconds per ROM tick in play
+TICK = 0.016            # seconds per ROM tick: 64 x 250 us FIQ [0x000114b0] (owner, 2026-11-25: the code, not the measured 16.26 ms)
 SECOND = 62             # ticks the ROM treats as one second
 START_HOLD_TICKS = 62   # adj 36 GAME RESTART: START held this long (timer 4, 0x3e ticks)
 
