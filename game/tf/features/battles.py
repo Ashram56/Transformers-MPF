@@ -989,6 +989,7 @@ class Battles(Feature):
         if now - last < RIGHT_IGNORE_S or now - self.right_at < RIGHT_REPEAT_S:
             return
         self.right_at = now
+        self.os.right_orbit_awards()                # [0x01033488]: special, then extra ball
         self.shot(RIGHT_ORBIT)
 
     def sw_14(self):

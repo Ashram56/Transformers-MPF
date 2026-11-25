@@ -143,7 +143,6 @@ class Side:
             return
         self.active = False
         os_.flag_clear(self.flag)
-        os_.flag_set(self.grace_flag)
         os_.request_refresh()
         os_.task_start(self.total_task, END_TICKS, self._total)
 
@@ -211,8 +210,8 @@ class Autobot(Side):
         return min(100000 * (self.supers + 1) + 25000 * self.m, 500000)
 
     def shot(self, shot):
-        if not self.active:
-            return
+        if not (self.active or self.alive):   # the rules run while the flag is set or the end task runs
+            return                             # (gates [0x0100be84] A / [0x0100dec0] D). QA 2026-11-25 M1
         os_ = self.os
         pd = self.pd
         if shot == SHOT and self.phase == 1:
@@ -222,7 +221,7 @@ class Autobot(Side):
             self.jp += 1
             self.m = min(self.m + 1, 6)
             self.phase, self.mask = 2, 0x3f
-            os_.task_start(self.TIMEOUT_TASK, self.TIMEOUT_TICKS, self._timeout)
+            self._arm_timeout()
             if self.jp >= 10:
                 self._super_lit()
         elif shot < 6 and self.phase == 2 and self.mask & (1 << shot):
@@ -232,7 +231,7 @@ class Autobot(Side):
             self.mask &= ~(1 << shot)
             self.jp += 1
             self.m = min(self.m + 1, 6)
-            os_.task_start(self.TIMEOUT_TASK, self.TIMEOUT_TICKS, self._timeout)
+            self._arm_timeout()
             if self.jp >= 10 or not self.mask:
                 self._super_lit()
         elif shot == SHOT and self.phase == 3:
@@ -259,6 +258,15 @@ class Autobot(Side):
         self.os.task_kill(self.TIMEOUT_TASK)
         self.phase, self.mask, self.m = 3, 0x40, 1
         self.os.leff_start(self.SUPER_LIT_LEFF)
+
+    def _arm_timeout(self):
+        """The double-jackpot timeout task [0x0100c10c] (restarted by [0x0100c164] at each award) first waits
+        while M < 3, then 250 + 62 ticks: after the first jackpot (M = 2) the doubles do not time out.
+        QA 2026-11-25 M3."""
+        if self.m < 3:
+            self.os.task_kill(self.TIMEOUT_TASK)
+        else:
+            self.os.task_start(self.TIMEOUT_TASK, self.TIMEOUT_TICKS, self._timeout)
 
     def _timeout(self):
         if self.active and self.phase == 2:
@@ -288,8 +296,22 @@ class Decepticon(Side):
         self.bag = 1
 
     def setup(self):
-        self.phase, self.mask, self.jp, self.dj, self.supers = 1, 0x7f, 0, 0, 0
+        """[0x0100e0bc]: adj 88 SAVE MEGATRON PROGRESS = YES restores the player's jackpot count, double count,
+        lit mask and phase (0x02111e04 / e0c / df4 / de4, written at every award); NO resets them
+        (FUN_0100dcc0). QA 2026-11-25 M2."""
+        pd = self.pd
+        if self.os.adj[88] == 1:
+            self.jp, self.dj = pd.get("mtd_jp", 0), pd.get("mtd_dj", 0)
+            self.mask, self.phase = pd.get("mtd_mask", 0x7f), pd.get("mtd_phase", 1)
+        else:
+            self.phase, self.mask, self.jp, self.dj = 1, 0x7f, 0, 0
+            self.save()
+        self.supers = 0
         self.bag = 1                # deff 77's animations drawn this multiball [0x0100e0bc]
+
+    def save(self):
+        pd = self.pd
+        pd.mtd_jp, pd.mtd_dj, pd.mtd_mask, pd.mtd_phase = self.jp, self.dj, self.mask, self.phase
 
     def draw(self):
         """[0x0100ddc8]: deff 77's animation for a lit shot, 1-9 drawn without repeats from a random start
@@ -306,8 +328,8 @@ class Decepticon(Side):
                 return i
 
     def shot(self, shot):
-        if not self.active:
-            return
+        if not (self.active or self.alive):   # the rules run while the flag is set or the end task runs
+            return                             # (gates [0x0100be84] A / [0x0100dec0] D). QA 2026-11-25 M1
         if self.phase == 1 and shot < 6 and self.mask & (1 << shot):
             self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP, anim=self.draw())
             self.mask &= ~(1 << shot)
@@ -322,6 +344,9 @@ class Decepticon(Side):
             if self.dj >= 3:
                 self.phase, self.mask = 3, 0x80
                 self.os.leff_start(self.SUPER_LIT_LEFF)
+        else:
+            return
+        self.save()
 
     def _jackpot(self):
         self.jp += 1
@@ -342,7 +367,8 @@ class Decepticon(Side):
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
         self.supers += 1
-        self.phase, self.mask, self.jp = 1, 0x7f, 0
+        self.phase, self.mask, self.jp, self.dj = 1, 0x7f, 0, 0
+        self.save()
         os_.request_refresh()
         return True
 
@@ -382,11 +408,13 @@ class Megatron(Feature):
         self.derive()
         pd.mt_since_super = pd.mt_sum = 0
         pd.mta_phase, pd.mta_mask, pd.mta_jp = 1, 0x40, 0
+        pd.mtd_jp, pd.mtd_dj, pd.mtd_mask, pd.mtd_phase = 0, 0, 0x7f, 1
 
     def wizard_reset(self):
         """[0x0100bd1c / 0x0100dcc0]: the saved multiball progress back to the start."""
         pd = self.pd
         pd.mta_phase, pd.mta_mask, pd.mta_jp = 1, 0x40, 0
+        pd.mtd_jp, pd.mtd_dj, pd.mtd_mask, pd.mtd_phase = 0, 0, 0x7f, 1
 
     def derive(self):
         """[0x0100acb4]: the lock state from the level."""

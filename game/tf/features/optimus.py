@@ -178,9 +178,9 @@ class Side:
     def double_anim(self, shot):
         return None
 
-    def super(self):
+    def super(self, mult=1):
         os_ = self.os
-        points = max(1000000, self.get("sum") * PCT[min(self.get("since"), 3)] // 100)
+        points = max(1000000, self.get("sum") * PCT[min(self.get("since"), 3)] // 100) * mult
         self.award(points, self.SUPER)
         os_.hook("wizard_req", WIZARD_REQ, 2)
         self.put("supers", self.get("supers") + 1)
@@ -244,8 +244,9 @@ class Autobot(Side):
         return shot        # deff 60: table 0x040c7344[shot] [0x01028da0]
 
     def shot(self, shot):
-        """[0x01027b74]: shots 0-5, 6 the Megatron lock."""
-        if not self.active:
+        """[0x01027b74]: shots 0-5, 6 the Megatron lock. The rules run while the flag is set or the end task
+        runs (gate [0x010276e0]). QA 2026-11-25 M1."""
+        if not (self.active or self.alive):
             return False
         bit = 1 << shot
         if self.phase == 1 and shot < 6 and self.lit & bit:
@@ -281,8 +282,8 @@ class Decepticon(Side):
         return VARIANTS.randrange(3)   # deff 66: random_below(3), table 0x040c749c [0x0102ad30]
 
     def shot(self, shot):
-        """[0x01029bf4]: shots 0-5 (the center lane from sw 11 only)."""
-        if not self.active or shot >= 6:
+        """[0x01029bf4]: shots 0-5 (the center lane from sw 11 only); flag or end task (gate [0x01029754])."""
+        if not (self.active or self.alive) or shot >= 6:
             return False
         bit = 1 << shot
         if self.phase == 1 and self.lit & bit:
@@ -298,14 +299,15 @@ class Decepticon(Side):
         return True
 
     def optimus(self):
-        """The Optimus target (sw 51): the double, or the super in phase 3."""
-        if not self.active:
+        """The Optimus target (sw 51): the double, or the super in phase 3 (x the center lane's multiplier,
+        table 0x040c7400 row 6 slot 4, [0x01029bf4]: QA 2026-11-25 M4)."""
+        if not (self.active or self.alive):
             return False
         if self.phase == 2:
             self.double(CENTER)
             self.after_double()
         elif self.phase == 3:
-            self.super()
+            self.super(self.mult(CENTER))
             self.save()
             self.os.request_refresh()
         else:

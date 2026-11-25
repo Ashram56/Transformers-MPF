@@ -4,9 +4,11 @@ bonus = (670 x bonus_count + held_bonus) x bonus_mult, added with playfield mult
 - bonus_count (RAM 0x34b3c + 2(p-1)): 0 at ball start (event 0x13 hook 0x01000d58), +1 for every playfield
   switch handler through 0x1032d2c -> 0x01000dfc (tf/switches.py calls hook bonus_add);
 - held_bonus (0x2111ce0 + 4(p-1)): 125,000 at ball start unless BONUS HOLD (game flag 0x4b); with it, the end
-  of that ball stores 670 x count + held as the next ball's held bonus (0x01000f68; inferred end of ball);
+  of that ball stores 670 x count + held as the next ball's held bonus, not when tilted (0x01000f68, state & 0x200);
 - bonus_mult (0x2111cf0 + (p-1)): 1 at ball start unless BONUS X HOLD (flag 0x4a); +1 per call of 0x01000e44
-  (hook bonus_x_add: the other side's lanes, the "%iX BONUS MULTIPLIER" award), cap 25.
+  (hook bonus_x_add: the other side's lanes, the "%iX BONUS MULTIPLIER" award), cap 25;
+- both hold flags last one ball: the ball start hook clears them after use (game_flag_clear(0x4a) at
+  0x01000d8c, (0x4b) at 0x01000dc4). QA 2026-11-25 P1.
 Checked against every reference trace's bonus (127,680 / 130,360 / 128,350 / 333,080 at 2X / 135,050).
 Deff 25 starts at the end of ball (caller 0x19fb8) and plays its own sounds (the capture's: 0x20 Decepticon /
 0x21 Autobot at the start, 0x77 0x78 0x79 0x7a); the total is added 338 ticks later, as the next ball starts
@@ -24,21 +26,28 @@ SIDE_SOUND = {1: 0x21, 2: 0x20}       # the deff's first sound by side (Autobot 
 
 class Bonus(Feature):
     name = "bonus"
-    HOOKS = ("player_first_ball", "ball_start", "bonus_add", "bonus_x_add")
+    HOOKS = ("player_first_ball", "ball_start", "ball_end", "bonus_add", "bonus_x_add")
 
     def player_first_ball(self):
         self.pd.bonus_x = 1
         self.pd.bonus_held = HELD
 
-    def ball_start(self):
-        """0x01000d58: count 0; held bonus and multiplier back unless held (flags 0x4b / 0x4a)."""
+    def ball_end(self):
+        """0x01000f68: with BONUS HOLD and not tilted, store 670 x count + held as the next ball's held bonus."""
         pd = self.pd
-        if self.os.flag(BONUS_HOLD) and pd.get("bonus_count") is not None:
+        if self.os.flag(BONUS_HOLD) and not self.os.tilted:
             pd.bonus_held = UNIT * pd.get("bonus_count", 0) + pd.get("bonus_held", HELD)
-        else:
+
+    def ball_start(self):
+        """0x01000d58: count 0; held bonus and multiplier back unless held (flags 0x4b / 0x4a), then both flags
+        cleared: a hold lasts one ball."""
+        pd = self.pd
+        if not self.os.flag(BONUS_HOLD):
             pd.bonus_held = HELD
         if not self.os.flag(BONUS_X_HOLD):
             pd.bonus_x = 1
+        self.os.flag_clear(BONUS_X_HOLD)
+        self.os.flag_clear(BONUS_HOLD)
         pd.bonus_count = 0
 
     def bonus_add(self, n=1):

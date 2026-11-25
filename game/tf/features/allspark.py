@@ -211,8 +211,7 @@ class Allspark(Feature):
         os_ = self.os
         pd = self.pd
         if item == 1:
-            os_.specials_lit[os_.player_num - 1] += 1
-            os_.special_lamp_update()
+            os_.light_special()                     # [0x01008528]
         elif item == 2:
             os_.light_extra_ball()
         elif item == 3:

@@ -192,7 +192,7 @@ class Wizard(Feature):
         os_ = self.os
         if os_.tilted or not os_.game:
             return
-        if self.wmb_running:
+        if self.wmb_running or self.wmb_alive:     # flag or end task 0xc5 (gate [0x01036590]): QA M1
             if all(c >= WMB_HITS for c in self.wmb_counts):
                 self.wmb_super()
             else:
@@ -212,7 +212,7 @@ class Wizard(Feature):
     def mb_shot(self, shot):
         if shot == 0 or self.os.tilted:
             return                              # the Allspark: eject_modes
-        if self.wmb_running:
+        if self.wmb_running or self.wmb_alive:
             self.wmb_hit(WIZ_SHOT[shot])
         elif self.side_running:
             self.side_hit(WIZ_SHOT[shot])
@@ -222,7 +222,7 @@ class Wizard(Feature):
         0x010365c4(2) and 0x01010174(2) before its own rules)."""
         if self.os.tilted:
             return
-        if self.wmb_running:
+        if self.wmb_running or self.wmb_alive:
             self.wmb_hit(i)
         elif self.side_running:
             self.side_hit(i)

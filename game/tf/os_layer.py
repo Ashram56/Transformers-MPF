@@ -1523,9 +1523,22 @@ class TfOS(CustomCode):
     # ------------------------------------------------------------------ extra ball (5.4)
 
     def light_extra_ball(self):
-        """OS part of 0x01012190: lit count +1 for the current player."""
+        """Light extra ball [0x01007b40]: FUN_000180c8(0) adds one lit extra ball for the current player and
+        redraws the insert; then show task 0x5f queues deff 53 "EXTRA BALL IS LIT" (FUN_01007b14 ->
+        queue_fullscreen_deff(0x35, 0xea6, 0x9f)). QA 2026-11-25 F3."""
         self.eb_lit[self.player_num - 1] += 1
         self.eb_lamp_update()
+        self.show(0x5f, 53)
+
+    def right_orbit_awards(self):
+        """The right orbit handler [0x01033488] collects a lit special [0x01008684], then a lit extra ball
+        [0x01007b74], before its shot rules. QA 2026-11-25 F1, F2."""
+        if self.game and not self.tilted:
+            self.special_collect()
+            p = self.player_num - 1
+            if self.eb_lit[p]:                       # FUN_00018090
+                self.collect_extra_ball()            # FUN_00018204(0)
+                self.deff_start(54)                  # deff_start(0x36)
 
     def collect_extra_ball(self):
         """0x01012228 OS part: returns True when an extra ball was awarded, False when it paid points
@@ -1543,24 +1556,29 @@ class TfOS(CustomCode):
         return False
 
     def light_special(self):
-        """special_light(0) [0x00024014]: special lit for the current player, lamp update; deff 81
-        "SPECIAL IS LIT" (the caller's display)."""
+        """Light special [0x01008528]: lamp 53 on and flashing (FUN_000077a0 / FUN_00007814), show task 0x61
+        queues deff 55 "SPECIAL IS LIT" (FUN_010084fc -> queue_fullscreen_deff(0x37, 0xea6, 0x9f)); the NVRAM
+        special counters at 0x02102cf8 are not modelled. QA 2026-11-25 F2."""
         self.specials_lit[self.player_num - 1] += 1
         self.special_lamp_update()
-        self.deff_start(81)
+        self.show(0x61, 55)
 
     def special_lamp_update(self):
         """FUN_00024298: the special insert (SPECIAL_LAMP) is on while the player has a special lit, off
         otherwise. self.lamps holds the inserts the rules read back (lamp_test), not the lamp matrix."""
         if self.specials_lit[self.player_num - 1]:
             self.lamps.add(SPECIAL_LAMP)
+            self.lamps.lamp_flash(SPECIAL_LAMP)      # [0x01008528]
         else:
             self.lamps.discard(SPECIAL_LAMP)
+            self.lamps.lamp_off(SPECIAL_LAMP)        # [0x01008684] FUN_0000765c
 
     def special_collect(self):
-        """special_collect [0x00024218] + special_award [0x000240ac]: use one lit special and award it per
-        adj 23 (0 credit, 3 points, 4 extra ball), or the over-limit points past the adj 22 limit. Returns
-        True when a special was lit. The outlane shows deff 82 and scores 100,000 itself."""
+        """Special collect [0x01008684] from the right orbit: when lamp 53 is lit, turn it off, award it with
+        FUN_0001d7a0(0) per adj 23 (0 credit, 3 points, 4 extra ball) or the over-limit 5,000,000
+        (0x00030ea8) past the adj 22 limit, and show task 0x62 queues deff 56 (FUN_01008658). Returns True when
+        a special was lit.
+        TODO (QA F13): the FUN_0001d7a0 cases 1 and 2 (adj 23 = 1, 2) are not modelled."""
         p = self.player_num - 1
         if not self.specials_lit[p]:
             return False
@@ -1579,6 +1597,7 @@ class TfOS(CustomCode):
             self.specials_collected[p] += 1
             self.audit(0x0e)
         self.special_lamp_update()
+        self.show(0x62, 56)
         return True
 
     # ------------------------------------------------------------------ outlane ball save
