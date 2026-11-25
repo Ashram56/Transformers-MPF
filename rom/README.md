@@ -30,7 +30,7 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `rom_data/sound/music_table.csv` | The ROM's background table: 18 prioritized entries, each a condition plus a background deff and its music call (base music per side, mode music) |
 | `rom_data/io/lamp_effects.csv`, `lamp_groups.json` | The 178 lamp effects (leffs): function, flags, lamp group, coil group, priority, how the capture ended, loop, show file, lamps and flashers used, who starts it; the 148 lamp groups |
 | `mpf_package/config/shows/lampfx_NNN.yaml` | 113 lamp effects as MPF shows, decoded from each leff's code (`tools/leff_lift.py`, `tools/leff_package.py`); looping ones cut to one exact cycle; tick by tick in `rom_data/io/leff_ops/` |
-| `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball: points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
+| `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball, read by running the ROM's code (`tools/switch_lift.py`, op lists `rom_data/rules/switch_lift.json`, the trace only confirms): points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
 | `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
 | `rom_data/settings/` | `adjustments.csv` (98: NVRAM slot, defaults, range, menu, labels, country overrides, readers), `audits.csv` (166: menu, formula, incremented_by), `pricing.json`/`.csv` (68 presets), `presets.csv`, `service_texts.csv`, `menus_runtime.json`; see its README |
@@ -81,7 +81,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
   pick), each state cited to the routine that sets it; the first one is packaged. `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
   (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
-  that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/coil_pulses.py` reads the coil
+  that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/switch_lift.py` plays a ball in the ROM's code (OS tick loop [0x0002bd48], the module constructors [0x0002c0f4], the switch dispatcher [0x0000dc44]) and writes `rules/switch_handlers.csv`. `tools/coil_pulses.py` reads the coil
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
   adjustment value formatters. `tools/deff_args.py` lists the stores of `deff_start` callers into the new deff
   task (+0x30...), the inputs of the game-state variants.

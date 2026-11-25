@@ -6,7 +6,7 @@ ball is on the playfield, validates it, reloads the ball search), then calls the
 "sw_<number>" and "switch" in registration order (os.hook), then adds the switch's base score.
 
 The scores, sounds, display and lamp effects are the ROM extraction's per-switch trace (rom/rules/
-switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
+switches_and_shots.md, switch_handlers.csv; read by running the ROM's code from a fresh ball, rom/tools/switch_lift.py):
 - BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
 - slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
 - pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
@@ -38,12 +38,13 @@ SLINGS = {26: 440, 27: 440}
 SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon (observed: game_flow player 1 Autobot 0x159)
 POPS = (30, 31, 32)
 POP_EXTRA = 170
-# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, observed callers
+# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, callers
 # 0x1033aec, 0x1033c1c / 0x1033c5c, 0x1033b24, 0x1033050); the shot audits 65-68 are the mode-progress
 # function's (0x1020074, with the modes)
 SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
-# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
-# traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
+# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv: the edge mask
+# +0xe 0x1fff has 0x400 closing and 0x800 opening, switch_dispatch_debounce [0x0000dc44]; the trace
+# traces/switches.jsonl 124.35 / 124.42 s confirms: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
 NO_BONUS = {6}
 # handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
