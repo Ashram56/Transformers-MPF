@@ -84,5 +84,5 @@ ball's travel (switch 0xe closing), which is physics, not code.
 
 Each direct pulse (`FUN_00002160` [0x00002160]) holds the search until the 1 ms IO pass ends it: 64 // 16 + 1 =
 5 ticks. The game's `BALL_SEARCH_SWEEP` is this table one tick later (the task runs the tick after its start).
-Code open: when the queued auto-launch pulse really starts (the game uses 14, observed), the Optimus motor and
+Code open: when the queued auto-launch pulse really starts (the game uses 14 from a trace, not yet from the code), the Optimus motor and
 the orbit gate (from the event 0xd / 0xc handlers), and the search's own length (`task_running(0x2b)` loop).

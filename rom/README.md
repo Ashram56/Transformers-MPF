@@ -81,7 +81,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
   pick), each state cited to the routine that sets it; the first one is packaged. `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
   (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
-  that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/switch_lift.py` plays a ball in the ROM's code (OS tick loop [0x0002bd48], the module constructors [0x0002c0f4], the switch dispatcher [0x0000dc44]) and writes `rules/switch_handlers.csv`. `tools/coil_pulses.py` reads the coil
+  that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/switch_lift.py` plays a ball in the ROM's code (OS tick loop [0x0002bd48], the module constructors [0x0002c0f4], the switch dispatcher [0x0000dc44]) and writes `rules/switch_handlers.csv`; `tools/scenario_lift.py` plays every reference scenario the same way (the tracer's ball model and inputs, random draws as `#! random` inputs) and writes `rules/traces/code_runs.csv` (each mark against the trace). `tools/coil_pulses.py` reads the coil
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
   adjustment value formatters. `tools/deff_args.py` lists the stores of `deff_start` callers into the new deff
   task (+0x30...), the inputs of the game-state variants.

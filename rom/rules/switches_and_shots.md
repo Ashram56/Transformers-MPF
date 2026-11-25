@@ -1,6 +1,6 @@
 # Switches, shots, side choice and bonus
 
-Transformers Pro 1.80 (`tf_180`). Tags: **observed** = the real ROM in the emulator (`tools/trace/tf_ref`),
+Transformers Pro 1.80 (`tf_180`). Tags: **observed** = the real ROM in the emulator (`tools/trace/tf_ref`), used here only to confirm,
 **code** = read from `code/tf_decompiled.c`, **inferred** = reasoning only.
 
 ## Per-switch handlers (code)
@@ -12,9 +12,14 @@ on its events, `game_init` [0x00019c64] as `sw_start_button` [0x0001a6e4] calls 
 [0x0000b648]. A switch hit is decided as `switch_dispatch_debounce` [0x0000dc44] does: the record at
 0x040e2c20 + n*0x20 gives the handler (+0), its argument (+4), the task flags (+0xc), the edges and game-state
 mask (+0xe: 0x400 closing edge, 0x800 opening edge; the captive ball runs on both, hence its 60 points) and
-the task id (+0x14). Every rule routine, deff, leff, sound and coil pulse below is the ROM's code; Python only
-records `score_add`, `event_post`, `audit_add`, the game flags and the deff, leff and sound starts, and
-moves the ball from trough to shooter when coil 1 fires (the plunge is the scenario's).
+the task id (+0x14); dedicated switches (flippers, tilt, coins) have their records at 0x040e3740 + (n - 0x81) * 0x20
+(`error_log_wrap_d2d4` [0x0000d2d4]). Every rule routine, deff, leff, sound and coil pulse below is the ROM's code,
+the current player, side and flipper state included; tasks end through the OS exit path with their exit calls
+(`leaf_a84c` [0x0000a84c]). Python only records `score_add_player` [0x0001cb0c], `event_post`, `audit_add`, the game
+flags and the deff, leff and sound starts, keeps the OS task list, and moves the balls as the tracer does
+(`tools/trace/tf_ref.cpp`: coil 1 trough to shooter, coil 2 launch, coil 22 eject, coil 3 lock release). The random
+draws (`random_below` [0x0000ba94]) are inputs, like the switch hits: the scenario's `#! random` lines give the side
+drawn at game start (on_event_26_33f94 [0x01033f94]), every other draw answers 0.
 
 Scenario `rules/traces/switches.txt`: one player, ball plunged, one left sling hit to validate the playfield,
 then every playfield switch hit twice ("first" and "repeat"), with nothing else going on. A hit is 60 ms
@@ -26,7 +31,7 @@ something (Energon, top lanes, 2-bank, Optimus). Treat this as the behaviour fro
 rule.
 
 How to read it:
-- **Points** is the change of the player's score. **Awards** lists each `score_add` with the function that
+- **Points** is the change of the player's score. **Awards** lists each award with the function that
   awarded it (`handler`: the switch's own handler, `handler` column of the CSV).
 - **Sounds** are sound calls (`rom_data/sound/sound_call_uses.csv`). Speech 0x14c / 0x14d of task 0xc6
   [0x010250f4] (one of the two at random, retried every tick) is not a switch sound.
@@ -35,7 +40,7 @@ How to read it:
 - **Coils** are the pulses the code asks for, `coil:ms`. Coils 18/21/23/32 etc. are flashers.
 - The playfield multiplier was 1 throughout.
 - **Trace** compares the row with the emulator trace `rules/traces/switches.jsonl` (confirmation only).
-  Points, awards and audits agree on all 58 rows; 51 rows agree on every column. The others (their Trace column says which column and what the trace has): the
+  Points, awards and audits agree on all 58 rows; 52 rows agree on every column. The others (their Trace column says which column and what the trace has): the
   Blackout battle's total screen (deff 103, leff 116, sounds 0x1cb 0x1cc) starts on the 50 hits in the code run
   and on 51 repeat in the trace (the battle timers run on the scenario's tick count, inferred as the cause); the
   extra Energon sound 0x25f, the 2-bank's 0x265 / 0x266 and some game flags differ in the same way. Random picks
@@ -67,7 +72,7 @@ How to read it:
 | 13 MEGATRON BACK DOOR | repeat | 30 | 30 (handler) | - | - | - | - | same |
 | 14 R. RAMP EXIT | first | 351170 | 25000 (0x1020074) + 100000 (0x101caa4) + 225000 (0x1002f0c) + 1170 (handler) | 0x02a 0x1a9 0x1c2 | 100 deff_100_blackout 101 deff_101_blackout | 35 114 113 | 8:384ms | same |
 | 14 R. RAMP EXIT | repeat | 276170 | 25000 (0x101cc6c) + 250000 (0x1002f0c) + 1170 (handler) | 0x1aa | 101 deff_101_blackout | 35 | - | same |
-| 24 LEFT OUTLANE | first | 102500 | 2500 (0x102db28) + 100000 (handler) | 0x169 [ball saved sound] | - | 97 | - | differs: deffs (trace 101) |
+| 24 LEFT OUTLANE | first | 102500 | 2500 (0x102db28) + 100000 (handler) | 0x169 [ball saved sound] | 101 deff_101_blackout | 97 | - | same |
 | 24 LEFT OUTLANE | repeat | 101000 | 1000 (0x102db28) + 100000 (handler) | 0x168 | - | 98 | - | same |
 | 25 LEFT RETURN LANE | first | 11090 | 10000 (0x102db28) + 1090 (handler) | 0x16a 0x059 0x05a | 44 deff_044_multipliers 101 deff_101_blackout | 99 37 | - | same |
 | 25 LEFT RETURN LANE | repeat | 3590 | 2500 (0x102db28) + 1090 (handler) | 0x169 [ball saved sound] | - | 97 | - | same |
@@ -102,9 +107,11 @@ How to read it:
 | 51 OPTIMUS PRIME | first | 30 | 30 (handler) | 0x05b 0x05c | 50 deff_050 | 38 | 32:100ms x34 12:64ms | same |
 | 51 OPTIMUS PRIME | repeat | 30 | 30 (handler) | - | - | - | 32:100ms x35 12:64ms | differs: sounds (trace 0x1cb 0x1cc) deffs (trace 103) leffs (trace 116) |
 
-## Side choice (observed + code)
+## Side choice (code; code run = trace)
 
-- At game start the player's side byte (0x02112107 + player) is set to **2 = Decepticon**. Display effect 40
+- At the player's first ball (event 0x26) on_event_26_33f94 [0x01033f94] sets the side byte (0x02112107 + player):
+  adj 65 TRANSFORMERS SELECT 0 RANDOM gives random_below(2) + 1, 1 / 2 give that side, competition mode gives 1
+  (the emulator drew 2 = Decepticon in the one-player traces). Display effect 40
   ("USE FLIPPERS TO / CHOOSE YOUR SIDE / PLUNGE BALL TO / CONFIRM SELECTION") runs while task 200 is alive,
   with music 0x1b (Decepticon) or 0x1a (Autobot) from the music table.
 - **Either flipper toggles the side** (left: side-1, wrapping 1 -> 2; right: side+1, wrapping 2 -> 1; with two
@@ -112,14 +119,14 @@ How to read it:
   deff 40 function 0x1034198; trace `side_left.jsonl`, `side_right.jsonl` (side 2 -> 1 on one press).
 - **1 = Autobot, 2 = Decepticon** (code: deff 41 draws message 0x682 AUTOBOT when the byte is 1, 0x683 DECEPTICON otherwise).
 - **What ends it:** the shooter lane switch (23) opening while task 200 runs starts task 0xc9 (0x1033f18), which
-  sleeps 31 ticks (about 0.53 s observed: plunge 16.67 s, deff 41 at 17.20 s) and then calls 0x1033f54: deff 41
+  sleeps 31 ticks (0.50 s; the trace confirms: plunge 16.67 s, deff 41 at 17.20 s; code runs side_left / side_right in `traces/code_runs.csv`) and then calls 0x1033f54: deff 41
   "AUTOBOT/DECEPTICON TRANSFORMER SELECTED" (sound 0x57 Autobot / 0x58 Decepticon) and kills task 200.
   The choice also ends earlier if a playfield switch other than 12 (right orbit) is released first
   (event hooks 0x6b/0x6c, 0x1033dec/0x1033e08, object 0x3141c) (code).
 - After the choice the music table gives deff 19 with 0x1c (Autobot) / 0x1d (Decepticon) at ball start and
   0x1e / 0x1f in main play; 0x31 / 0x34 when the battle can progress.
 
-## End-of-ball bonus (code + observed)
+## End-of-ball bonus (code; code run = trace)
 
 Display effect 25 (0x1000ffc), started at drain (caller 0x19fb8):
 - **Bonus base** = 670 x bonus count (u16 per player at RAM 0x34b3c, +1 from 11 shot functions through
@@ -129,4 +136,4 @@ Display effect 25 (0x1000ffc), started at drain (caller 0x19fb8):
 - Screen: "BONUS" with the animated background images 0x225b-0x2262, then "%dX" and the value, counting the
   multiplier up from 2 (8 frames per step below 6x, 4 above), then "TOTAL BONUS".
 - Sounds: 0x21 (Autobot) / 0x20 (Decepticon) at start, 0x77 + 0x78 at the first value, 0x76 after the
-  multiplier count, 0x79, then 0x7a at TOTAL BONUS (observed: `sounds.jsonl` at 114.47-116.92 s).
+  multiplier count, 0x79, then 0x7a at TOTAL BONUS (code run = trace: `sounds` in `traces/code_runs.csv`, `sounds.jsonl` at 114.47-116.92 s).

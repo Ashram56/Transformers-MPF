@@ -2,6 +2,7 @@
 # POKES: the Autobot requirements 5-9 are marked completed in NVRAM (0x0211210c + 16*req, value 0x0101) to
 # qualify Autobots Roll Out; after one real shot its six shot counters (RAM 0x34eb4 + 4*i) are set to 2 to
 # light its super jackpot; then requirements 0-4 are marked completed so all 11 are done for the Wizard Multiball.
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
 autoplunge 0
 start 1
 wait 2

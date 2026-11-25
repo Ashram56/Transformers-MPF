@@ -1,0 +1,263 @@
+scenario,mark,tick,points,awards,sounds,deffs,leffs,trace
+allspark_energon,energon_left,450,76110,1110 (handler) + 75000 (0x10309a4),0x25e 0x25f,124,140,same
+allspark_energon,energon_left_again,587,11110,10000 (0x10309a4) + 1110 (handler),0x25d,,141,same
+allspark_energon,energon_right,724,76110,1110 (handler) + 75000 (0x10309a4),0x01f 0x25e 0x25f,124,140,same
+allspark_energon,energon_center_completes,861,251110,1110 (handler) + 250000 (0x10309a4),0x13e 0x13f 0x260,125,142 40,same
+allspark_energon,allspark_collect_1,1123,5070,5070 (0x100a788),0x066 0x067 0x140 0x141 0x144 0x157 0x158,52 55,22 41,differs: sounds (trace 0x140 0x141 0x144 0x145 0x157 0x158); deffs (trace 52); leffs (trace 21 22 41)
+allspark_energon,eject_unlit,1510,5070,5070 (0x100a788),0x067 0x145 0x157 0x158,,22,differs: sounds (trace 0x145 0x157 0x158); leffs (trace 21 22)
+allspark_energon,energon_set2,1834,428330,1110 (handler) + 1110 (handler) + 1110 (handler) + 275000 (0x10309a4) + 75000 (0x10309a4) + 75000 (0x10309a4),0x13e 0x13f 0x25e 0x25f 0x260,124 125,140 142 40,same
+allspark_energon,allspark_collect_2,2244,5070,5070 (0x100a788),0x062 0x063 0x140 0x141 0x144,52 53,41 42,differs: sounds (trace 0x140 0x141 0x144 0x157 0x161 0x162); deffs (trace 149 52); leffs (trace 21 31 32 41)
+allspark_energon,energon_set3,2631,453330,1110 (handler) + 1110 (handler) + 1110 (handler) + 300000 (0x10309a4) + 75000 (0x10309a4) + 75000 (0x10309a4),0x063 0x13e 0x13f 0x145 0x157 0x158 0x25e 0x25f 0x260,124 125,140 142 22 40,differs: sounds (trace 0x13e 0x13f 0x145 0x158 0x25e 0x25f 0x260)
+allspark_energon,allspark_collect_3,3041,140120,135050 (0x19e44) + 5070 (0x100a788),0x001 0x01d 0x020 0x022 0x066 0x067 0x077 0x078 0x079 0x07a 0x140 0x141 0x144 0x157 0x158,25 52 55,104 14 22 41 92,differs: points (trace 410220); awards (trace 405150 (0x19e44) 5070 (0x100a788)); sounds (trace 0x001 0x01d 0x020 0x022 0x076 0x077 0x078 0x079 0x07a 0x140 0x141 0x144 0x145 0x146 0x157 0x158); deffs (trace 25 52); leffs (trace 104 14 21 22 32 41 92)
+battle_blackout,poke_battle_lit_4,450,0,,,,,same
+battle_blackout,qualify,512,699780,10000 (0x1020074) + 100000 (0x101caa4) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01f 0x02a 0x172 0x1a9 0x1aa 0x1c2,100 101 91,103 113 114 35,same
+battle_blackout,bo_hits,1373,2819840,1170 (handler) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 200000 (0x1002f0c) + 200000 (0x101cc6c) + 225000 (0x1002f0c) + 2500 (0x1025de4) + 25000 (0x101cc6c) + 25000 (0x101cc6c) + 25000 (0x101cc6c) + 25000 (0x101cc6c) + 25000 (0x101cc6c) + 25000 (0x101cc6c) + 250000 (0x1002f0c) + 250000 (0x101cc6c) + 275000 (0x1002f0c) + 30 (handler) + 300000 (0x1002f0c) + 300000 (0x101cc6c) + 325000 (0x1002f0c) + 5070 (0x100a788) + 5070 (0x100a788),0x157 0x158 0x1ab 0x1c2 0x1c3 0x2a3,101 102 141,115 170 22 35,differs: sounds (trace 0x157 0x158 0x1ab 0x1c2 0x1c3 0x1c4 0x2a3 0x2a4); leffs (trace 115 170 21 22 35)
+battle_blackout,poke_remaining_1,2856,1954990,1170 (handler) + 1220 (handler) + 20000 (0x1020074) + 2500 (0x1025de4) + 25000 (0x1020074) + 30 (handler) + 350000 (0x1002f0c) + 350000 (0x101cc6c) + 375000 (0x1002f0c) + 400000 (0x1002f0c) + 425000 (0x1002f0c) + 5070 (0x100a788),0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x145 0x157 0x158 0x1ab 0x1b1 0x1b2 0x1c6 0x1c7 0x1c8 0x1c9 0x1cb 0x1cc 0x2a3,102 103 141 25 91,103 104 115 116 170 22 35,differs: sounds (trace 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x145 0x157 0x158 0x1ab 0x1b1 0x1b2 0x1c6 0x1c7 0x1c8 0x1c9 0x1ca 0x1cb 0x1cc 0x2a3); leffs (trace 103 104 115 116 170 21 22 35)
+battle_bumblebee,qualify_1_left_orbit,523,11220,10000 (0x1020074) + 1220 (handler),0x174,91,103,same
+battle_bumblebee,qualify_2_left_ramp,660,166170,1170 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c),0x01e 0x174,91,103 35,same
+battle_bumblebee,qualify_3_right_ramp,797,196170,1170 (handler) + 175000 (0x1002f0c) + 20000 (0x1020074),0x174,91,103 35,same
+battle_bumblebee,qualify_4_right_orbit,934,326220,100000 (0x10142dc) + 1220 (handler) + 200000 (0x1002f0c) + 25000 (0x1020074),0x02c 0x1e9 0x1ea 0x1eb 0x1ec 0x1ed,108 109,122 123 35,same
+battle_bumblebee,bb_allspark,1384,755070,5070 (0x100a788) + 750000 (0x1014638),0x157 0x158 0x1ee 0x1f0 0x1f1 0x1f2,109 110,125 22,differs: leffs (trace 125 21 22)
+battle_bumblebee,bb_left_orbit,1584,901220,1220 (handler) + 150000 (0x1002f0c) + 750000 (0x1014638),0x1ee 0x1f4,109 110,125 35,differs: sounds (trace 0x1ee 0x1f3 0x1f4)
+battle_bumblebee,bb_left_ramp,1721,926170,1170 (handler) + 175000 (0x1002f0c) + 750000 (0x1014638),0x1ee 0x1f5,109 110,125 35,same
+battle_bumblebee,bb_right_ramp,1858,951170,1170 (handler) + 200000 (0x1002f0c) + 750000 (0x1014638),0x1ee 0x1f7,109 110,125 35,same
+battle_bumblebee,bb_right_orbit,1995,976220,1220 (handler) + 225000 (0x1002f0c) + 750000 (0x1014638),0x1ee 0x1f0 0x1f8,109 110,125 35,same
+battle_bumblebee,bb_unlit_right_ramp,2132,276170,1170 (handler) + 25000 (0x1014638) + 250000 (0x1002f0c),0x1f4,109,35,same
+battle_bumblebee,bb_center_last_phase1,2269,945830,2500 (0x1025de4) + 275000 (0x1002f0c) + 30 (handler) + 668300 (0x1014638),0x1ee 0x1f9 0x2a3,109 110 141,124 125 170 35,same
+battle_bumblebee,bb_phase2_bumblebee_target,2531,4438330,20000 (0x1001a70) + 30 (handler) + 4418300 (0x1014638),0x01e 0x1ee 0x1fb 0x1fc 0x1fe,110 111 128,104 125 126,differs: sounds (trace 0x01e 0x1ee 0x1fb 0x1fc 0x1fd 0x1fe)
+battle_bumblebee,next_lit_battle_check,3043,133710,133710 (0x19e44),0x001 0x01c 0x021 0x022 0x077 0x078 0x079 0x07a 0x1ff,25,104 14 92,same
+battle_devastator,poke_battle_lit_8,450,0,,,,,same
+battle_devastator,qualify,512,699780,10000 (0x1020074) + 100000 (0x1015dc0) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01f 0x02b 0x173 0x1cd 0x1ce 0x1cf 0x1d0,104 105 91,103 117 118 35,same
+battle_devastator,dv_hit_right_orbit,1373,101220,100000 (0x1015f8c) + 1220 (handler),0x1d1 0x1d8 0x1d9 0x1e3,105 106,119,same
+battle_devastator,dv_hit_allspark_rover,1573,355070,150000 (0x1002f0c) + 200000 (0x1015f8c) + 5070 (0x100a788),0x157 0x158 0x1d1 0x1dc 0x1e3,105 106,119 22 35,differs: sounds (trace 0x157 0x158 0x1d1 0x1dc 0x1e3 0x1e4)
+battle_devastator,dv_right_orbit_again,1835,476220,1220 (handler) + 175000 (0x1002f0c) + 300000 (0x1015f8c),0x1d1 0x1dc 0x1e3,105 106,119 35,differs: sounds (trace 0x1d1 0x1dc 0x1e3 0x1e4)
+battle_devastator,dv_bumper_moves_rover,2035,27340,10000 (0x1032f8c) + 10000 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 3000 (0x102c8c8) + 4000 (0x102c8c8),0x15c,105 46,120 26 27,same
+battle_devastator,dv_hit_left_ramp_rover,2183,601170,1170 (handler) + 200000 (0x1002f0c) + 400000 (0x1015f8c),0x1d1 0x1dd 0x1e3,105 106,119 35,same
+battle_devastator,poke_remaining_1,2320,879260,1220 (handler) + 133040 (0x19e44) + 20000 (0x1020074) + 225000 (0x1002f0c) + 500000 (0x1015f8c),0x001 0x01d 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x1d1 0x1da 0x1db 0x1e3 0x1e5 0x1e7,106 107 25 91,103 104 119 121 14 35 92,differs: sounds (trace 0x001 0x01d 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x1d1 0x1da 0x1db 0x1e3 0x1e4 0x1e5 0x1e6 0x1e7)
+battle_ironhide,poke_battle_lit_32,523,0,,,,,same
+battle_ironhide,qualify,585,699780,10000 (0x1020074) + 100000 (0x101adc8) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01e 0x02d 0x175 0x17d 0x200 0x203 0x204,112 113 91,103 127 128 35,same
+battle_ironhide,ih_hit_center,1446,202530,200000 (0x101afbc) + 2500 (0x1025de4) + 30 (handler),0x201 0x202 0x214 0x2a3,113 114 141,129 170,same
+battle_ironhide,ih_hit_left_ramp,1646,401170,1170 (handler) + 150000 (0x1002f0c) + 250000 (0x101afbc),0x201 0x205 0x214,113 114,129 35,same
+battle_ironhide,ih_hit_right_ramp,1783,476170,1170 (handler) + 175000 (0x1002f0c) + 300000 (0x101afbc),0x201 0x206 0x208 0x209 0x214,113 114,129 35,same
+battle_ironhide,ih_hit_left_orbit,1920,551220,1220 (handler) + 200000 (0x1002f0c) + 350000 (0x101afbc),0x201 0x20a 0x214,113 114,129 35,same
+battle_ironhide,poke_remaining_1,2057,0,,,,,same
+battle_ironhide,ih_hit_center_completes,2057,759230,131700 (0x19e44) + 225000 (0x1002f0c) + 2500 (0x1025de4) + 30 (handler) + 400000 (0x101afbc),0x001 0x01c 0x01e 0x021 0x022 0x077 0x078 0x079 0x07a 0x201 0x213 0x214 0x216 0x218 0x219 0x2a3,114 115 141 25,104 129 130 14 170 35 92,differs: sounds (trace 0x001 0x01c 0x01e 0x021 0x022 0x077 0x078 0x079 0x07a 0x201 0x213 0x214 0x216 0x217 0x218 0x219 0x2a3)
+battle_mudflap,poke_battle_lit_64,523,0,,,,,same
+battle_mudflap,qualify,585,699780,10000 (0x1020074) + 100000 (0x1019150) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01e 0x02e 0x056 0x176 0x17d 0x21a 0x21b,116 117 91,103 13 131 132 35,same
+battle_mudflap,mf_plunge_added_ball,1446,0,,,,,same
+battle_mudflap,mf_hits,1634,903560,1170 (handler) + 1170 (handler) + 1220 (handler) + 250000 (0x1019294) + 300000 (0x1019294) + 350000 (0x1019294),0x21c 0x21d 0x21e 0x22e,117 118,133,same
+battle_mudflap,poke_remaining_1,2045,427390,1170 (handler) + 1220 (handler) + 25000 (0x1019294) + 400000 (0x1019294),0x21c 0x22e 0x22f,117 118,133,same
+battle_mudflap,drain_to_one_ball,2319,0,,0x01e 0x230 0x232 0x233,119,104 134,differs: sounds (trace 0x01e 0x230 0x231 0x232 0x233)
+battle_mudflap,after_end,2701,21170,1170 (handler) + 20000 (0x1020074),0x021 0x022 0x077 0x078 0x079 0x07a 0x177,25 91,103,differs: points (trace 153540); awards (trace 1170 (handler) 132370 (0x19e44) 20000 (0x1020074)); sounds (trace 0x001 0x01c 0x021 0x022 0x077 0x078 0x079 0x07a 0x177); leffs (trace 103 104 14 92)
+battle_ratchet,poke_battle_lit_128,523,0,,,,,same
+battle_ratchet,qualify,585,699780,10000 (0x1020074) + 100000 (0x1012318) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01e 0x02f 0x177 0x17d 0x234 0x235,120 121 91,103 135 136 35,same
+battle_ratchet,ra_hit_left_orbit,1446,101220,100000 (0x1012508) + 1220 (handler),0x236 0x237 0x239 0x23a,121 122,137,same
+battle_ratchet,ra_hit_allspark_double,1583,455070,150000 (0x1002f0c) + 300000 (0x1012508) + 5070 (0x100a788),0x157 0x158 0x236 0x237 0x239 0x23a,121 122,137 22 35,same
+battle_ratchet,ra_hit_left_ramp_double,1845,576170,1170 (handler) + 175000 (0x1002f0c) + 400000 (0x1012508),0x236 0x237 0x23c,121 122,137 35,same
+battle_ratchet,ra_hit_right_ramp,1982,451170,1170 (handler) + 200000 (0x1002f0c) + 250000 (0x1012508),0x236 0x237 0x240 0x242,121 122,137 35,same
+battle_ratchet,ra_hit_left_ramp_unlit,2119,251170,1170 (handler) + 225000 (0x1002f0c) + 25000 (0x1012508),0x23f 0x240,121,35,same
+battle_ratchet,ra_drain_ends_battle,2256,131700,131700 (0x19e44),0x001 0x01c 0x021 0x022 0x077 0x078 0x079 0x07a 0x243 0x255 0x256,123 25,104 138 14 92,same
+battle_shockwave,poke_battle_lit_2,450,0,,,,,same
+battle_shockwave,qualify,512,699780,10000 (0x1020074) + 100000 (0x101e400) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 25000 (0x1020074),0x01f 0x029 0x171 0x193 0x194,91 96 97,103 109 110 35,same
+battle_shockwave,sw_hit_allspark,1373,205070,200000 (0x101e5d4) + 5070 (0x100a788),0x157 0x158 0x195 0x1a4,97 98,111 22,differs: leffs (trace 111 21 22)
+battle_shockwave,sw_hit_right_ramp,1635,376170,1170 (handler) + 150000 (0x1002f0c) + 225000 (0x101e5d4),0x195 0x196 0x1a4,97 98,111 35,same
+battle_shockwave,sw_hit_left_orbit_all_lit,1772,426220,1220 (handler) + 175000 (0x1002f0c) + 250000 (0x101e5d4),0x195 0x1a4,97 98,111 35,same
+battle_shockwave,sw_hit_left_ramp,1909,476170,1170 (handler) + 200000 (0x1002f0c) + 275000 (0x101e5d4),0x195 0x1a4,97 98,111 35,same
+battle_shockwave,sw_hit_left_ramp_again_unlit,2046,26170,1170 (handler) + 25000 (0x101e5d4),0x197 0x198,97,,same
+battle_shockwave,poke_remaining_1,2183,0,,,,,same
+battle_shockwave,sw_hit_center_completes,2183,659900,132370 (0x19e44) + 225000 (0x1002f0c) + 2500 (0x1025de4) + 30 (handler) + 300000 (0x101e5d4),0x001 0x01d 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x195 0x1a2 0x1a3 0x1a4 0x1a6 0x1a8 0x1cc 0x2a3,141 25 98 99,104 111 112 14 170 35 92,differs: sounds (trace 0x001 0x01d 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x195 0x1a2 0x1a3 0x1a4 0x1a6 0x1a7 0x1a8 0x1cc 0x2a3)
+battle_starscream,qualify_1_left_orbit,450,11220,10000 (0x1020074) + 1220 (handler),0x170,91,103,same
+battle_starscream,qualify_2_left_ramp,587,166170,1170 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c),0x01f 0x170,91,103 35,same
+battle_starscream,qualify_3_right_ramp,724,196170,1170 (handler) + 175000 (0x1002f0c) + 20000 (0x1020074),0x170,91,103 35,same
+battle_starscream,qualify_4_right_orbit,861,326220,100000 (0x101795c) + 1220 (handler) + 200000 (0x1002f0c) + 25000 (0x1020074),0x028 0x17f 0x180,92 93,105 106 35,same
+battle_starscream,ss_hit_left_orbit,1311,101220,100000 (0x1017b24) + 1220 (handler),0x181 0x182 0x18e,93 94,107,same
+battle_starscream,ss_hit_left_ramp,1448,263670,112500 (0x1017b24) + 1170 (handler) + 150000 (0x1002f0c),0x181 0x185 0x18e,93 94,107 35,same
+battle_starscream,ss_hit_center,1585,302530,125000 (0x1017b24) + 175000 (0x1002f0c) + 2500 (0x1025de4) + 30 (handler),0x181 0x185 0x186 0x18e 0x2a3,141 93 94,107 170 35,same
+battle_starscream,ss_hit_unlit_left_ramp,1722,226170,1170 (handler) + 200000 (0x1002f0c) + 25000 (0x1017b24),0x187 0x188,93,35,same
+battle_starscream,ss_hit_right_ramp,1859,363670,1170 (handler) + 137500 (0x1017b24) + 225000 (0x1002f0c),0x181 0x189 0x18a 0x18e,93 94,107 35,same
+battle_starscream,ss_wait_timer,1996,0,,0x01f 0x191 0x192,95,104 108,same
+battle_starscream,after_timer,4808,131700,131700 (0x19e44),0x001 0x01d 0x020 0x022 0x077 0x078 0x079 0x07a,25,104 14 92,same
+coils,slings,313,880,440 (0x1033104) + 440 (0x10331a4),0x15a,,,same
+coils,pops,399,12510,170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 3000 (0x102c8c8) + 4000 (0x102c8c8) + 5000 (0x102c8c8),0x01f 0x15c,46,26 27 28 29,same
+coils,eject,528,5070,5070 (0x100a788),0x145 0x157 0x158,,22,differs: leffs (trace 21 22)
+coils,optimus,728,161250,10000 (0x1020074) + 1220 (handler) + 150000 (0x1002f0c) + 30 (handler),0x145 0x173,91,103 35,differs: sounds (trace 0x173)
+coils,flippers,1002,0,,0x145,,,same
+coils,ball_search,1322,233530,100000 (handler) + 131030 (0x19e44) + 2500 (0x102db28),0x001 0x01d 0x020 0x022 0x077 0x078 0x079 0x07a 0x169,25,104 14 92 97,same
+combos,combo_chain,700,1179790,10000 (0x1020074) + 100000 (0x101795c) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 15000 (0x1020074) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 20000 (0x1020074) + 200000 (0x1002f0c) + 225000 (0x1002f0c) + 2500 (0x1025de4) + 2500 (0x1025de4) + 25000 (0x1020074) + 250000 (0x1002f0c) + 30 (handler) + 30 (handler),0x01f 0x028 0x170 0x17f 0x180 0x2a3,141 91 92 93,103 105 106 170 35,same
+combos,combo_after_timeout,1730,477390,100000 (0x1017b24) + 1170 (handler) + 1220 (handler) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 25000 (0x1017b24) + 25000 (0x1017b24),0x181 0x182 0x18e,93 94,107 35,same
+combos,eject_combo,2766,567570,112500 (0x1017b24) + 200000 (0x1002f0c) + 225000 (0x1002f0c) + 25000 (0x1017b24) + 5070 (0x100a788),0x157 0x158 0x181 0x185 0x18e,93 94,107 22 35,differs: leffs (trace 107 21 22 35)
+combos,combo_long_chain,3540,1291150,1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 135050 (0x19e44) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 200000 (0x1002f0c) + 225000 (0x1002f0c) + 25000 (0x1017b24) + 25000 (0x1017b24) + 25000 (0x1017b24) + 25000 (0x1017b24) + 25000 (0x1017b24) + 25000 (0x1017b24) + 250000 (0x1002f0c),0x001 0x01d 0x020 0x022 0x077 0x078 0x079 0x07a 0x191 0x192,25 95,104 108 14 35 92,differs: sounds (trace 0x001 0x01d 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x191 0x192)
+game_flow,p1_ball1_plunge,397,0,,0x01c 0x056 0x057,41,96,same
+game_flow,p1_hands_free_skill_lane,459,358000,2500 (0x102e208) + 2500 (0x102e208) + 2560 (handler) + 350000 (0x1031630) + 440 (0x1033104),0x01e 0x159 0x165 0x16d,42,100 93,same
+game_flow,p1_drain_in_ball_save,607,0,,0x056 0x05e 0x05f,20,15,same
+game_flow,p1_sling_only_then_drain,864,440,440 (0x10331a4),0x159,,,same
+game_flow,p1_reserved_plunge,1133,1220,1220 (handler),0x056,,,same
+game_flow,p1_drain_after_save,1957,230850,100000 (handler) + 128350 (0x19e44) + 2500 (0x102db28),0x001 0x01a 0x021 0x022 0x077 0x078 0x079 0x07a 0x169,25 40,104 14 92 95 97,same
+game_flow,p2_ball1_flip_side,2593,0,,0x01b 0x01d 0x056 0x058 0x257,41,96,same
+game_flow,p2_super_skill,2728,501250,1220 (handler) + 30 (handler) + 500000 (0x1031848),0x01d 0x01f 0x167,43,94,differs: sounds (trace 0x01f 0x167)
+game_flow,p2_drain,3564,229510,100000 (handler) + 127010 (0x19e44) + 2500 (0x102e208),0x001 0x01c 0x01f 0x020 0x022 0x077 0x078 0x079 0x07a 0x16d,25,100 104 14 92,differs: sounds (trace 0x001 0x01c 0x020 0x022 0x077 0x078 0x079 0x07a 0x16d)
+game_flow,p1_ball2,4200,0,,0x056,,,same
+game_flow,p1_flipper_then_skill,4262,268780,10000 (0x1020074) + 1220 (handler) + 2500 (0x102db28) + 2500 (0x102db28) + 250000 (0x1031630) + 2560 (handler),0x01e 0x165 0x169,42 91,103 93 97,same
+game_flow,tilt_warning_1,4483,0,,0x016 0x052,23,11,same
+game_flow,tilt_warning_2,4616,0,,0x016 0x01e 0x052,23,11,differs: sounds (trace 0x016 0x052)
+game_flow,tilt,4749,0,,0x017 0x01d 0x053,21,104 14 9 92,same
+game_flow,p2_ball2,5389,126890,1220 (handler) + 125670 (0x19e44),0x001 0x01c 0x01f 0x020 0x022 0x056 0x077 0x078 0x079 0x07a,25,104 14 92,same
+game_flow,p1_ball3,6908,126890,1220 (handler) + 125670 (0x19e44),0x001 0x01d 0x01e 0x021 0x022 0x056 0x077 0x078 0x079 0x07a,25,104 14 92,same
+game_flow,p2_ball3,8427,1220,1220 (handler),0x01f 0x056,,,same
+game_flow,game_over,9321,125670,125670 (0x19e44),0x001 0x020 0x022 0x023 0x024 0x04b 0x073 0x077 0x078 0x079 0x07a,1 25 38,1,same
+megatron_autobot,lock1,389,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x056 0x294 0x29a,140,168,same
+megatron_autobot,lock2,776,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x056 0x294 0x29c,140,168,same
+megatron_autobot,lock3,1163,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x01e 0x056 0x294 0x29f,140,168,same
+megatron_autobot,lock4,1550,255120,250000 (0x100c200) + 5120 (0x100a3b8),0x038 0x0c7 0x0c8 0x0c9 0x13b 0x13c 0x13d,69 70,13 23 24 25 61 62,same
+megatron_autobot,jackpot1,2312,130120,125000 (0x100c430) + 5120 (0x100a3b8),0x0ca 0x0cb 0x0cc 0x0d1 0x13b 0x13c,70 71,23 24 64,same
+megatron_autobot,double1,2512,301220,1220 (handler) + 300000 (0x100c430),0x0d2 0x0d3,70 72,65,same
+megatron_autobot,timeout_wait,2586,0,,0x0d8,70,,same
+megatron_autobot,unlit_shot,3024,1170,1170 (handler),,,,same
+megatron_autobot,jackpot2,3130,130120,125000 (0x100c430) + 5120 (0x100a3b8),0x0ca 0x0cb 0x0cc 0x0d1 0x13c,70 71,24 64,differs: sounds (trace 0x0ca 0x0d0 0x0d1 0x13b 0x13c); leffs (trace 23 24 64)
+megatron_autobot,doubles,3330,2510880,1000 (0x1025de4) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 30 (handler) + 300000 (0x100c430) + 350000 (0x100c430) + 400000 (0x100c430) + 450000 (0x100c430) + 500000 (0x100c430) + 500000 (0x100c430) + 5070 (0x100a788),0x0d2 0x0d3 0x0d8 0x157 0x158 0x2a1,70 72,169 22 63 65,differs: sounds (trace 0x0d2 0x0d3 0x0d4 0x0d5 0x0d6 0x0d7 0x0d8 0x157 0x158 0x2a1); leffs (trace 169 21 22 63 65)
+megatron_autobot,super,4059,3055120,3050000 (0x100c430) + 5120 (0x100a3b8),0x0d9 0x0da 0x0db 0x0dc 0x0dd 0x13c,70 73,24 66,differs: sounds (trace 0x0d8 0x0d9 0x0da 0x0db 0x0dc 0x0dd 0x13b 0x13c); leffs (trace 23 24 66)
+megatron_autobot,jackpot_after_super,4321,230120,225000 (0x100c430) + 5120 (0x100a3b8),0x13b 0x13c,70 71,23 24,same
+megatron_autobot,drains,4521,0,,0x01e 0x0de,74,104 67,same
+megatron_decepticon,lock1,313,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x056 0x297 0x29a,140,168,same
+megatron_decepticon,lock2,575,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x056 0x297 0x29c,140,168,same
+megatron_decepticon,lock3,837,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x01f 0x056 0x297 0x29f,140,168,same
+megatron_decepticon,lock4,1099,105120,100000 (0x100e0bc) + 5120 (0x100a3b8),0x03b 0x0e2 0x0e3 0x13b 0x13c 0x13d,75 76,13 23 24 25 69 70,differs: sounds (trace 0x03b 0x0e2 0x0e3 0x13b 0x13c 0x13d 0x297)
+megatron_decepticon,phase1,1673,985880,1000 (0x1025de4) + 100000 (0x100e29c) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 125000 (0x100e29c) + 150000 (0x100e29c) + 175000 (0x100e29c) + 200000 (0x100e29c) + 225000 (0x100e29c) + 30 (handler) + 5070 (0x100a788),0x0e4 0x0e5 0x0e6 0x0e7 0x0e9 0x0ea 0x0eb 0x0ec 0x0ed 0x0f5 0x157 0x158 0x2a1,76 77,169 22 72,differs: sounds (trace 0x0e4 0x0e5 0x0e6 0x0e7 0x0ea 0x0eb 0x0ec 0x0ed 0x0f0 0x0f5 0x0f6 0x157 0x158 0x2a1)
+megatron_decepticon,lock_shot_in_mb,2403,858680,100000 (0x100e29c) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 250000 (0x100e29c) + 250000 (0x100e29c) + 250000 (0x100e29c) + 5120 (0x100a3b8),0x0e4 0x0e5 0x0ee 0x0f0 0x0f4 0x13b 0x13c,76 77,23 24 72,differs: sounds (trace 0x0e4 0x0e9 0x0ee 0x0f1 0x0f2 0x0f4 0x13b 0x13c)
+megatron_decepticon,phase2,2952,1503090,1000 (0x1025de4) + 1000 (0x1025de4) + 1000 (0x1025de4) + 30 (handler) + 30 (handler) + 30 (handler) + 500000 (0x100e29c) + 500000 (0x100e29c) + 500000 (0x100e29c),0x0f7 0x0f8 0x2a1,76 78,169 71 73,same
+megatron_decepticon,phase3,3488,1000030,1000000 (0x100e29c) + 30 (handler),0x0f9 0x0fa 0x0fb,76 79,74,same
+megatron_decepticon,drains,3750,0,,0x01f 0x0fc,80,104 75,same
+megatron_decepticon,relight,4395,418450,10000 (0x100af0c) + 1110 (handler) + 1110 (handler) + 1110 (handler) + 250000 (0x10309a4) + 5120 (0x100a3b8) + 75000 (0x10309a4) + 75000 (0x10309a4),0x13b 0x13c 0x25e 0x25f 0x260 0x293,124 125 139,140 142 167 23 24 40,same
+megatron_decepticon,lock_after,5067,30120,25000 (0x100b130) + 5120 (0x100a3b8),0x056 0x297 0x298 0x29a,140,168,differs: sounds (trace 0x056 0x298 0x29a)
+optimus_autobot,access,389,732620,150000 (0x1002f0c) + 175000 (0x1002f0c) + 200000 (0x1002f0c) + 200000 (0x102628c) + 2500 (0x1025de4) + 2500 (0x1025de4) + 2500 (0x1025de4) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler),0x01e 0x031 0x148 0x2a3 0x2a4 0x2ab 0x2ac,141 142,170 174 175 176 20 35,differs: sounds (trace 0x01e 0x031 0x149 0x2a3 0x2a4 0x2ab 0x2ac)
+optimus_autobot,battle_hits,1062,90,30 (handler) + 30 (handler) + 30 (handler),0x2aa 0x2b3 0x2b4,144,177 178,same
+optimus_autobot,mb_start,1473,2250030,2000000 (0x10262f0) + 250000 (0x1027994) + 30 (handler),0x01e 0x032 0x056 0x07d 0x093,57 58,13 45 46,same
+optimus_autobot,jackpot1,1860,151220,1220 (handler) + 150000 (0x1027b74),0x01e 0x032 0x07f 0x095,58 59,46 48,differs: sounds (trace 0x07f 0x095); leffs (trace 48)
+optimus_autobot,unlit_shot,1997,1170,1170 (handler),0x080,58,,same
+optimus_autobot,double1,2134,2570540,1000 (0x1025de4) + 1000 (0x1025de4) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 150000 (0x1027b74) + 150000 (0x1027b74) + 150000 (0x1027b74) + 150000 (0x1027b74) + 150000 (0x1027b74) + 30 (handler) + 30 (handler) + 300000 (0x1027b74) + 300000 (0x1027b74) + 300000 (0x1027b74) + 300000 (0x1027b74) + 300000 (0x1027b74) + 300000 (0x1027b74) + 5070 (0x100a788) + 5070 (0x100a788),0x07f 0x081 0x082 0x083 0x084 0x085 0x086 0x087 0x088 0x089 0x08a 0x08c 0x08e 0x094 0x096 0x097 0x098 0x099 0x09a 0x09c 0x09f 0x157 0x158 0x2a1,58 59 60,169 22 47 48 49,differs: sounds (trace 0x07f 0x081 0x082 0x083 0x084 0x085 0x086 0x087 0x088 0x089 0x08a 0x08e 0x094 0x096 0x097 0x098 0x099 0x09a 0x09c 0x09f 0x0a0 0x157 0x158 0x2a1); leffs (trace 169 21 22 47 48 49)
+optimus_autobot,super,3923,2705120,2700000 (0x1027b74) + 5120 (0x100a3b8),0x08f 0x090,58 61,50,same
+optimus_autobot,drains,4185,0,,0x01e 0x091 0x0a1 0x13b 0x13c,62,104 23 24 51,same
+optimus_decepticon,access,313,332590,150000 (0x1002f0c) + 175000 (0x1002f0c) + 2500 (0x1025de4) + 2500 (0x1025de4) + 2500 (0x1025de4) + 30 (handler) + 30 (handler) + 30 (handler),0x01f 0x2a3 0x2a4,141,170 35,same
+optimus_decepticon,battle_start,724,400030,200000 (0x1002f0c) + 200000 (0x102628c) + 30 (handler),0x034 0x2ab 0x2ad,142,174 175 176 20 35,same
+optimus_decepticon,battle_hits,986,90,30 (handler) + 30 (handler) + 30 (handler),0x2aa 0x2b5,144,177 178,differs: sounds (trace 0x2aa 0x2b5 0x2b6)
+optimus_decepticon,mb_start,1397,2250030,2000000 (0x10262f0) + 250000 (0x1029a08) + 30 (handler),0x01f 0x035 0x056 0x2b5,63 64,13 53 54,same
+optimus_decepticon,jackpot1,1784,151220,1220 (handler) + 150000 (0x1029bf4),0x01f 0x035 0x0a5 0x0a6 0x0b1,64 65,54 56,differs: sounds (trace 0x0a5 0x0a6 0x0b1 0x2b6); leffs (trace 56)
+optimus_decepticon,double1,1921,451200,1170 (handler) + 150000 (0x1029bf4) + 30 (handler) + 300000 (0x1029bf4),0x0a5 0x0a6 0x0aa 0x0b1 0x0c4,64 65 66,56 57,same
+optimus_decepticon,center_quirk,2195,2259670,1000 (0x1025de4) + 1000 (0x1025de4) + 1170 (handler) + 1220 (handler) + 150000 (0x1029bf4) + 150000 (0x1029bf4) + 150000 (0x1029bf4) + 150000 (0x1029bf4) + 150000 (0x1029bf4) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 300000 (0x1029bf4) + 300000 (0x1029bf4) + 300000 (0x1029bf4) + 300000 (0x1029bf4) + 300000 (0x1029bf4) + 5070 (0x100a788),0x0a5 0x0a6 0x0aa 0x0b1 0x0c4 0x157 0x158 0x2a1,64 65 66,169 22 55 56 57,same
+optimus_decepticon,super,3628,2850030,2850000 (0x1029bf4) + 30 (handler),0x0ab 0x0ac 0x0ad,64 67,58,same
+optimus_decepticon,drains,3828,0,,0x01f 0x0ae 0x0c5,68,104 59,same
+scoring,pops_fast,700,250400,10000 (0x102c8c8) + 11000 (0x102c8c8) + 12000 (0x102c8c8) + 13000 (0x102c8c8) + 14000 (0x102c8c8) + 15000 (0x102c8c8) + 16000 (0x102c8c8) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 17000 (0x102c8c8) + 18000 (0x102c8c8) + 19000 (0x102c8c8) + 20000 (0x102c8c8) + 20000 (0x102c8c8) + 20000 (0x102c8c8) + 3000 (0x102c8c8) + 4000 (0x102c8c8) + 5000 (0x102c8c8) + 6000 (0x102c8c8) + 7000 (0x102c8c8) + 8000 (0x102c8c8) + 9000 (0x102c8c8),0x01f 0x15c,46,26 27 28 29,same
+scoring,pops_after_pause,1065,9510,170 (0x1032f8c) + 170 (0x1032f8c) + 170 (0x1032f8c) + 3000 (0x102c8c8) + 3000 (0x102c8c8) + 3000 (0x102c8c8),0x15c,46,26 27 28 29,same
+scoring,spinner,1419,12950,2500 (0x10320a4) + 2500 (0x10320a4) + 2500 (0x10320a4) + 2500 (0x10320a4) + 2500 (0x10320a4) + 90 (handler) + 90 (handler) + 90 (handler) + 90 (handler) + 90 (handler),0x26d,,152,same
+scoring,lanes_left,1594,123710,10000 (0x102db28) + 100000 (handler) + 1090 (handler) + 2500 (0x102db28) + 2500 (0x102db28) + 2500 (0x102db28) + 2560 (handler) + 2560 (handler),0x059 0x05a 0x169 0x16a,44,37 97 99,same
+scoring,lanes_right,2016,123710,10000 (0x102e208) + 100000 (handler) + 1090 (handler) + 2500 (0x102e208) + 2500 (0x102e208) + 2500 (0x102e208) + 2560 (handler) + 2560 (handler),0x16d 0x16e,45,100 102,same
+scoring,bumblebee,2438,245240,20000 (0x1001a70) + 25000 (0x1001a70) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30000 (0x1001a70) + 35000 (0x1001a70) + 40000 (0x1001a70) + 45000 (0x1001a70) + 50000 (0x1001a70),0x026 0x26b 0x27a 0x27b,128 129 130,150 156 157,same
+scoring,during_double_scoring,3274,37280,15000 (0x1001a70) + 170 (0x1032f8c) + 30 (handler) + 3000 (0x102c8c8) + 440 (0x1033104),0x15a 0x15d 0x26b 0x27c 0x27d 0x280 0x281 0x282 0x283 0x284 0x285 0x286,128 130 46,150 26 27,differs: sounds (trace 0x01f 0x15a 0x15d 0x26b 0x27b 0x27c 0x27d 0x280 0x281 0x282 0x283 0x284 0x285 0x286)
+scoring,after_double_scoring,6246,440,440 (0x1033104),0x15a,,,same
+scoring,two_bank,6383,450180,30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 30 (handler) + 75000 (0x102e9c0) + 75000 (0x102e9c0) + 75000 (0x102e9c0) + 75000 (0x102e9c0) + 75000 (0x102e9c0) + 75000 (0x102e9c0),0x01f 0x263 0x264 0x265 0x266,126,144,differs: sounds (trace 0x263 0x264 0x265 0x266)
+scoring,during_fast_scoring,6890,609270,10000 (0x1004644) + 10000 (0x1004644) + 10000 (0x1004644) + 100000 (0x1004394) + 1110 (handler) + 1110 (handler) + 1110 (handler) + 250000 (0x10309a4) + 30 (handler) + 30 (handler) + 440 (0x1033104) + 440 (0x10331a4) + 75000 (0x102e9c0) + 75000 (0x10309a4) + 75000 (0x10309a4),0x027 0x15a 0x25e 0x25f 0x260 0x263 0x287 0x288 0x289 0x28a 0x291,124 125 131 132 133,140 142 144 147 148 158 159 160 40,differs: sounds (trace 0x01f 0x027 0x15a 0x25e 0x260 0x263 0x287 0x288 0x289 0x28a 0x291)
+scoring,after_fast_scoring,9346,343520,10000 (0x1004644) + 333080 (0x19e44) + 440 (0x1033104),0x001 0x01d 0x01f 0x020 0x022 0x076 0x077 0x078 0x079 0x07a 0x15a 0x28d 0x290,133 134 137 25,104 14 164 165 40 92,differs: sounds (trace 0x001 0x01d 0x020 0x022 0x076 0x077 0x078 0x079 0x07a 0x15a 0x28d 0x290); deffs (trace 134 137 25)
+side_left,press_left,125,0,,0x01a 0x257,,,same
+side_left,plunge,327,440,440 (0x1033104),0x01c 0x056 0x057 0x159,41,96,same
+side_left,end,777,0,,,,,same
+side_right,press_right,125,0,,0x01a 0x257,,,same
+side_right,plunge,327,440,440 (0x1033104),0x01c 0x056 0x057 0x159,41,96,same
+side_right,end,777,0,,,,,same
+sounds,attract,0,0,,,,,same
+sounds,coin,0,0,,,,,differs: sounds (trace 0x042); deffs (trace 10)
+sounds,start,0,0,,,5,,differs: sounds (trace 0x01b 0x042 0x043); deffs (trace 10 40); leffs (trace 104 14 92 95)
+sounds,shooter_wait,0,0,,0x01b,40,104 14 92 95,differs: sounds (trace -); deffs (trace -); leffs (trace -)
+sounds,plunge,750,0,,0x01d 0x056 0x058,41,96,same
+sounds,play,938,111480,10000 (0x1020074) + 1110 (handler) + 1170 (handler) + 170 (0x1032f8c) + 20000 (0x1001a70) + 30 (handler) + 3000 (0x102c8c8) + 440 (0x1033104) + 560 (handler) + 75000 (0x10309a4),0x01f 0x15a 0x15c 0x172 0x25e 0x25f 0x26b 0x273,124 128 46 91,103 140 150 26 27,same
+sounds,tilt_warning,1260,0,,0x016 0x052,23,11,same
+sounds,tilt_warning_2,1393,0,,0x016 0x052,23,11,same
+sounds,tilt,1526,0,,0x017 0x053,21,9,same
+sounds,after_tilt,1791,0,,0x01d,,104 14 92,same
+sounds,ball2,2541,440,440 (0x10331a4),0x056 0x15a,,,same
+sounds,drain_ball2,3865,102500,100000 (handler) + 2500 (0x102db28),0x01f 0x056 0x05e 0x05f 0x169,20,15 97,same
+sounds,ball3,4626,440,440 (0x1033104),0x15a,,,same
+sounds,drain_ball3,5950,102500,100000 (handler) + 2500 (0x102e208),0x16d,,100,same
+sounds,game_over,5961,127680,127680 (0x19e44),0x001 0x01d 0x020 0x022 0x077 0x078 0x079 0x07a,25,104 14 92,same
+sounds,attract_after,7836,0,,,,,same
+switches,sw_1,513,20030,20000 (0x1001a70) + 30 (handler),0x26b,128,150,same
+switches,sw_1_again,650,25030,25000 (0x1001a70) + 30 (handler),0x26b,128,150,same
+switches,sw_2,787,76110,1110 (handler) + 75000 (0x10309a4),0x01f 0x25e 0x25f,124,140,same
+switches,sw_2_again,924,11110,10000 (0x10309a4) + 1110 (handler),0x25d,,141,same
+switches,sw_4,1061,560,560 (handler),0x273,,,same
+switches,sw_4_again,1198,560,560 (handler),0x273,,,same
+switches,sw_5,1335,11220,10000 (0x1020074) + 1220 (handler),0x172,91,103,same
+switches,sw_5_again,1472,1220,1220 (handler),,,,same
+switches,sw_6,1609,150000,150000 (0x1002f0c),,,35,same
+switches,sw_6_again,1746,0,,,,,same
+switches,sw_7,1883,5060,2500 (0x102e208) + 2560 (handler),0x16d,,100,same
+switches,sw_7_again,2020,5060,2500 (0x102e208) + 2560 (handler),0x16d,,100,same
+switches,sw_8,2157,5060,2500 (0x102db28) + 2560 (handler),0x169,,97,same
+switches,sw_8_again,2294,5060,2500 (0x102db28) + 2560 (handler),0x169,,97,same
+switches,sw_10,2431,16170,1170 (handler) + 15000 (0x1020074),0x172,91,103,same
+switches,sw_10_again,2568,1170,1170 (handler),,,,same
+switches,sw_11,2705,152530,150000 (0x1002f0c) + 2500 (0x1025de4) + 30 (handler),0x2a3 0x2a4,141,170 35,same
+switches,sw_11_again,2842,177530,175000 (0x1002f0c) + 2500 (0x1025de4) + 30 (handler),0x2a3 0x2a4,141,170 35,same
+switches,sw_12,2979,1220,1220 (handler),,,,same
+switches,sw_12_again,3116,221220,1220 (handler) + 20000 (0x1020074) + 200000 (0x1002f0c),0x172,91,103 35,same
+switches,sw_13,3253,30,30 (handler),,,,same
+switches,sw_13_again,3390,30,30 (handler),,,,same
+switches,sw_14,3527,351170,100000 (0x101caa4) + 1170 (handler) + 225000 (0x1002f0c) + 25000 (0x1020074),0x02a 0x1a9 0x1c2,100 101,113 114 35,same
+switches,sw_14_again,3664,276170,1170 (handler) + 25000 (0x101cc6c) + 250000 (0x1002f0c),0x1aa,101,35,same
+switches,sw_24,3801,102500,100000 (handler) + 2500 (0x102db28),0x169,101,97,same
+switches,sw_24_again,3938,101000,1000 (0x102db28) + 100000 (handler),0x168,,98,same
+switches,sw_25,4075,11090,10000 (0x102db28) + 1090 (handler),0x059 0x05a 0x16a,101 44,37 99,same
+switches,sw_25_again,4212,3590,1090 (handler) + 2500 (0x102db28),0x169,,97,same
+switches,sw_26,4349,440,440 (0x1033104),0x15a,,,same
+switches,sw_26_again,4486,440,440 (0x1033104),0x15a,,,same
+switches,sw_27,4623,440,440 (0x10331a4),0x15a,,,same
+switches,sw_27_again,4760,440,440 (0x10331a4),0x15a,,,same
+switches,sw_28,4897,3590,1090 (handler) + 2500 (0x102e208),0x16d,,100,same
+switches,sw_28_again,5034,2090,1000 (0x102e208) + 1090 (handler),0x16c,,101,same
+switches,sw_29,5171,110000,10000 (0x102e208) + 100000 (handler),0x16e,45,102,same
+switches,sw_29_again,5308,102500,100000 (handler) + 2500 (0x102e208),0x16d,,100,same
+switches,sw_30,5445,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 27,same
+switches,sw_30_again,5582,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 27,same
+switches,sw_31,5719,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 28,same
+switches,sw_31_again,5856,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 28,same
+switches,sw_32,5993,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 29,same
+switches,sw_32_again,6130,3170,170 (0x1032f8c) + 3000 (0x102c8c8),0x15c,46,26 29,same
+switches,sw_34,6267,2590,2500 (0x10320a4) + 90 (handler),0x26d,,152,same
+switches,sw_34_again,6404,2590,2500 (0x10320a4) + 90 (handler),0x26d,,152,same
+switches,sw_35,6541,560,560 (handler),0x272,,,same
+switches,sw_35_again,6678,560,560 (handler),0x272,,,same
+switches,sw_37,6815,5030,30 (handler) + 5000 (0x102e9c0),0x261,,143,same
+switches,sw_37_again,6952,5030,30 (handler) + 5000 (0x102e9c0),0x261,,143,same
+switches,sw_45,7089,60,30 (handler) + 30 (handler),,,,same
+switches,sw_45_again,7226,60,30 (handler) + 30 (handler),,,,same
+switches,sw_46,7363,76110,1110 (handler) + 75000 (0x10309a4),0x25e 0x25f,101 124,140,differs: sounds (trace 0x25e)
+switches,sw_46_again,7500,11110,10000 (0x10309a4) + 1110 (handler),0x25d,101,141,same
+switches,sw_49,7637,251110,1110 (handler) + 250000 (0x10309a4),0x13e 0x13f 0x260,101 125,142 40,same
+switches,sw_49_again,7774,76110,1110 (handler) + 75000 (0x10309a4),0x25e 0x25f,101 124,140,differs: sounds (trace 0x25e)
+switches,sw_50,7911,5030,30 (handler) + 5000 (0x102e9c0),0x01f 0x1cb 0x261,103,104 116 143,differs: sounds (trace 0x01f 0x261); deffs (trace -); leffs (trace 104 143)
+switches,sw_50_again,8048,75030,30 (handler) + 75000 (0x102e9c0),0x1cc 0x263,126,144,differs: sounds (trace 0x263 0x265 0x266)
+switches,sw_51,8185,30,30 (handler),0x05b 0x05c,50,38,same
+switches,sw_51_again,8322,30,30 (handler),,,,differs: sounds (trace 0x1cb 0x1cc); deffs (trace 103); leffs (trace 116)
+switches,eject,8459,5070,5070 (0x100a788),0x066 0x067 0x140 0x141 0x144 0x157 0x158,52 55,22 41,differs: sounds (trace 0x140 0x141 0x144 0x157 0x158 0x161 0x162); deffs (trace 149 52); leffs (trace 21 22 31 32 41)
+tilt_ball_save,validate,219,1220,1220 (handler),0x01f 0x058,41,96,same
+tilt_ball_save,tilt_warning_1,243,0,,0x016 0x052,23,11,same
+tilt_ball_save,tilt_warning_2,320,0,,0x016 0x052,23,11,same
+tilt_ball_save,tilt,397,0,,0x017,21,9,same
+tilt_ball_save,drain_in_save,436,0,,0x01d 0x053,,104 14 92,same
+tilt_ball_save,after,1068,0,,0x056,,,same
+wizard_all_hail_megatron,poke_requirements,313,0,,,,,same
+wizard_all_hail_megatron,start_ahm,375,1005070,1000000 (0x100fff0) + 5070 (0x100a788),0x11a 0x157 0x158,81,22 78 79,differs: leffs (trace 21 22 78 79)
+wizard_all_hail_megatron,shots,887,10895590,1000 (0x1025de4) + 1000 (0x1025de4) + 1000000 (0x1010174) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 150000 (0x1002f0c) + 175000 (0x1002f0c) + 200000 (0x1002f0c) + 225000 (0x1002f0c) + 250000 (0x1002f0c) + 275000 (0x1002f0c) + 30 (handler) + 30 (handler) + 300000 (0x1002f0c) + 325000 (0x1002f0c) + 350000 (0x1002f0c) + 375000 (0x1002f0c) + 500000 (0x1010174) + 5070 (0x100a788) + 5070 (0x100a788) + 550000 (0x1010174) + 600000 (0x1010174) + 650000 (0x1010174) + 700000 (0x1010174) + 750000 (0x1010174) + 800000 (0x1010174) + 850000 (0x1010174) + 900000 (0x1010174) + 950000 (0x1010174),0x03c 0x11a 0x11b 0x11c 0x11d 0x11e 0x11f 0x120 0x121 0x157 0x158 0x2a1,82 83,169 22 35 81,differs: leffs (trace 169 21 22 35 81)
+wizard_all_hail_megatron,last_shot,3020,1451170,1050000 (0x1010174) + 1170 (handler) + 400000 (0x1002f0c),0x11a 0x11b,82 83,35 80 81,same
+wizard_all_hail_megatron,super,3220,9730070,425000 (0x1002f0c) + 5070 (0x100a788) + 9300000 (0x1010174),0x019 0x01f 0x068 0x06a 0x128 0x12a 0x12c 0x14e 0x157 0x158,28 84 85,104 17 22 35 82 83,same
+wizard_all_hail_megatron,drain,3982,134380,134380 (0x19e44),0x001 0x01d 0x020 0x022 0x077 0x078 0x079 0x07a,25,104 14 92,same
+wizard_multiball,poke_autobot_requirements,389,0,,,,,differs: leffs (trace 76 77)
+wizard_multiball,start_aro,451,1005070,1000000 (0x100fff0) + 5070 (0x100a788),0x119 0x157 0x158,81,21 22 78 79,same
+wizard_multiball,aro_shot,963,651170,1170 (handler) + 150000 (0x1002f0c) + 500000 (0x1010174),0x03c 0x11b 0x124,82 83,35 81,same
+wizard_multiball,poke_aro_counters,1100,0,,,,,differs: leffs (trace 80)
+wizard_multiball,aro_super,1162,680070,175000 (0x1002f0c) + 500000 (0x1010174) + 5070 (0x100a788),0x01e 0x128 0x12b 0x12c 0x14e 0x157 0x158,84 85,104 22 35 82 83,same
+wizard_multiball,poke_decepticon_requirements,1736,0,,,,,same
+wizard_multiball,start_wizard_mb,1798,1005070,1000000 (0x10363ec) + 5070 (0x100a788),0x03d 0x056 0x12d 0x12e 0x130 0x157 0x158,86 87,13 22 86 87,differs: sounds (trace 0x03d 0x056 0x12d 0x12e 0x12f 0x130 0x157 0x158); leffs (trace 13 21 22 86 87)
+wizard_multiball,wmb_shots,2685,15331470,1000 (0x1025de4) + 1000 (0x1025de4) + 1000 (0x1025de4) + 1000000 (0x10365c4) + 1050000 (0x10365c4) + 1100000 (0x10365c4) + 1150000 (0x10365c4) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1170 (handler) + 1200000 (0x10365c4) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1220 (handler) + 1250000 (0x10365c4) + 1300000 (0x10365c4) + 30 (handler) + 30 (handler) + 30 (handler) + 500000 (0x10365c4) + 5070 (0x100a788) + 5070 (0x100a788) + 5070 (0x100a788) + 550000 (0x10365c4) + 600000 (0x10365c4) + 650000 (0x10365c4) + 700000 (0x10365c4) + 750000 (0x10365c4) + 800000 (0x10365c4) + 850000 (0x10365c4) + 900000 (0x10365c4) + 950000 (0x10365c4),0x056 0x131 0x132 0x157 0x158 0x2a1,87 88,169 22 89,differs: sounds (trace 0x056 0x131 0x132 0x133 0x157 0x158 0x2a1); leffs (trace 169 21 22 89)
+wizard_multiball,last_shot,5767,1351170,1170 (handler) + 1350000 (0x10365c4),0x019 0x068 0x131 0x132,28 87 88,17 88 89,same
+wizard_multiball,super_wizard,5967,16655070,16650000 (0x10365c4) + 5070 (0x100a788),0x06a 0x157 0x158,87 89,22,differs: leffs (trace 21 22)
+wizard_multiball,drains,6354,0,,0x01e 0x13a,90,104 91,same

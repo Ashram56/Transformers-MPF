@@ -35,6 +35,25 @@ from deff_lift import S  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SW_TABLE = 0x040e2c20          # switch records, 0x20 bytes, number n at + n * 0x20 (error_log_wrap_d2d4 [0x0000d2d4])
+DED_TABLE = 0x040e3740         # dedicated switches 0x81.. (D1..D32): record at + (n - 0x81) * 0x20 (same routine)
+
+
+_STARTS = []
+
+
+def func_of(addr):
+    """The decompile's function that holds addr."""
+    import bisect
+    import re
+    if not _STARTS:
+        src = open(os.path.join(HERE, "..", "code", "tf_decompiled.c"), encoding="utf-8").read()
+        _STARTS.extend(sorted(int(m.group(1), 16) for m in re.finditer(r"^// ==== ([0-9a-f]{8}) ", src, re.M)))
+    return _STARTS[bisect.bisect_right(_STARTS, addr) - 1]
+
+
+def record(sw):
+    """The switch's record, as error_log_wrap_d2d4 [0x0000d2d4] finds it."""
+    return SW_TABLE + sw * 0x20 if sw < 0x41 else DED_TABLE + (sw - 0x81) * 0x20
 SCORE_P1 = 0x021109e4          # player scores, u32 each (sw_energon_left [0x01033a28] adds into it)
 GAME_STATE = 0x00031468        # DAT_00031468, the game-state bits the dispatcher masks with
 THUNKS = 0x02680000            # free RAM for the event thunks and dummy effect structs
@@ -61,7 +80,46 @@ class SwitchRunner(ball_search.SearchRunner):
                 r.op(kind, **dict(zip(names, [a(i) for i in range(len(names))])))
                 return NOTE
             return f
-        st(S("score_add"), "score_add", note("score", ["value"]))
+        # the game state the effect runners answer in Python (deff_lift) is the ROM's own here: the current
+        # player, the player count, the side byte 0x02112107 + player and the flipper buttons (the flipper
+        # table 0x00031458, switches 137 / 139) are read by their ROM routines
+        for name in ("current_player", "num_players", "player_side", "flipper_buttons_held"):
+            self.stubs.pop(S(name), None)
+        # random_below [0x0000ba94]: the emulator's draws cannot be known from the code (they depend on its
+        # timing), so each draw is an input of the run like a switch hit: rand_inputs maps the ROM function
+        # that draws to its answers in order; any other draw answers 0. Every draw is recorded.
+        self.rand_inputs = {}
+
+        def rnd(r):
+            n = a(0)
+            f = func_of(r.caller())
+            q = r.rand_inputs.get(f)
+            v = min(q.pop(0) if q else 0, max(n - 1, 0))
+            r.op("random", n=n, value=v, fn="0x%08x" % f)
+            return v
+        st(S("random_below"), "random_below", rnd)
+        # every award goes through score_add_player [0x0001cb0c] (score_add [0x0001caf0] applies the playfield
+        # multiplier and tail-calls it; the end-of-ball bonus calls it directly): the value as scored, the caller
+        # a deff lowering its own priority (error_log_user_20e84 [0x00020e84] -> leaf_20ec4 [0x00020ec4]: when the
+        # active deff 0x00032464 is the task's (+0x24), its priority 0x00032466 takes the new value), also inside
+        # default_user_2108c [0x0002108c] before its sleep: the display manager then lets a higher one replace it
+        def set_prio(r, prio):
+            if r.cur is not None:
+                did = struct.unpack("<H", bytes(r.m.mem_read(r.cur.struct + 0x24, 2)))[0]
+                act = struct.unpack("<H", bytes(r.m.mem_read(0x00032464, 2)))[0]
+                if act and act == did:
+                    r.m.mem_write(0x00032466, bytes([prio & 0xff]))
+                    return 1
+            return 0
+        st(S("FUN_00020e84"), "deff_prio", lambda r: (r.op("prio", prio=a(0) & 0xff), set_prio(r, a(0)))[1])
+
+        def sleep_prio(r):
+            r.op("prio", prio=a(1) & 0xff)
+            set_prio(r, a(1))
+            r.op("sleep", ticks=a(0))
+            r.sleep(a(0))
+        st(S("FUN_0002108c"), "deff_prio_sleep", sleep_prio)
+        st(S("score_add_player"), "score_add_player", lambda r: (r.op("score", value=a(1), player=a(0) & 0xff), NOTE)[1])
         st(S("event_post"), "event_post", note("event", ["id", "arg"]))
         st(S("audit_add"), "audit_add", note("audit", ["id", "n"]))
         st(S("game_flag_set"), "game_flag_set", note("flag_set", ["flag"]))
@@ -201,7 +259,7 @@ class SwitchRunner(ball_search.SearchRunner):
         """The debounced state of switch sw, as switch_dispatch_debounce [0x0000dc44] leaves it: bit n-1 of
         0x000368da, 0x000368ee and 0x00036902 (inverted for an opto, record +0x10 bit 4: error_log_wrap_d3e8
         [0x0000d3e8]). Returns the raw bit."""
-        rec = SW_TABLE + sw * 0x20
+        rec = record(sw)
         opto = struct.unpack("<H", bytes(self.m.mem_read(rec + 0x10, 2)))[0] & 4
         raw = int(bool(closed)) ^ int(bool(opto))
         i = sw - 1
@@ -253,7 +311,7 @@ class SwitchRunner(ball_search.SearchRunner):
         """A task ends (returns or is killed) as in the OS exit path event_post_user_b654 [0x0000b654] ->
         leaf_a910 [0x0000a910]: a deff task (flags 4) that is no child (+0x14 = 0) ends the active deff,
         leaf_209d4 [0x000209d4] clears deff_active_id 0x32464, its priority 0x32466 and flags 0x32467.
-        The per-task exit calls at +0x48 (leaf_a84c [0x0000a84c]) are reported if a task has any."""
+        Then the per-task exit calls at +0x48 (leaf_a84c [0x0000a84c], set by error_log_wrap_b598 [0x0000b598]) run."""
         t.alive = False
         self.relink()
         m = self.m
@@ -265,9 +323,13 @@ class SwitchRunner(ball_search.SearchRunner):
         if fl & 4 and rd32(m, t.struct + 0x14) == 0:
             m.mem_write(0x00032464, b"\0\0")
             m.mem_write(0x00032466, b"\0\0")
-        for k in range(4):
-            if rd32(m, t.struct + 0x48 + 8 * k):
-                self.op("exit_call_unrun", fn="0x%08x" % rd32(m, t.struct + 0x48 + 8 * k), task="0x%08x" % t.fn)
+        for k in range(4):                     # the exit calls leaf_a84c [0x0000a84c]: fn(task, arg), then cleared
+            fn = rd32(m, t.struct + 0x48 + 8 * k)
+            if fn:
+                arg = rd32(m, t.struct + 0x4c + 8 * k)
+                m.mem_write(t.struct + 0x48 + 8 * k, b"\0\0\0\0")
+                self.thunk_call(fn, t.struct, arg)
+                self.op("exit_call", fn="0x%08x" % fn, task="0x%08x" % t.fn)
 
     def reset(self):
         if self.keep:                  # the game goes on: RAM and live tasks stay
@@ -351,13 +413,23 @@ class SwitchRunner(ball_search.SearchRunner):
         t.wake = self.now
         return t
 
+    def thunk_call(self, fn, r0, r1):
+        """A task that runs fn(r0, r1) as ROM code (ldr r0; ldr r1; ldr pc), this tick."""
+        self._thunk = (getattr(self, "_thunk", 0) + 1) % 32
+        base = THUNKS + self._thunk * 0x40
+        code = struct.pack("<IIIIIII", 0xe59f0008, 0xe59f1008, 0xe59ff008, 0xe1a00000, r0, r1, fn)
+        self.m.mem_write(base, code)
+        t = self.new_task(0x7e, base, 0)
+        t.wake = self.now
+        return t
+
     def edge(self, sw, closed):
         """Switch sw changes, and switch_dispatch_debounce [0x0000dc44] handles the change once debounced: the
         record's mask +0x0e says on which edge the handler runs (raw state 1: 0x400, raw 0: 0x800), which
         game-state bits let it run (against DAT_00031468 unless that is 0); then task_create(id +0x14,
         fn +0x00, flags +0x0c) with +0x30 the switch and +0x34 the argument +0x04, and event 0x6c (mask
         0x2000) or 0x6b (0x1000) with the switch number."""
-        rec = SW_TABLE + sw * 0x20
+        rec = record(sw)
         fn, arg = rd32(self.m, rec), rd32(self.m, rec + 4)
         flags, mask = struct.unpack("<HH", bytes(self.m.mem_read(rec + 0x0c, 4)))
         tid = struct.unpack("<H", bytes(self.m.mem_read(rec + 0x14, 2)))[0]
@@ -411,6 +483,19 @@ def start_game(r):
     # state at 0 every switch passes the dispatcher's mask (switch_dispatch_debounce [0x0000dc44])
     st = struct.unpack("<H", bytes(r.m.mem_read(GAME_STATE, 2)))[0]
     r.m.mem_write(GAME_STATE, struct.pack("<H", st & 0xffdf))
+
+
+def random_inputs(r, path):
+    """The scenario's random draws: comment lines `#! random FN V [V ...]` (the tracer ignores comments) give
+    the answers of random_below when called from ROM function FN, in order."""
+    for ln in open(path):
+        w = ln.split()
+        if w[:2] == ["#!", "random"]:
+            q = r.rand_inputs.setdefault(int(w[2], 16), [])
+            for v in w[3:]:
+                if not v.isdigit():
+                    break
+                q.append(int(v))
 
 
 def run_scenario(r, path):
@@ -534,8 +619,10 @@ def check(rows, trace):
 def main():
     deff_lift.work_pages()
     r = SwitchRunner()
+    path = os.path.join(HERE, "..", "rules", "traces", "switches.txt")
+    random_inputs(r, path)
     start_game(r)
-    segs = run_scenario(r, os.path.join(HERE, "..", "rules", "traces", "switches.txt"))
+    segs = run_scenario(r, path)
     with open(sys.argv[1], "w") as f:
         json.dump({"scenario": "rules/traces/switches.txt", "tick_ms": 16.0, "segments": segs}, f, indent=0)
     if len(sys.argv) > 2:

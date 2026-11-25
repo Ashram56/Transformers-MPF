@@ -38,7 +38,7 @@ So overlapping triggers extend the run: traces show 386-401 ms for pattern 2 and
 | 3 MAXIMAL only | 2 (384 ms) | Megatron BALL n LOCKED (140); N-WAY COMBO (48, a deff no code was found to start) |
 | 3 MAXIMAL only | 1 (200 ms) | N MORE FOR MODE START (91), N MORE TO ACCESS OPTIMUS (141), every fast-scoring all-targets award [0x01004644, tail call at 0x01004750] |
 
-## 5. Observed
+## 5. Trace confirmation
 Every coil 8 run in `traces/*.jsonl` (factory settings, adj 96 = 3; 207 runs) starts within 80 ms of one of
 the deffs above, with the listed length: e.g. `battle_blackout.jsonl` 19.61 deff 91 -> 200 ms, 26.18 deff 100 ->
 390 ms; `megatron_autobot.jsonl` 76.93 deff 73 -> 1,060 ms; `scoring.jsonl` 160.41 fast-scoring award (deff 134)

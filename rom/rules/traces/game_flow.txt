@@ -1,6 +1,7 @@
 # game flow: two players (factory settings; side is random per adj 65: here player 1 = Autobot, player 2 =
 # Decepticon), skill shots, ball save, re-serve without a valid playfield, bonus, tilt, rotation, game over.
 # Watch list: watch_game_flow.tsv
+#! random 01033f94 0 0   side draws (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made them: P1 1 Autobot, P2 1 Autobot
 autoplunge 0
 start 2
 wait 3

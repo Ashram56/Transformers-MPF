@@ -619,7 +619,7 @@
 "op": "sound",
 "at": "0x0002521c",
 "task": 2,
-"call": 87
+"call": 88
 },
 {
 "t": 222,
@@ -873,7 +873,8 @@
 "op": "score",
 "at": "0x0103319c",
 "task": 4,
-"value": 440
+"value": 440,
+"player": 1
 },
 {
 "t": 313,
@@ -998,7 +999,8 @@
 "op": "score",
 "at": "0x01001aac",
 "task": 4,
-"value": 20000
+"value": 20000,
+"player": 1
 },
 {
 "t": 513,
@@ -1029,7 +1031,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 513,
@@ -1162,7 +1165,8 @@
 "op": "score",
 "at": "0x01001aac",
 "task": 4,
-"value": 25000
+"value": 25000,
+"player": 1
 },
 {
 "t": 650,
@@ -1193,7 +1197,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 650,
@@ -1357,7 +1362,8 @@
 "op": "score",
 "at": "0x01030ab4",
 "task": 4,
-"value": 75000
+"value": 75000,
+"player": 1
 },
 {
 "t": 787,
@@ -1371,7 +1377,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 787,
@@ -1679,7 +1686,8 @@
 "op": "score",
 "at": "0x01030a2c",
 "task": 4,
-"value": 10000
+"value": 10000,
+"player": 1
 },
 {
 "t": 924,
@@ -1693,7 +1701,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 924,
@@ -1818,7 +1827,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 560
+"value": 560,
+"player": 1
 },
 {
 "t": 1061,
@@ -1959,7 +1969,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 560
+"value": 560,
+"player": 1
 },
 {
 "t": 1198,
@@ -2085,7 +2096,8 @@
 "op": "score",
 "at": "0x010200e0",
 "task": 4,
-"value": 10000
+"value": 10000,
+"player": 1
 },
 {
 "t": 1335,
@@ -2148,7 +2160,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1220
+"value": 1220,
+"player": 1
 },
 {
 "t": 1335,
@@ -2476,7 +2489,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1220
+"value": 1220,
+"player": 1
 },
 {
 "t": 1472,
@@ -2642,7 +2656,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 150000
+"value": 150000,
+"player": 1
 },
 {
 "t": 1609,
@@ -2950,7 +2965,8 @@
 "op": "score",
 "at": "0x0102e300",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 1883,
@@ -2964,7 +2980,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 2560
+"value": 2560,
+"player": 1
 },
 {
 "t": 1883,
@@ -3104,7 +3121,8 @@
 "op": "score",
 "at": "0x0102e300",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 2020,
@@ -3118,7 +3136,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 2560
+"value": 2560,
+"player": 1
 },
 {
 "t": 2020,
@@ -3258,7 +3277,8 @@
 "op": "score",
 "at": "0x0102dc0c",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 2157,
@@ -3272,7 +3292,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 2560
+"value": 2560,
+"player": 1
 },
 {
 "t": 2157,
@@ -3444,7 +3465,8 @@
 "op": "score",
 "at": "0x0102dc0c",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 2294,
@@ -3458,7 +3480,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 2560
+"value": 2560,
+"player": 1
 },
 {
 "t": 2294,
@@ -3584,7 +3607,8 @@
 "op": "score",
 "at": "0x010200e0",
 "task": 4,
-"value": 15000
+"value": 15000,
+"player": 1
 },
 {
 "t": 2431,
@@ -3638,7 +3662,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1170
+"value": 1170,
+"player": 1
 },
 {
 "t": 2431,
@@ -3998,7 +4023,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1170
+"value": 1170,
+"player": 1
 },
 {
 "t": 2568,
@@ -4133,7 +4159,8 @@
 "op": "score",
 "at": "0x01025e40",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 2705,
@@ -4193,7 +4220,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 150000
+"value": 150000,
+"player": 1
 },
 {
 "t": 2705,
@@ -4246,7 +4274,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 2705,
@@ -4566,7 +4595,8 @@
 "op": "score",
 "at": "0x01025e40",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 2842,
@@ -4626,7 +4656,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 175000
+"value": 175000,
+"player": 1
 },
 {
 "t": 2842,
@@ -4679,7 +4710,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 2842,
@@ -5115,7 +5147,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1220
+"value": 1220,
+"player": 1
 },
 {
 "t": 2979,
@@ -5458,7 +5491,8 @@
 "op": "score",
 "at": "0x010200e0",
 "task": 4,
-"value": 20000
+"value": 20000,
+"player": 1
 },
 {
 "t": 3116,
@@ -5504,7 +5538,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 200000
+"value": 200000,
+"player": 1
 },
 {
 "t": 3116,
@@ -5549,7 +5584,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1220
+"value": 1220,
+"player": 1
 },
 {
 "t": 3116,
@@ -5909,7 +5945,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 3253,
@@ -6260,7 +6297,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 3390,
@@ -6386,7 +6424,8 @@
 "op": "score",
 "at": "0x010200e0",
 "task": 4,
-"value": 25000
+"value": 25000,
+"player": 1
 },
 {
 "t": 3527,
@@ -6400,7 +6439,8 @@
 "op": "score",
 "at": "0x0101cb24",
 "task": 4,
-"value": 100000
+"value": 100000,
+"player": 1
 },
 {
 "t": 3527,
@@ -6461,7 +6501,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 225000
+"value": 225000,
+"player": 1
 },
 {
 "t": 3527,
@@ -6506,7 +6547,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1170
+"value": 1170,
+"player": 1
 },
 {
 "t": 3527,
@@ -6750,7 +6792,8 @@
 "op": "score",
 "at": "0x0101ce10",
 "task": 4,
-"value": 25000
+"value": 25000,
+"player": 1
 },
 {
 "t": 3664,
@@ -6764,7 +6807,8 @@
 "op": "score",
 "at": "0x01002fec",
 "task": 4,
-"value": 250000
+"value": 250000,
+"player": 1
 },
 {
 "t": 3664,
@@ -6809,7 +6853,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1170
+"value": 1170,
+"player": 1
 },
 {
 "t": 3664,
@@ -6973,7 +7018,8 @@
 "op": "score",
 "at": "0x0102dc0c",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 3801,
@@ -6987,7 +7033,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 100000
+"value": 100000,
+"player": 1
 },
 {
 "t": 3801,
@@ -7013,20 +7060,29 @@
 "n": 1
 },
 {
+"t": 3825,
+"op": "task",
+"at": "0x01006614",
+"task": 106,
+"fn": "0x010062b0",
+"id": 89
+},
+{
+"t": 3825,
+"op": "deff",
+"at": "0x0001794c",
+"task": null,
+"deff": 101,
+"queue": 0,
+"force": 0
+},
+{
 "t": 3827,
 "op": "task",
 "at": "0x000206c0",
 "task": null,
 "fn": "0x0101d8ac",
 "id": 2
-},
-{
-"t": 3827,
-"op": "task",
-"at": "0x01006614",
-"task": 106,
-"fn": "0x010062b0",
-"id": 89
 },
 {
 "t": 3850,
@@ -7151,7 +7207,8 @@
 "op": "score",
 "at": "0x0102dbb0",
 "task": 4,
-"value": 1000
+"value": 1000,
+"player": 1
 },
 {
 "t": 3938,
@@ -7165,7 +7222,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 100000
+"value": 100000,
+"player": 1
 },
 {
 "t": 3938,
@@ -7338,7 +7396,8 @@
 "op": "score",
 "at": "0x0102dd00",
 "task": 4,
-"value": 10000
+"value": 10000,
+"player": 1
 },
 {
 "t": 4075,
@@ -7352,7 +7411,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1090
+"value": 1090,
+"player": 1
 },
 {
 "t": 4075,
@@ -7538,7 +7598,8 @@
 "op": "score",
 "at": "0x0102dc0c",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 4212,
@@ -7552,7 +7613,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1090
+"value": 1090,
+"player": 1
 },
 {
 "t": 4212,
@@ -7677,7 +7739,8 @@
 "op": "score",
 "at": "0x0103319c",
 "task": 4,
-"value": 440
+"value": 440,
+"player": 1
 },
 {
 "t": 4349,
@@ -7834,7 +7897,8 @@
 "op": "score",
 "at": "0x0103319c",
 "task": 4,
-"value": 440
+"value": 440,
+"player": 1
 },
 {
 "t": 4486,
@@ -7959,7 +8023,8 @@
 "op": "score",
 "at": "0x0103323c",
 "task": 4,
-"value": 440
+"value": 440,
+"player": 1
 },
 {
 "t": 4623,
@@ -8100,7 +8165,8 @@
 "op": "score",
 "at": "0x0103323c",
 "task": 4,
-"value": 440
+"value": 440,
+"player": 1
 },
 {
 "t": 4760,
@@ -8240,7 +8306,8 @@
 "op": "score",
 "at": "0x0102e300",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 4897,
@@ -8254,7 +8321,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1090
+"value": 1090,
+"player": 1
 },
 {
 "t": 4897,
@@ -8394,7 +8462,8 @@
 "op": "score",
 "at": "0x0102e29c",
 "task": 4,
-"value": 1000
+"value": 1000,
+"player": 1
 },
 {
 "t": 5034,
@@ -8408,7 +8477,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1090
+"value": 1090,
+"player": 1
 },
 {
 "t": 5034,
@@ -8605,7 +8675,8 @@
 "op": "score",
 "at": "0x0102e3fc",
 "task": 4,
-"value": 10000
+"value": 10000,
+"player": 1
 },
 {
 "t": 5171,
@@ -8619,7 +8690,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 100000
+"value": 100000,
+"player": 1
 },
 {
 "t": 5171,
@@ -8767,7 +8839,8 @@
 "op": "score",
 "at": "0x0102e300",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 5308,
@@ -8781,7 +8854,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 100000
+"value": 100000,
+"player": 1
 },
 {
 "t": 5308,
@@ -8946,7 +9020,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 5445,
@@ -9015,7 +9090,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 5445,
@@ -9204,7 +9280,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 5582,
@@ -9273,7 +9350,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 5582,
@@ -9462,7 +9540,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 5719,
@@ -9531,7 +9610,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 5719,
@@ -9752,7 +9832,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 5856,
@@ -9821,7 +9902,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 5856,
@@ -10010,7 +10092,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 5993,
@@ -10079,7 +10162,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 5993,
@@ -10284,7 +10368,8 @@
 "op": "score",
 "at": "0x0102c9c4",
 "task": 4,
-"value": 3000
+"value": 3000,
+"player": 1
 },
 {
 "t": 6130,
@@ -10353,7 +10438,8 @@
 "op": "score",
 "at": "0x01033074",
 "task": 4,
-"value": 170
+"value": 170,
+"player": 1
 },
 {
 "t": 6130,
@@ -10527,7 +10613,8 @@
 "op": "score",
 "at": "0x010321ac",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 6267,
@@ -10579,7 +10666,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 90
+"value": 90,
+"player": 1
 },
 {
 "t": 6267,
@@ -10705,7 +10793,8 @@
 "op": "score",
 "at": "0x010321ac",
 "task": 4,
-"value": 2500
+"value": 2500,
+"player": 1
 },
 {
 "t": 6404,
@@ -10757,7 +10846,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 90
+"value": 90,
+"player": 1
 },
 {
 "t": 6404,
@@ -10922,7 +11012,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 560
+"value": 560,
+"player": 1
 },
 {
 "t": 6541,
@@ -11047,7 +11138,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 560
+"value": 560,
+"player": 1
 },
 {
 "t": 6678,
@@ -11211,7 +11303,8 @@
 "op": "score",
 "at": "0x0102ead8",
 "task": 4,
-"value": 5000
+"value": 5000,
+"player": 1
 },
 {
 "t": 6815,
@@ -11225,7 +11318,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 6815,
@@ -11373,7 +11467,8 @@
 "op": "score",
 "at": "0x0102ead8",
 "task": 4,
-"value": 5000
+"value": 5000,
+"player": 1
 },
 {
 "t": 6952,
@@ -11387,7 +11482,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 6952,
@@ -11513,7 +11609,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 7089,
@@ -11535,7 +11632,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 7093,
@@ -11693,7 +11791,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 7226,
@@ -11715,7 +11814,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 7230,
@@ -11880,7 +11980,8 @@
 "op": "score",
 "at": "0x01030ab4",
 "task": 4,
-"value": 75000
+"value": 75000,
+"player": 1
 },
 {
 "t": 7363,
@@ -11894,7 +11995,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 7363,
@@ -12082,7 +12184,8 @@
 "op": "score",
 "at": "0x01030a2c",
 "task": 4,
-"value": 10000
+"value": 10000,
+"player": 1
 },
 {
 "t": 7500,
@@ -12096,7 +12199,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 7500,
@@ -12286,7 +12390,8 @@
 "op": "score",
 "at": "0x01030b34",
 "task": 4,
-"value": 250000
+"value": 250000,
+"player": 1
 },
 {
 "t": 7637,
@@ -12308,7 +12413,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 7637,
@@ -12818,7 +12924,8 @@
 "op": "score",
 "at": "0x01030ab4",
 "task": 4,
-"value": 75000
+"value": 75000,
+"player": 1
 },
 {
 "t": 7774,
@@ -12832,7 +12939,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 1110
+"value": 1110,
+"player": 1
 },
 {
 "t": 7774,
@@ -12874,6 +12982,14 @@
 "coil": 32,
 "ms": 100,
 "arg": 2863311530
+},
+{
+"t": 7780,
+"op": "fault",
+"at": "0x0003f000",
+"task": 126,
+"fn": "0x02680600",
+"error": "Invalid memory write (UC_ERR_WRITE_UNMAPPED): unmapped access 0x00300000 at pc 0x00000094 lr 0x0003f000"
 },
 {
 "t": 7781,
@@ -13342,7 +13458,8 @@
 "op": "score",
 "at": "0x0102ead8",
 "task": 4,
-"value": 5000
+"value": 5000,
+"player": 1
 },
 {
 "t": 7911,
@@ -13356,7 +13473,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 7911,
@@ -13994,7 +14112,8 @@
 "op": "score",
 "at": "0x0102ea68",
 "task": 4,
-"value": 75000
+"value": 75000,
+"player": 1
 },
 {
 "t": 8048,
@@ -14016,7 +14135,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 8048,
@@ -14376,6 +14496,14 @@
 "arg": 2827528328
 },
 {
+"t": 8126,
+"op": "fault",
+"at": "0x0003f000",
+"task": 126,
+"fn": "0x026806c0",
+"error": "Invalid memory write (UC_ERR_WRITE_UNMAPPED): unmapped access 0x00300000 at pc 0x00000094 lr 0x0003f000"
+},
+{
 "t": 8127,
 "op": "task",
 "at": "0x000206c0",
@@ -14665,7 +14793,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 8185,
@@ -15345,7 +15474,8 @@
 "op": "score",
 "at": "0x0003f000",
 "task": 4,
-"value": 30
+"value": 30,
+"player": 1
 },
 {
 "t": 8322,
@@ -15508,6 +15638,14 @@
 "at": "0x0000722c",
 "task": 3,
 "code": 45
+},
+{
+"t": 8355,
+"op": "fault",
+"at": "0x0003f000",
+"task": 126,
+"fn": "0x02680780",
+"error": "Invalid memory write (UC_ERR_WRITE_UNMAPPED): unmapped access 0x00300000 at pc 0x00000094 lr 0x0003f000"
 },
 {
 "t": 8356,

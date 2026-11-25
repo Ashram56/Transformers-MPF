@@ -1,5 +1,6 @@
 # QA F15 (owner waiver 2026-11-25, docs/pinmame_waivers.md): tilt during the ball save, then a drain.
 # Does the save re-serve the ball after a tilt? One player, factory settings (adj 38 BALL SAVE 5 s).
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
 autoplunge 0
 start 1
 wait 3

@@ -75,8 +75,10 @@ Only while the battle can progress (flag 0x46 and no Megatron / Optimus / AHM / 
   multiball for the player's side, passing the center lane's shot multiplier (slot 4) [0x010262f0]
   (verified in emulator: 33.66 s, 2,000,000, opt_level 1 -> 2).
 - So the default (L = 1) needs 3 + 1 = 4 Optimus hits; each battle won adds 2 hits (max 8 + 1).
-- Optimus is raised for the battle and lowered after; in the simulator motor coil 30 runs about 7.65 s per move
-  (observed: 22.95 -> 30.62 s and 31.53 -> 39.19 s). Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background
+- Optimus is raised for the battle and lowered after. The motor (coil 30, flag motor_or_long) belongs to the mech
+  object 0x000351e8 (methods through 0x00035250 +0x34 / +0xf4, positions 0x2b / 0x2c; 0x0100e798 asks for 0x2b; coil
+  test 0x01025568); how long it runs per move is the mech's, not decoded (code open). The 7.65 s of the traces is the
+  tracer's simulated motor (tools/trace/tf_ref.cpp), not the ROM. Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background
   deff) is never started (open question).
 
 ### 4.3 Multiball start [A 0x01027994 / D 0x01029a08]
@@ -84,7 +86,7 @@ Only while the battle can progress (flag 0x46 and no Megatron / Optimus / AHM / 
 3.0 s)` (verified in emulator: both traces). Then: adj 87 YES restores phase / remaining / lit from the player's
 copies, NO resets them (all 6 shots, phase 1) and clears mb_since_super and sum; **250,000 x the center-lane
 multiplier**; flag 0x14 cleared (if no other multiball runs); flag 0x1f (A) / 0x22 (D) set; intro task 0x71 (A) - deff 57
-(A, 5.7 s) / deff 63 (D, 8.7 s), shown 1.3 s (A) / 3.5 s (D) after the start (observed); mb_since_super += 1;
+(A, 5.7 s) / deff 63 (D, 8.7 s), shown 1.3 s (A) / 3.5 s (D) after the start (code run = trace); mb_since_super += 1;
 counter 0x6c (A, #116 OPTIMUS M.B.A. STARTED) / 0x70 (D, #120); wizard requirement 5 (Optimus multiball)
 collected: 0x01035af0(5,1), counter 0x86 (#142 WIZARD: REQ. 6 COLLECTED).
 (verified in emulator: optimus_decepticon.jsonl 33.67 s, optimus_autobot.jsonl 34.93 s)
@@ -105,7 +107,7 @@ Super = max(1,000,000, pct x sum), pct = [100, 100, 75, 50]% indexed by min(mb_s
 | the lit shot again | phase 2 | DJ; shot removed from remaining; lit = remaining; counter 0x6e | 60 DOUBLE JACKPOT | 0x84 | phase 1, or phase 3 (lit = Megatron lock) when none remain |
 | Megatron lock | phase 3 | super; opa_supers += 1; wizard req 5 completed (counter 0x91, #153); sum and mb_since_super = 0; all 6 relit; counter 0x6f | 61 SUPER JACKPOT | 0x8f, 0x90, 0xa1 | phase 1 |
 | unlit shot | any | nothing | | | |
-Observed (optimus_autobot.jsonl): 41.05 left orbit J 150,000 (lit 2); 43.20 left ramp: nothing; 45.39 left orbit
+Code run = trace (traces/optimus_autobot.jsonl, `traces/code_runs.csv`): 41.05 left orbit J 150,000 (lit 2); 43.20 left ramp: nothing; 45.39 left orbit
 DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, Allspark (47.57-70.45); 70.45 phase 3;
 74.64 super **2,700,000** at the lock (= 6 x 450,000); background deff 58 changes its text to "SHOOT MEGATRON".
 
@@ -116,7 +118,7 @@ DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, All
 | Optimus sw 51 | phase 2 | DJ; lit = remaining; counter 0x72 | 66 DOUBLE JACKPOT | 0xaa | phase 1, or phase 3 (super at Optimus) when none remain |
 | center lane (sw 11), unlit | phase 2 | **quirk**: J again, deff 65, counter 0x71, no state change | 65 | | phase 2 |
 | Optimus sw 51 | phase 3 | super x the center lane's shot multiplier [0x01029bf4] (QA M4); opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
-Observed (optimus_decepticon.jsonl): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
+Code run = trace (traces/optimus_decepticon.jsonl, `traces/code_runs.csv`): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
 J 150,000 (quirk, caller 0x01029e14); J/DJ pairs to 66.89; 69.06 super **2,850,000** (= 6 x 450,000 + the quirk
 jackpot). The quirk is probably there because the center lane and Optimus share one shot position (inferred);
 reproduce it or not by choice.

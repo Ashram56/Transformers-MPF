@@ -23,7 +23,7 @@ switch,name,hit,handler,handler_arg,switch_flags,score_total,awards,sounds,deffs
 13,MEGATRON BACK DOOR,repeat,0x1033c80,0,0x14000000,30,30 (handler),,,,,,,code,same
 14,R. RAMP EXIT,first,0x1033918,0,0x24000000,351170,25000 (0x1020074) + 100000 (0x101caa4) + 225000 (0x1002f0c) + 1170 (handler),0x02a 0x1a9 0x1c2,100 deff_100_blackout 101 deff_101_blackout,35 114 113,8:384ms,68 88 93 132 154,-19,code,same
 14,R. RAMP EXIT,repeat,0x1033918,0,0x24000000,276170,25000 (0x101cc6c) + 250000 (0x1002f0c) + 1170 (handler),0x1aa,101 deff_101_blackout,35,,68 154,,code,same
-24,LEFT OUTLANE,first,0x1033670,8,0x24000000,102500,2500 (0x102db28) + 100000 (handler),0x169 [ball saved sound],,97,,,,code,differs: deffs (trace 101)
+24,LEFT OUTLANE,first,0x1033670,8,0x24000000,102500,2500 (0x102db28) + 100000 (handler),0x169 [ball saved sound],101 deff_101_blackout,97,,,,code,same
 24,LEFT OUTLANE,repeat,0x1033670,8,0x24000000,101000,1000 (0x102db28) + 100000 (handler),0x168,,98,,,,code,same
 25,LEFT RETURN LANE,first,0x10336f0,9,0x24000000,11090,10000 (0x102db28) + 1090 (handler),0x16a 0x059 0x05a,44 deff_044_multipliers 101 deff_101_blackout,99 37,,,,code,same
 25,LEFT RETURN LANE,repeat,0x10336f0,9,0x24000000,3590,2500 (0x102db28) + 1090 (handler),0x169 [ball saved sound],,97,,,,code,same

@@ -1,5 +1,6 @@
 # sound contexts: attract, coin, start, shooter lane wait, launch, playfield, tilt warnings + tilt,
 # outlane drains after ball save expires, game over, attract after the game
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
 autoplunge 0
 mark attract
 wait 5

@@ -1,4 +1,5 @@
 # coil timing: every switch-driven coil, flipper hold, then ball search with no switch activity
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
 autoplunge 0
 start 1
 wait 3

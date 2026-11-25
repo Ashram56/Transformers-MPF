@@ -1,4 +1,5 @@
 # Decepticon (default side): four mode-start shots light Starscream, then Starscream shots, timer runs out
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
 autoplunge 0
 start 1
 wait 3

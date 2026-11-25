@@ -111,7 +111,7 @@ Shot index (wizard numbering; table rows {mask, lamp group, counter address, max
 | shot i | its counter < 2 | **500,000 + 50,000 x (total hits so far)** x mult [0x01010100]; counter += 1; added to super and total; counter 0x7f (#135 WIZARD AWARDS) | 83: on a shot's first hit the character of that shot: Decepticon SOUNDWAVE, DEMOLISHER, STARSCREAM, SHOCKWAVE, BLACKOUT, DEVASTATOR / Autobot ARCEE, SIDESWIPE, BUMBLEBEE, IRONHIDE, MUD & SKIDS, RATCHET (index 0-5) [msg tables 0x040c66c8 / 0x040c66d4]; second hit: value only | 0x11b, 0x11c / leff 81 |
 | shot i | counter = 2 | nothing from this mode | | |
 | Allspark | all six counters = 2 [portal_mb_all_shots_done] | **super = ahm_super x Allspark multiplier**; counter 0x80 (#136 WIZARD COMPLETED); mode ends (flag 0x3c cleared) | 84 "ALL HAIL MEGATRON / COMPLETED" or "AUTOBOTS ROLL OUT / COMPLETED", then total 85 | 0x128, 0x12a / 0x12c |
-Observed (wizard_all_hail_megatron.jsonl): 26.33-59.62 twelve shots 500,000, 550,000 ... 1,050,000; 63.57 super
+Code run = trace (traces/wizard_all_hail_megatron.jsonl, `traces/code_runs.csv`): 26.33-59.62 twelve shots 500,000, 550,000 ... 1,050,000; 63.57 super
 **9,300,000** (the sum), deff 84 at 64.22, deff 85 at 66.84. The background deff 82 "ALL HAIL MEGATRON / NEXT
 SHOT = n / SUPER = n" ("SUPER LIT / SHOOT THE ALLSPARK" when lit) with music 0x3c appears after the intro
 (33.45 s). With the counters poked to 2, the super is only the real awards (wizard_multiball.jsonl 30.75 s:
@@ -123,7 +123,7 @@ SHOT = n / SUPER = n" ("SUPER LIT / SHOOT THE ALLSPARK" when lit) with music 0x3
 | shot i | counter < 3 | **500,000 + 50,000 x (total hits this round)** x mult [0x01036534]; counter += 1; added to super and total; counter 0x98 (#160 WIZARD MULTIBALL AWARDS) | 88 (value, shot, "complete" flag) | 0x131 |
 | Allspark | counter 0 >= 3 and all others at 3 [0x01036318] | **SUPER WIZARD JACKPOT = wmb_super x Allspark multiplier**; all counters and wmb_super = 0 (new round, values restart at 500,000); counter 0x99 (#161) | 89 "SUPER WIZARD JACKPOT" | 0x135-0x139 |
 | shot at 3 | super not lit | nothing | | |
-Observed (wizard_multiball.jsonl): 55.09-103.52 eighteen shots 500,000 ... 1,350,000; 107.44 super wizard
+Code run = trace (traces/wizard_multiball.jsonl, `traces/code_runs.csv`): 55.09-103.52 eighteen shots 500,000 ... 1,350,000; 107.44 super wizard
 jackpot **16,650,000**. Background deff 87 "NEXT SHOT = n" / "SHOOT THE ALLSPARK / SUPER = n" + music 0x3d from
 the start (40.95 s).
 
