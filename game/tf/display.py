@@ -118,6 +118,7 @@ class Display:
         self.media = media_table.load(PKG)
         self.prio, self.background = deff_table()
         self.flags = deff_flags()
+        self.own_sounds = set()     # (deff, call) a feature plays itself, with its argument: not again from the op list
         self.fg = None              # running foreground deff id
         self.show_held = False      # a show ended in this deff's hold: its rules refresh is due at its exit
         self.arcade_held = False    # ... the RULES_HOLD_SHOW show: the score display comes back at its exit
@@ -217,7 +218,8 @@ class Display:
         if sounds is not None:
             events = [(t, "call", fn) for t, fn in sounds]
         else:
-            events = [(t, "sound", c) for t, c in info.sounds if not seconds or t < seconds]
+            events = [(t, "sound", c) for t, c in info.sounds
+                      if (not seconds or t < seconds) and (deff_id, c) not in self.own_sounds]
         events += [(t, "tube", n) for t, n in info.tubes if not seconds or t < seconds]
         for offset, kind, value in sorted(events, key=lambda e: e[0]):
             fire = (lambda k, v: lambda: self.fg == deff_id and (

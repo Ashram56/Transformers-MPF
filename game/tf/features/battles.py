@@ -276,6 +276,9 @@ class Battle:
         """left: the shots left after this hit, which picks the ROM's hit animation (index BASE - left, the hit
         functions' task+0x34); the PuP map reads it with hit and completed."""
         os_ = self.os
+        # the hit deff plays snd_play2(hit_sound, task+0x40) once (e.g. deff_094 [0x010189a8]): here, with its
+        # argument, so not a second time from the deff's op list (QA SC1)
+        os_.display.own_sounds.add((self.hit_deff, self.hit_sound))
         kwargs = {"run_seconds": self.completed_seconds} if completed else {}
         if left is not None:
             kwargs["left"] = left

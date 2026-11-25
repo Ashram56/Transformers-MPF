@@ -24,7 +24,7 @@ from tf.hw_numbers import rom_numbers
 from tf.os_layer import TICK
 
 LAMP_COUNT = 80
-FLASH_TICKS = 5             # compositor FUN_000073cc inverts the flash phase every 5 passes (1/tick)
+FLASH_TICKS = 10            # lamp_compositor_tick [0x000073cc] inverts the flash phase every 10 passes (1/tick, QA L-G02)
 # The reference traces log the lamp outputs as libpinmame reports them: a lamp reads on while it was on
 # at any time in about the last 65 ms (a flashing insert: on ~146 ms, off ~16 ms; leff 14 blinking every
 # 10 ticks: on ~225 ms, off ~97 ms; anything toggled every 2 ticks reads solid). The trace applies that
@@ -75,7 +75,7 @@ def parse_show(path):
         if m and section == "coils":
             coil = m.group(1)
             continue
-        m = re.match(r"\s+(\S+):\s*'?([0-9a-fA-F]+)(ms)?'?\s*$", line)
+        m = re.match(r"""\s+(\S+):\s*['"]?([0-9a-fA-F]+)(ms)?['"]?\s*$""", line)   # agent A writes "ffffff" (QA L-G01)
         if m and steps and section:
             name, value = m.group(1), m.group(2)
             if section == "flashers":

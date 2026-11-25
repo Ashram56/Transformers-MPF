@@ -106,7 +106,8 @@ class TestVpx(TfTestCase, MpfBcpTestCase):
 
         self.vpx("changed_lamps")
         self.machine.lights["l_start_button"].on()
-        self.machine.lights["l_roll_out"].color("808080")
+        # above the game's lamp layer: the leffs now light lamps (QA L-G01), lamp 3 among them
+        self.machine.lights["l_roll_out"].color("808080", priority=1000, key="test")
         self.advance_time_and_run(.1)
         lamps = dict(self.vpx("changed_lamps"))
         self.assertEqual(255, lamps[1])             # 0-255: core.vbs scales by 1/255 with UseVPMModSol = 2

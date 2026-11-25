@@ -37,6 +37,19 @@ package's deff and leff data match the code mechanically. The departures are in 
 
 Medium and low: the findings tables of each report. Fixes follow, high first, each with a regression test.
 
+### Fixed (regression tests in [tests/test_qa_2026_11_26.py](../../tests/test_qa_2026_11_26.py))
+
+| id | Fix | ROM |
+|---|---|---|
+| L-G01 | `parse_show` reads the shows' double-quoted colours: the leffs light their lamps (52 shows with lamps) | leff op lists |
+| L-G02 | flash phase 10 ticks (FLASH_TICKS) | `0x000073cc` |
+| SC1 | the battle hit call plays once, with its argument (Display.own_sounds keeps the op list from playing it again) | `0x010189a8` |
+| V-TXT1 | `%P1//S/%` picks choice n-1 clamped to the last: "0 COMBOS", "SHOOT 11 SHOTS" | `0x0002fef0`, deff_044 op list |
+| V-SC1 | main score font and row by value, table 0x040c75d0 (font 17 row 18 from 1,000,000) | `0x0102f11c`, `0x0102fa40` |
+| R-F8, V-ENG2, L-G12 (citations) | the Tron 1.74 addresses still cited are replaced by tf_180 routines or marked inferred | see the commit |
+
+All 24 trace scenarios compare the same before and after these fixes (161 checks OK both ways).
+
 ## Pass of 2026-11-25
 
 Three independent read-only reviews, each with the decompile, the ROM and the game in its test harness:

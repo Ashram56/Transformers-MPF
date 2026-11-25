@@ -33,11 +33,13 @@ def format_rom_text(line, args, last=None):
     def sub(m):
         spec = m.group(1)
         if spec.startswith("P"):
-            choices = spec[3:-1].split("/")
+            # vsprintf [0x0002fef0]: %P1/c1/c2/.../cn//% picks choice n-1 (unsigned), clamped to the last one:
+            # "%d COMBO%P1//S/%" gives "1 COMBO", "0 COMBOS", "3 COMBOS" (deff op lists, e.g. deff_044). The
+            # caller passes the number again for %P; every live text passes the previous %d's value, so `last`
+            # holds it (QA V-TXT1; the tournament texts 36 / 37 pass another value: V-TXT2, not modelled).
+            choices = spec[3:-1].split("/")[:-1] or [""]
             n = last[0]
-            if spec[1] == "1" and len(choices) > 2:     # ordinal list: 1-based
-                return choices[n - 1] if 0 < n <= len(choices) else ""
-            return choices[0] if n == 1 else (choices[2] if len(choices) > 2 else choices[-1])
+            return choices[min(max(n - 1, 0) if n > 0 else len(choices) - 1, len(choices) - 1)]
         value = args.pop(0) if args else 0
         if value is None:
             return ""
