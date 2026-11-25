@@ -387,3 +387,19 @@ class TestLowFixes(QaCase):
         mt.lock_completion()
         self.assertEqual((1, 2), (pd.mtl_lit, pd.mtl_count))
         self.assertTrue(all(p.get("mtl_count") == p.get("mtl_need", 1) for p in self.tf.players))
+
+    def test_deff_hold_tails_from_op_lists(self):
+        """FUN_0103058c(n, 0x20): the hold is the ticks from the last priority-0x20 op to the deff's end (QA F7)."""
+        import json
+        import os
+        import tempfile
+        from tf import display
+        with tempfile.TemporaryDirectory() as rom:
+            os.makedirs(os.path.join(rom, "rom_data", "dmd", "deff_ops"))
+            with open(os.path.join(rom, "rom_data", "dmd", "deff_ops", "deff_092.json"), "w") as f:
+                json.dump({"deff": 92, "end_tick": 343, "ops": [{"t": 342, "op": "prio", "prio": 32}]}, f)
+            saved, display.ROM = display.ROM, rom
+            try:
+                self.assertEqual({92: 1}, display.deff_holds())
+            finally:
+                display.ROM = saved
