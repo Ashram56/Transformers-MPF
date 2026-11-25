@@ -453,3 +453,10 @@ class TestLowFixes(QaCase):
         lanes._flipper("left")
         self.tf.state &= ~0x01
         self.assertEqual({51}, lanes.lit("left"))
+
+    def test_tilt_and_multiball_validate_the_playfield(self):
+        """FUN_0000d8c4 from tilt() [0x0001db40] and the multiball task [0x0103aba4] (QA F12)."""
+        self.start()
+        self.assertFalse(self.tf.pf_valid)
+        self.tf._tilt()
+        self.assertTrue(self.tf.pf_valid and self.tf.flag(0x1c))

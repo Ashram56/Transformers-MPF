@@ -797,6 +797,8 @@ class TfOS(CustomCode):
 
     def _mb_request(self, start_save=True):
         """(Re)create the multiball task for new balls: the first one waits a trough cycle."""
+        if not self.pf_valid:
+            self._validate()                         # FUN_0000d8c4 first in the multiball task [0x0103aba4] (QA F12)
         self._mb_first_at = self.now + (MB_FIRST_EJECT_TICKS - 0.5) * TICK
         self._mb_task(start_save)
 
@@ -1562,6 +1564,8 @@ class TfOS(CustomCode):
         self.state |= ST_TILT
         self.ball_search_reload(15)
         self.audit(0x2a)
+        if not self.pf_valid:
+            self._validate()                         # tilt() [0x0001db40] calls FUN_0000d8c4 (QA F12)
         self.kill_ball_save()
         self.machine.events.post("tf_tilt")
         self.hook("tilt")                            # event 0x65
