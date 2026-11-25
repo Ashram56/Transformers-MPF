@@ -145,9 +145,14 @@ lamp effects as shows, the switch handler spec with the side choice and the bonu
 Next, in this order: settings in package format with pricing, the format string behind each text draw, rules
 specs per mode with traces, switch flags.
 
-Open items:
-1. The aux strobe outputs (PinMAME maps CSTB/DSTB to solenoids 51-56 and 59-64) were not seen firing yet. The
-   coil register map is PinMAME's SAM map, and the measured pulses match each coil's role.
-2. 225 library animations keep a 50 ms placeholder frame time; about 35 effects need live play to capture.
-3. Meaning of the sound call fields at +0x0c..+0x13 (`flags_0x10` holds values like 0x1b0, 0x1ff) is not decoded.
-4. 60 samples are in no sound call; they may be played directly or be unused.
+Items once open, all decoded from the code (2026-11-25):
+1. The aux outputs are decoded (code): tf_180 pulses only strobe bit 6 of register 0xB (PinMAME ESTB), in the 1 ms
+   IO pass [0x000114b0] after each coil burst, latching byte 4 of the coil shadow 0x00035b04 (aux coils 33-35: ticket
+   advance, meter, enable) on AUX_DRV; `0x0000bf30` is the latch routine (init [0x00003854]). The other strobes
+   (PinMAME BSTB, CSTB, DSTB, ASTB) stay high: the shadow 0x000368c8 starts at 0xfe [0x0000bcf4] and only bit 0 (GI
+   relay) changes [0x0000bed8, 0x0000bf04]; there is no ramp-tube driver as in Tron LE.
+2. The library animations' frame times are no longer placeholders: every deff is drawn from its code in OS ticks
+   (`tools/deff_lift.py`), so no effect needs live play.
+3. The sound call fields at +0x0c..+0x13 are decoded from snd_resolve_call [0x00025044] and snd_start_sample [0x00024ae4] (`tools/sound_fields.py`, columns `cue`, `no_repeat`, `priority`, `replace_equal`, `speech` of `rom_data/sound/sound_calls.csv`).
+4. The 60 samples in no sound call are never played: `snd_start_sample` [0x00024ae4] has two callers, both taking
+   the sample from a call's list (snd_resolve_call [0x00025044] and snd_play_arg [0x00025224]).
