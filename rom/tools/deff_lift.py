@@ -45,7 +45,14 @@ SYM = symbols()
 
 
 def S(name):
-    return SYM[name]
+    """A routine's address by its name in the decompile, or by its Ghidra name FUN_xxxxxxxx (the functions were
+    renamed by name_functions.py; the address is the name)."""
+    if name in SYM:
+        return SYM[name]
+    m = re.fullmatch(r"(?:thunk_)?FUN_([0-9a-f]{8})", name)
+    if m:
+        return int(m.group(1), 16)
+    raise KeyError(name)
 
 
 class DeffRunner(coderun.Runner):
