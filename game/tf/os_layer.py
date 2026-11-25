@@ -218,6 +218,7 @@ class TfOS(CustomCode):
         self.flags = set()
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
+        self.timers = {}            # switch-timeout timer token -> end time (FUN_0000ff00 / FUN_0000febc)
         self.pokes = {}             # ROM RAM address -> setter(value), for the scenarios' "poke"
         self.features = []
         self.players = []           # PlayerData per player
@@ -323,10 +324,12 @@ class TfOS(CustomCode):
         self.display = Display(self)
         self.tubes = Tubes(self)
         self.leffs = Leffs(self)
-        from tf.lamps import Lamps                # noqa: E402
+        from tf.lamps import Lamps, SUPER_LIT_LEFF_GROUPS, flasher_group_pulse  # noqa: E402
         self.lamps = Lamps(self)
         self.lamps.leff_code(13, self._leff_save_lamp, priority=0x81)
         self.lamps.leff_code(14, self._leff_save_lamp, priority=0x80)
+        for leff_id, group in SUPER_LIT_LEFF_GROUPS.items():   # the super-lit flashers (QA M6)
+            self.lamps.leff_code(leff_id, flasher_group_pulse(group))
         from tf import switches                   # noqa: E402
         self.switches = switches.SwitchLayer(self)
         from tf.features import load_features     # noqa: E402
@@ -363,6 +366,14 @@ class TfOS(CustomCode):
     def task_running(self, task_id):
         return task_id in self.tasks
 
+    def timer_set(self, token, ticks):
+        """FUN_0000ff00(token, ticks): a switch-timeout timer (tokens 0-0xd, table 0x040cfd20)."""
+        self.timers[token] = self.now + ticks * TICK
+
+    def timer_running(self, token):
+        """FUN_0000febc(token): nonzero while the timer runs."""
+        return self.timers.get(token, 0) > self.now
+
     def task_ticks_left(self, task_id):
         task = self.tasks.get(task_id)
         if not task:
@@ -384,6 +395,12 @@ class TfOS(CustomCode):
 
     def has_hook(self, name):
         return bool(self.hooks.get(name))
+
+    def add_ball_open(self):
+        """FUN_01006760: a multiball flag is set or a multiball's end task runs its first 156 ticks (0xa9, 0xb7,
+        0xb9, 0xbb, 0xbf, 0xc5; the tasks rename themselves to 0xb8 / 0xba / 0xbc / 0xc0 for their last 62 ticks,
+        [0x0100c7e8]): ADD-A-BALL is offered (QA M7). Hook "add_ball_open" (every feature asked)."""
+        return any(self.flag(f) for f in MULTIBALL_FLAGS) or any(fn() for fn in self.hooks.get("add_ball_open", ()))
 
     def any_multiball(self):
         """A multiball runs: [0x01006704] (the decompile's any_timed_mode_running) tests the six multiball flags.

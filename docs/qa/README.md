@@ -41,9 +41,22 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | M4 | Optimus Decepticon super x the center lane multiplier | `0x01029bf4` |
 | M13 | the never-set grace flags 0x26 / 0x2a are no longer set | grep: only `game_flag_clear` |
 | P1 | BONUS HOLD and BONUS X HOLD last one ball; no held bonus stored when tilted | `0x01000d58`, `0x01000f68` |
-| F13 | the OS-layer files cite tf_180's routines, not Tron 1.74's: about 110 citations (bracketed addresses, `FUN_` names, RAM and the power table) re-cited by matching each Tron routine of Tron-Legacy-LE-ROM-Decryption `code/tron_game_decompiled_v2.c` against the tf_180 decompile (normalised bodies), ties settled by reading both; still marked Tron: `any_multiball_running` (Tron 0x0100f918) and the score-display music rules (Tron 0x0100f594 / 0x0100f5c8), no tf_180 match yet | e.g. serve_ball `0x0103b39c`, score_add `0x0001caf0`, multiball_start `0x0103aec0`, end of ball `0x00019e44`, slam `0x0001d534` |
+| F13 | the OS-layer files cite tf_180's routines, not Tron 1.74's: about 110 citations (bracketed addresses, `FUN_` names, RAM and the power table) re-cited by matching each Tron routine of Tron-Legacy-LE-ROM-Decryption `code/tron_game_decompiled_v2.c` against the tf_180 decompile (normalised bodies), ties settled by reading both; still marked Tron: the score-display music rules (Tron 0x0100f594 / 0x0100f5c8), no tf_180 match yet (`any_multiball` cites tf_180's `0x01006704`) | e.g. serve_ball `0x0103b39c`, score_add `0x0001caf0`, multiball_start `0x0103aec0`, end of ball `0x00019e44`, slam `0x0001d534` |
 
-All 24 trace scenarios give the same comparison before and after these fixes (no trace reaches them).
+| P2 | the lit shot multiplier is raised before the shot's combo award (FUN_010237ac first in every shot handler) | `0x010237ac`, `0x01033824` |
+| P3 | the skill shots end on any 3 distinct switches posting event 0x6b (slings and pops count) | hook `0x010313cc` |
+| P4, P5 | mystery item 10 weight 0 only with a lit multiplier or the roving 3X; double and fast scoring starts clear flag 0x13 | `0x01023494`, `0x010039a0`, `0x01004394` |
+| P6, P12, P16 | double scoring: the countdown never pauses, 0x285 once per run at the first count in 5..10, 125-tick tail, ADD MORE TIME in the tail revives it | `0x010038dc`, `0x0100393c`, `0x0100396c`, `0x01003a8c` |
+| P7, P8, P9 | fast scoring: pops and top lanes hold it 156 ticks; 11 x 6-tick steps; +1,000 on a cycle's first target only, leffs 144 / 145, +10 counts on the completing hit; the tails are not timed modes | `0x01032f8c`, `0x01004220`, `0x010047b8`, `0x010067bc` |
+| M5, P10, P11 | the center lane / Optimus lockout is task 0x54 (62 ticks, started by sw 51); sw 51 ignored while 0x54 or 0x4e run; the fast award and double sounds in every handler but sw 6's | `0x01033d3c`, `0x01033b3c`, `0x010332e4` |
+| F4, F5 | a held plumb bob warns every 62 ticks then tilts (task 0x2e); the bob counts in the end of ball and a tilt there removes the bonus | `0x0001dc58`, `0x0001dc14`, `0x00019e44` |
+| F6 | an equal-priority deff replaces the running one only when its flags & 3 | `0x00020498` |
+| F10 | the end of ball waits for the longest flag-0x2000 task, at most 937 ticks | `0x00019e44`, DAT_00033324 |
+| F11 | the Megatron lock entry adds a bonus count and resets the ball search | `0x0100a31c` |
+| M6 | the super-lit leffs 47 / 55 / 63 / 71 pulse their coil group every 8 ticks (a higher leff owning the flashers wins); Megatron's run by their lamp rules | `0x010286f8`, `0x0102a83c`, `0x0100d038`, `0x0100ef64`, `0x0100d004`, `0x0100ef30` |
+| M7 | ADD-A-BALL offered while a multiball flag is set or in the first 156 ticks of its end task; award with ball save 312 / grace 187 | `0x01006760`, `0x01024a20`, `0x01024a60`, `0x0100c7e8` |
+| M9 | Starscream's lit pair moves each counted second with fewer than 6 shots left, unless a ramp entrance in the last 93 ticks | `0x01017824`, `0x010337e8`, `0x010338dc` |
+All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.26 ms.
 
 ### Open (proved, not fixed yet)
 
@@ -51,21 +64,10 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| M5, P11 | center lane / Optimus lockout: only task 0x54 (started by sw 51) blocks sw 11; sw 51 blocked by 0x4e / 0x54 | medium |
-| F4, F5 | held plumb bob tilts after 124 ticks; the bob is taken in the end of ball and bonus | medium |
-| F6, F7 | deff equal priority needs flags & 3; hold tail per deff (1, 2, 10, 15, 41 ticks) | medium |
+| F7 | deff hold tail per deff (1, 2, 10, 15, 41 ticks); a per-deff table broke battle_starscream, so it waits for agent A's decoded deff lengths (PR #15, `timing.json`) to know whether the lengths include the tail | medium |
 | F9b | match sounds 0x072 / 0x074 when matched; award inside deff 38 | medium |
-| F10 | end-of-ball wait: every flag-0x2000 task, up to 937 ticks | medium |
-| F11 | Megatron lock entry adds the bonus count and resets the search | medium |
-| M6 | super-lit flasher leffs 47 / 55 / 63 / 71 (coil groups every 8 ticks) | medium |
-| M7 | add-a-ball offered in the first 156 ticks of the end window, with ball save 312 / grace 187 | medium |
-| M9 | Starscream's lit pair moves each second | medium |
-| P2 | the shot multiplier is raised before the combo award | medium |
-| P3 | skill shot end: any 3 distinct switches posting 0x6b (slings, pops, 45, 51 count); `tests/test_switches.py` asserts the wrong value | medium |
-| P4, P5 | mystery item 10 weight; flag 0x13 cleared by double and fast scoring starts | medium |
-| P7, P8, P9 | fast scoring pause on pops / top lanes; 2-bank cycle values and leffs 144 / 145; timed-mode tails are not timed modes | medium |
 | F15 | ball save may survive a tilt (doubtful: hooks of events 0x65 / 0x66 not read) | medium if true |
-| F8, F9a, F9c, F12, F14, F16-F18, M8, M10-M12, M14, M15, P6, P10, P12-P20 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| F8, F9a, F9c, F12, F14, F16-F18, M8, M10-M12, M14, M15, P13-P15, P17-P20 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 ### For agent A (one batched request)
 

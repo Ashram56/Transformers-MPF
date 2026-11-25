@@ -71,6 +71,7 @@ LOCK_SPEECH_AT = 1.71
 WIZARD_REQ = 0
 MB_BALLS, SAVE_TICKS, GRACE_TICKS = 4, 625, 187
 END_TICKS = 218
+END_OFFER_TICKS = 0x9c     # the end task's first sleep before it renames itself [0x0100c7e8] (QA M7)
 
 # kickout sounds and leffs (offset s, sound, leff), then the coil (observed: 82.19 s handler, 82.81 s coil 3)
 KICK_ONE = ((0.0, 0x13b, 23), (0.243, 0x13b, None), (0.505, 0x13c, 24))
@@ -155,6 +156,11 @@ class Side:
         os_.display.when_idle(self.total_task, self.total_deff, values=[self.total],
                               on_start=lambda: os_.deff_media(self.total_deff, self.total_leff))
 
+    def add_ball_open(self):
+        """The end task under its first id: its first 156 of END_TICKS (QA M7)."""
+        return self.alive and self.os.task_running(self.total_task) and \
+            self.os.task_ticks_left(self.total_task) > END_TICKS - END_OFFER_TICKS
+
     def add_ball(self):
         if self.alive and not self.active:
             self.os.task_kill(self.total_task)
@@ -179,7 +185,7 @@ class Autobot(Side):
     JP = (71, 64, 0xca, 0x77)
     DJ = (72, 65, 0xd2, 0x78)
     SUPER = (73, 66, 0xd9, 0x79)
-    SUPER_LIT_LEFF = 63
+    SUPER_LIT_LEFF, SUPER_RULE = 63, 0x0100d004
     TIMEOUT_TASK, TIMEOUT_TICKS = 0xbd, 312
     PCT = (100, 100, 75, 50)
 
@@ -256,8 +262,8 @@ class Autobot(Side):
 
     def _super_lit(self):
         self.os.task_kill(self.TIMEOUT_TASK)
-        self.phase, self.mask, self.m = 3, 0x40, 1
-        self.os.leff_start(self.SUPER_LIT_LEFF)
+        self.phase, self.mask, self.m = 3, 0x40, 1      # leff 63 runs by its lamp rule [0x0100d004]
+        self.os.request_refresh()
 
     def _arm_timeout(self):
         """The double-jackpot timeout task [0x0100c10c] (restarted by [0x0100c164] at each award) first waits
@@ -287,7 +293,7 @@ class Decepticon(Side):
     JP = (77, 72, 0xe4, 0x7b)
     DJ = (78, 73, 0xf7, 0x7c)
     SUPER = (79, 74, 0xf9, 0x7d)
-    SUPER_LIT_LEFF = 71
+    SUPER_LIT_LEFF, SUPER_RULE = 71, 0x0100ef30
     CENTER = 3
 
     def __init__(self, mgr):
@@ -342,8 +348,8 @@ class Decepticon(Side):
             self.award(500000 * self.mult(self.CENTER), *self.DJ)
             self.dj += 1
             if self.dj >= 3:
-                self.phase, self.mask = 3, 0x80
-                self.os.leff_start(self.SUPER_LIT_LEFF)
+                self.phase, self.mask = 3, 0x80             # leff 71 runs by its lamp rule [0x0100ef30]
+                self.os.request_refresh()
         else:
             return
         self.save()
@@ -375,7 +381,7 @@ class Decepticon(Side):
 
 class Megatron(Feature):
     name = "megatron"
-    HOOKS = ("player_first_ball", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
+    HOOKS = ("player_first_ball", "add_ball_open", "mb_shot", "sw_13", "sw_51", "lock_completion", "multiball_end", "add_ball",
              "ball_end", "tilt", "megatron_running", "lock_lit", "wizard_reset", "device_kicking")
 
     def __init__(self, os_):
@@ -399,6 +405,10 @@ class Megatron(Feature):
             # the rule leff flashes the lit shots (leff_062 / leff_070 [0x0100cf28 / 0x0100ee54])
             os_.lamps.leff_code(side.rule_leff,
                                 shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.mask)(side)))
+            # the super-lit flasher leff while phase 3: rules FUN_0100d004 / FUN_0100ef30 (QA M6; a phase 3
+            # restored by adj 88 gets it too)
+            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.SUPER_LIT_LEFF,
+                          order=side.SUPER_RULE)
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
 
     def player_first_ball(self):
@@ -664,6 +674,9 @@ class Megatron(Feature):
     def add_ball(self):
         for side in self.sides.values():
             side.add_ball()
+
+    def add_ball_open(self):
+        return any(side.add_ball_open() for side in self.sides.values())
 
     def ball_end(self):
         for side in self.sides.values():

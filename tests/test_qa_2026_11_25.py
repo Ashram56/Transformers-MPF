@@ -288,3 +288,61 @@ class TestOsFixes(QaCase):
         count = self.tf.pd.get("bonus_count", 0)
         self.tf.features_by_name["megatron"]._handle(back_door=True)
         self.assertEqual(count + 1, self.tf.pd.get("bonus_count", 0))
+
+    def test_super_lit_flashers(self):
+        """leff_063 [0x0100d038]: while the Autobot super is lit (rule FUN_0100d004), coil group 26 (the Megatron
+        flasher, table 0x040cf65c) pulses every 8 ticks on a valid playfield (QA M6)."""
+        self.start()
+        self.hit_and_release_switch("s_right_orbit_spinner")
+        self.advance_time_and_run(0.5)
+        side = self.tf.features_by_name["megatron"].sides[1]
+        side.active, side.phase = True, 3
+        self.tf.request_refresh()
+        self.advance_time_and_run(0.1)
+        before = len([e for e in self.tf.trace.of("coil") if e.get("coil") == 28 and e.get("on")])
+        self.advance_time_and_run(8 * TICK * 10)
+        after = len([e for e in self.tf.trace.of("coil") if e.get("coil") == 28 and e.get("on")])
+        self.assertGreaterEqual(after - before, 8)
+        side.active = False
+
+    def test_add_a_ball_offered_in_the_first_156_end_ticks(self):
+        """FUN_01006760: a multiball flag or the end task under its first id (0xbb sleeps 156 ticks, then renames
+        itself 0xbc [0x0100c7e8]); the award is FUN_0103aff4(1, 0, 312, 187) [0x01024a60] (QA M7)."""
+        self.start()
+        side = self.tf.features_by_name["megatron"].sides[1]
+        allspark = self.tf.features_by_name["allspark"]
+        side.active = side.alive = True
+        self.tf.flag_set(side.flag)
+        side.multiball_end()
+        self.advance_time_and_run(100 * TICK)
+        self.assertTrue(self.tf.add_ball_open())
+        self.assertGreater(allspark.weights()[4], 0)
+        allspark.run(5)
+        mb = self.tf.trace.of("multiball_start")[-1]
+        self.assertEqual((312, 187), (mb.get("save_ticks"), mb.get("grace_ticks")))
+        self.assertTrue(side.active and self.tf.flag(0x14))
+        self.tf.flag_clear(0x14)
+        side.multiball_end()
+        self.advance_time_and_run(170 * TICK)
+        self.assertFalse(self.tf.add_ball_open())
+        self.assertEqual(0, allspark.weights()[4])
+
+    def test_starscream_pair_moves_each_second(self):
+        """FUN_01017824: with fewer than 6 shots left the lit pair moves each counted second, not within 93
+        ticks of a ramp entrance (tokens 0xc / 0xd set by [0x010337e8] / [0x010338dc]) (QA M9)."""
+        self.start()
+        ss = self.tf.features_by_name["battles"].battles[0]
+        ss.setup()
+        ss.pd[ss.left_key] = 5
+        ss.seconds = 20
+        pair = ss.pair
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)
+        self.hit_and_release_switch("s_l_ramp_entrance")
+        self.advance_time_and_run(0.1)
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)
+        ss.pd[ss.left_key] = 6
+        self.advance_time_and_run(2)
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)

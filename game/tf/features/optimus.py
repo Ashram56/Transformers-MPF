@@ -58,6 +58,7 @@ MB_BALLS, SAVE_TICKS, GRACE_TICKS = 3, 625, 187
 MB_FLAG, ADD_BALL_FLAG = 0x49, 0x14
 WIZARD_REQ = 5
 END_TICKS = 218
+END_OFFER_TICKS = 0x9c     # the end task's first sleep before it renames itself [0x0100c7e8] (QA M7)
 PCT = (100, 100, 75, 50)
 ALL = 0x3f
 # shot tables {mask bit, lamp group} [0x040c729c A, 0x040c7400 D]: the orange arrows, then the lock (A) / Optimus (D)
@@ -214,6 +215,11 @@ class Side:
         os_.display.when_idle(self.total_task, self.total_deff, values=[self.total],
                               on_start=lambda: os_.deff_media(self.total_deff, self.total_leff))
 
+    def add_ball_open(self):
+        """The end task under its first id: its first 156 of END_TICKS (QA M7)."""
+        return self.alive and self.os.task_running(self.total_task) and \
+            self.os.task_ticks_left(self.total_task) > END_TICKS - END_OFFER_TICKS
+
     def add_ball(self):
         if self.alive and not self.active:
             self.os.task_kill(self.total_task)
@@ -317,7 +323,7 @@ class Decepticon(Side):
 
 class Optimus(Feature):
     name = "optimus"
-    HOOKS = ("player_first_ball", "ball_start", "base_music", "sw_11", "sw_51", "mb_shot", "mb_shot_6",
+    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "base_music", "sw_11", "sw_51", "mb_shot", "mb_shot_6",
              "multiball_end", "add_ball", "ball_end", "tilt", "wizard_reset", "optimus_running")
 
     def __init__(self, os_):
@@ -478,6 +484,9 @@ class Optimus(Feature):
     def add_ball(self):
         for side in self.sides.values():
             side.add_ball()
+
+    def add_ball_open(self):
+        return any(side.add_ball_open() for side in self.sides.values())
 
     def ball_end(self):
         for side in self.sides.values():

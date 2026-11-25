@@ -28,8 +28,8 @@ Observed, not in the spec text:
   lit or not, then the battles, then the mode-start rule (traces: audit, battle score, 25,000 / deff 91);
 - the completed hit deff runs until the total (Shockwave 8.67 s, Blackout 9.0, Devastator 8.76, Bumblebee 7.99,
   Ironhide 7.02 after the hit); Starscream and Ratchet were not traced, 8.5 s is assumed;
-- Starscream's lit pair did not move with the seconds once 5 shots were left (battle_starscream 41-82 s): only
-  lit hits move it here (the spec's per-second move depends on switch tokens 0xc / 0xd, not traced);
+- Starscream's lit pair also moves each counted second with fewer than 6 shots left, unless a ramp entrance
+  (switch-timeout tokens 0xc / 0xd, 93 ticks) was hit [0x01017824] (QA M9);
 - deffs without a capture get their length, lamp effects and sounds from the traces (UNCAPTURED).
 """
 from tf.features import Feature
@@ -194,7 +194,11 @@ class Battle:
             self.time_up()
             return
         self.seconds -= 1
+        self.second()
         os_.task_start(self.timer_task, STEP_TICKS, self._timer)
+
+    def second(self):
+        """Called at each counted second, after the decrement."""
 
     def restart_timer(self, at_least):
         """A new level / rover hit: the timer back to at least `at_least` seconds, the count restarted."""
@@ -338,6 +342,14 @@ class Starscream(Battle):
     def advance(self, shot):
         self.pair = (self.pair + 1) % len(self.PAIRS)
         self.lit = self.PAIRS[self.pair]
+
+    def second(self):
+        """FUN_01017824: each counted second, with fewer than 6 shots left and neither ramp entrance in the last
+        93 ticks (switch-timeout tokens 0xc / 0xd), the lit pair moves on (FUN_010177ec) (QA M9)."""
+        os_ = self.os
+        if self.pd.get(self.left_key, self.shots) < 6 and not os_.timer_running(0xc) and not os_.timer_running(0xd):
+            self.advance(None)
+            os_.request_refresh()
 
 
 class Shockwave(Battle):
@@ -712,7 +724,7 @@ BATTLES = (Starscream, Shockwave, Blackout, Devastator, Bumblebee, Ironhide, Mud
 
 class Battles(Feature):
     name = "battles"
-    HOOKS = ("player_first_ball", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
+    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
              "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
@@ -1024,6 +1036,10 @@ class Battles(Feature):
 
     def add_ball(self):
         self.battles[6].add_ball()
+
+    def add_ball_open(self):
+        """The battle multiball's end task 0xa9 [0x0101906c] (QA M7)."""
+        return self.os.task_running(self.battles[6].run_task)
 
     def multiball_end(self):
         self.battles[6].multiball_end()
