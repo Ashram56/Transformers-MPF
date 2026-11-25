@@ -439,3 +439,17 @@ class TestLowFixes(QaCase):
         self.assertEqual(3, combos.shot_mult_light(True))
         self.assertEqual(0, combos.shot_mult_light(True))
         self.assertEqual(2, len([e for e in self.tf.trace.of("deff_start") if e.get("id") == 44][-2:]))
+
+    def test_lanes_rotate_during_the_side_choice(self):
+        """[0x01032d5c]: only gf_state & 0x311 stops the rotation (QA P14)."""
+        self.start()
+        lanes = self.tf.features_by_name["lanes"]
+        self.tf.pd.lanes_left = {50}
+        self.tf.hooks.setdefault("side_choosing", []).append(lambda: True)
+        lanes._flipper("left")
+        self.tf.hooks["side_choosing"].pop()
+        self.assertEqual({51}, lanes.lit("left"))
+        self.tf.state |= 0x01
+        lanes._flipper("left")
+        self.tf.state &= ~0x01
+        self.assertEqual({51}, lanes.lit("left"))

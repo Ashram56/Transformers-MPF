@@ -60,6 +60,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | F8 | ball save: ends when fewer than 7 ticks are left (adj 38 = 5: 312 ticks) | `0x00017a28` |
 | P13, P17, P18, P20 | skill shot second lane lamp 50 / 49; spinner sample index reset each ball; deff 124 arg 0 before the new bit; item 4 text capped at 25 | `0x010335d0`, `0x0103361c`, `0x01032484`, `0x010309a4`, `0x01000f18` |
 | F9 | match: the number steps by 10 past the players when the rate is reached; 0x072 / 0x073 at frame 60 of deff 38, the award after frame 68 with 0x074 and 24 more frames; MATCH OFF shows no deff 38 (tournament not modelled) | `0x00019668`, `0x0100820c`, `0x00019874` |
+| P14, P15 | lanes rotate on every flipper press but in gf_state & 0x311, killing the group's leffs first; a lane completion always shows deff 44 with FUN_010236e8's result | `0x01032d5c`, `0x0102db28`, `0x010236e8` |
 | M10, M15 | the lock re-arm copies every player's count (ROM quirk kept); deff 139 gets the locked count | `0x0100af0c` |
 All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.15 ms (counted on code-timed spans; the 16.26 ms used before drifted 0.3 s over a battle and gave battle_blackout an extra bonus).
 
@@ -70,7 +71,12 @@ High first. Each line's detail, proof and game line are in its report.
 | id | What | Sev |
 |---|---|---|
 | F15 | ball save may survive a tilt (doubtful: hooks of events 0x65 / 0x66 not read) | medium if true |
-| F12, F14, F16-F18, M8, M11, M12, M14, P14, P15, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| F12, F14, F16-F18, M8, M11, M12, M14, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+
+M8 stays open on purpose: the code starts leffs 76 / 77 on zuse_qualify_enabled for either side [0x01011ed4], but
+the Decepticon reference (wizard_all_hail_megatron.jsonl 16.38 s) shows no 76 / 77 after its requirements are poked
+while the Autobot one (wizard_multiball.jsonl 17.96 s) does; FUN_01035db4 / FUN_0100ff58 are to be read before the
+Autobot-only gate goes.
 
 ### For agent A (one batched request)
 
