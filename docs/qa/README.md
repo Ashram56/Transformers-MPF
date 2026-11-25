@@ -91,5 +91,5 @@ and multiball tasks (`0x0103b39c`, `0x01039db4`, `0x0103aba4`).
 ### Owner decisions
 
 1. Decided 2026-11-25: no waiver for the captured data; agent A decodes it ([pinmame_waivers.md](../pinmame_waivers.md)).
-2. Whether the two Xilinx XC95144XL CPLDs (fuse map, no program, not loaded by the ROM) count as a board to decompile.
+2. Decided 2026-11-25: the two Xilinx XC95144XL CPLDs are not decoded (fixed function, no game rule). `check_strict_rule.py` still fails on that row, since it accepts only `complet`; letting it accept an owner-excluded board is a change to the check itself, left to the owner.
 3. F15: confirming the tilt / ball save case needs a new reference trace, which is an emulator capture.

@@ -18,6 +18,12 @@ them and they stay in the game.
 | `rom/rom_data/io/coils.csv` (column `mpf_source`, from `coil_timing.csv`) | coil pulse and hold times measured from the solenoid register writes in the emulator | the coil descriptors (test and ball-search ms already read: `test_pulse_ms`), the game's `coil_pulse` call arguments and the OS pulse routine | refused 2026-11-25: decode |
 | `rom/rom_data/settings/adjustments.csv` | the display text of 143 adjustment values, from the OS formatter run in the emulator | the formatter 0x0002aebc and its message tables (the values and ranges themselves are read from the ROM) | refused 2026-11-25: decode |
 
+## Approved captures
+
+| Path | Why | Approval |
+|---|---|---|
+| `rom/rules/traces/tilt_ball_save.jsonl` | QA F15: does the ball save survive a tilt? The code read leaves it open (the hooks of events 0x65 / 0x66 not read); one reference trace, tilt during the ball save then a drain, used only to confirm the code | approved by Vincent 2026-11-25 |
+
 Not waivers (allowed by the rule): the reference traces `rom/rules/traces/` and their scenarios confirm the game,
 they are not a source; `game/tools/dmd_capture.gd` saves the game's own DMD for `scripts/render_check.py`, it
 builds nothing.
