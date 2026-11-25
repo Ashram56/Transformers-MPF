@@ -237,3 +237,54 @@ class TestPlayfield(QaCase):
         self.hit("s_left_orbit_top")
         self.assertEqual(total, fs.total)
         fs.stop()
+
+
+class TestOsFixes(QaCase):
+    def test_held_plumb_bob_tilts(self):
+        """FUN_0001dc58 starts task 0x2e [0x0001dc14]: a bob held closed warns every 62 ticks, then tilts (QA F4)."""
+        self.start()
+        self.hit_switch_and_run("s_tilt_pendulum", 62 * TICK * 2 + 0.2)
+        self.assertTrue(self.tf.tilted)
+        self.release_switch_and_run("s_tilt_pendulum", 0.1)
+
+    def test_bob_counts_while_the_ball_ends(self):
+        """The bob is ignored only while gf_state & 0x310, so a tilt during the end of ball removes the bonus
+        (QA F5, [0x00019e44])."""
+        self.start()
+        self.tf.state |= 0x04                              # end of ball
+        self.hit_and_release_switch("s_tilt_pendulum")
+        self.advance_time_and_run(0.1)
+        self.assertEqual(1, self.tf.tilt_warnings)
+        self.tf.state &= ~0x04
+
+    def test_equal_priority_deff_needs_flags(self):
+        """deff_start_core [0x00020498]: an equal priority start replaces the running deff only when its
+        flags & 3 (QA F6). Deffs 28 (flags & 3 = 0) and 13 (flags & 3 set) are both priority 240."""
+        self.start()
+        disp = self.tf.display
+        disp.start(28)
+        disp.start(13)
+        self.assertEqual(28, disp.fg)
+        disp.start(13)
+        disp.fg, disp.fg_prio = 13, disp.prio[13]
+        disp.start(28)
+        self.assertEqual(28, disp.fg)
+
+    def test_end_of_ball_waits_the_longest_hook(self):
+        """[0x00019e44]: the wait is the longest flag-0x2000 task, capped at DAT_00033324 = 937 ticks (QA F10)."""
+        from game.tf import os_layer
+        self.start()
+        hooks = self.tf.hooks
+        saved = list(hooks.get("ball_end_wait", ()))
+        hooks["ball_end_wait"] = [lambda: 300, lambda: 100]
+        waits = [fn() for fn in hooks["ball_end_wait"]]
+        self.assertEqual(300, min(max(waits), os_layer.END_BALL_WAIT_MAX))
+        hooks["ball_end_wait"] = saved
+        self.assertEqual(937, os_layer.END_BALL_WAIT_MAX)
+
+    def test_lock_entry_adds_a_bonus_count(self):
+        """[0x0100a31c] inlines 0x01032d2c: FUN_01000dfc(1), +1 bonus count (QA F11)."""
+        self.start()
+        count = self.tf.pd.get("bonus_count", 0)
+        self.tf.features_by_name["megatron"]._handle(back_door=True)
+        self.assertEqual(count + 1, self.tf.pd.get("bonus_count", 0))

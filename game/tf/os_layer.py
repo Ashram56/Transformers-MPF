@@ -40,6 +40,7 @@ START_HOLD_TICKS = 62   # adj 36 GAME RESTART: START held this long (timer 4, 0x
 
 # game state word bits (gf_state, RAM 0x31468)
 ST_BONUS, ST_END_BALL, ST_ATTRACT, ST_TILT = 0x01, 0x04, 0x10, 0x200
+END_BALL_WAIT_MAX = 937     # DAT_00033324: the end of ball waits at most this long for the flag-0x2000 tasks
 
 # Valid playfield (OS, game_flow.md 4.3): the switch descriptor's top byte (rom/rom_data/io/switches.csv
 # flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). The spec infers that
@@ -299,6 +300,7 @@ class TfOS(CustomCode):
         sw.add_switch_handler("s_start_button", self._start_held, ms=START_HOLD_TICKS * TICK * 1000)
         sw.add_switch_handler("s_back", self._service_back)
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob)
+        sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob_open, state=0)
         sw.add_switch_handler("s_l_flipper_button", lambda: self._flipper_launch(1))
         sw.add_switch_handler("s_r_flipper_button", lambda: self._flipper_launch(2))
         for name in ("s_l_flipper_button", "s_r_flipper_button"):
@@ -1494,11 +1496,33 @@ class TfOS(CustomCode):
     # ------------------------------------------------------------------ tilt (5.3)
 
     def _plumb_bob(self):
-        if not self.game or self.tilted or self.state & ST_END_BALL:
+        """FUN_0001dc58 (QA F4, F5): ignored only in task 0x29 or while gf_state & 0x310 (attract, service, tilt),
+        so the end of ball and the bonus count too. A closing bob warns unless timer 1 runs (62 ticks), and task
+        0x2e [task_2e 0x0001dc14] warns again every 62 ticks while the bob stays closed, then tilts."""
+        if not self.game or self.tilted or self.task_running(0x29) or self.state & (ST_ATTRACT | 0x100 | ST_TILT):
             return
-        if self.now - self._last_bob < SECOND * TICK:
+        if self.now - self._last_bob >= SECOND * TICK:     # timer 1 (FUN_0000ff00(1, 0x3e))
+            self._last_bob = self.now
+            self._tilt_warning()
+        if not self.task_running(0x2e):
+            self.task_start(0x2e, SECOND, lambda: self._bob_held(1))
+
+    def _plumb_bob_open(self):
+        self.task_kill(0x2e)
+
+    def _bob_held(self, n):
+        if not self.game or self.tilted:
             return
-        self._last_bob = self.now
+        self._tilt_warning()
+        if self.tilted:
+            return
+        if n < 2:
+            self.task_start(0x2e, SECOND, lambda: self._bob_held(n + 1))
+        else:
+            self._tilt()
+
+    def _tilt_warning(self):
+        """FUN_0001da8c: a warning while adj 32 allows one, else the tilt."""
         if self.adj_value(64) and self.coin_door_open():
             return                                   # FUN_0001da38: adj 64 ignores the tilt with the door open
         if self.tilt_warnings < self.adj_value(32):
@@ -1508,6 +1532,13 @@ class TfOS(CustomCode):
             self.sound(0x016)
             self.after(31, lambda: self.sound(GAME["tilt_warning_speech"]))
             return
+        self._tilt()
+
+    def _tilt(self):
+        """tilt() [0x0001db40]."""
+        if self.tilted:
+            return
+        self.task_kill(0x2e)
         self.hook("tilt_start")                      # event 0x66, posted before the tilt state is set
         self.state |= ST_TILT
         self.ball_search_reload(15)
@@ -1664,7 +1695,10 @@ class TfOS(CustomCode):
             self.audit(0x28)
         if self.task_running(0x38):
             self.audit(0x29)
-        wait_ticks = self.hook("ball_end_wait") or 0  # mode TOTAL displays (flag-0x2000 tasks)
+        # [0x00019e44]: wait while any flag-0x2000 task runs (the modes' TOTAL displays), at most DAT_00033324 =
+        # 937 ticks (QA F10): the longest wait, not the last feature's
+        waits = [fn() for fn in self.hooks.get("ball_end_wait", ())]
+        wait_ticks = min(max([w for w in waits if w] or [0]), END_BALL_WAIT_MAX)
         self.after(wait_ticks, lambda: self._ball_ending_bonus(queue))
 
     def _ball_ending_bonus(self, queue):
@@ -1680,7 +1714,7 @@ class TfOS(CustomCode):
             self._bonus_done(queue, 0)
 
     def _bonus_done(self, queue, total):
-        if total:
+        if total and not self.tilted:                # [0x00019e44]: no bonus when a tilt came during deff 25 (QA F5)
             # event 0x16, multiplier 1, not a score_add
             self._add_score(self.score_event(total))
             self.hook("score_changed")

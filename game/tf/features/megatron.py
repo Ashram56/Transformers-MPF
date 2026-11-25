@@ -518,6 +518,11 @@ class Megatron(Feature):
             keep = self.rule()
         if not os_.tilted and os_.game:
             os_.base_score(ENTRY_POINTS)
+            # the inline copy of 0x01032d2c in [0x0100a31c]: FUN_01000dfc(1), the bonus count, and
+            # FUN_00017d60, the ball search reset (QA F11)
+            os_.hook("bonus_add")
+            if not os_.task_running(0x2b):
+                os_.ball_search_count = 0
         if keep == "multiball":
             return
         if keep:

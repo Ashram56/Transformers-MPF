@@ -66,6 +66,17 @@ def deff_table():
             if row["background"] == "yes":
                 background.add(deff_id)
     return prio, background
+def deff_flags():
+    """Each deff's flags word from tf_180's deff table 0x040ce7c4 (rom/rom_data/dmd/deffs.csv)."""
+    flags = {}
+    path = os.path.join(ROM, "rom_data", "dmd", "deffs.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                flags[int(row["deff"])] = int(row["flags"] or "0", 16)
+    return flags
+
+
 PREVALID_PRIO = 0x10        # priority of the score display rule that runs until the playfield is valid
 
 
@@ -83,6 +94,7 @@ class Display:
         self.os = os_
         self.media = media_table.load(PKG)
         self.prio, self.background = deff_table()
+        self.flags = deff_flags()
         self.fg = None              # running foreground deff id
         self.show_held = False      # a show ended in this deff's hold: its rules refresh is due at its exit
         self.arcade_held = False    # ... the RULES_HOLD_SHOW show: the score display comes back at its exit
@@ -122,7 +134,10 @@ class Display:
             os_.media.deff_start(deff_id, self.prio.get(deff_id, 0), **args)
             return True
         os_.trace.log("deff_start", id=deff_id)    # the ROM trace logs every start call
-        if self.fg is not None and self.fg_prio > self.prio.get(deff_id, 0):
+        new_prio = self.prio.get(deff_id, 0)
+        # deff_start_core [0x00020498]: an equal priority replaces the running deff only when its flags & 3
+        if self.fg is not None and (self.fg_prio > new_prio or (
+                self.fg_prio == new_prio and not self.flags.get(self.fg, 0) & 3)):
             # a higher priority deff keeps the display; the deff rules still run and restart a mode's
             # background deff (traces/disc_multiball.jsonl: deff 48 refused behind deff 50, deff 47 again)
             if refresh and not self.show and self.mode_bg():
