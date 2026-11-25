@@ -6,7 +6,8 @@ __pycache__/
 # Game build (scripts/setup.py): toolchain and generated files
 .godot/
 .venv/
-/tools/
+/tools/*
+!/tools/check_strict_rule.py
 game/addons/mpf-gmc/
 game/logs/
 game/.godot/

@@ -1,0 +1,22 @@
+# Boards inventory: Transformers Pro 1.80 (STRICT RULE: DECOMPILE EVERYTHING, step zero)
+
+One row per board with its own CPU, MCU, ROM or firmware (template: Stern-SAM-Decryption
+`knowledge/templates/boards_inventory.md`). States: `complet` (every routine decompiled, named where used,
+every datum it sends or receives traced), `partiel`, `absent`. `tools/check_strict_rule.py` fails while any row
+is not `complet`. Written 2026-11-25 by the QA pass ([docs/qa/README.md](qa/README.md)); agent A owns it.
+
+| Board | CPU / MCU | ROM file(s) | Decompile state | Where (decompile, notes) | Open |
+|---|---|---|---|---|---|
+| SAM CPU/sound board (520-5246-02), game program | Atmel AT91R40008 (ARM7TDMI) | `tf_180.bin` (30,560,052 bytes, SHA1 `62e1328e…7e904`) | partiel | `rom/code/tf_decompiled.c`: Ghidra 11.4.2, all 3,003 functions decompiled, about 466 named (OS by matching Tron, deff/leff functions from this ROM's tables); 2,526 still `FUN_`. Scores, inserts and sounds of the rules: specs in `rom/rules/modes/` with addresses, many lines still tagged observed | (1) the deff (display effect) scripts are not decoded into tables: the game replays emulator captures (frames, run lengths); (2) the leff (lamp effect) scripts likewise (111 captured shows); (3) coil pulse times measured in the emulator, not read from the coil table; (4) sound call fields +0x0c..+0x13 not decoded; (5) aux strobe outputs (CSTB/DSTB) not traced; (6) naming of the 2,526 unnamed functions used by the rules |
+| SAM CPU board, Xilinx FPGA (DMD scan, audio playback, switch/IO glue) | Xilinx Spartan FPGA (configuration, no program) | configuration not in the PinMAME set | absent | Fixed function, no game logic; its behaviour (DMD 128x32 16 shades at 62.67 Hz, 24 kHz stereo audio FIFO) is documented game-agnostically in Stern-SAM-Decryption `knowledge/sam_hardware/CPU_BOARD_IO.md` | Owner decision: whether a board with configuration but no program counts under rule 1 (it carries no rule; nothing in the game depends on code inside it) |
+
+Boards without their own CPU, MCU, ROM or firmware, listed so nobody looks for one (not checked by the tool):
+
+| Board | Why it has no firmware |
+|---|---|
+| SAM IO power driver board (520-5249-00) | decoders and edge-triggered latches; every pulse width is what the CPU writes (`knowledge/sam_hardware/README.md`) |
+| 12-transistor aux driver board (PinMAME `SAM_GAME_AUXSOL12`, CSTB/DSTB) | latches on its strobe |
+| 128x32 DMD panel | scanned by the CPU board's FPGA |
+| Shaker motor kit (optional), speakers and amplifier | no logic |
+
+Last updated 2026-11-25.

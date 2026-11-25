@@ -10,7 +10,10 @@ changes that are not about this game go. The owner is Vincent (GitHub `Ashram56`
 Stern's **Transformers Pro**, code v1.80 (PinMAME set and ROM image `tf_180`), rebuilt in the Mission Pinball
 Framework: **MPF 0.80.1** runs the rules, **GMC 1.0.0 on Godot 4.6.3** draws the 128x32 DMD and plays the
 sounds. Everything (rules, scores, display effects, sounds, lamp shows, coil times, the 98 operator
-adjustments, the service menu, audits) was reverse engineered from the ROM and lives in [rom/](rom/README.md).
+adjustments, the service menu, audits) was extracted from the ROM and lives in [rom/](rom/README.md). Not all of it
+was read from the code yet: the display effects, lamp shows and coil times were captured in the emulator, which
+the strict rule ([CLAUDE.md](CLAUDE.md)) no longer allows without the owner's waiver; [docs/qa/README.md](docs/qa/README.md)
+lists what is still to decode.
 The goal is **the ROM's game exactly**. Every place the game still differs is a row in
 [docs/rom_differences.md](docs/rom_differences.md).
 
@@ -18,7 +21,8 @@ It runs on Windows, macOS and Linux: on a desktop (virtual hardware, optionally 
 Pinball X with MPF replacing PinMAME (Windows), and optionally with TerryRed's PuP Pack on three extra screens.
 
 The method (how a Stern SAM ROM becomes an MPF game) is not in this repository: it is game agnostic and lives
-in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decryption) (public). See section 8.
+in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decryption) (decryption) and
+[Ashram56/MPF-Godot-Packaging](https://github.com/Ashram56/MPF-Godot-Packaging) (MPF implementation), both public. See section 8.
 
 ## 2. Repository map
 
@@ -49,7 +53,7 @@ in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decrypt
 | `.github/workflows/test.yml` | CI: setup + tests on Windows, macOS, Linux, render check on Linux | runs only on pushes to `main` |
 | `docs/` | `rom_differences.md`, `pup.md`, `pup_captures.md`, `vpx.md`, `vpx/`, `hardware.md`, `requirements.md` | |
 
-Generated and git-ignored (rebuilt by setup, never committed): `.venv/`, `tools/` (Godot), `game/addons/`,
+Generated and git-ignored (rebuilt by setup, never committed): `.venv/`, `tools/` (Godot; `tools/check_strict_rule.py` is the one tracked file), `game/addons/`,
 `game/config/rom/`, `game/sounds/`, `game/media/`, `game/fonts/`, `game/slides/deffs/`, `captures/`,
 `pup_media/`, `game/pup.local.cfg`.
 
@@ -97,6 +101,7 @@ CI runs only on pushes to `main`, never on branches or pull requests: **you test
 .venv/bin/python scripts/render_check.py                 # display work: look at captures/dmd_latest_x8.png
 .venv/bin/python scripts/trace_check.py basic            # rules work: any scenario in rom/rules/traces/
 .venv/bin/python scripts/trace_check.py basic --events score,deff_start,lamp,coil
+python tools/check_strict_rule.py .                      # strict rule (CLAUDE.md): before every push
 ```
 
 The PuP tests skip without the `pup_pack` submodule (CI does not check it out). After a rules change run the
@@ -132,8 +137,9 @@ PinUP Player does in Visual Pinball. All of it is in [docs/pup.md](docs/pup.md);
   the variants: battle shots left, lock number, side, animation index). `scripts/pup_captures.py` rebuilds the
   match in `docs/pup_captures.md`. A hand-set or ROM-checked line says so and gives the ROM address.
 - **The runtime is shared.** `game/pup_runtime/`, `game/pup/`, `scripts/pup_setup.py`, `scripts/gen_pup.py`,
-  `scripts/pup_captures.py`, `scripts/pup_decode.py` are copies of Stern-SAM-Decryption
-  `tools/pup/runtime/`. **Do not edit the copies**: a runtime fix goes to Stern-SAM-Decryption (section 8) and
+  `scripts/pup_captures.py`, `scripts/pup_decode.py` are copies of MPF-Godot-Packaging
+  `tools/pup/runtime/` (moved there from Stern-SAM-Decryption on 2026-11-23; the copies' docstrings still name the
+  old home). **Do not edit the copies**: a runtime fix goes to MPF-Godot-Packaging (section 8) and
   comes back by running its `install.py`. This game's own PuP files are `game/pup.cfg`,
   `game/tf_pup/trigger_map.yaml`, `game/modes/pup/` and the hooks in `docs/pup.md`.
 
@@ -154,8 +160,10 @@ Fact tags used throughout `rom/` and the docs: **code** (read from the ROM or it
 ## 7. Rules for every change
 
 1. **Strict to the ROM.** The game reproduces tf_180, quirks included (`docs/rom_differences.md` lists ROM
-   quirks that are not bugs: do not "fix" them). A behaviour change must be backed by the ROM: the spec in
-   `rom/rules/modes/`, the decompile `rom/code/tf_decompiled.c`, or a reference trace in `rom/rules/traces/`.
+   quirks that are not bugs: do not "fix" them). A behaviour change must be backed by the ROM's code: the decompile
+   `rom/code/tf_decompiled.c` (which wins over the spec in `rom/rules/modes/` when they disagree), with the
+   routine's address. A reference trace in `rom/rules/traces/` only confirms; never code from a trace or a
+   capture without the owner's prior waiver in `docs/pinmame_waivers.md` (strict rule, [CLAUDE.md](CLAUDE.md)).
 2. **Cite the ROM.** Rules code and docs give the ROM address of what they reproduce, in the house form
    `[0x0101db34]` (a function or table in the game code, which starts at 0x01000000), plus the trace and time
    when the evidence is a trace (`scoring.jsonl 153.46 s`). Say when a value is inferred.
@@ -183,27 +191,32 @@ Typical tasks:
 | VPX does not drive a device | `game/tf/vpx_hardware.py`, `game/config/hw_vpx.yaml`, `docs/vpx.md` "Device map" | `tests/test_vpx.py` |
 | Install or run breaks on an OS | `scripts/setup.py`, `scripts/toolchain.py`, `scripts/install/` | `tests/test_install.py`, `setup.py --dry-run --os <os>` |
 
-## 8. Game facts here, methods in Stern-SAM-Decryption
+## 8. Game facts here, methods in Stern-SAM-Decryption and MPF-Godot-Packaging
 
-[Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decryption) holds what every Stern SAM
-game shares: the master plan and agent files (`agents/README.md`, `rom_extraction.md`, `recreation.md`,
-`vpx_bridge.md`, `packaging.md`, `pup_pack.md`, ...), the knowledge base (`knowledge/`, notably
-`sam_to_mpf_playbook.md`) and the shared tools (`tools/`, including the PuP runtime). Read the agent file for
-your kind of task before a large change: it explains how the parts were built and the mistakes already made.
+The method is split in two public, game-agnostic repositories (owner, 2026-11-23):
+
+| Repository | Holds | Agents |
+|---|---|---|
+| [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decryption) | The master plan (`agents/README.md`), taking a ROM or a VPX table apart: `rom_extraction.md`, `vpx_extraction.md`, the decryption knowledge (`knowledge/`: SAM hardware, OS API, deff engine), the extraction tools and the strict-rule check (`tools/strict_rule/`) | A, B |
+| [Ashram56/MPF-Godot-Packaging](https://github.com/Ashram56/MPF-Godot-Packaging) | Rebuilding in MPF: `recreation.md`, `vpx_bridge.md`, `improvement.md`, `packaging.md`, `pup_pack.md`, the playbook (`knowledge/sam_to_mpf_playbook.md`), MPF / Godot / GMC knowledge and fixes, the PuP runtime (`tools/pup/runtime/`), the bundle builder. **No game content** there (its `tests/test_no_game_content.py`) | C to G |
+
+Read the agent file for your kind of task before a large change: it explains how the parts were built and the
+mistakes already made. The **strict rule** at the top of [CLAUDE.md](CLAUDE.md) binds every change here.
 
 - **Game facts stay here**: this game's addresses, values, status, owner decisions.
-- **Game-agnostic learnings go there**: a fact true of every SAM ROM, MPF, GMC, Godot, VPX or PinMAME
-  behaviour, a method that worked or failed, a fix to a shared tool or the PuP runtime. Its
-  [CONTRIBUTING.md](https://github.com/Ashram56/Stern-SAM-Decryption/blob/main/CONTRIBUTING.md) is the rule:
+- **Game-agnostic learnings go to the repository that owns the topic**: a fact true of every SAM ROM, a ROM,
+  PinMAME or VPX table method to Stern-SAM-Decryption; an MPF, GMC, Godot, platform or packaging behaviour, a
+  recreation method, a fix to the PuP runtime to MPF-Godot-Packaging. Each one's CONTRIBUTING.md is the rule:
   - **With write access**, a pull request editing the file that owns the topic, titled
     `Knowledge: <topic> (from Transformers)`.
-  - **Without write access (the usual case for a contributor)**, open a **GitHub issue** on
-    Ashram56/Stern-SAM-Decryption with its "knowledge update" template, titled
-    `Knowledge: <topic> (from Transformers)`: the finding, its fact tag, the evidence (this game's value as the
-    example, e.g. an address or a trace), the file and section it belongs in, and the exact text to add. For a
-    code fix to a shared tool, put the diff in the issue, or open a pull request from your fork. Do it in the
-    same session as the finding; you do not need to ask anyone first.
-  - Nothing private or ROM-derived goes there (no ROM data, no PuP media, no tokens).
+  - **Without write access (the usual case for a contributor)**, open a **GitHub issue** on that repository
+    (Stern-SAM-Decryption has a "knowledge update" template), titled `Knowledge: <topic> (from Transformers)`:
+    the finding, its fact tag, the evidence (this game's value as the example, e.g. an address or a trace), the
+    file and section it belongs in, and the exact text to add. For a code fix to a shared tool, put the diff in
+    the issue, or open a pull request from your fork. Do it in the same session as the finding; you do not need
+    to ask anyone first.
+  - Nothing private or ROM-derived goes there (no ROM data, no PuP media, no tokens), and never a game name in
+    MPF-Godot-Packaging's toolchain code.
 
 ## 9. Contributing workflow
 
@@ -214,8 +227,10 @@ your kind of task before a large change: it explains how the parts were built an
    merges; a push to `main` runs CI on all three OSes.
 5. A change to the PuP Pack itself (a new pack release) is a separate pull request on
    Ashram56/Transformers-PuP, then a submodule bump here.
-6. Report game-agnostic learnings to Stern-SAM-Decryption (section 8) and say in your pull request which issue
-   or PR you opened.
+6. Report game-agnostic learnings to Stern-SAM-Decryption or MPF-Godot-Packaging (section 8) and say in your
+   pull request which issue or PR you opened.
+7. Run `python tools/check_strict_rule.py .` (strict rule, [CLAUDE.md](CLAUDE.md)) before every push; it must
+   pass, or the pull request says which failure stays open and why ([docs/qa/README.md](docs/qa/README.md)).
 
 When a change needs the owner's judgement (a look and feel choice, a departure from the ROM), pick a sensible
 default, say which in the pull request, and list the open questions as a short numbered list.
