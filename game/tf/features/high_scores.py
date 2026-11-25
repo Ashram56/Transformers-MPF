@@ -17,7 +17,7 @@ yet placed whose score beats the entry's [0x00018b70, ties go to the earlier pla
    [0x000188cc]; the entry's award (adj 55-59 count, adj 54 kind: 0 credit with knocker, 1 ticket,
    2 token) and audit 0x10 HIGH SCORE AWARDS by the count; event 0x37, deff 33 (the entry, name and score,
    with the award), event 0x38.
-Initials entry, deff 32 [0x010346e8], one frame per tick: the left / right flipper button picks the previous /
+Initials entry, deff 32 [0x0103c840], one frame per tick: the left / right flipper button picks the previous /
 next letter (auto-repeat after 31 frames, then every 7; both buttons together do nothing), START takes it.
 After the letters come three specials: BACK (deletes a letter), END and SPACE; once the name is full only
 BACK and END can be picked, END at first. 3 initials (adj 60 = 0) or 10 letters. A 30 s countdown (63
@@ -45,7 +45,7 @@ SOUNDS = {"left": None, "right": None, "select": None, "countdown": None, "enter
 
 
 class Entry:
-    """Initials entry, deff 32 [0x010346e8]."""
+    """Initials entry, deff 32 [0x0103c840]."""
 
     def __init__(self, hs, player, done):
         self.hs, self.os, self.machine = hs, hs.os, hs.machine
@@ -72,7 +72,7 @@ class Entry:
         self.os.media.text_show("text_page", ["PLAYER {} - ENTER INITIALS".format(self.player),
                                               self.name + ("_" if self.cursor >= len(LETTERS) else self.letter()),
                                               str(self.seconds) if self.counting else ""], 244,
-                                 screen=4)   # text_page.tscn: deff 32's rows (0x010346e8), ROM fonts 2 / 14 / 2
+                                 screen=4)   # text_page.tscn: deff 32's rows (0x0103c840), ROM fonts 2 / 14 / 2
 
     def _start(self):
         self.select = True

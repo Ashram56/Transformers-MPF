@@ -286,7 +286,7 @@ class MediaBridge:
         return "CREDITS %d %d/%d" % (whole, num, den)
 
     def replay_text(self):
-        """FUN_01023704: the current player's first replay level not yet awarded ("REPLAY AT <level>",
+        """adj_replay_award_2f804 [0x0102f804] (deff 19): the current player's first replay level not yet awarded ("REPLAY AT <level>",
         the award text for adj 13 = 0; the other awards' texts are ROM messages not in the package)."""
         level_of = getattr(self.os, "replay_level", None)
         if not level_of:

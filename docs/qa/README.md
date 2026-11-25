@@ -5,6 +5,38 @@ The owner's strict rule of 2026-11-24 ([CLAUDE.md](../../CLAUDE.md)) and the aud
 scope each, every finding proved; the review fixes nothing, the fixes follow from the reports). One folder per
 pass.
 
+## Pass of 2026-11-26: the MPF conversion against the ROM code
+
+Owner, 2026-11-26: the QA matrix also covers the conversion to MPF (configs, generated config, shows, Python and
+GDScript) and checks it against the decompiled code, not against the specs. Five independent read-only reviews,
+each one matrix row per element of its scope (verdicts: match, differs, missing, extra, unverifiable):
+
+| Scope | Matrix | Report | Rows | match | differs | missing | extra | unverifiable |
+|---|---|---|---|---|---|---|---|---|
+| MPF devices, settings, audits, pricing, service menu | [matrix_devices.csv](2026-11-26/matrix_devices.csv) | [report_devices.md](2026-11-26/report_devices.md) | 830 | 705 | 29 | 59 | 3 | 34 |
+| Display: 155 deffs, deff engine, score screen, fonts, text formats | [matrix_display.csv](2026-11-26/matrix_display.csv) | [report_display.md](2026-11-26/report_display.md) | 182 | 89 | 40 | 18 | 1 | 34 |
+| Lamps: 178 leffs, 148 lamp groups, inserts, lamp rules, engine | [matrix_lamps.csv](2026-11-26/matrix_lamps.csv) | [report_lamps.md](2026-11-26/report_lamps.md) | 412 | 118 | 112 | 60 | 0 | 122 |
+| Sounds (every call site) and rule-driven coils | [matrix_sounds_coils.csv](2026-11-26/matrix_sounds_coils.csv) | [report_sounds_coils.md](2026-11-26/report_sounds_coils.md) | 900 | 306 | 68 | 492 | 0 | 34 |
+| Rules: switch handlers, code runs, functional diagram, cited addresses, constants | [matrix_rules.csv](2026-11-26/matrix_rules.csv) | [report_rules.md](2026-11-26/report_rules.md) | 771 | 643 | 81 | 4 | 9 | 34 |
+| **total** | | | **3,095** | **1,861** | **330** | **633** | **13** | **258** |
+
+Each matrix is rebuilt by the `probe_*` script next to it (command in its report). Scores equal the ROM code on all
+58 switch rows and 137 of 138 scenario marks; devices, numbers, coil pulses, pricing, deff priorities and the
+package's deff and leff data match the code mechanically. The departures are in how the game plays that data.
+
+### High
+
+| id | What | Where |
+|---|---|---|
+| L-G01 | no leff lights a lamp: `parse_show` misses the shows' double-quoted colours (0 of 113 shows read) | lamps.py:78 |
+| SC1 | every battle hit sound plays twice (op list + Battle.hit_media) | battles.py:284 |
+| V-TXT1 | `%P1//S/%` plurals wrong ("SHOOT 11 SHOT", "3 COMBO") | media_bridge.py:35 |
+| V-SC1 | main score font and row from 1,000,000 up (table 0x040c75d0) | score_screen.py:18 |
+| D-SM-MODE / V003 | no service menu: SELECT starts mode `tf_service`, which does not exist | os_layer.py:1430 |
+| SC4 | the hint speech slot 0x02111f54 is never played (its reader is to be decoded by agent A) | - |
+
+Medium and low: the findings tables of each report. Fixes follow, high first, each with a regression test.
+
 ## Pass of 2026-11-25
 
 Three independent read-only reviews, each with the decompile, the ROM and the game in its test harness:

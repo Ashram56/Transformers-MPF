@@ -358,7 +358,7 @@ class Lamps:
         self.changed()
 
     def lamp_flash(self, n):
-        """lamp_on + lamp_bit_set(n, 0x36388) (FUN_01015094(n, 1)): flashing."""
+        """lamp_on + the lamp's bit in the flash bitmap DAT_00036388 (as ball_start_sub_1801c [0x0001801c] sets it)."""
         self.image.add(n)
         self.flash.add(n)
         self.changed()

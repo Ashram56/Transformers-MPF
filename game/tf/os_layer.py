@@ -50,7 +50,7 @@ FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
 COUNTING_SWITCHES = {1, 2, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 45, 46, 49, 50, 51}
 
 # Game flags of the running multiballs: [0x01006704], named any_timed_mode_running in the decompile, tests these
-# six flags (FUN_0100f918 on Tron). 0x1e Mudflap & Skids; the others come with their specs.
+# six flags. 0x1e Mudflap & Skids; the others come with their specs.
 MULTIBALL_FLAGS = (0x1e, 0x1f, 0x22, 0x25, 0x29, 0x3e)
 BALL_SAVE_GRACE = 218        # ticks (0xda) of grace after the ball-save timer
 SERVE_EJECT_TICKS = 32
@@ -561,7 +561,7 @@ class TfOS(CustomCode):
         self.display.stop(deff_id)
 
     def show(self, task_id, deff_id, **kwargs):
-        """queue_fullscreen_deff [0x0100fbb0] run as show task task_id (0x81-0xa7)."""
+        """deff_start_user_6350 [0x01006350] run as show task task_id (game ids 0x81-0xa7; tf_180 0x5d-0x7e)."""
         self.display.queue(task_id, deff_id, **kwargs)
         self.request_refresh()
 
@@ -569,7 +569,7 @@ class TfOS(CustomCode):
         return self.display.show_running()
 
     def base_music(self):
-        """Music of the score-display deff rules (Tron [0x0100f594 / 0x0100f5c8]): the plunger music until the
+        """Music of the score-display deff rules (inferred from the traces; routine not identified): the plunger music until the
         playfield is validated on this ball, then the play music; a feature may replace it (hook base_music)."""
         music = self.hook("base_music")
         if music is not None:
@@ -973,7 +973,7 @@ class TfOS(CustomCode):
         self.media.score_changed()
 
     def base_score(self, points):
-        """FUN_0102a188: base switch score, nothing while tilted."""
+        """Base switch score: score_add [0x0001caf0] adds nothing while gf_state & 0x210 (tilt)."""
         if not self.tilted:
             self.score_add(points)
 
@@ -1472,7 +1472,7 @@ class TfOS(CustomCode):
     def _power_off_warning(self):
         """FUN_00007028: deff 4 at priority 247, unless a higher one has the display (the volume display 248;
         the service menu, deff 3 at 253, which is why nothing shows when the door opens inside the menu).
-        Deff 4 [0x01036f1c] never ends by itself: "50V / 20V DISABLED" blinks five times with sound 0x010,
+        Deff 4 [0x0103ee10] never ends by itself: "50V / 20V DISABLED" blinks five times with sound 0x010,
         stays lit for 1875 ticks, then the whole screen dims to palette level 6 until the door is closed or
         BACK is pressed. Its captured frames hold the first part; the dimmed screen is drawn as the ROM draws it."""
         if self.in_service:
@@ -1601,7 +1601,7 @@ class TfOS(CustomCode):
                 self.deff_start(54)                  # deff_start(0x36)
 
     def collect_extra_ball(self):
-        """0x01012228 OS part: returns True when an extra ball was awarded, False when it paid points
+        """Extra ball collect, OS part (start_deff_54 [0x01007b74] -> [0x00018204]): returns True when an extra ball was awarded, False when it paid points
         (eb_paid: the points scored, which deff 133 prints)."""
         p = self.player_num - 1
         self.eb_lit[p] = max(0, self.eb_lit[p] - 1)

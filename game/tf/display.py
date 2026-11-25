@@ -10,18 +10,20 @@ game/tron/display.py, where the trace references below come from) and the same O
   at once, its sounds at their offsets (logged with in_deff = the deff).
 - A foreground deff spends its last 10 ticks in a hold at priority 0x20 (deff_hold_frames): any deff
   can replace it then.
-- Show queue, queue_fullscreen_deff [0x0100fbb0]: "show" tasks (ids 0x81-0xa7) first run once their
+- Show queue, deff_start_user_6350 [0x01006350] (Tron's queue_fullscreen_deff): "show" tasks first run once their
   caller has finished, wait until the running deff's priority is below their threshold (0x9f for every
-  caller) and they are the oldest show task waiting, then play their deff until its hold. While a show
-  task runs, mode clocks pause (and on Tron the VUK holds its ball).
-- Mode TOTAL tasks (when_idle, FUN_0100fd88) wait for no show and no foreground deff.
+  caller) and they are the oldest show task waiting (leaf_b698(0x5d, 0x7e): tf_180's show tasks are 0x5d-0x7e;
+  the game numbers them 0x81-0xa7, internal ids only), then play their deff until its hold (priority <= 0x20,
+  leaf_20e48). While a show task runs, mode clocks pause.
+- Mode TOTAL tasks (when_idle, deff_start_user_664c [0x0100664c]) wait for no show task (0x5d-0x7e,
+  [0x01006634]) and no foreground deff.
 - After an effect ends, and after a show ends, the deff rules re-assert the background deff (deff rule
   0x000178b0): deff 19, or the deff of the true mode rule, restarts in the background during normal play.
 - Mode deff rules (lamp_rule_init list 2, os.deff_rule -> add_rule): on each rules refresh the true rule
   with the highest priority starts its background deff (even behind a show) when it changed, and its
   music call when that music is not already playing. With no mode rule true the score display rule runs
-  with os.base_music() (Tron [0x0100f594 / 0x0100f5c8]). Every start of a rule's deff is traced with rule=1
-  (Tron's ROM caller 0x19944).
+  with os.base_music() (inferred from the traces; tf_180's music rule routine is not identified yet). Every
+  start of a rule's deff is traced with rule=1 (tf_180's caller 0x0001794c).
 - Each decoded deff holds for its own tail (HOLD_TICKS_BY_DEFF: 1, 2 or 10 ticks, the ticks after its
   deff_hold_frames priority 0x20 in agent A's op list, rom/rom_data/dmd/deff_ops/; QA F7); 10 for the others.
 
@@ -164,7 +166,7 @@ class Display:
             if refresh and not self.show and self.mode_bg():
                 os_.after(1, lambda: self.mode_bg() and self.start(self.mode_bg(), refresh=False))
             return False
-        # the show task waits for its own deff [0x0100fbb0]: another effect replacing it ends the show
+        # the show task waits for its own deff [0x01006350]: another effect replacing it ends the show
         # (traces/optimus_decepticon.jsonl: the jackpots replace intro deff 63, the Allspark ejects at once)
         replaced = self.show if self.show is not None and self.fg == self.show.deff_id != deff_id else None
         self._end_fg(stopped=True)
@@ -229,7 +231,7 @@ class Display:
     def _hold(self, deff_id):
         """Last 10 ticks of deff_id (cancelled with it when it is replaced): its priority drops to 0x20,
         so any deff can replace it, and a show task (waiting for priority < 0x21) ends here
-        [queue_fullscreen_deff 0x0100fbb0]; its rules pass restarts a mode's background deff behind the
+        [deff_start_user_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
         held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
         self.fg_prio = HOLD_PRIORITY
         if not self.show and deff_id in self.hold_tail:
@@ -241,8 +243,8 @@ class Display:
         if self.show:
             # the show's rules refresh request is served once the deff exits (traces/gem_hurryup.jsonl:
             # one tube 18 start as deff 76 ends; disc_multiball.jsonl 40.03 s: one tube 43 as deff 48
-            # ends), except for the Flynn's Arcade show 0x97, whose end the deferred rules wait for
-            # (FUN_0100f164; clu_hurryup.jsonl 42.89 s: the music 0x01b as the reel's hold starts)
+            # ends), except for the RULES_HOLD_SHOW show, whose end the deferred rules wait for (inherited
+            # from the Tron model, Tron traces; not read in tf_180's code)
             if self.show.task_id == RULES_HOLD_SHOW:
                 self.os.request_refresh()
                 self.arcade_held = True
@@ -290,7 +292,7 @@ class Display:
         self.media[deff_id] = info
 
     def set_hold_tail(self, deff_id, seconds):
-        """deff_hold_frames(n, 0x20) [0x01024460] when a deff's hold is not the usual 10 ticks: for its last
+        """deff_hold_frames(n, 0x20) (FUN_0002108c(n, 0x20) [0x0002108c]) when a deff's hold is not the usual 10 ticks: for its last
         `seconds` the deff runs at priority 0x20, so any other deff may replace it (measured per deff)."""
         self.hold_tail[deff_id] = seconds
 
@@ -336,7 +338,7 @@ class Display:
             self.show_held = False
             self.os.request_refresh()
         if exit_handler and info:
-            # the deff's exit handler stops the ramp tube show it started (e.g. FUN_010022c4); no rules
+            # the deff's exit handler stops the lamp show it started (Tron model; no tf_180 case read); no rules
             # refresh follows (traces/find_flynn_and_items.jsonl 18.15 s: tube 13 stops, no tube 14)
             for _, tube in info.tubes:
                 if self.os.tubes.is_running(tube):
@@ -391,7 +393,7 @@ class Display:
         self.rules.sort(key=lambda r: -r[0])
 
     def raise_rule(self, deff_id):
-        """A mode start re-inserts its rule before the others of its priority (e.g. FUN_0101ac74), so
+        """A mode start re-inserts its rule before the others of its priority (Tron model, inferred), so
         the mode started last shows its deff when several are true (stacked Light Cycle + Quorra)."""
         rule = next(r for r in self.rules if r[2] == deff_id)
         self.rules.remove(rule)
@@ -406,7 +408,7 @@ class Display:
         valid = self.os.flag(0x1c) or self.os.pf_valid
         for prio, cond, deff_id, music, on_start in self.rules:
             if prio < PREVALID_PRIO and not valid:
-                break                              # the score display rule before validation [0x0100f564]
+                break                              # only the score display rule before validation (inferred)
             if cond():
                 return deff_id, music() if callable(music) else music, on_start
         return 19, self.os.base_music(), None
