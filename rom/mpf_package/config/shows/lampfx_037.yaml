@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 37, function 0x01023928, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_037.json). runs until stopped: a cycle of 36 ticks (585 ms); lead-in of 5 ticks left out.
+# ROM lamp effect (leff) 37, function 0x01023928, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_037.json). runs until stopped: a cycle of 36 ticks (576 ms); lead-in of 5 ticks left out.
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 98ms
+- duration: 96ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -9,7 +9,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 195ms
+- duration: 192ms
   lights:
     l_allspark_x: "7f7f7f"
     l_center_lane_x: "7f7f7f"
@@ -17,7 +17,7 @@
     l_left_ramp_x: "7f7f7f"
     l_right_orbit_x: "7f7f7f"
     l_right_ramp_x: "7f7f7f"
-- duration: 98ms
+- duration: 96ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -25,7 +25,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 195ms
+- duration: 192ms
   lights:
     l_allspark_x: "7f7f7f"
     l_center_lane_x: "7f7f7f"

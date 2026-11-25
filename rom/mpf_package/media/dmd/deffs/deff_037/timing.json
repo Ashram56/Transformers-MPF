@@ -7,88 +7,88 @@
  "tag": "code",
  "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_037.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
  "end_tick": 102,
- "ended_ms": 1658.5,
+ "ended_ms": 1632.0,
  "ran_ticks": 102,
- "tick_ms": 16.26,
+ "tick_ms": 16.0,
  "panel": false,
  "frames": [
   {
    "i": 0,
    "tick": 0,
    "t_ms": 0.0,
-   "dur_ms": 130.1
+   "dur_ms": 128.0
   },
   {
    "i": 1,
    "tick": 8,
-   "t_ms": 130.1,
-   "dur_ms": 113.8
+   "t_ms": 128.0,
+   "dur_ms": 112.0
   },
   {
    "i": 2,
    "tick": 15,
-   "t_ms": 243.9,
-   "dur_ms": 113.8
+   "t_ms": 240.0,
+   "dur_ms": 112.0
   },
   {
    "i": 3,
    "tick": 22,
-   "t_ms": 357.7,
-   "dur_ms": 113.8
+   "t_ms": 352.0,
+   "dur_ms": 112.0
   },
   {
    "i": 4,
    "tick": 29,
-   "t_ms": 471.5,
-   "dur_ms": 113.8
+   "t_ms": 464.0,
+   "dur_ms": 112.0
   },
   {
    "i": 5,
    "tick": 36,
-   "t_ms": 585.4,
-   "dur_ms": 113.8
+   "t_ms": 576.0,
+   "dur_ms": 112.0
   },
   {
    "i": 6,
    "tick": 43,
-   "t_ms": 699.2,
-   "dur_ms": 113.8
+   "t_ms": 688.0,
+   "dur_ms": 112.0
   },
   {
    "i": 7,
    "tick": 50,
-   "t_ms": 813.0,
-   "dur_ms": 113.8
+   "t_ms": 800.0,
+   "dur_ms": 112.0
   },
   {
    "i": 8,
    "tick": 57,
-   "t_ms": 926.8,
-   "dur_ms": 113.8
+   "t_ms": 912.0,
+   "dur_ms": 112.0
   },
   {
    "i": 9,
    "tick": 64,
-   "t_ms": 1040.6,
-   "dur_ms": 113.8
+   "t_ms": 1024.0,
+   "dur_ms": 112.0
   },
   {
    "i": 10,
    "tick": 71,
-   "t_ms": 1154.5,
-   "dur_ms": 113.8
+   "t_ms": 1136.0,
+   "dur_ms": 112.0
   },
   {
    "i": 11,
    "tick": 78,
-   "t_ms": 1268.3,
-   "dur_ms": 113.8
+   "t_ms": 1248.0,
+   "dur_ms": 112.0
   },
   {
    "i": 12,
    "tick": 85,
-   "t_ms": 1382.1,
-   "dur_ms": 276.4
+   "t_ms": 1360.0,
+   "dur_ms": 272.0
   }
  ],
  "sounds": [],
@@ -125,7 +125,7 @@
   },
   {
    "tick": 8,
-   "t_ms": 130.1,
+   "t_ms": 128.0,
    "texts": [
     {
      "str": "PLAYER 0",

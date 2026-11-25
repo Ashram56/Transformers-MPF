@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 6, function 0x0104a04c, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_006.json). runs until stopped: a cycle of 16 ticks (260 ms); lead-in of 15 ticks left out.
+# ROM lamp effect (leff) 6, function 0x0104a04c, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_006.json). runs until stopped: a cycle of 16 ticks (256 ms); lead-in of 15 ticks left out.
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 130ms
+- duration: 128ms
   lights:
     l_allspark_orange: "000000"
     l_allspark_purple: "000000"
@@ -64,7 +64,7 @@
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "000000"
     l_tournament_start_button: "000000"
-- duration: 130ms
+- duration: 128ms
   lights:
     l_center_lane_orange: "ffffff"
     l_energon_left: "ffffff"

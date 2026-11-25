@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 95, function 0x01034030, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_095.json). runs until stopped: a cycle of 48 ticks (780 ms); lead-in of 15 ticks left out.
+# ROM lamp effect (leff) 95, function 0x01034030, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_095.json). runs until stopped: a cycle of 48 ticks (768 ms); lead-in of 15 ticks left out.
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 260ms
+- duration: 256ms
   lights:
     l_allspark_orange: "000000"
     l_allspark_purple: "7f7f7f"
@@ -61,7 +61,7 @@
     l_top_lane_purple_top: "7f7f7f"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "000000"
-- duration: 130ms
+- duration: 128ms
   lights:
     l_allspark_purple: "ffffff"
     l_blackout: "ffffff"
@@ -76,7 +76,7 @@
     l_starscream: "ffffff"
     l_top_lane_purple_bot: "ffffff"
     l_top_lane_purple_top: "ffffff"
-- duration: 260ms
+- duration: 256ms
   lights:
     l_allspark_purple: "7f7f7f"
     l_blackout: "7f7f7f"
@@ -91,7 +91,7 @@
     l_starscream: "7f7f7f"
     l_top_lane_purple_bot: "7f7f7f"
     l_top_lane_purple_top: "7f7f7f"
-- duration: 130ms
+- duration: 128ms
   lights:
     l_allspark_purple: "000000"
     l_blackout: "000000"

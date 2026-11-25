@@ -1,82 +1,82 @@
 #show_version=6
-# ROM lamp effect (leff) 23, function 0x0100a6a0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_023.json). ends by itself after 96 ticks (1561 ms).
+# ROM lamp effect (leff) 23, function 0x0100a6a0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_023.json). ends by itself after 96 ticks (1536 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 48
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_megatron:
       action: pulse

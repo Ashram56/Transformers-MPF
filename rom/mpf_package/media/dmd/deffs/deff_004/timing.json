@@ -9,80 +9,80 @@
  "end_tick": null,
  "ended_ms": null,
  "ran_ticks": 1963,
- "tick_ms": 16.26,
+ "tick_ms": 16.0,
  "panel": false,
  "frames": [
   {
    "i": 0,
    "tick": 0,
    "t_ms": 0.0,
-   "dur_ms": 130.1
+   "dur_ms": 128.0
   },
   {
    "i": 1,
    "tick": 8,
-   "t_ms": 130.1,
-   "dur_ms": 130.1
+   "t_ms": 128.0,
+   "dur_ms": 128.0
   },
   {
    "i": 2,
    "tick": 16,
-   "t_ms": 260.2,
-   "dur_ms": 130.1
+   "t_ms": 256.0,
+   "dur_ms": 128.0
   },
   {
    "i": 3,
    "tick": 24,
-   "t_ms": 390.2,
-   "dur_ms": 130.1
+   "t_ms": 384.0,
+   "dur_ms": 128.0
   },
   {
    "i": 4,
    "tick": 32,
-   "t_ms": 520.3,
-   "dur_ms": 130.1
+   "t_ms": 512.0,
+   "dur_ms": 128.0
   },
   {
    "i": 5,
    "tick": 40,
-   "t_ms": 650.4,
-   "dur_ms": 130.1
+   "t_ms": 640.0,
+   "dur_ms": 128.0
   },
   {
    "i": 6,
    "tick": 48,
-   "t_ms": 780.5,
-   "dur_ms": 130.1
+   "t_ms": 768.0,
+   "dur_ms": 128.0
   },
   {
    "i": 7,
    "tick": 56,
-   "t_ms": 910.6,
-   "dur_ms": 130.1
+   "t_ms": 896.0,
+   "dur_ms": 128.0
   },
   {
    "i": 8,
    "tick": 64,
-   "t_ms": 1040.6,
-   "dur_ms": 130.1
+   "t_ms": 1024.0,
+   "dur_ms": 128.0
   },
   {
    "i": 9,
    "tick": 72,
-   "t_ms": 1170.7,
-   "dur_ms": 130.1
+   "t_ms": 1152.0,
+   "dur_ms": 128.0
   },
   {
    "i": 10,
    "tick": 80,
-   "t_ms": 1300.8,
-   "dur_ms": 30617.6
+   "t_ms": 1280.0,
+   "dur_ms": 30128.0
   }
  ],
  "sounds": [
   {
    "tick": 16,
-   "t_ms": 260.2,
+   "t_ms": 256.0,
    "call": "10",
    "deff": 4,
    "sample": null,
@@ -90,7 +90,7 @@
   },
   {
    "tick": 32,
-   "t_ms": 520.3,
+   "t_ms": 512.0,
    "call": "10",
    "deff": 4,
    "sample": null,
@@ -98,7 +98,7 @@
   },
   {
    "tick": 48,
-   "t_ms": 780.5,
+   "t_ms": 768.0,
    "call": "10",
    "deff": 4,
    "sample": null,
@@ -106,7 +106,7 @@
   },
   {
    "tick": 64,
-   "t_ms": 1040.6,
+   "t_ms": 1024.0,
    "call": "10",
    "deff": 4,
    "sample": null,
@@ -114,7 +114,7 @@
   },
   {
    "tick": 80,
-   "t_ms": 1300.8,
+   "t_ms": 1280.0,
    "call": "10",
    "deff": 4,
    "sample": null,
@@ -168,7 +168,7 @@
   },
   {
    "tick": 8,
-   "t_ms": 130.1,
+   "t_ms": 128.0,
    "texts": [
     {
      "str": "CLOSE COIN DOOR",

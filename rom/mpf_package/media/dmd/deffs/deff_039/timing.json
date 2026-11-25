@@ -7,46 +7,46 @@
  "tag": "code",
  "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_039.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
  "end_tick": 382,
- "ended_ms": 6211.3,
+ "ended_ms": 6112.0,
  "ran_ticks": 382,
- "tick_ms": 16.26,
+ "tick_ms": 16.0,
  "panel": false,
  "frames": [
   {
    "i": 0,
    "tick": 0,
    "t_ms": 0.0,
-   "dur_ms": 1008.1
+   "dur_ms": 992.0
   },
   {
    "i": 1,
    "tick": 62,
-   "t_ms": 1008.1,
-   "dur_ms": 1008.1
+   "t_ms": 992.0,
+   "dur_ms": 992.0
   },
   {
    "i": 2,
    "tick": 124,
-   "t_ms": 2016.2,
-   "dur_ms": 1008.1
+   "t_ms": 1984.0,
+   "dur_ms": 992.0
   },
   {
    "i": 3,
    "tick": 186,
-   "t_ms": 3024.4,
-   "dur_ms": 1008.1
+   "t_ms": 2976.0,
+   "dur_ms": 992.0
   },
   {
    "i": 4,
    "tick": 248,
-   "t_ms": 4032.5,
-   "dur_ms": 1008.1
+   "t_ms": 3968.0,
+   "dur_ms": 992.0
   },
   {
    "i": 5,
    "tick": 310,
-   "t_ms": 5040.6,
-   "dur_ms": 1170.7
+   "t_ms": 4960.0,
+   "dur_ms": 1152.0
   }
  ],
  "sounds": [],
@@ -110,7 +110,7 @@
   },
   {
    "tick": 62,
-   "t_ms": 1008.1,
+   "t_ms": 992.0,
    "texts": [
     {
      "str": "COMPETITION MODE",
@@ -165,7 +165,7 @@
   },
   {
    "tick": 124,
-   "t_ms": 2016.2,
+   "t_ms": 1984.0,
    "texts": [
     {
      "str": "COMPETITION MODE",
@@ -220,7 +220,7 @@
   },
   {
    "tick": 186,
-   "t_ms": 3024.4,
+   "t_ms": 2976.0,
    "texts": [
     {
      "str": "COMPETITION MODE",
@@ -275,7 +275,7 @@
   },
   {
    "tick": 248,
-   "t_ms": 4032.5,
+   "t_ms": 3968.0,
    "texts": [
     {
      "str": "COMPETITION MODE",
@@ -330,7 +330,7 @@
   },
   {
    "tick": 310,
-   "t_ms": 5040.6,
+   "t_ms": 4960.0,
    "texts": [
     {
      "str": "COMPETITION MODE",

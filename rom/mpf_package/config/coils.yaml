@@ -68,7 +68,7 @@ coils:
     default_pulse_ms: 48   # code: 48 ms at 20 of 38 pulse sites (0x0100cc84, 0x0100d3d0, 0x0100d71c, 0x0100d940, 0x0100eb50, 0x0100f6a0, 0x0100f8a0, 0x0100fadc, 0x01011a18, 0x01011d4c, ); all: 24x2 32x10 48x20 64x5 250x1
   c_optional_coil:
     number: 24   # OPTIONAL COIL
-    default_pulse_ms: 81   # code open: the time comes from the device record +0xc of FUN_0102c074 [0x0102c074] (method table 0x00033bc0), a run-time record not decoded yet; 81 ms kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
+    default_pulse_ms: 64   # code: knocker, FUN_00002078(coil RAM 0x00030e98 = 24, 64 ms) in the knock task FUN_00019420 [0x00019420] when adj 44 Q24 OPTION = KNOCKER (DAT_000375bc = 2); the device method FUN_0102c074 drives it from a run-time record otherwise
   c_flash_center_lane_arrow:
     number: 25   # FLASH: CENTER LANE ARROW
     default_pulse_ms: 48   # code: 48 ms at 4 of 6 pulse sites (0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 48x4 64x2

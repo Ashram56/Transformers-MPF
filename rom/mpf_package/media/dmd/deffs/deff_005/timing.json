@@ -7,16 +7,16 @@
  "tag": "code",
  "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_005.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
  "end_tick": 125,
- "ended_ms": 2032.5,
+ "ended_ms": 2000.0,
  "ran_ticks": 125,
- "tick_ms": 16.26,
+ "tick_ms": 16.0,
  "panel": false,
  "frames": [
   {
    "i": 0,
    "tick": 0,
    "t_ms": 0.0,
-   "dur_ms": 2032.5
+   "dur_ms": 2000.0
   }
  ],
  "sounds": [],
@@ -69,7 +69,7 @@
   },
   {
    "tick": 1,
-   "t_ms": 16.3,
+   "t_ms": 16.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -113,7 +113,7 @@
   },
   {
    "tick": 2,
-   "t_ms": 32.5,
+   "t_ms": 32.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -157,7 +157,7 @@
   },
   {
    "tick": 3,
-   "t_ms": 48.8,
+   "t_ms": 48.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -201,7 +201,7 @@
   },
   {
    "tick": 4,
-   "t_ms": 65.0,
+   "t_ms": 64.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -245,7 +245,7 @@
   },
   {
    "tick": 5,
-   "t_ms": 81.3,
+   "t_ms": 80.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -289,7 +289,7 @@
   },
   {
    "tick": 6,
-   "t_ms": 97.6,
+   "t_ms": 96.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -333,7 +333,7 @@
   },
   {
    "tick": 7,
-   "t_ms": 113.8,
+   "t_ms": 112.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -377,7 +377,7 @@
   },
   {
    "tick": 8,
-   "t_ms": 130.1,
+   "t_ms": 128.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -421,7 +421,7 @@
   },
   {
    "tick": 9,
-   "t_ms": 146.3,
+   "t_ms": 144.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -465,7 +465,7 @@
   },
   {
    "tick": 10,
-   "t_ms": 162.6,
+   "t_ms": 160.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -509,7 +509,7 @@
   },
   {
    "tick": 11,
-   "t_ms": 178.9,
+   "t_ms": 176.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -553,7 +553,7 @@
   },
   {
    "tick": 12,
-   "t_ms": 195.1,
+   "t_ms": 192.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -597,7 +597,7 @@
   },
   {
    "tick": 13,
-   "t_ms": 211.4,
+   "t_ms": 208.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -641,7 +641,7 @@
   },
   {
    "tick": 14,
-   "t_ms": 227.6,
+   "t_ms": 224.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -685,7 +685,7 @@
   },
   {
    "tick": 15,
-   "t_ms": 243.9,
+   "t_ms": 240.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -729,7 +729,7 @@
   },
   {
    "tick": 16,
-   "t_ms": 260.2,
+   "t_ms": 256.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -773,7 +773,7 @@
   },
   {
    "tick": 17,
-   "t_ms": 276.4,
+   "t_ms": 272.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -817,7 +817,7 @@
   },
   {
    "tick": 18,
-   "t_ms": 292.7,
+   "t_ms": 288.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -861,7 +861,7 @@
   },
   {
    "tick": 19,
-   "t_ms": 308.9,
+   "t_ms": 304.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -905,7 +905,7 @@
   },
   {
    "tick": 20,
-   "t_ms": 325.2,
+   "t_ms": 320.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -949,7 +949,7 @@
   },
   {
    "tick": 21,
-   "t_ms": 341.5,
+   "t_ms": 336.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -993,7 +993,7 @@
   },
   {
    "tick": 22,
-   "t_ms": 357.7,
+   "t_ms": 352.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1037,7 +1037,7 @@
   },
   {
    "tick": 23,
-   "t_ms": 374.0,
+   "t_ms": 368.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1081,7 +1081,7 @@
   },
   {
    "tick": 24,
-   "t_ms": 390.2,
+   "t_ms": 384.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1125,7 +1125,7 @@
   },
   {
    "tick": 25,
-   "t_ms": 406.5,
+   "t_ms": 400.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1169,7 +1169,7 @@
   },
   {
    "tick": 26,
-   "t_ms": 422.8,
+   "t_ms": 416.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1213,7 +1213,7 @@
   },
   {
    "tick": 27,
-   "t_ms": 439.0,
+   "t_ms": 432.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1257,7 +1257,7 @@
   },
   {
    "tick": 28,
-   "t_ms": 455.3,
+   "t_ms": 448.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1301,7 +1301,7 @@
   },
   {
    "tick": 29,
-   "t_ms": 471.5,
+   "t_ms": 464.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1345,7 +1345,7 @@
   },
   {
    "tick": 30,
-   "t_ms": 487.8,
+   "t_ms": 480.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1389,7 +1389,7 @@
   },
   {
    "tick": 31,
-   "t_ms": 504.1,
+   "t_ms": 496.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1433,7 +1433,7 @@
   },
   {
    "tick": 32,
-   "t_ms": 520.3,
+   "t_ms": 512.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1477,7 +1477,7 @@
   },
   {
    "tick": 33,
-   "t_ms": 536.6,
+   "t_ms": 528.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1521,7 +1521,7 @@
   },
   {
    "tick": 34,
-   "t_ms": 552.8,
+   "t_ms": 544.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1565,7 +1565,7 @@
   },
   {
    "tick": 35,
-   "t_ms": 569.1,
+   "t_ms": 560.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1609,7 +1609,7 @@
   },
   {
    "tick": 36,
-   "t_ms": 585.4,
+   "t_ms": 576.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1653,7 +1653,7 @@
   },
   {
    "tick": 37,
-   "t_ms": 601.6,
+   "t_ms": 592.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1697,7 +1697,7 @@
   },
   {
    "tick": 38,
-   "t_ms": 617.9,
+   "t_ms": 608.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1741,7 +1741,7 @@
   },
   {
    "tick": 39,
-   "t_ms": 634.1,
+   "t_ms": 624.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1785,7 +1785,7 @@
   },
   {
    "tick": 40,
-   "t_ms": 650.4,
+   "t_ms": 640.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1829,7 +1829,7 @@
   },
   {
    "tick": 41,
-   "t_ms": 666.7,
+   "t_ms": 656.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1873,7 +1873,7 @@
   },
   {
    "tick": 42,
-   "t_ms": 682.9,
+   "t_ms": 672.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1917,7 +1917,7 @@
   },
   {
    "tick": 43,
-   "t_ms": 699.2,
+   "t_ms": 688.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -1961,7 +1961,7 @@
   },
   {
    "tick": 44,
-   "t_ms": 715.4,
+   "t_ms": 704.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2005,7 +2005,7 @@
   },
   {
    "tick": 45,
-   "t_ms": 731.7,
+   "t_ms": 720.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2049,7 +2049,7 @@
   },
   {
    "tick": 46,
-   "t_ms": 748.0,
+   "t_ms": 736.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2093,7 +2093,7 @@
   },
   {
    "tick": 47,
-   "t_ms": 764.2,
+   "t_ms": 752.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2137,7 +2137,7 @@
   },
   {
    "tick": 48,
-   "t_ms": 780.5,
+   "t_ms": 768.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2181,7 +2181,7 @@
   },
   {
    "tick": 49,
-   "t_ms": 796.7,
+   "t_ms": 784.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2225,7 +2225,7 @@
   },
   {
    "tick": 50,
-   "t_ms": 813.0,
+   "t_ms": 800.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2269,7 +2269,7 @@
   },
   {
    "tick": 51,
-   "t_ms": 829.3,
+   "t_ms": 816.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2313,7 +2313,7 @@
   },
   {
    "tick": 52,
-   "t_ms": 845.5,
+   "t_ms": 832.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2357,7 +2357,7 @@
   },
   {
    "tick": 53,
-   "t_ms": 861.8,
+   "t_ms": 848.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2401,7 +2401,7 @@
   },
   {
    "tick": 54,
-   "t_ms": 878.0,
+   "t_ms": 864.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2445,7 +2445,7 @@
   },
   {
    "tick": 55,
-   "t_ms": 894.3,
+   "t_ms": 880.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2489,7 +2489,7 @@
   },
   {
    "tick": 56,
-   "t_ms": 910.6,
+   "t_ms": 896.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2533,7 +2533,7 @@
   },
   {
    "tick": 57,
-   "t_ms": 926.8,
+   "t_ms": 912.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2577,7 +2577,7 @@
   },
   {
    "tick": 58,
-   "t_ms": 943.1,
+   "t_ms": 928.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2621,7 +2621,7 @@
   },
   {
    "tick": 59,
-   "t_ms": 959.3,
+   "t_ms": 944.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2665,7 +2665,7 @@
   },
   {
    "tick": 60,
-   "t_ms": 975.6,
+   "t_ms": 960.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2709,7 +2709,7 @@
   },
   {
    "tick": 61,
-   "t_ms": 991.9,
+   "t_ms": 976.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2753,7 +2753,7 @@
   },
   {
    "tick": 62,
-   "t_ms": 1008.1,
+   "t_ms": 992.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2797,7 +2797,7 @@
   },
   {
    "tick": 63,
-   "t_ms": 1024.4,
+   "t_ms": 1008.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2841,7 +2841,7 @@
   },
   {
    "tick": 64,
-   "t_ms": 1040.6,
+   "t_ms": 1024.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2885,7 +2885,7 @@
   },
   {
    "tick": 65,
-   "t_ms": 1056.9,
+   "t_ms": 1040.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2929,7 +2929,7 @@
   },
   {
    "tick": 66,
-   "t_ms": 1073.2,
+   "t_ms": 1056.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -2973,7 +2973,7 @@
   },
   {
    "tick": 67,
-   "t_ms": 1089.4,
+   "t_ms": 1072.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3017,7 +3017,7 @@
   },
   {
    "tick": 68,
-   "t_ms": 1105.7,
+   "t_ms": 1088.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3061,7 +3061,7 @@
   },
   {
    "tick": 69,
-   "t_ms": 1121.9,
+   "t_ms": 1104.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3105,7 +3105,7 @@
   },
   {
    "tick": 70,
-   "t_ms": 1138.2,
+   "t_ms": 1120.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3149,7 +3149,7 @@
   },
   {
    "tick": 71,
-   "t_ms": 1154.5,
+   "t_ms": 1136.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3193,7 +3193,7 @@
   },
   {
    "tick": 72,
-   "t_ms": 1170.7,
+   "t_ms": 1152.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3237,7 +3237,7 @@
   },
   {
    "tick": 73,
-   "t_ms": 1187.0,
+   "t_ms": 1168.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3281,7 +3281,7 @@
   },
   {
    "tick": 74,
-   "t_ms": 1203.2,
+   "t_ms": 1184.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3325,7 +3325,7 @@
   },
   {
    "tick": 75,
-   "t_ms": 1219.5,
+   "t_ms": 1200.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3369,7 +3369,7 @@
   },
   {
    "tick": 76,
-   "t_ms": 1235.8,
+   "t_ms": 1216.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3413,7 +3413,7 @@
   },
   {
    "tick": 77,
-   "t_ms": 1252.0,
+   "t_ms": 1232.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3457,7 +3457,7 @@
   },
   {
    "tick": 78,
-   "t_ms": 1268.3,
+   "t_ms": 1248.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3501,7 +3501,7 @@
   },
   {
    "tick": 79,
-   "t_ms": 1284.5,
+   "t_ms": 1264.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3545,7 +3545,7 @@
   },
   {
    "tick": 80,
-   "t_ms": 1300.8,
+   "t_ms": 1280.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3589,7 +3589,7 @@
   },
   {
    "tick": 81,
-   "t_ms": 1317.1,
+   "t_ms": 1296.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3633,7 +3633,7 @@
   },
   {
    "tick": 82,
-   "t_ms": 1333.3,
+   "t_ms": 1312.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3677,7 +3677,7 @@
   },
   {
    "tick": 83,
-   "t_ms": 1349.6,
+   "t_ms": 1328.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3721,7 +3721,7 @@
   },
   {
    "tick": 84,
-   "t_ms": 1365.8,
+   "t_ms": 1344.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3765,7 +3765,7 @@
   },
   {
    "tick": 85,
-   "t_ms": 1382.1,
+   "t_ms": 1360.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3809,7 +3809,7 @@
   },
   {
    "tick": 86,
-   "t_ms": 1398.4,
+   "t_ms": 1376.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3853,7 +3853,7 @@
   },
   {
    "tick": 87,
-   "t_ms": 1414.6,
+   "t_ms": 1392.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3897,7 +3897,7 @@
   },
   {
    "tick": 88,
-   "t_ms": 1430.9,
+   "t_ms": 1408.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3941,7 +3941,7 @@
   },
   {
    "tick": 89,
-   "t_ms": 1447.1,
+   "t_ms": 1424.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -3985,7 +3985,7 @@
   },
   {
    "tick": 90,
-   "t_ms": 1463.4,
+   "t_ms": 1440.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4029,7 +4029,7 @@
   },
   {
    "tick": 91,
-   "t_ms": 1479.7,
+   "t_ms": 1456.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4073,7 +4073,7 @@
   },
   {
    "tick": 92,
-   "t_ms": 1495.9,
+   "t_ms": 1472.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4117,7 +4117,7 @@
   },
   {
    "tick": 93,
-   "t_ms": 1512.2,
+   "t_ms": 1488.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4161,7 +4161,7 @@
   },
   {
    "tick": 94,
-   "t_ms": 1528.4,
+   "t_ms": 1504.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4205,7 +4205,7 @@
   },
   {
    "tick": 95,
-   "t_ms": 1544.7,
+   "t_ms": 1520.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4249,7 +4249,7 @@
   },
   {
    "tick": 96,
-   "t_ms": 1561.0,
+   "t_ms": 1536.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4293,7 +4293,7 @@
   },
   {
    "tick": 97,
-   "t_ms": 1577.2,
+   "t_ms": 1552.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4337,7 +4337,7 @@
   },
   {
    "tick": 98,
-   "t_ms": 1593.5,
+   "t_ms": 1568.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4381,7 +4381,7 @@
   },
   {
    "tick": 99,
-   "t_ms": 1609.7,
+   "t_ms": 1584.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4425,7 +4425,7 @@
   },
   {
    "tick": 100,
-   "t_ms": 1626.0,
+   "t_ms": 1600.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4469,7 +4469,7 @@
   },
   {
    "tick": 101,
-   "t_ms": 1642.3,
+   "t_ms": 1616.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4513,7 +4513,7 @@
   },
   {
    "tick": 102,
-   "t_ms": 1658.5,
+   "t_ms": 1632.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4557,7 +4557,7 @@
   },
   {
    "tick": 103,
-   "t_ms": 1674.8,
+   "t_ms": 1648.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4601,7 +4601,7 @@
   },
   {
    "tick": 104,
-   "t_ms": 1691.0,
+   "t_ms": 1664.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4645,7 +4645,7 @@
   },
   {
    "tick": 105,
-   "t_ms": 1707.3,
+   "t_ms": 1680.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4689,7 +4689,7 @@
   },
   {
    "tick": 106,
-   "t_ms": 1723.6,
+   "t_ms": 1696.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4733,7 +4733,7 @@
   },
   {
    "tick": 107,
-   "t_ms": 1739.8,
+   "t_ms": 1712.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4777,7 +4777,7 @@
   },
   {
    "tick": 108,
-   "t_ms": 1756.1,
+   "t_ms": 1728.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4821,7 +4821,7 @@
   },
   {
    "tick": 109,
-   "t_ms": 1772.3,
+   "t_ms": 1744.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4865,7 +4865,7 @@
   },
   {
    "tick": 110,
-   "t_ms": 1788.6,
+   "t_ms": 1760.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4909,7 +4909,7 @@
   },
   {
    "tick": 111,
-   "t_ms": 1804.9,
+   "t_ms": 1776.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4953,7 +4953,7 @@
   },
   {
    "tick": 112,
-   "t_ms": 1821.1,
+   "t_ms": 1792.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -4997,7 +4997,7 @@
   },
   {
    "tick": 113,
-   "t_ms": 1837.4,
+   "t_ms": 1808.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5041,7 +5041,7 @@
   },
   {
    "tick": 114,
-   "t_ms": 1853.6,
+   "t_ms": 1824.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5085,7 +5085,7 @@
   },
   {
    "tick": 115,
-   "t_ms": 1869.9,
+   "t_ms": 1840.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5129,7 +5129,7 @@
   },
   {
    "tick": 116,
-   "t_ms": 1886.2,
+   "t_ms": 1856.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5173,7 +5173,7 @@
   },
   {
    "tick": 117,
-   "t_ms": 1902.4,
+   "t_ms": 1872.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5217,7 +5217,7 @@
   },
   {
    "tick": 118,
-   "t_ms": 1918.7,
+   "t_ms": 1888.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5261,7 +5261,7 @@
   },
   {
    "tick": 119,
-   "t_ms": 1934.9,
+   "t_ms": 1904.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5305,7 +5305,7 @@
   },
   {
    "tick": 120,
-   "t_ms": 1951.2,
+   "t_ms": 1920.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5349,7 +5349,7 @@
   },
   {
    "tick": 121,
-   "t_ms": 1967.5,
+   "t_ms": 1936.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5393,7 +5393,7 @@
   },
   {
    "tick": 122,
-   "t_ms": 1983.7,
+   "t_ms": 1952.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5437,7 +5437,7 @@
   },
   {
    "tick": 123,
-   "t_ms": 2000.0,
+   "t_ms": 1968.0,
    "texts": [
     {
      "str": "TRANSFORMERS",
@@ -5481,7 +5481,7 @@
   },
   {
    "tick": 124,
-   "t_ms": 2016.2,
+   "t_ms": 1984.0,
    "texts": [
     {
      "str": "TRANSFORMERS",

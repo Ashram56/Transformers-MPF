@@ -1,482 +1,482 @@
 #show_version=6
-# ROM lamp effect (leff) 173, function 0x0102650c, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_173.json). ends by itself after 192 ticks (3122 ms).
+# ROM lamp effect (leff) 173, function 0x0102650c, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_173.json). ends by itself after 192 ticks (3072 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 24
-- duration: 33ms
+- duration: 32ms
   coils:
     c_flash_right_side:
       action: pulse

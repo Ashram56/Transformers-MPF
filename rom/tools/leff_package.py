@@ -26,7 +26,7 @@ ROMDIR = os.path.join(HERE, "..")
 SHOWS = os.path.join(ROMDIR, "mpf_package", "config", "shows")
 OPS_DIR = os.path.join(ROMDIR, "rom_data", "io", "leff_ops")
 CSV = os.path.join(ROMDIR, "rom_data", "io", "lamp_effects.csv")
-TICK_MS = 16.26
+TICK_MS = 16.0                     # the OS tick from the code: 64 IO interrupts of 250 us [0x000114b0] (owner, 2026-11-25)
 COL = {0: "000000", 1: "7f7f7f", 2: "7f7f7f", 3: "ffffff"}
 COIL_GROUPS = 0x040cf65c           # coilgroup_pulse [0x00005fd4]: 0-terminated coil lists
 

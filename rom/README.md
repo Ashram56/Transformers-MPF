@@ -70,8 +70,8 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
 - **Effects decoded from their code (code, 2026-11-25).** The strict rule forbids the captures below as a source,
   so each effect is now read from its own function: `tools/coderun.py` runs a ROM routine in Unicorn (the ROM
   image only, no emulator of the machine) with the OS services answered in Python: `task_sleep` and the task calls
-  (a cooperative scheduler, one tick = 64 IO interrupts of 250 us [0x000114b0] = 16.0 ms nominal; the game uses
-  16.26 ms), sound, deff / leff starts, the flash bank switch 0x00011274. Everything else (the effect's code, the
+  (a cooperative scheduler, one tick = 64 IO interrupts of 250 us [0x000114b0] = 16.0 ms, the tick the
+  package uses since the owner's decision of 2026-11-25), sound, deff / leff starts, the flash bank switch 0x00011274. Everything else (the effect's code, the
   text helpers, `msg_get`, `vsprintf`, the lamp library, the status panel 0x0102f200) runs as ROM code.
   `tools/deff_lift.py` records the display primitives as an op list (`rom_data/dmd/deff_ops/deff_NNN.json`, every
   op with the return address of its call), `tools/deff_render.py` draws it with the primitives re-implemented from

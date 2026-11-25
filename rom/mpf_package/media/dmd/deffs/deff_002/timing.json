@@ -7,22 +7,22 @@
  "tag": "code",
  "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_002.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
  "end_tick": 312,
- "ended_ms": 5073.1,
+ "ended_ms": 4992.0,
  "ran_ticks": 312,
- "tick_ms": 16.26,
+ "tick_ms": 16.0,
  "panel": false,
  "frames": [
   {
    "i": 0,
    "tick": 0,
    "t_ms": 0.0,
-   "dur_ms": 97.6
+   "dur_ms": 96.0
   },
   {
    "i": 1,
    "tick": 6,
-   "t_ms": 97.6,
-   "dur_ms": 4975.6
+   "t_ms": 96.0,
+   "dur_ms": 4896.0
   }
  ],
  "sounds": [],
@@ -61,7 +61,7 @@
   },
   {
    "tick": 6,
-   "t_ms": 97.6,
+   "t_ms": 96.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -91,7 +91,7 @@
   },
   {
    "tick": 12,
-   "t_ms": 195.1,
+   "t_ms": 192.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -121,7 +121,7 @@
   },
   {
    "tick": 18,
-   "t_ms": 292.7,
+   "t_ms": 288.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -151,7 +151,7 @@
   },
   {
    "tick": 24,
-   "t_ms": 390.2,
+   "t_ms": 384.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -181,7 +181,7 @@
   },
   {
    "tick": 30,
-   "t_ms": 487.8,
+   "t_ms": 480.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -211,7 +211,7 @@
   },
   {
    "tick": 36,
-   "t_ms": 585.4,
+   "t_ms": 576.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -241,7 +241,7 @@
   },
   {
    "tick": 42,
-   "t_ms": 682.9,
+   "t_ms": 672.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -271,7 +271,7 @@
   },
   {
    "tick": 48,
-   "t_ms": 780.5,
+   "t_ms": 768.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -301,7 +301,7 @@
   },
   {
    "tick": 54,
-   "t_ms": 878.0,
+   "t_ms": 864.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -331,7 +331,7 @@
   },
   {
    "tick": 60,
-   "t_ms": 975.6,
+   "t_ms": 960.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -361,7 +361,7 @@
   },
   {
    "tick": 66,
-   "t_ms": 1073.2,
+   "t_ms": 1056.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -391,7 +391,7 @@
   },
   {
    "tick": 72,
-   "t_ms": 1170.7,
+   "t_ms": 1152.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -421,7 +421,7 @@
   },
   {
    "tick": 78,
-   "t_ms": 1268.3,
+   "t_ms": 1248.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -451,7 +451,7 @@
   },
   {
    "tick": 84,
-   "t_ms": 1365.8,
+   "t_ms": 1344.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -481,7 +481,7 @@
   },
   {
    "tick": 90,
-   "t_ms": 1463.4,
+   "t_ms": 1440.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -511,7 +511,7 @@
   },
   {
    "tick": 96,
-   "t_ms": 1561.0,
+   "t_ms": 1536.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -541,7 +541,7 @@
   },
   {
    "tick": 102,
-   "t_ms": 1658.5,
+   "t_ms": 1632.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -571,7 +571,7 @@
   },
   {
    "tick": 108,
-   "t_ms": 1756.1,
+   "t_ms": 1728.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -601,7 +601,7 @@
   },
   {
    "tick": 114,
-   "t_ms": 1853.6,
+   "t_ms": 1824.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -631,7 +631,7 @@
   },
   {
    "tick": 120,
-   "t_ms": 1951.2,
+   "t_ms": 1920.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -661,7 +661,7 @@
   },
   {
    "tick": 126,
-   "t_ms": 2048.8,
+   "t_ms": 2016.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -691,7 +691,7 @@
   },
   {
    "tick": 132,
-   "t_ms": 2146.3,
+   "t_ms": 2112.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -721,7 +721,7 @@
   },
   {
    "tick": 138,
-   "t_ms": 2243.9,
+   "t_ms": 2208.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -751,7 +751,7 @@
   },
   {
    "tick": 144,
-   "t_ms": 2341.4,
+   "t_ms": 2304.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -781,7 +781,7 @@
   },
   {
    "tick": 150,
-   "t_ms": 2439.0,
+   "t_ms": 2400.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -811,7 +811,7 @@
   },
   {
    "tick": 156,
-   "t_ms": 2536.6,
+   "t_ms": 2496.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -841,7 +841,7 @@
   },
   {
    "tick": 162,
-   "t_ms": 2634.1,
+   "t_ms": 2592.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -871,7 +871,7 @@
   },
   {
    "tick": 168,
-   "t_ms": 2731.7,
+   "t_ms": 2688.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -901,7 +901,7 @@
   },
   {
    "tick": 174,
-   "t_ms": 2829.2,
+   "t_ms": 2784.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -931,7 +931,7 @@
   },
   {
    "tick": 180,
-   "t_ms": 2926.8,
+   "t_ms": 2880.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -961,7 +961,7 @@
   },
   {
    "tick": 186,
-   "t_ms": 3024.4,
+   "t_ms": 2976.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -991,7 +991,7 @@
   },
   {
    "tick": 192,
-   "t_ms": 3121.9,
+   "t_ms": 3072.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1021,7 +1021,7 @@
   },
   {
    "tick": 198,
-   "t_ms": 3219.5,
+   "t_ms": 3168.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1051,7 +1051,7 @@
   },
   {
    "tick": 204,
-   "t_ms": 3317.0,
+   "t_ms": 3264.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1081,7 +1081,7 @@
   },
   {
    "tick": 210,
-   "t_ms": 3414.6,
+   "t_ms": 3360.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1111,7 +1111,7 @@
   },
   {
    "tick": 216,
-   "t_ms": 3512.2,
+   "t_ms": 3456.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1141,7 +1141,7 @@
   },
   {
    "tick": 222,
-   "t_ms": 3609.7,
+   "t_ms": 3552.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1171,7 +1171,7 @@
   },
   {
    "tick": 228,
-   "t_ms": 3707.3,
+   "t_ms": 3648.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1201,7 +1201,7 @@
   },
   {
    "tick": 234,
-   "t_ms": 3804.8,
+   "t_ms": 3744.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1231,7 +1231,7 @@
   },
   {
    "tick": 240,
-   "t_ms": 3902.4,
+   "t_ms": 3840.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1261,7 +1261,7 @@
   },
   {
    "tick": 246,
-   "t_ms": 4000.0,
+   "t_ms": 3936.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1291,7 +1291,7 @@
   },
   {
    "tick": 252,
-   "t_ms": 4097.5,
+   "t_ms": 4032.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1321,7 +1321,7 @@
   },
   {
    "tick": 258,
-   "t_ms": 4195.1,
+   "t_ms": 4128.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1351,7 +1351,7 @@
   },
   {
    "tick": 264,
-   "t_ms": 4292.6,
+   "t_ms": 4224.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1381,7 +1381,7 @@
   },
   {
    "tick": 270,
-   "t_ms": 4390.2,
+   "t_ms": 4320.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1411,7 +1411,7 @@
   },
   {
    "tick": 276,
-   "t_ms": 4487.8,
+   "t_ms": 4416.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1441,7 +1441,7 @@
   },
   {
    "tick": 282,
-   "t_ms": 4585.3,
+   "t_ms": 4512.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1471,7 +1471,7 @@
   },
   {
    "tick": 288,
-   "t_ms": 4682.9,
+   "t_ms": 4608.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1501,7 +1501,7 @@
   },
   {
    "tick": 294,
-   "t_ms": 4780.4,
+   "t_ms": 4704.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1531,7 +1531,7 @@
   },
   {
    "tick": 300,
-   "t_ms": 4878.0,
+   "t_ms": 4800.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",
@@ -1561,7 +1561,7 @@
   },
   {
    "tick": 306,
-   "t_ms": 4975.6,
+   "t_ms": 4896.0,
    "texts": [
     {
      "str": "USE -/+ TO ADJUST VOLUME",

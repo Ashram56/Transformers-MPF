@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 146, function 0x01009ab0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_146.json). ends by itself after 48 ticks (780 ms).
+# ROM lamp effect (leff) 146, function 0x01009ab0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_146.json). ends by itself after 48 ticks (768 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 780ms
+- duration: 768ms
   lights:
     l_right_2_bank_target_bot: "000000"
     l_right_2_bank_target_top: "000000"

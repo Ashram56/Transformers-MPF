@@ -24,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROMDIR = os.path.join(HERE, "..")
 PKG_DEFFS = os.path.join(ROMDIR, "mpf_package", "media", "dmd", "deffs")
 OPS_DIR = os.path.join(ROMDIR, "rom_data", "dmd", "deff_ops")
-TICK_MS = 16.26
+TICK_MS = 16.0                     # the OS tick from the code: 64 IO interrupts of 250 us [0x000114b0] (owner, 2026-11-25)
 PANEL_SITES = ("0x0102f2ec", "0x0102f36c")
 
 

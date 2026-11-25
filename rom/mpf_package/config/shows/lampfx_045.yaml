@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 45, function 0x01028228, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_045.json). ends by itself after 300 ticks (4878 ms).
+# ROM lamp effect (leff) 45, function 0x01028228, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_045.json). ends by itself after 300 ticks (4800 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -67,7 +67,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -130,7 +130,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -193,7 +193,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -256,7 +256,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -319,7 +319,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -382,7 +382,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -445,7 +445,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -508,7 +508,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -571,7 +571,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -634,7 +634,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -697,7 +697,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -760,7 +760,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -823,7 +823,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -886,7 +886,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -949,7 +949,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1012,7 +1012,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1075,7 +1075,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1138,7 +1138,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1201,7 +1201,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1264,7 +1264,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1327,7 +1327,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1390,7 +1390,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1453,7 +1453,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1516,7 +1516,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1579,7 +1579,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1642,7 +1642,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1705,7 +1705,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -1768,7 +1768,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -1831,7 +1831,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -1894,7 +1894,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -1957,7 +1957,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -2020,7 +2020,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -2083,7 +2083,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_ramp:
       action: pulse
@@ -2146,7 +2146,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -2209,7 +2209,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_slingshot_left:
       action: pulse
@@ -2272,7 +2272,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_slingshot_right:
       action: pulse
@@ -2335,7 +2335,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -2398,7 +2398,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -2461,12 +2461,12 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 98ms
+- duration: 96ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -2529,7 +2529,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -2592,7 +2592,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -2655,7 +2655,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -2718,7 +2718,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_ramp:
       action: pulse
@@ -2781,7 +2781,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -2844,7 +2844,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_slingshot_left:
       action: pulse
@@ -2907,7 +2907,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_slingshot_right:
       action: pulse
@@ -2970,7 +2970,7 @@
     l_top_lane_purple_top: "ffffff"
     l_top_lane_red_bot: "ffffff"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -3033,7 +3033,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_optimus_prime:
       action: pulse

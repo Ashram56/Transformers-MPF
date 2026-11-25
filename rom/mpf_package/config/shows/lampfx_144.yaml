@@ -1,17 +1,17 @@
 #show_version=6
-# ROM lamp effect (leff) 144, function 0x0102ed54, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_144.json). ends by itself after 20 ticks (325 ms).
+# ROM lamp effect (leff) 144, function 0x0102ed54, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_144.json). ends by itself after 20 ticks (320 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 32
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 32
-- duration: 146ms
+- duration: 144ms
   coils:
     c_flash_right_side:
       action: pulse

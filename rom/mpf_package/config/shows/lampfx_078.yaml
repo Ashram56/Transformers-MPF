@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 78, function 0x01010744, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_078.json). ends by itself after 296 ticks (4813 ms).
+# ROM lamp effect (leff) 78, function 0x01010744, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_078.json). ends by itself after 296 ticks (4736 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -66,7 +66,7 @@
     l_top_lane_purple_top: "000000"
     l_top_lane_red_bot: "000000"
     l_top_lane_red_top: "000000"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -74,7 +74,7 @@
 - duration: 16ms
   lights:
     l_allspark_red: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -82,7 +82,7 @@
 - duration: 16ms
   lights:
     l_left_orbit_purple: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -90,7 +90,7 @@
 - duration: 16ms
   lights:
     l_left_orbit_red: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -98,7 +98,7 @@
 - duration: 16ms
   lights:
     l_left_ramp_purple: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -106,7 +106,7 @@
 - duration: 16ms
   lights:
     l_left_ramp_red: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -114,7 +114,7 @@
 - duration: 16ms
   lights:
     l_center_lane_purple: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -122,7 +122,7 @@
 - duration: 16ms
   lights:
     l_center_lane_red: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -130,7 +130,7 @@
 - duration: 16ms
   lights:
     l_right_ramp_purple: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -138,7 +138,7 @@
 - duration: 16ms
   lights:
     l_right_ramp_red: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -146,7 +146,7 @@
 - duration: 16ms
   lights:
     l_right_orbit_purple: "ffffff"
-- duration: 81ms
+- duration: 80ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -154,7 +154,7 @@
 - duration: 16ms
   lights:
     l_right_orbit_red: "ffffff"
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -162,7 +162,7 @@
     c_flash_left_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -170,7 +170,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -178,7 +178,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -186,7 +186,7 @@
     c_flash_slingshot_left:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -194,7 +194,7 @@
     c_flash_slingshot_right:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -202,7 +202,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -210,7 +210,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -218,7 +218,7 @@
     c_flash_pop_bumper:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -226,7 +226,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_slingshot_left:
       action: pulse
@@ -234,7 +234,7 @@
     c_flash_slingshot_right:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -242,7 +242,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -250,7 +250,7 @@
     c_flash_left_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -258,7 +258,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -266,7 +266,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -274,7 +274,7 @@
     c_flash_slingshot_left:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -282,7 +282,7 @@
     c_flash_slingshot_right:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -290,7 +290,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -298,7 +298,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -306,7 +306,7 @@
     c_flash_pop_bumper:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -314,7 +314,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_slingshot_left:
       action: pulse
@@ -322,7 +322,7 @@
     c_flash_slingshot_right:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -330,7 +330,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -338,7 +338,7 @@
     c_flash_left_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -346,7 +346,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_pop_bumper:
       action: pulse
@@ -354,7 +354,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -362,7 +362,7 @@
     c_flash_slingshot_left:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -370,7 +370,7 @@
     c_flash_slingshot_right:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_decepticon:
       action: pulse
@@ -378,7 +378,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -386,7 +386,7 @@
     c_flash_right_side:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_bumblebee:
       action: pulse
@@ -394,7 +394,7 @@
     c_flash_pop_bumper:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_center_lane_arrow:
       action: pulse
@@ -402,7 +402,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 64
-- duration: 114ms
+- duration: 112ms
   coils:
     c_flash_slingshot_left:
       action: pulse

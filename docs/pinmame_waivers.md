@@ -15,8 +15,22 @@ them and they stay in the game.
 |---|---|---|---|
 | `rom/mpf_package/media/dmd/deffs` | 153 display effects: frames, run lengths (`ended_ms`), sounds and leffs started inside each effect, recorded by `rom/tools/emu/tracer.cpp` | **117 of 153** now come from the deff's own code: `rom/tools/deff_lift.py` runs the deff function as ROM code with the OS calls answered in Python (sleep, tasks, sound, show), `rom/tools/deff_render.py` draws the op list with the ROM's primitives, images and fonts, `rom/tools/deff_package.py` writes the frames and `timing.json` (`"tag": "code"`) plus the op list `rom/rom_data/dmd/deff_ops/deff_NNN.json`. Of these, 84 reproduce every captured frame, 26 had no capture at all, 7 differ only in the value texts the game draws live | **38 deffs** keep their capture: 35 whose frames depend on game state or on the caller's task arguments (battle side and backgrounds, shots left, lock number, value texts; ids 1 3 14 16 18 19 25 32 34 48 50 51 58 64 66 70 71 72 76 81 87 97 101 105 113 121 123 126 127 135 139 140 147 149 150), and 3 the runner cannot run yet (33: pointer arguments of the high-score entry; 36: OS routines 0x0002b88c / 0x0002b8b8 that write the page directly; 152: an image index read from game state). Next: one run per game-state variant, with the state the caller sets (`rom/tools/deff_args.py` lists the stores into the deff task) |
 | `rom/mpf_package/config/shows` | 111 lamp effects (leffs) as MPF shows, recorded on every lamp compositor tick by `rom/tools/emu/lfx.cpp` | **all**: `rom/tools/leff_lift.py` runs each leff function as ROM code (the lamp library and layers too) and re-does the compositor 0x000073cc each tick; `rom/tools/leff_package.py` writes 113 shows (2 more than captured: 99, 102) and `rom_data/io/lamp_effects.csv`, `tag` code. Leffs 46, 54, 62, 70, 104 blink the entries lit in a game word: run with every bit set | none |
-| `rom/rom_data/io/coils.csv` (column `mpf_source`) | coil pulse and hold times measured from the solenoid register writes in the emulator | **32 of 35**: `rom/tools/coil_pulses.py` (every constant `coil_pulse` call, the leffs' pulses, the OS pop table 0x040ddfb0 and slingshot table 0x040ddfe0 of the 1 ms IO pass 0x000114b0, the shaker table 0x040c7620); one row per call site in `rom_data/io/coil_pulses.csv` | flippers 15, 16 (no flipper drive found in the CPU code yet) and the optional coil 24 (its time is in a run-time device record, FUN_0102c074): their emulator times stay until decoded, and fail the check |
+| `rom/rom_data/io/coils.csv` (column `mpf_source`) | coil pulse and hold times measured from the solenoid register writes in the emulator | **33 of 35**: `rom/tools/coil_pulses.py` (every constant `coil_pulse` call, the leffs' pulses, the OS pop table 0x040ddfb0 and slingshot table 0x040ddfe0 of the 1 ms IO pass 0x000114b0, the shaker table 0x040c7620); one row per call site in `rom_data/io/coil_pulses.csv` | flippers 15, 16 (no flipper drive found in the CPU code yet): their emulator times stay, approved by the owner below |
 | `rom/rom_data/settings/adjustments.csv` | the display text of 143 adjustment values, from the OS formatter run in the emulator | **all**: the 15 formatter functions are run as ROM code (`rom/tools/adj_format.py`; each one's logic, read from the decompile, is listed there: 0x0002aebc is `sprintf("%d")`); factory defaults read from the U.S.A. country record | none |
+
+## Approved waivers
+
+- `rom/rom_data/io/coils.csv`: the flipper times of coils 15 and 16 (pulse 40.5 / 40.6 ms, hold 0.083 / 0.084) stay as measured in the emulator until the flipper drive is found in the code, approved by Vincent 2026-11-25.
+  This is the only measured data left in the file: every other row comes from the code (`rom/tools/coil_pulses.py`),
+  coil 24 (Q24, the knocker) included: 64 ms at FUN_00019420.
+
+## Owner decisions on the method (2026-11-25)
+
+- Running the ROM's own code in Unicorn (the ROM image only, the OS services answered in Python: `rom/tools/coderun.py`)
+  counts as decoding from the code (Vincent, 2026-11-25).
+- The tick is the code's: 64 IO interrupts of 250 us = **16.0 ms** [0x000114b0], not the 16.26 ms measured in the
+  emulator (Vincent, 2026-11-25). The decoded deffs and lamp shows use it (`TICK_MS` of `deff_package.py`,
+  `leff_package.py`).
 
 Not waivers (allowed by the rule): the reference traces `rom/rules/traces/` and their scenarios confirm the game,
 they are not a source; `game/tools/dmd_capture.gd` saves the game's own DMD for `scripts/render_check.py`, it

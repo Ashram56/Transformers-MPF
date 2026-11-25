@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 36, function 0x01023bf4, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_036.json). ends by itself after 36 ticks (585 ms).
+# ROM lamp effect (leff) 36, function 0x01023bf4, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_036.json). ends by itself after 36 ticks (576 ms).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
-- duration: 49ms
+- duration: 48ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -9,7 +9,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -17,7 +17,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -25,7 +25,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -33,7 +33,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -41,7 +41,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -49,7 +49,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -57,7 +57,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -65,7 +65,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -73,7 +73,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -81,7 +81,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -89,7 +89,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -97,7 +97,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -105,7 +105,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -113,7 +113,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"
@@ -121,7 +121,7 @@
     l_left_ramp_x: "ffffff"
     l_right_orbit_x: "ffffff"
     l_right_ramp_x: "ffffff"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "000000"
     l_center_lane_x: "000000"
@@ -129,7 +129,7 @@
     l_left_ramp_x: "000000"
     l_right_orbit_x: "000000"
     l_right_ramp_x: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_allspark_x: "ffffff"
     l_center_lane_x: "ffffff"

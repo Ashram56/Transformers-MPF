@@ -80,8 +80,9 @@ SPECIAL = {
     15: _kept("40.5", "0.083", "no flipper drive found in the CPU code (no flipper device: the OS device list "
               "0x0003143c, table 0x040ddfa4, has count 1 at 0x040c4604, so none; the FPGA is not decoded)"),
     16: _kept("40.6", "0.084", "as the left flipper"),
-    24: _kept("81", "", "the time comes from the device record +0xc of FUN_0102c074 [0x0102c074] (method table "
-              "0x00033bc0), a run-time record not decoded yet"),
+    24: lambda c: (64, "", "code: knocker, FUN_00002078(coil RAM 0x00030e98 = 24, 64 ms) in the knock task "
+                   "FUN_00019420 [0x00019420] when adj 44 Q24 OPTION = KNOCKER (DAT_000375bc = 2); the device method "
+                   "FUN_0102c074 drives it from a run-time record otherwise"),
     30: lambda c: ("", "", "motor: enabled for a time, not pulsed (code open: its drive routine is not found yet)"),
 }
 
