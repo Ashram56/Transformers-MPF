@@ -37,7 +37,7 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory USA defaults observed in the emulator |
 | `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
 | `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
-| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect, from its code (117, `"tag": "code"`, `tools/deff_package.py`: `frames/`, `timing.json` with frames, sounds, leffs, pages of text draws with their call site and printf format) or, for the 38 still open, as captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
+| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect, all 153 from its code (`"tag": "code"`, `tools/deff_package.py`: `frames/`, `timing.json` with frames, sounds, leffs, pages of text draws with their call site and printf format; for the 38 drawn from game state, `variant` names the state it ran with and `other_variants` the other states, whose op lists are `rom_data/dmd/deff_ops/deff_NNN__<name>.json`) |
 | `rom_data/dmd/deff_text_formats.csv` | Static list of the text each effect can draw, read from the decompile (helper, font, flags, x, y, message id, text or printf format), for effects that print live values or did not render |
 | `mpf_package/config/` | MPF v6 config: `switches.yaml`, `coils.yaml`, `lights.yaml`, `sounds.yaml` (659 sounds, 694 pools, one per sound call) |
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
@@ -77,8 +77,9 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   op with the return address of its call), `tools/deff_render.py` draws it with the primitives re-implemented from
   their routines (mixer, fills, rect, frame, copy, bitmap, masked bitmap, text with `text_width`, remap
   0x01006bb8, dissolve 0x01034758) and `tools/deff_package.py` writes `frames/` and `timing.json` (`"tag": "code"`).
-  117 of 153 effects come from this; the 38 others still carry their capture (game-state variants, listed in
-  `docs/pinmame_waivers.md`). `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
+  All 153 effects come from this. The 38 whose drawing depends on game state run once per state their caller
+  sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
+  pick), each state cited to the routine that sets it; the first one is packaged. `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
   (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
   that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/coil_pulses.py` reads the coil
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the

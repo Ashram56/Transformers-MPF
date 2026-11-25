@@ -178,6 +178,12 @@ class DeffRunner(coderun.Runner):
         st(S("FUN_01006bb8"), "dim_box", remap)
         st(S("FUN_01006cf4"), "dim_box2", remap)
 
+        def invert(r):                         # 0x0002b808 (x, y, w, h): the edit cursor; each dot of the box
+            x, y, w, h = a(0), a(1), a(2), a(3)        # on the fg work page becomes 0xf if it was 0, else 0
+            if x < 0x80 and not y & 0x80000000 and w and h and y < 0x20:
+                r.op("invert", page=rd32(r.m, WORK["fg"]), x=x, y=y, w=w, h=h)
+        st(S("FUN_0002b808"), "invert_box", invert)
+
         def dissolve(r):                       # 0x01034758(ticks): 7 steps from the shown pair to the work
             r.op("dissolve", ticks=a(0), table="0x040c76e8", work=[rd32(r.m, WORK["fg"]), rd32(r.m, WORK["bg"])])   # pair through mask table 0x040c76e8 (10 x 8),
             r.op("sleep", ticks=8 * max(1, a(0)))               # each with the panel, then the work pair

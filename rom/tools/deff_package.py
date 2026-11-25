@@ -93,6 +93,9 @@ def package(doc):
                            for p in pages for t in p["texts"]),
               "frames": recs, "sounds": sounds, "leffs": leffs, "deffs": deffs, "pages": pages,
               "inputs": doc.get("reads", [])[:50], "detached_tasks": doc.get("detached", [])}
+    if doc.get("variant"):          # a deff drawn from game state: the state this one ran with (deff_variants.py)
+        timing["variant"] = doc["variant"]
+        timing["other_variants"] = doc.get("other_variants", [])
     with open(os.path.join(folder, "timing.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(timing, f, indent=1)
     os.makedirs(OPS_DIR, exist_ok=True)
@@ -103,6 +106,16 @@ def package(doc):
     return len(recs)
 
 
+def save_variant(doc, name):
+    """Another state's op list (deff_variants.py), next to the packaged one: deff_NNN__<name>.json."""
+    os.makedirs(OPS_DIR, exist_ok=True)
+    with open(os.path.join(OPS_DIR, "deff_%03d__%s.json" % (doc["deff"], name)), "w", encoding="utf-8",
+              newline="\n") as f:
+        json.dump({k: v for k, v in doc.items() if k != "ops"} | {"ops": compact_ops(doc)}, f,
+                  separators=(",", ":"))
+        f.write("\n")
+
+
 def main():
     src = sys.argv[1]
     ids = [int(x) for x in sys.argv[2:]]
@@ -110,6 +123,12 @@ def main():
         doc = json.load(open(p))
         if ids and doc["deff"] not in ids:
             continue
+        base = os.path.basename(p)[:-5]
+        if "__" in base:
+            save_variant(doc, base.split("__", 1)[1])
+            continue
+        doc["other_variants"] = sorted(os.path.basename(q)[:-5].split("__", 1)[1]
+                                       for q in glob.glob(os.path.join(src, base + "__*.json")))
         if "error" in doc:
             print(doc["deff"], "error", doc["error"])
             continue

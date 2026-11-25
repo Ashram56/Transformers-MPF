@@ -25,8 +25,8 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | Check | State |
 |---|---|
 | Rule text in CLAUDE.md | passes |
-| `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (38 game-state deffs, the flipper drive and 2,526 unnamed functions open), the two Xilinx XC95144XL CPLDs `absent` (flash fuse map, only readable through the J8 JTAG header of a real board; owner to say whether it counts) |
-| Captured data | **fails** for 38 files (was 266): the deff captures that depend on game state (the flipper times in `coils.csv` are waived by the owner, 2026-11-25). Decoded from the code by agent A on 2026-11-25: 117 deffs, all leff shows, 33 coil times, every adjustment value text ([pinmame_waivers.md](../pinmame_waivers.md)) |
+| `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (the flipper drive and 2,526 unnamed functions open), the two Xilinx XC95144XL CPLDs `absent` (flash fuse map, only readable through the J8 JTAG header of a real board; owner to say whether it counts) |
+| Captured data | **passes** (was 266 failures): the flipper times in `coils.csv` are waived by the owner, 2026-11-25. Decoded from the code by agent A on 2026-11-25: all 153 deffs (the 38 game-state ones per state, `rom/tools/deff_variants.py`), all leff shows, 33 coil times, every adjustment value text ([pinmame_waivers.md](../pinmame_waivers.md)) |
 | Functional diagram | passes: [functional_diagram.md](../functional_diagram.md), assembled after the fact from A's specs, each address checked by `tests/test_functional_diagram.py` |
 
 ### Fixed in this pass (each with a regression test)
@@ -78,7 +78,7 @@ length, hold tail, sounds), each leff's function and the lamp groups (table 0x04
 game's `coil_pulse` calls, the adjustment value formatter 0x0002aebc, the ball search task `0x0103b778`, the serve
 and multiball tasks (`0x0103b39c`, `0x01039db4`, `0x0103aba4`).
 
-Status 2026-11-25 (agent A): the deffs (117 of 153), the leffs and lamp groups (all), the coil pulses (33 of 35) and
+Status 2026-11-25 (agent A): the deffs (all 153), the leffs and lamp groups (all), the coil pulses (33 of 35) and
 the adjustment formatters (all 15, 0x0002aebc included) are decoded from the code; what stays open is listed in
 [pinmame_waivers.md](../pinmame_waivers.md). The 20 spec errors are corrected in `rom/rules/modes/` (each
 line cites its routine and the QA id). The ball search, serve and multiball tasks are not done yet.

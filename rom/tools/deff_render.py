@@ -7,7 +7,7 @@ ROM image (images.py); nothing comes from an emulator.
 - show(fg, bg) [0x00020134]: the DMD shows, per dot, mask = fg >> 4, dot = (bg & mask) | (fg & ~mask), low
   4 bits (the mixer: PinMAME's model, external; every TF effect that sets fg to 0xff means "background here").
 - fill (0x0001fb60 / 0x0001fcc4), rect (0x0001fdc4, x0..x1 and y0..y1 inclusive, clipped), frame (0x0001f910:
-  the four edges), copy (0x0001fbe8), copy_rect (0x0001fc28), remap (0x01006bb8: dot = table[dot & 0xf]).
+  the four edges), copy (0x0001fbe8), copy_rect (0x0001fc28), remap (0x01006bb8: dot = table[dot & 0xf]), invert (0x0002b808: the edit cursor, dot 0 <-> 0xf).
 - bitmap(img, page, x, y, a, b) [0x00023d28 -> 0x00022324 / 0x00022480]: a = 0: each image byte is copied
   unless it equals b; a = palette: byte < 16 -> palette[byte], else 0xff, copied unless equal to b.
 - bitmap_masked(img, page, x, y, palette) [0x00023c7c -> 0x00022058 / 0x000221bc]: palette 0: every byte
@@ -198,6 +198,10 @@ class Screen:
                 n = min(o["w"], 4096 - a, 4096 - b)
                 if n > 0:
                     dst[b:b + n] = src[a:a + n]
+        elif k == "invert":
+            p = self.page(o["page"])
+            box = p[o["y"]:o["y"] + o["h"], o["x"]:o["x"] + o["w"]]
+            p[o["y"]:o["y"] + o["h"], o["x"]:o["x"] + o["w"]] = np.where(box == 0, 0xf, 0).astype(np.uint8)
         elif k == "remap":
             p = self.page(o["page"])
             x0, y0, x1, y1 = o["x0"], o["y0"], o["x1"], o["y1"]
