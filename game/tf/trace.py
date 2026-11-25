@@ -14,9 +14,12 @@ class Trace:
         self.path = path or os.environ.get("TF_TRACE")
         self._file = open(self.path, "w", encoding="utf-8") if self.path else None
         self.events = []        # kept in memory for tests
+        # game seconds per trace second: the scenario replay sets it to the game's tick over the reference
+        # emulator's (tests/scenario.py), so both traces count the same ticks
+        self.time_scale = 1.0
 
     def log(self, ev, **fields):
-        rec = {"t": round(self.machine.clock.get_time(), 4), "ev": ev}
+        rec = {"t": round(self.machine.clock.get_time() / self.time_scale, 4), "ev": ev}
         rec.update(fields)
         self.events.append(rec)
         if self._file:
