@@ -230,6 +230,29 @@ def shot_blink(rows, mask_fn, blink=3):
     return run
 
 
+# coilgroup_pulse groups of the super-lit leffs: tf_180 coil group table 0x040cf65c (group -> ROM coil numbers)
+COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25)}
+# leff -> coil group (rom/rom_data/io/lamp_effects.csv coil_group): leff_047 [0x010286f8], leff_055 [0x0102a83c],
+# leff_063 [0x0100d038], leff_071 [0x0100ef64]
+SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31}
+
+
+def flasher_group_pulse(group, every=8, time=0x20):
+    """The super-lit leffs (QA M6): forever, every `every` ticks, coilgroup_pulse(group, 0x20) [0x00005fd4] while
+    the playfield is valid (DAT_000314d8, FUN_0000d8ac; flag 0x1c here) and ball search (task 0x2b) is not
+    running. The group is the leff table's coil group, read by FUN_000081f4. -> fn(LeffTask)."""
+    def run(task):
+        lamps = task.lamps
+        os_ = lamps.os
+        if os_.flag(0x1c) and not os_.task_running(0x2b):
+            names = {num: name for name, num in lamps.coil_numbers.items()}
+            for num in COIL_GROUPS[group]:
+                if num in names:
+                    lamps.flasher(names[num], time, owner=task.leff_id)
+        task.sleep(every, run)
+    return run
+
+
 def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, chase=8):
     """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
     lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is

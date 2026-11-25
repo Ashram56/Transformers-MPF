@@ -323,10 +323,12 @@ class TfOS(CustomCode):
         self.display = Display(self)
         self.tubes = Tubes(self)
         self.leffs = Leffs(self)
-        from tf.lamps import Lamps                # noqa: E402
+        from tf.lamps import Lamps, SUPER_LIT_LEFF_GROUPS, flasher_group_pulse  # noqa: E402
         self.lamps = Lamps(self)
         self.lamps.leff_code(13, self._leff_save_lamp, priority=0x81)
         self.lamps.leff_code(14, self._leff_save_lamp, priority=0x80)
+        for leff_id, group in SUPER_LIT_LEFF_GROUPS.items():   # the super-lit flashers (QA M6)
+            self.lamps.leff_code(leff_id, flasher_group_pulse(group))
         from tf import switches                   # noqa: E402
         self.switches = switches.SwitchLayer(self)
         from tf.features import load_features     # noqa: E402

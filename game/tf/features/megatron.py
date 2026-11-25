@@ -179,7 +179,7 @@ class Autobot(Side):
     JP = (71, 64, 0xca, 0x77)
     DJ = (72, 65, 0xd2, 0x78)
     SUPER = (73, 66, 0xd9, 0x79)
-    SUPER_LIT_LEFF = 63
+    SUPER_LIT_LEFF, SUPER_RULE = 63, 0x0100d004
     TIMEOUT_TASK, TIMEOUT_TICKS = 0xbd, 312
     PCT = (100, 100, 75, 50)
 
@@ -256,8 +256,8 @@ class Autobot(Side):
 
     def _super_lit(self):
         self.os.task_kill(self.TIMEOUT_TASK)
-        self.phase, self.mask, self.m = 3, 0x40, 1
-        self.os.leff_start(self.SUPER_LIT_LEFF)
+        self.phase, self.mask, self.m = 3, 0x40, 1      # leff 63 runs by its lamp rule [0x0100d004]
+        self.os.request_refresh()
 
     def _arm_timeout(self):
         """The double-jackpot timeout task [0x0100c10c] (restarted by [0x0100c164] at each award) first waits
@@ -287,7 +287,7 @@ class Decepticon(Side):
     JP = (77, 72, 0xe4, 0x7b)
     DJ = (78, 73, 0xf7, 0x7c)
     SUPER = (79, 74, 0xf9, 0x7d)
-    SUPER_LIT_LEFF = 71
+    SUPER_LIT_LEFF, SUPER_RULE = 71, 0x0100ef30
     CENTER = 3
 
     def __init__(self, mgr):
@@ -342,8 +342,8 @@ class Decepticon(Side):
             self.award(500000 * self.mult(self.CENTER), *self.DJ)
             self.dj += 1
             if self.dj >= 3:
-                self.phase, self.mask = 3, 0x80
-                self.os.leff_start(self.SUPER_LIT_LEFF)
+                self.phase, self.mask = 3, 0x80             # leff 71 runs by its lamp rule [0x0100ef30]
+                self.os.request_refresh()
         else:
             return
         self.save()
@@ -399,6 +399,10 @@ class Megatron(Feature):
             # the rule leff flashes the lit shots (leff_062 / leff_070 [0x0100cf28 / 0x0100ee54])
             os_.lamps.leff_code(side.rule_leff,
                                 shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.mask)(side)))
+            # the super-lit flasher leff while phase 3: rules FUN_0100d004 / FUN_0100ef30 (QA M6; a phase 3
+            # restored by adj 88 gets it too)
+            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.SUPER_LIT_LEFF,
+                          order=side.SUPER_RULE)
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
 
     def player_first_ball(self):

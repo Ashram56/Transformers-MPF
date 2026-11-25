@@ -288,3 +288,19 @@ class TestOsFixes(QaCase):
         count = self.tf.pd.get("bonus_count", 0)
         self.tf.features_by_name["megatron"]._handle(back_door=True)
         self.assertEqual(count + 1, self.tf.pd.get("bonus_count", 0))
+
+    def test_super_lit_flashers(self):
+        """leff_063 [0x0100d038]: while the Autobot super is lit (rule FUN_0100d004), coil group 26 (the Megatron
+        flasher, table 0x040cf65c) pulses every 8 ticks on a valid playfield (QA M6)."""
+        self.start()
+        self.hit_and_release_switch("s_right_orbit_spinner")
+        self.advance_time_and_run(0.5)
+        side = self.tf.features_by_name["megatron"].sides[1]
+        side.active, side.phase = True, 3
+        self.tf.request_refresh()
+        self.advance_time_and_run(0.1)
+        before = len([e for e in self.tf.trace.of("coil") if e.get("coil") == 28 and e.get("on")])
+        self.advance_time_and_run(8 * TICK * 10)
+        after = len([e for e in self.tf.trace.of("coil") if e.get("coil") == 28 and e.get("on")])
+        self.assertGreaterEqual(after - before, 8)
+        side.active = False
