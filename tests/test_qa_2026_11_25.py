@@ -326,3 +326,23 @@ class TestOsFixes(QaCase):
         self.advance_time_and_run(170 * TICK)
         self.assertFalse(self.tf.add_ball_open())
         self.assertEqual(0, allspark.weights()[4])
+
+    def test_starscream_pair_moves_each_second(self):
+        """FUN_01017824: with fewer than 6 shots left the lit pair moves each counted second, not within 93
+        ticks of a ramp entrance (tokens 0xc / 0xd set by [0x010337e8] / [0x010338dc]) (QA M9)."""
+        self.start()
+        ss = self.tf.features_by_name["battles"].battles[0]
+        ss.setup()
+        ss.pd[ss.left_key] = 5
+        ss.seconds = 20
+        pair = ss.pair
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)
+        self.hit_and_release_switch("s_l_ramp_entrance")
+        self.advance_time_and_run(0.1)
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)
+        ss.pd[ss.left_key] = 6
+        self.advance_time_and_run(2)
+        ss.second()
+        self.assertEqual((pair + 1) % 8, ss.pair)

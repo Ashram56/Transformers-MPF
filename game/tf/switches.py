@@ -50,6 +50,8 @@ NO_BONUS = {6}
 DELAY = {51: 5}
 
 
+RAMP_ENTRANCE_TIMERS = {4: 0xc, 35: 0xd}     # left / right ramp entrance: switch-timeout tokens
+
 class SwitchLayer:
 
     def __init__(self, os_):
@@ -81,6 +83,8 @@ class SwitchLayer:
             return              # [0x01033d3c] returns at once while the last hit's task 0x54 (or 0x4e) runs (QA P11)
         # sw 11 while task 0x54 runs: only its 30 and bonus count, the shot block is skipped [0x01033b3c] (QA M5)
         locked = num == 11 and os_.task_running(0x54)
+        if num in RAMP_ENTRANCE_TIMERS:     # FUN_0000ff00(0xc / 0xd, 0x5d) [0x010337e8 / 0x010338dc] (QA M9)
+            os_.timer_set(RAMP_ENTRANCE_TIMERS[num], 0x5d)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
         if num in SW_AUDIT and not os_.tilted:

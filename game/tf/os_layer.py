@@ -218,6 +218,7 @@ class TfOS(CustomCode):
         self.flags = set()
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
+        self.timers = {}            # switch-timeout timer token -> end time (FUN_0000ff00 / FUN_0000febc)
         self.pokes = {}             # ROM RAM address -> setter(value), for the scenarios' "poke"
         self.features = []
         self.players = []           # PlayerData per player
@@ -364,6 +365,14 @@ class TfOS(CustomCode):
 
     def task_running(self, task_id):
         return task_id in self.tasks
+
+    def timer_set(self, token, ticks):
+        """FUN_0000ff00(token, ticks): a switch-timeout timer (tokens 0-0xd, table 0x040cfd20)."""
+        self.timers[token] = self.now + ticks * TICK
+
+    def timer_running(self, token):
+        """FUN_0000febc(token): nonzero while the timer runs."""
+        return self.timers.get(token, 0) > self.now
 
     def task_ticks_left(self, task_id):
         task = self.tasks.get(task_id)
