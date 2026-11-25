@@ -454,6 +454,19 @@ class TestLowFixes(QaCase):
         self.tf.state &= ~0x01
         self.assertEqual({51}, lanes.lit("left"))
 
+    def test_tilt_ends_the_ball_save(self):
+        """tilt() [0x0001db40] kills the ball save: a drain inside the save ends the ball, no re-serve. Confirmed
+        by the approved capture rom/rules/traces/tilt_ball_save.jsonl (tilt 2.87 s, drain 3.64 s in the save,
+        next ball's save 6.57 s) (QA F15)."""
+        self.start()
+        self.hit_and_release_switch("s_left_slingshot")
+        self.advance_time_and_run(0.5)
+        self.assertEqual("armed", self.tf.ball_save)
+        self.tf._tilt()
+        self.assertIsNone(self.tf.ball_save)
+        self.assertFalse(self.tf.task_running(0x31))
+        self.assertEqual(1, self.machine.game.player.ball)
+
     def test_tilt_and_multiball_validate_the_playfield(self):
         """FUN_0000d8c4 from tilt() [0x0001db40] and the multiball task [0x0103aba4] (QA F12)."""
         self.start()

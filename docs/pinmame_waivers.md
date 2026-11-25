@@ -32,6 +32,12 @@ them and they stay in the game.
   emulator (Vincent, 2026-11-25). The decoded deffs and lamp shows use it (`TICK_MS` of `deff_package.py`,
   `leff_package.py`).
 
+## Approved captures
+
+| Path | Why | Approval |
+|---|---|---|
+| `rom/rules/traces/tilt_ball_save.jsonl` | QA F15: does the ball save survive a tilt? The code read leaves it open (the hooks of events 0x65 / 0x66 not read); one reference trace, tilt during the ball save then a drain, used only to confirm the code | approved by Vincent 2026-11-25 |
+
 Not waivers (allowed by the rule): the reference traces `rom/rules/traces/` and their scenarios confirm the game,
 they are not a source; `game/tools/dmd_capture.gd` saves the game's own DMD for `scripts/render_check.py`, it
 builds nothing.

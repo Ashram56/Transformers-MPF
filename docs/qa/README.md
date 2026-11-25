@@ -63,6 +63,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | P14, P15 | lanes rotate on every flipper press but in gf_state & 0x311, killing the group's leffs first; a lane completion always shows deff 44 with FUN_010236e8's result | `0x01032d5c`, `0x0102db28`, `0x010236e8` |
 | F12 | tilt() and the multiball task validate the playfield | `0x0001db40`, `0x0103aba4`, `0x0000d8c4` |
 | M10, M15 | the lock re-arm copies every player's count (ROM quirk kept); deff 139 gets the locked count | `0x0100af0c` |
+| F15 | no change needed: the ball save does not survive a tilt in the ROM, as in the game. Approved capture [tilt_ball_save.jsonl](../../rom/rules/traces/tilt_ball_save.jsonl) (waiver row in [pinmame_waivers.md](../pinmame_waivers.md)): tilt 2.87 s, drain 3.64 s inside the save, end of ball, next ball's save 6.57 s, no re-serve | `0x0001db40` |
 All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.15 ms (counted on code-timed spans; the 16.26 ms used before drifted 0.3 s over a battle and gave battle_blackout an extra bonus).
 
 ### Open (proved, not fixed yet)
@@ -71,7 +72,6 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F15 | ball save may survive a tilt (doubtful: hooks of events 0x65 / 0x66 not read) | medium if true |
 | F14, F16-F18, M8, M11, M12, M14, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 M8 stays open on purpose: the code starts leffs 76 / 77 on zuse_qualify_enabled for either side [0x01011ed4], but
@@ -104,5 +104,5 @@ tasks are read from the code in `rom/rules/modes/ball_feed.md` (device settles 3
 1. Decided 2026-11-25: no waiver for the captured data; agent A decodes it ([pinmame_waivers.md](../pinmame_waivers.md)).
    Decided later the same day: the flipper times may stay as measured until decoded; running the ROM's own code in
    Unicorn counts as decoding; the tick is the code's 16.0 ms (the game's `os_layer.py` TICK still says 16.26).
-2. Whether the two Xilinx XC95144XL CPLDs (fuse map, no program, not loaded by the ROM) count as a board to decompile.
-3. F15: confirming the tilt / ball save case needs a new reference trace, which is an emulator capture.
+2. Decided 2026-11-25: the two Xilinx XC95144XL CPLDs are not decoded (fixed function, no game rule); `docs/boards_inventory.md` lists them with the unchecked boards.
+3. Decided 2026-11-25: PinMAME capture approved for F15 only (row in [pinmame_waivers.md](../pinmame_waivers.md)); it confirmed the game.
