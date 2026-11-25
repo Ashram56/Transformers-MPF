@@ -134,3 +134,157 @@ class TestBonusHold(QaCase):
         self.machine.default_platform.add_ball_to_device(self.machine.ball_devices["bd_trough"])
         self.advance_time_and_run(15)
         self.release_switch_and_run("s_shooter_lane", 2)
+
+
+class TestPlayfield(QaCase):
+    def hit(self, name, wait=0.5):
+        before = self.score()
+        self.hit_and_release_switch(name)
+        self.advance_time_and_run(wait)
+        return self.score() - before
+
+    def test_lit_multiplier_doubles_its_own_combo(self):
+        """FUN_010237ac(shot) runs first in every shot handler [0x01033824]: the shot that takes the lit 2X
+        scores its combo at 2X (QA P2)."""
+        self.start()
+        self.hit("s_right_orbit_spinner")                   # a force switch ends the skill shots
+        self.hit("s_l_ramp_exit")                           # combo window opens
+        self.tf.pd.mult_lit = True
+        before = len(self.tf.trace.of("score_add"))
+        self.hit("s_r_ramp_exit")
+        self.assertEqual(2, self.tf.pd.shot_mult[4])
+        self.assertIn(300000, [e.get("points") for e in self.tf.trace.of("score_add")[before:]])
+
+    def test_slings_and_pops_end_the_skill_shots(self):
+        """Event 0x6b hook 0x010313cc counts slings and pops: 3 distinct end both skill shots (QA P3)."""
+        self.start()
+        for name in ("s_left_slingshot", "s_right_slingshot", "s_top_bumper"):
+            self.hit(name)
+        skill = self.tf.features_by_name["skill_shot"]
+        self.assertFalse(skill.top or skill.super)
+        self.assertEqual(30, self.hit("s_megatron_back_door"))
+
+    def test_item_10_offered_with_all_shots_at_2x(self):
+        """0x01023494 gives item 10 weight 0 only when a multiplier is lit or the roving 3X runs (QA P4)."""
+        self.start()
+        allspark = self.tf.features_by_name["allspark"]
+        self.tf.pd.shot_mult = [2] * 6
+        self.tf.pd.allspark_last = 0
+        self.assertGreater(allspark.weights()[9], 0)
+        self.tf.pd.mult_lit = True
+        self.assertEqual(0, allspark.weights()[9])
+
+    def test_double_and_fast_scoring_starts_clear_add_time_flag(self):
+        """game_flag_clear(0x13) in 0x010039a0 and 0x01004394 (QA P5)."""
+        self.start()
+        for name in ("bumblebee", "twobank"):
+            self.tf.flag_set(0x13)
+            self.tf.features_by_name[name].start()
+            self.assertFalse(self.tf.flag(0x13), name)
+            self.tf.features_by_name[name].stop()
+
+    def test_fast_scoring_targets_and_tail(self):
+        """[0x010047b8]: +1,000 on the first target of a cycle only, +10 counts on the completing hit; the
+        250-tick tail is no timed mode and +10 there restarts the countdown (QA P8, P9)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        value, count = fs.value, fs.count
+        fs._fast_target(50)
+        self.assertEqual(value + 1000, fs.value)
+        fs._fast_target(37)
+        self.assertEqual((value + 1000, min(count + 10, 90)), (fs.value, fs.count))
+        fs.counting, fs.count = False, 0                  # in the tail
+        self.assertFalse(self.tf.timed_mode_running())
+        fs._fast_target(50)
+        self.assertEqual(value + 1000, fs.value)          # no +1,000 outside the countdown
+        fs._fast_target(37)
+        self.assertTrue(fs.counting)
+        self.assertEqual(10, fs.count)
+        fs.stop()
+
+    def test_pops_hold_the_fast_scoring_countdown(self):
+        """Pops start the 156-tick hold task 0x59 [0x01032f8c], battle or not (QA P7)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        count = fs.count
+        for _ in range(8):
+            self.hit("s_top_bumper", 0.75)
+        self.assertEqual(count, fs.count)
+        fs.stop()
+
+    def test_center_lane_locked_after_an_optimus_hit(self):
+        """Task 0x54 [0x01033d3c] (62 ticks): the center lane right after an Optimus hit scores only its 30
+        [0x01033b3c], a repeat Optimus hit nothing (QA M5, P11)."""
+        self.start()
+        self.hit("s_right_orbit_spinner")
+        self.hit_and_release_switch("s_optimus_prime")
+        self.advance_time_and_run(0.15)
+        self.assertTrue(self.tf.task_running(0x54))
+        self.assertEqual(30, self.hit("s_center_lane", 0.1))
+        self.assertEqual(0, self.hit("s_optimus_prime", 0.2))
+
+    def test_sw6_gives_no_fast_scoring_award(self):
+        """sw 6's handler [0x010332e4] calls neither FUN_010047b8 nor FUN_01003a64 (QA P10)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        total = fs.total
+        self.hit("s_left_orbit_top")
+        self.assertEqual(total, fs.total)
+        fs.stop()
+
+
+class TestOsFixes(QaCase):
+    def test_held_plumb_bob_tilts(self):
+        """FUN_0001dc58 starts task 0x2e [0x0001dc14]: a bob held closed warns every 62 ticks, then tilts (QA F4)."""
+        self.start()
+        self.hit_switch_and_run("s_tilt_pendulum", 62 * TICK * 2 + 0.2)
+        self.assertTrue(self.tf.tilted)
+        self.release_switch_and_run("s_tilt_pendulum", 0.1)
+
+    def test_bob_counts_while_the_ball_ends(self):
+        """The bob is ignored only while gf_state & 0x310, so a tilt during the end of ball removes the bonus
+        (QA F5, [0x00019e44])."""
+        self.start()
+        self.tf.state |= 0x04                              # end of ball
+        self.hit_and_release_switch("s_tilt_pendulum")
+        self.advance_time_and_run(0.1)
+        self.assertEqual(1, self.tf.tilt_warnings)
+        self.tf.state &= ~0x04
+
+    def test_equal_priority_deff_needs_flags(self):
+        """deff_start_core [0x00020498]: an equal priority start replaces the running deff only when its
+        flags & 3 (QA F6). Deffs 28 (flags & 3 = 0) and 13 (flags & 3 set) are both priority 240."""
+        self.start()
+        disp = self.tf.display
+        disp.start(28)
+        disp.start(13)
+        self.assertEqual(28, disp.fg)
+        disp.start(13)
+        disp.fg, disp.fg_prio = 13, disp.prio[13]
+        disp.start(28)
+        self.assertEqual(28, disp.fg)
+
+    def test_end_of_ball_waits_the_longest_hook(self):
+        """[0x00019e44]: the wait is the longest flag-0x2000 task, capped at DAT_00033324 = 937 ticks (QA F10)."""
+        from game.tf import os_layer
+        self.start()
+        hooks = self.tf.hooks
+        saved = list(hooks.get("ball_end_wait", ()))
+        hooks["ball_end_wait"] = [lambda: 300, lambda: 100]
+        waits = [fn() for fn in hooks["ball_end_wait"]]
+        self.assertEqual(300, min(max(waits), os_layer.END_BALL_WAIT_MAX))
+        hooks["ball_end_wait"] = saved
+        self.assertEqual(937, os_layer.END_BALL_WAIT_MAX)
+
+    def test_lock_entry_adds_a_bonus_count(self):
+        """[0x0100a31c] inlines 0x01032d2c: FUN_01000dfc(1), +1 bonus count (QA F11)."""
+        self.start()
+        count = self.tf.pd.get("bonus_count", 0)
+        self.tf.features_by_name["megatron"]._handle(back_door=True)
+        self.assertEqual(count + 1, self.tf.pd.get("bonus_count", 0))

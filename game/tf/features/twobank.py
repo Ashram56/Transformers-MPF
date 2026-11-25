@@ -13,8 +13,14 @@
   counts of 66 ticks, holds while a show or deff 132 is up (observed: first count 5.1 s after the start).
   Every playfield switch scores fast_value (one award per tick, task 0x5b); unless deff 132 is up or about to
   show (task 0x70): sound 0x28d, leff 164, a 200 ms shake (MAXIMAL), and deff 134 when it is not up and no
-  multiball runs [0x01004644]. Switches 50 / 37: the first hit of each this cycle adds
-  1,000 to fast_value (cap 50,000, deff 135); both hit: +10 counts (cap 90), deff 136, cycle reset.
+  multiball runs [0x01004644]. Switches 50 / 37 [0x010047b8]: the first target of a cycle adds 1,000 to
+  fast_value only during the countdown (task 0xac; cap 50,000, deff 135 when it changed) [0x01004520] and starts
+  leff 144; a target already hit this cycle starts leff 145; the completing hit adds 10 counts (cap 90) with
+  deff 136 [0x0100457c] and resets the cycle (QA P8). Each count is 11 steps of 6 ticks; a step that finds the
+  timers held (0x0100683c: pops and top lanes start the 156-tick hold task 0x59) restarts the count [0x01004220]
+  (QA P7). The 250-tick tail (task 0xae) is not a timed mode (any_timed_mode_running [0x010067bc] tests task
+  0xac only: the 2-bank scores 75,000 and counts down again); 0x0100457c in the tail kills 0xae and restarts the
+  countdown (QA P9), for the completing hit and ADD MORE TIME alike (deff 136 both times, QA P16).
   One count after 0 the switches keep scoring 250 ticks, then the total task 0x88 [0x01004950] (a ball-end-wait
   task) shows deff 137 "FAST SCORING TOTAL" (2.65 s, sound 0x290 and leff 165 from its code) when the display is
   free. Task 0xad, started with the mode, is still running after that (observed: scoring.jsonl, task 0x88 again at
@@ -34,6 +40,8 @@ READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
 FIRST_LEFT = 7
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
+STEP_TICKS, STEPS = 6, 11            # a count: 11 x task_sleep(6) [0x01004220]
+NEW_LEFF, REPEAT_LEFF = 0x90, 0x91   # 144 a new target this cycle, 145 a repeat [0x010047b8]
 FS_DEFF_S, TICK_S = 3.97, 0.016     # deff 132's length (the capture), one tick
 FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF = 132, 133, 134, 135, 136, 137
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
@@ -45,7 +53,7 @@ AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_
 
 class TwoBank(Feature):
     name = "twobank"
-    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
+    HOOKS = ("player_first_ball", "sw_50", "sw_37", "scoring_switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
              "timed_mode", "add_time")
 
     def __init__(self, os_):
@@ -91,7 +99,7 @@ class TwoBank(Feature):
             return
         if self.running:
             self._fast_target(num)
-        if os_.any_multiball() or os_.timed_mode_running() or self.running:     # [0x0102e994]
+        if os_.any_multiball() or os_.timed_mode_running():     # [0x0102e994] (the countdown, not its tail)
             points, sound, leff = LOCKED
             os_.score_add(points)
             os_.sound(sound)
@@ -120,11 +128,13 @@ class TwoBank(Feature):
         os_ = self.os
         pd = self.pd
         os_.score_add(START_POINTS)
+        os_.flag_clear(0x13)                         # ADD MORE TIME offered again [0x01004394] (QA P5)
         self.value = min(10000 + 5000 * pd.get("fs_starts", 0), 50000)
         pd.fs_starts = pd.get("fs_starts", 0) + 1
         pd.twobank_left = min(5 + 2 * (pd.fs_starts + 1), 12)
         os_.audit(START_AUDIT)
         self.running = self.counting = True
+        self.steps = 0
         self.lingering = False
         self.count = os_.adj[81]
         self.groups = 0
@@ -134,7 +144,7 @@ class TwoBank(Feature):
         self.intro_pending = True               # task 0x70 until deff 132 shows
         os_.ball_search_reload()                # FUN_01006350 reloads the search at call, show start and show end
         os_.after(SHOW_TICKS, self._show)
-        os_.task_start(TASK, COUNT_TICKS, self._tick)
+        os_.task_start(TASK, STEP_TICKS, self._tick)
 
     def _show(self):
         self.intro_pending = False
@@ -148,13 +158,19 @@ class TwoBank(Feature):
         if not self.running:
             return
         if os_.timed_mode_paused() or os_.display.running(FS_DEFF):
-            os_.task_start(TASK, COUNT_TICKS, self._tick)
+            self.steps = 0                      # [0x01004220]: a held step restarts the count
+        else:
+            self.steps += 1
+        if self.steps < STEPS:
+            os_.task_start(TASK, STEP_TICKS, self._tick)
             return
+        self.steps = 0
         if self.count > 0:                      # one more count after 0 (observed 0 at 148.22 s, total 153.46 s)
             self.count -= 1
-            os_.task_start(TASK, COUNT_TICKS, self._tick)
+            os_.task_start(TASK, STEP_TICKS, self._tick)
             return
-        self.counting = False
+        self.counting = False                   # task 0xae: the tail
+        os_.request_refresh()
         os_.task_start(TASK, TAIL_TICKS, self._end)
 
     def _end(self):
@@ -177,22 +193,40 @@ class TwoBank(Feature):
             self.os.request_refresh()
 
     def add_time(self):
-        if self.running:
-            self.count = min(self.count + self.os.adj[81], 90)
+        """ADD MORE TIME: FUN_0100457c(0), adj 81 counts."""
+        self._add_counts(self.os.adj[81])
+
+    def _add_counts(self, n):
+        """[0x0100457c]: while task 0xac or its tail 0xae runs, n counts (cap 90), the tail killed and the
+        countdown (re)started, deff 136."""
+        os_ = self.os
+        if not self.running:
+            return
+        self.count = min(self.count + n, 90)
+        if not self.counting:
+            self.counting = True
+            self.steps = 0
+            os_.task_start(TASK, STEP_TICKS, self._tick)
+            os_.request_refresh()
+        os_.deff_start(FS_TIME_DEFF)
 
     def _fast_target(self, num):
         os_ = self.os
         bit = SWITCHES[num]
-        if not self.groups & bit:
-            self.groups |= bit
+        if self.groups & bit:
+            os_.leff_start(REPEAT_LEFF)
+            return
+        self.groups |= bit
+        if self.groups & 6 == 6:                # the completing hit [0x010047b8]
+            self.groups = 0
+            self._add_counts(10)
+            return
+        if self.counting and self.value < 50000:          # [0x01004520]: task 0xac only
             self.value = min(self.value + 1000, 50000)
             os_.deff_start(FS_VALUE_DEFF, values=[self.value])
-        if self.groups & 6 == 6:
-            self.count = min(self.count + 10, 90)
-            self.groups = 0
-            os_.deff_start(FS_TIME_DEFF)
+        os_.leff_start(NEW_LEFF)
 
-    def switch(self, num):
+    def scoring_switch(self, num):
         if getattr(self, "started_now", False):
             self.started_now = False
             return
@@ -244,7 +278,8 @@ class TwoBank(Feature):
         self.lingering = False
 
     def scoring_boost(self):
-        return self.running or None
+        """Task 0xac runs: the countdown, not its tail ([0x01004618], QA P9)."""
+        return (self.running and self.counting) or None
 
     timed_mode = scoring_boost          # a timed mode ([0x010067bc], task 0xac / 0xc3)
 

@@ -9,10 +9,12 @@
   after that [0x010017fc].
 - Double scoring [0x010039a0]: playfield multiplier 2, deff 129 ("FOR n SECONDS"), leff 156, audit 105;
   background deff 130 ("n / ALL SCORES X 2") with music 0x026 and leff 157 while it runs. Every scoring switch
-  plays 0x27c + 0x27d [0x01003a64]. Countdown [0x010038dc]: adj 80 counts of 66 ticks (observed 1.07 s),
-  holding while the playfield is not valid; sound 0x285 at 10, 0x284 .. 0x280 at 5 .. 1; one count after 0
-  the end sound 0x286, the multiplier back to 1 124 ticks later (observed 103.89 / 105.91 s; the tail's
-  split is inferred). ADD MORE TIME adds adj 80 counts (cap 90) [0x01003a8c].
+  plays 0x27c + 0x27d [0x01003a64]. Countdown [0x010038dc] (task 0xc3): adj 80 counts of 11 x 6 ticks that never
+  pause (the 0x0100683c result is thrown away; QA P6); 0x284 .. 0x280 at 5 .. 1 (table 0x040c5d18), and 0x285
+  once per run of the task at the first count in 5 .. 10 (QA P12); one count after 0 the end sound 0x286, then
+  the tail task 0xc4 sets the multiplier back to 1 125 ticks later [0x0100396c-0x0100398c]. The tail is not a
+  timed mode (any_timed_mode_running [0x010067bc] tests task 0xc3 only; QA P9). ADD MORE TIME adds adj 80 counts
+  (cap 90) [0x01003a8c]; in the tail it kills 0xc4 and restarts the countdown (QA P16).
 - Inferred: the end of ball and the tilt stop it (the OS resets the multiplier there).
 """
 from tf.features import Feature
@@ -26,21 +28,24 @@ DS_DEFF, DS_BG_DEFF, DS_SOUND, DS_LEFF, DS_BG_LEFF, DS_MUSIC, DS_AUDIT = 129, 13
 DS_DEFF_SOUNDS = ((0.0, 0x27a, DS_DEFF), (0.33, 0x27b, DS_DEFF), (1.43, 0x27b, 0), (2.41, 0x27b, 0),
                   (3.43, 0x27b, 0))
 SWITCH_SOUNDS = (0x27c, 0x27d)
-COUNT_TICKS = 66
-END_TICKS = 124
+COUNT_TICKS = 66                     # 11 x task_sleep(6)
+END_TICKS = 125                      # sleep 0x7d [0x0100396c]
 TASK = "double_scoring"
-COUNT_SOUNDS = {10: 0x285, 5: 0x284, 4: 0x283, 3: 0x282, 2: 0x281, 1: 0x280}
+COUNT_SOUNDS = {5: 0x284, 4: 0x283, 3: 0x282, 2: 0x281, 1: 0x280}
+WARN_SOUND = 0x285
 END_SOUND = 0x286
 MAX_COUNT = 90
 
 
 class Bumblebee(Feature):
     name = "bumblebee"
-    HOOKS = ("player_first_ball", "sw_1", "switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
+    HOOKS = ("player_first_ball", "sw_1", "scoring_switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
 
     def __init__(self, os_):
         super().__init__(os_)
-        self.running = False                     # double scoring counts down
+        self.running = False                     # double scoring: countdown (task 0xc3) or its tail (0xc4)
+        self.counting = False                    # task 0xc3
+        self.warned = False                      # 0x285 played in this run of task 0xc3
         self.count = 0
         os_.deff_rule(lambda: self.running, DS_BG_DEFF, music=DS_MUSIC, priority=0x80)
         os_.lamp_rule(lambda: self.running, leff=DS_BG_LEFF, order=0x010039a0)
@@ -75,8 +80,10 @@ class Bumblebee(Feature):
         os_ = self.os
         os_.task_kill(TASK)
         self.started_at = os_.now                    # the starting hit plays no doubled-switch sounds
-        self.running = True
+        self.running = self.counting = True
+        self.warned = False
         self.count = count or os_.adj[80]
+        os_.flag_clear(0x13)                         # ADD MORE TIME offered again [0x010039a0] (QA P5)
         os_.pf_mult = 2
         os_.deff_start(DS_DEFF, values=[self.count], sounds=[
             (t, (lambda d: lambda: os_.sound(c, in_deff=d))(d)) for t, c, d in DS_DEFF_SOUNDS])
@@ -86,41 +93,49 @@ class Bumblebee(Feature):
         os_.task_start(TASK, COUNT_TICKS, self._tick)
 
     def add_time(self):
-        """ADD MORE TIME [0x01003a8c]."""
+        """ADD MORE TIME [0x01003a8c]: counts added; in the tail the countdown restarts (multiplier 2)."""
         if self.running:
             self.count = min(self.count + self.os.adj[80], MAX_COUNT)
+            if not self.counting:
+                self.counting, self.warned = True, False
+                self.os.pf_mult = 2
+                self.os.task_start(TASK, COUNT_TICKS, self._tick)
+                self.os.request_refresh()
 
     def _tick(self):
         os_ = self.os
         if not self.running:
             return
-        if not os_.pf_valid:
-            os_.task_start(TASK, COUNT_TICKS, self._tick)
-            return
         if self.count == 0:
             os_.sound(END_SOUND)
+            self.counting = False                    # task 0xc4: the tail
+            os_.request_refresh()
             os_.task_start(TASK, END_TICKS, self.stop)
             return
         self.count -= 1
         if self.count in COUNT_SOUNDS:
             os_.sound(COUNT_SOUNDS[self.count])
+        if not self.warned and 5 <= self.count <= 10:
+            self.warned = True
+            os_.sound(WARN_SOUND)
         os_.task_start(TASK, COUNT_TICKS, self._tick)
 
     def stop(self):
         os_ = self.os
         os_.task_kill(TASK)
         if self.running:
-            self.running = False
+            self.running = self.counting = False
             os_.pf_mult = 1
             os_.request_refresh()
 
-    def switch(self, num):
+    def scoring_switch(self, num):
         if self.running and not self.os.tilted and getattr(self, "started_at", None) != self.os.now:
             for call in SWITCH_SOUNDS:
                 self.os.sound(call)
 
     def scoring_boost(self):
-        return self.running or None
+        """Task 0xc3 runs: the countdown, not its tail ([0x010038b0], QA P9)."""
+        return (self.running and self.counting) or None
 
     timed_mode = scoring_boost          # a timed mode ([0x010067bc], task 0xac / 0xc3)
 

@@ -89,6 +89,7 @@ class Allspark(Feature):
         """[0x0100a788] event 2, ball entered."""
         os_ = self.os
         os_.audit(ENTER_AUDIT)
+        os_.hook("shot_mult_take", 0)               # FUN_010237ac(0) first [0x0100a788] (QA P2)
         os_.hook("eject_modes")                     # the wizard modes' hits and starts first [0x0100a788]
         os_.hook("mb_shot", 0)
         os_.hook("battle_shot", 0)
@@ -96,6 +97,7 @@ class Allspark(Feature):
             self.award()
         os_.hook("mode_start_shot", 0)
         os_.hook("combo_shot", 0)
+        os_.hook("scoring_switch", None)            # FUN_010047b8 and FUN_01003a64 [0x0100a788] (QA P10)
         os_.hook("bonus_add")
         os_.base_score(POINTS)
         os_.request_refresh()
@@ -172,8 +174,8 @@ class Allspark(Feature):
             w[8] = 0
         if os_.flag(BONUS_X_HOLD):
             w[9] = 0
-        if all(m >= 2 for m in pd.get("shot_mult", [1] * 6)):
-            w[10] = 0
+        if pd.get("mult_lit") or os_.task_running(0xb6):     # 0x01023494 returns 0 (QA P4): a multiplier lit
+            w[10] = 0                                         # or the roving 3X runs; all six at 2X still offer it
         if pd.get("super_spinner"):
             w[11] = 0
         if last in w and last not in (5, 6):

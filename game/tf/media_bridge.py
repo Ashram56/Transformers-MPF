@@ -272,7 +272,7 @@ class MediaBridge:
     # ------------------------------------------------------------------ score display (deff 19)
 
     def credits_text(self):
-        """FUN_00004ff4: "FREE PLAY", "CREDITS n", "CREDITS a/b" (coins toward the next credit) or
+        """FUN_000044a4: "FREE PLAY", "CREDITS n", "CREDITS a/b" (coins toward the next credit) or
         "CREDITS n a/b". The credit count comes from the OS when it keeps one (os.credits,
         os.credit_fraction = (coins, coins per credit), os.free_play); 3 coins make a credit."""
         if getattr(self.os, "free_play", False):
@@ -373,7 +373,7 @@ class MediaBridge:
     # ------------------------------------------------------------------ sounds
 
     def sound_stop(self, call):
-        """Stop every sample of sound call `call` (FUN_0002ceb4)."""
+        """Stop every sample of sound call `call` (FUN_000257b4)."""
         pool = self.data["pools"].get(call) if self.data else None
         for sample in (pool or {}).get("samples", []):
             self._send("sounds_play", {sample: {"action": "stop", "key": sample}})

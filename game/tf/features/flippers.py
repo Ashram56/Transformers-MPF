@@ -1,9 +1,9 @@
 """Flipper buttons in play: flipper audits and INSTANT INFO (OS code, game_flow.md; not a rules mode).
 
-- FUN_0002dcc0: each flipper button press while the flippers are live counts audit 0x2c LEFT / 0x2d
+- FUN_00026608: each flipper button press while the flippers are live counts audit 0x2c LEFT / 0x2d
   RIGHT FLIPPER USED and stops the score refresh deff 14 (the ROM sees the right button first when both
   close together).
-- FUN_0001b144 (every tick): while a flipper button is held and gf_state & 0x211 is 0, a counter runs;
+- FUN_0001914c (every tick): while a flipper button is held and gf_state & 0x211 is 0, a counter runs;
   at 93 ticks (0x5d, ball not scored yet) or 468 ticks (0x1d4, ball scored) deff 27 INSTANT INFO starts.
   Releasing every button stops deff 27 and resets the counter.
 """

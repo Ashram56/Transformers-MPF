@@ -52,7 +52,6 @@ ORBIT_TOKEN_S = 2.26
 # (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
 # the ignored repeats leave it shut)
 GATE_TICKS = 91
-CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 0x54, inferred time)
 # sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
 # a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
 # 2.18 s after a plunge, 1.17 s after sw 13; switches.jsonl 58.86 s, 2.18 s after the center lane; counted 4.36 s
@@ -928,6 +927,7 @@ class Battles(Feature):
         os_ = self.os
         if not os_.game or os_.tilted:
             return
+        os_.hook("shot_mult_take", shot)            # FUN_010237ac(shot) first in every shot handler (QA P2)
         if shot in SHOT_AUDIT:
             os_.audit(SHOT_AUDIT[shot])
         if mb:
@@ -969,10 +969,8 @@ class Battles(Feature):
         self.shot(LEFT_RAMP)
 
     def _center(self, mb=True):
-        now = self.os.now
-        last, self.center_at = self.center_at, now
-        if now - last < CENTER_LOCK_S:
-            return
+        """The center lane and the Optimus target lock each other out through task 0x54 (tf/switches.py)."""
+        self.center_at = self.os.now
         self.shot(CENTER, mb)
 
     def sw_11(self):
@@ -1003,8 +1001,7 @@ class Battles(Feature):
         self.battle_shot(BEE)
 
     def _top_lane(self):
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x010335d0] / [0x0103361c], always (QA P7)
 
     sw_7 = sw_8 = _top_lane
 
@@ -1016,8 +1013,7 @@ class Battles(Feature):
         for b in self.battles:
             if b.scoring:
                 b.pop()
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x01032f8c], always (QA P7)
 
     sw_30 = sw_31 = sw_32 = _pop
 
