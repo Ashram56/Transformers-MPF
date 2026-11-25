@@ -34,7 +34,7 @@ READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
 FIRST_LEFT = 7
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
-FS_DEFF_S, TICK_S = 3.97, 0.01626     # deff 132's length (the capture), one tick
+FS_DEFF_S, TICK_S = 3.97, 0.016     # deff 132's length (the capture), one tick
 FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF = 132, 133, 134, 135, 136, 137
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
@@ -97,7 +97,7 @@ class TwoBank(Feature):
             os_.sound(sound)
             os_.leff_start(leff)
             return
-        if os_.now - self.last_hit < HIT_TICKS * 0.01626:
+        if os_.now - self.last_hit < HIT_TICKS * 0.016:
             return
         self.last_hit = os_.now
         pd = self.pd

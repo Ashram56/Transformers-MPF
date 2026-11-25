@@ -59,7 +59,7 @@ CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 
 # after it: no audit, no mode start, no combo); the 3 s are inferred. Within 187 ticks of the previous right orbit
 # shot it is ignored too (timer 9 [0x01033530], combos_and_multipliers.md 4.1).
 RIGHT_IGNORE_S = 3.0
-RIGHT_REPEAT_S = 187 * 0.01626
+RIGHT_REPEAT_S = 187 * 0.016
 
 # mode-start shots [table 0x040c6d00]: battle shot -> mode-start index (mask bit 1 << index)
 MS_SHOT = {ALLSPARK: 0, LEFT_ORBIT: 1, LEFT_RAMP: 2, RIGHT_RAMP: 3, RIGHT_ORBIT: 4}
