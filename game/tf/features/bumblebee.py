@@ -39,7 +39,7 @@ MAX_COUNT = 90
 
 class Bumblebee(Feature):
     name = "bumblebee"
-    HOOKS = ("player_first_ball", "sw_1", "switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
+    HOOKS = ("player_first_ball", "sw_1", "scoring_switch", "ball_end", "tilt", "scoring_boost", "timed_mode", "add_time")
 
     def __init__(self, os_):
         super().__init__(os_)
@@ -127,7 +127,7 @@ class Bumblebee(Feature):
             os_.pf_mult = 1
             os_.request_refresh()
 
-    def switch(self, num):
+    def scoring_switch(self, num):
         if self.running and not self.os.tilted and getattr(self, "started_at", None) != self.os.now:
             for call in SWITCH_SOUNDS:
                 self.os.sound(call)

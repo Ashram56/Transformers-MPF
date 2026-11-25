@@ -97,6 +97,7 @@ class Allspark(Feature):
             self.award()
         os_.hook("mode_start_shot", 0)
         os_.hook("combo_shot", 0)
+        os_.hook("scoring_switch", None)            # FUN_010047b8 and FUN_01003a64 [0x0100a788] (QA P10)
         os_.hook("bonus_add")
         os_.base_score(POINTS)
         os_.request_refresh()

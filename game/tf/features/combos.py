@@ -126,6 +126,8 @@ class Combos(Feature):
         pd.mult_lit = False
 
     def switch(self, num):
+        if num == 11 and self.os.task_running(0x54):
+            return                                  # [0x01033b3c]: the Optimus hit's task 0x54 (QA M5)
         if num in SHOTS and not self.os.tilted:
             self.shot(SHOTS[num])
 

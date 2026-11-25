@@ -77,14 +77,23 @@ class SwitchLayer:
         if not os_.game or not os_.in_play:
             return
         os_.playfield_switch(num)
+        if num == 51 and (os_.task_running(0x54) or os_.task_running(0x4e)):
+            return              # [0x01033d3c] returns at once while the last hit's task 0x54 (or 0x4e) runs (QA P11)
+        # sw 11 while task 0x54 runs: only its 30 and bonus count, the shot block is skipped [0x01033b3c] (QA M5)
+        locked = num == 11 and os_.task_running(0x54)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
         if num in SW_AUDIT and not os_.tilted:
             os_.audit(SW_AUDIT[num])
         if num not in NO_BONUS:
             os_.hook("bonus_add")
-        os_.hook("sw_{}".format(num))
+        if not locked:
+            os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
+        if not locked and num != 6 and not os_.tilted:
+            # FUN_010047b8 (fast scoring award) and FUN_01003a64 (double scoring sounds): every handler but
+            # sw 6's [0x010332e4], and the eject and lock entries (QA P10)
+            os_.hook("scoring_switch", num)
         if os_.tilted:
             return
         if num in SLINGS:

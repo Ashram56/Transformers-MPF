@@ -514,6 +514,7 @@ class Megatron(Feature):
         keep = False
         if not back_door and os_.in_play and not os_.tilted:
             os_.hook("wizard_shot", 2)              # [0x0100a31c]: the wizard modes' shot 2 first
+            os_.hook("scoring_switch", None)        # FUN_010047b8 and FUN_01003a64 [0x0100a31c] (QA P10)
             keep = self.rule()
         if not os_.tilted and os_.game:
             os_.base_score(ENTRY_POINTS)

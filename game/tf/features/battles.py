@@ -52,7 +52,6 @@ ORBIT_TOKEN_S = 2.26
 # (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
 # the ignored repeats leave it shut)
 GATE_TICKS = 91
-CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 0x54, inferred time)
 # sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
 # a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
 # 2.18 s after a plunge, 1.17 s after sw 13; switches.jsonl 58.86 s, 2.18 s after the center lane; counted 4.36 s
@@ -970,10 +969,8 @@ class Battles(Feature):
         self.shot(LEFT_RAMP)
 
     def _center(self, mb=True):
-        now = self.os.now
-        last, self.center_at = self.center_at, now
-        if now - last < CENTER_LOCK_S:
-            return
+        """The center lane and the Optimus target lock each other out through task 0x54 (tf/switches.py)."""
+        self.center_at = self.os.now
         self.shot(CENTER, mb)
 
     def sw_11(self):

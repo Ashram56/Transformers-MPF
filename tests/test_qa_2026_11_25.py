@@ -215,3 +215,25 @@ class TestPlayfield(QaCase):
             self.hit("s_top_bumper", 0.75)
         self.assertEqual(count, fs.count)
         fs.stop()
+
+    def test_center_lane_locked_after_an_optimus_hit(self):
+        """Task 0x54 [0x01033d3c] (62 ticks): the center lane right after an Optimus hit scores only its 30
+        [0x01033b3c], a repeat Optimus hit nothing (QA M5, P11)."""
+        self.start()
+        self.hit("s_right_orbit_spinner")
+        self.hit_and_release_switch("s_optimus_prime")
+        self.advance_time_and_run(0.15)
+        self.assertTrue(self.tf.task_running(0x54))
+        self.assertEqual(30, self.hit("s_center_lane", 0.1))
+        self.assertEqual(0, self.hit("s_optimus_prime", 0.2))
+
+    def test_sw6_gives_no_fast_scoring_award(self):
+        """sw 6's handler [0x010332e4] calls neither FUN_010047b8 nor FUN_01003a64 (QA P10)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        total = fs.total
+        self.hit("s_left_orbit_top")
+        self.assertEqual(total, fs.total)
+        fs.stop()

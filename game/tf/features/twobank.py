@@ -53,7 +53,7 @@ AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_
 
 class TwoBank(Feature):
     name = "twobank"
-    HOOKS = ("player_first_ball", "sw_50", "sw_37", "switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
+    HOOKS = ("player_first_ball", "sw_50", "sw_37", "scoring_switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
              "timed_mode", "add_time")
 
     def __init__(self, os_):
@@ -226,7 +226,7 @@ class TwoBank(Feature):
             os_.deff_start(FS_VALUE_DEFF, values=[self.value])
         os_.leff_start(NEW_LEFF)
 
-    def switch(self, num):
+    def scoring_switch(self, num):
         if getattr(self, "started_now", False):
             self.started_now = False
             return
