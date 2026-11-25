@@ -62,12 +62,15 @@ class Lanes(Feature):
                 else:
                     self.os.lamps.lamp_off(n)
 
-    def lane_award(self, num):
-        """The lane function of switch `num` (a made top-lane skill shot calls it twice)."""
+    def lane_award(self, num, lamp=None):
+        """The lane function of switch `num` (a made top-lane skill shot calls it again with `lamp`: 50 / 49,
+        FUN_0102db28(0x32) [0x010335d0] / FUN_0102e208(0x31) [0x0103361c]; QA P13)."""
         os_ = self.os
         if os_.tilted:
             return
         group, choices = LAMP[num]
+        if lamp is not None:
+            choices = (lamp,)
         lit = self.lit(group)
         lamp = next((n for n in choices if n not in lit), None)
         if lamp is None:

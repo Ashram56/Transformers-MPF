@@ -346,3 +346,44 @@ class TestOsFixes(QaCase):
         self.advance_time_and_run(2)
         ss.second()
         self.assertEqual((pair + 1) % 8, ss.pair)
+
+
+class TestLowFixes(QaCase):
+    def test_ball_save_length(self):
+        """ball_save_task [0x00017a28]: adj 38 = 5 saves 5 x 62 = 310 -> 52 sleeps of 6 = 312 ticks (QA F8)."""
+        self.start()
+        self.hit_and_release_switch("s_right_orbit_spinner")
+        self.advance_time_and_run(0.05)
+        self.tf._arm_ball_save()
+        start = self.tf.now
+        while self.tf.ball_save == "armed" and self.tf.now - start < 10:
+            self.advance_time_and_run(TICK)
+        self.assertAlmostEqual(312, round((self.tf.now - start) / TICK), delta=2)
+
+    def test_skill_shot_second_lane_lamp(self):
+        """The second lane award of a top-lane skill shot lights 50 / 49 [0x010335d0] / [0x0103361c] (QA P13)."""
+        self.start()
+        lanes = self.tf.features_by_name["lanes"]
+        lanes.lane_award(8, 50)
+        self.assertIn(50, lanes.lit("left"))
+        self.assertNotIn(51, lanes.lit("left"))
+
+    def test_spinner_sample_reset_each_ball(self):
+        """[0x01032484]: the spinner sound's sample index back to 0 at each ball (QA P17)."""
+        self.start()
+        spinner = self.tf.features_by_name["spinner"]
+        spinner.sample = 3
+        spinner.ball_start()
+        self.assertEqual(0, spinner.sample)
+
+    def test_lock_lit_rearms_every_player(self):
+        """[0x0100af0c]: DAT_02111d4c = DAT_02111d48 re-arms every player's count; deff 139 gets the locked
+        count (QA M10, M15)."""
+        self.start()
+        mt = self.tf.features_by_name["megatron"]
+        pd = self.tf.pd
+        pd.mtl_level, pd.mtl_need, pd.mtl_count, pd.mtl_lit, pd.mtl_locked = 3, 2, 1, 0, 1
+        mt.blocked = lambda: False
+        mt.lock_completion()
+        self.assertEqual((1, 2), (pd.mtl_lit, pd.mtl_count))
+        self.assertTrue(all(p.get("mtl_count") == p.get("mtl_need", 1) for p in self.tf.players))

@@ -24,6 +24,8 @@ SKILL_DEFF = 42
 SUPER_DEFF, SUPER_TASK = 43, 0x65
 
 
+SKILL_LANE_LAMP = {8: 50, 7: 49}     # the second lane award's lamp [0x010335d0] / [0x0103361c] (QA P13)
+
 class SkillShot(Feature):
     name = "skill_shot"
     HOOKS = ("player_first_ball", "ball_served", "switch", "ball_end", "tilt")
@@ -102,7 +104,7 @@ class SkillShot(Feature):
         self.cancel()
         os_.score_add(self.value)
         os_.deff_start(SKILL_DEFF, values=[self.value])     # its sound 0x165 and leff 93 come with it
-        os_.hook("lane_award", num)
+        os_.hook("lane_award", num, SKILL_LANE_LAMP.get(num))
 
     def _award_super(self):
         os_ = self.os

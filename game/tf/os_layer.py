@@ -1193,9 +1193,11 @@ class TfOS(CustomCode):
         self.task_start(0x31, 6, self._ball_save_poll)
 
     def _ball_save_poll(self):
-        if self.pf_valid and self.ball_save_left > 6:
-            self.ball_save_left -= 6
-        if self.ball_save_left > 6:
+        """ball_save_task [0x00017a28]: every 6 ticks, held while FUN_000179dc (no valid playfield); ends when
+        fewer than 7 ticks are left, else 6 off: adj 38 = 5 gives 5 x 62 = 310 -> 52 sleeps, 312 ticks (QA F8)."""
+        if not self.pf_valid or self.ball_save_left >= 7:
+            if self.pf_valid:
+                self.ball_save_left -= 6
             self.task_start(0x31, 6, self._ball_save_poll)
             return
         self.leff_stop(14)
