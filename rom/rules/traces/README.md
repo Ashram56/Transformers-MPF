@@ -8,6 +8,7 @@ and commands: `tools/trace/README.md`.
 | `basic` | one player: start, plunge, slings, pops, a target, flippers, three drains |
 | `coils` | every switch-driven coil, flipper hold, then 45 s with no switch activity (ball search) |
 | `sounds` | attract, coin, start, 12 s in the shooter lane, plunge, playfield hits, two tilt warnings and a tilt, ball save, drains, bonus (run with `TF_EVENTS=1`) |
+| `tilt_ball_save` | QA F15 (capture approved by the owner 2026-11-25): validate, three tilt presses, drain inside the ball save, next ball |
 | `switches` | every playfield switch hit twice, one at a time, then the left eject (`rules/switch_handlers.csv`) |
 | `side_left`, `side_right` | side choice with one press of the left / right flipper; watches the side byte (`watch_side.tsv`) |
 

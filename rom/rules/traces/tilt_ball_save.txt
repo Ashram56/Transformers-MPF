@@ -1,0 +1,27 @@
+# QA F15 (owner waiver 2026-11-25, docs/pinmame_waivers.md): tilt during the ball save, then a drain.
+# Does the save re-serve the ball after a tilt? One player, factory settings (adj 38 BALL SAVE 5 s).
+autoplunge 0
+start 1
+wait 3
+plunge
+wait 0.5
+mark validate
+hit 12
+wait 0.2
+mark tilt_warning_1
+button tilt 50
+wait 1.1
+mark tilt_warning_2
+button tilt 50
+wait 1.1
+mark tilt
+button tilt 50
+wait 0.5
+mark drain_in_save
+drain
+wait 10
+mark after
+plunge
+wait 2
+drain
+wait 10
