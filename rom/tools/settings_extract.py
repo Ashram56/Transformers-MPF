@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from rom import ROM, foff, u8, u16, u32, s32, cstr, disasm, bl_callers, func_start  # noqa: E402
 from tables import msg  # noqa: E402
+import adj_format  # noqa: E402
 
 BASE = os.path.dirname(HERE)                       # rom/
 OUT = os.path.join(BASE, 'rom_data', 'settings')
@@ -176,12 +177,11 @@ def sample_values(r):
 
 
 def formatter_labels():
-    fnout = collections.defaultdict(dict)
-    for l in emu_lines('t5.log'):
-        m = re.match(r'[\d.]+ fmt 0x([0-9a-f]+) (-?\d+) = -?\d+ "(.*)"$', l)
-        if m:
-            fnout[int(m.group(1), 16)][int(m.group(2))] = m.group(3).replace('|', '\n')
     out = {}
+    shared = collections.defaultdict(set)      # the values listed for one formatter, over every adjustment using it
+    for i in range(1, ADJ_N + 1):
+        r = adj_record(i)
+        shared[fmt_of(r)[0]] |= set(sample_values(r))
     for i in range(1, ADJ_N + 1):
         r = adj_record(i)
         fn, arg = fmt_of(r)
@@ -192,14 +192,17 @@ def formatter_labels():
             for v in vals:
                 labels[v] = msg(lst[v]) if 0 <= v < len(lst) else str(v)
             src = 'msg list %s (%s), drawn by 0x76c' % (hx(arg), ','.join(hx(x) for x in lst))
+        elif fn in adj_format.FORMATTERS:
+            for v in sorted(x for x in shared[fn] if r['min'] <= x <= r['max'] and (x - r['min']) % r['step'] == 0):
+                labels[v] = adj_format.run(fn, v)
+            if i == 28 and NPRESET in labels:
+                labels[NPRESET] = msg(0x287)    # the custom pricing record is built at run time (0x4694): its name
+            src = 'formatter fn %s run as ROM code (rom/tools/adj_format.py): %s%s' % (
+                hx(fn), adj_format.FORMATTERS[fn],
+                '' if len(labels) == len(vals) else '; %d of %d values listed' % (len(labels), len(vals)))
         else:
-            got = fnout.get(fn, {})
-            for v in vals:
-                if v in got:
-                    labels[v] = got[v]
-            tag = 'observed' if got else 'missing'
-            src = 'formatter fn %s run in the emulator (emu/t5.log)%s' % (
-                hx(fn), '' if len(labels) == len(vals) else '; %d of %d values sampled' % (len(labels), len(vals)))
+            tag = 'missing'
+            src = 'formatter fn %s not decoded' % hx(fn)
         out[i] = dict(fn=fn, arg=arg, labels=labels, src=src, tag=tag)
     return out
 
@@ -266,7 +269,13 @@ def adj_readers():
         ids = [c] if c is not None and 1 <= c <= ADJ_N else STRUCT_SITES.get(site, ([], ''))[0]
         for i in ids:
             rd[i].append('%s %s%s' % (hx(site), fname(fa), ' (observed)' if obs.get((i, site)) else ''))
+    for i, txt in TAIL_READERS.items():
+        rd[i].append(txt)
     return rd
+
+
+# readers that reach adj_get through a tail call (code)
+TAIL_READERS = {96: 'FUN_01004644 (fast scoring award: tail call 0x1004750 into 0x10307a0)'}
 
 
 # ================================================================ pricing
@@ -907,10 +916,14 @@ def main():
             menu, num = 'STANDARD ADJUSTMENTS', 'STANDARD ADJUSTMENT #%d' % (std_order.index(i) + 1)
         else:
             menu, num = 'FEATURE ADJUSTMENTS', 'FEATURE ADJUSTMENT #%d' % (i - FEAT_ADJ[0] + 1)
-        fdu = obs_get.get(i, obs_def.get(i, ''))
+        # factory default for the U.S.A. (country 0): the country record's override lists, else the table default
+        usa = dict(ctry[0]['os'] + ctry[0]['game'])
+        fdu = usa.get(i, r['default'])
+        if obs_get.get(i, fdu) != fdu:
+            print('adj %d: code default %d, emulator log %d' % (i, fdu, obs_get[i]))
         rows.append(dict(adj=i, name=r['name'], default_table=r['default'], min=r['min'], max=r['max'], step=r['step'],
                          field_0x14=r['f14'], display_type=r['display_type'], nvram=hx(r['nvram']), desc_addr=hx(r['rec']),
-                         tag='observed' if i in obs_get else 'code',
+                         tag='code' if lb['tag'] == 'code' else lb['tag'],
                          menu=menu, menu_label=num, default_label=lb['labels'].get(r['default'], ''),
                          factory_default_usa=fdu, factory_default_usa_label=lb['labels'].get(fdu, '') if fdu != '' else '',
                          wraps='no' if r['nowrap'] else 'yes', formatter=hx(lb['fn']) if lb['fn'] else 'msg list %s' % hx(lb['arg']),

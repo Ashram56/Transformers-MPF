@@ -63,8 +63,9 @@ class Bumblebee(Feature):
         pd.bb_letters = letters + 1
         if pd.bb_letters < LETTERS:                  # the 9th letter shows deff 129 instead (observed)
             os_.deff_start(LETTER_DEFF)
-            os_.leff_start(LETTER_LEFF)               # deff 128's code starts its leff and sound
-            os_.sound(LETTER_SOUND, in_deff=LETTER_DEFF)
+            # deff 128's code starts its leff and sound [0x01002410, 0x0100241c]: the package's timing.json
+            # carries them now; deff_media starts only what it does not
+            os_.deff_media(LETTER_DEFF, LETTER_LEFF, LETTER_SOUND)
         else:
             pd.bb_completions = pd.get("bb_completions", 0) + 1
             pd.bb_letters = 1 if pd.bb_completions == 1 else 0

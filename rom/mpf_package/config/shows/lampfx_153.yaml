@@ -1,6 +1,6 @@
 #show_version=6
-# ROM lamp effect (leff) 153, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1835 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 153, function 0x010327b4, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_153.json). ends by itself after 112 ticks (1821 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 114ms
   coils:
     c_flash_decepticon:
@@ -33,7 +33,7 @@
     c_flash_slingshot_left:
       action: pulse
       pulse_ms: 64
-- duration: 115ms
+- duration: 114ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -121,7 +121,7 @@
     c_flash_slingshot_left:
       action: pulse
       pulse_ms: 64
-- duration: 124ms
+- duration: 114ms
   coils:
     c_flash_megatron:
       action: pulse

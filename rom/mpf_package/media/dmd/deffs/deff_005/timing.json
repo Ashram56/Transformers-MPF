@@ -1,278 +1,5535 @@
 {
  "deff": 5,
- "fn": "0x103ef30",
+ "fn": "0x0103ef30",
  "flags": 2,
  "priority": 254,
  "background": false,
- "capture": "fg3",
- "forced_at_s": 15.0493,
- "ended_ms": 0.0,
- "window_ms": 300.1,
- "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
- "frames": [],
- "pages": [],
+ "tag": "code",
+ "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_005.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
+ "end_tick": 125,
+ "ended_ms": 2032.5,
+ "ran_ticks": 125,
+ "tick_ms": 16.26,
+ "panel": false,
+ "frames": [
+  {
+   "i": 0,
+   "tick": 0,
+   "t_ms": 0.0,
+   "dur_ms": 2032.5
+  }
+ ],
  "sounds": [],
  "leffs": [],
- "events": [
+ "deffs": [],
+ "pages": [
   {
+   "tick": 0,
    "t_ms": 0.0,
-   "event": 74
-  },
-  {
-   "t_ms": 9.8,
-   "event": 32
-  },
-  {
-   "t_ms": 10.3,
-   "event": 33
-  },
-  {
-   "t_ms": 10.3,
-   "event": 10
-  },
-  {
-   "t_ms": 10.3,
-   "event": 11
-  },
-  {
-   "t_ms": 16.0,
-   "event": 74
-  },
-  {
-   "t_ms": 26.0,
-   "event": 32
-  },
-  {
-   "t_ms": 26.5,
-   "event": 33
-  },
-  {
-   "t_ms": 32.3,
-   "event": 74
-  },
-  {
-   "t_ms": 42.1,
-   "event": 32
-  },
-  {
-   "t_ms": 42.6,
-   "event": 33
-  },
-  {
-   "t_ms": 48.4,
-   "event": 74
-  },
-  {
-   "t_ms": 58.1,
-   "event": 32
-  },
-  {
-   "t_ms": 58.6,
-   "event": 33
-  },
-  {
-   "t_ms": 64.2,
-   "event": 74
-  },
-  {
-   "t_ms": 74.3,
-   "event": 32
-  },
-  {
-   "t_ms": 74.8,
-   "event": 33
-  },
-  {
-   "t_ms": 80.4,
-   "event": 74
-  },
-  {
-   "t_ms": 90.5,
-   "event": 32
-  },
-  {
-   "t_ms": 91.0,
-   "event": 33
-  },
-  {
-   "t_ms": 96.8,
-   "event": 74
-  },
-  {
-   "t_ms": 106.5,
-   "event": 32
-  },
-  {
-   "t_ms": 107.0,
-   "event": 33
-  },
-  {
-   "t_ms": 107.1,
-   "event": 10
-  },
-  {
-   "t_ms": 107.1,
-   "event": 11
-  },
-  {
-   "t_ms": 112.8,
-   "event": 74
-  },
-  {
-   "t_ms": 122.8,
-   "event": 32
-  },
-  {
-   "t_ms": 123.3,
-   "event": 33
-  },
-  {
-   "t_ms": 129.0,
-   "event": 74
-  },
-  {
-   "t_ms": 138.8,
-   "event": 32
-  },
-  {
-   "t_ms": 139.3,
-   "event": 33
-  },
-  {
-   "t_ms": 145.0,
-   "event": 74
-  },
-  {
-   "t_ms": 154.8,
-   "event": 32
-  },
-  {
-   "t_ms": 155.3,
-   "event": 33
-  },
-  {
-   "t_ms": 161.0,
-   "event": 74
-  },
-  {
-   "t_ms": 170.8,
-   "event": 32
-  },
-  {
-   "t_ms": 171.3,
-   "event": 33
-  },
-  {
-   "t_ms": 177.2,
-   "event": 74
-  },
-  {
-   "t_ms": 186.8,
-   "event": 32
-  },
-  {
-   "t_ms": 187.3,
-   "event": 33
-  },
-  {
-   "t_ms": 192.9,
-   "event": 74
-  },
-  {
-   "t_ms": 203.0,
-   "event": 32
-  },
-  {
-   "t_ms": 203.5,
-   "event": 33
-  },
-  {
-   "t_ms": 203.6,
-   "event": 10
-  },
-  {
-   "t_ms": 203.6,
-   "event": 11
-  },
-  {
-   "t_ms": 209.1,
-   "event": 74
-  },
-  {
-   "t_ms": 219.3,
-   "event": 32
-  },
-  {
-   "t_ms": 219.8,
-   "event": 33
-  },
-  {
-   "t_ms": 225.4,
-   "event": 74
-  },
-  {
-   "t_ms": 235.5,
-   "event": 32
-  },
-  {
-   "t_ms": 236.0,
-   "event": 33
-  },
-  {
-   "t_ms": 241.7,
-   "event": 74
-  },
-  {
-   "t_ms": 251.5,
-   "event": 32
-  },
-  {
-   "t_ms": 252.0,
-   "event": 33
-  },
-  {
-   "t_ms": 257.8,
-   "event": 74
-  },
-  {
-   "t_ms": 267.5,
-   "event": 32
-  },
-  {
-   "t_ms": 268.0,
-   "event": 33
-  },
-  {
-   "t_ms": 273.8,
-   "event": 74
-  },
-  {
-   "t_ms": 283.5,
-   "event": 32
-  },
-  {
-   "t_ms": 284.0,
-   "event": 33
-  },
-  {
-   "t_ms": 289.8,
-   "event": 74
-  },
-  {
-   "t_ms": 299.6,
-   "event": 32
-  },
-  {
-   "t_ms": 300.1,
-   "event": 33
-  },
-  {
-   "t_ms": 300.1,
-   "event": 10
-  },
-  {
-   "t_ms": 300.1,
-   "event": 11
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 0,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 0
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 0
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 0
+    }
+   ]
+  },
+  {
+   "tick": 1,
+   "t_ms": 16.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 2,
+   "t_ms": 32.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 3,
+   "t_ms": 48.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 4,
+   "t_ms": 65.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 5,
+   "t_ms": 81.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 6,
+   "t_ms": 97.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 7,
+   "t_ms": 113.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 8,
+   "t_ms": 130.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 9,
+   "t_ms": 146.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 10,
+   "t_ms": 162.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 11,
+   "t_ms": 178.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 12,
+   "t_ms": 195.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 13,
+   "t_ms": 211.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 14,
+   "t_ms": 227.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 15,
+   "t_ms": 243.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 16,
+   "t_ms": 260.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 17,
+   "t_ms": 276.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 18,
+   "t_ms": 292.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 19,
+   "t_ms": 308.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 20,
+   "t_ms": 325.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 21,
+   "t_ms": 341.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 22,
+   "t_ms": 357.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 23,
+   "t_ms": 374.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 24,
+   "t_ms": 390.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 25,
+   "t_ms": 406.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 26,
+   "t_ms": 422.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 27,
+   "t_ms": 439.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 28,
+   "t_ms": 455.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 29,
+   "t_ms": 471.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 30,
+   "t_ms": 487.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 31,
+   "t_ms": 504.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 32,
+   "t_ms": 520.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 33,
+   "t_ms": 536.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 34,
+   "t_ms": 552.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 35,
+   "t_ms": 569.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 36,
+   "t_ms": 585.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 37,
+   "t_ms": 601.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 38,
+   "t_ms": 617.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 39,
+   "t_ms": 634.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 40,
+   "t_ms": 650.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 41,
+   "t_ms": 666.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 42,
+   "t_ms": 682.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 43,
+   "t_ms": 699.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 44,
+   "t_ms": 715.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 45,
+   "t_ms": 731.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 46,
+   "t_ms": 748.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 47,
+   "t_ms": 764.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 48,
+   "t_ms": 780.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 49,
+   "t_ms": 796.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 50,
+   "t_ms": 813.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 51,
+   "t_ms": 829.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 52,
+   "t_ms": 845.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 53,
+   "t_ms": 861.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 54,
+   "t_ms": 878.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 55,
+   "t_ms": 894.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 56,
+   "t_ms": 910.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 57,
+   "t_ms": 926.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 58,
+   "t_ms": 943.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 59,
+   "t_ms": 959.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 60,
+   "t_ms": 975.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 61,
+   "t_ms": 991.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 62,
+   "t_ms": 1008.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 63,
+   "t_ms": 1024.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 64,
+   "t_ms": 1040.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 65,
+   "t_ms": 1056.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 66,
+   "t_ms": 1073.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 67,
+   "t_ms": 1089.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 68,
+   "t_ms": 1105.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 69,
+   "t_ms": 1121.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 70,
+   "t_ms": 1138.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 71,
+   "t_ms": 1154.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 72,
+   "t_ms": 1170.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 73,
+   "t_ms": 1187.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 74,
+   "t_ms": 1203.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 75,
+   "t_ms": 1219.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 76,
+   "t_ms": 1235.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 77,
+   "t_ms": 1252.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 78,
+   "t_ms": 1268.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 79,
+   "t_ms": 1284.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 80,
+   "t_ms": 1300.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 81,
+   "t_ms": 1317.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 82,
+   "t_ms": 1333.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 83,
+   "t_ms": 1349.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 84,
+   "t_ms": 1365.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 85,
+   "t_ms": 1382.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 86,
+   "t_ms": 1398.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 87,
+   "t_ms": 1414.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 88,
+   "t_ms": 1430.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 89,
+   "t_ms": 1447.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 90,
+   "t_ms": 1463.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 91,
+   "t_ms": 1479.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 92,
+   "t_ms": 1495.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 93,
+   "t_ms": 1512.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 94,
+   "t_ms": 1528.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 95,
+   "t_ms": 1544.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 96,
+   "t_ms": 1561.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 97,
+   "t_ms": 1577.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 98,
+   "t_ms": 1593.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 99,
+   "t_ms": 1609.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 100,
+   "t_ms": 1626.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 101,
+   "t_ms": 1642.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 102,
+   "t_ms": 1658.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 103,
+   "t_ms": 1674.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 104,
+   "t_ms": 1691.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 105,
+   "t_ms": 1707.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 106,
+   "t_ms": 1723.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 107,
+   "t_ms": 1739.8,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 108,
+   "t_ms": 1756.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 109,
+   "t_ms": 1772.3,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 110,
+   "t_ms": 1788.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 111,
+   "t_ms": 1804.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 112,
+   "t_ms": 1821.1,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 113,
+   "t_ms": 1837.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 114,
+   "t_ms": 1853.6,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 115,
+   "t_ms": 1869.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
+  },
+  {
+   "tick": 116,
+   "t_ms": 1886.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 15,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 15
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 15
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 15
+    }
+   ]
+  },
+  {
+   "tick": 117,
+   "t_ms": 1902.4,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 17,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 17
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 17
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 17
+    }
+   ]
+  },
+  {
+   "tick": 118,
+   "t_ms": 1918.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 1,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 1
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 1
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 1
+    }
+   ]
+  },
+  {
+   "tick": 119,
+   "t_ms": 1934.9,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 3,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 3
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 3
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 3
+    }
+   ]
+  },
+  {
+   "tick": 120,
+   "t_ms": 1951.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 5,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 5
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 5
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 5
+    }
+   ]
+  },
+  {
+   "tick": 121,
+   "t_ms": 1967.5,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 7,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 7
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 7
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 7
+    }
+   ]
+  },
+  {
+   "tick": 122,
+   "t_ms": 1983.7,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 9,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 9
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 9
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 9
+    }
+   ]
+  },
+  {
+   "tick": 123,
+   "t_ms": 2000.0,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 11,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 11
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 11
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 11
+    }
+   ]
+  },
+  {
+   "tick": 124,
+   "t_ms": 2016.2,
+   "texts": [
+    {
+     "str": "TRANSFORMERS",
+     "font": 8,
+     "x": 64,
+     "y": 9,
+     "flags": 2,
+     "call_site": "103f018",
+     "page": 13,
+     "source": "%s",
+     "msg": null
+    },
+    {
+     "str": "-----",
+     "font": 8,
+     "x": 0,
+     "y": 19,
+     "flags": 1,
+     "call_site": "103f08c",
+     "page": 13
+    },
+    {
+     "str": "V1.8",
+     "font": 8,
+     "x": 127,
+     "y": 19,
+     "flags": 4,
+     "call_site": "103f0bc",
+     "page": 13
+    },
+    {
+     "str": "ENGLISH",
+     "font": 8,
+     "x": 64,
+     "y": 29,
+     "flags": 2,
+     "call_site": "103f2f8",
+     "page": 13
+    }
+   ]
   }
- ]
+ ],
+ "inputs": [
+  [
+   "flipper_buttons_held",
+   "0x00006848",
+   0
+  ]
+ ],
+ "detached_tasks": []
 }

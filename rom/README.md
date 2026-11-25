@@ -29,7 +29,7 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `rom_data/sound/sound_call_uses.csv` | Per sound call: role where identified (coin, credit, tilt, ball save, drain, launch, music), how it was identified, scenarios it was heard in, deffs that play it, code call sites |
 | `rom_data/sound/music_table.csv` | The ROM's background table: 18 prioritized entries, each a condition plus a background deff and its music call (base music per side, mode music) |
 | `rom_data/io/lamp_effects.csv`, `lamp_groups.json` | The 178 lamp effects (leffs): function, flags, lamp group, coil group, priority, how the capture ended, loop, show file, lamps and flashers used, who starts it; the 148 lamp groups |
-| `mpf_package/config/shows/lampfx_NNN.yaml` | 111 lamp effects as MPF shows, captured in the emulator (`tools/emu/lfx.cpp`); looping ones cut to one period |
+| `mpf_package/config/shows/lampfx_NNN.yaml` | 113 lamp effects as MPF shows, decoded from each leff's code (`tools/leff_lift.py`, `tools/leff_package.py`); looping ones cut to one exact cycle; tick by tick in `rom_data/io/leff_ops/` |
 | `rules/switches_and_shots.md`, `rules/switch_handlers.csv` | Every playfield switch hit twice on a fresh ball: points and who awarded them, sounds, display and lamp effects, coils; the side choice; the end-of-ball bonus |
 | `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
@@ -37,7 +37,7 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory USA defaults observed in the emulator |
 | `code/tf_decompiled.c` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, OS API and deff/leff functions named |
 | `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
-| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
+| `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect, from its code (117, `"tag": "code"`, `tools/deff_package.py`: `frames/`, `timing.json` with frames, sounds, leffs, pages of text draws with their call site and printf format) or, for the 38 still open, as captured in the emulator: `frames/NNNN.png` (grey, level x 17), `reference_capture.gif` and `_x4.gif`, `timing.json` (frame times, every image and text draw per shown page, sounds, lamp effects, events; each text draw carries `helper`, `call_site` and `source` = the ROM message or printf format it came from, `msg_id` when it is a ROM message) |
 | `rom_data/dmd/deff_text_formats.csv` | Static list of the text each effect can draw, read from the decompile (helper, font, flags, x, y, message id, text or printf format), for effects that print live values or did not render |
 | `mpf_package/config/` | MPF v6 config: `switches.yaml`, `coils.yaml`, `lights.yaml`, `sounds.yaml` (659 sounds, 694 pools, one per sound call) |
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
@@ -67,6 +67,23 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   WAV with `loop_start_at`.
 - **Images (code).** Formats 0, 1, 3, 7, 9, 12 as on Tron. Most animations are 87x32 (drawn at x = 41 on Tron;
   assumed here until display effects are captured), 693 images are full 128x32.
+- **Effects decoded from their code (code, 2026-11-25).** The strict rule forbids the captures below as a source,
+  so each effect is now read from its own function: `tools/coderun.py` runs a ROM routine in Unicorn (the ROM
+  image only, no emulator of the machine) with the OS services answered in Python: `task_sleep` and the task calls
+  (a cooperative scheduler, one tick = 64 IO interrupts of 250 us [0x000114b0] = 16.0 ms nominal; the game uses
+  16.26 ms), sound, deff / leff starts, the flash bank switch 0x00011274. Everything else (the effect's code, the
+  text helpers, `msg_get`, `vsprintf`, the lamp library, the status panel 0x0102f200) runs as ROM code.
+  `tools/deff_lift.py` records the display primitives as an op list (`rom_data/dmd/deff_ops/deff_NNN.json`, every
+  op with the return address of its call), `tools/deff_render.py` draws it with the primitives re-implemented from
+  their routines (mixer, fills, rect, frame, copy, bitmap, masked bitmap, text with `text_width`, remap
+  0x01006bb8, dissolve 0x01034758) and `tools/deff_package.py` writes `frames/` and `timing.json` (`"tag": "code"`).
+  117 of 153 effects come from this; the 38 others still carry their capture (game-state variants, listed in
+  `docs/pinmame_waivers.md`). `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
+  (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
+  that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/coil_pulses.py` reads the coil
+  times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
+  adjustment value formatters. `tools/deff_args.py` lists the stores of `deff_start` callers into the new deff
+  task (+0x30...), the inputs of the game-state variants.
 - **Display effects (code + observed).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
   the 21 background effects (attract, status panel 40, mode backgrounds), bit 1 most foreground effects. The deff
   id is the u16 at task+0x24 of the deff task. Effects were captured by calling `deff_start(id)` from the
@@ -102,7 +119,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
   0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
   entries. Which value is Autobot is inferred (1 = Autobot).
-- **Lamp effects (observed).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
+- **Lamp effects (observed, replaced by the code above).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
   on every lamp compositor tick (0x73cc), only the lamps the effect's own task owns (shared leff layer 0x36394 /
   mask 0x363a8 and the layer list at 0x31480). 119 end by themselves, 59 run until stopped. 111 produce lamps or
   flasher pulses; the other 67 draw from game state, need a lamp parameter from their caller, or were refused.

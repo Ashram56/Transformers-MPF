@@ -1,102 +1,101 @@
 #config_version=6
 # Generated from the Stern Transformers Pro v1.80 ROM (PinMAME set tf_180). See ../README.md.
 # number: the SAM driver number (1-32 on the IO board, 33-35 aux bus ticket outputs). FLASH: entries are
-# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse and hold times were measured from the
-# solenoid register writes in the emulator (rom_data/io/coil_timing.csv, mpf_source column of coils.csv).
+# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse times are the code's (rom/tools/coil_pulses.py:
+# rom_data/io/coil_pulses.csv, one row per call site; mpf_source column of coils.csv says which, and which stay open).
 coils:
   c_trough_up_kicker:
     number: 1   # TROUGH UP-KICKER
-    default_pulse_ms: 64   # observed in play
+    default_pulse_ms: 64   # code: 64 ms at 1 of 1 pulse sites (0x0100a13c); all: 64x1
   c_auto_launch:
     number: 2   # AUTO LAUNCH
-    default_pulse_ms: 64   # observed in play
+    default_pulse_ms: 64   # code: 64 ms at 1 of 1 pulse sites (0x0100a1e0); all: 64x1
   c_megatron_lockup:
     number: 3   # MEGATRON LOCKUP
-    default_pulse_ms: 64   # observed in ball search only
+    default_pulse_ms: 64   # code: 64 ms at 3 of 4 pulse sites (0x0100a39c, 0x0100a640, 0x0100a68c); all: 4x1 64x3
   c_orbit_control_gate:
     number: 5   # ORBIT CONTROL GATE
     default_hold_power: 1.0   # held on, not pulsed
   c_shaker_motor_optional:
     number: 8   # SHAKER MOTOR (OPTIONAL)
     default_hold_power: 1.0   # held on, not pulsed
-    # the game ran it 202 ms at a time
   c_top_pop_bumper:
     number: 9   # TOP POP BUMPER
-    default_pulse_ms: 34   # observed in play
+    default_pulse_ms: 32   # code: pop bumper 1: switch 30, dead 16 ms, debounce 16 (0x040ddfbc)
   c_right_pop_bumper:
     number: 10   # RIGHT POP BUMPER
-    default_pulse_ms: 34   # observed in play
+    default_pulse_ms: 32   # code: pop bumper 2: switch 31, dead 16 ms, debounce 16 (0x040ddfc8)
   c_bottom_pop_bumper:
     number: 11   # BOTTOM POP BUMPER
-    default_pulse_ms: 34   # observed in play
+    default_pulse_ms: 32   # code: pop bumper 3: switch 32, dead 16 ms, debounce 16 (0x040ddfd4)
   c_optimus_prime:
     number: 12   # OPTIMUS PRIME
-    default_pulse_ms: 65   # observed in play
+    default_pulse_ms: 64   # code: 64 ms at 1 of 1 pulse sites (0x01033d28); all: 64x1
   c_left_slingshot:
     number: 13   # LEFT SLINGSHOT
-    default_pulse_ms: 67   # observed in play
+    default_pulse_ms: 64   # code: slingshot 1: switch 26, dead 192 ms (0x040ddfe8)
   c_right_slingshot:
     number: 14   # RIGHT SLINGSHOT
-    default_pulse_ms: 68   # observed in play
+    default_pulse_ms: 64   # code: slingshot 2: switch 27, dead 192 ms (0x040ddff0)
   c_left_flipper:
     number: 15   # LEFT FLIPPER
-    default_pulse_ms: 40   # flipper: pulse then hold PWM 1 ms on / 12 ms (observed)
+    default_pulse_ms: 40   # code open: no flipper drive found in the CPU code (no flipper device: the OS device list 0x0003143c, table 0x040ddfa4, has count 1 at 0x040c4604, so none; the FPGA is not decoded); 40.5 ms and hold 0.083 kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
     default_hold_power: 0.083
   c_right_flipper:
     number: 16   # RIGHT FLIPPER
-    default_pulse_ms: 41   # flipper: pulse then hold PWM 1 ms on / 12 ms (observed)
+    default_pulse_ms: 41   # code open: as the left flipper; 40.6 ms and hold 0.084 kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
     default_hold_power: 0.084
   c_flash_decepticon:
     number: 17   # FLASH: DECEPTICON
-    default_pulse_ms: 32   # not fired in traces; ROM coil test time
+    default_pulse_ms: 48   # code: 48 ms at 5 of 9 pulse sites (0x0100cc84, 0x0100eb50, 0x01026e9c, 0x01028348, 0x0102a468); all: 24x2 48x5 64x2
   c_flash_left_ramp:
     number: 18   # FLASH: LEFT RAMP
-    default_pulse_ms: 65   # observed in play
+    default_pulse_ms: 48   # code: 48 ms at 20 of 38 pulse sites (0x0100cc84, 0x0100d3d0, 0x0100d71c, 0x0100d940, 0x0100eb50, 0x0100f6a0, 0x0100f8a0, 0x0100fadc, 0x01011a18, 0x01011d4c, ); all: 24x2 32x8 48x20 64x5 100x2 250x1
   c_flash_right_side:
     number: 19   # FLASH: RIGHT SIDE
-    default_pulse_ms: 32   # not fired in traces; ROM coil test time
+    default_pulse_ms: 32   # code: 32 ms at 6 of 15 pulse sites (0x010048e0, 0x01005a54, 0x01005a58, 0x0102ed3c, 0x01032478, 0x01032b94); all: 24x2 32x6 48x5 64x2
   c_flash_bumblebee:
     number: 20   # FLASH: BUMBLEBEE
-    default_pulse_ms: 64   # not fired in traces; ROM coil test time
+    default_pulse_ms: 48   # code: 48 ms at 4 of 6 pulse sites (0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 48x4 64x2
   c_flash_pop_bumper:
     number: 21   # FLASH: POP BUMPER
-    default_pulse_ms: 32   # observed in play
+    default_pulse_ms: 48   # code: 48 ms at 10 of 25 pulse sites (0x0100bb98, 0x0100bb9c, 0x0100cc84, 0x0100eb50, 0x0101079c, 0x010107a0, 0x01028348, 0x0102a468, 0x01036d04, 0x01036d08); all: 32x7 48x10 64x3 80x4 250x1
   c_left_eject:
     number: 22   # LEFT EJECT
-    default_pulse_ms: 65   # observed in play
+    default_pulse_ms: 64   # code: 64 ms at 1 of 1 pulse sites (0x0100a9b0); all: 64x1
   c_flash_right_ramp:
     number: 23   # FLASH: RIGHT RAMP
-    default_pulse_ms: 65   # observed in play
+    default_pulse_ms: 48   # code: 48 ms at 20 of 38 pulse sites (0x0100cc84, 0x0100d3d0, 0x0100d71c, 0x0100d940, 0x0100eb50, 0x0100f6a0, 0x0100f8a0, 0x0100fadc, 0x01011a18, 0x01011d4c, ); all: 24x2 32x10 48x20 64x5 250x1
   c_optional_coil:
     number: 24   # OPTIONAL COIL
-    default_pulse_ms: 81   # observed in play
+    default_pulse_ms: 81   # code open: the time comes from the device record +0xc of FUN_0102c074 [0x0102c074] (method table 0x00033bc0), a run-time record not decoded yet; 81 ms kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
   c_flash_center_lane_arrow:
     number: 25   # FLASH: CENTER LANE ARROW
-    default_pulse_ms: 32   # not fired in traces; ROM coil test time
+    default_pulse_ms: 48   # code: 48 ms at 4 of 6 pulse sites (0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 48x4 64x2
   c_flash_slingshot_left:
     number: 26   # FLASH: SLINGSHOT (LEFT)
-    default_pulse_ms: 32   # not fired in traces; ROM coil test time
+    default_pulse_ms: 48   # code: 48 ms at 4 of 7 pulse sites (0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 48x4 64x2 150x1
   c_flash_slingshot_right:
     number: 27   # FLASH: SLINGSHOT (RIGHT)
-    default_pulse_ms: 32   # not fired in traces; ROM coil test time
+    default_pulse_ms: 48   # code: 48 ms at 4 of 7 pulse sites (0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 48x4 64x2 150x1
   c_flash_megatron:
     number: 28   # FLASH: MEGATRON
-    default_pulse_ms: 66   # observed in play
+    default_pulse_ms: 48   # code: 48 ms at 8 of 15 pulse sites (0x0100a6bc, 0x0100b568, 0x0100bb84, 0x0100bb88, 0x0100cc84, 0x0100eb50, 0x01028348, 0x0102a468); all: 32x1 48x8 64x2 100x4
   c_optimus_prime_motor:
     number: 30   # OPTIMUS PRIME MOTOR
     default_hold_power: 1.0   # held on, not pulsed
   c_flash_optimus_prime:
     number: 31   # FLASH: OPTIMUS PRIME
-    default_pulse_ms: 66   # observed in play
+    default_pulse_ms: 24   # code: 24 ms at 4 of 17 pulse sites (0x0102651c, 0x01026520, 0x010273a0, 0x010273a4); all: 24x4 48x4 64x2 80x4 100x3
   c_flash_allspark:
     number: 32   # FLASH: ALLSPARK
-    default_pulse_ms: 49   # observed in play
+    default_pulse_ms: 100   # code: 100 ms at 2 of 3 pulse sites (0x0100aa2c, 0x01024360); all: 48x1 100x2
   c_aux_1_ticket_advance:
     number: 33   # AUX 1: TICKET ADVANCE
-    default_pulse_ms: 64   # not fired in traces; ROM coil test time
+    default_pulse_ms: 64   # code: no pulse in the game code; coil test time of the descriptor 0x40ce770
   c_aux_2_ticket_meter:
     number: 34   # AUX 2: TICKET METER
-    default_pulse_ms: 64   # not fired in traces; ROM coil test time
+    default_pulse_ms: 64   # code: no pulse in the game code; coil test time of the descriptor 0x40ce78c
   c_aux_3_ticket_enable:
     number: 35   # AUX 3: TICKET ENABLE
-    default_pulse_ms: 64   # not fired in traces; ROM coil test time
+    default_pulse_ms: 64   # code: no pulse in the game code; coil test time of the descriptor 0x40ce7a8

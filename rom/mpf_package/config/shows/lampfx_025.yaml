@@ -1,7 +1,22 @@
 #show_version=6
-# ROM lamp effect (leff) 25, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 286 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 17ms
+# ROM lamp effect (leff) 25, function 0x0100a714, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_025.json). ends by itself after 17 ticks (276 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+- duration: 16ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 100
+- duration: 16ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 100
+- duration: 16ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 100
+- duration: 16ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -26,22 +41,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 100
-- duration: 17ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 100
 - duration: 16ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 100
-- duration: 16ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 100
-- duration: 17ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -66,11 +66,6 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 100
-- duration: 17ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 100
 - duration: 16ms
   coils:
     c_flash_megatron:
@@ -81,7 +76,12 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 100
-- duration: 26ms
+- duration: 16ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 100
+- duration: 16ms
   coils:
     c_flash_megatron:
       action: pulse

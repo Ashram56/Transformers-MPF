@@ -1,6 +1,6 @@
 #show_version=6
-# ROM lamp effect (leff) 103, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1034 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 103, function 0x010227e0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_103.json). ends by itself after 63 ticks (1024 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 65ms
   coils:
     c_flash_left_ramp:
@@ -78,7 +78,40 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 250
-- duration: 48ms
+- duration: 49ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 49ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 49ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 49ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -133,17 +166,6 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 250
-- duration: 48ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
 - duration: 49ms
   coils:
     c_flash_left_ramp:
@@ -167,28 +189,6 @@
       action: pulse
       pulse_ms: 250
 - duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 48ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 59ms
   coils:
     c_flash_left_ramp:
       action: pulse

@@ -1,6 +1,6 @@
 #show_version=6
-# ROM lamp effect (leff) 96, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1716 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 96, function 0x01034610, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_096.json). ends by itself after 105 ticks (1707 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 114ms
   coils:
     c_flash_megatron:
@@ -17,31 +17,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 113ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 64
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 64
 - duration: 114ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 64
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 64
-- duration: 114ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 64
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 64
-- duration: 113ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -73,7 +49,7 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 113ms
+- duration: 114ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -81,13 +57,19 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 1ms
+- duration: 114ms
   coils:
     c_flash_megatron:
       action: pulse
       pulse_ms: 64
-- duration: 113ms
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
   coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
@@ -115,7 +97,23 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 64
-- duration: 123ms
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 64
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 64
+- duration: 114ms
   coils:
     c_flash_megatron:
       action: pulse

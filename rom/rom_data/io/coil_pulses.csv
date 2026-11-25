@@ -1,0 +1,200 @@
+coil,ms,how,site,source
+1,64,FUN_00002010,0x0100a13c,code: constant arguments at the call
+2,64,FUN_00002010,0x0100a1e0,code: constant arguments at the call
+3,4,FUN_00002078,0x0100a48c,code: constant arguments at the call
+3,64,FUN_00002078,0x0100a39c,code: constant arguments at the call
+3,64,FUN_00002160,0x0100a640,code: constant arguments at the call
+3,64,FUN_00002078,0x0100a68c,code: constant arguments at the call
+9,32,"pop bumper 1: switch 30, dead 16 ms, debounce 16",0x040ddfbc,"code: OS pop table, IO interrupt 0x000114b0"
+10,32,"pop bumper 2: switch 31, dead 16 ms, debounce 16",0x040ddfc8,"code: OS pop table, IO interrupt 0x000114b0"
+11,32,"pop bumper 3: switch 32, dead 16 ms, debounce 16",0x040ddfd4,"code: OS pop table, IO interrupt 0x000114b0"
+12,64,FUN_00002078,0x01033d28,code: constant arguments at the call
+13,64,"slingshot 1: switch 26, dead 192 ms",0x040ddfe8,"code: OS slingshot table, IO interrupt 0x000114b0"
+14,64,"slingshot 2: switch 27, dead 192 ms",0x040ddff0,"code: OS slingshot table, IO interrupt 0x000114b0"
+17,24,coil_pulse,0x01026530,code: constant arguments at the call
+17,24,leff 173 coil,0x01026534,code: the leff's code run (leff_lift.py)
+17,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+17,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+17,48,leff 174 coil,0x01026e9c,code: the leff's code run (leff_lift.py)
+17,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+17,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+17,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+17,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+18,100,coil_pulse_fn,0x0100c964,code: constant arguments at the call
+18,100,coil_pulse_fn,0x0100e820,code: constant arguments at the call
+18,24,coil_pulse,0x010273b4,code: constant arguments at the call
+18,24,leff 178 coil,0x010273b8,code: the leff's code run (leff_lift.py)
+18,250,leff 103 coil_group_fn,0x0102283c,code: the leff's code run (leff_lift.py)
+18,32,leff 156 coil_group,0x01003dc4,code: the leff's code run (leff_lift.py)
+18,32,leff 103 coil_group_fn,0x0102280c,code: the leff's code run (leff_lift.py)
+18,32,coil_pulse,0x0102939c,code: constant arguments at the call
+18,32,leff 51 coil,0x010293a0,code: the leff's code run (leff_lift.py)
+18,32,coil_pulse,0x0102b310,code: constant arguments at the call
+18,32,leff 59 coil,0x0102b314,code: the leff's code run (leff_lift.py)
+18,32,leff 33 coil_group,0x0102d944,code: the leff's code run (leff_lift.py)
+18,32,leff 140 coil_group,0x01030edc,code: the leff's code run (leff_lift.py)
+18,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+18,48,leff 64 coil,0x0100d3d0,code: the leff's code run (leff_lift.py)
+18,48,leff 65 coil,0x0100d71c,code: the leff's code run (leff_lift.py)
+18,48,leff 66 coil,0x0100d940,code: the leff's code run (leff_lift.py)
+18,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+18,48,leff 72 coil,0x0100f6a0,code: the leff's code run (leff_lift.py)
+18,48,leff 73 coil,0x0100f8a0,code: the leff's code run (leff_lift.py)
+18,48,leff 74 coil,0x0100fadc,code: the leff's code run (leff_lift.py)
+18,48,leff 81 coil,0x01011a18,code: the leff's code run (leff_lift.py)
+18,48,leff 82 coil,0x01011d4c,code: the leff's code run (leff_lift.py)
+18,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+18,48,leff 48 coil,0x01028b00,code: the leff's code run (leff_lift.py)
+18,48,leff 49 coil,0x01028fa0,code: the leff's code run (leff_lift.py)
+18,48,leff 50 coil,0x010291dc,code: the leff's code run (leff_lift.py)
+18,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+18,48,leff 56 coil,0x0102ac48,code: the leff's code run (leff_lift.py)
+18,48,leff 57 coil,0x0102af00,code: the leff's code run (leff_lift.py)
+18,48,leff 58 coil,0x0102b150,code: the leff's code run (leff_lift.py)
+18,48,leff 89 coil,0x010374a0,code: the leff's code run (leff_lift.py)
+18,48,leff 90 coil,0x01037768,code: the leff's code run (leff_lift.py)
+18,64,leff 149 coil,0x01001a44,code: the leff's code run (leff_lift.py)
+18,64,leff 150 coil,0x010024b0,code: the leff's code run (leff_lift.py)
+18,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+18,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+18,64,leff 30 coil,0x0102c7d8,code: the leff's code run (leff_lift.py)
+19,24,coil_pulse,0x01026544,code: constant arguments at the call
+19,24,leff 173 coil,0x01026548,code: the leff's code run (leff_lift.py)
+19,32,leff 161 coil_group,0x010048e0,code: the leff's code run (leff_lift.py)
+19,32,coil_pulse,0x01005a54,code: constant arguments at the call
+19,32,leff 165 coil,0x01005a58,code: the leff's code run (leff_lift.py)
+19,32,leff 144 coil_group,0x0102ed3c,code: the leff's code run (leff_lift.py)
+19,32,leff 152 coil_group,0x01032478,code: the leff's code run (leff_lift.py)
+19,32,leff 155 coil_group,0x01032b94,code: the leff's code run (leff_lift.py)
+19,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+19,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+19,48,leff 174 coil,0x01026e9c,code: the leff's code run (leff_lift.py)
+19,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+19,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+19,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+19,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+20,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+20,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+20,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+20,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+20,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+20,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+21,250,leff 103 coil_group_fn,0x0102283c,code: the leff's code run (leff_lift.py)
+21,32,coil_pulse,0x0100db04,code: constant arguments at the call
+21,32,leff 67 coil,0x0100db08,code: the leff's code run (leff_lift.py)
+21,32,coil_pulse,0x0100fca0,code: constant arguments at the call
+21,32,leff 75 coil,0x0100fca4,code: the leff's code run (leff_lift.py)
+21,32,leff 103 coil_group_fn,0x0102280c,code: the leff's code run (leff_lift.py)
+21,32,leff 26 coil_group,0x0102d124,code: the leff's code run (leff_lift.py)
+21,32,leff 33 coil_group,0x0102d944,code: the leff's code run (leff_lift.py)
+21,48,coil_pulse,0x0100bb98,code: constant arguments at the call
+21,48,leff 168 coil,0x0100bb9c,code: the leff's code run (leff_lift.py)
+21,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+21,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+21,48,coil_pulse,0x0101079c,code: constant arguments at the call
+21,48,leff 78 coil,0x010107a0,code: the leff's code run (leff_lift.py)
+21,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+21,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+21,48,coil_pulse,0x01036d04,code: constant arguments at the call
+21,48,leff 86 coil,0x01036d08,code: the leff's code run (leff_lift.py)
+21,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+21,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+21,64,leff 30 coil,0x0102c7d8,code: the leff's code run (leff_lift.py)
+21,80,coil_pulse_fn,0x0100cbb4,code: constant arguments at the call
+21,80,leff 61 coil_fn,0x0100cbb8,code: the leff's code run (leff_lift.py)
+21,80,coil_pulse_fn,0x0100ea80,code: constant arguments at the call
+21,80,leff 69 coil_fn,0x0100ea84,code: the leff's code run (leff_lift.py)
+22,64,FUN_00002078,0x0100a9b0,code: constant arguments at the call
+23,24,coil_pulse,0x010273c0,code: constant arguments at the call
+23,24,leff 178 coil,0x010273c4,code: the leff's code run (leff_lift.py)
+23,250,leff 103 coil_group_fn,0x0102283c,code: the leff's code run (leff_lift.py)
+23,32,leff 156 coil_group,0x01003dc4,code: the leff's code run (leff_lift.py)
+23,32,coil_pulse,0x0100c94c,code: constant arguments at the call
+23,32,coil_pulse,0x0100e808,code: constant arguments at the call
+23,32,leff 103 coil_group_fn,0x0102280c,code: the leff's code run (leff_lift.py)
+23,32,coil_pulse,0x01029390,code: constant arguments at the call
+23,32,leff 51 coil,0x01029394,code: the leff's code run (leff_lift.py)
+23,32,coil_pulse,0x0102b304,code: constant arguments at the call
+23,32,leff 59 coil,0x0102b308,code: the leff's code run (leff_lift.py)
+23,32,leff 140 coil_group,0x01030edc,code: the leff's code run (leff_lift.py)
+23,32,leff 155 coil_group,0x01032b94,code: the leff's code run (leff_lift.py)
+23,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+23,48,leff 64 coil,0x0100d3d0,code: the leff's code run (leff_lift.py)
+23,48,leff 65 coil,0x0100d71c,code: the leff's code run (leff_lift.py)
+23,48,leff 66 coil,0x0100d940,code: the leff's code run (leff_lift.py)
+23,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+23,48,leff 72 coil,0x0100f6a0,code: the leff's code run (leff_lift.py)
+23,48,leff 73 coil,0x0100f8a0,code: the leff's code run (leff_lift.py)
+23,48,leff 74 coil,0x0100fadc,code: the leff's code run (leff_lift.py)
+23,48,leff 81 coil,0x01011a18,code: the leff's code run (leff_lift.py)
+23,48,leff 82 coil,0x01011d4c,code: the leff's code run (leff_lift.py)
+23,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+23,48,leff 48 coil,0x01028b00,code: the leff's code run (leff_lift.py)
+23,48,leff 49 coil,0x01028fa0,code: the leff's code run (leff_lift.py)
+23,48,leff 50 coil,0x010291dc,code: the leff's code run (leff_lift.py)
+23,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+23,48,leff 56 coil,0x0102ac48,code: the leff's code run (leff_lift.py)
+23,48,leff 57 coil,0x0102af00,code: the leff's code run (leff_lift.py)
+23,48,leff 58 coil,0x0102b150,code: the leff's code run (leff_lift.py)
+23,48,leff 89 coil,0x010374a0,code: the leff's code run (leff_lift.py)
+23,48,leff 90 coil,0x01037768,code: the leff's code run (leff_lift.py)
+23,64,leff 149 coil,0x01001a44,code: the leff's code run (leff_lift.py)
+23,64,leff 150 coil,0x010024b0,code: the leff's code run (leff_lift.py)
+23,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+23,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+23,64,leff 30 coil,0x0102c7d8,code: the leff's code run (leff_lift.py)
+25,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+25,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+25,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+25,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+25,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+25,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+26,150,FUN_00006044 group 48,0x01003f48,code: constant arguments at the call
+26,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+26,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+26,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+26,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+26,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+26,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+27,150,FUN_00006044 group 48,0x01003f48,code: constant arguments at the call
+27,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+27,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+27,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+27,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+27,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+27,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+28,100,leff 24 coil_group_fn,0x0100a6fc,code: the leff's code run (leff_lift.py)
+28,100,leff 25 coil_group_fn,0x0100a73c,code: the leff's code run (leff_lift.py)
+28,100,coil_pulse_fn,0x0100bb58,code: constant arguments at the call
+28,100,leff 168 coil_fn,0x0100bb5c,code: the leff's code run (leff_lift.py)
+28,32,leff 166 coil_group,0x0100b43c,code: the leff's code run (leff_lift.py)
+28,48,leff 23 coil_group,0x0100a6bc,code: the leff's code run (leff_lift.py)
+28,48,leff 167 coil_group,0x0100b568,code: the leff's code run (leff_lift.py)
+28,48,coil_pulse,0x0100bb84,code: constant arguments at the call
+28,48,leff 168 coil,0x0100bb88,code: the leff's code run (leff_lift.py)
+28,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+28,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+28,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+28,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+28,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+28,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+31,100,leff 170 coil_group_fn,0x010264f0,code: the leff's code run (leff_lift.py)
+31,100,coil_pulse_fn,0x01028034,code: constant arguments at the call
+31,100,coil_pulse_fn,0x0102a144,code: constant arguments at the call
+31,24,coil_pulse,0x0102651c,code: constant arguments at the call
+31,24,leff 173 coil,0x01026520,code: the leff's code run (leff_lift.py)
+31,24,coil_pulse,0x010273a0,code: constant arguments at the call
+31,24,leff 178 coil,0x010273a4,code: the leff's code run (leff_lift.py)
+31,48,leff 61 coil,0x0100cc84,code: the leff's code run (leff_lift.py)
+31,48,leff 69 coil,0x0100eb50,code: the leff's code run (leff_lift.py)
+31,48,leff 45 coil,0x01028348,code: the leff's code run (leff_lift.py)
+31,48,leff 53 coil,0x0102a468,code: the leff's code run (leff_lift.py)
+31,64,leff 19 coil,0x01008a24,code: the leff's code run (leff_lift.py)
+31,64,leff 31 coil,0x01009b6c,code: the leff's code run (leff_lift.py)
+31,80,coil_pulse_fn,0x01028278,code: constant arguments at the call
+31,80,leff 45 coil_fn,0x0102827c,code: the leff's code run (leff_lift.py)
+31,80,coil_pulse_fn,0x0102a398,code: constant arguments at the call
+31,80,leff 53 coil_fn,0x0102a39c,code: the leff's code run (leff_lift.py)
+32,100,leff 22 coil_group_fn,0x0100aa2c,code: the leff's code run (leff_lift.py)
+32,100,coil_pulse_fn,0x01024360,code: constant arguments at the call
+32,48,leff 21 coil_group,0x0100a9ec,code: the leff's code run (leff_lift.py)

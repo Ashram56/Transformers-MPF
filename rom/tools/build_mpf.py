@@ -37,8 +37,8 @@ names_out['switches'] = {**{str(k): v for k, v in sn.items()}, **{str(k): v for 
 # ---- coils
 co = rd('coils.csv'); cn = names(co, 'coil', 'c_')
 L = [HDR, '# number: the SAM driver number (1-32 on the IO board, 33-35 aux bus ticket outputs). FLASH: entries are\n',
-     '# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse and hold times were measured from the\n',
-     '# solenoid register writes in the emulator (rom_data/io/coil_timing.csv, mpf_source column of coils.csv).\ncoils:\n']
+     '# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse times are the code\'s (rom/tools/coil_pulses.py:\n',
+     '# rom_data/io/coil_pulses.csv, one row per call site; mpf_source column of coils.csv says which, and which stay open).\ncoils:\n']
 for r in co:
     n = int(r['coil'])
     if n not in cn: continue

@@ -1,12 +1,12 @@
 #show_version=6
-# ROM lamp effect (leff) 174, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 3526 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 174, function 0x01026e34, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_174.json). ends by itself after 216 ticks (3512 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 98ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -16,7 +16,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -26,7 +26,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -36,7 +36,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -46,7 +46,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -56,7 +56,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -66,7 +66,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -76,7 +76,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -86,7 +86,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -96,7 +96,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -106,7 +106,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -116,7 +116,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -126,7 +126,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -136,7 +136,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -146,7 +146,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -156,7 +156,7 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
@@ -166,17 +166,17 @@
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse
       pulse_ms: 48
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_decepticon:
       action: pulse
       pulse_ms: 48
-- duration: 114ms
+- duration: 98ms
   coils:
     c_flash_right_side:
       action: pulse

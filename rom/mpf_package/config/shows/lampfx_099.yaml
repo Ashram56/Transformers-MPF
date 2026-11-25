@@ -1,0 +1,153 @@
+#show_version=6
+# ROM lamp effect (leff) 99, function 0x0102e0e8, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_099.json). ends by itself after 48 ticks (780 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+- duration: 16ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 33ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"
+- duration: 33ms
+  lights:
+    l_left_outlane: "ffffff"
+    l_left_return_lane: "ffffff"
+    l_top_lane_purple_bot: "ffffff"
+    l_top_lane_purple_top: "ffffff"
+- duration: 16ms
+  lights:
+    l_left_outlane: "000000"
+    l_left_return_lane: "000000"
+    l_top_lane_purple_bot: "000000"
+    l_top_lane_purple_top: "000000"

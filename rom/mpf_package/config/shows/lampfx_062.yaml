@@ -1,9 +1,21 @@
 #show_version=6
-# ROM lamp effect (leff) 62, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 97 ms).
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 62, function 0x0100cf28, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_062.json). runs until stopped: a cycle of 6 ticks (98 ms); lead-in of 2 ticks left out.
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 49ms
   lights:
+    l_allspark_orange: "ffffff"
+    l_center_lane_orange: "ffffff"
     l_challenge_megatron: "ffffff"
-- duration: 48ms
+    l_left_orbit_orange: "ffffff"
+    l_left_ramp_orange: "ffffff"
+    l_right_orbit_orange: "ffffff"
+    l_right_ramp_orange: "ffffff"
+- duration: 49ms
   lights:
+    l_allspark_orange: "000000"
+    l_center_lane_orange: "000000"
     l_challenge_megatron: "000000"
+    l_left_orbit_orange: "000000"
+    l_left_ramp_orange: "000000"
+    l_right_orbit_orange: "000000"
+    l_right_ramp_orange: "000000"

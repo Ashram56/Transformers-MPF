@@ -1,22 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 166, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1570 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 166, function 0x0100b414, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_166.json). ends by itself after 96 ticks (1561 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 98ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 32
-- duration: 97ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 32
-- duration: 98ms
-  coils:
-    c_flash_megatron:
-      action: pulse
-      pulse_ms: 32
-- duration: 97ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -26,7 +11,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -36,7 +21,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -46,7 +31,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -56,7 +41,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -66,7 +51,7 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 97ms
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse
@@ -76,7 +61,22 @@
     c_flash_megatron:
       action: pulse
       pulse_ms: 32
-- duration: 107ms
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
+  coils:
+    c_flash_megatron:
+      action: pulse
+      pulse_ms: 32
+- duration: 98ms
   coils:
     c_flash_megatron:
       action: pulse

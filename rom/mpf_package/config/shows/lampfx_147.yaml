@@ -1,15 +1,15 @@
 #show_version=6
-# ROM lamp effect (leff) 147, captured in the emulator (tools/emu/lfx.cpp). loops in the ROM (period 585 ms).
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 97ms
+# ROM lamp effect (leff) 147, function 0x0102eebc, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_147.json). runs until stopped: a cycle of 36 ticks (585 ms); lead-in of 5 ticks left out.
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+- duration: 98ms
   lights:
     l_right_2_bank_target_bot: "000000"
     l_right_2_bank_target_top: "000000"
-- duration: 196ms
+- duration: 195ms
   lights:
     l_right_2_bank_target_bot: "7f7f7f"
     l_right_2_bank_target_top: "7f7f7f"
-- duration: 97ms
+- duration: 98ms
   lights:
     l_right_2_bank_target_bot: "ffffff"
     l_right_2_bank_target_top: "ffffff"

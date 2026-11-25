@@ -1,42 +1,12 @@
 #show_version=6
-# ROM lamp effect (leff) 170, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 563 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
+# ROM lamp effect (leff) 170, function 0x010264b8, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_170.json). ends by itself after 34 ticks (553 ms).
+# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
 - duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 32ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
 - duration: 33ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
-- duration: 32ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
-- duration: 33ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
-- duration: 32ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
-- duration: 33ms
-  coils:
-    c_flash_optimus_prime:
-      action: pulse
-      pulse_ms: 100
-- duration: 32ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -51,12 +21,12 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 32ms
+- duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 32ms
+- duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse
@@ -71,17 +41,47 @@
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 32ms
+- duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 32ms
+- duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse
       pulse_ms: 100
-- duration: 43ms
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
+  coils:
+    c_flash_optimus_prime:
+      action: pulse
+      pulse_ms: 100
+- duration: 33ms
   coils:
     c_flash_optimus_prime:
       action: pulse

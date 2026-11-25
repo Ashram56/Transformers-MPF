@@ -1,270 +1,148 @@
 {
  "deff": 35,
- "fn": "0x103e208",
+ "fn": "0x0103e208",
  "flags": 2,
  "priority": 244,
  "background": false,
- "capture": "fg1",
- "forced_at_s": 54.9803,
- "ended_ms": 0.0,
- "window_ms": 301.0,
- "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
- "frames": [],
- "pages": [],
+ "tag": "code",
+ "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_035.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
+ "end_tick": 114,
+ "ended_ms": 1853.6,
+ "ran_ticks": 114,
+ "tick_ms": 16.26,
+ "panel": false,
+ "frames": [
+  {
+   "i": 0,
+   "tick": 0,
+   "t_ms": 0.0,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 1,
+   "tick": 8,
+   "t_ms": 130.1,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 2,
+   "tick": 16,
+   "t_ms": 260.2,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 3,
+   "tick": 24,
+   "t_ms": 390.2,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 4,
+   "tick": 32,
+   "t_ms": 520.3,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 5,
+   "tick": 40,
+   "t_ms": 650.4,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 6,
+   "tick": 48,
+   "t_ms": 780.5,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 7,
+   "tick": 56,
+   "t_ms": 910.6,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 8,
+   "tick": 64,
+   "t_ms": 1040.6,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 9,
+   "tick": 72,
+   "t_ms": 1170.7,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 10,
+   "tick": 80,
+   "t_ms": 1300.8,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 11,
+   "tick": 88,
+   "t_ms": 1430.9,
+   "dur_ms": 130.1
+  },
+  {
+   "i": 12,
+   "tick": 96,
+   "t_ms": 1561.0,
+   "dur_ms": 292.7
+  }
+ ],
  "sounds": [],
  "leffs": [],
- "events": [
+ "deffs": [],
+ "pages": [
   {
+   "tick": 0,
    "t_ms": 0.0,
-   "event": 74
+   "texts": [
+    {
+     "str": "YOU QUALIFIED!",
+     "font": 12,
+     "x": 64,
+     "y": 24,
+     "flags": 2,
+     "call_site": "103e268",
+     "page": 0,
+     "font_list": [
+      12,
+      10,
+      2
+     ],
+     "width": 116
+    },
+    {
+     "str": "PLAYER 0",
+     "font": 12,
+     "x": 64,
+     "y": 14,
+     "flags": 2,
+     "call_site": "103e2a0",
+     "page": 0,
+     "source": "PLAYER %d",
+     "msg": 1219
+    }
+   ]
   },
   {
-   "t_ms": 10.1,
-   "event": 32
-  },
-  {
-   "t_ms": 10.6,
-   "event": 33
-  },
-  {
-   "t_ms": 10.6,
-   "event": 10
-  },
-  {
-   "t_ms": 10.6,
-   "event": 11
-  },
-  {
-   "t_ms": 16.3,
-   "event": 74
-  },
-  {
-   "t_ms": 26.0,
-   "event": 32
-  },
-  {
-   "t_ms": 26.5,
-   "event": 33
-  },
-  {
-   "t_ms": 32.3,
-   "event": 74
-  },
-  {
-   "t_ms": 42.0,
-   "event": 32
-  },
-  {
-   "t_ms": 42.5,
-   "event": 33
-  },
-  {
-   "t_ms": 48.2,
-   "event": 74
-  },
-  {
-   "t_ms": 58.0,
-   "event": 32
-  },
-  {
-   "t_ms": 58.5,
-   "event": 33
-  },
-  {
-   "t_ms": 64.1,
-   "event": 74
-  },
-  {
-   "t_ms": 74.3,
-   "event": 32
-  },
-  {
-   "t_ms": 74.8,
-   "event": 33
-  },
-  {
-   "t_ms": 80.4,
-   "event": 74
-  },
-  {
-   "t_ms": 90.3,
-   "event": 32
-  },
-  {
-   "t_ms": 90.8,
-   "event": 33
-  },
-  {
-   "t_ms": 96.4,
-   "event": 74
-  },
-  {
-   "t_ms": 106.5,
-   "event": 32
-  },
-  {
-   "t_ms": 107.1,
-   "event": 33
-  },
-  {
-   "t_ms": 107.1,
-   "event": 10
-  },
-  {
-   "t_ms": 107.1,
-   "event": 11
-  },
-  {
-   "t_ms": 112.8,
-   "event": 74
-  },
-  {
-   "t_ms": 123.1,
-   "event": 32
-  },
-  {
-   "t_ms": 123.6,
-   "event": 33
-  },
-  {
-   "t_ms": 129.2,
-   "event": 74
-  },
-  {
-   "t_ms": 139.3,
-   "event": 32
-  },
-  {
-   "t_ms": 139.8,
-   "event": 33
-  },
-  {
-   "t_ms": 145.4,
-   "event": 74
-  },
-  {
-   "t_ms": 155.3,
-   "event": 32
-  },
-  {
-   "t_ms": 155.8,
-   "event": 33
-  },
-  {
-   "t_ms": 161.4,
-   "event": 74
-  },
-  {
-   "t_ms": 171.5,
-   "event": 32
-  },
-  {
-   "t_ms": 172.0,
-   "event": 33
-  },
-  {
-   "t_ms": 177.8,
-   "event": 74
-  },
-  {
-   "t_ms": 187.5,
-   "event": 32
-  },
-  {
-   "t_ms": 188.0,
-   "event": 33
-  },
-  {
-   "t_ms": 193.8,
-   "event": 74
-  },
-  {
-   "t_ms": 203.5,
-   "event": 32
-  },
-  {
-   "t_ms": 204.0,
-   "event": 33
-  },
-  {
-   "t_ms": 204.0,
-   "event": 10
-  },
-  {
-   "t_ms": 204.0,
-   "event": 11
-  },
-  {
-   "t_ms": 209.8,
-   "event": 74
-  },
-  {
-   "t_ms": 219.5,
-   "event": 32
-  },
-  {
-   "t_ms": 220.0,
-   "event": 33
-  },
-  {
-   "t_ms": 225.7,
-   "event": 74
-  },
-  {
-   "t_ms": 235.8,
-   "event": 32
-  },
-  {
-   "t_ms": 236.3,
-   "event": 33
-  },
-  {
-   "t_ms": 242.1,
-   "event": 74
-  },
-  {
-   "t_ms": 252.3,
-   "event": 32
-  },
-  {
-   "t_ms": 252.8,
-   "event": 33
-  },
-  {
-   "t_ms": 258.6,
-   "event": 74
-  },
-  {
-   "t_ms": 268.3,
-   "event": 32
-  },
-  {
-   "t_ms": 268.8,
-   "event": 33
-  },
-  {
-   "t_ms": 274.4,
-   "event": 74
-  },
-  {
-   "t_ms": 284.5,
-   "event": 32
-  },
-  {
-   "t_ms": 285.0,
-   "event": 33
-  },
-  {
-   "t_ms": 290.7,
-   "event": 74
-  },
-  {
-   "t_ms": 300.5,
-   "event": 32
-  },
-  {
-   "t_ms": 301.0,
-   "event": 33
+   "tick": 8,
+   "t_ms": 130.1,
+   "texts": [
+    {
+     "str": "YOU QUALIFIED!",
+     "font": 12,
+     "x": 64,
+     "y": 24,
+     "flags": 2,
+     "call_site": "103e2e4",
+     "page": 1
+    }
+   ]
   }
- ]
+ ],
+ "inputs": [],
+ "detached_tasks": []
 }

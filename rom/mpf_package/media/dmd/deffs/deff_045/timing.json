@@ -1,270 +1,11237 @@
 {
  "deff": 45,
- "fn": "0x102e568",
+ "fn": "0x0102e568",
  "flags": 2,
  "priority": 129,
  "background": false,
- "capture": "fg2",
- "forced_at_s": 74.5908,
- "ended_ms": 0.0,
- "window_ms": 300.1,
- "note": "frames are emulator DMD output (only changed frames recorded); the left 41 columns may show the status panel drawn by deff 40 (background) rather than this effect",
- "frames": [],
- "pages": [],
+ "tag": "code",
+ "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list rom/rom_data/dmd/deff_ops/deff_045.json; frames drawn from the ROM's images and fonts (rom/tools/deff_render.py)",
+ "end_tick": 150,
+ "ended_ms": 2439.0,
+ "ran_ticks": 150,
+ "tick_ms": 16.26,
+ "panel": true,
+ "frames": [
+  {
+   "i": 0,
+   "tick": 0,
+   "t_ms": 0.0,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 1,
+   "tick": 4,
+   "t_ms": 65.0,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 2,
+   "tick": 8,
+   "t_ms": 130.1,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 3,
+   "tick": 12,
+   "t_ms": 195.1,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 4,
+   "tick": 16,
+   "t_ms": 260.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 5,
+   "tick": 20,
+   "t_ms": 325.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 6,
+   "tick": 24,
+   "t_ms": 390.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 7,
+   "tick": 28,
+   "t_ms": 455.3,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 8,
+   "tick": 32,
+   "t_ms": 520.3,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 9,
+   "tick": 36,
+   "t_ms": 585.4,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 10,
+   "tick": 40,
+   "t_ms": 650.4,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 11,
+   "tick": 44,
+   "t_ms": 715.4,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 12,
+   "tick": 48,
+   "t_ms": 780.5,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 13,
+   "tick": 52,
+   "t_ms": 845.5,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 14,
+   "tick": 56,
+   "t_ms": 910.6,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 15,
+   "tick": 60,
+   "t_ms": 975.6,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 16,
+   "tick": 64,
+   "t_ms": 1040.6,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 17,
+   "tick": 68,
+   "t_ms": 1105.7,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 18,
+   "tick": 72,
+   "t_ms": 1170.7,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 19,
+   "tick": 76,
+   "t_ms": 1235.8,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 20,
+   "tick": 80,
+   "t_ms": 1300.8,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 21,
+   "tick": 84,
+   "t_ms": 1365.8,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 22,
+   "tick": 88,
+   "t_ms": 1430.9,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 23,
+   "tick": 92,
+   "t_ms": 1495.9,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 24,
+   "tick": 96,
+   "t_ms": 1561.0,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 25,
+   "tick": 100,
+   "t_ms": 1626.0,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 26,
+   "tick": 104,
+   "t_ms": 1691.0,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 27,
+   "tick": 108,
+   "t_ms": 1756.1,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 28,
+   "tick": 112,
+   "t_ms": 1821.1,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 29,
+   "tick": 116,
+   "t_ms": 1886.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 30,
+   "tick": 120,
+   "t_ms": 1951.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 31,
+   "tick": 124,
+   "t_ms": 2016.2,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 32,
+   "tick": 128,
+   "t_ms": 2081.3,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 33,
+   "tick": 132,
+   "t_ms": 2146.3,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 34,
+   "tick": 136,
+   "t_ms": 2211.4,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 35,
+   "tick": 140,
+   "t_ms": 2276.4,
+   "dur_ms": 65.0
+  },
+  {
+   "i": 36,
+   "tick": 144,
+   "t_ms": 2341.4,
+   "dur_ms": 97.6
+  }
+ ],
  "sounds": [],
  "leffs": [],
- "events": [
+ "deffs": [],
+ "pages": [
   {
-   "t_ms": 0.1,
-   "event": 74
+   "tick": 0,
+   "t_ms": 0.0,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 1,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 9.8,
-   "event": 32
+   "tick": 1,
+   "t_ms": 16.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 10.3,
-   "event": 33
+   "tick": 2,
+   "t_ms": 32.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 16.0,
-   "event": 74
+   "tick": 3,
+   "t_ms": 48.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 25.8,
-   "event": 32
+   "tick": 4,
+   "t_ms": 65.0,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 6,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 6,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 6,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 26.3,
-   "event": 33
+   "tick": 5,
+   "t_ms": 81.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 31.9,
-   "event": 74
+   "tick": 6,
+   "t_ms": 97.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 41.8,
-   "event": 32
+   "tick": 7,
+   "t_ms": 113.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 42.3,
-   "event": 33
+   "tick": 8,
+   "t_ms": 130.1,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 11,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 11,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 11,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 48.0,
-   "event": 74
+   "tick": 9,
+   "t_ms": 146.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 58.3,
-   "event": 32
+   "tick": 10,
+   "t_ms": 162.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 58.8,
-   "event": 33
+   "tick": 11,
+   "t_ms": 178.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 64.4,
-   "event": 74
+   "tick": 12,
+   "t_ms": 195.1,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 16,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 16,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 16,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 74.3,
-   "event": 32
+   "tick": 13,
+   "t_ms": 211.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 74.8,
-   "event": 33
+   "tick": 14,
+   "t_ms": 227.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 74.8,
-   "event": 10
+   "tick": 15,
+   "t_ms": 243.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 74.8,
-   "event": 11
+   "tick": 16,
+   "t_ms": 260.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 3,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 3,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 3,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 80.5,
-   "event": 74
+   "tick": 17,
+   "t_ms": 276.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 90.3,
-   "event": 32
+   "tick": 18,
+   "t_ms": 292.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 90.8,
-   "event": 33
+   "tick": 19,
+   "t_ms": 308.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 96.4,
-   "event": 74
+   "tick": 20,
+   "t_ms": 325.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 8,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 8,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 8,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 106.3,
-   "event": 32
+   "tick": 21,
+   "t_ms": 341.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 106.8,
-   "event": 33
+   "tick": 22,
+   "t_ms": 357.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 112.5,
-   "event": 74
+   "tick": 23,
+   "t_ms": 374.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 122.3,
-   "event": 32
+   "tick": 24,
+   "t_ms": 390.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 13,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 13,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 13,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 122.8,
-   "event": 33
+   "tick": 25,
+   "t_ms": 406.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 128.6,
-   "event": 74
+   "tick": 26,
+   "t_ms": 422.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 138.3,
-   "event": 32
+   "tick": 27,
+   "t_ms": 439.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 138.8,
-   "event": 33
+   "tick": 28,
+   "t_ms": 455.3,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 0,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 0,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 0,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 144.6,
-   "event": 74
+   "tick": 29,
+   "t_ms": 471.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 154.3,
-   "event": 32
+   "tick": 30,
+   "t_ms": 487.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 154.8,
-   "event": 33
+   "tick": 31,
+   "t_ms": 504.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 160.4,
-   "event": 74
+   "tick": 32,
+   "t_ms": 520.3,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 5,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 5,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 5,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 170.5,
-   "event": 32
+   "tick": 33,
+   "t_ms": 536.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 171.0,
-   "event": 33
+   "tick": 34,
+   "t_ms": 552.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 171.0,
-   "event": 10
+   "tick": 35,
+   "t_ms": 569.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 171.0,
-   "event": 11
+   "tick": 36,
+   "t_ms": 585.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 10,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 10,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 10,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 177.0,
-   "event": 74
+   "tick": 37,
+   "t_ms": 601.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 186.5,
-   "event": 32
+   "tick": 38,
+   "t_ms": 617.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 187.0,
-   "event": 33
+   "tick": 39,
+   "t_ms": 634.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 192.8,
-   "event": 74
+   "tick": 40,
+   "t_ms": 650.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 15,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 15,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 15,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 202.5,
-   "event": 32
+   "tick": 41,
+   "t_ms": 666.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 203.0,
-   "event": 33
+   "tick": 42,
+   "t_ms": 682.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 208.8,
-   "event": 74
+   "tick": 43,
+   "t_ms": 699.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 218.5,
-   "event": 32
+   "tick": 44,
+   "t_ms": 715.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 2,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 2,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 2,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 219.0,
-   "event": 33
+   "tick": 45,
+   "t_ms": 731.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 224.7,
-   "event": 74
+   "tick": 46,
+   "t_ms": 748.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 234.8,
-   "event": 32
+   "tick": 47,
+   "t_ms": 764.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 235.3,
-   "event": 33
+   "tick": 48,
+   "t_ms": 780.5,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 7,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 7,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 7,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 240.9,
-   "event": 74
+   "tick": 49,
+   "t_ms": 796.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 250.8,
-   "event": 32
+   "tick": 50,
+   "t_ms": 813.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 251.3,
-   "event": 33
+   "tick": 51,
+   "t_ms": 829.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 256.9,
-   "event": 74
+   "tick": 52,
+   "t_ms": 845.5,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 12,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 12,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 12,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 267.1,
-   "event": 32
+   "tick": 53,
+   "t_ms": 861.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 267.6,
-   "event": 33
+   "tick": 54,
+   "t_ms": 878.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 267.6,
-   "event": 10
+   "tick": 55,
+   "t_ms": 894.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 267.6,
-   "event": 11
+   "tick": 56,
+   "t_ms": 910.6,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 17,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 17,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 17,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 273.2,
-   "event": 74
+   "tick": 57,
+   "t_ms": 926.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 283.3,
-   "event": 32
+   "tick": 58,
+   "t_ms": 943.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 283.8,
-   "event": 33
+   "tick": 59,
+   "t_ms": 959.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 289.4,
-   "event": 74
+   "tick": 60,
+   "t_ms": 975.6,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 4,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 4,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 4,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 299.5,
-   "event": 32
+   "tick": 61,
+   "t_ms": 991.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   },
   {
-   "t_ms": 300.0,
-   "event": 33
+   "tick": 62,
+   "t_ms": 1008.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 63,
+   "t_ms": 1024.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 64,
+   "t_ms": 1040.6,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 9,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 9,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 9,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 65,
+   "t_ms": 1056.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 66,
+   "t_ms": 1073.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 67,
+   "t_ms": 1089.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 68,
+   "t_ms": 1105.7,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 14,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 14,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 14,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 69,
+   "t_ms": 1121.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 70,
+   "t_ms": 1138.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 71,
+   "t_ms": 1154.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 72,
+   "t_ms": 1170.7,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 1,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 73,
+   "t_ms": 1187.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 74,
+   "t_ms": 1203.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 75,
+   "t_ms": 1219.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 76,
+   "t_ms": 1235.8,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 6,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 6,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 6,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 77,
+   "t_ms": 1252.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 78,
+   "t_ms": 1268.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 79,
+   "t_ms": 1284.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 80,
+   "t_ms": 1300.8,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 11,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 11,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 11,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 81,
+   "t_ms": 1317.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 82,
+   "t_ms": 1333.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 83,
+   "t_ms": 1349.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 84,
+   "t_ms": 1365.8,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 16,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 16,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 16,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 85,
+   "t_ms": 1382.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 86,
+   "t_ms": 1398.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 87,
+   "t_ms": 1414.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 88,
+   "t_ms": 1430.9,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 3,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 3,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 3,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 89,
+   "t_ms": 1447.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 90,
+   "t_ms": 1463.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 91,
+   "t_ms": 1479.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 92,
+   "t_ms": 1495.9,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 8,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 8,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 8,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 93,
+   "t_ms": 1512.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 94,
+   "t_ms": 1528.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 95,
+   "t_ms": 1544.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 96,
+   "t_ms": 1561.0,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 13,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 13,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 13,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 97,
+   "t_ms": 1577.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 98,
+   "t_ms": 1593.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 99,
+   "t_ms": 1609.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 100,
+   "t_ms": 1626.0,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 0,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 0,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 0,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 101,
+   "t_ms": 1642.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 102,
+   "t_ms": 1658.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 103,
+   "t_ms": 1674.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 104,
+   "t_ms": 1691.0,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 5,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 5,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 5,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 105,
+   "t_ms": 1707.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 106,
+   "t_ms": 1723.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 107,
+   "t_ms": 1739.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 108,
+   "t_ms": 1756.1,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 10,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 10,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 10,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 109,
+   "t_ms": 1772.3,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 110,
+   "t_ms": 1788.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 111,
+   "t_ms": 1804.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 112,
+   "t_ms": 1821.1,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 15,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 15,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 15,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 113,
+   "t_ms": 1837.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 114,
+   "t_ms": 1853.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 115,
+   "t_ms": 1869.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 116,
+   "t_ms": 1886.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 2,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 2,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 2,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 117,
+   "t_ms": 1902.4,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 118,
+   "t_ms": 1918.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 119,
+   "t_ms": 1934.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 120,
+   "t_ms": 1951.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 7,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 7,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 7,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 121,
+   "t_ms": 1967.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 9,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 9,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 9,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 9,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 122,
+   "t_ms": 1983.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 123,
+   "t_ms": 2000.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 124,
+   "t_ms": 2016.2,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 12,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 12,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 12,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 125,
+   "t_ms": 2032.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 14,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 14,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 14,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 14,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 126,
+   "t_ms": 2048.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 127,
+   "t_ms": 2065.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 128,
+   "t_ms": 2081.3,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 17,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 17,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 17,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 129,
+   "t_ms": 2097.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 1,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 1,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 1,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 1,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 130,
+   "t_ms": 2113.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 131,
+   "t_ms": 2130.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 132,
+   "t_ms": 2146.3,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 4,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 4,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 4,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 133,
+   "t_ms": 2162.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 134,
+   "t_ms": 2178.8,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 135,
+   "t_ms": 2195.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 8,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 8,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 8,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 8,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 136,
+   "t_ms": 2211.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 9,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 9,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 9,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 10,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 10,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 10,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 10,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 137,
+   "t_ms": 2227.6,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 11,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 11,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 11,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 11,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 138,
+   "t_ms": 2243.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 12,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 12,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 12,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 12,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 139,
+   "t_ms": 2260.1,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 13,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 13,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 13,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 13,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 140,
+   "t_ms": 2276.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 14,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 14,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 14,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 15,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 15,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 15,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 15,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 141,
+   "t_ms": 2292.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 16,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 16,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 16,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 16,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 142,
+   "t_ms": 2308.9,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 17,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 17,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 17,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 17,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 143,
+   "t_ms": 2325.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 0,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 0,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 0,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 0,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 144,
+   "t_ms": 2341.4,
+   "texts": [
+    {
+     "str": "OPTIMUS LANES",
+     "font": 7,
+     "x": 41,
+     "y": 8,
+     "flags": 1,
+     "call_site": "102e600",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "COMPLETED",
+     "font": 7,
+     "x": 41,
+     "y": 19,
+     "flags": 1,
+     "call_site": "102e630",
+     "page": 1,
+     "font_list": [
+      7,
+      7,
+      7,
+      1
+     ],
+     "width": 85
+    },
+    {
+     "str": "0X BONUS",
+     "font": 7,
+     "x": 41,
+     "y": 30,
+     "flags": 1,
+     "call_site": "102e674",
+     "page": 1,
+     "source": "%dX BONUS",
+     "msg": 1536
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 2,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 2,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 2,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 2,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 145,
+   "t_ms": 2357.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 3,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 3,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 3,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 3,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 146,
+   "t_ms": 2374.0,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 4,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 4,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 4,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 4,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 147,
+   "t_ms": 2390.2,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 5,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 5,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 5,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 5,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 148,
+   "t_ms": 2406.5,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 6,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 6,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 6,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 6,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
+  },
+  {
+   "tick": 149,
+   "t_ms": 2422.7,
+   "texts": [
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 36,
+     "flags": 4,
+     "call_site": "102f2ec",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "00",
+     "font": 0,
+     "x": 38,
+     "y": 5,
+     "flags": 4,
+     "call_site": "102f36c",
+     "page": 7,
+     "source": "%,02lu",
+     "msg": 1282
+    },
+    {
+     "str": "0-WAY",
+     "font": 1,
+     "x": 39,
+     "y": 38,
+     "flags": 4,
+     "call_site": "102f5a8",
+     "page": 7,
+     "source": "%d-WAY",
+     "msg": 1745
+    },
+    {
+     "str": "COMBO",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f620",
+     "page": 7,
+     "source": "COMBO",
+     "msg": 1746
+    },
+    {
+     "str": "0 COMBOS",
+     "font": 1,
+     "x": 39,
+     "y": 44,
+     "flags": 4,
+     "call_site": "102f6cc",
+     "page": 7,
+     "source": "%d COMBO%P1//S/%",
+     "msg": 1747
+    }
+   ]
   }
- ]
+ ],
+ "inputs": [
+  [
+   "player_side",
+   "0x0102e574",
+   2
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f234",
+   1
+  ],
+  [
+   "num_players",
+   "0x0102f634",
+   1
+  ],
+  [
+   "current_player",
+   "0x0102f224",
+   1
+  ]
+ ],
+ "detached_tasks": []
 }
