@@ -25,7 +25,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | Check | State |
 |---|---|
 | Rule text in CLAUDE.md | passes |
-| `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (deff and leff scripts not decoded, coil pulses measured, 2,526 functions unnamed), the Xilinx FPGA `absent` (configuration not in the set; owner to say whether it counts) |
+| `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (deff and leff scripts not decoded, coil pulses measured, 2,526 functions unnamed), the two Xilinx XC95144XL CPLDs `absent` (flash fuse map, only readable through the J8 JTAG header of a real board; owner to say whether it counts) |
 | Captured data | **fails** for 266 files: 153 deff captures, 111 leff shows, `coils.csv` (pulses), `adjustments.csv` (value texts); listed in [pinmame_waivers.md](../pinmame_waivers.md); no waiver (owner, 2026-11-25): agent A decodes them |
 | Functional diagram | passes: [functional_diagram.md](../functional_diagram.md), assembled after the fact from A's specs, each address checked by `tests/test_functional_diagram.py` |
 
@@ -79,5 +79,5 @@ and multiball tasks (`0x0103b39c`, `0x01039db4`, `0x0103aba4`).
 ### Owner decisions
 
 1. Decided 2026-11-25: no waiver for the captured data; agent A decodes it ([pinmame_waivers.md](../pinmame_waivers.md)).
-2. Whether the Xilinx FPGA (configuration, no program) counts as a board to decompile.
+2. Whether the two Xilinx XC95144XL CPLDs (fuse map, no program, not loaded by the ROM) count as a board to decompile.
 3. F15: confirming the tilt / ball save case needs a new reference trace, which is an emulator capture.
