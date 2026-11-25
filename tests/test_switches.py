@@ -22,7 +22,8 @@ class TestSwitchScores(TfTestCase):
         self.assertEqual(440, self.hit("s_right_slingshot"))
         self.assertEqual(3170, self.hit("s_top_bumper"))
         self.assertEqual(560, self.hit("s_l_ramp_entrance"))
-        self.assertEqual(500030, self.hit("s_megatron_back_door"))    # super skill shot (ends both)
+        # slings and a pop are 3 switches posting event 0x6b: both skill shots have ended [0x010313cc] (QA P3)
+        self.assertEqual(30, self.hit("s_megatron_back_door"))
         self.assertEqual(2500 + 2560, self.hit("s_left_top_lane"))     # lane lamp + handler
         sounds = [int(e["call"], 16) for e in self.tf.trace.of("sound")]
         self.assertTrue({0x15a, 0x15c} <= set(sounds))

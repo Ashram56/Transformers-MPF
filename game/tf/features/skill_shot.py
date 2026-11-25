@@ -11,7 +11,8 @@ cancels both.
   other than 7, 8, 12 or after 3 different valid switches other than those.
 - Super skill shot (task 0xb4): the Megatron back door (sw13): 500,000 + 100,000 x super skill shots made
   (cap 1,000,000); deff 43 queued (show task 0x65), leff 94, sound 0x167. It ends on a force switch other
-  than 12, 13 or 3 different valid switches other than those. Slings and pops end neither.
+  than 12, 13 or 3 different valid switches other than those. Every switch that posts event 0x6b counts,
+  slings, pops, the captive ball 45 and Optimus 51 included (hook 0x010313cc registered at 0x01031ed8; QA P3).
 """
 from tf.features import Feature
 
@@ -21,8 +22,6 @@ LANE = {AUTOBOT: 7}                 # own lane by side (Decepticon: 8)
 NOT_HANDS_FREE = 0x11
 SKILL_DEFF = 42
 SUPER_DEFF, SUPER_TASK = 43, 0x65
-# the skill shots' own count of valid switches (obj 0x31400 / 0x3140c): slings and pops do not end them
-SKILL_COUNTING = {1, 2, 4, 5, 6, 13, 35, 37, 46, 49, 50}
 
 
 class SkillShot(Feature):
@@ -81,12 +80,12 @@ class SkillShot(Feature):
                 self.super = False
 
     def _ends(self, num, exempt, seen):
-        from tf.os_layer import FORCE_SWITCHES
+        from tf.os_layer import COUNTING_SWITCHES, FORCE_SWITCHES
         if num in exempt:
             return False
         if num in FORCE_SWITCHES:
             return True
-        if num in SKILL_COUNTING:
+        if num in COUNTING_SWITCHES:        # the event 0x6b hook's count (obj 0x31400 / 0x3140c) [0x010313cc]
             seen.add(num)
             return len(seen) >= 3
         return False

@@ -89,6 +89,7 @@ class Allspark(Feature):
         """[0x0100a788] event 2, ball entered."""
         os_ = self.os
         os_.audit(ENTER_AUDIT)
+        os_.hook("shot_mult_take", 0)               # FUN_010237ac(0) first [0x0100a788] (QA P2)
         os_.hook("eject_modes")                     # the wizard modes' hits and starts first [0x0100a788]
         os_.hook("mb_shot", 0)
         os_.hook("battle_shot", 0)

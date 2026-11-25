@@ -928,6 +928,7 @@ class Battles(Feature):
         os_ = self.os
         if not os_.game or os_.tilted:
             return
+        os_.hook("shot_mult_take", shot)            # FUN_010237ac(shot) first in every shot handler (QA P2)
         if shot in SHOT_AUDIT:
             os_.audit(SHOT_AUDIT[shot])
         if mb:

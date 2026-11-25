@@ -134,3 +134,32 @@ class TestBonusHold(QaCase):
         self.machine.default_platform.add_ball_to_device(self.machine.ball_devices["bd_trough"])
         self.advance_time_and_run(15)
         self.release_switch_and_run("s_shooter_lane", 2)
+
+
+class TestPlayfield(QaCase):
+    def hit(self, name, wait=0.5):
+        before = self.score()
+        self.hit_and_release_switch(name)
+        self.advance_time_and_run(wait)
+        return self.score() - before
+
+    def test_lit_multiplier_doubles_its_own_combo(self):
+        """FUN_010237ac(shot) runs first in every shot handler [0x01033824]: the shot that takes the lit 2X
+        scores its combo at 2X (QA P2)."""
+        self.start()
+        self.hit("s_right_orbit_spinner")                   # a force switch ends the skill shots
+        self.hit("s_l_ramp_exit")                           # combo window opens
+        self.tf.pd.mult_lit = True
+        before = len(self.tf.trace.of("score_add"))
+        self.hit("s_r_ramp_exit")
+        self.assertEqual(2, self.tf.pd.shot_mult[4])
+        self.assertIn(300000, [e.get("points") for e in self.tf.trace.of("score_add")[before:]])
+
+    def test_slings_and_pops_end_the_skill_shots(self):
+        """Event 0x6b hook 0x010313cc counts slings and pops: 3 distinct end both skill shots (QA P3)."""
+        self.start()
+        for name in ("s_left_slingshot", "s_right_slingshot", "s_top_bumper"):
+            self.hit(name)
+        skill = self.tf.features_by_name["skill_shot"]
+        self.assertFalse(skill.top or skill.super)
+        self.assertEqual(30, self.hit("s_megatron_back_door"))
