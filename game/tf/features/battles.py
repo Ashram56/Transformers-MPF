@@ -1004,8 +1004,7 @@ class Battles(Feature):
         self.battle_shot(BEE)
 
     def _top_lane(self):
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x010335d0] / [0x0103361c], always (QA P7)
 
     sw_7 = sw_8 = _top_lane
 
@@ -1017,8 +1016,7 @@ class Battles(Feature):
         for b in self.battles:
             if b.scoring:
                 b.pop()
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x01032f8c], always (QA P7)
 
     sw_30 = sw_31 = sw_32 = _pop
 

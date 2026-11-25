@@ -173,8 +173,8 @@ class Allspark(Feature):
             w[8] = 0
         if os_.flag(BONUS_X_HOLD):
             w[9] = 0
-        if all(m >= 2 for m in pd.get("shot_mult", [1] * 6)):
-            w[10] = 0
+        if pd.get("mult_lit") or os_.task_running(0xb6):     # 0x01023494 returns 0 (QA P4): a multiplier lit
+            w[10] = 0                                         # or the roving 3X runs; all six at 2X still offer it
         if pd.get("super_spinner"):
             w[11] = 0
         if last in w and last not in (5, 6):

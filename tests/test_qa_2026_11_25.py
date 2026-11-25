@@ -163,3 +163,55 @@ class TestPlayfield(QaCase):
         skill = self.tf.features_by_name["skill_shot"]
         self.assertFalse(skill.top or skill.super)
         self.assertEqual(30, self.hit("s_megatron_back_door"))
+
+    def test_item_10_offered_with_all_shots_at_2x(self):
+        """0x01023494 gives item 10 weight 0 only when a multiplier is lit or the roving 3X runs (QA P4)."""
+        self.start()
+        allspark = self.tf.features_by_name["allspark"]
+        self.tf.pd.shot_mult = [2] * 6
+        self.tf.pd.allspark_last = 0
+        self.assertGreater(allspark.weights()[9], 0)
+        self.tf.pd.mult_lit = True
+        self.assertEqual(0, allspark.weights()[9])
+
+    def test_double_and_fast_scoring_starts_clear_add_time_flag(self):
+        """game_flag_clear(0x13) in 0x010039a0 and 0x01004394 (QA P5)."""
+        self.start()
+        for name in ("bumblebee", "twobank"):
+            self.tf.flag_set(0x13)
+            self.tf.features_by_name[name].start()
+            self.assertFalse(self.tf.flag(0x13), name)
+            self.tf.features_by_name[name].stop()
+
+    def test_fast_scoring_targets_and_tail(self):
+        """[0x010047b8]: +1,000 on the first target of a cycle only, +10 counts on the completing hit; the
+        250-tick tail is no timed mode and +10 there restarts the countdown (QA P8, P9)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        value, count = fs.value, fs.count
+        fs._fast_target(50)
+        self.assertEqual(value + 1000, fs.value)
+        fs._fast_target(37)
+        self.assertEqual((value + 1000, min(count + 10, 90)), (fs.value, fs.count))
+        fs.counting, fs.count = False, 0                  # in the tail
+        self.assertFalse(self.tf.timed_mode_running())
+        fs._fast_target(50)
+        self.assertEqual(value + 1000, fs.value)          # no +1,000 outside the countdown
+        fs._fast_target(37)
+        self.assertTrue(fs.counting)
+        self.assertEqual(10, fs.count)
+        fs.stop()
+
+    def test_pops_hold_the_fast_scoring_countdown(self):
+        """Pops start the 156-tick hold task 0x59 [0x01032f8c], battle or not (QA P7)."""
+        self.start()
+        fs = self.tf.features_by_name["twobank"]
+        fs.start()
+        self.advance_time_and_run(6)
+        count = fs.count
+        for _ in range(8):
+            self.hit("s_top_bumper", 0.75)
+        self.assertEqual(count, fs.count)
+        fs.stop()
