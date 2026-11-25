@@ -1,16 +1,34 @@
 """Game over: match, game-over music and the return to attract (OS code; Tron's game_flow.md 5.5 and 6.2).
-Timings are Tron's reference traces (the same OS)."""
-import random
-
+The match sequence is read from match [0x00019668] and deff 38 [0x0100820c] (QA F9)."""
 from tf.features import Feature
+from tf.os_layer import TICK
 
-MATCH_REVEAL = 258       # ticks from deff 38 to the match award (traces/game_flow.jsonl 4.19 s)
-ATTRACT_DELAY = 370      # ticks from the match display to attract (traces/game_flow.jsonl 158.65 -> 164.66 s)
+# deff 38 [0x0100820c]: 68 frames of 5 ticks (sound 0x023 at 0, 0x072 matched / 0x073 not at frame 60), the
+# awards after the last frame, then if any: 0x074 and 24 more frames; task_sleep(0x1f) and a 2-tick hold
+FRAME_TICKS, VERDICT_FRAME, FRAMES, WIN_FRAMES, TAIL_TICKS = 5, 60, 68, 24, 0x1f + 2
+MATCH_SOUND, MATCHED_SOUND, NO_MATCH_SOUND, WIN_SOUND = 0x023, 0x072, 0x073, 0x074
 GAME_OVER_MUSIC, GAME_OVER_SPEECH, SPEECH_TICKS = 0x24, 0x4b, 0x7c   # task 0x9b [0x01006138]
 
 
 class GameOver(Feature):
     name = "match"
+
+    def number(self, scores):
+        """match [0x00019668]: a random 00-90; while the machine's match rate (audits 0x0f x 100 / 0x11) is below adj
+        30 MATCH PERCENTAGE, the players whose score ends with it match; otherwise the number steps by 10 until no
+        player has it (QA F9a). -> (number, matched player count)."""
+        os_ = self.os
+        number = os_.pick("match_number", [1] * 10)
+        number = (number or 0) * 10
+        audits = os_.audits
+        rate = audits[0x0f] * 100 // audits[0x11] if audits[0x11] else 0
+        if rate < os_.adj_value(30):
+            return number, sum(1 for score in scores if score % 100 == number)
+        start = n = number
+        while True:
+            n = n + 10 if n + 10 <= 99 else 0
+            if not any(score % 100 == n for score in scores) or n == start:
+                return n, 0
 
     def run(self, done):
         os_ = self.os
@@ -18,25 +36,24 @@ class GameOver(Feature):
             os_.hook("attract_start")
             done()
             return
-        number = random.randrange(0, 100, 10)
-        os_.deff_start(38, number=number, number_again=number)   # deff 38 prints the number (task + 0x34)
+        if os_.adj_value(30) == 11:               # MATCH OFF: no deff 38 [0x00019668] (QA F9c; tournament not modelled)
+            self._attract(done)
+            return
+        number, matched = self.number([p.score for p in self.machine.game.player_list])
         forced = os_.forced.get("match")
-        matched = 0
-        # match [0x00019668]: adj 30 MATCH PERCENTAGE (11 = OFF). The number can match only while the
-        # machine's match rate (TOTAL MATCHES 0x0f x 100 / games 0x11, persistent audits) is below adj 30;
-        # otherwise the ROM picks a number no player has.
-        audits = os_.audits
-        rate = audits[0x0f] * 100 // audits[0x11] if audits[0x11] else 0
-        if os_.adj_value(30) < 11 and rate < os_.adj_value(30):
-            matched = sum(1 for p in self.machine.game.player_list if p.score % 100 == number)
         if forced:
             matched = forced.pop(0)
-        if matched:
-            os_.after(MATCH_REVEAL, lambda: self._award(matched))
-        os_.after(ATTRACT_DELAY, lambda: self._attract(done))
+        ticks = FRAMES * FRAME_TICKS + (WIN_FRAMES * FRAME_TICKS if matched else 0) + TAIL_TICKS
+        verdict = MATCHED_SOUND if matched else NO_MATCH_SOUND
+        os_.deff_start(38, number=number, number_again=number, run_seconds=ticks * TICK, sounds=[
+            (0.0, lambda: os_.sound(MATCH_SOUND, in_deff=38)),
+            (VERDICT_FRAME * FRAME_TICKS * TICK, lambda: os_.sound(verdict, in_deff=38))])
+        if matched:                               # inside the deff, after its 68th frame (QA F9b)
+            os_.after(FRAMES * FRAME_TICKS, lambda: self._award(matched))
+        os_.after(ticks, lambda: self._attract(done))
 
     def _award(self, matched):
-        """Match award (adj 29): 0 = credit with knocker 0x019."""
+        """match_award [0x00019874] per matched player (adj 29: 0 = credit with knocker 0x019), then 0x074."""
         os_ = self.os
         for _ in range(matched):
             os_.audit(0x0f)
@@ -45,6 +62,7 @@ class GameOver(Feature):
                 os_.knock()
             else:
                 self.machine.events.post("tf_award_ticket" if os_.adj_value(29) == 1 else "tf_award_token")
+        os_.sound(WIN_SOUND, in_deff=38)
 
     def _attract(self, done):
         os_ = self.os

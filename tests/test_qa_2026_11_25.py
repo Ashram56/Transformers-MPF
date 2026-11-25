@@ -403,3 +403,28 @@ class TestLowFixes(QaCase):
                 self.assertEqual({92: 1}, display.deff_holds())
             finally:
                 display.ROM = saved
+
+    def test_match_number_steps_past_the_players(self):
+        """[0x00019668]: with the match rate at or above adj 30 the number steps by 10 until no player has it (QA F9a)."""
+        self.start()
+        go = self.tf.features_by_name["match"]
+        self.tf.forced["match_number"] = [3]
+        self.tf.audits.add(0x11, 10)
+        self.tf.audits.add(0x0f, 10)
+        number, matched = go.number([1230, 40, 50])
+        self.assertEqual((60, 0), (number, matched))
+
+    def test_match_sounds_and_award_inside_deff_38(self):
+        """deff 38 [0x0100820c]: 0x072 at frame 60 when a player matched, the award after frame 68, then 0x074
+        (QA F9b)."""
+        from tf.features import game_over
+        self.start()
+        go = self.tf.features_by_name["match"]
+        self.tf.forced["match"] = [1]
+        go.run(lambda: None)
+        self.advance_time_and_run(61 * 5 * TICK)
+        calls = [e.get("call") for e in self.tf.trace.of("sound")]
+        self.assertIn(game_over.MATCHED_SOUND, [int(c, 16) if isinstance(c, str) else c for c in calls])
+        self.advance_time_and_run(8 * 5 * TICK)
+        calls = [int(c, 16) if isinstance(c, str) else c for c in (e.get("call") for e in self.tf.trace.of("sound"))]
+        self.assertIn(game_over.WIN_SOUND, calls)

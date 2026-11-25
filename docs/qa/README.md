@@ -59,6 +59,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | F7 | each decoded deff holds for its own tail (1, 2 or 10 ticks), read from agent A's op lists | `0x0103058c`, `0x0002108c` |
 | F8 | ball save: ends when fewer than 7 ticks are left (adj 38 = 5: 312 ticks) | `0x00017a28` |
 | P13, P17, P18, P20 | skill shot second lane lamp 50 / 49; spinner sample index reset each ball; deff 124 arg 0 before the new bit; item 4 text capped at 25 | `0x010335d0`, `0x0103361c`, `0x01032484`, `0x010309a4`, `0x01000f18` |
+| F9 | match: the number steps by 10 past the players when the rate is reached; 0x072 / 0x073 at frame 60 of deff 38, the award after frame 68 with 0x074 and 24 more frames; MATCH OFF shows no deff 38 (tournament not modelled) | `0x00019668`, `0x0100820c`, `0x00019874` |
 | M10, M15 | the lock re-arm copies every player's count (ROM quirk kept); deff 139 gets the locked count | `0x0100af0c` |
 All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.15 ms (counted on code-timed spans; the 16.26 ms used before drifted 0.3 s over a battle and gave battle_blackout an extra bonus).
 
@@ -68,9 +69,8 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F9b | match sounds 0x072 / 0x074 when matched; award inside deff 38 | medium |
 | F15 | ball save may survive a tilt (doubtful: hooks of events 0x65 / 0x66 not read) | medium if true |
-| F9a, F9c, F12, F14, F16-F18, M8, M11, M12, M14, P14, P15, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| F12, F14, F16-F18, M8, M11, M12, M14, P14, P15, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 ### For agent A (one batched request)
 
