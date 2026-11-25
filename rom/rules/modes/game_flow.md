@@ -17,7 +17,7 @@ is **0x3243c** and, unlike Tron, Transformers **does** set it (double scoring = 
 
 1 `task_sleep` tick ≈ 16.26 ms (Tron measurement, same OS and same scheduler; not re-measured here). The
 ROM treats 62 ticks (0x3e) as one second for ball save and tilt bob timing [0x00017a28] [0x0001dc14].
-Observed here: ball search 10.06 s after the last switch (traces t 30.59 → 40.65), i.e. 620 ticks at 16.2 ms.
+Ball search waits `DAT_00033320` = 10 seconds, a ROM constant (code); the traces confirm 10.06 s (t 30.59 → 40.65).
 
 ## 1. Summary
 
@@ -97,10 +97,10 @@ sound 0x048, num_players 2).
 ### 4.3 Valid playfield (OS, same rule as Tron) [0x0000e264 hooks 0x6b/0x6c]
 The switch descriptor's top byte (`flags_0x0c` in `rom_data/io/switches.csv`): **0x20 = force** (one hit
 validates): 7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34; **0x10 = valid** (3 different needed): 1, 2, 4, 5, 6,
-13, 35, 37, 46, 49, 50. **Slingshots and pops (0x04) also count as valid** (observed in basic.jsonl: sw26,
-sw27 then pop 30 validate, music 0x01f starts; correction from the MPF port, the first version of this spec said
-they did not). The eject/lock/trough switches do not count (inferred from the flag pattern). The skill-shot end
-count (obj 0x31400) does exclude slings and pops (below). Observed: one sling then drain → re-served for a manual
+13, 35, 37, 46, 49, 50. **Slingshots and pops also count as valid** (code: their handlers 0x01033104, 0x010331a4 and 0x01032f8c post
+event 0x6b, the valid-playfield hook; basic.jsonl confirms: sw26, sw27 then pop 30 validate, music 0x01f starts).
+Switches 3 and 38-42 (eject, lock, trough) carry dispatcher flag 0x1000; whether they validate is open (the
+earlier "do not count" was inferred). The skill-shot end count (obj 0x31400) counts slings and pops too (below). Observed: one sling then drain → re-served for a manual
 plunge, same player and ball, no bonus, no ball save (t 25.25 → 26.44 drain → 27.61 eject); sw7 or sw12
 alone validates (t 18.78, 30.57).
 
@@ -130,7 +130,8 @@ auto-launch) cancels both.
     2,500, see combos_and_multipliers.md) (observed t 18.79, 80.86).
 - Hitting the unlit lane: nothing extra, and the skill shot is cancelled (task killed) [0x01031630].
 - Ends (task killed) on a **force** switch other than 7, 8, 12, or after **3 different valid** switches other
-  than 7, 8, 12 [0x010313cc] [0x01031420] [0x01031470] [obj 0x31400 count 3]. Slings and pops do not end it.
+  than 7, 8, 12 [0x010313cc] [0x01031420] [0x01031470] [obj 0x31400 count 3]. Slings, pops, the captive ball 45 and Optimus 51 count like any switch that posts 0x6b (QA P3, hook 0x010313cc
+  registered at 0x01031ed8); only 7, 8, 12 (and 12 / 13 for the super) are left out.
 
 **Super skill shot** (task 0xb4):
 - Megatron back door (sw13) while task 0xb4 runs: 500,000 + 100,000 × super skill shots made this game,
@@ -150,7 +151,7 @@ Observed: drain t 21.12 (2.3 s after valid) → deff 20 at 21.66 (trough settle 
 Outlanes call ball_save_try(1/2) for an early save (code, not traced). Multiball starts kill it (OS).
 
 ### 5.3 Ball search (OS)
-10 s (620 ticks) without a valid/force switch or score → search (audit 37), coils pulsed; 15 s after a tilt;
+10 s (`DAT_00033320` = 10, ROM constant) without a valid/force switch or score → search (audit 37), coils pulsed; 15 s after a tilt;
 5th search with adj 63 = 1 → deff 13 "PINBALL MISSING / PLEASE WAIT", ball re-served. Observed: audit 37 at
 t 40.65 (10.06 s after sw12 at 30.59).
 
@@ -159,9 +160,12 @@ t 40.65 (10.06 s after sw12 at 30.59).
 |---|---|---|---|---|---|
 | Plumb bob | not tilted, coin-door rule, warnings < adj 32 | warnings +1 | deff 23 "DANGER" (prio 241) | 0x016, then speech **0x052** 0.51 s later (game hook) | leff 11 |
 | Plumb bob | warnings ≥ adj 32 | **TILT**: event 0x66, state \|= 0x200, audit 42, flippers/slings off, tasks with flag 0x1000 killed, sounds stopped, event 0x65 (game hooks stop modes: 0x0100414c fast scoring, 0x01023130 shot multipliers, 0x0102b898, 0x0103bd5c, 0x01005e98), ball search 15 s | deff 21 "TILT" | 0x017, speech **0x053** 1.0 s later | leff 9 |
-| Bob held closed | — | a warning every 62 ticks, tilt after 2 | | | |
+| Bob held closed | — | a warning every 62 ticks, **tilt after 124 ticks** (task 0x2e 0x0001dc14, FUN_0001dc58) | | | |
+| Bob ignored | while task 0x29 runs or state & 0x310 [0x0001da8c] | — | | | |
 | Slam tilt (dedicated) | — | state \|= 0x200, task 0x39 resets the game (OS) | deff 24 "SLAM TILT" (prio 251) | 0x018 | leff 12 |
-- While tilted: no score, no ball save, no bonus; ball(s) drain; next ball starts with warnings 0.
+- While tilted: no score, no bonus (the ball save is **not** killed by the tilt in the code: its task has flags 0
+  [0x00017acc] and the tilt kills only 0x1000 tasks; 0x01039ed4 calls `ball_save_try(0)` with no tilt check: open,
+  QA F15); ball(s) drain; next ball starts with warnings 0.
 - Observed: bobs at t 83.19 / 85.31 → deff 23, warnings 1, 2; t 87.45 → deff 21, state 512; drain t 91.70
   → audit 8 at 92.23 (0.53 s), no deff 25, next player at once (state 0, warnings 0).
 
@@ -175,9 +179,9 @@ t 40.65 (10.06 s after sw12 at 30.59).
   Not traced.
 - **Shoot again**: at the next end of ball the same player plays again with the same ball number; ball start
   shows deff 26 + leff 16 [0x00019d30] [0x0001abb4].
-- **Special** [0x01008528]: lit by the left-eject award "SPECIAL LIT" (weight 1) [0x010248b0]: lamp 53
-  SPECIAL on, task 0x61 queues deff 55 "SPECIAL / IS LIT" (prio 180, sound 0x066). Collected at the **right
-  orbit** while lamp 53 is lit [0x01008684]: lamp off, OS special award 0x0001d7a0 (adj 22/23), deff 56
+- **Special** [0x01008528]: lit by the left-eject award "SPECIAL LIT" (weight 1) [0x010248b0]: the lit state *is*
+  lamp 53 SPECIAL (on, with a flash), audit at 0x02102cf8, task 0x61 queues deff 55 "SPECIAL / IS LIT" (prio 180, sound 0x066). Collected at the **right
+  orbit** while lamp 53 is lit [0x01008684]: lamp off, OS special award 0x0001d7a0 (adj 22/23; over the limit it scores 5,000,000, `DAT_00030ea8`), task 0x62 → deff 56
   (sound 0x068). Not traced.
 
 ### 5.6 Replay, high score, match
@@ -187,15 +191,16 @@ t 40.65 (10.06 s after sw12 at 30.59).
   deff 33 "PLAYER %d", deff 31 "PLAYER %d / ENTER INITIALS", deff 32 initials entry; deffs 34-37 are the
   competition/tournament results ("SORRY, YOU DID NOT QUALIFY", "YOU QUALIFIED!", "%P PLACE") [0x0001e810]
   [0x0001e328]. Not traced (needs ≥ 25 M).
-- Match [0x00019668]: deff 38 (prio 245), music 0x023, then 0x073 (observed t 166.65 → 171.48); award adj 29,
-  percentage adj 30.
+- Match [0x00019668]: deff 38 (prio 245) [deff_038 0x0100820c]: music 0x023, then at step 60 0x072 when a player
+  matched or 0x073 when none did, and 0x074 with the award (`match_award`); no deff 38 when adj 30 = 11 (OFF) or in a
+  tournament. Award adj 29, percentage adj 30. The trace (t 166.65 → 171.48) shows the no-match path.
 
 ## 6. How it ends
 
 ### 6.1 End of ball [0x00019e44]
 Same as Tron: event 0x1e, state |= 4, event 0x1d (game hooks end multiballs/modes: 0x0100415c,
 0x0100c8dc, 0x0100e768, 0x01010428, 0x01023140, 0x01027fc4, 0x0102a0a8, 0x0103686c), audit 8 (and 40 / 41
-LEFT/RIGHT DRAINS after an outlane), wait up to 169 ticks for "total" deffs, **pf multiplier = 1**, then (not
+LEFT/RIGHT DRAINS after an outlane), wait up to 937 ticks (`DAT_00033324`) for every task with flag 0x2000 (every foreground deff with flags & 5 == 0), **pf multiplier = 1**, then (not
 tilted) deff 25 bonus (see combos_and_multipliers.md for the formula), event 0x16 adds it, event 0x15; wait
 for replay tasks; clear tilt; event 0x1f; next up [0x0001abb4].
 - Observed: drain t 42.82 → audit 8 + deff 25 at 43.36 (0.54 s) → bonus added at 48.85 (5.5 s at bonus X 1)

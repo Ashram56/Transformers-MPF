@@ -71,8 +71,9 @@ Nothing else (values, counts, timers) is adjustable.
 | mtd_jp | 0x00034e2e | 0 | jackpots this cycle |
 | mtd_dj | 0x00034e30 | 0 on entering phase 2 | double jackpots this cycle (reads 65535 before the first phase 2: uninitialised, harmless) |
 
-Game flags: 0x25 (37) Megatron A running, 0x26 (38) A grace; 0x29 (41) Megatron D running, 0x2a (42) D grace
-[0x0100c200, 0x0100e0bc] (verified in emulator).
+Game flags: 0x25 (37) Megatron A running, 0x29 (41) Megatron D running [0x0100c200, 0x0100e0bc]. Flags 0x26 (38) and
+0x2a (42), once read as A / D grace, are never set (only `game_flag_clear` touches them): the end window is the end
+task below, and the shot rules keep running during it (QA M13).
 
 ## 4. How it starts
 ### 4.1 Lighting the lock
@@ -140,7 +141,7 @@ Let J = min(100,000 x (mta_supers + 1) + 25,000 x M, 500,000) [0x0100bf14]; DJ =
 |---|---|---|---|---|---|
 | Megatron lock | phase 1 | J x mult; jp += 1; M += 1 (max 6); counter 0x77 | 71 JACKPOT | 0xca (sample index cycles) | phase 2, mask 0x3f; if jp >= 10: phase 3 |
 | a lit main shot | phase 2 | DJ x mult; the shot unlights; jp += 1; M += 1; counter 0x78 | 72 DOUBLE JACKPOT | 0xd2 | if jp >= 10 or no shot left: phase 3 (mask 0x40, M = 1) |
-| no double jackpot for 250 + 62 ticks (5.07 s) after the last one | phase 2 | mask 0x40, M = 1 (tasks 0xbd / 0xbe) | - | - | phase 1 |
+| no double jackpot for 250 + 62 ticks (5.07 s) after the last one, counted only once M >= 3 (the timer task waits `while (M < 3)` first [0x0100c10c]) | phase 2 | mask 0x40, M = 1 (tasks 0xbd / 0xbe) | - | - | phase 1 |
 | Megatron lock | phase 3 | **super** = max(1,000,000, pct x mt_sum), pct = [100, 100, 75, 50]% indexed by min(mt_mb_since_super, 3) [table 0x040c6438, 0x0100c024]; supers += 1; jp = 0; mt_sum = 0; mt_mb_since_super = 0; wizard req 0 completed (0x01035af0(0,2), counter 0x8c #148); counter 0x79 | 73 SUPER JACKPOT | from deff 73 | phase 1 |
 | unlit shot | any | nothing from this mode | - | - | - |
 Observed (megatron_autobot.jsonl): 49.05 jackpot 125,000; 51.49 DJ 300,000; 56.56 timeout (phase 1, M = 1);
@@ -163,9 +164,12 @@ phase 2; 58.32 / 60.49 / 62.66 DJ 500,000 -> phase 3; 66.90 super 1,000,000 -> p
   156 then 62 ticks) then the total screen: deff 74 "MEGATRON MULTIBALL TOTAL: n" (A) / deff 80 (D) via a queued
   task (0x8b) [0x0100c790]; not shown in tilt / game-over states (0x31468 & 0x310).
   (verified in emulator: A flag 37 cleared 86.25 s, deff 74 at 89.78 s; D flag 41 cleared 73.84 s, deff 80 at 77.40 s)
-- Add-a-ball (Allspark mystery award, 0x01024a60) during the grace window revives the multiball [0x0100c858].
+- Add-a-ball (Allspark mystery award, 0x01024a60) is offered only in the first 156 ticks of the end window
+  [0x01006760]; taken, it revives the multiball, which the end task allows for its whole 218 ticks [0x0100c858].
+  The D total (deff 80) is queued by show task 0x8c.
 - Carries over: mtl_level (+1 per multiball), A progress if adj 88 = YES, mt_sum / mt_mb_since_super (A),
-  wizard requirement 0. D progress always starts fresh.
+  wizard requirement 0. D progress is restored too when adj 88 = YES [0x0100e0bc] (QA M2; it does not always start
+  fresh).
 
 ## 7. Media
 | When | Display effect | Sound | Lamp effect |

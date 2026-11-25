@@ -115,14 +115,15 @@ DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, All
 | lit shot 0-5 | phase 1 | J; shot removed from remaining; lit = Optimus only (0x40); counter 0x71 | 65 JACKPOT | 0xa5 (cycles) | phase 2 |
 | Optimus sw 51 | phase 2 | DJ; lit = remaining; counter 0x72 | 66 DOUBLE JACKPOT | 0xaa | phase 1, or phase 3 (super at Optimus) when none remain |
 | center lane (sw 11), unlit | phase 2 | **quirk**: J again, deff 65, counter 0x71, no state change | 65 | | phase 2 |
-| Optimus sw 51 | phase 3 | super; opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
+| Optimus sw 51 | phase 3 | super x the center lane's shot multiplier [0x01029bf4] (QA M4); opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
 Observed (optimus_decepticon.jsonl): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
 J 150,000 (quirk, caller 0x01029e14); J/DJ pairs to 66.89; 69.06 super **2,850,000** (= 6 x 450,000 + the quirk
 jackpot). The quirk is probably there because the center lane and Optimus share one shot position (inferred);
 reproduce it or not by choice.
 
 ## 6. How it ends
-- Down to one ball: flag 0x1f / 0x22 cleared (grace 187 ticks for add-a-ball), then the total screen deff 62 (A) /
+- Down to one ball: flag 0x1f / 0x22 cleared (the end task runs 218 ticks [0x01027f18]; add-a-ball can revive it then; 187 ticks is the
+  multiball_start grace, not this window), then the total screen deff 62 (A) /
   68 (D) "OPTIMUS PRIME MULTIBALL TOTAL: n" via task 0x89 / 0x8a, skipped in tilt / game-over states
   [0x01027ec0, 0x01029fa4] (verified in emulator: A flag 31 cleared 81.53 s, deff 62 at 85.09 s; D flag 34 cleared
   73.82 s, deff 68 at 77.40 s).

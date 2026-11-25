@@ -40,7 +40,7 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
 | super_pop_value | 0x2112064 + 4(p-1) | per lighting | 50,000 + 10,000 × n, cap 100,000 | n = times lit before [0x0102d270] |
 | super_pop_hits_left | 0x2112078 + (p-1) (u8) | per lighting | 50 + 5 × n, cap 75 [0x0102d2bc] | |
 | super_pop_count n | 0x211207c + (p-1) | per player | 0 at the player's first ball [0x0102d244] | Times super pops lit |
-| spin_value | 0x21120dc + 4(p-1) | per ball | 2,500 at ball start (event 0x11) unless flag 0x1c [0x01032484] | Normal spinner value |
+| spin_value | 0x21120dc + 4(p-1) | per ball | 2,500 at ball start (event 0x11) unless flag 0x1c, which is then cleared; the sample index of 0x26d (0x3573c) is reset every ball [0x01032484] (QA P17) | Normal spinner value |
 | super_spin (flag 0x4c) | game flag 76 | until completed | cleared at player's first ball [0x010324dc] | Super spinner lit |
 | super_spin_value / hits | 0x21120ec + 4(p-1) / 0x2112100 + (p-1) | per lighting | 50,000 + 10,000 n (cap 100,000) / 50 + 5 n (cap 75) [0x01032510] [0x0103255c] | |
 | super_spin_count n | 0x2112104 + (p-1) | per player | 0 at first ball | |
@@ -101,10 +101,10 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
   plays: one from deff 129 at +0.33 s, then three at +1.43, +2.41 and +3.43 s after deff 129 starts played by the
   OS delayed-sound queue (caller 0x255b8 in 0x254b4: 8 slots at 0x38368, each with a call and a countdown; the
   call is played when its countdown reaches 0) (observed scoring.jsonl t 60.31-63.41), audit 105; background deff 130
-  "DOUBLE SCORING / n / ALL SCORES X 2" with music 0x026 and leff 157. Every scoring switch plays 0x27c +
-  0x27d [0x01003a64]. Countdown: adj 80 steps of 11 × 6 = 66 ticks (observed 1.07 s each); sound 0x285 at 10,
-  0x284..0x280 at 5..1, 0x286 at the end [0x010038dc]; the countdown pauses while 0x0100683c says the ball is
-  not in free play. ADD MORE TIME award adds adj 80 (cap 90) [0x01003a8c]. Restarting kills the old timer.
+  "DOUBLE SCORING / n / ALL SCORES X 2" with music 0x026 and leff 157. The scoring switches whose handler calls 0x01003a64 play 0x27c +
+  0x27d, among them the eject 0x0100a788 and lock 0x0100a31c entries; sw 6 (0x010332e4) does not (QA P10). Countdown: adj 80 steps of 11 × 6 = 66 ticks (observed 1.07 s each); sound 0x285 at the first count
+  in 5..10 after the task (re)starts [0x0100393c-0x01003964] (not only at 10), 0x284..0x280 at 5..1, 0x286 at the end
+  [0x010038dc]; the countdown never pauses (the `bl 0x0100683c` result is thrown away; QA P6). ADD MORE TIME award adds adj 80 (cap 90) [0x01003a8c]. Restarting kills the old timer.
 - Observed: 7 hits from L=2: 20,000 ... 50,000 (t 49.87-59.97); at the 7th the 50,000 itself was ×1 but the
   same switch's 30 was ×2; pf_mult 2 for 40 counts (t 59.99 → 102.81), end sound 0x286 at 103.89, pf_mult
   back to 1 at 105.91 (2.0 s later). During it: sling 440 → 880, pop 3,170 → 6,340, Bumblebee 15,030 → 30,060.
@@ -123,12 +123,14 @@ and +1 bonus count (see `combos_and_multipliers.md` §bonus); those are listed i
   (0.9 s), background deff 133 "ALL TARGETS=n" with music 0x027, leff 158/159/160. Sound 0x291 plays once
   about 10 s after the start (observed t 134.83 = start + 10.1 s; caller 0x10041b0 in 0x0100415c, which calls
   0x010049a8; the trigger was not decoded).
-  - Every switch handler calls 0x010047b8: one all-targets award of fast_value per hit (queued, task 0x5b,
+  - Most switch handlers call 0x010047b8 (not sw 6, and not the center lane / Optimus while task 0x4e or 0x54
+    locks them out, QA P10 / P11): one all-targets award of fast_value per hit (queued, task 0x5b,
     one per tick), deff 134 when deff 132 and deff 134 are not up and no multiball runs (0x01006704), sound 0x28d,
     leff 164 [0x01004644]
     (observed sw2, sw46, sw49: +10,000 each).
-  - sw50 / sw37 during fast scoring: the first hit of each this cycle raises fast_value by 1,000 (cap 50,000,
-    deff 135 "ALL / TARGETS / value") [0x01004520]; when both are hit (groups = 7): time +10 counts (cap 90),
+  - sw50 / sw37 during fast scoring: only the first target of a cycle, and only during the countdown (not the
+    tail), raises fast_value by 1,000 (cap 50,000, deff 135 "ALL / TARGETS / value") [0x01004520]; leff 144 on a new
+    target, 145 on a repeat (QA P8); when both are hit (groups = 7): time +10 counts (cap 90),
     deff 136 "TIME / EXTENDED", groups reset [0x010047b8] [0x0100457c].
   - End: the countdown reaches 0 and switches keep scoring for that last count, then task 0xae waits 250
     ticks (4.1 s) during which switches still score fast_value (MPF port observed 0 at t 148.22, deff 137 at

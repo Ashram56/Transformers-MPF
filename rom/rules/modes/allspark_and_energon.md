@@ -96,7 +96,7 @@ Only if allspark_lit > 0:
 | 7 | POPS SCORE %,02lu | 150 | last award, or 0x0102c8a4 true (super pops running, inferred) | competition step 9 | pop bumper value up (0x0102c624) | MYSTERY: POPS GROW |
 | 8 | BONUS HOLD | 100 | last award, or flag 0x4b set (already held) | competition step 7 | set flag 0x4b | MYSTERY: BONUS HOLD |
 | 9 | BONUS X HOLD | 100 | last award, or flag 0x4a set | competition step 6 | set flag 0x4a | MYSTERY: BONUS X HOLD |
-| 10 | SHOT MULTIPLER(S) LIT | 100 | last award, or no shot multiplier can be raised (0x01023494) | competition step 5 | light shot multipliers (0x010236e8) | MYSTERY: SHOT MULTIP. LIT |
+| 10 | SHOT MULTIPLER(S) LIT | 100 | last award, or 0x01023494 returns 0: only when a shot multiplier is already lit or the roving 3X runs (with all six at 2X it returns 3 and starts the roving 3X; QA P4) | competition step 5 | light shot multipliers (0x010236e8) | MYSTERY: SHOT MULTIP. LIT |
 | 11 | SUPER SPINNER LIT | 100 | last award, or super spinner already lit (0x01032280) | competition step 4 | light super spinner (0x010325bc) | MYSTERY: SUPER SPINNERS LIT |
 | 12 | SUPER POP BUMPERS LIT | 100 | last award, or 0x0102c8a4 true | competition step 3 | light super pops (0x0102d31c) | MYSTERY: SUPER POPS LIT |
 

@@ -18,6 +18,9 @@ the many modes needed to qualify:
 The game keeps 11 **wizard requirements** per player: Megatron multiball, the 4 Decepticon battles, Optimus
 multiball, the 4 Autobot battles, and the side mode below. Each is "collected" when started and "completed" when
 won (battle completed, multiball super jackpot). Starting 5 of them lights an extra ball.
+The qualify lamps are lamp rules 76 (0x4c) and 77 (0x4d) on the layers 0x34e44 / 0x34e58, registered with the
+condition `zuse_qualify_enabled` [0x01011ed4]: both sides, not Autobot only (QA M8; the earlier reading came from
+an Autobot-side trace).
 - Completing your own side's five (Decepticon: Megatron multiball + Starscream, Shockwave, Blackout, Devastator;
   Autobot: Optimus multiball + Bumblebee, Ironhide, Mudflap & Skids, Ratchet) makes the **Allspark** (left eject)
   start **All Hail Megatron** (Decepticon) / **Autobots Roll Out** (Autobot): a single-ball mode, 1,000,000 to

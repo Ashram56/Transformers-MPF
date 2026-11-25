@@ -61,7 +61,9 @@ No adjustment changes the combo window or values.
 - Ramp entrances (4, 35), orbit bottom (5) and the spinner are not combo shots.
 
 ### 4.2 Rule
-On a major shot:
+On a major shot (order, code: every major shot handler calls `FUN_010237ac(shot)` first, so a lit
+multiplier goes to that shot **before** its mode shots and its combo award, which then score at 2X; handlers
+0x0100a788, 0x01033244, 0x01033824, 0x01033918, 0x01033b3c, 0x01033488; QA P2):
 1. If no combo window is running (task 0x92/0x93): combo_way = 1, no award.
 2. Else if the shot's bit is in combo_mask: combo_way + 1, combo_total + 1, best updated,
    **award = M × (100,000 + 25,000 × combo_way)** where M = that shot's multiplier (1, 2, or 3 when the

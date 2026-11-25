@@ -78,8 +78,8 @@ and multiball tasks (`0x0103b39c`, `0x01039db4`, `0x0103aba4`).
 
 Status 2026-11-25 (agent A): the deffs (117 of 153), the leffs and lamp groups (all), the coil pulses (32 of 35) and
 the adjustment formatters (all 15, 0x0002aebc included) are decoded from the code; what stays open is listed in
-[pinmame_waivers.md](../pinmame_waivers.md). The spec errors, the ball search, serve and multiball tasks are not
-done yet.
+[pinmame_waivers.md](../pinmame_waivers.md). The 20 spec errors are corrected in `rom/rules/modes/` (each
+line cites its routine and the QA id). The ball search, serve and multiball tasks are not done yet.
 
 ### Owner decisions
 
