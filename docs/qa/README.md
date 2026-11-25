@@ -56,7 +56,11 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | M6 | the super-lit leffs 47 / 55 / 63 / 71 pulse their coil group every 8 ticks (a higher leff owning the flashers wins); Megatron's run by their lamp rules | `0x010286f8`, `0x0102a83c`, `0x0100d038`, `0x0100ef64`, `0x0100d004`, `0x0100ef30` |
 | M7 | ADD-A-BALL offered while a multiball flag is set or in the first 156 ticks of its end task; award with ball save 312 / grace 187 | `0x01006760`, `0x01024a20`, `0x01024a60`, `0x0100c7e8` |
 | M9 | Starscream's lit pair moves each counted second with fewer than 6 shots left, unless a ramp entrance in the last 93 ticks | `0x01017824`, `0x010337e8`, `0x010338dc` |
-All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.26 ms.
+| F7 | each decoded deff holds for its own tail (1, 2 or 10 ticks), read from agent A's op lists | `0x0103058c`, `0x0002108c` |
+| F8 | ball save: ends when fewer than 7 ticks are left (adj 38 = 5: 312 ticks) | `0x00017a28` |
+| P13, P17, P18, P20 | skill shot second lane lamp 50 / 49; spinner sample index reset each ball; deff 124 arg 0 before the new bit; item 4 text capped at 25 | `0x010335d0`, `0x0103361c`, `0x01032484`, `0x010309a4`, `0x01000f18` |
+| M10, M15 | the lock re-arm copies every player's count (ROM quirk kept); deff 139 gets the locked count | `0x0100af0c` |
+All 24 trace scenarios give the same comparison before and after these fixes, except two coil burst counts that M6 moves (megatron_decepticon, optimus_autobot); the trace replay runs at the code's 16.0 ms tick, scaled to the traces' 16.15 ms (counted on code-timed spans; the 16.26 ms used before drifted 0.3 s over a battle and gave battle_blackout an extra bonus).
 
 ### Open (proved, not fixed yet)
 
@@ -64,10 +68,9 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F7 | deff hold tail per deff (1, 2, 10, 15, 41 ticks); a per-deff table broke battle_starscream, so it waits for agent A's decoded deff lengths (PR #15, `timing.json`) to know whether the lengths include the tail | medium |
 | F9b | match sounds 0x072 / 0x074 when matched; award inside deff 38 | medium |
 | F15 | ball save may survive a tilt (doubtful: hooks of events 0x65 / 0x66 not read) | medium if true |
-| F8, F9a, F9c, F12, F14, F16-F18, M8, M10-M12, M14, M15, P13-P15, P17-P20 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| F9a, F9c, F12, F14, F16-F18, M8, M11, M12, M14, P14, P15, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 ### For agent A (one batched request)
 
