@@ -81,7 +81,11 @@ and multiball tasks (`0x0103b39c`, `0x01039db4`, `0x0103aba4`).
 Status 2026-11-25 (agent A): the deffs (all 153), the leffs and lamp groups (all), the coil pulses (33 of 35) and
 the adjustment formatters (all 15, 0x0002aebc included) are decoded from the code; what stays open is listed in
 [pinmame_waivers.md](../pinmame_waivers.md). The 20 spec errors are corrected in `rom/rules/modes/` (each
-line cites its routine and the QA id). The ball search, serve and multiball tasks are not done yet.
+line cites its routine and the QA id). The ball search's coil sweep is decoded from its task (`rom/tools/ball_search.py`,
+`rom/rom_data/io/ball_search_ops.json`: Optimus coil 0, top pop 5, left eject and Megatron lockup 6, right pop 10,
+bottom pop 15, slings 20 and 25 ticks, end 30; the game's `BALL_SEARCH_SWEEP` is the same, one tick later); still
+open there: the queued auto-launch's wait, the motor and gate from the event handlers. The serve and multiball
+tasks are not done yet.
 
 ### Owner decisions
 

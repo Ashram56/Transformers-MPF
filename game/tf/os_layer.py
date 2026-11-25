@@ -72,9 +72,13 @@ BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long
 BALL_SEARCH_TICKS = 104     # search task 0x2b; a drain during it ends the ball after it
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
-# the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate
-# (observed, the same in every search: traces/game_flow.jsonl 32.65 / 102.01 / 126.13 / 150.45 s,
-# megatron_decepticon.jsonl 68.99 s; pulses 64 ms, the pops' search time; rom_data/io/coils.csv ballsearch_fn)
+# the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate.
+# Code (rom/tools/ball_search.py runs the search task FUN_0103b778 [0x0103b778], rom_data/io/ball_search_ops.json):
+# the coil registry's search routine of the Optimus coil [0x01033cb0], the game devices (FUN_0103be8c: left eject,
+# Megatron lockup, the trough's queued auto-launch), the pops [0x00003018], the slings [0x00003518], 64 ms each,
+# each one holding the search 64 // 16 + 1 = 5 ticks (FUN_00002160); the task runs the tick after its start, hence
+# the +1. The auto-launch time (14), the motor and the gate are observed (traces/game_flow.jsonl 32.65 / 102.01 /
+# 126.13 / 150.45 s, megatron_decepticon.jsonl 68.99 s): the queued pulse's wait and the event handlers are code open.
 BALL_SEARCH_SWEEP = ((1, ("c_optimus_prime",)), (6, ("c_top_pop_bumper",)), (7, ("c_megatron_lockup", "c_left_eject")),
                      (11, ("c_right_pop_bumper",)), (14, ("c_auto_launch",)), (16, ("c_bottom_pop_bumper",)),
                      (21, ("c_left_slingshot",)), (26, ("c_right_slingshot",)))
