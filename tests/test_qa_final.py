@@ -419,3 +419,26 @@ class TestFinalPass(QaCase):
         draw = service.draw_of(service.screens()[path], path)
         self.assertEqual([199, 200, 201, 202], sorted(d["i"] for d in draw if "i" in d))
         self.assertTrue(any("t" in d for d in draw))
+
+    def test_f062_bonus_multiplier_pages(self):
+        """draw_bonus_play_snd_77_ffc [0x01000ffc]: at 3X deff 25 runs as its code run with RAM 0x02111cf0 = 3 (variant
+        x3: 350 + 8 ticks, 0x76 at tick 87); counting page u prints "uX" [0x01001258] over u x subtotal
+        [0x01001290], 2X from tick 71, 3X from tick 79; the last page prints the total [0x0100161c]."""
+        self.start()
+        pd, done = self.tf.pd, []
+        pd["bonus_x"], pd["bonus_count"], pd["bonus_held"] = 3, 0, 125000
+        self.tf.features_by_name["bonus"].run(done.append)
+        self.assertEqual("x3", self.tf.media.variant_of.get(25))
+        self.assertEqual(358 * TICK, round(self.tf.display.fg_info.seconds, 6))
+
+        def texts():
+            return self.tf.media.deff_lines(25, self.tf.media.started.get(25, {}))["values"]
+        self.advance_time_and_run(72 * TICK)
+        self.assertEqual(["2X", "250,000", "3X", "375,000"], texts()[:4])
+        self.advance_time_and_run(9 * TICK)
+        self.assertEqual(["3X", "375,000"], texts()[:2])
+        self.assertEqual("375,000", texts()[-1])
+        self.advance_time_and_run(300 * TICK)
+        self.assertEqual([375000], done)
+        calls = self.sounds()
+        self.assertLess(calls.index("0x076"), calls.index("0x079"))

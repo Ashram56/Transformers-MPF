@@ -60,6 +60,11 @@ def battle_bg(addr, start, why):
 # deff -> [(name, {"args": {task offset: (size, value)}, "ram": {addr: bytes}, "state": {getter: value},
 #                  "pages": (fg, bg)}, why)]; the first variant is the one packaged
 VARIANTS = {
+    25: [("default", {}, "state at 0: the 1X pages; the values it prints are drawn live by the game")] + [
+        ("x%d" % x, {"ram": {0x02111cf0: bytes([x])}},
+          "draw_bonus_play_snd_77_ffc [0x01000ffc] (deff_025 [0x010014b8]'s child): player_byte_11cef_f18 "
+          "[0x01000f18] reads the bonus multiplier of player 1 (0x02111cef + 1); above 1 one counting page per "
+          "multiplier 2..x (8 frames, 4 from 6X) and sound 0x76") for x in range(2, 26)],
     14: [("score", {"pages": (1, 2)}, "called inside the score display: the work pages are the pair the score "
                                       "deff allocated (FUN_0103d828 [0x0103d828] draws on them)"),
          ("tournament", {"pages": (1, 2), "ram": {0x00031468: u16(0x10)}},
@@ -163,7 +168,7 @@ VARIANTS.update({
           for side, sv, top in (("decepticon", 2, 6), ("autobot", 1, 11)) for n in range(top + 1)],
 })
 # the others read only values the game draws live (scores, counts): one run with the state at 0
-DEFAULT = [1, 3, 19, 25, 34, 48, 58, 64, 70, 76, 81, 87, 123, 126, 127, 135, 139, 147, 149, 150]
+DEFAULT = [1, 3, 19, 34, 48, 58, 64, 70, 76, 81, 87, 123, 126, 127, 135, 139, 147, 149, 150]
 for _d in DEFAULT:
     VARIANTS[_d] = [("default", {}, "state at 0: the values it prints are drawn live by the game")]
 

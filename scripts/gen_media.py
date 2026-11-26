@@ -205,7 +205,7 @@ def value_texts(timing, frames, deff_id=None, fits=None):
             if key not in keys:
                 keys[key] = len(slots)
                 slots.append({"t": t["str"], "f": t["font"], "x": t["x"], "y": t["y"], "a": t["flags"],
-                              "source": t["source"]})
+                              "source": t["source"], "site": t.get("call_site")})
                 if "fl" in t:
                     slots[-1].update(fl=t["fl"], w=t["w"])
             for x, y, _ in lit:
@@ -387,7 +387,8 @@ def build_deffs(only_data):
         if deff_id in CREDIT_LINE_DEFFS:
             slots, per_frame = credit_slots(timing, frames)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
-                        "panel": panel, "args": [], "values": [v["source"] for v in slots]}
+                        "panel": panel, "args": [], "values": [v["source"] for v in slots],
+                        "sites": [v.get("site") for v in slots]}
         if deff_id in SIDE_VARIANTS:
             out[deff_id]["sides"] = {"1": "deff_{:03d}_side1".format(deff_id)}
         if only_data:
@@ -417,12 +418,16 @@ def build_deffs(only_data):
             continue
         slide = "deff_{:03d}__{}".format(deff_id, vname)
         out[deff_id].setdefault("variants", {})[vname] = slide
-        if only_data:
-            continue
         frames = capture_frames(vfolder, timing)
         panel = out[deff_id]["panel"]
         loop = out[deff_id]["loop"]
         slots, per_frame = value_texts(timing, frames, deff_id, fits)
+        # the variant's own printf slots (deff 25 at 2X and up has the counting pages' [0x01001258] [0x01001290]):
+        # tf/media_bridge.py deff_lines fills them by call site (site_values)
+        out[deff_id].setdefault("variant_values", {})[vname] = {"values": [v["source"] for v in slots],
+                                                               "sites": [v["site"] for v in slots]}
+        if only_data:
+            continue
         if panel is not None:
             for img, _ in frames:
                 ImageDraw.Draw(img).rectangle((0, 0, PANEL_WIDTH - 1, 31), fill=(0, 0, 0, 255))

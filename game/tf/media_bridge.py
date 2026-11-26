@@ -98,6 +98,7 @@ class MediaBridge:
         self.counters = {}
         self._refresh = None
         self._panel_last = {}                     # deff -> the panel arguments last sent (sent again only on change)
+        self.variant_of = {}                       # deff -> the variant whose slide runs (deff_start)
         self.active = set()                        # deffs on screen that draw the status panel or live values
         self.started = {}                          # deff id -> the args of its last start
         self.slides = {}                           # deff id -> the slide it plays (a side variant: deff_slide)
@@ -149,12 +150,17 @@ class MediaBridge:
             args = dict(args, slot_texts={0: self.credits_text(), 1: "PRESS START" if self.can_start() else
                                           "INSERT COINS"})
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
-        if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
-            passed["values"] = format_values(info["values"], args.get("values") or [])
+        own = (info.get("variant_values") or {}).get(self.variant_of.get(deff_id))
+        sources, sites = (own["values"], own["sites"]) if own else (info.get("values"), info.get("sites"))
+        if sources:                                    # captured printf texts drawn live (tf/deff_values.gd)
+            values = args.get("values") or []
+            if args.get("site_values") is not None and sites:   # by the printf's call site in the deff's code
+                values = [args["site_values"].get(site) for site in sites]
+            passed["values"] = format_values(sources, values)
             for slot, text in (args.get("slot_texts") or {}).items():   # a fixed message drawn in a slot's place
                 if slot < len(passed["values"]):
                     passed["values"][slot] = text
-            for slot, text in zip(info["values"], passed["values"]):
+            for slot, text in zip(sources, passed["values"]):
                 if text is None:
                     self.note_missing(deff_id, "slot", slot)
         if not info["text"]:
@@ -202,6 +208,7 @@ class MediaBridge:
         if not info:
             return
         slide = (info.get("variants") or {}).get(variant) if variant else None
+        self.variant_of[deff_id] = variant if slide else None     # its own printf slots (deff_lines)
         slide = slide or self.deff_slide(info)
         old = self.slides.get(deff_id)
         if old not in (None, slide):               # the other side's slide of the same deff (a side change)
