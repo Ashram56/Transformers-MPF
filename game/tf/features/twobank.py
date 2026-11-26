@@ -51,7 +51,7 @@ FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF =
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
 TASK, AWARD_TASK, TOTAL_TASK = "fast_scoring", 0x5b, 0x88
-TOTAL_SECONDS = 2.65                 # deff 137 (no capture; scoring.jsonl 153.46 -> 156.10 -> 158.76 s)
+TOTAL_SECONDS = 163 * 0.016          # deff 137's run: its op list's end_tick 163 (deff_137.json, code)
 AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_data/io/shaker.csv)
 
 
@@ -73,7 +73,6 @@ class TwoBank(Feature):
         self.lingering = False          # task 0xad after the total (see above)
         self.total_at = None            # when deff 137 last started
         self.end_wait = 0.0
-        os_.display.set_media(FS_TOTAL_DEFF, TOTAL_SECONDS, (FS_TOTAL_LEFF,), ((0.0, FS_TOTAL_SOUND),))
         for leff in READY_LEFFS:
             os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff)
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x57)   # QA V-ENG5 (os_layer deff_rule)

@@ -91,9 +91,6 @@ RELEASE_COILS = (0.017 + 0.016, 0.419 + 0.016, 0.820 + 0.016, 1.221 + 0.016)
 EJECT_OVER_TICKS = 66       # a kick's eject is over (the multiball end that waited for it: optimus_autobot.jsonl
                             # kick 72.45 s, end 73.53 s; inferred as the device's eject check)
 RELEASE_AFTER_INTRO = 0.07
-# deffs the package has no length for: (seconds, leffs, sounds) observed in traces/megatron_decepticon.jsonl
-# (lengths inferred: the next effect comes several seconds later)
-UNCAPTURED = {79: (3.0, (74,), ((0.0, 0xf9), (0.58, 0xfa), (1.57, 0xfb))), 139: (2.0, (167,), ((0.0, 0x293),))}
 
 
 JACKPOT_DEFF, JACKPOT_RETRY_SOUND, JACKPOT_RETRY_TICKS = 77, 0x0f4, 0x2e     # [0x0100f3b4]
@@ -456,8 +453,6 @@ class Megatron(Feature):
         super().__init__(os_)
         self.sides = {AUTOBOT: Autobot(self), DECEPTICON: Decepticon(self)}
         self.back_door_at = -10.0
-        for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
-            os_.display.set_media(deff_id, seconds, leffs, sounds)
         self.in_device = 0          # balls the device holds (locked or waiting for their handler / kickout)
         self.pending = 0            # entered balls not handled yet (still counted in play)
         self.locked_held = 0        # locked balls (not in play)

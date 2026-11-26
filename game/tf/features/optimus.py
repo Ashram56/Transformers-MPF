@@ -66,10 +66,6 @@ ALL = 0x3f
 ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)))
 SHOT_LAMPS = {46: ARROWS + ((0x40, (29,)),), 54: ARROWS + ((0x40, (59,)),)}
 OPTIMUS_BIT = 0x40
-# deffs the package has no length for: (seconds, leffs, sounds) as observed in traces/optimus_autobot.jsonl (the
-# jackpots, 2.2 s apart, still play their speech 2.5 s in; the total runs until the trace ends: length inferred)
-UNCAPTURED = {59: (3.0, (48,), ((0.0, 0x7f), (1.52, 0x95))), 60: (3.0, (49,), ((0.0, 0x84), (0.98, 0x85))),
-              62: (2.0, (51,), ((0.0, 0x91),))}
 
 
 class Side:
@@ -357,8 +353,6 @@ class Optimus(Feature):
         super().__init__(os_)
         self.sides = {AUTOBOT: Autobot(self), DECEPTICON: Decepticon(self)}
         self.hit_at = -10.0
-        for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
-            os_.display.set_media(deff_id, seconds, leffs, sounds)
         for side in self.sides.values():
             os_.deff_rule((lambda s: lambda: s.active and s.shown)(side), side.bg, music=side.music, priority=0x76)   # QA V-ENG5
             os_.lamp_rule((lambda s: lambda: s.active and s.shown)(side), leff=side.rule_leff)

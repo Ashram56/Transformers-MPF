@@ -26,11 +26,9 @@ hit deff runs its COMPLETED page, then the total. Drain and tilt end every battl
 Observed, not in the spec text:
 - the shot audits 65 left orbit, 66 right orbit, 67 left ramp, 68 right ramp come first in the shot handlers,
   lit or not, then the battles, then the mode-start rule (traces: audit, battle score, 25,000 / deff 91);
-- the completed hit deff runs until the total (Shockwave 8.67 s, Blackout 9.0, Devastator 8.76, Bumblebee 7.99,
-  Ironhide 7.02 after the hit); Starscream and Ratchet were not traced, 8.5 s is assumed;
+- the completed hit deff runs its final animation (+0x3c = 1), whose op list gives its length;
 - Starscream's lit pair also moves each counted second with fewer than 6 shots left, unless a ramp entrance
   (switch-timeout tokens 0xc / 0xd, 93 ticks) was hit [0x01017824] (QA M9);
-- deffs without a capture get their length, lamp effects and sounds from the traces (UNCAPTURED).
 """
 from tf.features import Feature
 from tf.display import deff_variant
@@ -85,14 +83,6 @@ ADD_TIME, MAX_TIME = 15, 90
 RULE_PRIORITY = 0x40                  # below double / fast scoring (music table [0x000178b0]; QA V-ENG5)
 TOTAL_TICKS = 120                     # a total started at the drain holds the bonus (battle_ratchet: 1.94 s)
 
-# deffs the package has no capture (or no end) of: (seconds, leffs, sounds), from the reference traces
-UNCAPTURED = {
-    94: (2.2, (107,), ((2.02, 0x18e),)),                    # Starscream hit (0x18e 2.02 s after each hit)
-    96: (4.93, (109,), ((0.0, 0x193), (3.70, 0x194))),      # Shockwave intro (deff 97 again 4.93 s later)
-    111: (1.92, (126,), ((0.0, 0x1fe),)),                   # Bumblebee total
-    118: (4.4, (133,), ()),                                 # Mudflap & Skids hit (length as deff 114)
-    119: (1.92, (134,), ((0.0, 0x232),)),                   # Mudflap & Skids total
-}
 
 
 class Battle:
@@ -117,7 +107,6 @@ class Battle:
     speech_follow = ()                  # the calls its follow-ups play (their op-list copies are not played)
     speech_final_delay = None           # the child's sleep on the last hit, when it differs
     shots = 10
-    completed_seconds = 8.5
     multiball = False
 
     def __init__(self, mgr):
@@ -286,7 +275,7 @@ class Battle:
         # the hit deff plays snd_play2(hit_sound, task+0x40) once (e.g. deff_094 [0x010189a8]): here, with its
         # argument, so not a second time from the deff's op list (QA SC1)
         os_.display.own_sounds.add((self.hit_deff, self.hit_sound))
-        kwargs = {"run_seconds": self.completed_seconds} if completed else {}
+        kwargs = {}
         if left is not None:
             kwargs["left"] = left
         # the hit deff's animation by its +0x34 (anim_index) or the final one (+0x3c = 1): deff 94 [0x010189a8]
@@ -301,7 +290,6 @@ class Battle:
                 k -= 1
             variant = "shots{}".format(k)
         if deff_variant(self.hit_deff, variant):
-            kwargs.pop("run_seconds", None)
             kwargs["variant"] = variant
         os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # PuP
         lengths = os_.sample_lengths(self.hit_sound)
@@ -440,7 +428,6 @@ class Shockwave(Battle):
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 96, 97, 98, 99, 0x29, 110, 0x195
     speech, speech_base = (0x1a4, 0x5d, True), 10                     # deff_098
     shots = 11
-    completed_seconds = 8.67
 
     def setup(self):
         self.phase = 1
@@ -474,7 +461,6 @@ class Blackout(Battle):
             chain = lambda k: (lambda e: self._queue(e, 0x1c5, k, chain(k + 1) if k < 3 else None))
             chain(0)(end)
     shots = 11
-    completed_seconds = 9.0
     GROUPS = ((0x01, 0x02, 0x04), (0x08, 0x10, 0x20))
 
     def setup(self):
@@ -512,7 +498,6 @@ class Devastator(Battle):
         """[0x01017068]: 0x1e4 with the same sample after 0x1e3."""
         self._queue(end, 0x1e4, index)
     shots = 10
-    completed_seconds = 8.76
     ROVER = (0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0)       # table 0x040c6964
     ROVER_LEFF, ROVER_POINTS = 120, 10000
 
@@ -557,7 +542,6 @@ class Bumblebee(Battle):
     item, audit_started, audit_completed, insert = 6, 0x61, 0x62, 23
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 108, 109, 110, 111, 0x2c, 123, 0x1ee
     PHASE2_LEFF = 124
-    completed_seconds = 7.99
     DECAY_TICKS, END_TICKS, FLOOR = 3, 46, 100000
     DIRECT_JACKPOT = 200000
 
@@ -681,7 +665,6 @@ class Ironhide(Battle):
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 112, 113, 114, 115, 0x2d, 128, 0x201
     speech, speech_base = (0x214, 0x5d, True), 9                      # deff_114
     shots = 10
-    completed_seconds = 7.02
     PATTERNS = {1: 0x08, 2: 0x14, 3: 0x2a, 4: 0x36}    # table 0x040c6b3c
 
     def reset(self):
@@ -864,8 +847,6 @@ class Battles(Feature):
         self.task47_until = self.token9_until = 0.0      # task 0x47 and token 9 [0x01033530]
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._launched, state=0)
         self.ended_at_drain = False
-        for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
-            os_.display.set_media(deff_id, seconds, leffs, sounds)
         for b in self.battles:
             os_.deff_rule((lambda b_: lambda: b_.rule())(b), b.bg, music=b.music, priority=RULE_PRIORITY)
             os_.deff_live((b.bg,), b.background_values)

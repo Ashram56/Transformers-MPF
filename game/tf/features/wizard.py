@@ -70,9 +70,6 @@ WMB_HIT_DEFF, WMB_HIT_LEFF, WMB_HIT_SOUND = 88, 89, 0x131
 WMB_SUPER_DEFF = 89
 WMB_TOTAL_DEFF, WMB_TOTAL_LEFF, WMB_TOTAL_TASK = 90, 91, 0x90
 WMB_SUPER_LIT_LEFF = 88
-# deffs the package has no length for (observed in traces/wizard_multiball.jsonl: the replay 2.39 s after the last
-# hit deff 88, at its hold)
-UNCAPTURED = {WMB_HIT_DEFF: (2.55, (WMB_HIT_LEFF,), ((0.0, WMB_HIT_SOUND), (0.52, 0x132)))}
 
 
 REQ_LAMPS = (27, 7, 6, 5, 4, 22, 23, 24, 25, 26, 28)   # table 0x040c7a14 (stride 0x10), byte 0
@@ -121,8 +118,6 @@ class Wizard(Feature):
         for r in range(REQS):
             os_.register_poke(0x0211210c + 16 * r, self._poke_req(r), stride=4)
         os_.register_poke(0x34eb4, self._poke_side_count, players=6, stride=4)
-        for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
-            os_.display.set_media(deff_id, seconds, leffs, sounds)
 
     def _poke_req(self, r):
         def setter(p, v):

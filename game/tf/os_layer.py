@@ -61,7 +61,7 @@ LATER_SERVE_EXTRA_TICKS = 6     # every later ball start: trough eject 0.645 s a
 # serve task [0x0103b128] (ball_feed.md): types 2 and 8 kick without a settle, the others after the trough's +0x10
 # settle (31 ticks, table 0x040d17fc) and the tick the task starts on (QA CC1, CC2)
 SAVE_EJECT_TICKS = 1
-AUTO_LAUNCH_TICKS = 12      # task 0x3c after an auto-launch (inferred: covers the shooter lane opening)
+AUTO_LAUNCH_TICKS = 0xbb    # auto_launch_started [0x0100a150]: task 0x3c sleeps 0xbb ticks (task_create_arg_abe8 [0x0000abe8])
 MB_TASK = "multiball"       # the multiball task (ROM id: trough device + 0x18)
 # Multiball feed FUN_0103aba4 [0x0103aba4] / FUN_0103aa5c [0x0103aa5c] (ball_feed.md, QA CC3, R-F10): each ball
 # after the trough's 31-tick settle, then 6-tick polls while a ball sits in the shooter lane [0x0103ab6c] or the
@@ -1380,9 +1380,8 @@ class TfOS(CustomCode):
             self.after(GAME["launch_sound_ticks"], lambda: self.game and self.sound(GAME["launch_sound"]))
 
     def _shooter_ejecting(self, mechanical_eject=False, **kwargs):
-        """Auto-launch (coil 2): the OS runs task 0x3c from the launch, so the shooter lane does not raise
-        the orbit post and the launched ball's orbit pass is ignored (sw23; portal_multiball_shots.jsonl
-        24.07 launch, 0x3c at the launch, left orbit 1.8 s later scores no shot). Length not traced."""
+        """Auto-launch (coil 2): auto_launch_started [0x0100a150], the pulse's callback
+        (coil_pulse_queue_wait(2, 0x40, ...)), runs task 0x3c for 0xbb ticks (a bare task_sleep, [0x0000ab9c])."""
         if not mechanical_eject:
             self.task_start(0x3c, AUTO_LAUNCH_TICKS)
 
