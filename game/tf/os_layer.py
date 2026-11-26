@@ -77,7 +77,8 @@ SAVE_SERVE_TICKS = 32           # ball save re-serve, serve type 1: settle + the
 BALL_SEARCH_EVENT_TICKS = 36
 BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
                                 # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
-BALL_SEARCH_TICKS = 104     # search task 0x2b; a drain during it ends the ball after it
+BALL_SEARCH_TICKS = 104     # search task 0x2b
+SEARCH_DEVICES_TICKS = 63   # its device tasks: device 4's +0x14 settle (62, table 0x040d17fc) + the task's start tick
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
 # the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate.
@@ -2061,13 +2062,21 @@ class TfOS(CustomCode):
             return
         queue.wait()
         if self.task_running(0x2b):
-            self.after(self.task_ticks_left(0x2b), lambda: self._ball_ending_go(queue))
-            return
+            # the search (count_15_0m_17_49m [0x0103b778]) restarts every ball device's task at its start
+            # (set_flag_a_3be8c [0x0103be8c] -> game_device_39de0(dev, type, 0x1a)); with flag 2 each handler runs
+            # callback 3 and settles with its +0x14 (trough 31 [0x010387ac], shooter 46 [0x010383a8], device 4 62
+            # [0x010391a0]); the last one's task_0x1c [0x01039db4] (no device task left) ends the ball, whose
+            # task_kill(0, 0x100) [0x00019e44] ends the search
+            wait = max(0, SEARCH_DEVICES_TICKS - (BALL_SEARCH_TICKS - self.task_ticks_left(0x2b)))
+            if wait:
+                self.after(wait, lambda: self._ball_ending_go(queue))
+                return
         self._ball_ending_go(queue)
 
     def _ball_ending_go(self, queue):
         self.state |= ST_END_BALL
         self.rule_leffs_kill(end_of_ball=True)
+        self.task_kill(0x2b)                         # end_of_ball's task_kill(0, 0x100) [0x00019e44]
         self.task_kill("search_run")                 # the search found the drained ball
         self.kill_ball_save()
         self.kill_mb_save()
