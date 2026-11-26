@@ -132,9 +132,9 @@ class SwitchRunner(ball_search.SearchRunner):
         st(S("random_below"), "random_below", rnd)
         # every award goes through score_add_player [0x0001cb0c] (score_add [0x0001caf0] applies the playfield
         # multiplier and tail-calls it; the end-of-ball bonus calls it directly): the value as scored, the caller
-        # a deff lowering its own priority (error_log_user_20e84 [0x00020e84] -> leaf_20ec4 [0x00020ec4]: when the
+        # a deff lowering its own priority (deff_prio_set_own_20e84 [0x00020e84] -> deff_prio_set_20ec4 [0x00020ec4]: when the
         # active deff 0x00032464 is the task's (+0x24), its priority 0x00032466 takes the new value), also inside
-        # default_user_2108c [0x0002108c] before its sleep: the display manager then lets a higher one replace it
+        # deff_prio_sleep_2108c [0x0002108c] before its sleep: the display manager then lets a higher one replace it
         def set_prio(r, prio):
             if r.cur is not None:
                 did = struct.unpack("<H", bytes(r.m.mem_read(r.cur.struct + 0x24, 2)))[0]
@@ -157,7 +157,7 @@ class SwitchRunner(ball_search.SearchRunner):
         st(S("game_flag_set"), "game_flag_set", note("flag_set", ["flag"]))
         st(S("game_flag_clear"), "game_flag_clear", note("flag_clear", ["flag"]))
         # deff_start and leff_start run as ROM code (the display and lamp managers keep what runs, which the
-        # rules ask: wait_display_idle [0x01006878], the show tasks of task_sleep_user_6480 [0x01006480], the
+        # rules ask: wait_display_idle [0x01006878], the show tasks of deff_sequence_flippers_6480 [0x01006480], the
         # background evaluation bg_entry_eval [0x000178b0]); the effects run as tasks like any other.
         st(S("deff_start"), "deff_start", note("deff", ["deff", "queue", "force"]))
 
@@ -201,14 +201,14 @@ class SwitchRunner(ball_search.SearchRunner):
             return int(bool(hit))
         st(S("task_kill_range"), "task_kill_range", kill_range)
 
-        def create_once(r):                    # task_running_user_aaf8(id, fn, flags, stack): only if not running
+        def create_once(r):                    # task_create_unique_aaf8(id, fn, flags, stack): only if not running
             tid = a(0) & 0xffff
             if any(t.tid == tid for t in others(r)):
                 return 0
             t = r.new_task(tid, a(1), a(2))
             r.op("task", fn="0x%08x" % t.fn, id=tid)
             return t.struct
-        st(S("task_running_user_aaf8"), "task_create_once", create_once)
+        st(S("task_create_unique_aaf8"), "task_create_once", create_once)
         def remove(r):                         # post_event_49_a9bc(task) [0x0000a9bc]: end that task now
             t = next((t for t in r.tasks if t.alive and t.struct == a(0)), None)
             if t is not None and t is not r.cur:
@@ -219,13 +219,13 @@ class SwitchRunner(ball_search.SearchRunner):
         # create_child 0x0000ac20 runs as ROM code (task_create, then the parent at +0x14, its flags and args)
         st(0x0000ac20, "task_create_child", lambda r: NOTE)
 
-        def first_in_range(r):                 # leaf_b698(lo, hi) [0x0000b698]: first task of the list in range
+        def first_in_range(r):                 # task_find_in_range_b698(lo, hi) [0x0000b698]: first task of the list in range
             lo, hi = a(0) & 0xffff, a(1) & 0xffff
             t = next((t for t in r.tasks if t.alive and lo <= t.tid <= hi), None)
             return t.struct if t else 0
         st(0x0000b698, "task_first_in_range", first_in_range)
 
-        def first_of(r):                       # leaf_b320(ids) [0x0000b320]: another task whose id is listed
+        def first_of(r):                       # task_any_running_b320(ids) [0x0000b320]: another task whose id is listed
             ids, p = [], a(0)
             while p:
                 v = struct.unpack("<H", bytes(r.m.mem_read(p + 2 * len(ids), 2)))[0]
@@ -236,7 +236,7 @@ class SwitchRunner(ball_search.SearchRunner):
             return t.struct if t else 0
         st(0x0000b320, "task_first_of", first_of)
 
-        def set_id(r):                         # task_running_user_b4dc(id) [0x0000b4dc]: the caller takes the id
+        def set_id(r):                         # task_wait_for_b4dc(id) [0x0000b4dc]: the caller takes the id
             tid = a(0) & 0xffff
             if r.cur is not None and not any(t.tid == tid for t in others(r)):
                 r.cur.tid = tid
@@ -292,7 +292,7 @@ class SwitchRunner(ball_search.SearchRunner):
     # coil 2 or the scenario's `plunge` launches it (23 opens); Optimus Prime starts down (switch 44 closed).
     def set_raw(self, sw, closed):
         """The debounced state of switch sw, as switch_dispatch_debounce [0x0000dc44] leaves it: bit n-1 of
-        0x000368da, 0x000368ee and 0x00036902 (inverted for an opto, record +0x10 bit 4: switch_rec_d2d4_wrap_d3e8
+        0x000368da, 0x000368ee and 0x00036902 (inverted for an opto, record +0x10 bit 4: switch_bit_test2_d3e8
         [0x0000d3e8]). Returns the raw bit."""
         rec = record(sw)
         opto = struct.unpack("<H", bytes(self.m.mem_read(rec + 0x10, 2)))[0] & 4
@@ -344,21 +344,21 @@ class SwitchRunner(ball_search.SearchRunner):
 
     def exit(self, t):
         """A task ends (returns or is killed) as in the OS exit path post_event_49_b654 [0x0000b654] ->
-        leaf_a910 [0x0000a910]: a deff task (flags 4) that is no child (+0x14 = 0) ends the active deff,
-        leaf_209d4 [0x000209d4] clears deff_active_id 0x32464, its priority 0x32466 and flags 0x32467.
-        Then the per-task exit calls at +0x48 (leaf_a84c [0x0000a84c], set by error_log_wrap_b598 [0x0000b598]) run."""
+        task_free_a910 [0x0000a910]: a deff task (flags 4) that is no child (+0x14 = 0) ends the active deff,
+        deff_active_clear_209d4 [0x000209d4] clears deff_active_id 0x32464, its priority 0x32466 and flags 0x32467.
+        Then the per-task exit calls at +0x48 (task_run_exit_handlers_a84c [0x0000a84c], set by task_wait_object_b598 [0x0000b598]) run."""
         t.alive = False
         self.relink()
         m = self.m
         fl = struct.unpack("<H", bytes(m.mem_read(t.struct + 2, 2)))[0]
-        if fl & 8:                             # leaf_ad64 [0x0000ad64]: its children (+0x14 = it) end with it
+        if fl & 8:                             # task_kill_children_ad64 [0x0000ad64]: its children (+0x14 = it) end with it
             for c in self.tasks:
                 if c.alive and c is not self.cur and rd32(m, c.struct + 0x14) == t.struct:
                     self.exit(c)
         if fl & 4 and rd32(m, t.struct + 0x14) == 0:
             m.mem_write(0x00032464, b"\0\0")
             m.mem_write(0x00032466, b"\0\0")
-        for k in range(4):                     # the exit calls leaf_a84c [0x0000a84c]: fn(task, arg), then cleared
+        for k in range(4):                     # the exit calls task_run_exit_handlers_a84c [0x0000a84c]: fn(task, arg), then cleared
             fn = rd32(m, t.struct + 0x48 + 8 * k)
             if fn:
                 arg = rd32(m, t.struct + 0x4c + 8 * k)
@@ -373,10 +373,10 @@ class SwitchRunner(ball_search.SearchRunner):
         super().reset()
 
     def step(self, until):
-        """Run the machine until tick `until`, one OS tick at a time as the main loop ram_00031550_user
+        """Run the machine until tick `until`, one OS tick at a time as the main loop os_main_loop_14f68
         [0x00014f68] does: the tick's OS work post_event_20_coil_pulse_queue_serve_2bd48 [0x0002bd48] (event 0x20, queued pulses,
         the display queue coil_rec_208f4, the lamp compositor, sounds, the switch debounce, ...), every
-        task due, then the end-of-tick hooks leaf_b648 [0x0000b648]."""
+        task due, then the end-of-tick hooks poll_hooks_all_ok_b648 [0x0000b648]."""
         while self.now < until:
             self.clocks()
             self.slot_ends()
@@ -534,7 +534,7 @@ class SwitchRunner(ball_search.SearchRunner):
 
 
 def boot(r):
-    """The start-up of start_deff_5_user [0x00000308]: the global constructors (0x0002c0f4 ->
+    """The start-up of os_start_308 [0x00000308]: the global constructors (0x0002c0f4 ->
     __do_global_ctors 0x0002c078, the 39 entries of 0x00033e40: each rule module's event hooks, e.g. the pop
     value at ball start 0x0102d1ec, hooked on event 0x11 by 0x0102dab8), game state 0x10, the OS init
     0x00006ecc, then the device registration 0x01005fb8 as ball_search.boot."""

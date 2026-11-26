@@ -81,7 +81,7 @@ ball's travel (switch 0xe closing), which is physics, not code.
 | 15 | 11 bottom pop | |
 | 20 | 13 left sling | `FUN_00003518` [0x00003518] slings 1..2 |
 | 25 | 14 right sling | |
-| 31 | 5 orbit control gate | the gate object's pulse `leaf_2c074` [0x0102c074] |
+| 31 | 5 orbit control gate | the gate object's pulse `drv_pulse_coil_2c074` [0x0102c074] |
 
 Each direct pulse (`FUN_00002160` [0x00002160]) holds the search until the 1 ms IO pass ends it: 64 // 16 + 1 =
 5 ticks. The game's `BALL_SEARCH_SWEEP` is this table one tick later (the task runs the tick after its start).
@@ -91,7 +91,7 @@ search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick 
 hold-off 0x0003144c is 0; when a queued pulse is over it sets the hold-off to 6, so the next one starts 7 ticks
 later. In the search the queue is still held off from the trough's previous pulse: queued at 6, started at 13,
 which is the game's 14 one tick later (so the game's value is now code, not trace). The orbit gate (coil 5) is
-pulsed at 31 for 1,488 ms (`leaf_2c074` [0x0102c074]: the game's `BALL_SEARCH_GATE` (32, 91) is this one tick later).
+pulsed at 31 for 1,488 ms (`drv_pulse_coil_2c074` [0x0102c074]: the game's `BALL_SEARCH_GATE` (32, 91) is this one tick later).
 The Optimus motor (coil 30, object 0x000351e8) did not move in the three sweeps of the run: its only movers are
 `optimus_motor_test` [0x01025568] and `play_sound_010_25844` [0x01025844] (`motor_goto_check`), and the run's motor
 was already where the game wants it. Code open: the search's motor step the game plays at 33 (traces only).

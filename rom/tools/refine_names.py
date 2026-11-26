@@ -143,14 +143,15 @@ def main():
 
 def rename(ren):
     """Rename functions (old -> new) in the decompile and in the .md, .py and .csv files of rom/, docs/ and game/tf/
-    that name them (function_names.csv and function_names_hand.csv excepted: they keep the old name in `was`)."""
+    that name them (function_names.csv and function_names_hand.csv excepted: they keep the old name in `was`; the
+    dated QA reports docs/qa/YYYY-MM-DD/ too)."""
     if not ren:
         return
     pat = re.compile(r"\b(" + "|".join(sorted(map(re.escape, ren), key=len, reverse=True)) + r")\b")
     files = [DECOMP]
     repo = os.path.abspath(os.path.join(ROMDIR, ".."))
     for d, _, fs in [w for top in ("rom", "docs", os.path.join("game", "tf")) for w in os.walk(os.path.join(repo, top))]:
-        if "/." in d or d.endswith("__pycache__"):
+        if "/." in d or d.endswith("__pycache__") or re.search(r"docs/qa/\d{4}-", d):   # dated QA reports stay as written
             continue
         for fn in fs:
             p = os.path.join(d, fn)
