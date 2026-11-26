@@ -9,8 +9,8 @@ agent plus capable. Brouillon interne : rien n'est encore proposé à Stern-SAM-
 MPF-Godot-Packaging. Une autre session a reçu la même demande ; après le feu vert de Vincent, on relit les deux
 dépôts et on n'ouvre de PR que pour ce qui n'y est pas déjà (colonne « Upstream » de tricks.md).
 
-**Status.** Draft of 2026-11-26, written while the QA thread (branch `claude/project-thread-y1zqep`, PR #14) is
-still running; it will be completed when that thread ends. Nothing here is pushed to Stern-SAM-Decryption or
+**Status.** Draft complete as of 2026-11-26 15:45 UTC: it covers the QA thread up to its last commit `03df8fc7`
+(QA final F064; the thread is waiting for review). 33 tricks. Nothing here is pushed to Stern-SAM-Decryption or
 MPF-Godot-Packaging until the owner says so (owner, 2026-11-26).
 
 **Sources.** PR #15, #17, #18, #19 (agent A, merged into PR #14), PR #14 (QA and recreation fixes, 120 commits on
