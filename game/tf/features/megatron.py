@@ -223,7 +223,7 @@ class Autobot(Side):
     JP = (71, 64, 0xca, 0x77)
     DJ = (72, 65, 0xd2, 0x78)
     SUPER = (73, 66, 0xd9, 0x79)
-    SUPER_LIT_LEFF, SUPER_RULE = 63, 0x0100d004
+    SUPER_LIT_LEFF = 63
     TIMEOUT_TASK, TIMEOUT_TICKS = 0xbd, 312
     PCT = (100, 100, 75, 50)
 
@@ -331,7 +331,7 @@ class Decepticon(Side):
     JP = (77, 72, 0xe4, 0x7b)
     DJ = (78, 73, 0xf7, 0x7c)
     SUPER = (79, 74, 0xf9, 0x7d)
-    SUPER_LIT_LEFF, SUPER_RULE = 71, 0x0100ef30
+    SUPER_LIT_LEFF = 71
     CENTER = 3
 
     def __init__(self, mgr):
@@ -439,14 +439,13 @@ class Megatron(Feature):
                 sc.add_switch_handler(name, self._switch, state=0)
         for side in self.sides.values():
             os_.deff_rule((lambda s: lambda: s.active)(side), side.bg, music=side.music, priority=0x78)   # QA V-ENG5
-            os_.lamp_rule((lambda s: lambda: s.active)(side), leff=side.rule_leff, order=0x0100cee0 + side.flag)
+            os_.lamp_rule((lambda s: lambda: s.active)(side), leff=side.rule_leff)
             # the rule leff flashes the lit shots (leff_062 / leff_070 [0x0100cf28 / 0x0100ee54])
             os_.lamps.leff_code(side.rule_leff,
                                 shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.mask)(side)))
             # the super-lit flasher leff while phase 3: rules FUN_0100d004 / FUN_0100ef30 (QA M6; a phase 3
             # restored by adj 88 gets it too)
-            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.SUPER_LIT_LEFF,
-                          order=side.SUPER_RULE)
+            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.SUPER_LIT_LEFF)
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
         os_.lamp_update(self.draw_lock)
 

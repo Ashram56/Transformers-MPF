@@ -223,6 +223,20 @@ def sum_bits(slots):
     return out
 
 
+
+_LEFF_RULE_ORDER = None
+
+
+def leff_rule_rank(leff):
+    """The position of `leff`'s rule in the ROM's leff rule list (list 3), from rom/tools/rule_order.py."""
+    global _LEFF_RULE_ORDER
+    if _LEFF_RULE_ORDER is None:
+        import json                         # noqa: PLC0415
+        path = os.path.join(os.path.dirname(__file__), "..", "..", "rom", "rom_data", "rules", "leff_rule_order.json")
+        with open(path, encoding="utf-8") as f:
+            _LEFF_RULE_ORDER = {leff_: i for i, leff_ in enumerate(json.load(f)["order"])}
+    return _LEFF_RULE_ORDER.get(leff, len(_LEFF_RULE_ORDER))
+
 class Task:
     """One ROM task: a timer that calls back after a number of ticks."""
 
@@ -514,11 +528,13 @@ class TfOS(CustomCode):
 
     # ------------------------------------------------------------------ lamp rules
 
-    def lamp_rule(self, cond, leff=None, tube=None, order=0):
-        """Lamp/tube rule (leff_rule_init / FUN_00017748): lamp-matrix effect `leff` and/or ramp tube show
-        `tube` run while cond() is true. Re-evaluated by rules_refresh() in `order` (use the ROM address
-        of the rule's condition function, so rules start in the ROM's order)."""
-        self.rules.append([cond, leff, tube, False, order])
+    def lamp_rule(self, cond, leff=None, tube=None):
+        """Lamp/tube rule (rule_record_init_a_17748 [0x00017748]): lamp-matrix effect `leff` and/or ramp tube show
+        `tube` run while cond() is true. Re-evaluated by rules_refresh() in the order of the ROM's leff rule list
+        (QA R-F9): every rule has priority 0, so each registration goes to the head of the list
+        [0x00017580] and the static constructors run the modules last first [0x0002c0c8]
+        (rom/rom_data/rules/leff_rule_order.json, rom/tools/rule_order.py)."""
+        self.rules.append([cond, leff, tube, False, leff_rule_rank(leff)])
         self.rules.sort(key=lambda r: r[4])
 
     def deff_live(self, deff_ids, values):

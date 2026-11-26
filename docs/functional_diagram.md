@@ -103,7 +103,7 @@ Game: `game/tf/features/optimus.py`, `game/tf/features/optimus_mech.py`.
 ```mermaid
 flowchart TD
   R["Reset per player 0x0101fe98"] --> Q{"Qualifying allowed 0x0101fdac<br/>start allowed 0x01022ca8"}
-  Q --> MSH["Flashing mode-start shot hit 0x01020074<br/>10,000 + 5,000 x hits"]
+  Q --> MSH["Flashing mode-start shot hit 0x01020074<br/>min(10,000 + 10,000 x started + 5,000 x hits, 75,000) 0x0101fd34"]
   MSH -->|4th| ST["Battle start 0x01022e08<br/>100,000, intro, wizard item 0x01035af0"]
   MSH -->|else| RL["Relight a random unlit shot 0x0101ffa0"]
   MV["Move lit battle 0x01022cf8 (pops, Bumblebee)"] -.-> ST

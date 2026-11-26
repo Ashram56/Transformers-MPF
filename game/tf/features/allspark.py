@@ -53,10 +53,8 @@ class Allspark(Feature):
         super().__init__(os_)
         self.machine.switch_controller.add_switch_handler(SWITCH, self._entered)
         self.machine.events.add_handler("balldevice_bd_left_eject_ball_eject_success", self._eject_success)
-        os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("allspark_lit", 0) > 0, leff=BANKED_LEFF,
-                      order=0x01024f24)
-        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("super_pops")), leff=SUPER_POPS_LEFF,
-                      order=0x0102d520)
+        os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("allspark_lit", 0) > 0, leff=BANKED_LEFF)
+        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("super_pops")), leff=SUPER_POPS_LEFF)
 
     def player_first_ball(self):
         pd = self.pd

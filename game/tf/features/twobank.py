@@ -75,10 +75,10 @@ class TwoBank(Feature):
         self.end_wait = 0.0
         os_.display.set_media(FS_TOTAL_DEFF, TOTAL_SECONDS, (FS_TOTAL_LEFF,), ((0.0, FS_TOTAL_SOUND),))
         for leff in READY_LEFFS:
-            os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff, order=0x0102e9c0)
+            os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff)
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x57)   # QA V-ENG5 (os_layer deff_rule)
         for leff in FS_RULE_LEFFS:
-            os_.lamp_rule(lambda: self.running, leff=leff, order=0x01004394)
+            os_.lamp_rule(lambda: self.running, leff=leff)
         os_.display.own_sounds.add((LEFT_DEFF, LEFT_SOUND))
         self._left_token = 0
         os_.deff_live((FS_DEFF, FS_VALUE_DEFF), lambda: {"values": [self.value]})

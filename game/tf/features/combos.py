@@ -66,14 +66,13 @@ class Combos(Feature):
         self.way = 0
         self.ticks = 0
         self.mask = ALL
-        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF,
-                      order=0x01023928)
+        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF)
         self.rove = self.rove_prev = 0          # roving 3X index (1-6 = shot + 1) and the one it just left
         self.rove_dir = -1
         from tf.os_layer import TICK                     # noqa: PLC0415
         os_.display.set_media(MULT_DEFF, MULT_TICKS * TICK, (), ((0.0, MULT_SOUND),
                                                                  (MULT_SOUND_2X_TICKS * TICK, MULT_SOUND_2X)))
-        os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
+        os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF)
         os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
         os_.lamp_update(self.draw)
 

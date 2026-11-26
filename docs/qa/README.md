@@ -164,6 +164,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - ~~D-CR-DELAY~~ task_0x13 [0x00003f00]: adj 62 single-tick sleeps, the coin dropped at the first refusal.
     - D-SW-DEB, D-SW-ERR, D-SW-15, D-SW-D19: rows in rom_differences.md (MPF limit / not modelled hardware).
     - Flippers: decoded by agent A (table 0x040cf590, io_isr [0x000114b0]); the waiver is no longer used.
+    - ~~R-F9~~ the leff rules run in the ROM's list order: all priority 0, each registration at the head
+      [0x00017580], the constructors run last first [0x0002c0c8] (`rom/tools/rule_order.py`,
+      `rom/rom_data/rules/leff_rule_order.json`); the made-up `order=` keys are gone.
+    - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
+      [0x0101fd34].
   - Still open (in progress): the device, display, lamp and rules lows of the reports.
 
 ## Pass of 2026-11-25

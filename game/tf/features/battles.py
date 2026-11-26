@@ -793,11 +793,11 @@ class Battles(Feature):
                     fn = arrow_blink(rows, (lambda b_: lambda: b_.lit)(b))
                 os_.lamps.leff_code(b.rule_leff, fn)
                 os_.lamp_rule((lambda b_: lambda: b_.active and not (isinstance(b_, Bumblebee) and b_.phase2()))(b),
-                              leff=b.rule_leff, order=0x01012000 + b.index)
+                              leff=b.rule_leff)
         bee = self.battles[4]
-        os_.lamp_rule(lambda: bee.phase2(), leff=Bumblebee.PHASE2_LEFF, order=0x01012010)
+        os_.lamp_rule(lambda: bee.phase2(), leff=Bumblebee.PHASE2_LEFF)
         os_.lamp_rule(lambda: bool(os_.game) and self.qualify_allowed() and bool(self.pd.get("battle_lit")),
-                      leff=LIT_LEFF, order=0x010232d4)
+                      leff=LIT_LEFF)
         os_.lamp_update(self.draw)
         os_.register_poke(0x2111ecc, self._poke("battle_lit"), stride=4)
         for b in self.battles:

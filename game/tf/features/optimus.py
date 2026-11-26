@@ -339,17 +339,14 @@ class Optimus(Feature):
             os_.display.set_media(deff_id, seconds, leffs, sounds)
         for side in self.sides.values():
             os_.deff_rule((lambda s: lambda: s.active and s.shown)(side), side.bg, music=side.music, priority=0x76)   # QA V-ENG5
-            os_.lamp_rule((lambda s: lambda: s.active and s.shown)(side), leff=side.rule_leff,
-                          order=0x01028000 + side.flag)
+            os_.lamp_rule((lambda s: lambda: s.active and s.shown)(side), leff=side.rule_leff)
             # the rule leff flashes the lit shots (leff_046 / leff_054 [0x010285e8 / 0x0102a72c])
             os_.lamps.leff_code(side.rule_leff,
                                 shot_blink(SHOT_LAMPS[side.rule_leff], (lambda s: lambda: s.lit)(side)))
-            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.super_leff,
-                          order=0x01028100 + side.flag)
+            os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.super_leff)
         for i, leff in enumerate(BATTLE_RULE_LEFFS):
-            os_.lamp_rule(self.battle_progress, leff=leff, order=0x01026000 + i)
-        os_.lamp_rule(lambda: self.battle_progress() and self.pd.get("opt_left", 0) <= 0, leff=BATTLE_DONE_LEFF,
-                      order=0x01026010)
+            os_.lamp_rule(self.battle_progress, leff=leff)
+        os_.lamp_rule(lambda: self.battle_progress() and self.pd.get("opt_left", 0) <= 0, leff=BATTLE_DONE_LEFF)
 
     def player_first_ball(self):
         pd = self.pd

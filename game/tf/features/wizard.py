@@ -96,26 +96,25 @@ class Wizard(Feature):
         os_.deff_live((SIDE_BG,), lambda: {"values": [SIDE_POINTS + SIDE_STEP * sum(self.side_counts),
                                                       self.side_sum]})
         os_.deff_live((WMB_BG,), lambda: {"values": [WMB_POINTS + WMB_STEP * sum(self.wmb_counts)]})
-        os_.lamp_rule(lambda: self.side_running, leff=SIDE_RULE_LEFF, order=0x01010958)
+        os_.lamp_rule(lambda: self.side_running, leff=SIDE_RULE_LEFF)
         # leff_079 / leff_087 [0x010109a0 / 0x01037060]: made hits solid, the rest flashing; the super's sweep
         os_.lamps.leff_code(SIDE_RULE_LEFF, hit_count_blink(
             SIDE_LAMPS, lambda: self.side_counts, self.side_super_lit, SUPER_SWEEP, sum(SIDE_LAMPS, ())))
         os_.lamps.leff_code(WMB_RULE_LEFF, hit_count_blink(
             WMB_LAMPS, lambda: self.wmb_counts, lambda: all(c >= WMB_HITS for c in self.wmb_counts), SUPER_SWEEP,
             sum(WMB_LAMPS, ())))
-        os_.lamp_rule(lambda: self.side_running and self.side_super_lit(), leff=SIDE_LIT_LEFF, order=0x01010959)
-        os_.lamp_rule(lambda: self.wmb_running, leff=WMB_RULE_LEFF, order=0x01037018)
-        os_.lamp_rule(lambda: self.wmb_running and all(c >= WMB_HITS for c in self.wmb_counts), leff=WMB_SUPER_LIT_LEFF,
-                      order=0x01037019)
+        os_.lamp_rule(lambda: self.side_running and self.side_super_lit(), leff=SIDE_LIT_LEFF)
+        os_.lamp_rule(lambda: self.wmb_running, leff=WMB_RULE_LEFF)
+        os_.lamp_rule(lambda: self.wmb_running and all(c >= WMB_HITS for c in self.wmb_counts), leff=WMB_SUPER_LIT_LEFF)
         for i, leff in enumerate(QUALIFY_LEFFS):
             os_.lamp_rule(lambda: bool(os_.game) and self.side_qualifies(),
-                          leff=leff, order=0x0100ff80 + i)
+                          leff=leff)
         os_.lamp_update(self.draw, priority=1)
         # leffs 84 and 85 while every requirement is completed, no multiball runs and flag 0x3c is clear: rule
         # items_all_collected_idle_363b4 [0x010363b4] (items_all_collected [0x01035d50]) (QA L-084, L-085)
         for i, leff in enumerate((84, 85)):
             os_.lamp_rule(lambda: bool(os_.game) and self.all_done() and not os_.any_multiball() and not os_.flag(0x3c),
-                          leff=leff, order=0x010363b4 + i)
+                          leff=leff)
         for r in range(REQS):
             os_.register_poke(0x0211210c + 16 * r, self._poke_req(r), stride=4)
         os_.register_poke(0x34eb4, self._poke_side_count, players=6, stride=4)
