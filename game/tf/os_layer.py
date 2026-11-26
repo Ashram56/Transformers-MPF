@@ -55,17 +55,18 @@ MULTIBALL_FLAGS = (0x1e, 0x1f, 0x22, 0x25, 0x29, 0x3e)
 BALL_SAVE_GRACE = 218        # ticks (0xda) of grace after the ball-save timer
 SERVE_EJECT_TICKS = 32
 LATER_SERVE_EXTRA_TICKS = 6     # every later ball start: trough eject 0.645 s after the ball start, not 0.545 s
-SAVE_EJECT_TICKS = 39
+# serve task [0x0103b128] (ball_feed.md): types 2 and 8 kick without a settle, the others after the trough's +0x10
+# settle (31 ticks, table 0x040d17fc) and the tick the task starts on (QA CC1, CC2)
+SAVE_EJECT_TICKS = 1
 AUTO_LAUNCH_TICKS = 12      # task 0x3c after an auto-launch (inferred: covers the shooter lane opening)
 MB_TASK = "multiball"       # the multiball task (ROM id: trough device + 0x18)
-MB_EJECT_TICKS = 101        # trough eject cycle while it launches multiball balls (Tron traces)
-# A device holding a ball for the rules (Tron: the VUK) stays busy for a fixed time after its kick, however
-# soon MPF confirms the eject (Tron traces: 3.0 s from the kick to the first multiball ball's launch).
-DEVICE_BUSY_TICKS = 149
-# A request without a held ball (add-a-ball, a drain during the save) launches its first ball after a trough
-# cycle (Tron traces: 1.43 s, of which MPF's trough eject + auto-launch take ~0.6 s).
-MB_FIRST_EJECT_TICKS = 51
-SAVE_SERVE_TICKS = 48           # ball save re-serve: deff 20 -> shooter lane opens 1.383 s (Tron traces)
+# Multiball feed FUN_0103aba4 [0x0103aba4] / FUN_0103aa5c [0x0103aa5c] (ball_feed.md, QA CC3, R-F10): each ball
+# after the trough's 31-tick settle, then 6-tick polls while a ball sits in the shooter lane [0x0103ab6c] or the
+# shooter's task 0x16 runs (125 ticks from the shooter lane switch closing [0x0103a7a4]); no fixed device hold.
+MB_SETTLE_TICKS, MB_POLL_TICKS, SHOOTER_TASK_TICKS = 31, 6, 125
+MB_KICK_RETRY_TICKS = 312       # [0x0103a7fc]: from the 16th try on, 312 ticks between kick tries
+MB_FIRST_EJECT_TICKS = 32       # settle + the task's start tick
+SAVE_SERVE_TICKS = 32           # ball save re-serve, serve type 1: settle + the task's start tick (QA CC1)
 BALL_SEARCH_EVENT_TICKS = 36
 BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
                                 # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
@@ -328,6 +329,9 @@ class TfOS(CustomCode):
             sw.add_switch_handler(name, self._search_hold)
             sw.add_switch_handler(name, self._search_hold, state=0)
         sw.add_switch_handler("s_shooter_lane", self._shooter_left, state=0)
+        sw.add_switch_handler("s_shooter_lane", self._shooter_entered)
+        self._shooter_at = -1e9     # last closing of the shooter lane switch (task 0x16 [0x0103a7a4] starts there)
+        self._mb_kick_at = -1e9
         sw.add_switch_handler("s_coin_door_open", self._coin_door_opened)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_closed, state=0)
         self._power_off_run = 0     # counts deff 4 starts, so a dim timer of an earlier start does nothing
@@ -850,8 +854,7 @@ class TfOS(CustomCode):
         """Multiball task FUN_0103aba4: wait until no ball device is busy (a device keeps or is ejecting
         its ball), then start the save and launch the balls one per trough eject cycle, the first one
         after a trough cycle (_mb_request)."""
-        device_busy_until = self.device_released_at + (DEVICE_BUSY_TICKS - 0.5) * TICK
-        if self.ball_held or self.device_busy or self.now < device_busy_until:
+        if self.ball_held or self.device_busy:
             self.task_start(MB_TASK, 1, lambda: self._mb_task(start_save))
             return
         if start_save:
@@ -869,11 +872,27 @@ class TfOS(CustomCode):
     def _mb_launch(self):
         if self._mb_pending <= 0 or not self.game or self.state & 0x214:
             self._mb_pending = 0
+            self._mb_kick_at = -1e9
             self.task_kill(MB_TASK)
             return
+        if not self._mb_feed_ready():
+            self.task_start(MB_TASK, MB_POLL_TICKS, self._mb_launch)
+            return
         self._mb_pending -= 1
+        self._mb_kick_at = self.now
         self.machine.playfield.add_ball(balls=1, player_controlled=False)
-        self.task_start(MB_TASK, MB_EJECT_TICKS, self._mb_launch)
+        self.task_start(MB_TASK, MB_SETTLE_TICKS + 1, self._mb_launch)
+
+    def _mb_feed_ready(self):
+        """[0x0103aa5c] / [0x0103ab6c]: the shooter lane empty and its task 0x16 (125 ticks from the lane's switch
+        closing) over; the kick before it must have reached the lane."""
+        sw = self.machine.switches.get("s_shooter_lane") if hasattr(self.machine.switches, "get") else None
+        if sw is not None and sw.state:
+            return False
+        if self._mb_kick_at > 0 and self._shooter_at < self._mb_kick_at \
+                and self.now < self._mb_kick_at + MB_KICK_RETRY_TICKS * TICK:
+            return False             # the previous ball has not reached the shooter lane yet
+        return self.now >= self._shooter_at + (SHOOTER_TASK_TICKS - 0.5) * TICK
 
     def _mb_save_grace(self, grace_ticks):
         self.leff_stop(13)
@@ -1122,6 +1141,9 @@ class TfOS(CustomCode):
         """The holding device's task runs from the release until MPF confirms the eject (a playfield switch or
         the eject timeout); the multiball task waits for it."""
         self.device_busy = unconfirmed
+
+    def _shooter_entered(self):
+        self._shooter_at = self.now
 
     def _shooter_left(self):
         """The ball leaves the shooter lane, plunged or auto-launched: the launch sound (GAME, observed;
