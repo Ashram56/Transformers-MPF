@@ -1,16 +1,15 @@
 """Display effect (deff) manager: priorities, the background score display and the show queue.
 
-Model of the SAM OS deff system, rebuilt for Tron Legacy first (github.com/Ashram56/Tron-Legacy-MPF,
-game/tron/display.py, where the trace references below come from) and the same OS here:
+Model of the SAM OS deff system (first built for Tron Legacy, the same OS), checked against tf_180's code:
 - Background deffs (the deff table's flag 0x0001, e.g. 19 score display, 21 tilt) loop until replaced.
-- Foreground deffs run for their recorded length (timing.json run_seconds) unless started with
+- Foreground deffs run for their length (timing.json run_seconds, the deff run as ROM code) unless started with
   hold=True (the caller stops them, e.g. the bonus). A deff with a lower priority than the running
   foreground deff is not shown.
 - What a deff starts by itself comes from the asset package (media_table): its lamp-matrix effects
   at once, its sounds at their offsets (logged with in_deff = the deff).
 - A foreground deff spends its last 10 ticks in a hold at priority 0x20 (deff_hold_frames): any deff
   can replace it then.
-- Show queue, deff_sequence_6350 [0x01006350] (Tron's queue_fullscreen_deff): "show" tasks first run once their
+- Show queue, deff_sequence_6350 [0x01006350]: "show" tasks first run once their
   caller has finished, wait until the running deff's priority is below their threshold (0x9f for every
   caller) and they are the oldest show task waiting (task_find_in_range_b698(0x5d, 0x7e): tf_180's show tasks are 0x5d-0x7e;
   the game numbers them 0x81-0xa7, internal ids only), then play their deff until its hold (priority <= 0x20,
@@ -30,7 +29,7 @@ game/tron/display.py, where the trace references below come from) and the same O
 
 Data: the deff priorities and background flags come from the ROM extraction's event_map.csv when it exists,
 else game/config/interim/deffs.csv (scripts/interim_tables.py, read from tf_180's deff table); the run lengths,
-sounds and lamp effects of each deff from the package's captures (media_table), none delivered yet.
+sounds and lamp effects of each deff from the package (media_table: timing.json from the deff run as ROM code).
 """
 import csv
 import os
@@ -42,8 +41,6 @@ SHOW_TIMEOUT = 0xea6
 HOLD_TICKS = 10             # deffs end with deff_hold_frames(10, 0x20): priority 0x20 for the last 10 ticks
 HOLD_PRIORITY = 0x20
 # a few deffs hold for fewer ticks (read from their code: deff_hold_frames(1, 0x20))
-# A show task whose end the deferred rules refresh waits for (Tron: the Flynn's Arcade show 0x97); none here yet
-RULES_HOLD_SHOW = None
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ROM = os.path.join(ROOT, "rom")
 PKG = os.path.join(ROM, "mpf_package")
@@ -241,7 +238,6 @@ class Display:
         self.own_sounds = set()     # (deff, call) a feature plays itself, with its argument: not again from the op list
         self.fg = None              # running foreground deff id
         self.show_held = False      # a show ended in this deff's hold: its rules refresh is due at its exit
-        self.arcade_held = False    # ... the RULES_HOLD_SHOW show: the score display comes back at its exit
         self.fg_prio = 0            # its priority (HOLD_PRIORITY in its last 10 ticks)
         self.fg_handle = None
         self.bg = None              # running background deff id
@@ -284,13 +280,13 @@ class Display:
         # deff_start_core [0x00020498]: an equal priority replaces the running deff only when its flags & 3
         if self.fg is not None and (self.fg_prio > new_prio or (
                 self.fg_prio == new_prio and not self.flags.get(self.fg, 0) & 3)):
-            # a higher priority deff keeps the display; the deff rules still run and restart a mode's
-            # background deff (traces/disc_multiball.jsonl: deff 48 refused behind deff 50, deff 47 again)
+            # a higher priority deff keeps the display; the deff rules (bg_entry_eval [0x000178b0]) still run and
+            # restart a mode's background deff
             if refresh and not self.show and self.mode_bg():
                 os_.after(1, lambda: self.mode_bg() and self.start(self.mode_bg(), refresh=False))
             return False
         # the show task waits for its own deff [0x01006350]: another effect replacing it ends the show
-        # (traces/optimus_decepticon.jsonl: the jackpots replace intro deff 63, the Allspark ejects at once)
+        # (optimus_decepticon.jsonl confirms: the jackpots replace intro deff 63, the Allspark ejects at once)
         replaced = self.show if self.show is not None and self.fg == self.show.deff_id != deff_id else None
         self._end_fg(stopped=True)
         if self.bg is not None:
@@ -377,19 +373,12 @@ class Display:
     def _hold(self, deff_id):
         """Last 10 ticks of deff_id (cancelled with it when it is replaced): its priority drops to 0x20,
         so any deff can replace it, and a show task (waiting for priority < 0x21) ends here
-        [deff_sequence_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
-        held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
+        [deff_sequence_6350 0x01006350]; its rules pass (bg_entry_eval [0x000178b0]) restarts a mode's
+        background deff behind the held deff."""
         self.fg_prio = HOLD_PRIORITY
         if self.show:
-            # the show's rules refresh request is served once the deff exits (traces/gem_hurryup.jsonl:
-            # one tube 18 start as deff 76 ends; disc_multiball.jsonl 40.03 s: one tube 43 as deff 48
-            # ends), except for the RULES_HOLD_SHOW show, whose end the deferred rules wait for (inherited
-            # from the Tron model, Tron traces; not read in tf_180's code)
-            if self.show.task_id == RULES_HOLD_SHOW:
-                self.os.request_refresh()
-                self.arcade_held = True
-            else:
-                self.show_held = True
+            # the show's rules refresh request is served once the deff exits
+            self.show_held = True
             show, self.show = self.show, None
             self.os.ball_search_reload()
             if show.on_end:
@@ -484,7 +473,7 @@ class Display:
     def running(self, deff_id):
         return deff_id in (self.fg, self.bg)
 
-    def _end_fg(self, stopped=False, exit_handler=True):
+    def _end_fg(self, stopped=False):
         info = (self.fg_info or self.media.get(self.fg)) if self.fg is not None else None
         self.fg_info = None
         if info:
@@ -502,31 +491,18 @@ class Display:
         if self.show_held:
             self.show_held = False
             self.os.request_refresh()
-        if exit_handler and info:
-            # the deff's exit handler stops the lamp show it started (Tron model; no tf_180 case read); no rules
-            # refresh follows (traces/find_flynn_and_items.jsonl 18.15 s: tube 13 stops, no tube 14)
-            for _, tube in info.tubes:
-                if self.os.tubes.is_running(tube):
-                    self.os.tubes.stop(tube)
         self.fg = None
-        self.arcade_held = False
 
     def _ended(self, deff_id):
         self.fg_handle = None
         if self.fg != deff_id:
             return
-        arcade_end = self.arcade_held
         self._end_fg()
-        # the deff rules restart a mode's background deff when the effect in front of it ends
-        # (traces/disc_multiball.jsonl: deff 47 again as deff 48/50 end)
+        # the deff rules (bg_entry_eval [0x000178b0]) restart a mode's background deff when the effect in front
+        # of it ends
         if self.mode_bg():
             self.start(self.mode_bg(), refresh=False)
-            self.os.request_refresh()              # the same rules pass restarts the mode's tube show
-        elif arcade_end:
-            # the rules pass deferred during the Flynn's Arcade show 0x97 runs at its deff's exit and puts
-            # the score display back (traces/flynns_arcade.jsonl 19.36 s: deff 19 as deff 105 ends); without
-            # it the screen stayed empty until the next effect
-            self.refresh()
+            self.os.request_refresh()              # the same rules pass reruns the lamp rules
         self._after_fg()
 
     def _after_fg(self):
@@ -535,8 +511,7 @@ class Display:
         self._pump()
         if self.fg is None and self.bg is None:
             # nothing left on the display: the deff rules [0x000178b0] put the background deff back (the
-            # score display, or the mode's), as after every effect (traces/flynns_arcade.jsonl 19.36 s,
-            # end_of_line_multiball.jsonl 38.60 s: deff 19 as the effect in front ends)
+            # score display, or the mode's), as after every effect
             self.refresh()
 
     def _end_show(self):
@@ -619,7 +594,7 @@ class Display:
         self.show = None
         self.music = None
         self.idle_waits = []
-        self._end_fg(exit_handler=False)
+        self._end_fg()
         if self._pump_handle:
             self.os.machine.clock.unschedule(self._pump_handle)
             self._pump_handle = None
@@ -680,14 +655,14 @@ class Display:
         self.shows = [s for s in self.shows if s.task_id != task_id]
         if self.show is not None and self.show.task_id == task_id:
             # task_start kills the running show task of that id and its effect: the new one plays at once
-            # (traces/megatron_decepticon.jsonl: each BALL n LOCKED replaces the previous one, task 0x73)
+            # (megatron_decepticon.jsonl confirms: each BALL n LOCKED replaces the previous one, task 0x73)
             old, self.show = self.show, None
             if self.fg == old.deff_id:
                 self._end_fg(stopped=True)
         self.shows.append(Show(task_id, deff_id, threshold, timeout, on_start, on_end, self.os.now, deff_args))
         self.os.ball_search_reload()
-        # FUN_0000b698 takes the first show task in the OS task list, i.e. the oldest one waiting
-        # (traces/end_of_line_multiball.jsonl: task 0x87 deff 139, then 0x83 deff 133, then 0x97).
+        # task_find_in_range_b698(0x5d, 0x7e) [0x0000b698] (deff_sequence_flippers_6480 [0x00006480]) takes the
+        # first show task in the OS task list, i.e. the oldest one waiting.
         # The show task first runs once its caller has finished (a deff the caller starts right after
         # queueing, e.g. deff 55 after the extra ball show 0x82, is on screen first).
         if self._pump_handle is None and (not self.show or threshold != SHOW_THRESHOLD):
@@ -701,7 +676,7 @@ class Display:
         return bool(self.show and self.show.task_id == task_id) or any(s.task_id == task_id for s in self.shows)
 
     def show_running(self):
-        """task_running_range(0x81, 0xa7): a show task is waiting or playing."""
+        """task_running_range(0x5d, 0x7e) (e.g. [0x00006480]): a show task is waiting or playing."""
         return bool(self.show or self.shows)
 
     def _pump(self):
@@ -711,7 +686,7 @@ class Display:
         if self.show and self.shows and self.shows[0].threshold != SHOW_THRESHOLD and self.fg is not None \
                 and self.fg_prio < self.shows[0].threshold:
             # a show waiting on its own priority (a multiball intro) does not wait for the show playing below it
-            # (traces/megatron_decepticon.jsonl 29.65 s: intro deff 75 over the lock show's deff 140)
+            # (megatron_decepticon.jsonl 29.65 s confirms: intro deff 75 over the lock show's deff 140)
             old, self.show = self.show, None
             if old.on_end:
                 old.on_end()
@@ -742,7 +717,7 @@ class Display:
 
 
 class Tubes:
-    """Tron's ramp light tube shows; Transformers has none, so every show is refused (kept for the OS calls)."""
+    """Ramp light tube shows of the shared OS model (Tron); tf_180 drives none, so every call is refused."""
 
     def __init__(self, os_):
         self.os = os_

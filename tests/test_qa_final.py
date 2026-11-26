@@ -90,3 +90,17 @@ class TestFinalPass(QaCase):
         self.advance_time_and_run(2)                    # task 0x49 ends
         self.hit("s_right_orbit_spinner", 0.2)
         self.assertEqual(value, spinner.super_total)
+
+    def test_f045_replay_waits_for_any_foreground_deff(self):
+        """Task 0x33 [0x0001c360]: deff 28 REPLAY waits while a non-background deff is on the display
+        (deff_not_background_210a8 [0x000210a8]), a pop's deff 46 included, then starts with leff 17."""
+        self.start()
+        self.advance_time_and_run(4)                    # the launch deff over
+        self.hit("s_top_bumper", 0.1)
+        self.assertEqual(46, self.tf.display.fg)
+        self.tf.replay_award(1)
+        self.advance_time_and_run(0.3)
+        self.assertNotIn(28, [e["id"] for e in self.tf.trace.of("deff_start")])
+        self.advance_time_and_run(3)
+        self.assertIn(28, [e["id"] for e in self.tf.trace.of("deff_start")])
+        self.assertIn(17, [e["id"] for e in self.tf.trace.of("leff_start")])

@@ -605,8 +605,6 @@ class TfOS(CustomCode):
         self._refresh_pending = False
         if self.game and self.state & ST_TILT:
             return          # FUN_000176ec: a rule runs only when gf_state is 0 or matches its mode mask
-        if self.hook("rules_hold"):
-            return          # a game feature holds the rules (Tron: its arcade show task 0x97)
         active_game = bool(self.game) and not self.state & (ST_ATTRACT | ST_END_BALL | ST_BONUS)
         for rule in self.rules:
             cond, leff, tube, on = rule[:4]
@@ -1227,8 +1225,9 @@ class TfOS(CustomCode):
 
     def replay_award(self, n):
         """replay_award [0x0001c410]: award per adj 13 (0 = credit + knocker 0x019), audit 9 + n, then task
-        0x33 (an end-of-ball wait task) shows deff 28 REPLAY with leff 17 once no show runs (FUN_000210a8; traces/
-        portal_multiball.jsonl: replay 16.53 s, deff 28 at 25.09 s when show deff 140 ends, confirms), until it ends."""
+        0x33 [0x0001c360]: it sleeps a tick at a time while a non-background deff is on the display
+        (deff_not_background_210a8 [0x000210a8]), then starts deff 28 REPLAY with leff 17 (when the deff starts)
+        and runs until deff 28 is over (deff_is_active_20a90 [0x00020a90])."""
         award = self.adj_value(13)                   # 0 credit, 1 ticket, 2 token, 3 extra ball
         if award == 0:
             if self.award_credit():                  # FUN_000041a0: the knocker only when a credit was added
@@ -1244,9 +1243,9 @@ class TfOS(CustomCode):
         self.audit(9 + n)
 
         def show():
-            if self.display.show_running() or (self.display.fg is not None and self.display.fg_prio > 0x9f):
-                # FUN_000210a8: wait while a show runs, or a mode's award deff (traces/wizard_multiball.jsonl:
-                # the replay as the last wizard hit deff 88 ends)
+            if self.display.fg is not None:
+                # deff_not_background_210a8 [0x000210a8]: the deff on the display is not the background deff
+                # (wizard_multiball.jsonl confirms: the replay as the last wizard hit deff 88 ends)
                 self.task_start(0x33, 1, show)
                 return
             if self.deff_start(28):

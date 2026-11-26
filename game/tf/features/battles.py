@@ -23,10 +23,12 @@ at 0 one more count, then the run ends (music back), lit shots still score for 1
 The last shot completes it (completed bit, audits, wizard item completed 0x8c + item): run killed at once, the
 hit deff runs its COMPLETED page, then the total. Drain and tilt end every battle (no total on a tilt).
 
-Observed, not in the spec text:
-- the shot audits 65 left orbit, 66 right orbit, 67 left ramp, 68 right ramp come first in the shot handlers,
-  lit or not, then the battles, then the mode-start rule (traces: audit, battle score, 25,000 / deff 91);
-- the completed hit deff runs its final animation (+0x3c = 1), whose op list gives its length;
+Not in the spec text (code; traces confirm):
+- the shot audits 65 left orbit, 66 right orbit, 67 left ramp, 68 right ramp come first in the shot routines,
+  lit or not, then the combo multiplier (deff 50) and the modes in turn, the battles among them ([0x01033244]
+  [0x01033488] [0x01033824] [0x01033918]: audit_add(0x41..0x44) first);
+- the completed hit deff runs its final animation (+0x3c = 1: set by the hit [0x01014638], read by the hit deff,
+  e.g. deff_094 [0x010189a8]), whose op list (run as ROM code) gives its length;
 - Starscream's lit pair also moves each counted second with fewer than 6 shots left, unless a ramp entrance
   (switch-timeout tokens 0xc / 0xd, 93 ticks) was hit [0x01017824] (QA M9);
 """

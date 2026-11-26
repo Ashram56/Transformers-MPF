@@ -1,4 +1,4 @@
-"""Game over: match, game-over music and the return to attract (OS code; Tron's game_flow.md 5.5 and 6.2).
+"""Game over: match, game-over music and the return to attract (code: task 0x9b [0x01006138] below).
 The match sequence is read from match [0x00019668] and deff 38 [0x0100820c] (QA F9)."""
 from tf.features import Feature
 from tf.os_layer import TICK

@@ -767,8 +767,8 @@ class Lamps:
     def flasher(self, name, ms=30, owner=None, power=None):
         """coil_pulse(coil, time) for a flasher: pulse the MPF coil, log coil on/off like the ROM traces.
         owner: the leff pulsing it. While a running leff with a higher priority uses the same flasher,
-        a lower leff's pulses do not reach it (the ROM's flasher ownership: traces/portal_multiball.jsonl
-        35.4 s, the disc flashers of leff 167 stop while leff 169 runs). power: the duty of a patterned pulse
+        a lower leff's pulses do not reach it (the ROM's flasher ownership: the leff's coil group, +8 of its
+        table entry, claimed by leff_start's conflict test [0x00007c10], tf/display.py Leffs). power: the duty of a patterned pulse
         (coil_pulse_fn's 32-bit on/off pattern, bits set / 32) as MPF's pulse_power."""
         if owner is not None and self.os.leffs.flasher_outranked(owner, name):
             return
