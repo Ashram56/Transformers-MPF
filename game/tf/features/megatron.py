@@ -13,8 +13,8 @@ Lock entry (switches 38-41, the ball device bd_megatron; its handler runs 46 tic
 0.75 s): the shot-6 rules of the running mode, else a lit lock: BALL n LOCKED (25,000, audit 0x75, deff 140,
 leff 168, sound 0x29a / 0x29c / 0x29f); the 4th ball starts the multiball of the player's side. Then the handler's
 5,120. A locked ball stays (ball hold hold_megatron) and a new ball is served and launched 155 ticks later
-(observed 2.51 s to the trough coil, adj 89 AUTOFIRE AFTER LOCK); any other ball is kicked out (0x13b + leff 23,
-0x13b, 0x13c + leff 24, coil 3 0.62 s after the handler, observed). A ball within the back-door task (sw 13,
+(observed 2.51 s to the trough coil, adj 89 AUTOFIRE AFTER LOCK); any other ball is kicked out by device 4's callback
+[0x0100a3b8]: 0x13b + leff 23, 0x13b at tick 15, 0x13c + leff 24 and coil 3 at tick 31. A ball within the back-door task (sw 13,
 187 ticks) is kicked out with no shot rules.
 
 Multiball: multiball_start(4 if no ball is in play else in play + 3, ball save 625, grace 187); level + 1 and the
@@ -40,6 +40,7 @@ import random
 from tf.features import Feature
 from tf.lamps import shot_blink
 from tf.display import deff_variant
+from tf.os_layer import TICK
 
 # the display effects' random animation picks: their own generator, so the rules' picks stay as they were
 VARIANTS = random.Random()
@@ -80,15 +81,16 @@ MB_BALLS, SAVE_TICKS, GRACE_TICKS = 4, 625, 187
 END_TICKS = 218
 END_OFFER_TICKS = 0x9c     # the end task's first sleep before it renames itself [0x0100c7e8] (QA M7)
 
-# kickout sounds and leffs (offset s, sound, leff), then the coil (observed: 82.19 s handler, 82.81 s coil 3)
-KICK_ONE = ((0.0, 0x13b, 23), (0.243, 0x13b, None), (0.505, 0x13c, 24))
-KICK_ONE_COIL = 0.61
-# multiball release (megatron_decepticon.jsonl 35.86-37.19 s): per ball its media and coil offsets
-RELEASE = (((0.0, 0x13b, 23), (0.016, 0x13c, 24), (0.017, 0x13d, 25)), ((0.242, 0x13b, None), (0.419, 0x13d, 25),
-           (0.500, 0x13c, 24)), ((0.820, 0x13d, 25),), ((1.221, 0x13d, 25),))
-# [0x0100a3b8 case 3] with task 0x57: per ball 0x13d, leff 25, coil_pulse_now_wait(3, 64 ms), task_sleep(0x14):
-# the coil one tick after the ball's 0x13d, 25 ticks per ball (the 0x13d offsets above)
-RELEASE_COILS = (0.017 + 0.016, 0.419 + 0.016, 0.820 + 0.016, 1.221 + 0.016)
+# device 4's callback run_leff_23_pulse_megatron_lockup_a3b8 [0x0100a3b8] (ticks, sound, leff): case 7 plays 0x13b +
+# leff 23, again 0x13b at its 16th pass (tick 15), returns after 31 passes; the device loop [0x010391a0] then calls
+# case 8 (nothing) and case 9: 0x13c + leff 24, falling into case 3: coil_pulse_now(3, 0x40) the same tick
+KICK_ONE = ((0, 0x13b, 23), (15, 0x13b, None), (31, 0x13c, 24))
+KICK_ONE_COIL = 31
+# multiball release: the case 7 task as above beside case 4 -> 9 one tick later (0x13c + leff 24), then case 3 with
+# task 0x57: per ball 0x13d + leff 25 and coil_pulse_now_wait(3, 64 ms) (64 // 16 + 1 = 5 ticks) + task_sleep(0x14):
+# 25 ticks per ball
+RELEASE_KICK = ((0, 0x13b, 23), (15, 0x13b, None), (31, 0x13c, 24))
+RELEASE_FIRST, RELEASE_STEP = 1, 5 + 0x14
 EJECT_OVER_TICKS = 66       # a kick's eject is over (the multiball end that waited for it: optimus_autobot.jsonl
                             # kick 72.45 s, end 73.53 s; inferred as the device's eject check)
 RELEASE_AFTER_INTRO = 0.07
@@ -748,26 +750,29 @@ class Megatron(Feature):
     def _release(self, balls):
         """The multiball release: each ball's sounds and leffs, then coil 3."""
         os_ = self.os
+        for at, sound, leff in RELEASE_KICK:
+            self._media_at(at, sound, leff)
         for i in range(balls):
-            steps = RELEASE[min(i, len(RELEASE) - 1)]
-            for at, sound, leff in steps:
-                self._media_at(at, sound, leff)
-            os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT),
-                                            RELEASE_COILS[min(i, len(RELEASE_COILS) - 1)])
+            at = RELEASE_FIRST + RELEASE_STEP * i
+            self._media_at(at, ((0x13c, 24),) * (i == 0) + ((0x13d, 25),))     # case 9 then case 3, one task
+            os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT), at * TICK)
 
-    def _media_at(self, at, sound, leff):
+    def _media_at(self, at, sound, leff=None):
+        """At tick `at`: sound + leff, or sound = ((sound, leff), ...) in that order."""
         os_ = self.os
+        steps = sound if isinstance(sound, tuple) else ((sound, leff),)
 
         def run():
             if not os_.game:
                 return
-            os_.sound(sound)
-            if leff is not None:
-                os_.leff_start(leff)
+            for call, lf in steps:
+                os_.sound(call)
+                if lf is not None:
+                    os_.leff_start(lf)
         if at <= 0:
             run()
         else:
-            os_.machine.clock.schedule_once(lambda: run(), at)
+            os_.machine.clock.schedule_once(lambda: run(), at * TICK)
 
     def _kick(self):
         """The eject waits while deff 61 (the Optimus super) runs [list 0x040c6200] (optimus_autobot.jsonl: the
@@ -778,7 +783,7 @@ class Megatron(Feature):
             return
         for at, sound, leff in KICK_ONE:
             self._media_at(at, sound, leff)
-        os_.machine.clock.schedule_once(lambda: self._kicked(), KICK_ONE_COIL)
+        os_.machine.clock.schedule_once(lambda: self._kicked(), KICK_ONE_COIL * TICK)
 
     def _kicked(self):
         self.machine.events.post(RELEASE_EVENT)
