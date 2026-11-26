@@ -40,6 +40,9 @@ step is missing.
 | T28 | The final table "MPF against decoded code" (element, MPF, ROM, state, correction, test) | C | no proof that the MPF code matches the decompile beyond the traces | new |
 | T29 | A multiball's rules outlive its flag | C | jackpots after the drain | MGP 5b |
 | T30 | Two agents on stacked branches: batched requests, who owns which file, merge the other's branch | A, C | conflicts on `boards_inventory.md` and `docs/qa/README.md`; piecemeal questions | new (global, see global_method.md) |
+| T31 | Values drawn live in a lifted effect: one slot per `printf` call site, filled by the game at run time | A, C | bonus pages 2X-25X showed the multiplier in the total slot; frames with baked-in values | new |
+| T32 | A delay read from part of a path is a guess: run the whole task in code before coding the timing | C | end of ball during a ball search, inferred from the search alone, came 1 s early on battle_blackout | new (global rule, see global_method.md 5) |
+| T33 | An empty action routine (`bx lr`) is the ROM's behaviour: the menu item does nothing | A, C | DISPLAY HELP SCREEN was given a screen the ROM never draws | SSD ground rule 6 (stubs) |
 
 ## Part 2. The method, trick by trick
 
@@ -305,3 +308,27 @@ valid state.
    state_before, state, correction, test`; `fixed`, `match` (now cites the code instead of a trace), or
    `open (MPF limit)` with its `rom_differences.md` row.
 **Check.** pytest, strict check at 0, and the trace floor never goes down.
+
+### T31. Live values in lifted effects
+
+**When.** An effect prints numbers or names (a bonus page, a score, a counter) and a single lifted run would bake
+one value into the frames.
+**Steps.** In the op list, keep each text op that comes from a formatted print (`vsprintf` / `printf` through the
+text API) as a **slot**, keyed by its call site (`at`), with its format, font, position and the source of each
+argument (RAM address or task offset, cited). Render the rest of the frame from the run; the game fills the slots
+each frame from its own state. One run per page layout (tf_180 deff 25: 24 runs of `0x01000ffc`, one per
+multiplier 2-25 with RAM `0x02111cf0` set; each counting page prints "uX" and u x subtotal live).
+**Check.** For every slot, the game's argument source equals the code's (QA F043: 92 printf deffs checked against
+their decoded sources). Baked values in packaged frames: 0.
+
+### T32. Run the whole task before timing it
+
+When a timing depends on a chain of tasks (end of ball while a ball search runs: search, device recount
+`0x0103be8c`, trough settle, trough task `0x01039db4`), do not derive it from the one routine you read. Run the
+chain in the code runner (T01, T11) and take the tick from the run. tf_180: a version inferred from the search
+alone was 1 s early against `battle_blackout`; it was removed until the run gives the delay.
+
+### T33. Empty actions
+
+A menu or rule entry whose routine is `bx lr` / `mov pc, lr` does nothing in this ROM version, even when its label
+promises a screen (tf_180 DISPLAY HELP SCREEN `0x01045a74`). Reproduce the nothing; do not draw a help page.
