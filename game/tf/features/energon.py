@@ -6,8 +6,8 @@ Three standups: left sw 2, center sw 49, right sw 46 (bits 1 / 2 / 4 of energon_
   traces/switches.jsonl 128.67 s): 5,000, sound 0x25c, leff 139; nothing lights.
 - Within 10 ticks of a completed set (task 0xb0): nothing.
 - A lit target, set not complete: 10,000, sound 0x25d, leff 141.
-- An unlit target that is not the last: lit, 75,000, deff 124, leff 140, sound 0x25e and 0x25f one second
-  later (task 0x97, observed 1.01 s).
+- An unlit target that is not the last: lit, 75,000, deff 124, leff 140, sound 0x25e and, 62 ticks later
+  (task 0x97 [0x01030984]), 0x25f under speech_once [0x01006ae0] (flag 0x47; at most twice a game with 0x265).
 - The third one: set complete: 250,000 + 25,000 x sets before (cap 750,000), deff 125 "ALLSPARK LIT", leff 142,
   sound 0x260 (0x13e, 0x13f from the deff); energon_sets + 1, the targets unlit, one Allspark banked
   (tf/features/allspark.py). The Megatron lock lighting it also calls comes with the Megatron spec.
@@ -23,6 +23,7 @@ ALL = 0x07
 TIMED = (5000, 0x25c, 139)
 RELIT = (10000, 0x25d, 141)
 LIT_POINTS, LIT_DEFF, LIT_LEFF, LIT_SOUND, LIT_SOUND2, LIT_SOUND2_TICKS = 75000, 124, 140, 0x25e, 0x25f, 62
+LIT_SOUND2_FLAG = 0x47               # task 0x97 [0x01030984]: sleep 0x3e, speech_once(0x25f, flag 0x47) [0x01006ae0]
 SET_DEFF, SET_LEFF, SET_SOUND = 125, 142, 0x260
 LIT_DEFF_TICKS, SET_DEFF_TICKS = 156, 142       # the op lists' end_tick (deff_124 [0x01030b94], deff_125 [0x01031038])
 SET_BASE, SET_STEP, SET_CAP = 250000, 25000, 750000
@@ -74,7 +75,7 @@ class Energon(Feature):
             os_.deff_start(LIT_DEFF, values=[lit, bit])     # arg0: the set before the new bit [0x010309a4] (QA P18)
             os_.leff_start(LIT_LEFF)
             os_.sound(LIT_SOUND)
-            os_.task_start(SOUND_TASK, LIT_SOUND2_TICKS, lambda: os_.sound(LIT_SOUND2))
+            os_.task_start(SOUND_TASK, LIT_SOUND2_TICKS, lambda: os_.speech_once(LIT_SOUND2, LIT_SOUND2_FLAG))
             os_.score_add(LIT_POINTS)
             os_.request_refresh()
             return

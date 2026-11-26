@@ -460,6 +460,7 @@ class Megatron(Feature):
         pd = self.pd
         pd.mtl_level = self.os.adj[68]
         pd.mtl_music_a, pd.mtl_music_d = LOCK_MUSIC[AUTOBOT][0], LOCK_MUSIC[DECEPTICON][0]
+        pd.mtl_played_a = pd.mtl_played_d = 0      # [0x0100ab5c]
         self.derive()
         pd.mt_since_super = pd.mt_sum = 0
         pd.mta_phase, pd.mta_mask, pd.mta_jp = 1, 0x40, 0
@@ -614,7 +615,7 @@ class Megatron(Feature):
             # show task 0x73: it waits for the ball launch deff 41 (megatron_autobot.jsonl 10.71 s, 0.33 s on)
             os_.show(LOCK_TASK, LOCK_DEFF, values=[n], sounds=[
                 (0, lambda: os_.sound(LOCK_SOUNDS[min(n, 3) - 1], in_deff=LOCK_DEFF)),
-                (LOCK_SPEECH_AT, lambda: os_.sound(self.lock_music(), in_deff=LOCK_DEFF))],
+                (LOCK_SPEECH_AT, lambda: self.lock_call(n))],
                 on_start=lambda: os_.deff_media(LOCK_DEFF, LOCK_LEFF))
             os_.request_refresh()
             return True
@@ -628,6 +629,27 @@ class Megatron(Feature):
             return pd.get("mtl_music_a", LOCK_MUSIC[AUTOBOT][0])
         return pd.get("mtl_music_d", LOCK_MUSIC[DECEPTICON][0])
 
+    def lock_call(self, n):
+        """Deff 140 after its 21 frames [0x0100b7f0]: the side's call plays its samples in order, one per lock,
+        while the per-player count (RAM 0x02111d78 Autobot, 0x02111d88 Decepticon; reset at [0x0100ab5c] and
+        [0x0100ad70]) is below the call's sample count (snd_call_sample_count [0x00025924]); snd_play2
+        [0x00025250] picks sample `count`, and the count moves on when it started. At the third lock the call's
+        last sample follows when that one ends (snd_play_after [0x00025284])."""
+        os_ = self.os
+        pd = self.pd
+        call = self.lock_music()
+        key = "mtl_played_a" if pd.get("side", DECEPTICON) == AUTOBOT else "mtl_played_d"
+        played = pd.get(key, 0)
+        count = len(os_.sample_lengths(call))
+        if played >= count:
+            return
+        end = os_.sound(call, in_deff=LOCK_DEFF, index=played)
+        if end is None:
+            return
+        pd[key] = played + 1
+        if n == 3:
+            os_.machine.clock.schedule_once(lambda: os_.sound(call, index=count - 1), max(end - os_.now, 0))
+
     def next_lock_music(self):
         """[0x0100ad70]: both sides' calls move to the next of their three, at every Megatron multiball."""
         pd = self.pd
@@ -635,6 +657,7 @@ class Megatron(Feature):
             first, end = LOCK_MUSIC[side]
             call = pd.get(key, first) + 1
             pd[key] = call if call < end else first
+        pd.mtl_played_a = pd.mtl_played_d = 0      # [0x0100ad70]
 
     def start_multiball(self):
         os_ = self.os

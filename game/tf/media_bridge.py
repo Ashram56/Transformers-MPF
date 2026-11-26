@@ -405,6 +405,14 @@ class MediaBridge:
         for sample in (pool or {}).get("samples", []):
             self._send("sounds_play", {sample: {"action": "stop", "key": sample}})
 
+    def sound_fade(self, call, seconds):
+        """Fade out and stop every sample of sound call `call` over `seconds` (task 0x9b [0x01006138])."""
+        pool = self.data["pools"].get(call) if self.data else None
+        for sample in (pool or {}).get("samples", []):
+            self._send("sounds_play", {sample: {"action": "stop", "key": sample, "fade_out": seconds}})
+        if pool and pool["track"] == "music":
+            self.music_key = None
+
     def sound(self, call, index=None):
         if not self.data:
             return

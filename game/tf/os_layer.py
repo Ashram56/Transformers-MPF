@@ -250,6 +250,7 @@ class TfOS(CustomCode):
         self.trace = Trace(self.machine)
         self.tasks = {}
         self.flags = set()
+        self.speech_once_count = 0
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
         self.timers = {}            # switch-timeout timer token -> end time (FUN_0000ff00 / FUN_0000febc)
@@ -448,6 +449,24 @@ class TfOS(CustomCode):
         0xb9, 0xbb, 0xbf, 0xc5; the tasks rename themselves to 0xb8 / 0xba / 0xbc / 0xc0 for their last 62 ticks,
         [0x0100c7e8]): ADD-A-BALL is offered (QA M7). Hook "add_ball_open" (every feature asked)."""
         return any(self.flag(f) for f in MULTIBALL_FLAGS) or any(fn() for fn in self.hooks.get("add_ball_open", ()))
+
+    def speech_once(self, call, flag, in_deff=0):
+        """deff_126_0_more_sub [0x01006ae0]: play `call` unless game flag `flag` is set, two such calls already
+        played this game (RAM 0x34d1c), task 0x96 runs, a multiball runs, or this is the last ball
+        (0x0001aae4 the ball number == 0x0001aacc adj 0x1f balls per game). A call that starts its sample
+        sets the flag, starts task 0x96 for 0x3a2 ticks and counts. Returns True when it played. Callers: deff 126 (0x265, flag 0x30)
+        [0x0102eaec], Energon task 0x97 (0x25f, flag 0x47) [0x01030984]."""
+        game = self.game
+        last_ball = bool(game and game.player and game.player.ball >= self.adj_value(0x1f))
+        if (self.flag(flag) or self.speech_once_count >= 2 or self.task_running(0x96) or self.any_multiball()
+                or last_ball):
+            return False
+        if self.sound(call, in_deff=in_deff) is None:   # snd_play returns 0: the sample did not start [0x01006b5c]
+            return False
+        self.flag_set(flag)
+        self.task_start(0x96, 0x3a2)
+        self.speech_once_count += 1
+        return True
 
     def any_multiball(self):
         """A multiball runs: [0x01006704] (the decompile's any_timed_mode_running) tests the six multiball flags.
@@ -711,6 +730,10 @@ class TfOS(CustomCode):
                     taken |= 1 << bit
                     need -= 1
         return taken, victim
+
+    def sound_playing(self, call):
+        """snd_call_playing [0x000255d4]: a voice slot (0x00037c2c) plays a sample of `call`."""
+        return any(s["call"] == call and s["end"] > self.now for s in getattr(self, "_slots", ()))
 
     def _voice_take(self, call, i, length):
         """Start sample i of `call` on the sound board's voices, or refuse it (_voice_plan)."""
@@ -1349,6 +1372,7 @@ class TfOS(CustomCode):
         self._valid_at = None
         self.shoot_again = False
         self.flags.clear()
+        self.speech_once_count = 0                   # RAM 0x34d1c (game RAM, cleared with the game: inferred)
         self.tasks_kill_all()
         self.credit_model.take(1)                         # FUN_0000434c: the game's credit
         self.credit_model.free_games = 0

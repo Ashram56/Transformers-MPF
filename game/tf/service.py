@@ -58,6 +58,12 @@ def draw_of(texts):
     return [rd.text(t, font, x, y, flags) for t, font, flags, x, y in texts]
 
 
+# the service loops' button sounds (deff 3 [0x0103f960] and the item screens): snd_resolve_call through
+# 0x0000ecfc (BACK 0x009), 0x0000ed0c (MINUS 0x00a), 0x0000ed1c (PLUS 0x00b), 0x0000ed2c (SELECT 0x00c);
+# 0x0000ed3c (0x00d) when a reset or install is done ([0x0104196c] [0x010417b4])
+BEEP_BACK, BEEP_MINUS, BEEP_PLUS, BEEP_SELECT, BEEP_DONE = 0x009, 0x00a, 0x00b, 0x00c, 0x00d
+
+
 class ServiceMode(Mode):
     """The service menu. self.stack: the open menus [(menu name, item index, path)]; self.page: the item's screen
     when one is open (adjustments, audits, confirm, static), else None."""
@@ -69,12 +75,19 @@ class ServiceMode(Mode):
         self.stack = []
         self.page = None
         self.title = True
-        for name, fn in (("s_select", self._select), ("s_back", self._back), ("s_plus", lambda: self._move(1)),
-                         ("s_minus", lambda: self._move(-1))):
+        for name, fn in (("s_select", self._beep(BEEP_SELECT, self._select)), ("s_back", self._beep(BEEP_BACK, self._back)),
+                         ("s_plus", self._beep(BEEP_PLUS, lambda: self._move(1))),
+                         ("s_minus", self._beep(BEEP_MINUS, lambda: self._move(-1)))):
             if name in self.machine.switches:
                 self.switch_handlers.append(self.machine.switch_controller.add_switch_handler(name, fn))
         self.os.trace.log("service", screen="title")
         self.show()
+
+    def _beep(self, call, fn):
+        def handler():
+            self.os.sound(call)
+            fn()
+        return handler
 
     def mode_stop(self, **kwargs):
         self.os.in_service = False
@@ -178,6 +191,7 @@ class ServiceMode(Mode):
                 page["editing"], page["value"] = True, self.os.adj[num]
         elif page["kind"] == "confirm":
             page["do"]()
+            self.os.sound(BEEP_DONE)
             self.page = None
         self.show()
 

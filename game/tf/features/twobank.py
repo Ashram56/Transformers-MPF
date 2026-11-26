@@ -37,6 +37,8 @@ HIT_TICKS = 10                       # task 0xb1: one hit per 10 ticks
 LOCKED = (5000, 0x261, 143)
 HIT = (75000, 0x263, 144)
 LEFT_DEFF, READY_DEFF = 126, 131
+# deff 126 frame 15 (tick 75) [0x0102eaec]: speech_once(0x265, flag 0x30) [0x01006ae0], else 0x264
+LEFT_SOUND_TICKS, LEFT_SPEECH, LEFT_FLAG, LEFT_SOUND = 75, 0x265, 0x30, 0x264
 READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
 FIRST_LEFT = 7
@@ -76,6 +78,8 @@ class TwoBank(Feature):
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x57)   # QA V-ENG5 (os_layer deff_rule)
         for leff in FS_RULE_LEFFS:
             os_.lamp_rule(lambda: self.running, leff=leff, order=0x01004394)
+        os_.display.own_sounds.add((LEFT_DEFF, LEFT_SOUND))
+        self._left_token = 0
         os_.deff_live((FS_DEFF, FS_VALUE_DEFF), lambda: {"values": [self.value]})
         # deffs 133 / 134 / 136: the countdown on both sides (RAM 0x34c3c) ("%u" at x 42 and 127), then "ALL TARGETS=%,02lu"
         os_.deff_live((FS_BG_DEFF, FS_AWARD_DEFF, FS_TIME_DEFF),
@@ -84,6 +88,14 @@ class TwoBank(Feature):
 
     def ready(self):
         return bool(self.os.game) and self.pd.get("twobank_left", FIRST_LEFT) == 0
+
+    def _left_sound(self, token):
+        """Deff 126 frame 15 [0x0102eaec]: speech_once(0x265, 0x30) [0x01006ae0], else 0x264."""
+        os_ = self.os
+        if token != self._left_token or not os_.display.running(LEFT_DEFF):
+            return
+        if not os_.speech_once(LEFT_SPEECH, LEFT_FLAG, in_deff=LEFT_DEFF):
+            os_.sound(LEFT_SOUND, in_deff=LEFT_DEFF)
 
     def player_first_ball(self):
         self.pd.twobank_left = FIRST_LEFT
@@ -118,6 +130,10 @@ class TwoBank(Feature):
         pd.twobank_left = left - 1
         points, sound, leff = HIT
         os_.deff_start(READY_DEFF if pd.twobank_left == 0 else LEFT_DEFF, values=[pd.twobank_left])
+        if pd.twobank_left:
+            self._left_token += 1
+            token = self._left_token
+            os_.after(LEFT_SOUND_TICKS, lambda: self._left_sound(token))
         os_.leff_start(leff)
         os_.sound(sound)
         os_.score_add(points)
