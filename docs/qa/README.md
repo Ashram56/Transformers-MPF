@@ -54,6 +54,9 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | L-R04 | a shot's X lamp (12 16 47 43 31 36) solid at 2X or more, else off | `0x01023a84`, table `0x040c6f58` |
 | L-R02 | lamps 29, 57, 58 flash while a Megatron lock is lit and nothing blocks it, else off | `0x0100b228`, `0x0100b0b8` |
 | L-R07 | the 11 requirement inserts (27 Megatron, 22 Optimus, 28 Sentinel, the 8 battles) drawn from the requirements: solid completed, flashing collected | `0x01035ea8`, table `0x040c7a14` |
+| L-I60-62 | the pop leffs 27-29 blink their bumper lamp 60 / 61 / 62 | `0x0102d138`, table `0x040c74d2` |
+| L-151, L-154, L-084, L-085 | rule leffs started: 151 (all BUMBLEBEE letters), 154 (super spinner lit, flasher ramp of 14 patterns), 84 / 85 (all requirements completed, no multiball, flag 0x3c clear); 44 / 52 / 60 / 68 need nothing: their conditions return 0 in tf_180 | `0x010018bc`, `0x01032094`, `0x010327bc`, `0x010363b4`, `0x0103692c`; `0x0100c90c`, `0x0100e7c8`, `0x0102805c`, `0x0102a16c` |
+| L-G06 | rule leffs follow their record's mode mask (not evaluated, so left running, outside it); end of ball kills those without task flag 0x100, ball start kills all | `0x000176ec`, `0x00019e44`, `0x00019d30`, rules/leff_rules.csv |
 | V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
 | R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
 | R-F5 | no 1 s Optimus time gate (the lockout is task 0x54) | `0x01025de4`, `0x010262f0` |

@@ -157,6 +157,19 @@ def shaker_table(shaker_csv):
     return deffs
 
 
+def leff_rule_table(path):
+    """{leff: (gf_state mask, killed at end of ball)} from rom/rules/leff_rules.csv (game_flow.md 5.8): the OS rule
+    records' mode mask [0x000176ec] and whether the leff task lacks flag 0x100, so task_kill(0, 0x100) at the end of
+    ball [0x00019e44] kills it (QA L-G06)."""
+    table = {}
+    if not os.path.exists(path):
+        return table
+    with open(path, encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            table[int(row["leff"])] = (int(row["gf_state_mask"], 16), row["end_of_ball"].startswith("killed"))
+    return table
+
+
 def sample_lengths(base):
     """{sound call: [duration (s) of each sample it picks from]} from the ROM extraction's sound tables."""
     import csv
@@ -279,6 +292,8 @@ class TfOS(CustomCode):
         self.game_seconds = 0.0     # validated play time of the running game
         self.replayed = False       # a replay was awarded in this game (DAT_0003817e)
         self._coindoor_save = False  # the running multiball save is the coin door ball saver's (adj 41)
+        self.leff_rule_info = leff_rule_table(os.path.join(self.machine.machine_path, "..", "rom", "rules",
+                                                           "leff_rules.csv"))
         self.shaker_deffs = shaker_table(os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "io",
                                                       "shaker.csv"))
         self.machine.tf = self
@@ -492,6 +507,10 @@ class TfOS(CustomCode):
         active_game = bool(self.game) and not self.state & (ST_ATTRACT | ST_END_BALL | ST_BONUS)
         for rule in self.rules:
             cond, leff, tube, on = rule[:4]
+            info = self.leff_rule_info.get(leff) if tube is None else None
+            if info is not None and self.game and self.state and not self.state & ST_ATTRACT \
+                    and not self.state & info[0]:
+                continue    # [0x000176ec]: the record is not evaluated; its leff keeps running (QA L-G06)
             want = bool(active_game and cond())
             if want and leff is not None and (not on or self.leffs.retry_due(leff)):
                 self.leff_start(leff, loop=True)     # also a refused one whose outputs are free now
@@ -510,6 +529,20 @@ class TfOS(CustomCode):
             self.lamps.run_rules()
             self.shoot_again_lamp_update()
         self.machine.events.post("tf_rules_refresh")
+
+    def rule_leffs_kill(self, end_of_ball=False):
+        """The rule leff tasks killed by task_kill: at the end of ball (0x100, [0x00019e44]) those without task flag
+        0x100 (leff_rules.csv end_of_ball), at ball start (0x80, [0x00019d30]) all; the rule restarts them when its
+        mask lets it run again (game_flow.md 5.8, QA L-G06)."""
+        for rule in self.rules:
+            leff = rule[1]
+            if leff is None or not rule[3]:
+                continue
+            info = self.leff_rule_info.get(leff)
+            if end_of_ball and (info is None or not info[1]):
+                continue
+            self.leff_stop(leff)
+            rule[3] = False
 
     def lamp_update(self, fn, priority=0):
         """rule_obj_init(obj, 5, fn, 0x20, 0, priority): a lamp rule, fn() redraws its inserts from game
@@ -1146,6 +1179,7 @@ class TfOS(CustomCode):
         player = self.game.player
         first_ball = player.ball == 1 and not self.shoot_again
         self.state = 0
+        self.rule_leffs_kill()                       # ball_start task_kill(0, 0x80) [0x00019d30] (QA L-G06)
         self.pf_valid = False
         self._counting_seen = set()
         self.ball_scored = False
@@ -1708,6 +1742,7 @@ class TfOS(CustomCode):
 
     def _ball_ending_go(self, queue):
         self.state |= ST_END_BALL
+        self.rule_leffs_kill(end_of_ball=True)
         self.task_kill("search_run")                 # the search found the drained ball
         self.kill_ball_save()
         self.kill_mb_save()

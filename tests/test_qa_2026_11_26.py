@@ -154,3 +154,9 @@ class TestMediumFixes(TfTestCase):
             if self.tf.lamps.lights.get(60) and self.tf.lamps.lights[60].stack:
                 seen.add(60)
         self.assertIn(60, seen)
+
+    def test_rule_leff_table(self):
+        """leff_rules.csv: the rule records' mask and end-of-ball kill (game_flow.md 5.8, QA L-G06)."""
+        info = self.tf.leff_rule_info
+        self.assertEqual((0x20, False), info[37])        # kept: task flag 0x100
+        self.assertEqual((0x20, True), info[40])         # killed by task_kill(0, 0x100) [0x00019e44]
