@@ -27,7 +27,6 @@ not known yet, and the call is skipped.
 """
 import csv
 import os
-import random
 import re
 
 from mpf.core.custom_code import CustomCode
@@ -77,6 +76,27 @@ SAVE_SERVE_TICKS = 32           # ball save re-serve, serve type 1: settle + the
 BALL_SEARCH_EVENT_TICKS = 36
 BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
                                 # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
+class RomRandom:
+    """The ROM's generator: x = x * 0x19660d + 1 mod 2^32 (set_dat_000314b4_ba64 [0x0000ba64]), random_below(n) =
+    n * x >> 32 [0x0000ba94]. Its state 0x000314b4 starts at 0x04277dc9 [0x0000ba48] and is set from the factory config
+    words in flash [0x0000ba54] (factory_config_read_10da4 [0x00010da4], factory_config_get_10f3c [0x00010f3c]), a
+    machine's own data, so live play seeds it from the clock in place of them; tests and scenarios seed it."""
+
+    def __init__(self, seed=None):
+        self.seed(seed)
+
+    def seed(self, value=None):
+        import time                         # noqa: PLC0415
+        self.state = (int(time.time() * 1000) if value is None else int(value)) & 0xffffffff
+
+    def next(self):
+        self.state = (self.state * 0x19660d + 1) & 0xffffffff
+        return self.state
+
+    def randrange(self, n):
+        return (n * self.next()) >> 32
+
+
 BALL_SEARCH_TICKS = 104     # search task 0x2b
 # its device tasks: created at tick 5, once coil_reset_one_2558 [0x00002558] has waited out coil 12's 64 ms pulse
 # (coil_pulse_now_wait, one-tick sleeps at 0x000021a0; rom/rom_data/io/ball_search_ops.json), one tick later in
@@ -312,7 +332,7 @@ class TfOS(CustomCode):
         # deff id -> function returning the values the deff's code reads from RAM each frame (timers,
         # mode values, the current stage): its display lines (tf/media_bridge.py, refreshed while shown)
         self.deff_values = {}
-        self.random = random.Random()
+        self.random = RomRandom()
         self._new_game = False
         self._pulse_queue_used = False  # a queued pulse ran since power-up [0x00003758]
         self._search_handle = None

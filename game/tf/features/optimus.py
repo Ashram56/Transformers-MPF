@@ -27,14 +27,12 @@ Optimus (leff 55; deff 67, leff 58, sound 0xab, audit 0x73). A super: requiremen
 End: down to one ball the running flag goes, 218 ticks later the total (A deff 62 + leff 51, D deff 68 + leff 59).
 The figure's motor and hit kicker are tf/features/optimus_mech.py. Not modelled: the chained speech of deff 144.
 """
-import random
 
 from tf.features import Feature
 from tf.lamps import shot_blink
 from tf.display import deff_variant
 
 # the display effects' random animation picks: their own generator, so the rules' picks stay as they were
-VARIANTS = random.Random()
 
 ORDER = 41
 AUTOBOT, DECEPTICON = 1, 2
@@ -316,7 +314,7 @@ class Decepticon(Side):
         return 0           # deff 65 indexes its table by task+0x38, which no caller sets [0x0102aa70]
 
     def double_anim(self, shot):
-        return VARIANTS.randrange(3)   # deff 66: random_below(3), table 0x040c749c [0x0102ad30]
+        return self.os.random.randrange(3)   # deff 66: random_below(3), table 0x040c749c [0x0102ad30]
 
     def shot(self, shot):
         """[0x01029bf4]: shots 0-5 (the center lane from sw 11 only); flag or end task (gate [0x01029754])."""
