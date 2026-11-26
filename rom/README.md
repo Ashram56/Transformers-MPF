@@ -127,12 +127,15 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
   0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
-  entries. Which value is Autobot is inferred (1 = Autobot).
+  entries. 1 = Autobot, 2 = Decepticon (code: see the side choice below).
 - **Lamp effects (observed, replaced by the code above).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
   on every lamp compositor tick (0x73cc), only the lamps the effect's own task owns (shared leff layer 0x36394 /
   mask 0x363a8 and the layer list at 0x31480). 119 end by themselves, 59 run until stopped. 111 produce lamps or
   flasher pulses; the other 67 draw from game state, need a lamp parameter from their caller, or were refused.
-- **Side choice (code + observed).** Side byte 0x02112107 + player: 1 = Autobot, 2 = Decepticon (default).
+- **Side choice (code).** Side byte 0x02112107 + player (`player_side` [0x01033e30]): 1 = Autobot, 2 = Decepticon
+  (default). The texts the code picks by it say so: side 2 draws msg 0x5c8 ALL HAIL MEGATRON and side 1 msg 0x5c9
+  AUTOBOTS ROLL OUT (deff 82 [0x010107e8]; the same pairs 0x5dd / 0x5db in deff 84 [0x01011a54] and 0x5e0 / 0x5df
+  in deff 85 [0x01011d88]); side 1 draws HUNT FOR DECEPTICONS (msgs 0x6c3-0x6c5, deff 142 [0x010269d8]).
   Either flipper toggles it on the choose-side screen; the plunge confirms it 31 ticks later (deff 41).
 - **Names in the decompile.** OS functions were named by matching Tron's decompile (same OS). Game-code
   functions that matched a Tron game function keep Tron's name (for example `dbattle_can_progress`): the code
