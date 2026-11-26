@@ -1,16 +1,16 @@
-"""Pop bumpers: the growing pop value (rom/rules/modes/scoring_features.md 4.1; code + observed in
+"""Pop bumpers: the growing pop value (rom/rules/modes/scoring_features.md 4.1; code, confirmed by
 traces/scoring.jsonl).
 
 - pop_base (0x2112054 + 4(p-1)): 3,000 at ball start (event 0x11 hook 0x0102d1ec) unless game flag 0x40, which
   nothing in 1.80 sets (agent A, scoring_features.md): reset every ball.
 - Each pop hit (handler 0x01032f8c, tf/switches.py: +170, audit 73) queues one award; task 0x51 pays one
-  queued award per tick [0x0102ca98] and ends 93 ticks after the last one, setting pop_value back to
-  pop_base [0x0102ca30] (observed: back to 3,000 1.53 s after the last hit).
+  queued award per tick [0x0102ca98] and ends after 0x5d (93) idle ticks, setting pop_value back to
+  pop_base [0x0102ca30] (code; the trace's 1.53 s after the last hit confirms it).
 - An award [0x0102c8c8]: score pop_value, then pop_value + 1,000 up to 20,000; sound 0x15b Autobot / 0x15c
   Decepticon (0x15d during double or fast scoring); deff 46 (the burst total pop_total, 0x353d4) unless it is
   showing; leff 26 + leff 27 / 28 / 29 (top / right / bottom). The step and deff 46 are skipped during a multiball
   or with flag 0x3c ([0x0102c878] -> [0x01006704], the multiball flags, which the decompile names
-  any_timed_mode_running); during a battle both happen (observed: traces/battle_devastator 43.86 / 45.04 s:
+  any_timed_mode_running); during a battle both happen (the test is the multiball flags only; traces/battle_devastator confirms, 43.86 / 45.04 s:
   3,000 then 4,000, deff 46 each time).
 - POPS GROW (left-eject award "POPS SCORE", deff 47): grow().
 - Super pop bumpers (left-eject award "SUPER POP BUMPERS LIT") [0x0102d31c]: value 50,000 + 10,000 x times lit
@@ -44,6 +44,7 @@ class Pops(Feature):
         self.queue = []
         self.total = 0
         self.super_total = 0
+        self._first = False
         os_.deff_live((DEFF,), lambda: {"values": [self.total]})
         for leff, lamp in OWN_LAMP.items():
             os_.lamps.leff_code(leff, self._bumper_blink(lamp))
@@ -78,11 +79,14 @@ class Pops(Feature):
     def pop(self, num):
         self.queue.append(num)
         if not self.os.task_running(TASK):
-            self._pay()
+            self._pay(first=True)                    # start_leff_26 [0x0102ca98]: award now, start task 0x51
         elif len(self.queue) == 1:                   # the task was idling: it pays in the same tick
             self._pay()
 
-    def _pay(self):
+    def _pay(self, first=False):
+        """One award [0x0102c8c8]; `first` is its argument 1 (the hit that starts task 0x51): the burst totals
+        (0x000353d4, super 0x000353d8) start again there, else they add up while the task runs."""
+        self._first = first
         os_ = self.os
         if not self.queue:
             for player in os_.players:              # every player's value back to the base [0x0102ca30]
@@ -100,16 +104,15 @@ class Pops(Feature):
             return
         busy = os_.any_multiball() or os_.flag(0x3c)       # [0x0102c878]
         os_.score_add(pd.pop_value)
-        if not os_.display.running(DEFF):
-            self.total = 0
-        self.total += pd.pop_value
+        if not busy:
+            self.total = pd.pop_value if self._first else self.total + pd.pop_value
         if not busy:
             pd.pop_value = min(pd.pop_value + STEP, CAP)
         fast = bool(os_.hook("scoring_boost"))       # double or fast scoring runs
         os_.sound(FAST_SOUND if fast else SOUND.get(pd.get("side", 2), SOUND[2]))
         if not busy:
             if os_.display.running(DEFF):
-                os_.display.extend(DEFF)             # it shows the burst total until the burst ends (observed)
+                os_.display.extend(DEFF)             # deff_046 [0x0102d004] counts its 62 ticks again at each award
             else:
                 os_.deff_start(DEFF)
         os_.leff_start(LEFF)
@@ -145,9 +148,7 @@ class Pops(Feature):
         pd = self.pd
         points = pd.get("super_pop_value", 50000)
         os_.score_add(points)
-        if not os_.display.running(SUPER_DEFF):
-            self.super_total = 0
-        self.super_total += points
+        self.super_total = points if self._first else self.super_total + points
         pd.super_pop_left = max(pd.get("super_pop_left", 1) - 1, 0)
         if pd.super_pop_left == 0:
             os_.deff_start(SUPER_DONE_DEFF, values=[points])

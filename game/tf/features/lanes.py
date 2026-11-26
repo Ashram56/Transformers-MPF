@@ -1,5 +1,5 @@
 """The Megatron (left, purple) and Optimus (right, red) lanes (rom/rules/modes/combos_and_multipliers.md
-section 5; code [0x0102db28] [0x0102e208] + observed in traces/scoring.jsonl).
+section 5; code [0x0102db28] [0x0102e208], confirmed by traces/scoring.jsonl).
 
 - Lamp group 76 (Megatron): 50 PURPLE/BOT, 51 PURPLE/TOP, 8 LEFT OUTLANE, 9 LEFT RETURN LANE; group 77
   (Optimus): 52 RED/TOP, 49 RED/BOT, 10 RIGHT RETURN LANE, 11 RIGHT OUTLANE.
@@ -12,7 +12,9 @@ section 5; code [0x0102db28] [0x0102e208] + observed in traces/scoring.jsonl).
 - Each flipper press (not during the bonus, tilt, service or attract; during the side choice too) moves the lit lamps of one group
   one position: left flipper 50 -> 51 -> 8 -> 9 -> 50, right flipper 52 -> 49 -> 10 -> 11 -> 52 (code; the
   direction was not traced).
-Inferred: the lamps are per player and kept from ball to ball (the spec has them as lamp state).
+The lamps are per player and kept from ball to ball: their records' byte +9 (0x040d0e05 + 12 x lamp, lamps.csv
+b_0x09) is 0, so the player change saves and restores them (lamp_layer_1a760 [0x0001a760] / lamp_layer_1a7b4
+[0x0001a7b4]) and each player's first ball clears them (lamp_layer_74fc [0x000074fc]).
 """
 from tf.features import Feature
 

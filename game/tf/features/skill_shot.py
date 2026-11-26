@@ -1,5 +1,5 @@
 """Skill shot and super skill shot (rom/rules/modes/game_flow.md 5.1; code [0x01031928] [0x01031518]
-[0x0103177c] [0x01031630] [0x01031848] + observed in traces/game_flow.jsonl t 18.79, 55.12, 80.86).
+[0x0103177c] [0x01031630] [0x01031848], confirmed by traces/game_flow.jsonl t 18.79, 55.12, 80.86).
 
 Armed on every serve of type 3 or 4 (a new ball) by the event 0x0f hook; a ball-save serve (type 1)
 cancels both.

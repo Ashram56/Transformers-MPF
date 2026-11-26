@@ -1,17 +1,17 @@
 """The Optimus Prime figure: its motor (coil 30) and its hit kicker (coil 12) (rom/rules/modes/optimus_multiball.md
-4.2 and 11; code [0x010253d8] [0x010253b8] [0x01033d3c] [0x01033cfc] + observed in traces/optimus_*.jsonl and
-megatron_decepticon.jsonl).
+4.2 and 11; code [0x010253d8] [0x010253b8] [0x01033d3c] [0x01033cfc] [0x00016c88], confirmed by traces/optimus_*.jsonl
+and megatron_decepticon.jsonl).
 
 - Position [0x010253d8]: up ('+', 0x2b) while the Optimus battle can progress, while Optimus D waits for the
   Optimus shot (its phase 2 or 3 [0x0102a0d8]) or while Megatron D is at its Optimus phase 3 (flag 0x29 or its
   end task 0xbf [0x0100e798]); down (',', 0x2c) otherwise, and with no game. The mech moves when the wanted
   position is not the one it is at, never while tilted (state 0x300) [0x010253b8]: coil 30 runs until the
-  position switch closes (sw 43 OPTIMUS PRIME UP / sw 44 OPTIMUS PRIME DOWN). Observed: 7.65 s per move in the
-  simulator (battle start 16.2 s -> 23.84 s, multiball start 24.78 s -> 32.46 s in optimus_autobot.jsonl).
+  position switch closes (sw 43 OPTIMUS PRIME UP / sw 44 OPTIMUS PRIME DOWN), at most 468 ticks (motor_move_task
+  [0x00016c88]); the simulator's moves confirm it (7.65 s in optimus_autobot.jsonl, 16.2 -> 23.84 s).
 - Hit kicker [0x01033d3c]: every Optimus hit (sw 51) not within task 0x54 starts task 0x54: 15 ticks later coil 12
-  for 64 ms, then 47 ticks more (observed coil 12 0.37 s after each hit).
+  for 64 ms, then 47 ticks more (task 0x54 [0x01033cfc]; the traces show coil 12 0.37 s after each hit).
 - The simulator never moves the position switches: sw 44 stays closed (the figure reads down) and every move up
-  runs into the time limit (7.65 s, observed: 7642-7694 ms), after which the next rules check starts it again while
+  runs into the 468-tick limit (the traces: 7642-7694 ms), after which the next rules check starts it again while
   up is still wanted (optimus_decepticon.jsonl: 14.95, 23.53, 31.81, 42.68, 51.36 s). The virtual platforms do the
   same here: the down switch starts closed and nothing else moves it, so the coil 30 runs match the traces.
 - Ball search: 33 ticks into each search the motor runs to its time limit (tf/os_layer.py BALL_SEARCH_SWEEP).
@@ -94,7 +94,8 @@ class OptimusMech(Feature):
             self._move(want)
 
     def ball_search_motor(self):
-        """The ball search runs the motor too, to its time limit (observed in every search: 33 ticks in, 7.57 s)."""
+        """The ball search runs the motor too, to its time limit: event 0xc at search tick 30 [0x0103b808] starts the
+        motor's search task [0x00016674] (tf/os_layer.py BALL_SEARCH_SWEEP)."""
         if self.moving is None and MOTOR in self.machine.coils:
             self._move("search")
 

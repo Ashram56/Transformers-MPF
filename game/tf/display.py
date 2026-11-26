@@ -255,7 +255,6 @@ class Display:
         # score display (deff 19) runs with the OS base music (os.base_music()).
         self.rules = []
         self.fg_info = None         # the running foreground deff's DeffInfo (its variant's, deff_variant)
-        self.hold_tail = {}         # deff id -> seconds of its hold when not HOLD_TICKS (set_hold_tail)
         self.music = None           # music call the background rules last played
 
     # ------------------------------------------------------------------ start / stop
@@ -319,8 +318,8 @@ class Display:
                 drop = HOLD_AT_BY_DEFF.get(deff_id)
                 if variant and (deff_id, variant) in VARIANT_TIMING:
                     hold_ticks, drop = VARIANT_TIMING[(deff_id, variant)]
-                hold_at = seconds - self.hold_tail.get(deff_id, hold_ticks * TICK)
-                if drop is not None and deff_id not in self.hold_tail \
+                hold_at = seconds - hold_ticks * TICK
+                if drop is not None \
                         and HOLD_AT_IF.get(deff_id, lambda o: True)(os_):
                     hold_at = drop * TICK     # a drop counted from the start (deff 140; deff 83 animations 7, 8, 10)
                 self._sound_handles.append(os_.machine.clock.schedule_once(
@@ -381,12 +380,6 @@ class Display:
         [deff_sequence_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
         held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
         self.fg_prio = HOLD_PRIORITY
-        if not self.show and deff_id in self.hold_tail:
-            # a measured hold (set_hold_tail): its rules pass restarts the mode's background deff behind
-            # it (traces/quorra_multiball: deff 65 again 2.78 s into deff 68)
-            if self.os.in_play and self.bg not in (None, 19):
-                self.start(self.bg, refresh=False)
-            self.os.request_refresh()
         if self.show:
             # the show's rules refresh request is served once the deff exits (traces/gem_hurryup.jsonl:
             # one tube 18 start as deff 76 ends; disc_multiball.jsonl 40.03 s: one tube 43 as deff 48
@@ -448,11 +441,6 @@ class Display:
         info = media_table.DeffInfo(deff_id, "deff_%03d" % deff_id)
         info.seconds, info.leffs, info.sounds = seconds, list(leffs), list(sounds)
         self.media[deff_id] = info
-
-    def set_hold_tail(self, deff_id, seconds):
-        """deff_hold_frames(n, 0x20) (FUN_0002108c(n, 0x20) [0x0002108c]) when a deff's hold is not the usual 10 ticks: for its last
-        `seconds` the deff runs at priority 0x20, so any other deff may replace it (measured per deff)."""
-        self.hold_tail[deff_id] = seconds
 
     def _deff_after(self, call):
         """snd_play_after [0x000253d4]: `call` queued on the sample the deff started last; nothing when that sample
@@ -553,7 +541,7 @@ class Display:
 
     def _end_show(self):
         """The show task [0x01006480] reloads the ball-search countdown when it runs, when its deff starts and
-        when the deff is over (observed: game_flow.jsonl, super skill shot deff 43 49.21-51.73 s, no search
+        when the deff is over (code; confirmed by game_flow.jsonl, super skill shot deff 43 49.21-51.73 s, no search
         before the drain at 60.47 s)."""
         show, self.show = self.show, None
         self.os.ball_search_reload()
@@ -569,14 +557,6 @@ class Display:
         self.rules.append((priority, cond, deff_id, music, on_start))
         self.rules.sort(key=lambda r: -r[0])
 
-    def raise_rule(self, deff_id):
-        """A mode start re-inserts its rule before the others of its priority (Tron model, inferred), so
-        the mode started last shows its deff when several are true (stacked Light Cycle + Quorra)."""
-        rule = next(r for r in self.rules if r[2] == deff_id)
-        self.rules.remove(rule)
-        i = next((k for k, r in enumerate(self.rules) if r[0] <= rule[0]), len(self.rules))
-        self.rules.insert(i, rule)
-
     def is_rule_deff(self, deff_id):
         return any(r[2] == deff_id for r in self.rules)
 
@@ -585,7 +565,8 @@ class Display:
         valid = self.os.pf_valid
         for prio, cond, deff_id, music, on_start in self.rules:
             if prio < PREVALID_PRIO and not valid:
-                break                              # only the score display rule before validation (inferred)
+                break                              # the record 0x00034cd4 (priority 0x10, test_flag_10_68b4
+                # [0x010068b4]: not valid) is true and ends the walk [0x000178b0] with the score display
             if cond():
                 return deff_id, music() if callable(music) else music, on_start
         return 19, self.os.base_music(), None
@@ -658,7 +639,7 @@ class Display:
         """FUN_0100fd88, used by the mode TOTAL tasks 0x4d-0x58: wait until no show task runs, no
         foreground deff is on screen and this is the oldest such task waiting, then play deff_id;
         on_end() runs when it is over (or when the wait times out). tf_180 [0x0100664c] reloads the ball-search
-        countdown when it is called and again when its deff starts (observed: battle_blackout, total deff 103 at
+        countdown when it is called and again when its deff starts (code; confirmed by battle_blackout, total deff 103 at
         66.04 s, ball search 10.1 s later)."""
         from tf.os_layer import TICK
         self.os.ball_search_reload()

@@ -1,5 +1,5 @@
 """Character battles and the mode-start shots (rom/rules/modes/battles.md; code [0x01020074] [0x01022e08]
-[0x010229ec] [0x01022cf8] and the eight battles' start / hit / end functions; observed in traces/battle_*.jsonl).
+[0x010229ec] [0x01022cf8] and the eight battles' start / hit / end functions; confirmed by traces/battle_*.jsonl).
 
 Mode start (4.2): five shots (Allspark, left orbit, left ramp, right ramp, right orbit) carry the side's arrows;
 adj 66 MODE START DIFFICULTY lights N of them at reset (game start, each battle start) and keeps at least a

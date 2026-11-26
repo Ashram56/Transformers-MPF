@@ -36,13 +36,20 @@ class TestSwitchScores(TfTestCase):
         self.assertIn(42, [e["id"] for e in self.tf.trace.of("deff_start")])
 
     def test_side_choice_ends_on_a_playfield_switch(self):
+        """Task 200 ends on a force switch (event 0x6c [0x01033e08]) or 3 different counting ones (event 0x6b
+        [0x01033dec]), with no deff 41 (only the shooter lane's task 0xc9 shows it [0x01033f54])."""
         self.fill_trough()
         self.hit_and_release_switch("s_start_button")
         self.advance_time_and_run(2)
         self.assertEqual(40, self.tf.display.bg)
+        side = self.tf.features_by_name["side"]
         self.hit_and_release_switch("s_left_slingshot")
         self.advance_time_and_run(0.5)
-        self.assertIn(41, [e["id"] for e in self.tf.trace.of("deff_start")])
+        self.assertTrue(side.choosing)
+        self.hit_and_release_switch("s_left_top_lane")
+        self.advance_time_and_run(0.5)
+        self.assertFalse(side.choosing)
+        self.assertNotIn(41, [e["id"] for e in self.tf.trace.of("deff_start")])
 
     def test_pop_runs_its_lamp_effect(self):
         """A pop starts leff 26, whose captured show pulses the pop bumper flasher (lampfx_026.yaml)."""

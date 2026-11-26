@@ -9,8 +9,8 @@ FRAME_TICKS, VERDICT_FRAME, FRAMES, WIN_FRAMES, TAIL_TICKS = 5, 60, 68, 24, 0x1f
 MATCH_SOUND, MATCHED_SOUND, NO_MATCH_SOUND, WIN_SOUND = 0x023, 0x072, 0x073, 0x074
 GAME_OVER_MUSIC, GAME_OVER_SPEECH, SPEECH_TICKS = 0x24, 0x4b, 0x7c   # task 0x9b [0x01006138]
 # sample 0x28f's script sets slot +0x8c (op 0x0d, snd_op_set_8c [0x000245a8]) after 6501 + 98240 units of 1/4000 s;
-# the task then raises voice 0's attenuation by 1 every 2 ticks up to 0x100 (snd_chan_25dc4 [0x00025dc4]; from 0:
-# inferred) and frees the slot; the sample ends 20000 units after the cue
+# the task then raises voice 0's attenuation by 1 every 2 ticks up to 0x100 (snd_chan_25dc4 [0x00025dc4]), from
+# the 0 snd_start_sample [0x00024ae4] gives each voice it takes, and frees the slot; the sample ends 20000 units after the cue
 MUSIC_CUE_S, MUSIC_FADE_S, MUSIC_END_S = (6501 + 98240) / 4000, 0x100 * 2 * 0.016, 124741 / 4000
 
 
@@ -88,7 +88,7 @@ class GameOver(Feature):
         os_ = self.os
         os_.hook("attract_start")                 # event 0x08: deff 1, leff 1, attract tube rule
         # task 0x9b [0x01006138], one tick later: the game-over music 0x24 (unless it already plays), then the
-        # speech 0x4b 124 ticks later (observed: game_flow.jsonl 164.68 / 166.66 s); no leff
+        # speech 0x4b after task_sleep(0x7c) (confirmed: game_flow.jsonl 164.68 / 166.66 s); no leff
         os_.after(1, self._music)
         os_.after(1 + SPEECH_TICKS, lambda: os_.game or os_.sound(GAME_OVER_SPEECH))   # a game start kills it
         done()

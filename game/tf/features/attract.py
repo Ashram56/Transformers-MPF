@@ -4,13 +4,15 @@ Started at power-up and after every game (OS event 0x08, attract_start [0x00000a
 are in the deff and leff tables with Tron's priorities and flags (deff 1: priority 1, background; leff 1:
 priority 1); what leff 1 draws (game code 0x01009e78) comes with the ROM extraction's lamp effects, and the
 attract pages with its display effects (tf/attract_pages.py: the page table 0x00030d10 walked as deff 1 does,
-each page drawn from its op list with live texts). Tron's attract timings (power-up to deff 1: 0.992 s) are kept.
+each page drawn from its op list with live texts). Power-up: os_start_308 [0x00000308] calls start_deff_5 [0x00006ecc]
+(the OS init and the boot screen, deff 5, priority 254, 125 ticks) then attract_start [0x00000a84] in the same pass, so
+deff 1 and leff 1 start at once; the boot screen over them is not drawn (rom_differences.md, QA V005).
 """
 from tf.attract_pages import Walker
 from tf.features import Feature
 
 ORDER = 6
-BOOT_SECONDS = 0.992        # power-up -> deff 1 + leff 1 (Tron traces/attract_and_service.jsonl t 0.99)
+BOOT_SECONDS = 0            # power-up -> deff 1 + leff 1: same pass as the boot screen (os_start_308 [0x00000308])
 
 
 class Attract(Feature):

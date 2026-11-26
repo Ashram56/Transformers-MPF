@@ -5,6 +5,16 @@ The owner's strict rule of 2026-11-24 ([CLAUDE.md](../../CLAUDE.md)) and the aud
 scope each, every finding proved; the review fixes nothing, the fixes follow from the reports). One folder per
 pass.
 
+## Final pass: the MPF code against the decoded code
+
+Owner, 2026-11-26: once everything is decoded, the MPF code is checked against the decoded code as a QA test table
+(element, ROM address, state, correction), and each divergence is fixed. The table is
+[final/mpf_vs_code.csv](final/mpf_vs_code.csv) (columns: id, element, mpf, rom, state_before, state, correction,
+test); state `fixed` is a divergence corrected in the code, `match` an MPF value that already equalled the code and
+now cites it instead of a trace, `open (MPF limit)` a difference MPF cannot remove (with its row in
+[rom_differences.md](../rom_differences.md)). Its regression tests are [tests/test_qa_final.py](../../tests/test_qa_final.py). The
+table grows as the last observed and inferred values are decoded; the full sweep of every feature closes it.
+
 ## Pass of 2026-11-26: the MPF conversion against the ROM code
 
 Owner, 2026-11-26: the QA matrix also covers the conversion to MPF (configs, generated config, shows, Python and

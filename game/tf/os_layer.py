@@ -45,9 +45,10 @@ ST_BONUS, ST_END_BALL, ST_ATTRACT, ST_TILT = 0x01, 0x04, 0x10, 0x200
 END_BALL_WAIT_MAX = 937     # DAT_00033324: the end of ball waits at most this long for the flag-0x2000 tasks
 
 # Valid playfield (OS, game_flow.md 4.3): the switch descriptor's top byte (rom/rom_data/io/switches.csv
-# flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). The spec infers that
-# slings and pops (0x04) do not count, but traces/basic validates on the 3rd different switch of slings 26, 27
-# and pop 30 (play music 0x01f at 7.78 s): they count, as on Tron (observed).
+# flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). Slings and pops (0x04,
+# no event bit in the dispatcher's mask) count too: their handlers post event 0x6b themselves (the slings
+# [0x01033104], the pops [0x01032f8c]: post_event_6a_d8d0 then event_post(0x6b)), whose hook [0x00017db4] adds the
+# switch to the counter 0x00031608; traces/basic confirms (play music 0x01f at 7.78 s).
 FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
 # 3 and 38-42 (left eject, Megatron lock): top byte 0x1f, the 0x1000 mask word: event 0x6b [0x0000ddf8] (game_flow.md 4.3)
 COUNTING_SWITCHES = {1, 2, 3, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 45, 46, 49, 50, 51}
@@ -57,7 +58,10 @@ COUNTING_SWITCHES = {1, 2, 3, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 38, 39, 4
 MULTIBALL_FLAGS = (0x1e, 0x1f, 0x22, 0x25, 0x29, 0x3e)
 BALL_SAVE_GRACE = 218        # ticks (0xda) of grace after the ball-save timer
 SERVE_EJECT_TICKS = 32
-LATER_SERVE_EXTRA_TICKS = 6     # every later ball start: trough eject 0.645 s after the ball start, not 0.545 s
+# coil_pulse_queue_serve [0x00003758]: the queue's head still points at the last pulse it ran; the serve that steps
+# past it sets a hold-off of 6 serves (one a tick), so every queued pulse after the first since power-up starts 6
+# ticks later (the trough kick run as ROM code: queued +32, started +39; scenario_lift game_flow)
+LATER_SERVE_EXTRA_TICKS = 6
 # serve task [0x0103b128] (ball_feed.md): types 2 and 8 kick without a settle, the others after the trough's +0x10
 # settle (31 ticks, table 0x040d17fc) and the tick the task starts on (QA CC1, CC2)
 SAVE_EJECT_TICKS = 1
@@ -104,19 +108,20 @@ DYNAMIC_REPLAY_MIN = 5000000                                # dynamic replay flo
 # The game's own numbers the OS uses. Lamps from rom/rom_data/io/lamps.csv [code]; None = not known yet.
 GAME = {
     "start_lamp": 1,            # START BUTTON
-    "shoot_again_lamp": 3,      # ROLL OUT: the insert between the flippers (VPX table: li3, x 0.45 y 0.88), inferred
+    "shoot_again_lamp": 3,      # ROLL OUT: RAM 0x00030e9a after the boot (run as ROM code), read by [0x0001801c]
     "eb_lamp": 55,              # EXTRA BALL
     "special_lamp": 53,         # SPECIAL
     # the base music is the side's (tf/features/side.py)
     "music_plunger": 0x1d,      # ball start, Decepticon: side_choice_deff_ids_68e4 [0x010068e4]
     "music_play": 0x1f,         # main play, Decepticon: side_deff_ids_6970 [0x01006970]
     "add_player_sound": 0x048,
-    "game_start_sound": None,   # none observed (traces/sounds.jsonl: only the side choice music 0x1b)
+    "game_start_sound": None,   # none: the game start's hooks (event 0x2e: [0x0103621c] [0x010026ec]) play no sound
     "tilt_warning_speech": 0x052,   # task 0x98 [0x01005e44], 0x1f ticks after the warning (event 0x69)
     "tilt_speech": 0x053,       # task 0x99 [0x01005e80], 0x3e ticks after the tilt (event 0x65)
     "tilt_speech_ticks": 0x3e + 1,
-    "launch_sound": 0x056,      # observed on every plunge and auto-launch, 0.08 s after the lane opens
-    "launch_sound_ticks": 4,
+    "launch_sound": 0x056,      # sw_shooter_lane [0x01032dfc] on the opening, unless task 0x3d (6 ticks from the closing) runs
+    "launch_sound_ticks": 4,    # the opening's debounce and dispatch (MPF does not debounce: rom_differences D-SW-DEB)
+    "launch_bounce_ticks": 6,   # task 0x3d [0x01032dfc]
 }
 SHOOT_AGAIN_LAMP = GAME["shoot_again_lamp"]
 START_LAMP = GAME["start_lamp"]
@@ -305,7 +310,7 @@ class TfOS(CustomCode):
         self.deff_values = {}
         self.random = random.Random()
         self._new_game = False
-        self._new_game_ball = False
+        self._pulse_queue_used = False  # a queued pulse ran since power-up [0x00003758]
         self._search_handle = None
         self._search_at = 0.0
         self._search_paused = None      # countdown seconds left while a flipper button is held
@@ -1113,8 +1118,15 @@ class TfOS(CustomCode):
             return
         self._mb_pending -= 1
         self._mb_kick_at = self.now
-        self.machine.playfield.add_ball(balls=1, player_controlled=False)
+        self.after(self.pulse_queue_hold_off(), lambda: self.machine.playfield.add_ball(balls=1, player_controlled=False))
         self.task_start(MB_TASK, MB_SETTLE_TICKS + 1, self._mb_launch)
+
+    def pulse_queue_hold_off(self):
+        """The trough kick is a queued pulse (coil_pulse_queue [0x00001f70]): coil_pulse_queue_serve [0x00003758]
+        starts it LATER_SERVE_EXTRA_TICKS later, except the first queued pulse since power-up."""
+        extra = LATER_SERVE_EXTRA_TICKS if self._pulse_queue_used else 0
+        self._pulse_queue_used = True
+        return extra
 
     def _mb_feed_ready(self):
         """[0x0103aa5c] / [0x0103ab6c]: the shooter lane empty and its task 0x16 (125 ticks from the lane's switch
@@ -1215,8 +1227,8 @@ class TfOS(CustomCode):
 
     def replay_award(self, n):
         """replay_award [0x0001c410]: award per adj 13 (0 = credit + knocker 0x019), audit 9 + n, then task
-        0x33 (an end-of-ball wait task) shows deff 28 REPLAY with leff 17 once no show runs (traces/
-        portal_multiball.jsonl: replay 16.53 s, deff 28 at 25.09 s when show deff 140 ends), until it ends."""
+        0x33 (an end-of-ball wait task) shows deff 28 REPLAY with leff 17 once no show runs (FUN_000210a8; traces/
+        portal_multiball.jsonl: replay 16.53 s, deff 28 at 25.09 s when show deff 140 ends, confirms), until it ends."""
         award = self.adj_value(13)                   # 0 credit, 1 ticket, 2 token, 3 extra ball
         if award == 0:
             if self.award_credit():                  # FUN_000041a0: the knocker only when a credit was added
@@ -1341,7 +1353,9 @@ class TfOS(CustomCode):
         if num > 1:
             self.credit_model.take(1)
             self.audit(0x11)
-            self.sound(GAME["add_player_sound"])     # observed: traces/game_flow.jsonl 5.88 s (player 2)
+            # event 0x46 [0x0001a9e4] hook [0x0100601c]: call 0x48 with argument players - 1 (snd_play_arg
+            # [0x00025250]), the sample of that index (0x202 / 0x203 / 0x204 for players 2-4)
+            self.sound(GAME["add_player_sound"], index=num - 1)
 
     def _start_held(self):
         """adj 36 GAME RESTART [0x0001a6e4]: START held 62 ticks (timer 4) on ball 2 or later restarts the game,
@@ -1395,8 +1409,11 @@ class TfOS(CustomCode):
         self._shooter_at = self.now
 
     def _shooter_left(self):
-        """The ball leaves the shooter lane, plunged or auto-launched: the launch sound (GAME, observed;
-        FUN_01032dfc plays it, from which switch is not traced)."""
+        """The ball leaves the shooter lane (switch 23), plunged or auto-launched: sw_shooter_lane [0x01032dfc]
+        plays 0x56 on the opening (game state & 0x316 clear) unless task 0x3d, started for 6 ticks by the
+        closing, still runs (a bounce)."""
+        if self.now - getattr(self, "_shooter_at", -1.0) < GAME["launch_bounce_ticks"] * TICK:
+            return
         if self.game and not self.tilted and GAME["launch_sound"] is not None:
             self.after(GAME["launch_sound_ticks"], lambda: self.game and self.sound(GAME["launch_sound"]))
 
@@ -1427,7 +1444,7 @@ class TfOS(CustomCode):
         self._valid_at = None
         self.shoot_again = False
         self.flags.clear()
-        self.speech_once_count = 0                   # RAM 0x34d1c (game RAM, cleared with the game: inferred)
+        self.speech_once_count = 0                   # RAM 0x34d1c: game_init [0x00019c64] clears it (run as ROM code)
         self.tasks_kill_all()
         self.credit_model.take(1)                         # FUN_0000434c: the game's credit
         self.credit_model.free_games = 0
@@ -1437,7 +1454,6 @@ class TfOS(CustomCode):
             hs.game_started()                        # FUN_000184f8: adj 61 HSTD RESET COUNT
         self.display.clear()
         self._new_game = True
-        self._new_game_ball = True
         self.hook("game_start")                      # event 0x2e
 
     def tasks_kill_all(self):
@@ -1473,15 +1489,15 @@ class TfOS(CustomCode):
             self.sound(GAME["game_start_sound"])
         self.ball_search_count = 0
         self.ball_search_reload()
-        later_ball = not self._new_game_ball
-        self._new_game_ball = False
+        extra = self.pulse_queue_hold_off()
         self.serve(3)
-        # The trough eject task kicks the ball about 32 ticks after the serve (traces/game_flow.jsonl
-        # ball start 1.90 s, trough eject 2.42 s); MPF ejects when the ball_starting queue clears.
+        # task_of_serve_ball [0x0103b128] kicks the ball after the trough's settle (SERVE_EJECT_TICKS); MPF ejects
+        # when the ball_starting queue clears (game_flow.jsonl confirms: ball start 1.90 s, trough eject 2.42 s).
         if queue:
             queue.wait()
-            # (all reference traces: 0.545 s for the game's first ball, 0.645 s for every later one)
-            self.after(SERVE_EJECT_TICKS + (LATER_SERVE_EXTRA_TICKS if later_ball else 0), queue.clear)
+            # (the queue's hold-off [0x00003758]; the traces confirm: 0.545 s for the first ball since power-up,
+            # 0.645 s for every later one)
+            self.after(SERVE_EJECT_TICKS + extra, queue.clear)
 
     def _ball_started(self, **kwargs):
         pass
@@ -1573,8 +1589,8 @@ class TfOS(CustomCode):
             self.hook("ball_drained", balls)
             # trough entry (trough device callback [0x0100a0a4] case 0xe): installed - balls in devices (a held
             # ball counts) < 2 -> the multiballs end [0x0100aa44]. While the Megatron lock still holds a ball it
-            # is about to kick, the end comes once that eject is over (hook device_kicking; observed:
-            # optimus_autobot.jsonl, last drain 71.16 s, the super's ball kicked 72.45 s, end 73.53 s)
+            # is about to kick, the end comes once that eject is over: device 4's task 0x1c re-runs case 0xe after
+            # its settle (hook device_kicking, megatron.py EJECT_OVER_TICKS; optimus_autobot.jsonl confirms)
             if self.balls_in_play() - balls - (1 if self.ball_held else 0) < 2:
                 if self.hook("device_kicking"):
                     self._mb_end_deferred = True
@@ -1589,16 +1605,22 @@ class TfOS(CustomCode):
             self.machine.playfield.add_ball(player_controlled=True)
             return {"balls": 0}
         if self.ball_save:
+            # drain [0x01039db4]: ball_save_try(0) [0x00017b3c] (deff 20, leff 15 only when it shows, audit
+            # 0x2b), then serve_ball(1) [0x0103b39c]
             self.kill_ball_save()
-            self.deff_start(20)
-            self.leff_start(15)
+            if self.deff_start(20):
+                self.leff_start(15)
             self.audit(0x2b)
-            self.ball_scored = False                 # traces/game_flow_tilt: ball_scored 0 at BALL SAVED
-            self.request_refresh()                   # the save re-runs the lamp rules (game_flow.jsonl 7.96)
+            # 0x000314d8 (ball scored) cleared by switch_timeout_clear_d8a0 [0x0000d8a0] in the serve; game_flow_tilt
+            # confirms (0 at BALL SAVED)
+            self.ball_scored = False
+            self.request_refresh()                   # the save re-runs the lamp rules (game_flow.jsonl 7.96 confirms)
             self.hook("ball_saved")
             self.serve(1)
-            # trough eject task, then the auto-launch (traces/game_flow.jsonl: save 7.96 s, eject 8.60 s)
-            self.after(SAVE_SERVE_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
+            # task_of_serve_ball [0x0103b128]: the trough's settle then the kick, through the pulse queue
+            # [0x00003758]; then the auto-launch (game_flow.jsonl confirms: save 7.96 s, eject 8.60 s)
+            self.after(SAVE_SERVE_TICKS + self.pulse_queue_hold_off(),
+                       lambda: self.machine.playfield.add_ball(player_controlled=False))
             return {"balls": 0}
         return {"balls": balls}
 
@@ -1621,7 +1643,7 @@ class TfOS(CustomCode):
 
     def _search_hold(self):
         """The countdown does not run while a flipper button is held (ball_search_tick: the held-buttons byte
-        0x31621 of the instant-info code [0x0001914c]; observed: coils.jsonl, buttons held 19.32-21.32 and
+        0x31621 of the instant-info code [0x0001914c]; confirmed by coils.jsonl, buttons held 19.32-21.32 and
         21.90-23.90 s, search 31.27 s, 14.1 s after the last switch)."""
         sc = self.machine.switch_controller
         held = any(name in self.machine.switches and sc.is_active(self.machine.switches[name])
@@ -2016,7 +2038,8 @@ class TfOS(CustomCode):
             return False
         self.serve(2)
         self.game.balls_in_play += 1                 # the outlane ball still drains later
-        self.after(SAVE_EJECT_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
+        self.after(SAVE_EJECT_TICKS + self.pulse_queue_hold_off(),
+                   lambda: self.machine.playfield.add_ball(player_controlled=False))
         self.kill_ball_save()
         if self.deff_start(20):
             self.leff_start(15)
@@ -2135,7 +2158,7 @@ class TfOS(CustomCode):
             return
         # game-time audits (audits 59-71), one per player by that player's play time (RAM 0x37630, whole
         # seconds counted with audit 0x3c [0x0001f344], bucketed from the table at 0x33328 [0x0001f564];
-        # observed: game_flow.jsonl 158.64 s, two players under a minute: counter 46 twice), and the
+        # confirmed by game_flow.jsonl 158.64 s, two players under a minute: counter 46 twice), and the
         # score-range audits (audits 30-46, one per player) [0x0001ce58]
         players = self.game.player_list if self.game else []
         for player in players:

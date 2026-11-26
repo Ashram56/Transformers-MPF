@@ -1,5 +1,5 @@
 """Combos and shot multipliers (rom/rules/modes/combos_and_multipliers.md sections 4 and 6; code [0x01002f0c]
-[0x01002be4] [0x01002b5c] [0x010236e8] [0x01023538] + observed in traces/combos.jsonl).
+[0x01002be4] [0x01002b5c] [0x010236e8] [0x01023538], confirmed by traces/combos.jsonl).
 
 Major shots (index / mask bit): 0 left eject (the Allspark rule, tf/features/allspark.py), 1 left orbit (sw5
 or sw6 as tf/features/battles.py decides a pass, hook combo_shot), 2 left ramp exit
@@ -9,13 +9,13 @@ round the left orbit, switch timer 7, and not within 187 ticks of the previous r
 Combos, on a major shot:
 1. no window running: combo_way = 1, no award;
 2. the shot's bit in combo_mask: way + 1, award M x (100,000 + 25,000 x way) with M the shot's multiplier,
-   leff 35, audit 154 (observed 150,000 ... 250,000 for 2- to 6-way);
+   leff 35, audit 154 (the traces confirm 150,000 ... 250,000 for 2- to 6-way);
 3. else the way count stays.
 Then the window ends, and unless a multiball runs ([0x01002afc] -> [0x01006704], the multiball flags, named
 any_timed_mode_running in the decompile) mask = all six minus the shot when it is the eject or the left ramp and
 the window restarts: 312 ticks (task 0x92, not counting while the
-left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (observed:
-traces/battle_starscream.jsonl, no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
+left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (the test is the multiball
+flags only; traces/battle_starscream.jsonl confirms: no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
 combo on every shot). The arrows of the allowed shots (leff 34 [0x01003104]) are not drawn: 1.80 never runs
 that leff (no start in the code or the traces; the arrow lamps stay as the modes set them during a window).
 deff 48 (n-WAY COMBO) is never started in 1.80 (no starter; the status panel shows combos).
@@ -200,7 +200,8 @@ class Combos(Feature):
 
     def sw_51(self):
         """The Optimus handler [0x01033d3c] gives the center lane's multiplier slot (not a combo shot), unless
-        task 0x54 (the previous hit) or 0x4e runs (observed: switches.jsonl 133.93 s, deff 50 on the Optimus)."""
+        task 0x4e or 0x54 (the previous hit) runs; start_deff_50(4) is shot record 4, the center lane (switches.jsonl
+        133.93 s confirms)."""
         os_ = self.os
         if os_.game and os_.in_play and not os_.tilted and not os_.task_running(0x54) \
                 and not os_.task_running(0x4e):

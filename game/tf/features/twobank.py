@@ -1,5 +1,5 @@
 """Right 2-bank targets and fast scoring (rom/rules/modes/scoring_features.md 4.4; code [0x0102e9c0]
-[0x01004394] [0x010047b8] [0x01004220] + observed in traces/scoring.jsonl t 104.88-161.46).
+[0x01004394] [0x010047b8] [0x01004220], confirmed by traces/scoring.jsonl t 104.88-161.46).
 
 - Switches 50 (top) and 37 (bottom), handler 30 points + audit 70 (tf/switches.py BASE_SCORE / here).
 - During a multiball or a timed mode ([0x0102e994]: [0x01006704] multiball flags, [0x010067bc] battle timers,
@@ -10,7 +10,7 @@
   12): fs_level is adj 82 at the player's first ball [0x0102e8f8] and + 1 at each start [0x0102e9c0], audit 106.
 - Fast scoring: fast_value = 10,000 + 5,000 x starts before (cap 50,000); deff 132 0.9 s later (sound 0x289,
   leff 158), background deff 133 "ALL TARGETS = n" with music 0x027, leffs 159 / 160. The countdown, adj 81
-  counts of 66 ticks, holds while a show or deff 132 is up (observed: first count 5.1 s after the start).
+  counts of 66 ticks (11 x 6 [0x01004220]), holds while a show or deff 132 is up.
   Every playfield switch scores fast_value (one award per tick, task 0x5b); unless deff 132 is up or about to
   show (task 0x70): sound 0x28d, leff 164, a 200 ms shake (MAXIMAL), and deff 134 when it is not up and no
   multiball runs [0x01004644]. Switches 50 / 37 [0x010047b8]: the first target of a cycle adds 1,000 to
@@ -23,10 +23,12 @@
   countdown (QA P9), for the completing hit and ADD MORE TIME alike (deff 136 both times, QA P16).
   One count after 0 the switches keep scoring 250 ticks, then the total task 0x88 [0x01004950] (a ball-end-wait
   task) shows deff 137 "FAST SCORING TOTAL" (2.65 s, sound 0x290 and leff 165 from its code) when the display is
-  free. Task 0xad, started with the mode, is still running after that (observed: scoring.jsonl, task 0x88 again at
-  the drain, 155.11 s), so the end of that ball [0x010049a8] shows the total once more, after the first one, and the
-  bonus waits for it (deff 137 at 153.46 and 156.10 s, bonus 158.76 s). What else task 0xad keeps running after the
-  total (the awards [0x010047b8] test the same tasks) is not traced: here only the ball-end total. ADD MORE TIME adds adj 81 counts (cap 90).
+  free. Task 0xad [0x0100416c], started with the mode, sleeps 0x271 ticks, then plays call 0x291 once (its one
+  sample, skipped while a multiball runs) and sleeps 0x271 again, and ends at the first wake that finds task 0xac
+  gone; until then the mode's tasks 0xac-0xae [0x0100462c] still run: every playfield switch still scores the
+  award [0x010047b8], a completing 2-bank hit or ADD MORE TIME restarts the countdown [0x0100457c], and the end of
+  that ball [0x010049a8] shows the total once more (scoring.jsonl confirms: 0x291 at 134.83 s, deff 137 at 153.46
+  and 156.10 s). ADD MORE TIME adds adj 81 counts (cap 90).
 """
 from tf.features import Feature
 
@@ -48,11 +50,13 @@ FIRST_LEFT = 5 + 2 * FIRST_LEVEL
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
 STEP_TICKS, STEPS = 6, 11            # a count: 11 x task_sleep(6) [0x01004220]
 NEW_LEFF, REPEAT_LEFF = 0x90, 0x91   # 144 a new target this cycle, 145 a repeat [0x010047b8]
-FS_DEFF_S, TICK_S = 3.97, 0.016     # deff 132's length (the capture), one tick
+FS_DEFF_TICKS = 246     # deff_132_fast [0x01004de8] run as ROM code: end_tick of rom/rom_data/dmd/deff_ops/deff_132.json
 FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF = 132, 133, 134, 135, 136, 137
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
 TASK, AWARD_TASK, TOTAL_TASK = "fast_scoring", 0x5b, 0x88
+SPEECH_TASK, SPEECH_SLEEP, SPEECH = 0xad, 0x271, 0x291     # [0x0100416c]
+SPEECH_TICKS = 84                    # call 0x291's sample 0x00c, 1.333 s (sound_call_uses.csv), waited out tick by tick
 AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_data/io/shaker.csv)
 
 
@@ -71,7 +75,8 @@ class TwoBank(Feature):
         self.awards = 0
         self.last_hit = -1.0
         os_.lamp_update(self.draw)
-        self.lingering = False          # task 0xad after the total (see above)
+        self.speech_left = 0
+        self.ad_running = False         # task 0xad [0x0100416c] (see above)
         for leff in READY_LEFFS:
             os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff)
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x57)   # QA V-ENG5 (os_layer deff_rule)
@@ -113,7 +118,7 @@ class TwoBank(Feature):
         os_ = self.os
         if os_.tilted:
             return
-        if self.running:
+        if self.live():
             self._fast_target(num)
         if os_.any_multiball() or os_.timed_mode_running():     # [0x0102e994] (the countdown, not its tail)
             points, sound, leff = LOCKED
@@ -156,11 +161,14 @@ class TwoBank(Feature):
         os_.audit(START_AUDIT)
         self.running = self.counting = True
         self.steps = 0
-        self.lingering = False
         self.count = os_.adj[81]
         self.groups = 0
         self.total = START_POINTS
-        self.started_now = True                 # the starting hit scores no all-targets award (observed)
+        self.ad_running = True                  # task 0xad: snd_call_sample_count(0x291) = 1 [0x00025924]
+        self.speech_left = 1
+        os_.task_start(SPEECH_TASK, SPEECH_SLEEP, self._speech)
+        self.started_now = True                 # no award for the starting hit: its handler [0x01033c00] runs the
+        # award check [0x010047b8] before the 2-bank rule [0x0102e9c0] that starts the mode
         os_.request_refresh()
         self.intro_pending = True               # task 0x70 until deff 132 shows
         os_.ball_search_reload()                # FUN_01006350 reloads the search at call, show start and show end
@@ -172,7 +180,7 @@ class TwoBank(Feature):
         if self.running:
             self.os.deff_start(FS_DEFF, values=[self.value])    # sound 0x289 and leff 158 come with it
             self.os.ball_search_reload()
-            self.os.after(int(FS_DEFF_S / TICK_S), self.os.ball_search_reload)
+            self.os.after(FS_DEFF_TICKS, self.os.ball_search_reload)
 
     def _tick(self):
         os_ = self.os
@@ -186,7 +194,7 @@ class TwoBank(Feature):
             os_.task_start(TASK, STEP_TICKS, self._tick)
             return
         self.steps = 0
-        if self.count > 0:                      # one more count after 0 (observed 0 at 148.22 s, total 153.46 s)
+        if self.count > 0:                      # one more count after 0: the loop tests the count after each [0x01004220]
             self.count -= 1
             os_.task_start(TASK, STEP_TICKS, self._tick)
             return
@@ -195,17 +203,37 @@ class TwoBank(Feature):
         os_.task_start(TASK, TAIL_TICKS, self._end)
 
     def _end(self):
-        self.stop()
-        self.lingering = True
+        self.stop(speech=False)
         self._show_total()
+
+    def live(self):
+        """tasks_ac_ae_running [0x0100462c]: the countdown, its tail or task 0xad."""
+        return self.running or self.ad_running
+
+    def _speech(self):
+        """Task 0xad's wake [0x0100416c]: ends when task 0xac is gone [0x01004618], else call 0x291 while it has
+        one left and no multiball runs, then 0x271 ticks more."""
+        os_ = self.os
+        if not (self.running and self.counting):
+            self.ad_running = False
+            return
+        wait = SPEECH_SLEEP
+        if self.speech_left and not os_.any_multiball():
+            os_.sound(SPEECH)
+            self.speech_left -= 1
+            wait += SPEECH_TICKS
+        os_.task_start(SPEECH_TASK, wait, self._speech)
 
     def _show_total(self):
         """Task 0x88 [0x01004950]: deff 137 with the total once the display is free."""
         if self.total and not self.os.state & 0x310:
             self.os.display.when_idle(TOTAL_TASK, FS_TOTAL_DEFF, values=[self.total])
 
-    def stop(self):
+    def stop(self, speech=True):
         self.os.task_kill(TASK)
+        if speech:                              # the end of ball and tilt kill 0xac-0xae [0x010049a8]
+            self.os.task_kill(SPEECH_TASK)
+            self.ad_running = False
         self.os.task_kill(AWARD_TASK)
         self.awards = 0
         if self.running:
@@ -220,11 +248,11 @@ class TwoBank(Feature):
         """[0x0100457c]: while task 0xac or its tail 0xae runs, n counts (cap 90), the tail killed and the
         countdown (re)started, deff 136."""
         os_ = self.os
-        if not self.running:
+        if not self.live():
             return
         self.count = min(self.count + n, 90)
         if not self.counting:
-            self.counting = True
+            self.running = self.counting = True
             self.steps = 0
             os_.task_start(TASK, STEP_TICKS, self._tick)
             os_.request_refresh()
@@ -250,14 +278,14 @@ class TwoBank(Feature):
         if getattr(self, "started_now", False):
             self.started_now = False
             return
-        if self.running and not self.os.tilted:
+        if self.live() and not self.os.tilted:
             self.awards += 1
             if not self.os.task_running(AWARD_TASK):
                 self._award()
 
     def _award(self):
         os_ = self.os
-        if not self.awards or not self.running:
+        if not self.awards or not self.live():
             self.awards = 0
             return
         self.awards -= 1
@@ -275,15 +303,13 @@ class TwoBank(Feature):
     def ball_end(self):
         """[0x010049a8] (event 0x1d): while the mode's tasks 0xac-0xae run, they stop and task 0x88 shows the total
         once the display is free [0x01004950]: after a total still playing (the end of ball kills no deff task)."""
-        if self.running or self.lingering:
+        if self.live():
             self.stop()
-            self.lingering = False
             if not self.os.tilted and self.total:
                 self._show_total()
 
     def tilt(self):
         self.stop()
-        self.lingering = False
 
     def scoring_boost(self):
         """Task 0xac runs: the countdown, not its tail ([0x01004618], QA P9)."""

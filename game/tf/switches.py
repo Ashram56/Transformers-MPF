@@ -11,7 +11,7 @@ switches_and_shots.md, switch_handlers.csv; read by running the ROM's code from 
 - slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
 - pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
 Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add) except sw 6's (0x010332e4 returns
-without it; observed: traces/combos.jsonl last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
+without it, code; traces/combos.jsonl confirms: last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
 switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
 rom/rules/modes/).
 """
@@ -35,7 +35,7 @@ BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 3
               24: 100000, 25: 1090, 28: 1090, 29: 100000, 34: 90, 35: 560, 37: 30, 45: 30, 46: 1110, 49: 1110,
               50: 30, 51: 30}
 SLINGS = {26: 440, 27: 440}
-SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon (observed: game_flow player 1 Autobot 0x159)
+SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon: player_side() picks the call [0x01033104]
 POPS = (30, 31, 32)
 POP_EXTRA = 170
 # audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, callers

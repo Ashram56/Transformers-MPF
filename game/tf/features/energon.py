@@ -1,9 +1,9 @@
-"""Energon targets (rom/rules/modes/allspark_and_energon.md 5.1; code [0x010309a4] + observed in
+"""Energon targets (rom/rules/modes/allspark_and_energon.md 5.1; code [0x010309a4], confirmed by
 traces/allspark_energon.jsonl).
 
 Three standups: left sw 2, center sw 49, right sw 46 (bits 1 / 2 / 4 of energon_lit, per player).
-- During a multiball ([0x0103096c] -> [0x01006704], the multiball flags; not during a battle timer, observed
-  traces/switches.jsonl 128.67 s): 5,000, sound 0x25c, leff 139; nothing lights.
+- During a multiball ([0x0103096c] -> [0x01006704], the multiball flags only, so not during a battle timer;
+  traces/switches.jsonl 128.67 s confirms): 5,000, sound 0x25c, leff 139; nothing lights.
 - Within 10 ticks of a completed set (task 0xb0): nothing.
 - A lit target, set not complete: 10,000, sound 0x25d, leff 141.
 - An unlit target that is not the last: lit, 75,000, deff 124, leff 140, sound 0x25e and, 62 ticks later
@@ -11,7 +11,7 @@ Three standups: left sw 2, center sw 49, right sw 46 (bits 1 / 2 / 4 of energon_
 - The third one: set complete: 250,000 + 25,000 x sets before (cap 750,000), deff 125 "ALLSPARK LIT", leff 142,
   sound 0x260 (0x13e, 0x13f from the deff); energon_sets + 1, the targets unlit, one Allspark banked
   (tf/features/allspark.py). The Megatron lock lighting it also calls comes with the Megatron spec.
-The switch's own 1,110 follows (tf/switches.py). Inserts 48 / 54 / 35: unlit flash, lit solid (observed).
+The switch's own 1,110 follows (tf/switches.py). Inserts 48 / 54 / 35: unlit flash, lit solid (lamp rule [0x01030f80]).
 Deffs 124 and 125 have no capture: their lengths and sounds come from their op lists (agent A, the deff code run):
 124 31 frames x 5 ticks + hold = 156 ticks; 125 142 ticks, 0x13e at 0 and 0x13f at tick 70 (QA V124, V125).
 """

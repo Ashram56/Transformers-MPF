@@ -1,15 +1,15 @@
 """The score display (deff 19) and the status panel, drawn as ROM draw lists (tf/rom_draw.py).
 
-From the ROM extraction's capture of deff 19 (rom/mpf_package/media/dmd/deffs/deff_019/timing.json: every text
-draw with its font, position and flags, observed) and the code of deff 19 (0x0102fb8c) and of its score drawing
-FUN_0102f200 (code):
+From the code of deff 19 (0x0102fb8c) and of its score drawing FUN_0102f200 [0x0102f200] (the positions are the
+code's: text_printf_msg(0x502, ..., x 0x26, row) with row 8p - 3, 0x15 for player 2 of 2, the award line at
+8p + 13; the deff's code run, rom/rom_data/dmd/deff_ops/deff_019.json, gives the same draws):
 - the status panel, left of a separator at column 40: each player's score in font 0, right edge at x 38, on rows
   8p - 3 (player 2 of a 2-player game on row 21); the players not up are drawn with a dimmer palette (code: the
   palette at sp+0x24 unless the player is up: level 3, 0x0102f200);
 - the current player's score centred on x 84, font and baseline by value from table 0x040c75d0 (code, SCORE_TABLE);
 - the bottom row (baseline 30): BALL n left at x 42 and the credits right at x 127, alternating with
   REPLAY AT <level> centred on x 84: 156 ticks of BALL / credits, then 312 ticks of REPLAY, then 1250 ticks of
-  BALL / credits, and so on (code: 0x9c, 0x138, 0x4e2 at 0x0102fb90-0x0102fbe8; observed 2.49 s and 7.50 s).
+  BALL / credits, and so on (code: 0x9c, 0x138, 0x4e2 at 0x0102fb90-0x0102fbe8; the traces confirm 2.49 s and 7.50 s).
 
 The status counters (QA V-SC2, V-SC7, V-SC8, V-SC9; StatusCounters below): RAM 0x021120b0 (ticks since the last
 score), 0x021120b8 (ticks since the last award value) and 0x021120a8 (ticks since the last combo) count up by one

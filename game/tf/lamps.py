@@ -429,7 +429,8 @@ def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, 
     """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
     lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is
     lit the shot lamps go back to the rules and `super_lamps` light one by one, then go out one by one, a step
-    every `chase` ticks (the order inferred)."""
+    every `chase` ticks, in the order of lamp group 0x3d (12, 13, 14, 15): lamp_group_9164 [0x00009164] lights the
+    group's first unlit lamp, lamp_group_941c [0x0000941c] puts out its first lit one."""
     def shots(task, on=True):
         if super_fn():
             for lamp in all_lamps:

@@ -27,7 +27,8 @@
    "audit": 5,
    "audit_name": "COINS THROUGH LEFT SLOT",
    "pinmame_input": "PinMAME key 3",
-   "tag": "observed"
+   "tag": "code",
+   "source": "dedicated switch D1: handler 0x00019c40, handler_arg 0 (dedicated_switches.csv)"
   },
   {
    "slot": 1,
@@ -35,7 +36,8 @@
    "audit": 7,
    "audit_name": "COINS THROUGH CENTER SLOT",
    "pinmame_input": "key 4",
-   "tag": "observed"
+   "tag": "code",
+   "source": "dedicated switch D2: handler 0x00019c40, handler_arg 1 (dedicated_switches.csv)"
   },
   {
    "slot": 2,
@@ -43,7 +45,8 @@
    "audit": 6,
    "audit_name": "COINS THROUGH RIGHT SLOT",
    "pinmame_input": "key 5",
-   "tag": "observed"
+   "tag": "code",
+   "source": "dedicated switch D3: handler 0x00019c40, handler_arg 2 (dedicated_switches.csv)"
   },
   {
    "slot": 3,
@@ -51,7 +54,8 @@
    "audit": 8,
    "audit_name": "COINS THROUGH FOURTH SLOT",
    "pinmame_input": "key 6",
-   "tag": "observed"
+   "tag": "code",
+   "source": "dedicated switch D4: handler 0x00019c40, handler_arg 3 (dedicated_switches.csv)"
   },
   {
    "slot": 4,
@@ -59,7 +63,8 @@
    "audit": 9,
    "audit_name": "COINS THROUGH FIFTH SLOT",
    "pinmame_input": null,
-   "tag": "code"
+   "tag": "code",
+   "source": "dedicated switch D5: handler 0x00019c40, handler_arg 4 (dedicated_switches.csv)"
   }
  ],
  "presets": [

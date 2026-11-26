@@ -24,7 +24,8 @@ credits of each unit step, coin_pricing_set_48a8 [0x000048a8] trims the trailing
 import json
 import os
 
-# coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots (observed, keys 3-6 of PinMAME)
+# coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots; the slot is the handler argument of
+# D1-D5 in the switch table (handler 0x00019c40, dedicated_switches.csv)
 SLOTS = {"s_left_coin_slot": (0, 2), "s_center_coin_slot": (1, 3), "s_right_coin_slot": (2, 4),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
 CREDIT_FLAG, MORE_COINS_SOUND = 0x12, 0x045    # [0x01005ebc] sets flag 0x12; play_sound_045 [0x01005f00]

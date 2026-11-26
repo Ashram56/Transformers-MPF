@@ -1,5 +1,5 @@
 """Right orbit spinner (rom/rules/modes/scoring_features.md 4.2; code [0x01033a08 -> 0x01032294 -> 0x010320a4]
-+ observed: 5 spins -> 5 x (2,500 + 90), traces/scoring.jsonl t 33.71).
+, confirmed by traces: 5 spins -> 5 x (2,500 + 90), traces/scoring.jsonl t 33.71).
 
 - spin_value (0x21120dc + 4(p-1)): 2,500 at ball start (event 0x11 hook 0x01032484) unless game flag 0x1c.
   Nothing in 1.80 sets flag 0x1c (no game_flag_set(0x1c) in the code, agent A, scoring_features.md), so the

@@ -1,4 +1,4 @@
-"""End-of-ball bonus, display effect 25 (rom/rules/modes/combos_and_multipliers.md section 7; code + observed).
+"""End-of-ball bonus, display effect 25 (rom/rules/modes/combos_and_multipliers.md section 7; code).
 
 bonus = (670 x bonus_count + held_bonus) x bonus_mult, added with playfield multiplier 1 [0x01000ffc]:
 - bonus_count (RAM 0x34b3c + 2(p-1)): 0 at ball start (event 0x13 hook 0x01000d58), +1 for every playfield
@@ -11,8 +11,8 @@ bonus = (670 x bonus_count + held_bonus) x bonus_mult, added with playfield mult
   0x01000d8c, (0x4b) at 0x01000dc4). QA 2026-11-25 P1.
 Checked against every reference trace's bonus (127,680 / 130,360 / 128,350 / 333,080 at 2X / 135,050).
 Deff 25 starts at the end of ball (caller 0x19fb8) and plays its own sounds (the capture's: 0x20 Decepticon /
-0x21 Autobot at the start, 0x77 0x78 0x79 0x7a); the total is added 338 ticks later, as the next ball starts
-(observed: traces/sounds.jsonl deff 25 at 114.471 s, bonus 119.967 s). A multiplier above 1 adds its counting pages and
+0x21 Autobot at the start, 0x77 0x78 0x79 0x7a); the total is added when it ends, 338 ticks later at 1X (deff_025 [0x010014b8] run as ROM code:
+rom/rom_data/dmd/deff_ops/deff_025.json end_tick; traces/sounds.jsonl confirms, deff 25 at 114.471 s, bonus 119.967 s). A multiplier above 1 adds its counting pages and
 sound 0x76 [0x01000ffc] (x_extra_ticks; QA SC9).
 """
 from tf.features import Feature

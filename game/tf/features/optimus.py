@@ -1,6 +1,6 @@
 """The center lane's Optimus access, the Optimus Prime battle and the Optimus multiball, Autobot (A) and
 Decepticon (D) rules (rom/rules/modes/optimus_multiball.md; code [0x01025de4] [0x0102628c] [0x010262f0]
-[0x01027994] [0x01027b74] [0x01029a08] [0x01029bf4] + observed in traces/optimus_autobot.jsonl,
+[0x01027994] [0x01027b74] [0x01029a08] [0x01029bf4], confirmed by traces/optimus_autobot.jsonl,
 optimus_decepticon.jsonl).
 
 Access (center lane sw 11, after the battles' shot and before the combo): blocked while a Megatron, Optimus, side

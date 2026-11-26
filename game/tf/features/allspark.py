@@ -1,12 +1,12 @@
 """The Allspark: the left eject (sw 3, coil 22) and its mystery award (rom/rules/modes/allspark_and_energon.md
-5.2-5.3; code [0x0100a754] [0x0100a788] [0x010243b4] [table 0x040dde30] + observed in
+5.2-5.3; code [0x0100a754] [0x0100a788] [0x010243b4] [table 0x040dde30], confirmed by
 traces/allspark_energon.jsonl and the battle traces).
 
 The eject holds its ball (ball hold hold_left_eject). The device settles 46 ticks (record 0x040d1868 +0x10) from the tick after the switch, then the
 rule runs (not when tilted): audit 0x45; every battle with shot 0 (tf/features/battles.py); the mystery award if
 an Allspark is banked; mode-start shot 0; combo shot 0; the handler's bonus count and 5,070. The kickout waits
 while a show runs (the award, a battle intro), then sound 0x157 + leff 21, 54 ticks later 0x158 + leff 22 and
-coil 22 (observed: 36.27 / 37.15 s with nothing showing; after deff 52 with the award).
+coil 22 (device 3 case 7 [0x0100a788]: 0x35 + 1 ticks; the traces confirm, 36.27 / 37.15 s with nothing showing).
 
 Mystery award (one banked Allspark spent): a weighted pick over 12 items (each item's weight is 0 when it was
 the last award; ADD-A-BALL only in a multiball and once, ADD MORE TIME only in a timed mode and once per mode,
@@ -208,7 +208,8 @@ class Allspark(Feature):
         item = pick + 1
         sound = ITEM_SOUND.get(item, ITEM_SOUND_OTHER)
         # the item pages' printf slots: "%iX BONUS" (read after the award, 0x01000f18: capped at 25, QA P20) and
-        # "POPS SCORE %,02lu" (the value the award sets, inferred)
+        # "POPS SCORE %,02lu": the show task's +0x34, pop_base read after the award ran (bag_run_award, then
+        # player_word_12054_2c54c [0x010243b4]), so the grown base
         pop_next = min(pd.get("pop_base", 3000) + 1000, 20000)
         os_.show(AWARD_TASK, AWARD_DEFF, values=[min(pd.get("bonus_x", 1) + (1 if item == 4 else 0), 25), pop_next], sounds=[
             (0.0, lambda: os_.sound(AWARD_SOUNDS[0], in_deff=AWARD_DEFF)),

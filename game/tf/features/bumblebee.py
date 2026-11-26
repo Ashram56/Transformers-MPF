@@ -1,5 +1,5 @@
 """Bumblebee target letters and double scoring (rom/rules/modes/scoring_features.md 4.3; code [0x01033adc ->
-0x01001a70] [0x010039a0] [0x010038dc] + observed in traces/scoring.jsonl t 49.87-105.91).
+0x01001a70] [0x010039a0] [0x010038dc], confirmed by traces/scoring.jsonl t 49.87-105.91).
 
 - bb_letters (0x2111cf4 + (p-1)): at the player's first ball 2 / 1 / 0 by adj 70 BUMBLEBEE LETTER
   DIFFICULTY (EASY / MEDIUM / HARD); bb_completions starts at the adj 70 value [0x01001880].
@@ -15,7 +15,8 @@
   the tail task 0xc4 sets the multiplier back to 1 125 ticks later [0x0100396c-0x0100398c]. The tail is not a
   timed mode (any_timed_mode_running [0x010067bc] tests task 0xc3 only; QA P9). ADD MORE TIME adds adj 80 counts
   (cap 90) [0x01003a8c]; in the tail it kills 0xc4 and restarts the countdown (QA P16).
-- Inferred: the end of ball and the tilt stop it (the OS resets the multiplier there).
+- The end of ball stops it: start_deff_25 [0x00019e44] kills the tasks without flag 0x100 (0xc3 / 0xc4 have
+  none) and sets the multiplier back to 1 (ball_number_set_1cce0(1)); the tilt ends the ball the same way.
 """
 from tf.features import Feature
 from tf.os_layer import TICK
@@ -74,7 +75,7 @@ class Bumblebee(Feature):
             return
         os_.score_add(10000 + 5000 * letters)
         pd.bb_letters = letters + 1
-        if pd.bb_letters < LETTERS:                  # the 9th letter shows deff 129 instead (observed)
+        if pd.bb_letters < LETTERS:                  # the 9th letter shows deff 129 instead [0x01001a70]
             os_.deff_start(LETTER_DEFF)
             # deff 128's code starts its leff and sound [0x01002410, 0x0100241c]: the package's timing.json
             # carries them now; deff_media starts only what it does not

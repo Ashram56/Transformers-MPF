@@ -1,6 +1,6 @@
 """Wizard requirements, All Hail Megatron / Autobots Roll Out (the side mode) and the Wizard Multiball
 (rom/rules/modes/wizard_modes.md; code [0x01035af0] [0x01035ad0] [0x0100fff0] [0x01010174] [0x010363ec]
-[0x010365c4] + observed in traces/wizard_all_hail_megatron.jsonl, wizard_multiball.jsonl).
+[0x010365c4], confirmed by traces/wizard_all_hail_megatron.jsonl, wizard_multiball.jsonl).
 
 Requirements (per player, hook wizard_req(r, what)): 0 Megatron multiball, 1-4 the Decepticon battles, 5 Optimus
 multiball, 6-9 the Autobot battles, 10 the side mode; what 1 = collected (started, audit 0x81 + r), 2 = completed

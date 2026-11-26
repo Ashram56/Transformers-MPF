@@ -1,6 +1,6 @@
 """The Megatron lock and the Megatron multiball, Autobot (A) and Decepticon (D) rules
 (rom/rules/modes/megatron_multiball.md; code [0x0100a31c] [0x0100acb4] [0x0100af0c] [0x0100b130] [0x0100c200]
-[0x0100c430] [0x0100e0bc] [0x0100e29c] + observed in traces/megatron_autobot.jsonl, megatron_decepticon.jsonl).
+[0x0100c430] [0x0100e0bc] [0x0100e29c], confirmed by traces/megatron_autobot.jsonl, megatron_decepticon.jsonl).
 
 Lock (per player): level = adj 68 at game start, +1 at each Megatron multiball; completions needed per lock:
 level 0 -> 0 (all four lit at once), 1 -> 1, n -> min(n - 1, 5). An Energon set completion (hook
@@ -9,8 +9,8 @@ and lit + locked < 4: 5,000, or on the last one the lock is lit (level < 2: all 
 the ROM's re-arm copies every player's counter, as here), audit 0x74, deff 139, leff 167, sound 0x293,
 10,000.
 
-Lock entry (switches 38-41, the ball device bd_megatron; its handler runs 46 ticks after the switch, observed
-0.75 s): the shot-6 rules of the running mode, else a lit lock: BALL n LOCKED (25,000, audit 0x75, deff 140,
+Lock entry (switches 38-41, the ball device bd_megatron; its handler runs after device 4's +0x10 settle of
+46 ticks, table 0x040d17fc; the traces show 0.75 s): the shot-6 rules of the running mode, else a lit lock: BALL n LOCKED (25,000, audit 0x75, deff 140,
 leff 168, sound 0x29a / 0x29c / 0x29f); the 4th ball starts the multiball of the player's side. Then the handler's
 5,120. A locked ball stays (ball hold hold_megatron) and a new ball is served once the lock and intro shows (tasks
 0x73-0x75, list 0x040c61f8) are over, polled every 6 ticks (device 4 case 2 [0x0100a3b8]; adj 89 AUTOFIRE AFTER LOCK); any other ball is kicked out by device 4's callback
@@ -77,7 +77,7 @@ LOCK_SOUNDS = (0x29a, 0x29c, 0x29f)
 # player's first ball [0x0100ab5c] and moved to the next at every Megatron multiball [0x0100ad70]
 # (megatron_decepticon.jsonl: 0x297 at the first three locks, 0x298 after the multiball, 94.66 s)
 LOCK_MUSIC = {AUTOBOT: (0x294, 0x297), DECEPTICON: (0x297, 0x29a)}   # first call, end of the cycle
-LOCK_SPEECH_AT = 1.71
+LOCK_SPEECH_AT = 0x15 * 5 * 0.016     # deff_140_locked [0x0100b7f0]: 21 frames of deff_status_frames(5), 1 tick each
 WIZARD_REQ = 0
 MB_BALLS, SAVE_TICKS, GRACE_TICKS = 4, 625, 187
 END_TICKS = 218
@@ -93,9 +93,10 @@ KICK_ONE_COIL = 31
 # 25 ticks per ball
 RELEASE_KICK = ((0, 0x13b, 23), (15, 0x13b, None), (31, 0x13c, 24))
 RELEASE_FIRST, RELEASE_STEP = 1, 5 + 0x14
-EJECT_OVER_TICKS = 66       # a kick's eject is over (the multiball end that waited for it: optimus_autobot.jsonl
-                            # kick 72.45 s, end 73.53 s; inferred as the device's eject check)
-RELEASE_AFTER_INTRO = 0.07
+# a kick's eject is over: device 4's task 0x1c [0x01039db4] settles its count +0x14 = 62 ticks after the ball
+# leaves, then runs the trough's case 0xe (the multiball end that waited) the tick after: optimus_autobot run as
+# ROM code (scenario_lift): coil 3 at tick 4324, flag 0x1f cleared at 4387
+EJECT_OVER_TICKS = 63
 
 
 JACKPOT_DEFF, JACKPOT_RETRY_SOUND, JACKPOT_RETRY_TICKS = 77, 0x0f4, 0x2e     # [0x0100f3b4]
@@ -745,9 +746,15 @@ class Megatron(Feature):
         side.start()
         held = self.locked_held + 1
         self.locked_held = 0
-        intro = os_.display.media.get(side.intro)
-        at = (intro.seconds if intro else 6.2) + RELEASE_AFTER_INTRO
-        os_.machine.clock.schedule_once(lambda: self._release(held), at)
+        # game_device_3a2c0(4, 0) [0x0100c200 caller]: the device releases its balls once its case 7 wait is over (the
+        # intro show task 0x74 / 0x75 that the multiball start just created)
+        os_.after(1, lambda: self._release_wait(held))
+
+    def _release_wait(self, balls):
+        if self._device_busy():
+            self.os.after(POLL_TICKS, lambda: self._release_wait(balls))
+            return
+        self._release(balls)
 
     def _release(self, balls):
         """The multiball release: each ball's sounds and leffs, then coil 3."""
@@ -776,11 +783,17 @@ class Megatron(Feature):
         else:
             os_.machine.clock.schedule_once(lambda: run(), at * TICK)
 
-    def _kick(self):
-        """The eject waits while deff 61 (the Optimus super) runs [list 0x040c6200] (optimus_autobot.jsonl: the
-        super's ball stays 5.3 s)."""
+    def _device_busy(self):
+        """Device 4's case 7 [0x0100a3b8] waits, 6 ticks a try, while a task of list 0x040c61f8 (0x73-0x75, the lock
+        and intro shows) or a deff of list 0x040c6200 (deff 61, the Optimus super) runs."""
         os_ = self.os
-        if os_.game and os_.display.running(KICK_WAIT_DEFF):
+        return os_.game and (os_.display.running(KICK_WAIT_DEFF) or
+                             any(os_.task_running(t) or os_.display.task_running(t) for t in SERVE_WAIT_TASKS))
+
+    def _kick(self):
+        """The eject waits while the device is busy (optimus_autobot.jsonl: the super's ball stays 5.3 s)."""
+        os_ = self.os
+        if self._device_busy():
             os_.after(POLL_TICKS, self._kick)
             return
         for at, sound, leff in KICK_ONE:
