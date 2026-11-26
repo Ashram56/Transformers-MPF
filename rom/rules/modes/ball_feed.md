@@ -81,18 +81,30 @@ ball's travel (switch 0xe closing), which is physics, not code.
 | 15 | 11 bottom pop | |
 | 20 | 13 left sling | `FUN_00003518` [0x00003518] slings 1..2 |
 | 25 | 14 right sling | |
-| 31 | 5 orbit control gate | the gate object's pulse `leaf_2c074` [0x0102c074] |
+| 31 | 5 orbit control gate | the gate object's pulse `drv_pulse_coil_2c074` [0x0102c074] |
 
 Each direct pulse (`FUN_00002160` [0x00002160]) holds the search until the 1 ms IO pass ends it: 64 // 16 + 1 =
 5 ticks. The game's `BALL_SEARCH_SWEEP` is this table one tick later (the task runs the tick after its start).
 The queued auto-launch pulse (code, `rom/tools/switch_lift.py` runs the queue as ROM code: `coils` scenario,
-search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick work `event_post_user_2bd48`
+search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick work `post_event_20_coil_pulse_queue_serve_2bd48`
 [0x0002bd48] and starts the head of the list 0x00031434 when no queued pulse runs (0x00031448 == 0) and the
 hold-off 0x0003144c is 0; when a queued pulse is over it sets the hold-off to 6, so the next one starts 7 ticks
 later. In the search the queue is still held off from the trough's previous pulse: queued at 6, started at 13,
 which is the game's 14 one tick later (so the game's value is now code, not trace). The orbit gate (coil 5) is
-pulsed at 31 for 1,488 ms (`leaf_2c074` [0x0102c074]: the game's `BALL_SEARCH_GATE` (32, 91) is this one tick later).
-The Optimus motor (coil 30, object 0x000351e8) did not move in the three sweeps of the run: its only movers are
-`optimus_motor_test` [0x01025568] and `play_sound_010_25844` [0x01025844] (`motor_goto_check`), and the run's motor
-was already where the game wants it. Code open: the search's motor step the game plays at 33 (traces only).
+pulsed at 31 for 1,488 ms (`drv_pulse_coil_2c074` [0x0102c074]: the game's `BALL_SEARCH_GATE` (32, 91) is this one tick later).
+The Optimus motor step (code, 2026-11-26). After the slings the search posts event 0xc at tick 30
+[0x0103b808]. Its first hook, `on_event_0c_16628` [0x00016628], walks the motor list 0x000315f4 and calls each
+motor's class method +0xdc, which is `start_task_2b_1673c` [0x0001673c] in both motor classes (the OS one
+0x00033cbc and the Optimus one 0x000339d4): it creates task 0x2b running [0x00016674] on the motor. That task
+claims the motor without waiting (`motor_claim` [0x0001687c], class +0x3c: nothing happens when a game task
+holds it), then, from the motor's current position (+0x20, else the first of its list +8), sends it to each next
+position of its list (+0xc entries) in turn and back to the current one (`motor_goto_wait` [0x00016f28], class
++0x4c), and releases it ([0x00016944], class +0x5c). Each move is `motor_move_task` [0x00016c88]: created at 31,
+it turns the motor on at 32 (class +0xfc) and waits while it runs, at most the limit of 468 ticks [0x00016830].
+The second hook of event 0xc, `on_event_0c_2badc` [0x0102badc], walks the driver list 0x000315f0 the same way
+(class +0xbc): that is the orbit gate's pulse at 31. Run in ROM code (`rom/tools/scenario_lift.py`, `coils`
+scenario, searches at 1736, 2861, 3986): event 0xc at +30, task [0x00016674] at +30, `motor_move_task` created
+at +31, motor on at +32 (its wait loop [0x00016db8] from 1768), off at the limit (+500, the simulated motor has
+no position switch). The game's `BALL_SEARCH_MOTOR_TICKS` (33) is +32 one tick later, like the rest of the table,
+so the traces only confirm it. (`ball_search.py` answers event_post in Python, so its run does not show the step.)
 The sweep repeats every 1,125 ticks (18.0 s: ticks 1736, 2861, 3986) while the search runs.

@@ -54,7 +54,7 @@ _MONEY = None
 
 def money_formats():
     """adj 28 value -> (unit value in minor units, money format): the pricing record's unit table entry
-    (+0 + unit index x 0xc) and its money format message (+0x16), msg_get_user_26f74 [0x00026f74]."""
+    (+0 + unit index x 0xc) and its money format message (+0x16), adj_text_price_26f74 [0x00026f74]."""
     global _MONEY
     if _MONEY is None:
         _MONEY = {66: (25, "USD %,d.%02d")}
@@ -94,7 +94,7 @@ class Credits:
         return presets().get(self.os.adj[28], presets()[66])
 
     def money(self, units):
-        """msg_get_user_26f74 [0x00026f74]: units x the unit value of the pricing selected now, as money in its
+        """adj_text_price_26f74 [0x00026f74]: units x the unit value of the pricing selected now, as money in its
         format (TOTAL EARNINGS, audit 11: counter 7; "USD 3.25" for 13 units at USA 10). CUSTOM keeps the
         factory preset's unit table and formats (0x00004764)."""
         from tf.media_bridge import format_rom_text      # noqa: PLC0415

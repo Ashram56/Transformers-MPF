@@ -253,7 +253,7 @@ def flasher_group_pulse(group, every=8, time=0x20):
     return run
 
 
-# leff_154 [0x010327bc]: coil_pulse_fn_user_6044(group, 0x96, pattern) through table 0x040c7680 (14 patterns), 4 ticks
+# leff_154 [0x010327bc]: coil_group_pulse_fn_6044(group, 0x96, pattern) through table 0x040c7680 (14 patterns), 4 ticks
 # apart, a brightness ramp up and down
 RAMP_PATTERNS = (0x80008000, 0x80808080, 0x88808880, 0x88888888, 0xa888a888, 0xa8a8a8a8, 0xaaa8aaa8, 0xaaaaaaaa,
                  0xaaa8aaa8, 0xa8a8a8a8, 0xa888a888, 0x88888888, 0x88808880, 0x80808080)

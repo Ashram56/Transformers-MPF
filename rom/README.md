@@ -35,8 +35,8 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `rules/traces/` | Scenarios and reference traces from the real ROM (`tools/trace/tf_ref`, a port of Tron's `tron_ref`) |
 | `rom_data/fonts.json` | The 27 fonts, Tron `fonts.json` layout (ranges, glyph to image number, height, spacing) |
 | `rom_data/settings/` | `adjustments.csv` (98: NVRAM slot, defaults, range, menu, labels, country overrides, readers), `audits.csv` (166: menu, formula, incremented_by), `pricing.json`/`.csv` (68 presets), `presets.csv`, `service_texts.csv`, `menus_runtime.json`; see its README |
-| `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory USA defaults observed in the emulator; the tree is confirmed in code by `rom_data/settings/service_screens.json` (`tools/service_walk.py`: 858 screens, the menus walked in a code run, the texts the ROM drew on each) |
-| `code/tf_decompiled.c`, `code/function_names.csv`, `code/function_names_hand.csv` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, all named: `tools/name_functions.py` (rule and evidence per name), then `tools/refine_names.py` (the hand names of `function_names_hand.csv`, then the OS subsystem whose RAM or table a function uses: sound channels, coil slots, pulse queue, motors, lamp groups, switch and coil records ...), which renames in the decompile and the docs |
+| `mpf_package/service_menu.json`, `.md`, `config/settings.yaml` | Service menu tree and the 98 operator settings in MPF v6 format, factory defaults per country from the ROM's factory reset run as ROM code (`tools/country_defaults.py`); the tree is confirmed in code by `rom_data/settings/service_screens.json` (`tools/service_walk.py`: 858 screens, the menus walked in a code run, the texts the ROM drew on each) |
+| `code/tf_decompiled.c`, `code/function_names.csv`, `code/function_names_hand.csv`, `code/function_names_read.csv` | Ghidra 11.4.2 decompile of OS and game code, 3,000+ functions, all named for what they do: `tools/name_functions.py` (rule and evidence per name), then `tools/refine_names.py` (the hand names of `function_names_hand.csv`, then the OS subsystem whose RAM or table a function uses: sound channels, coil slots, pulse queue, motors, lamp groups, switch and coil records ...), `tools/purpose_names.py` (the effects the body shows: messages, deffs, leffs, audits, adjustments, coils, lamps, switches, flags, tasks) and `tools/read_names.py` (the 1,687 names of `function_names_read.csv`, each read from its body, with the evidence); each renames in the decompile and the docs (not in the dated QA reports) |
 | `mpf_package/event_map.csv` | One row per deff: name, priority, background loop, ROM text, frames, run time, sounds and lamp effects heard and in code, images drawn, library animations, callers |
 | `mpf_package/media/dmd/deffs/deff_NNN/` | Per effect, all 153 from its code (`"tag": "code"`, `tools/deff_package.py`: `frames/`, `timing.json` with frames, sounds, leffs, pages of text draws with their call site and printf format; for the 38 drawn from game state, `variant` names the state it ran with and `other_variants` the other states, whose op lists are `rom_data/dmd/deff_ops/deff_NNN__<name>.json`) |
 | `rom_data/dmd/deff_text_formats.csv` | Static list of the text each effect can draw, read from the decompile (helper, font, flags, x, y, message id, text or printf format), for effects that print live values or did not render |
@@ -80,7 +80,10 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   0x01006bb8, dissolve 0x01034758) and `tools/deff_package.py` writes `frames/` and `timing.json` (`"tag": "code"`).
   All 153 effects come from this. The 38 whose drawing depends on game state run once per state their caller
   sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
-  pick), each state cited to the routine that sets it; the first one is packaged. `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
+  pick), each state cited to the routine that sets it; the first one is packaged. Deff 1 (attract) is a walk over
+  the page table 0x00030d10: `tools/attract_pages.py` runs each of its 39 pages alone in 7 NVRAM states (op lists
+  `deff_001__page<NN>[_<state>].json`, the table, conditions, lengths and the source of every text in
+  `rom_data/dmd/attract_pages.json`, spec `rules/modes/attract.md`). `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
   (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
   that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/switch_lift.py` plays a ball in the ROM's code (OS tick loop [0x0002bd48], the module constructors [0x0002c0f4], the switch dispatcher [0x0000dc44]) and writes `rules/switch_handlers.csv`; `tools/scenario_lift.py` plays every reference scenario the same way (the tracer's ball model and inputs, random draws as `#! random` inputs) and writes `rules/traces/code_runs.csv` (each mark against the trace). `tools/coil_pulses.py` reads the coil
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
@@ -109,13 +112,17 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   `text_draw_str_fit` (0x21b90) tries the ids in order and uses the first whose `text_width` is at most the width
   argument. With width 0, it uses the first id that fits the 128-px screen for the alignment flags. Font 0 ends the
   list and is used if nothing else fits.
-- **Animations (observed).** 87-wide animations are drawn at x = 41 (3,447 draws seen), right of the 41-column
-  status panel. 49 library animations have a measured frame time (median step), now in `index.json` and their
-  GIFs; the other 225 were not drawn in the captures and keep the 50 ms placeholder.
-- **Coils (observed).** Timed from the 250 us solenoid register writes. Flippers: 40.5 ms then hold at 1 ms on
-  every 12 ms (duty 0.083). Pops 34 ms in play (64 ms in ball search and coil test), slings 67-68 ms, trough,
-  launch, eject and Optimus target 64-65 ms. The orbit gate (5) and the motors (8, 30) are held, not pulsed.
-  Coil 24 ("OPTIONAL COIL") fires 81 ms on every coin: it is the coin meter output (inferred).
+- **Animations (code).** `tools/lib_timing_code.py` sets the frame time and x of the 274 library animations from
+  the code: the deff op lists run in ROM code (median step between consecutive images), the frame players'
+  call sites (`anim_play_frames_main_2ff60` [0x0102ff60] and variants: x = 0x29, one image every `speed` ticks) and the
+  image loops of the game code (`task_sleep(n)` between images). 213 have both from the code; the other 61 are not
+  named with constants by any code (played through a table, or unused) and keep the 50 ms placeholder, said so in
+  `index.json`.
+- **Coils (code).** `rom_data/io/coil_pulses.csv` (`tools/coil_pulses.py`): one row per pulse call site with its
+  constant time; `rom_data/io/coils.csv` gives each coil's time from them. Coil 24 (OPTIONAL COIL) is the knocker,
+  64 ms in the knock task [0x00019420] when adj 44 Q24 OPTION is KNOCKER. The orbit gate (5) and the motors (8, 30)
+  are held, not pulsed (their driver objects, `ball_feed.md`). Flippers: not in the CPU code; their measured times
+  (40.5 ms, then 1 ms every 12 ms) are kept under the owner's waiver (2026-11-25, `docs/pinmame_waivers.md`).
 - **Music (code + observed).** Background deff and music come from an 18-entry priority table walked by
   0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,

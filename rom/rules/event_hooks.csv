@@ -1,33 +1,33 @@
 event,order,handler,name,priority
-0x00,0,0x01045814,text_draw_str_page_user_45814,0
+0x00,0,0x01045814,draw_text_item_45814,0
 0x05,0,0x000045a4,on_event_05_45a4,0
 0x05,1,0x01005c30,on_event_05_5c30,0
-0x06,0,0x0104d970,leaf_4d970,0
-0x06,1,0x010457e4,leaf_457e4,0
+0x06,0,0x0104d970,custom_message_check_4d970,0
+0x06,1,0x010457e4,custom_pricing_check_457e4,0
 0x0c,0,0x00016628,on_event_0c_16628,0
 0x0c,1,0x0102badc,on_event_0c_2badc,0
 0x0f,0,0x01034010,on_event_0f_34010,0
 0x0f,1,0x01031928,on_event_0f_31928,0
 0x0f,2,0x0100a074,on_event_0f_a074,0
 0x11,0,0x010359d4,entry inside on_event_26_359ac [0x010359ac],0
-0x11,1,0x01032484,entry inside sw_right_orbit_spinner_sub_32294 [0x01032294],0
+0x11,1,0x01032484,entry inside sw_right_orbit_check_task_49_32294 [0x01032294],0
 0x11,2,0x0102d1ec,entry inside draw_02lu_2ce70 [0x0102ce70],0
 0x11,3,0x01023418,on_event_11,0
 0x11,4,0x0100fea0,entry inside on_event_26_fe5c [0x0100fe5c],0
-0x11,5,0x01002784,entry inside current_player_wrap_2754 [0x01002754],0
+0x11,5,0x01002784,entry inside player_word_11d20_clear_2754 [0x01002754],0
 0x13,0,0x00016558,on_event_13_16558,0
 0x13,1,0x0102b824,on_event_13_2b824,0
-0x13,2,0x0102f958,set_dat_021120b4_user,0
-0x13,3,0x0102e1e8,entry inside current_player_wrap_2e1b8 [0x0102e1b8],0
-0x13,4,0x0102db08,entry inside current_player_wrap_2dad8 [0x0102dad8],0
+0x13,2,0x0102f958,clear_counters_120b0_2f958,0
+0x13,3,0x0102e1e8,entry inside player_word_12088_clear_2e1b8 [0x0102e1b8],0
+0x13,4,0x0102db08,entry inside player_word_12080_clear_2dad8 [0x0102dad8],0
 0x13,5,0x01006290,on_event_13_6290,0
-0x13,6,0x01006b9c,entry inside deff_126_0_more_sub [0x01006ae0],0
+0x13,6,0x01006b9c,entry inside check_task_96_game_flag_test_6ae0 [0x01006ae0],0
 0x13,7,0x0100411c,on_event_13_411c,0
-0x13,8,0x01000d58,entry inside dmd_page_alloc_user_cd0 [0x01000cd0],0
-0x15,0,0x01000f68,error_log_user_f68,0
+0x13,8,0x01000d58,entry inside anim_images_226c_cd0 [0x01000cd0],0
+0x15,0,0x01000f68,test_flag_4b_f68,0
 0x16,0,0x01000f50,on_event_16,0
-0x19,0,0x01005ebc,entry inside error_log_user_5d4c [0x01005d4c],0
-0x1a,0,0x01005ed8,entry inside error_log_user_5d4c [0x01005d4c],0
+0x19,0,0x01005ebc,entry inside timer_text_5d4c [0x01005d4c],0
+0x1a,0,0x01005ed8,entry inside timer_text_5d4c [0x01005d4c],0
 0x1d,0,0x0103686c,on_event_1d_3686c,0
 0x1d,1,0x0102a0a8,on_event_1d_2a0a8,0
 0x1d,2,0x01027fc4,on_event_1d_27fc4,0
@@ -40,10 +40,10 @@ event,order,handler,name,priority
 0x1f,0,0x0102b980,on_event_1f,0
 0x21,0,0x00019420,adj_knocker_volume,0
 0x21,1,0x0102b798,on_event_21,0
-0x21,2,0x0102f9ec,entry inside get_dat_021120b4_user [0x0102f998],0
+0x21,2,0x0102f9ec,score_counters_tick_2f9ec (code after keep_lowest_120b4_2f998 that Ghidra did not split: adds 1 to 0x021120b0 0x021120b8 0x021120a8 and returns 1),0
 0x25,0,0x0001630c,on_event_25_1630c,0
 0x25,1,0x0102b698,on_event_25_2b698,0
-0x25,2,0x000100e4,entry inside leaf_100d0 [0x000100d0],0
+0x25,2,0x000100e4,entry inside halt_forever_100d0 [0x000100d0],0
 0x26,0,0x010295e0,on_event_26_295e0,1
 0x26,1,0x01027598,on_event_26_27598,1
 0x26,2,0x0100dd50,on_event_26_dd50,1
@@ -54,11 +54,11 @@ event,order,handler,name,priority
 0x26,7,0x010324dc,on_event_26_324dc,0
 0x26,8,0x010318cc,on_event_26_318cc,0
 0x26,9,0x01030908,on_event_26_30908,0
-0x26,10,0x0102e8f8,entry inside current_player_wrap_2e88c [0x0102e88c],0
-0x26,11,0x0102e1b8,current_player_wrap_2e1b8,0
-0x26,12,0x0102dad8,current_player_wrap_2dad8,0
+0x26,10,0x0102e8f8,entry inside player_state_reset_2e88c [0x0102e88c],0
+0x26,11,0x0102e1b8,player_word_12088_clear_2e1b8,0
+0x26,12,0x0102dad8,player_word_12080_clear_2dad8,0
 0x26,13,0x0102d244,on_event_26_2d244,0
-0x26,14,0x01025cf0,entry inside current_player_wrap_25ccc [0x01025ccc],0
+0x26,14,0x01025cf0,entry inside player_byte_11f7b_clear_25ccc [0x01025ccc],0
 0x26,15,0x010252cc,entry inside hint_speech_start [0x01025294],0
 0x26,16,0x01023fc8,on_event_26_23fc8,0
 0x26,17,0x01022c20,on_event_26_22c20,0
@@ -73,31 +73,31 @@ event,order,handler,name,priority
 0x26,26,0x0100fe5c,on_event_26_fe5c,0
 0x26,27,0x0100ada4,on_event_26_ada4,0
 0x26,28,0x010040d0,on_event_26_40d0,0
-0x26,29,0x01002754,current_player_wrap_2754,0
-0x26,30,0x01001880,entry inside current_player_wrap_17fc [0x010017fc],0
+0x26,29,0x01002754,player_word_11d20_clear_2754,0
+0x26,30,0x01001880,entry inside player_state_reset_17fc [0x010017fc],0
 0x27,0,0x01005fb8,entry inside on_event_2d [0x01005f84],128
 0x2a,0,0x0102b9f4,on_event_2a,0
-0x2a,1,0x0100aa64,entry inside portal_mb_down_to_one_ball_user [0x0100aa44],0
+0x2a,1,0x0100aa64,entry inside clear_flag_3e_portal_mb_down_to_one_ball_aa44 [0x0100aa44],0
 0x2b,0,0x000165c0,on_event_2b_165c0,0
 0x2b,1,0x0102ba68,on_event_2b_2ba68,0
 0x2b,2,0x01006200,entry inside snd_chan_6138 [0x01006138],0
 0x2d,0,0x01005f84,on_event_2d,0
 0x2e,0,0x0103621c,on_event_2e,0
-0x2e,1,0x010026ec,error_log_wrap_1a928_wrap_26ec,0
-0x30,0,0x01005ff8,entry inside task_sleep_user_5fd0 [0x01005fd0],0
+0x2e,1,0x010026ec,players_any_flag_26ec,0
+0x30,0,0x01005ff8,entry inside snd_4a_delayed_5fd0 [0x01005fd0],0
 0x33,0,0x010060bc,entry inside on_event_63 [0x0100607c],0
 0x35,0,0x010060e0,entry inside on_event_63 [0x0100607c],0
 0x37,0,0x01006114,entry inside on_event_63 [0x0100607c],0
 0x3a,0,0x000163a4,on_event_3a_163a4,0
 0x3a,1,0x0102b720,on_event_3a_2b720,0
 0x3d,0,0x0103c0f0,on_event_3d,0
-0x46,0,0x0100601c,entry inside task_sleep_user_5fd0 [0x01005fd0],0
+0x46,0,0x0100601c,entry inside snd_4a_delayed_5fd0 [0x01005fd0],0
 0x4a,0,0x01006240,entry inside snd_chan_6138 [0x01006138],0
-0x4b,0,0x0001f1b0,nvram_unlock_user_1f1b0,0
-0x4d,0,0x0103dbf8,entry inside flipper_buttons_held_user [0x0103d838],0
-0x4d,1,0x0102f998,get_dat_021120b4_user,0
-0x51,0,0x01005eec,entry inside error_log_user_5d4c [0x01005d4c],0
-0x5b,0,0x0104c988,bitmap_draw2_user_4c988,0
+0x4b,0,0x0001f1b0,tournament_record_find_1f1b0,0
+0x4d,0,0x0103dbf8,entry inside clear_flag_8_kill_task_11_3d838 [0x0103d838],0
+0x4d,1,0x0102f998,keep_lowest_120b4_2f998,0
+0x51,0,0x01005eec,entry inside timer_text_5d4c [0x01005d4c],0
+0x5b,0,0x0104c988,draw_screen_item_4c988,0
 0x5d,0,0x01005c60,on_event_5d,0
 0x61,0,0x010062a0,on_event_61,0
 0x62,0,0x01006054,on_event_62,0
@@ -105,18 +105,18 @@ event,order,handler,name,priority
 0x65,0,0x0103bd5c,on_event_65_3bd5c,128
 0x65,1,0x0102b898,on_event_65_2b898,0
 0x65,2,0x01023130,on_event_65_23130,0
-0x65,3,0x01005e98,entry inside error_log_user_5d4c [0x01005d4c],0
+0x65,3,0x01005e98,entry inside timer_text_5d4c [0x01005d4c],0
 0x65,4,0x0100414c,on_event_65_414c,0
-0x69,0,0x01005e5c,entry inside error_log_user_5d4c [0x01005d4c],0
+0x69,0,0x01005e5c,entry inside timer_text_5d4c [0x01005d4c],0
 0x6a,0,0x0103bcf4,on_event_6a_3bcf4,128
 0x6a,1,0x01031470,on_event_6a_31470,0
-0x6a,2,0x0102fa30,set_dat_000315fc_wrap,0
+0x6a,2,0x0102fa30,call_0315fc_true_2fa30,0
 0x6a,3,0x010060a4,entry inside on_event_63 [0x0100607c],0
-0x6b,0,0x00017db4,task_running_user_17db4,0
+0x6b,0,0x00017db4,check_task_2b_switch_timeout_obj_add_17db4,0
 0x6b,1,0x0000e230,entry inside switch_rec_e0b8 [0x0000e0b8],0
 0x6b,2,0x01033dec,on_event_6b_33dec,0
 0x6b,3,0x010313cc,on_event_6b_313cc,0
-0x6c,0,0x00017de4,entry inside task_running_user_17db4 [0x00017db4],0
+0x6c,0,0x00017de4,entry inside check_task_2b_switch_timeout_obj_add_17db4 [0x00017db4],0
 0x6c,1,0x0000e24c,entry inside switch_rec_e0b8 [0x0000e0b8],0
 0x6c,2,0x01033e08,on_event_6c_33e08,0
 0x6c,3,0x01031420,on_event_6c_31420,0

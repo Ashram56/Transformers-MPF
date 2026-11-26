@@ -217,7 +217,7 @@ Timer and tick length: the timer counts OS ticks, so its end moves with the tick
 (45 s) runs from sw_14 (67.58 s) to its stop at 138.17 s: 4,342 passes of the emulator's 16.26 ms, which the code
 run (16.0 ms ticks, owner 2026-11-25) plays 1.13 s earlier against the scenario's wall-clock hits (code run tick
 about 7,880 against sw_50 at 7,911; trace 0.69 s after sw_50). The total task 0x82 [0x0101ce60] then waits for a
-free display (`deff_start_user_664c` [0x0100664c], up to 3,750 checks): in the code run it starts deff 103 before
+free display (`deff_sequence_wait_664c` [0x0100664c], up to 3,750 checks): in the code run it starts deff 103 before
 sw_50_again's deff 126 takes the display, in the trace after deff 126 and deff 50 (4.5 s later). Hence the code run's
 deff 103 + 0x1cb + leff 116 about 400 ticks before the trace's (`traces/code_runs.csv` switches sw_50 /
 sw_51_again). No pause is missing: the game, with its 16.26 ms tick, agrees with the trace.

@@ -10,12 +10,12 @@ game/tron/display.py, where the trace references below come from) and the same O
   at once, its sounds at their offsets (logged with in_deff = the deff).
 - A foreground deff spends its last 10 ticks in a hold at priority 0x20 (deff_hold_frames): any deff
   can replace it then.
-- Show queue, deff_start_user_6350 [0x01006350] (Tron's queue_fullscreen_deff): "show" tasks first run once their
+- Show queue, deff_sequence_6350 [0x01006350] (Tron's queue_fullscreen_deff): "show" tasks first run once their
   caller has finished, wait until the running deff's priority is below their threshold (0x9f for every
-  caller) and they are the oldest show task waiting (leaf_b698(0x5d, 0x7e): tf_180's show tasks are 0x5d-0x7e;
+  caller) and they are the oldest show task waiting (task_find_in_range_b698(0x5d, 0x7e): tf_180's show tasks are 0x5d-0x7e;
   the game numbers them 0x81-0xa7, internal ids only), then play their deff until its hold (priority <= 0x20,
-  leaf_20e48). While a show task runs, mode clocks pause.
-- Mode TOTAL tasks (when_idle, deff_start_user_664c [0x0100664c]) wait for no show task (0x5d-0x7e,
+  deff_prio_get_20e48). While a show task runs, mode clocks pause.
+- Mode TOTAL tasks (when_idle, deff_sequence_wait_664c [0x0100664c]) wait for no show task (0x5d-0x7e,
   [0x01006634]) and no foreground deff.
 - After an effect ends, and after a show ends, the deff rules re-assert the background deff (deff rule
   0x000178b0): deff 19, or the deff of the true mode rule, restarts in the background during normal play.
@@ -166,7 +166,7 @@ class Show:
         self.on_start, self.on_end, self.queued_at, self.deff_args = on_start, on_end, queued_at, deff_args
 
 
-# the show deffs started by task_sleep_user_6480 [0x01006480] (battle and multiball intros, 140, 149, 146, 43):
+# the show deffs started by deff_sequence_flippers_6480 [0x01006480] (battle and multiball intros, 140, 149, 146, 43):
 # one flipper button held and the other pressed ends the deff (deff_stop) while its priority is above 0x20 (QA V-ENG4)
 SKIPPABLE = frozenset((0x8c, 0x45, 0x4b, 0x51, 0x54, 0x55, 0x78, 0x6c, 0x68, 0x5c, 0x74, 0x70, 100, 0x60, 0x39, 0x3f,
                        0x95, 0x2b, 0x92))
@@ -309,7 +309,7 @@ class Display:
     def _hold(self, deff_id):
         """Last 10 ticks of deff_id (cancelled with it when it is replaced): its priority drops to 0x20,
         so any deff can replace it, and a show task (waiting for priority < 0x21) ends here
-        [deff_start_user_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
+        [deff_sequence_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
         held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
         self.fg_prio = HOLD_PRIORITY
         if not self.show and deff_id in self.hold_tail:
@@ -704,7 +704,7 @@ class Leffs:
         self.running = {}           # leff id -> end handle (or None)
         self.pending = []           # refused lamp-rule leffs, started when an effect ends
         # leff_start's conflict test [0x00007c10] (QA L-G04): the leff table's lamp group (+6, lamp_group_9570
-        # [0x00009570] over table 0x040d1510) and coil group (+8, leff_start_sub_611c [0x0000611c] over table
+        # [0x00009570] over table 0x040d1510) and coil group (+8, leff_name_check_611c [0x0000611c] over table
         # 0x040cf65c) and flags (+4, bit 2: an equal-priority leff may replace it)
         import json                         # noqa: PLC0415
         groups = {}
@@ -728,7 +728,7 @@ class Leffs:
         out = []
         for other in self.running:
             if other == leff_id:
-                continue        # the same leff restarts (the game stops it first, as leaf_b780 / b7e4 callers do)
+                continue        # the same leff restarts (the game stops it first, as task_group_running_b780 / b7e4 callers do)
             o_lamps, o_coils, _ = self.claims.get(other, (frozenset(), frozenset(), 0))
             if o_lamps & lamps_ or o_coils & coils_:
                 out.append(other)

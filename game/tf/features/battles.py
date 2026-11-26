@@ -54,7 +54,7 @@ ORBIT_TOKEN_S = 0xbb * 0.016
 GATE_TICKS = 93
 # Right orbit sw 12 [0x01033530] (QA R-F3): with token 7 up (a left orbit just counted) it clears token 7 and counts
 # nothing; else with task 0x47 running it kills the task and counts nothing; else with token 9 up it clears token 9
-# and counts nothing; else it sets token 9 and counts the shot. Task 0x47 (leaf_abe8(0x47, 0xbb)) is started by the
+# and counts nothing; else it sets token 9 and counts the shot. Task 0x47 (task_create_arg_abe8(0x47, 0xbb)) is started by the
 # shooter lane [0x01032dfc] and the center lane [0x01033b3c]. Tokens 7 and 9 and task 0x47 all last 0xbb = 187
 # units of the OS loop [0x0002bd48]: ORBIT_TOKEN_S for the three.
 

@@ -81,8 +81,11 @@ SPECIAL_OVER_LIMIT_SCORE = 5000000
 # Megatron lockup, the trough's queued auto-launch), the pops [0x00003018], the slings [0x00003518], 64 ms each,
 # each one holding the search 64 // 16 + 1 = 5 ticks (FUN_00002160); the task runs the tick after its start, hence
 # the +1. The auto-launch time (14) and the gate (32, 1,488 ms) are code: the queued pulse starts at 13, held off 7
-# ticks by coil_pulse_queue_serve [0x00003758], the gate pulse is leaf_2c074 [0x0102c074] at 31 (ball_feed.md). The
-# motor step is observed (traces/game_flow.jsonl 32.65 / 102.01 / 126.13 / 150.45 s, megatron_decepticon.jsonl 68.99 s).
+# ticks by coil_pulse_queue_serve [0x00003758], the gate pulse is drv_pulse_coil_2c074 [0x0102c074] at 31 (ball_feed.md). The
+# motor step is code too: the search posts event 0xc at 30 [0x0103b808], whose hook on_event_0c_16628 [0x00016628]
+# starts each motor's search task [0x00016674] (task 0x2b); it claims the motor and sends it round its positions
+# (motor_goto_wait [0x00016f28]), and the move task motor_move_task [0x00016c88] turns the motor on at 32 and runs
+# it to the 468-tick limit when no position switch answers (ball_feed.md; traces only confirm).
 BALL_SEARCH_SWEEP = ((1, ("c_optimus_prime",)), (6, ("c_top_pop_bumper",)), (7, ("c_megatron_lockup", "c_left_eject")),
                      (11, ("c_right_pop_bumper",)), (14, ("c_auto_launch",)), (16, ("c_bottom_pop_bumper",)),
                      (21, ("c_left_slingshot",)), (26, ("c_right_slingshot",)))
@@ -524,7 +527,7 @@ class TfOS(CustomCode):
     def deff_rule(self, cond, deff_id, music=None, priority=0, on_start=None):
         """lamp_rule_init(list 2, cond, deff, music, priority): mode background deff + music (display.py).
         Order (QA V-ENG5, SC14): the ROM's deff rule bytes put the multiballs (7) above the battles, fast and
-        double scoring (5) [FUN_00017834, leaf_17580], and the music table [0x000178b0] takes the first true of
+        double scoring (5) [FUN_00017834, rule_list_insert_by_prio_17580], and the music table [0x000178b0] takes the first true of
         Megatron, wizard side, Optimus, wizard multiball, double scoring, fast scoring, battles. The game's
         priorities keep that order on its own scale (above PREVALID_PRIO): Megatron 0x78, wizard side 0x77,
         Optimus 0x76, WMB 0x75, double scoring 0x58, fast scoring 0x57, battles 0x40."""
@@ -646,7 +649,7 @@ class TfOS(CustomCode):
         self.display.stop(deff_id)
 
     def show(self, task_id, deff_id, **kwargs):
-        """deff_start_user_6350 [0x01006350] run as show task task_id (game ids 0x81-0xa7; tf_180 0x5d-0x7e)."""
+        """deff_sequence_6350 [0x01006350] run as show task task_id (game ids 0x81-0xa7; tf_180 0x5d-0x7e)."""
         self.display.queue(task_id, deff_id, **kwargs)
         self.request_refresh()
 

@@ -143,8 +143,8 @@ deff table entry references it).
 ## 8. Lamps
 Energon inserts: 48 ENERGON (LEFT), 54 ENERGON (CENTER), 35 ENERGON (RIGHT). The lamp rule 0x01030f80 (registered by
 0x010312e4), for the three entries of table 0x040c7630 against the player's lit mask 0x021120bc: an unlit target is
-on (error_log_wrap_7578_wrap_77a0 [0x000077a0]) with its flash bit set (error_log_wrap_7578_wrap_7814 [0x00007814], mask 0x00036388), a
-lit one is on with the flash bit cleared (solid, error_log_wrap_7578_wrap_7858 [0x00007858]); a completed set clears the mask,
+on (lamp_bit_toggle_set_77a0 [0x000077a0]) with its flash bit set (lamp_bit_set_7814 [0x00007814], mask 0x00036388), a
+lit one is on with the flash bit cleared (solid, lamp_bit_copy_masked_7858 [0x00007858]); a completed set clears the mask,
 so all three flash again. The flash phase is the lamp compositor's: lamp_compositor_tick [0x000073cc] inverts it every
 10 ticks (counter 0x0003148c), a 20-tick period = 0.32 s (code; the trace's lamp events 18-26 s of
 traces/allspark_energon.jsonl confirm about 0.33 s). The Allspark has no "lit" insert of its

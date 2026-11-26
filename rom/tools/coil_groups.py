@@ -1,5 +1,5 @@
 """Coil groups of tf_180: table 0x040cf65c (group -> pointer to a zero-terminated list of ROM coil numbers), read by
-coilgroup_pulse [0x00005fd4] and the leff conflict test leff_start_sub_611c [0x0000611c]; groups 1..0x3d.
+coilgroup_pulse [0x00005fd4] and the leff conflict test leff_name_check_611c [0x0000611c]; groups 1..0x3d.
 Writes rom/rom_data/io/coil_groups.json. Usage: TF_ROM=tf_180.bin python rom/tools/coil_groups.py"""
 import json
 import os

@@ -15,7 +15,7 @@ mask (+0xe: 0x400 closing edge, 0x800 opening edge; the captive ball runs on bot
 the task id (+0x14); dedicated switches (flippers, tilt, coins) have their records at 0x040e3740 + (n - 0x81) * 0x20
 (`switch_rec_d2d4` [0x0000d2d4]). Every rule routine, deff, leff, sound and coil pulse below is the ROM's code,
 the current player, side and flipper state included; tasks end through the OS exit path with their exit calls
-(`leaf_a84c` [0x0000a84c]). Python only records `score_add_player` [0x0001cb0c], `event_post`, `audit_add`, the game
+(`task_run_exit_handlers_a84c` [0x0000a84c]). Python only records `score_add_player` [0x0001cb0c], `event_post`, `audit_add`, the game
 flags and the deff, leff and sound starts, keeps the OS task list, and moves the balls as the tracer does
 (`tools/trace/tf_ref.cpp`: coil 1 trough to shooter, coil 2 launch, coil 22 eject, coil 3 lock release). The random
 draws (`random_below` [0x0000ba94]) are inputs, like the switch hits: the scenario's `#! random` lines give the side
