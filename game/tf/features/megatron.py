@@ -12,8 +12,8 @@ the ROM's re-arm copies every player's counter, as here), audit 0x74, deff 139, 
 Lock entry (switches 38-41, the ball device bd_megatron; its handler runs 46 ticks after the switch, observed
 0.75 s): the shot-6 rules of the running mode, else a lit lock: BALL n LOCKED (25,000, audit 0x75, deff 140,
 leff 168, sound 0x29a / 0x29c / 0x29f); the 4th ball starts the multiball of the player's side. Then the handler's
-5,120. A locked ball stays (ball hold hold_megatron) and a new ball is served and launched 155 ticks later
-(observed 2.51 s to the trough coil, adj 89 AUTOFIRE AFTER LOCK); any other ball is kicked out by device 4's callback
+5,120. A locked ball stays (ball hold hold_megatron) and a new ball is served once the lock and intro shows (tasks
+0x73-0x75, list 0x040c61f8) are over, polled every 6 ticks (device 4 case 2 [0x0100a3b8]; adj 89 AUTOFIRE AFTER LOCK); any other ball is kicked out by device 4's callback
 [0x0100a3b8]: 0x13b + leff 23, 0x13b at tick 15, 0x13c + leff 24 and coil 3 at tick 31. A ball within the back-door task (sw 13,
 187 ticks) is kicked out with no shot rules.
 
@@ -60,7 +60,9 @@ ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34
 SHOT_LAMPS = {62: ARROWS, 70: ARROWS + ((0x80, (59,)),)}
 SETTLE_TICKS = 46
 EJECT_SETTLE_TICKS, RETRY_SLEEP_TICKS = 62, 31   # device record 0x040d188c +0x14 / +0x18 (ball_feed.md)
-SERVE_TICKS = 155
+# device 4's case 2 [0x0100a3b8]: after the handler it waits, 6 ticks a try, while a task of list 0x040c61f8 runs
+# (the lock and intro shows 0x73, 0x74, 0x75), then adj_megatron_m_b_virtual [0x0100a1f8] and the trough's serve
+SERVE_WAIT_TASKS, SERVE_POLL_TICKS = (0x73, 0x74, 0x75), 6
 ENTRY_POINTS = 5120
 BACK_DOOR_S = 187 * 0.016
 SHOT = 6
@@ -655,7 +657,7 @@ class Megatron(Feature):
             keep = False
         if keep:
             self.locked_held += 1
-            os_.after(SERVE_TICKS, self._serve)
+            self._serve_wait()
         else:
             self.kicking += 1
             self._kick()
@@ -794,6 +796,16 @@ class Megatron(Feature):
             return
         if not self.kicking:
             self.os.after(EJECT_OVER_TICKS, self.os.device_ejected)
+
+    def _serve_wait(self):
+        os_ = self.os
+        if any(os_.task_running(t) or os_.display.task_running(t) for t in SERVE_WAIT_TASKS):
+            os_.after(SERVE_POLL_TICKS, self._serve_wait)
+            return
+        # the serve task [0x0103b128]: the trough's settle, then its kick through the coil queue (trough_callback
+        # case 9 [0x0100a0a4], coil_pulse_queue_wait), as a later ball start (tf/os_layer.py)
+        from tf.os_layer import SERVE_EJECT_TICKS, LATER_SERVE_EXTRA_TICKS     # noqa: PLC0415
+        os_.after(SERVE_EJECT_TICKS + LATER_SERVE_EXTRA_TICKS, self._serve)
 
     def _serve(self):
         """AUTOFIRE AFTER LOCK (adj 89): a new ball from the trough, auto-launched only when adj 89 = 1
