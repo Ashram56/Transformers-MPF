@@ -46,6 +46,7 @@ SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
 # +0xe 0x1fff has 0x400 closing and 0x800 opening, switch_dispatch_debounce [0x0000dc44]; the trace
 # traces/switches.jsonl 124.35 / 124.42 s confirms: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
+CAPTIVE_BALL = 45
 NO_BONUS = {6}
 DELAY = {}
 # switches whose handler runs on the opening edge only: sw 51 OPTIMUS PRIME, +0xe = 0x1800 (0x800 opening, no
@@ -78,6 +79,8 @@ class SwitchLayer:
         (os.request_refresh) as the ROM does."""
         def on_close():
             if not self.os.game or not self.os.in_play:
+                if num == CAPTIVE_BALL:     # sw_captive_ball [0x01033b14]: audit 72 before any state test (QA D-SW-45)
+                    self.os.after(BOTH_EDGES[num], lambda: self.os.audit(SW_AUDIT[num]))
                 return
             self.os.after(BOTH_EDGES.get(num, DELAY.get(num, 1)), lambda: self.handle(num))
         return on_close
@@ -96,7 +99,7 @@ class SwitchLayer:
             os_.timer_set(RAMP_ENTRANCE_TIMERS[num], 0x5d)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
-        if num in SW_AUDIT and not os_.tilted:
+        if num in SW_AUDIT and (not os_.tilted or num == CAPTIVE_BALL):
             os_.audit(SW_AUDIT[num])
         if num not in NO_BONUS:
             os_.hook("bonus_add")

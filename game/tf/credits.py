@@ -123,7 +123,16 @@ class Credits:
         if delay == DELAY_OFF:
             self._accept(*slot)
             return
-        self.os.after(delay, lambda: None if self.os.in_service else self._accept(*slot))
+        self._delay(delay, slot)
+
+    def _delay(self, left, slot):
+        """task_0x13 [0x00003f00]: task_sleep(1) adj 62 times, the coin dropped as soon as coin_task_running_3ea8
+        [0x00003ea8] refuses it (service, gf_state & 0x100) (QA D-CR-DELAY)."""
+        def tick():
+            if self.os.in_service:
+                return
+            self._delay(left - 1, slot) if left > 1 else self._accept(*slot)
+        self.os.after(1, tick)
 
     def _accept(self, slot, audit):
         os_ = self.os

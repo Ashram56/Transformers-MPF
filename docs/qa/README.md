@@ -158,6 +158,12 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - Leff end: leff_free_7df0 [0x00007df0] sets 0x31488 when the leff had a lamp or coil group, and the rules
       hook [0x01006240] then evaluates the whole leff rule list (list 3) unless task 0x29 runs. The game only
       retried refused leffs: wizard_multiball now starts 77 / 76 when leff 96 ends, as the ROM does.
+    - Battle arrows: each battle's rule leff (106-136, battles.md 8) owns the orange arrows and toggles the lit
+      shots every 3 ticks (lamp_bit_flash_78dc [0x000078dc]); Ratchet flashes the doubled ones and holds the others.
+    - ~~D-SW-45~~ sw_captive_ball [0x01033b14]: audit 72 in every state, tilt and attract included.
+    - ~~D-CR-DELAY~~ task_0x13 [0x00003f00]: adj 62 single-tick sleeps, the coin dropped at the first refusal.
+    - D-SW-DEB, D-SW-ERR, D-SW-15, D-SW-D19: rows in rom_differences.md (MPF limit / not modelled hardware).
+    - Flippers: decoded by agent A (table 0x040cf590, io_isr [0x000114b0]); the waiver is no longer used.
   - Still open (in progress): the device, display, lamp and rules lows of the reports.
 
 ## Pass of 2026-11-25
@@ -181,7 +187,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 |---|---|
 | Rule text in CLAUDE.md | passes |
 | `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (the flipper drive and 2,526 unnamed functions open), the two Xilinx XC95144XL CPLDs `absent` (flash fuse map, only readable through the J8 JTAG header of a real board; owner to say whether it counts) |
-| Captured data | **passes** (was 266 failures): the flipper times in `coils.csv` are waived by the owner, 2026-11-25. Decoded from the code by agent A on 2026-11-25: all 153 deffs (the 38 game-state ones per state, `rom/tools/deff_variants.py`), all leff shows, 33 coil times, every adjustment value text ([pinmame_waivers.md](../pinmame_waivers.md)) |
+| Captured data | **passes** (was 266 failures): the flipper times in `coils.csv` are decoded from the code since 2026-11-26 (table 0x040cf590 run each 1 ms by io_isr [0x000114b0]: 40 ms pulse, hold 1 ms on / 11 ms off, `rom/tools/flipper_drive.py`); the owner's waiver of 2026-11-25 is no longer used. Decoded from the code by agent A on 2026-11-25: all 153 deffs (the 38 game-state ones per state, `rom/tools/deff_variants.py`), all leff shows, 33 coil times, every adjustment value text ([pinmame_waivers.md](../pinmame_waivers.md)) |
 | Functional diagram | passes: [functional_diagram.md](../functional_diagram.md), assembled after the fact from A's specs, each address checked by `tests/test_functional_diagram.py` |
 
 ### Fixed in this pass (each with a regression test)

@@ -745,6 +745,21 @@ class Ratchet(Battle):
 
 
 BATTLES = (Starscream, Shockwave, Blackout, Devastator, Bumblebee, Ironhide, Mudflap, Ratchet)
+ARROW_BLINK = 3        # battles.md 8: every 3 ticks [0x010188cc ...]
+
+
+def arrow_blink(rows, flash_fn, steady_fn=lambda: 0):
+    """The battle rule leffs 106-136 (battles.md 8: leff_106 [0x010188cc], 110 [0x0101f5ec], 114 [0x0101da60],
+    118 [0x01016f94], 123 [0x01015408], 128 [0x0101c12c], 132 [0x0101a45c], 136 [0x01013918]): the layer owns the
+    orange arrows (seven with Bumblebee's captive ball, bit 0x40); every 3 ticks a shot in the flash mask is toggled
+    (lamp_bit_flash_78dc [0x000078dc], starting on), a shot in the steady mask (Ratchet's lit shots that are not
+    doubled: lamp_bit_toggle_set_77a0) is on, any other is off (lamp_bit_write_765c)."""
+    def run(task, on=True):
+        flash, steady = flash_fn() or 0, steady_fn() or 0
+        for bit, lamp in rows:
+            task.set(lamp, on if flash & bit else bool(steady & bit))
+        task.sleep(ARROW_BLINK, lambda t: run(t, not on))
+    return run
 
 
 class Battles(Feature):
@@ -770,6 +785,13 @@ class Battles(Feature):
             os_.deff_rule((lambda b_: lambda: b_.rule())(b), b.bg, music=b.music, priority=RULE_PRIORITY)
             os_.deff_live((b.bg,), b.background_values)
             if b.rule_leff:
+                rows = [(1 << shot, lamp) for shot, lamp in ORANGE.items() if shot != BEE or isinstance(b, Bumblebee)]
+                if isinstance(b, Ratchet):              # the double mask 0x34f0c flashes, the lit mask 0x34f08 holds
+                    fn = arrow_blink(rows, (lambda b_: lambda: b_.double())(b),
+                                     (lambda b_: lambda: b_.lit & ~b_.double())(b))
+                else:
+                    fn = arrow_blink(rows, (lambda b_: lambda: b_.lit)(b))
+                os_.lamps.leff_code(b.rule_leff, fn)
                 os_.lamp_rule((lambda b_: lambda: b_.active and not (isinstance(b_, Bumblebee) and b_.phase2()))(b),
                               leff=b.rule_leff, order=0x01012000 + b.index)
         bee = self.battles[4]
@@ -1111,15 +1133,8 @@ class Battles(Feature):
             else:
                 lamps.lamp_off(mine)
             lamps.lamp_off(other)
-        lit = 0
-        for b in self.battles:
-            if b.scoring:
-                lit |= b.lit
-        for shot, lamp in ORANGE.items():
-            if lit & (1 << shot):
-                lamps.lamp_flash(lamp)
-            else:
-                lamps.lamp_off(lamp)
+        for lamp in ORANGE.values():                 # the battle's rule leff owns the arrows (arrow_blink)
+            lamps.lamp_off(lamp)
         # the battle inserts are the requirement inserts: wizard.py draw [0x01035ea8] (QA L-R07)
 
 
