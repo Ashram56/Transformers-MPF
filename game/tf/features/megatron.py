@@ -104,7 +104,7 @@ class Side:
     """Shared parts of the two multiballs."""
     flag = grace_flag = 0
     intro = intro_task = start_leff = bg = music = rule_leff = 0
-    total_deff = total_leff = total_task = 0
+    total_deff = total_leff = total_task = show_task = 0
     start_points = start_audit = 0
 
     def __init__(self, mgr):
@@ -210,7 +210,7 @@ class Side:
         os_.flag_clear(self.grace_flag)
         if os_.tilted or not os_.game or os_.state & 0x310:
             return
-        os_.display.when_idle(self.total_task, self.total_deff, values=[self.total],
+        os_.display.when_idle(self.show_task, self.total_deff, values=[self.total],
                               on_start=lambda: os_.deff_media(self.total_deff, self.total_leff))
 
     def add_ball_open(self):
@@ -237,7 +237,8 @@ class Side:
 class Autobot(Side):
     flag, grace_flag = 0x25, 0x26
     intro, intro_task, start_leff, bg, music, rule_leff = 69, 0x74, 61, 70, 0x38, 62
-    total_deff, total_leff, total_task = 74, 67, 0xbb
+    # end task 0xbb [0x0100c7e8], its total shown by task 0x8b [0x0100c790] (QA M14)
+    total_deff, total_leff, total_task, show_task = 74, 67, 0xbb, 0x8b
     start_points, start_audit = 250000, 0x76
     JP = (71, 64, 0xca, 0x77)
     DJ = (72, 65, 0xd2, 0x78)
@@ -349,7 +350,8 @@ class Autobot(Side):
 class Decepticon(Side):
     flag, grace_flag = 0x29, 0x2a
     intro, intro_task, start_leff, bg, music, rule_leff = 75, 0x75, 69, 76, 0x3b, 70
-    total_deff, total_leff, total_task = 80, 75, 0xbc
+    # end task 0xbf [0x0100e6a0], its total shown by task 0x8c [0x0100e61c] (QA M14)
+    total_deff, total_leff, total_task, show_task = 80, 75, 0xbf, 0x8c
     start_points, start_audit = 100000, 0x7a
     JP = (77, 72, 0xe4, 0x7b)
     DJ = (78, 73, 0xf7, 0x7c)

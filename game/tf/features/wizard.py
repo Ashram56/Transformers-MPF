@@ -45,9 +45,12 @@ SIDE_INTRO_SOUND = {DECEPTICON: 0x11a, AUTOBOT: 0x119}
 SIDE_BG, SIDE_MUSIC, SIDE_RULE_LEFF, SIDE_LIT_LEFF = 82, 0x3c, 79, 80
 SIDE_HIT_DEFF, SIDE_HIT_LEFF, SIDE_HIT_SOUND = 83, 81, 0x11b
 SIDE_AFTER_SOUND = 0x119        # queued after the Autobot routines 6-11's speech [0x00025364]
-SIDE_DONE_DEFF, SIDE_DONE_LEFF, SIDE_DONE_TASK = 84, 82, 0x7b
+SIDE_DONE_DEFF, SIDE_DONE_LEFF, SIDE_DONE_TASK = 84, 82, 0x7a       # task 0x7a [0x01010174] (QA M14)
 SIDE_DONE_SOUNDS = {DECEPTICON: (0x128, 0x12a), AUTOBOT: (0x128, 0x12b)}
-SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF, SIDE_TOTAL_TASK = 85, 83, 0x8f
+SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF = 85, 83
+# mode_task_8f_7b_resume_10330 [0x01010330]: completed, task 0x7b plays deff 85 as a show (0x01010304); otherwise
+# (event 0x1d, the end of ball) task 0x8f waits for the display (deff_sequence_wait_664c(0x55, 0x753) [0x010102f4])
+SIDE_TOTAL_TASK, SIDE_TOTAL_WAIT_TASK, SIDE_TOTAL_WAIT = 0x7b, 0x8f, 0x753
 # zuse_qualify_enabled [0x0100ff80] (rule leffs 77, 76 [0x01011ed4]): no multiball, no timed mode, flag 0x3d clear
 # [0x0100ff58] and the side's five requirements done; the side only picks the range (0x01035db4: 0-4 Decepticon,
 # 5-9 Autobot), so both sides (QA M8, wizard_modes.md 1)
@@ -331,7 +334,7 @@ class Wizard(Feature):
         os_.show(SIDE_DONE_TASK, SIDE_DONE_DEFF, values=[points], sounds=[(0, (lambda c: lambda: os_.sound(c, in_deff=SIDE_DONE_DEFF))(c))
                                                          for c in sounds],
                  on_start=lambda: os_.deff_media(SIDE_DONE_DEFF, SIDE_DONE_LEFF))
-        self.side_end(show_total=True)
+        self.side_end(show_total="completed")
 
     def side_end(self, show_total):
         """[0x01010330]: the mode ends; its total follows (not when tilted)."""
@@ -341,10 +344,14 @@ class Wizard(Feature):
         self.side_running = False
         os_.flag_clear(SIDE_FLAG)
         os_.request_refresh()
-        if show_total and not os_.tilted:
-            total = self.side_total
-            os_.show(SIDE_TOTAL_TASK, SIDE_TOTAL_DEFF, values=[total],
-                     on_start=lambda: os_.deff_media(SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF))
+        total = self.side_total
+        if show_total and not os_.tilted and total:          # none with no total (DAT_00034ecc == 0)
+            media = (lambda: os_.deff_media(SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF))
+            if show_total == "completed":
+                os_.show(SIDE_TOTAL_TASK, SIDE_TOTAL_DEFF, values=[total], on_start=media)
+            else:
+                os_.display.when_idle(SIDE_TOTAL_WAIT_TASK, SIDE_TOTAL_DEFF, timeout=SIDE_TOTAL_WAIT, values=[total],
+                                      on_start=media)
 
     # ------------------------------------------------------------------ wizard multiball
 

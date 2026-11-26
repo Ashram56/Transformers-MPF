@@ -301,7 +301,7 @@ class Autobot(Side):
 
 class Decepticon(Side):
     key = "opd_"
-    flag, intro, intro_leff, intro_delay, intro_task = 0x22, 63, 53, 3.52, 0x71
+    flag, intro, intro_leff, intro_delay, intro_task = 0x22, 63, 53, 3.52, 0x72   # task 0x72 [0x01029a08] (QA M14)
     bg, music, rule_leff, super_leff = 64, 0x35, 54, 55
     start_audit, total_deff, total_leff, total_task = 0x70, 68, 59, 0x8a
     JP = (65, 56, 0xa5, 0x71)
