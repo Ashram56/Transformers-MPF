@@ -97,7 +97,7 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
   [0x00019e40] -> [0x0102f958], award value from event 0x4d [0x0102f998], combo from [0x01002f0c]. The score
   blanks 7 of 14 ticks after 0x3e idle ticks (sweep once the playfield is valid), the award fades over 0x1a
   ticks, the combo texts slide (tf/score_screen.py StatusCounters; tests/test_qa_2026_11_26.py
-  test_score_status_counters). Deffs 26 and 40 draw the same panel but refresh it every 0.25 s only.
+  test_score_status_counters). Deffs 26 and 40 draw the same panel, refreshed every tick (V-SC11).
 - ~~SC16 (voices)~~ fixed 2026-11-26: snd_start_sample [0x00024ae4] voice allocation. Each sample's script
   bytes 1-2 (voice mask, voices taken; rom/rom_data/sound/sample_voices.csv from rom/tools/sample_voices.py);
   a playing sample's voices are taken over when its call's priority (+0x10) is lower, or equal with its
@@ -179,7 +179,10 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       (rom_differences.md).
     - ~~V084~~, ~~V089~~ the priority drops at the first 0x20 op of the final run (deff 84 tick 162, deff 89 tick
       140, deff_prio_set through [0x010305a0]): wizard_all_hail_megatron deff and leff starts now match.
-      V047's interim 128 (tick 44) stays open.
+      ~~V047~~ deff 47 raises its own priority to 0x80 at frame 0x16, tick 44 (deff_prio_set_own_20e84
+      [0x0102c6dc]); the game takes every such step from agent A's op lists (display.py PRIO_STEPS).
+    - ~~V-SC11~~ the deffs that draw the status panel (draw_way_palette_identity_2f200 [0x0102f200], deffs 26 and
+      40 too) refresh it every tick instead of every 0.25 s, sent only when it changed.
     - V005, V007, V011, V012, V016, V018, V034-V037, V033, V-SC4, V-TXT2, L-G03, L-G05, L-G11: rows in
       rom_differences.md (machine states and tournament / ticket hardware not modelled, MPF limits).
     - ~~SC6~~ the animation sound tables (frame_sound_step_2fcb0 [0x0102fcb0]): agent A's

@@ -97,6 +97,7 @@ class MediaBridge:
         self.service_shown = False
         self.counters = {}
         self._refresh = None
+        self._panel_last = {}                     # deff -> the panel arguments last sent (sent again only on change)
         self.active = set()                        # deffs on screen that draw the status panel or live values
         self.started = {}                          # deff id -> the args of its last start
         self.slides = {}                           # deff id -> the slide it plays (a side variant: deff_slide)
@@ -209,8 +210,12 @@ class MediaBridge:
         self.started[deff_id] = args
         if info.get("panel") is not None or deff_id in getattr(self.os, "deff_values", {}):
             self.active.add(deff_id)
-            if self._refresh is None and self.connected():   # timer bars move between scores
-                self._refresh = self.machine.clock.schedule_interval(self.score_changed, 0.25)
+            self._panel_last.pop(deff_id, None)
+            # the deff's code draws the panel every frame (draw_way_palette_identity_2f200 [0x0102f200]: the score
+            # box blink, the award fade, the combo slide, timer bars): checked every tick, sent when it changed
+            # (QA V-SC11)
+            if self._refresh is None and self.connected():
+                self._refresh = self.machine.clock.schedule_interval(lambda *_: self.panels_refresh(), TICK)
         self._send("slides_play", {slide: {"action": "remove", "key": slide, "expire": None}})
         self._send("slides_play", {slide: {"action": "play", "key": slide, "expire": None,
                                            "priority": priority}},
@@ -346,9 +351,12 @@ class MediaBridge:
                                                               "expire": None}}, need_data=False, draw=draw)
 
     def score_changed(self, *_):
-        """Score flush (and every 0.25 s while a panel shows): refresh the score display and the
-        status panel of the effects on screen."""
+        """Score flush: refresh the score display and the status panel of the effects on screen."""
         self.redraw()
+        self.panels_refresh()
+
+    def panels_refresh(self):
+        """The status panel and live values of the effects on screen, sent when they changed (every tick)."""
         if not self.data:
             return
         args = None
@@ -363,6 +371,9 @@ class MediaBridge:
                 # another: they share the names line0, line1, ...)
                 mine.update({k: v for k, v in self.deff_lines(deff_id, self.started.get(deff_id, {})).items()
                              if k.startswith("line") or k in ("screen", "values")})
+            if self._panel_last.get(deff_id) == mine:
+                continue
+            self._panel_last[deff_id] = mine
             slide = self.slides.get(deff_id, info["slide"])
             self._send("slides_play", {slide: {"action": "update", "key": slide, "expire": None}}, **mine)
 

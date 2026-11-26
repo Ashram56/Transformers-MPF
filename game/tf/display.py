@@ -123,6 +123,27 @@ def deff_drops():
 
 
 HOLD_AT_BY_DEFF = deff_drops()
+
+
+def deff_prio_steps():
+    """The priority changes a deff's code makes while it runs, other than the drop to 0x20: {deff: [(tick, prio)]}
+    from agent A's op lists (deff 47: deff_prio_set_own_20e84(0x80) at frame 0x16, tick 44 [0x0102c6dc], QA V047)."""
+    steps = {}
+    folder = os.path.join(ROM, "rom_data", "dmd", "deff_ops")
+    if os.path.isdir(folder):
+        import json                         # noqa: PLC0415
+        for name in sorted(os.listdir(folder)):
+            if name.endswith(".json") and "__" not in name:
+                with open(os.path.join(folder, name), encoding="utf-8") as f:
+                    d = json.load(f)
+                s = [(o["t"], o["prio"]) for o in d.get("ops", ())
+                     if o.get("op") == "prio" and o.get("prio") != HOLD_PRIORITY and o.get("t")]
+                if s:
+                    steps[d["deff"]] = s
+    return steps
+
+
+PRIO_STEPS = deff_prio_steps()
 _VARIANTS = {}
 VARIANT_TIMING = {}     # (deff, variant) -> (hold ticks, drop tick or None): the variant's own priority 0x20 ops
 
@@ -290,6 +311,10 @@ class Display:
                     hold_at = drop * TICK     # a drop counted from the start (deff 140; deff 83 animations 7, 8, 10)
                 self._sound_handles.append(os_.machine.clock.schedule_once(
                     lambda: self._hold(deff_id), max(0.0, hold_at)))
+                for tick, prio in PRIO_STEPS.get(deff_id, ()) if not variant else ():
+                    if tick * TICK < hold_at:
+                        self._sound_handles.append(os_.machine.clock.schedule_once(
+                            (lambda p: lambda: self._set_prio(deff_id, p))(prio), tick * TICK))
         if replaced is not None and self.show is replaced:
             self.show = None
             self.os.ball_search_reload()            # the show task's end (below, _end_show)
@@ -330,6 +355,11 @@ class Display:
                 # a queued sound right after the sound it waits on (same-time callbacks keep no order)
                 self._sound_handles.append(os_.machine.clock.schedule_once(fire, offset + (1e-4 if kind == "after"
                                                                                             else 0)))
+
+    def _set_prio(self, deff_id, prio):
+        """deff_prio_set_own_20e84: the running deff's own priority changes (deff 47 [0x0102c6dc])."""
+        if self.fg == deff_id:
+            self.fg_prio = prio
 
     def _hold(self, deff_id):
         """Last 10 ticks of deff_id (cancelled with it when it is replaced): its priority drops to 0x20,
