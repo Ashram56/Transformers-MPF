@@ -540,6 +540,19 @@ class TestFinalPass(QaCase):
         self.assertIsNotNone(self.machine.game)
         self.assertEqual(before + 1, self.tf.audits.get(0x27, 0))
 
+    def test_f072_boot_screen(self):
+        """start_deff_5 [0x00006ecc]: the boot screen (deff 5) comes up with the first attract, ahead of the attract's
+        deff 1, for its 125 ticks; then the attract shows (QA V005)."""
+        self.advance_time_and_run(0.5)
+        starts = self.deffs()
+        self.assertIn(5, starts)
+        self.assertEqual(1, starts.count(5))
+        self.assertEqual(5, self.tf.display.fg)
+        self.assertEqual(1, self.tf.display.bg)            # the attract behind it
+        self.advance_time_and_run(125 * TICK + 0.5)
+        self.assertNotEqual(5, self.tf.display.fg)
+        self.assertEqual(1, self.tf.display.bg)
+
     def test_f069_bonus_replayed_live_from_its_ops(self):
         """Deff 25 runs as its op list replayed live (tf/op_player.py): the page change os_hook_call_203d0(10)
         [0x010357e0] [0x01035810] [0x0103582c] moves the subtotal page drawn with the game's values, where the

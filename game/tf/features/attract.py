@@ -6,7 +6,7 @@ priority 1); what leff 1 draws (game code 0x01009e78) comes with the ROM extract
 attract pages with its display effects (tf/attract_pages.py: the page table 0x00030d10 walked as deff 1 does,
 each page drawn from its op list with live texts). Power-up: os_start_308 [0x00000308] calls start_deff_5 [0x00006ecc]
 (the OS init and the boot screen, deff 5, priority 254, 125 ticks) then attract_start [0x00000a84] in the same pass, so
-deff 1 and leff 1 start at once; the boot screen over them is not drawn (rom_differences.md, QA V005).
+deff 1 and leff 1 start at once, behind the boot screen (TRANSFORMERS, "-----" and the version, the language; QA V005).
 """
 from tf.attract_pages import Walker
 from tf.features import Feature
@@ -27,7 +27,7 @@ class Attract(Feature):
         os_.attract_walker = self.walker = Walker(os_)
 
     def _power_up(self, **kwargs):
-        self._handle = self.machine.clock.schedule_once(lambda: self.start(), BOOT_SECONDS)
+        self._handle = self.machine.clock.schedule_once(lambda: self.start(boot=True), BOOT_SECONDS)
 
     def stop(self, **kwargs):
         if self._handle:
@@ -41,10 +41,12 @@ class Attract(Feature):
         """Event 0x08 at the end of the game: the game is still being torn down, so no game check."""
         self._show()
 
-    def start(self):
+    def start(self, boot=False):
         self._handle = None
         if self.os.game:
             return
+        if boot:
+            self.os.deff_start(5)                  # start_deff_5 [0x00006ecc]: the boot screen first
         self._show()
 
     def _show(self):
