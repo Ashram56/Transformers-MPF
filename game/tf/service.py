@@ -20,7 +20,9 @@ Screens, as the walk shows them:
   SELECT does it (Adjustments.install, Audits.reset_*) and goes back to the menu;
 - SWITCH TEST runs live as the ROM's loop [0x0104cae4] (SwitchTest below), the single and cycling coil and flash
   lamp tests as theirs [0x01046f4c] [0x01046a98] [0x010492b8] [0x01048de4] (SingleCoilTest and its variants);
-- every other screen (the other tests, help, USB) shows the texts the ROM drew for it in the walk.
+- the lamp tests [0x0104a6c8] [0x01049cf4] [0x0104aeac] [0x0104a0d0] (LampTest below) and the knocker, trough,
+  sound, dot matrix, active switch and Optimus motor tests (tf/service_tests.py) as theirs too;
+- every other screen (help, USB, the remaining pages) shows the texts the ROM drew for it in the walk.
 The menu items hidden at factory settings (service_menu.json shown_only_if: tournament, software errors) stay
 hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1).
 """
@@ -76,6 +78,8 @@ class ServiceMode(Mode):
     def mode_start(self, **kwargs):
         self.os = self.machine.tf
         self.os.in_service = True
+        self.os.lamps.leff_code(2, _leff_all_off)
+        self.os.leff_start(2)               # start_deff_3 [0x0000ed90]: leff 2 (leff_002 [0x0002b238]) over the lamps
         self.data = service_data()
         self.stack = []
         self.page = None
@@ -92,7 +96,7 @@ class ServiceMode(Mode):
         def handler():
             if self.page is not None and self.page["kind"] == "switch_test" and call != BEEP_BACK:
                 return                      # in the switch test only BACK acts [0x0104cae4]; the others are switches
-            if self.page is not None and self.page["kind"] == "coil_test":
+            if self.page is not None and self.page["kind"] in ("coil_test", "lamp_test", "loop"):
                 self.page["records"][call] += 1     # the button handlers post their records; the test's pass reads them
                 return
             self.os.sound(call)
@@ -102,10 +106,13 @@ class ServiceMode(Mode):
     def mode_stop(self, **kwargs):
         self._close_switch_test()
         self._close_coil_test()
+        self._close_lamp_test()
+        self._close_loop()
         if getattr(self, "_custom_timer", None):
             self.machine.clock.unschedule(self._custom_timer)
             self._custom_timer = None
         self.os.in_service = False
+        self.os.leff_stop(2)
         self.os.media.service_hide()
         if "attract" in self.machine.modes and not self.machine.modes["attract"].active and not self.os.game:
             self.machine.modes["attract"].start()
@@ -199,6 +206,10 @@ class ServiceMode(Mode):
             self._open_coil_test(path, CyclingCoilTest)
         elif text == "CYCLING FLASH LAMP TEST":
             self._open_coil_test(path, CyclingFlashLampTest)
+        elif text in LAMP_TESTS:
+            self._open_lamp_test(path, LAMP_TESTS[text])
+        elif text in LOOP_TESTS:
+            self._open_loop(path, text)
         elif text in ("STANDARD ADJUSTMENTS", "FEATURE ADJUSTMENTS"):
             group = text.split()[0].lower()
             nums = self.os.adj.menu(group)
@@ -408,6 +419,85 @@ class ServiceMode(Mode):
         page["stop"] = stop_task
         tick()
 
+    def _open_lamp_test(self, path, kind):
+        """The lamp tests [0x0104a6c8] [0x01049cf4] [0x0104aeac] [0x0104a0d0]: one pass every 2 ticks; the button
+        records are read in the pass; the test's leff (3 to 6) lights the lamps."""
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        test = kind()
+        for leff_id, fn in LAMP_LEFFS.items():
+            self.os.lamps.leff_code(leff_id, fn)
+        records = {BEEP_BACK: 0, BEEP_MINUS: 0, BEEP_PLUS: 0, BEEP_SELECT: 0}
+        page = {"kind": "lamp_test", "test": test, "path": path, "records": records, "draw": []}
+        self.page = page
+
+        def tick(*_):
+            if self.page is not page:
+                return
+            pressed = {call: bool(records[call]) for call in (BEEP_BACK, BEEP_MINUS, BEEP_PLUS)}
+            for call in (BEEP_MINUS, BEEP_PLUS):
+                records[call] = max(records[call] - 1, 0)
+            draw, actions = test.step(pressed)
+            for kind_, arg in actions:
+                if kind_ == "sound":
+                    self.os.sound(arg)
+                elif kind_ == "leff":
+                    self.os.leff_stop(arg[0])           # task_group_kill_b7e4(leff)
+                    self.os.leff_start(arg[0], lamp=arg[1])
+                elif kind_ == "kill":
+                    self.os.leff_stop(arg)
+            page["draw"] = draw
+            if test.done:
+                self._close_lamp_test()
+                self.page = None
+            self.show()
+        page["timer"] = self.machine.clock.schedule_interval(tick, LampTest.PASS_TICKS * TICK)
+        tick()
+
+    def switch_numbers(self):
+        """{ROM switch number: MPF switch}: the config numbers, "Dn" as 0x80 + n."""
+        out = {}
+        for sw in self.machine.switches.values():
+            num = str(sw.config.get("number", ""))
+            if num.isdigit():
+                out[int(num)] = sw
+            elif num[:1] == "D" and num[1:].isdigit():
+                out[0x80 + int(num[1:])] = sw
+        return out
+
+    def _open_loop(self, path, text):
+        """A test of tf/service_tests.py: its pass every PASS_TICKS ticks, the button records read in the pass."""
+        from tf import service_tests as st                # noqa: PLC0415
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        kind = LOOP_TESTS[text]
+        cls = getattr(st, kind)
+        test = cls(self, self.switch_numbers()) if kind in ("TroughTest", "ActiveSwitchTest") else cls(self)
+        records = {BEEP_BACK: 0, BEEP_MINUS: 0, BEEP_PLUS: 0, BEEP_SELECT: 0}
+        page = {"kind": "loop", "test": test, "path": path, "records": records, "draw": []}
+        self.page = page
+
+        def tick(*_):
+            if self.page is not page:
+                return
+            page["draw"] = test.step(records)
+            if test.done:
+                self._close_loop()
+                self.page = None
+            self.show()
+        page["timer"] = self.machine.clock.schedule_interval(tick, test.PASS_TICKS * TICK)
+        tick()
+
+    def _close_loop(self):
+        page = getattr(self, "page", None)
+        if page is not None and page.get("kind") == "loop":
+            self.machine.clock.unschedule(page["timer"])
+            page["test"].close()
+
+    def _close_lamp_test(self):
+        page = getattr(self, "page", None)
+        if page is not None and page.get("kind") == "lamp_test":
+            self.machine.clock.unschedule(page["timer"])
+            self.os.leff_stop(page["test"].LEFF)
+
     def _close_coil_test(self):
         page = getattr(self, "page", None)
         if page is not None and page.get("kind") == "coil_test":
@@ -461,7 +551,7 @@ class ServiceMode(Mode):
             return [rd.text(self.current()["text"], MENU_FONT, 64, MENU_Y, 2)]
         if page["kind"] == "custom":
             return page["editor"].draw()
-        if page["kind"] in ("switch_test", "coil_test"):
+        if page["kind"] in ("switch_test", "coil_test", "lamp_test", "loop"):
             return page["draw"]
         if page["kind"] == "adj":
             if not page["list"]:
@@ -900,3 +990,203 @@ class CyclingFlashLampTest(SingleCoilTest):
     TITLE = "CYCLING FLASH LAMP TEST"
     MASK, WANT = 0x1004, 4
     CYCLING = True
+
+
+def _lamp_tables():
+    """The lamp wire tables, array descriptors in RAM: 0x00030c14 (10 rows: wire colour, connector pin, driver) and
+    0x00030c20 (8 columns), entries of 4 messages at 0x040d11c8 / 0x040d1220 (code; read in the ROM's RAM after
+    its start-up, rom/rom_data/io/lamp_wires.csv)."""
+    import csv                                   # noqa: PLC0415
+    rows, cols = {}, {}
+    with open(os.path.join(ROOT, "rom", "rom_data", "io", "lamp_wires.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            (rows if r["table"] == "row" else cols)[int(r["index"])] = (r["wire"], r["pin"], r["driver"])
+    return rows, cols
+
+
+def lamp_names():
+    import csv                                   # noqa: PLC0415
+    with open(os.path.join(ROOT, "rom", "rom_data", "io", "lamps.csv"), encoding="utf-8") as f:
+        return {int(r["lamp"]): r["name"] for r in csv.DictReader(f)}
+
+
+class LampTest:
+    """The lamp tests' common screen: the lamp grid of the ROM's lamp tests (images 0xaa 28 x 1 above and below,
+    0xac 26 x 3 once per row of 8 lamps, 10 rows; centred in the 32 rows: y0 = (32 - (3 x 10 + 1 x 2)) >> 1),
+    a 3 x 3 dot (image 0xab) per lamp shown at x 2 + 3 x ((n - 1) & 7), y y0 + 1 + 3 x ((n - 1) >> 3)
+    (draw_bitmap_bits_4a5f8 [0x0104a5f8]), the texts centred at x 26 + (128 - 26) / 2 = 77.
+    lamp_rec_of_7578 [0x00007578]: lamp n is record n - 1, row (n - 1) >> 3, column bit (n - 1) & 7."""
+    PASS_TICKS = 2
+    LINE, ROW, DOT = 0xaa, 0xac, 0xab
+    LEFF = 0
+    COUNT = 0
+
+    def __init__(self):
+        sizes = _image_sizes()
+        self.line_h = sizes[self.LINE][1]
+        self.row_w, self.row_h = sizes[self.ROW]
+        self.dot_w = sizes[self.DOT][0]
+        self.y0 = (0x20 - (self.row_h * 10 + self.line_h * 2)) >> 1
+        self.x_text = self.row_w + (0x80 - self.row_w) // 2
+        self.names = lamp_names()
+        self.rows, self.cols = _lamp_tables()
+        self.index = 1
+        self.done = False
+        self.started = False
+
+    def grid(self):
+        draw = [rd.image(self.LINE, 0, self.y0)]
+        y = self.y0 + self.line_h
+        for _ in range(10):
+            draw.append(rd.image(self.ROW, 1, y))
+            y += self.row_h
+        draw.append(rd.image(self.LINE, 0, y))
+        return draw
+
+    def dot(self, lamp):
+        n = lamp - 1
+        return rd.image(self.DOT, 2 + self.dot_w * (n & 7), self.y0 + self.line_h + self.row_h * (n >> 3))
+
+    def wires(self, lamp):
+        """lamp_row_mask_7604 [0x00007604] (column bit + 1, table 0x00030c20) / lamp_column_of_75cc [0x000075cc]
+        (row + 1, table 0x00030c14): the record's own wire messages (+4, +6) are 0 for every lamp."""
+        n = lamp - 1
+        return "{} / {}".format(self.cols[(n & 7) + 1][0], self.rows[(n >> 3) + 1][0])
+
+    def lamps(self):
+        return [self.index]
+
+    def texts(self):
+        return []
+
+    def step(self, pressed):
+        """One pass: (draw list, actions). The single, row and column tests: the leff on the current lamp(s) from
+        the start; MINUS / PLUS (sounds 0x00a / 0x00b) the previous / next one, wrapping, the leff started again
+        on it; BACK (sound 0x009) kills the leff and leaves."""
+        actions = []
+        if not self.started:
+            self.started = True
+            actions.append(("leff", (self.LEFF, self.lamps())))
+        if pressed[BEEP_BACK]:
+            self.done = True
+            return [], actions + [("sound", BEEP_BACK), ("kill", self.LEFF)]
+        draw = self.grid() + [self.dot(n) for n in self.lamps()] + self.texts()
+        if pressed[BEEP_MINUS]:
+            self.index = self.index - 1 if self.index > 1 else self.COUNT
+            actions += [("sound", BEEP_MINUS), ("leff", (self.LEFF, self.lamps()))]
+        if pressed[BEEP_PLUS]:
+            self.index = self.index + 1 if self.index < self.COUNT else 1
+            actions += [("sound", BEEP_PLUS), ("leff", (self.LEFF, self.lamps()))]
+        return draw, actions
+
+
+class SingleLampTest(LampTest):
+    """SINGLE LAMP TEST, start_leff_3 [0x0104a6c8]: "SINGLE LAMP TEST" (msg 0x126, font 2, y 8), the lamp's name
+    (font 0, y 0xf), "LAMP #%d" (msg 0x127, font 0, y 0x15), its wires "%s / %s" (font 2, y 0x1b); lamps 1-0x50;
+    leff 3 (leff_003 [0x0104a464]: every lamp off in its layer, the lamp toggled every 8 ticks)."""
+    LEFF, COUNT = 3, 0x50
+
+    def texts(self):
+        x = self.x_text
+        return [rd.text("SINGLE LAMP TEST", 2, x, 8, 2), rd.text(self.names.get(self.index, ""), 0, x, 0xf, 2),
+                rd.text("LAMP #{}".format(self.index), 0, x, 0x15, 2), rd.text(self.wires(self.index), 2, x, 0x1b, 2)]
+
+
+class RowLampTest(LampTest):
+    """LAMP ROW TEST, start_leff_5 [0x0104aeac]: "ROW LAMPS TEST" (msg 0x12a, fit fonts 2, 0 in 100 dots, y 8),
+    "LAMP ROW #%d" (msg 0x12b, font 0, y 0xf), the row's wire colour (font 2, y 0x15) and "%s / %s" of its
+    connector pin and driver (font 2, y 0x1b), table 0x00030c14; rows 1-10, lamps 8 (r - 1) + 1 to 8 r
+    (column_first_switch_4adf8, times_8_4ae10); leff 5 (leff_005 [0x0104ae28]) toggles them every 8 ticks."""
+    LEFF, COUNT = 5, 10
+    TITLE = "ROW LAMPS TEST"
+
+    def lamps(self):
+        return list(range(8 * (self.index - 1) + 1, 8 * self.index + 1))
+
+    def entry(self):
+        return self.rows[self.index]
+
+    def texts(self):
+        x = self.x_text
+        wire, pin, driver = self.entry()
+        label = "LAMP ROW #{}" if self.LEFF == 5 else "LAMP COLUMN #{}"
+        return [rd.fit(self.TITLE, x, 8, (2, 0), 2, width=100), rd.text(label.format(self.index), 0, x, 0xf, 2),
+                rd.text(wire, 2, x, 0x15, 2), rd.text("{} / {}".format(pin, driver), 2, x, 0x1b, 2)]
+
+
+class ColumnLampTest(RowLampTest):
+    """LAMP COLUMN TEST, start_leff_6 [0x0104a0d0]: "COLUMN LAMPS TEST" (msg 0x12c), "LAMP COLUMN #%d" (msg 0x12d),
+    table 0x00030c20; columns 1-8, lamps c, c + 8, ... c + 0x48 (bit_index_49fb8, switch_row_letter_49ff8,
+    plus_8_4a040); leff 6 (leff_006 [0x0104a04c])."""
+    LEFF, COUNT = 6, 8
+    TITLE = "COLUMN LAMPS TEST"
+
+    def lamps(self):
+        return list(range(self.index, self.index + 0x49, 8))
+
+    def entry(self):
+        return self.cols[self.index]
+
+
+class AllLampsTest(LampTest):
+    """TEST ALL LAMPS, start_leff_4 [0x01049cf4]: the grid and "ALL LAMPS TEST" (msg 0x128, font 2, y 0xb); then
+    until BACK: leff 4 (leff_004 [0x01049cac]: every lamp on in its layer) with every lamp's dot and "ALL LAMPS ON"
+    (msg 0x129, font 8, y 0x18) for 15 passes, then leff 4 killed and no dots for 15 passes. MINUS / PLUS do
+    nothing."""
+    LEFF = 4
+    HALF = 0xf
+
+    def __init__(self):
+        LampTest.__init__(self)
+        self.n = 0
+
+    def step(self, pressed):
+        if pressed[BEEP_BACK]:
+            self.done = True
+            return [], [("sound", BEEP_BACK), ("kill", self.LEFF)]
+        actions = []
+        phase = self.n % (2 * self.HALF)
+        if phase == 0:
+            actions.append(("leff", (self.LEFF, None)))
+        elif phase == self.HALF:
+            actions.append(("kill", self.LEFF))
+        self.n += 1
+        draw = self.grid() + [rd.text("ALL LAMPS TEST", 2, self.x_text, 0xb, 2)]
+        if phase < self.HALF:
+            draw += [self.dot(n) for n in range(1, 0x51)] + [rd.text("ALL LAMPS ON", 8, self.x_text, 0x18, 2)]
+        return draw, actions
+
+
+def _leff_blink(task):
+    """leff_003 / leff_005 / leff_006 [0x0104a464] [0x0104ae28] [0x0104a04c]: a layer owning every lamp, all off
+    (lamp_row_fill_7b74 0xff on the mask), the task's lamp(s) toggled (lamp_bit_flash_78dc) every 8 ticks."""
+    lamps_ = task.data.get("lamp") or []
+    for n in range(1, 0x51):
+        task.set(n, False)
+
+    def run(t):
+        for n in lamps_:
+            t.toggle(n)
+        t.sleep(8, run)
+    run(task)
+
+
+def _leff_all_off(task):
+    """leff_002 [0x0002b238], the service menu's (start_deff_3 [0x0000ed90]), priority 253: a layer owning every
+    lamp (lamp_row_fill_7b74 0xff on the mask), all off, until killed; the lamp tests' leffs (254) draw over it."""
+    for n in range(1, 0x51):
+        task.set(n, False)
+
+
+def _leff_all_on(task):
+    """leff_004 [0x01049cac]: a layer owning every lamp, all on (lamp_rows_fill_7b24 0xff), until killed."""
+    for n in range(1, 0x51):
+        task.set(n, True)
+
+
+LOOP_TESTS = {"KNOCKER TEST": "KnockerTest", "BALL TROUGH TEST": "TroughTest", "SOUND/SPEAKER TEST": "SoundTest",
+              "DOT MATRIX TEST": "DotMatrixTest", "ACTIVE SWITCH TEST": "ActiveSwitchTest",
+              "OPTIMUS PRIME MOTOR TEST": "MotorTest"}
+LAMP_LEFFS = {3: _leff_blink, 4: _leff_all_on, 5: _leff_blink, 6: _leff_blink}
+LAMP_TESTS = {"SINGLE LAMP TEST": SingleLampTest, "TEST ALL LAMPS": AllLampsTest, "LAMP ROW TEST": RowLampTest,
+              "LAMP COLUMN TEST": ColumnLampTest}

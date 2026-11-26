@@ -44,6 +44,9 @@ class OptimusMech(Feature):
         super().__init__(os_)
         self.moving = None              # target position while the motor runs
         self._stop = None
+        self.claimed = False            # the service test holds the motor (motor_claim [0x01025844])
+        self.failed = None              # the target of a move that ran out of time (0x0003520c)
+        self.last = DOWN                # the position last reached (0x00035208)
         self.virtual = "virtual" in type(self.machine.default_platform).__name__.lower()
         sc = self.machine.switch_controller
         for pos, name in SWITCH.items():
@@ -87,7 +90,7 @@ class OptimusMech(Feature):
 
     def _check(self, **kwargs):
         """[0x010253b8]: start a move when the wanted position is not the one the figure is at."""
-        if self.moving is not None or self.os.state & 0x300 or MOTOR not in self.machine.coils:
+        if self.moving is not None or self.claimed or self.os.state & 0x300 or MOTOR not in self.machine.coils:
             return
         want = self.wanted()
         if self.position() != want:
@@ -99,13 +102,27 @@ class OptimusMech(Feature):
         if self.moving is None and MOTOR in self.machine.coils:
             self._move("search")
 
+    def goto(self, target):
+        """motor_goto_check (the service test): a move to `target`, False when the motor cannot start one."""
+        if self.moving is not None or MOTOR not in self.machine.coils or self.os.adj_value(85) == 1:
+            return False
+        self._move(target)
+        return True
+
     def _move(self, target):
         if self.os.adj_value(85) == 1:              # motor_goto [0x00016f88]: the disabled motor does not move
             return
+        self.failed = None
         self.moving = target
         self.machine.coils[MOTOR].enable()
         self.os.trace.log("coil", coil=MOTOR_NUM, on=1)
-        self._stop = self.machine.clock.schedule_once(lambda: self._motor_off(), MOVE_TICKS * TICK)
+        self._stop = self.machine.clock.schedule_once(lambda: self._timed_out(), MOVE_TICKS * TICK)
+
+    def _timed_out(self):
+        """motor_move_task [0x00016c88]: the time limit without the target switch: the move failed."""
+        if self.moving in SWITCH:
+            self.failed = self.moving
+        self._motor_off()
 
     def _set_switches(self, pos):
         sc = self.machine.switch_controller
@@ -114,6 +131,7 @@ class OptimusMech(Feature):
                 sc.process_switch(name, 1 if p == pos else 0, logical=True)
 
     def _arrived(self, pos):
+        self.last = pos
         if self.moving == pos:
             if self._stop is not None:
                 self.machine.clock.unschedule(self._stop)

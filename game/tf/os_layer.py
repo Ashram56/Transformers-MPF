@@ -900,8 +900,10 @@ class TfOS(CustomCode):
         step(tries)
 
     def sound_stop(self, call):
-        """FUN_000257b4(call): stop the sample a sound call plays (Tron: the arcade reel's roll)."""
+        """snd_chan_257b4 [0x000257b4](call): stop the sample a sound call plays; its voices are free again."""
         self.media.sound_stop(call)
+        if getattr(self, "_slots", None):
+            self._slots = [s for s in self._slots if s["call"] != call]
 
     def sound_chain(self, call, after):
         """snd_play_chain [0x00025284]: play `call` when the sample started by an earlier sound() ends."""

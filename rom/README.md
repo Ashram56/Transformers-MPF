@@ -21,7 +21,7 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | Path | What it is |
 |---|---|
 | `rom_data/rom_map.json` | Memory map, the OS resource block, and the OS **table registry** (43 tables: address, count, record size, name) |
-| `rom_data/io/` | `switches.csv` (64 matrix), `dedicated_switches.csv` (D1-D32 with PinMAME numbers), `coils.csv` (35, flags decoded, test/ball-search times, wire colours), `lamps.csv` (80) |
+| `rom_data/io/` | `switches.csv` (64 matrix), `dedicated_switches.csv` (D1-D32 with PinMAME numbers), `coils.csv` (35, flags decoded, test/ball-search times, wire colours), `lamps.csv` (80), `lamp_wires.csv` (the lamp tests' row and column wire tables 0x00030c14 / 0x00030c20: wire colour, connector pin, driver; `tools/extract_lamp_wires.py`) |
 | `rom_data/sound/` | `samples.csv` (668 directory entries: kind, rate, duration, ROM length check, loop point, stream offsets), `sound_calls.csv` (705 calls: sample list, raw fields) |
 | `rom_data/dmd/images.csv` | All 10,212 images: header fields and file offset |
 | `rom_data/dmd/deffs.csv` | The 155 display effects (deffs): function, flags, priority, background flag, capture summary |

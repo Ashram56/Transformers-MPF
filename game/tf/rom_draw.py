@@ -52,8 +52,17 @@ def fit(t, x=64, y=0, fonts_list=(2, 0), flags=2, width=WIDTH):
     return text(t, font, x, y, flags)
 
 
-def image(n, x, y):
-    return {"i": n, "x": x, "y": y}
+def image(n, x, y, inv=False):
+    """inv: drawn through the palette 0x040c95c8 of the service tests (0 -> 15: the image's empty dots lit)."""
+    item = {"i": n, "x": x, "y": y}
+    if inv:
+        item["inv"] = True
+    return item
+
+
+def checker(phase):
+    """The DOT MATRIX TEST's checkerboard [0x01047a50]: dot (x, y) lit when x + y + phase is odd."""
+    return {"chk": phase}
 
 
 def box(x, y, w, h, level=15):

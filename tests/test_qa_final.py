@@ -198,3 +198,169 @@ class TestFinalPass(QaCase):
         self.hit_and_release_switch("s_back")
         self.advance_time_and_run(0.1)
         self.assertIsNone(mode.page)
+
+    def _lamp_page(self, text):
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("LAMP MENU", "MAIN MENU / LAMP MENU")
+        mode._open_page({"text": text})
+        self.advance_time_and_run(0.1)
+        return mode, rom_draw
+
+    def test_f053_single_lamp_test(self):
+        """SINGLE LAMP TEST [0x0104a6c8]: the lamp, LAMP #n, its column / row wires (tables 0x00030c20 / 0x00030c14);
+        leff 3 blinks it every 8 ticks; MINUS wraps to lamp 0x50; BACK leaves."""
+        mode, rd = self._lamp_page("SINGLE LAMP TEST")
+        self.assertEqual(["SINGLE LAMP TEST", "START BUTTON", "LAMP #1", "YEL-BRN / RED-BRN"], rd.lines_of(mode.draw()))
+        self.assertIn(3, [e["id"] for e in self.tf.trace.of("leff_start")])
+        lamps = self.tf.lamps
+        seen = set()
+        for _ in range(12):
+            seen.add(lamps.composite(1))
+            self.assertFalse(lamps.composite(2))
+            self.advance_time_and_run(4 * TICK)
+        self.assertEqual({True, False}, seen)
+        self.hit_and_release_switch("s_minus")
+        self.advance_time_and_run(0.1)
+        self.assertEqual("LAMP #80", rd.lines_of(mode.draw())[2])
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
+
+    def test_f054_lamp_row_column_all_tests(self):
+        """LAMP ROW TEST [0x0104aeac] (rows of 8 lamps, wire, pin and driver), LAMP COLUMN TEST [0x0104a0d0] and
+        TEST ALL LAMPS [0x01049cf4] (15 passes on, 15 off)."""
+        mode, rd = self._lamp_page("LAMP ROW TEST")
+        self.assertEqual(["ROW LAMPS TEST", "LAMP ROW #1", "RED-BRN", "J12-P1 / Q33"], rd.lines_of(mode.draw()))
+        self.assertEqual(8, len([d for d in mode.draw() if d.get("i") == 0xab]))
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        mode._open_page({"text": "LAMP COLUMN TEST"})
+        self.advance_time_and_run(0.1)
+        self.hit_and_release_switch("s_plus")
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["COLUMN LAMPS TEST", "LAMP COLUMN #2", "YEL-RED", "J13-P8 / U16"], rd.lines_of(mode.draw()))
+        self.assertEqual(10, len([d for d in mode.draw() if d.get("i") == 0xab]))
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        mode._open_page({"text": "TEST ALL LAMPS"})
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["ALL LAMPS TEST", "ALL LAMPS ON"], rd.lines_of(mode.draw()))
+        self.assertTrue(all(self.tf.lamps.composite(n) for n in range(1, 0x51)))
+        self.advance_time_and_run(0x1e * TICK + 0.05)
+        self.assertEqual(["ALL LAMPS TEST"], rd.lines_of(mode.draw()))
+        self.assertFalse(any(self.tf.lamps.composite(n) for n in range(1, 0x51)))
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
+
+    def _diag_page(self, text):
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("DIAGNOSTICS", "MAIN MENU / DIAGNOSTICS")
+        mode._open_page({"text": text})
+        self.advance_time_and_run(0.1)
+        return mode, rom_draw
+
+    def _leave(self, mode):
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
+
+    def test_f055_knocker_test(self):
+        """KNOCKER TEST [0x010405ec]: SELECT queues a forced knock (adj_q24_option(2, 1) [0x00019378]): sound 0x019
+        and ACTIVATING KNOCKER while it is pending."""
+        mode, rd = self._diag_page("KNOCKER TEST")
+        self.assertEqual(["KNOCKER TEST", "PRESS 'SELECT' TO ACTIVATE", "KNOCKER"], rd.lines_of(mode.draw()))
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        self.assertIn("0x019", self.sounds())
+        self.assertIn("ACTIVATING KNOCKER", rd.lines_of(mode.draw()))
+        self.advance_time_and_run(1)
+        self.assertNotIn("ACTIVATING KNOCKER", rd.lines_of(mode.draw()))
+        self._leave(mode)
+
+    def test_f056_sound_speaker_test(self):
+        """SOUND/SPEAKER TEST [0x01047ee0]: the 6 entries of 0x040e25d0; SELECT plays the call (0x01f first), BACK
+        while it plays stops it and stays, BACK again leaves."""
+        mode, rd = self._diag_page("SOUND/SPEAKER TEST")
+        self.assertEqual(["SOUND / SPEAKER TEST", "MUSIC: DECEPTICON", "#1", "PRESS 'SELECT' TO PLAY"],
+                         rd.lines_of(mode.draw()))
+        self.hit_and_release_switch("s_minus")
+        self.advance_time_and_run(0.1)
+        self.assertEqual("#6", rd.lines_of(mode.draw())[2])
+        self.hit_and_release_switch("s_plus")
+        self.advance_time_and_run(0.1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        self.assertIn("0x01f", self.sounds())
+        self.assertTrue(self.tf.sound_playing(0x01f))
+        if self.tf.sound_playing(0x01f):
+            self.assertEqual("PLAYING SOUND #1", rd.lines_of(mode.draw())[-1])
+            self.hit_and_release_switch("s_back")
+            self.advance_time_and_run(0.1)
+            self.assertIsNotNone(mode.page)
+            self.assertFalse(self.tf.sound_playing(0x01f))
+        self._leave(mode)
+
+    def test_f057_trough_dot_matrix_tests(self):
+        """BALL TROUGH TEST [0x010402c0]: the trough and shooter switches in boxes, the closed ones drawn through the
+        palette; SELECT serves a ball to the shooter lane. DOT MATRIX TEST [0x01047a50]: a column sweep every 6
+        ticks."""
+        self.fill_trough()
+        mode, rd = self._diag_page("BALL TROUGH TEST")
+        draw = mode.draw()
+        self.assertEqual("TROUGH TEST", rd.lines_of(draw)[0])
+        boxes = {(d["x"], d["y"]): d.get("inv", False) for d in draw if d.get("i") == 0xad}
+        self.assertEqual(6, len(boxes))                 # 5 trough switches (the jam at 0x5f, 0), the shooter lane
+        self.assertTrue(boxes[(95, 15)])                # trough #1 holds a ball
+        self.assertFalse(boxes[(112, 16)])              # the shooter lane is empty
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(3)
+        draw = mode.draw()
+        self.assertTrue({(d["x"], d["y"]): d.get("inv", False) for d in draw if d.get("i") == 0xad}[(112, 16)])
+        self._leave(mode)
+        mode._open_page({"text": "DOT MATRIX TEST"})
+        self.advance_time_and_run(6 * TICK * 3 + 0.01)
+        bars = [d for d in mode.draw() if "r" in d and d["r"][2] == 1]
+        self.assertEqual(1, len(bars))
+        self.assertGreaterEqual(bars[0]["r"][0], 2)
+        self._leave(mode)
+
+    def test_f058_active_switch_and_motor_tests(self):
+        """ACTIVE SWITCH TEST [0x0104b95c]: the first closed switch named; OPTIMUS PRIME MOTOR TEST [0x01025844]:
+        PLUS moves the figure up (coil 30), the move times out on the virtual figure and reads FAILED."""
+        self.fill_trough()
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("SWITCH MENU", "MAIN MENU / SWITCH MENU")
+        mode._open_page({"text": "ACTIVE SWITCH TEST"})
+        self.advance_time_and_run(0.1)
+        from tf import rom_draw as rd
+        lines = rd.lines_of(mode.draw())
+        self.assertEqual("ACTIVE SWITCHES", lines[0])
+        self.assertNotEqual("NONE", lines[1])           # the trough switches are closed
+        self._leave(mode)
+        mode._open_menu("GAME-SPECIFIC TESTS", "MAIN MENU / GAME-SPECIFIC TESTS")
+        mode._open_page({"text": "OPTIMUS PRIME MOTOR TEST"})
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["OPTIMUS PRIME MOTOR TEST", "44", "43", "USE -/+ OR 'SELECT' TO TEST"],
+                         rd.lines_of(mode.draw()))
+        self.hit_and_release_switch("s_plus")
+        self.advance_time_and_run(0.1)
+        self.assertIn("MOVING TO SWITCH 43", rd.lines_of(mode.draw()))
+        self.advance_time_and_run(468 * TICK + 0.2)
+        self.assertIn("MOVE TO SWITCH 43: FAILED", rd.lines_of(mode.draw()))
+        self._leave(mode)
+        self.assertFalse(self.tf.features_by_name["optimus_mech"].claimed)

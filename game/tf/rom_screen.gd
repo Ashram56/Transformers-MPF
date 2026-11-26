@@ -4,7 +4,9 @@ extends Control
 ## - {"t", "f", "x", "y", "a", "l"}: text t in ROM font f (game/fonts), baseline row y, a = flags (1 left edge
 ##   at x, 2 centred on x, 4 right edge at x), measured as the ROM measures it, at palette level l (0-15);
 ## - {"i", "x", "y"}: ROM image i (rom/mpf_package/media/rom_images_all.zip, img_NNNNN.png), top left at x, y;
-## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15).
+## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15);
+## - {"i", "x", "y", "inv": true}: the image drawn through the service tests' palette (its empty dots lit);
+## - {"chk": phase}: the DOT MATRIX TEST's checkerboard.
 
 const RomFonts = preload("res://tf/rom_fonts.gd")
 const DMD_COLOR := Color(1, 0.45, 0.05, 1)
@@ -69,7 +71,18 @@ func _draw_items(items: Array) -> void:
 				r.size = tex.get_size()
 				r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 				r.modulate = DMD_COLOR
+				if d.get("inv", false):
+					# drawn through the palette 0 -> 15 (the service tests' closed switch boxes, palette
+					# 0x040c95c8): the image's empty dots lit behind its own dots
+					var back := ColorRect.new()
+					back.color = DMD_COLOR
+					back.position = r.position
+					back.size = r.size
+					add_child(back)
+					r.modulate = Color(0, 0, 0, 1)
 				add_child(r)
+		elif d.has("chk"):
+			add_child(_checker(int(d["chk"])))
 		elif d.has("r"):
 			var rect := ColorRect.new()
 			var level := int(d.get("l", 15)) / 15.0
@@ -77,6 +90,19 @@ func _draw_items(items: Array) -> void:
 			rect.position = Vector2(int(d["r"][0]), int(d["r"][1]))
 			rect.size = Vector2(int(d["r"][2]), int(d["r"][3]))
 			add_child(rect)
+
+
+func _checker(phase: int) -> TextureRect:
+	## The DOT MATRIX TEST's checkerboard [0x01047a50]: dot (x, y) lit when (x + y + phase) is odd.
+	var img := Image.create_empty(128, 32, false, Image.FORMAT_RGBA8)
+	for y in 32:
+		for x in 128:
+			img.set_pixel(x, y, DMD_COLOR if (x + y + phase) % 2 == 1 else Color(0, 0, 0, 1))
+	var r := TextureRect.new()
+	r.texture = ImageTexture.create_from_image(img)
+	r.size = Vector2(128, 32)
+	r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	return r
 
 
 func _add_text(s: String, font_id: int, x: int, y: int, flags: int, level: int = 15) -> void:
