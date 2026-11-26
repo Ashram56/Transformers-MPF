@@ -171,3 +171,17 @@ class TestMediumFixes(TfTestCase):
         self.advance_time_and_run(2.1)
         self.assertEqual(n + 1, self.sounds().count(0x145))
         self.assertEqual(1, self.tf.pd.hint_index)
+
+    def test_intro_flipper_skip(self):
+        """[0x01006480]: one flipper held, the other pressed, ends a show deff (QA V-ENG4)."""
+        self.start()
+        self.advance_time_and_run(4)
+        self.tf.show(0x73, 140, values=[1])
+        self.advance_time_and_run(0.3)
+        self.assertEqual(140, self.tf.display.fg)
+        self.hit_switch_and_run("s_l_flipper_button", 0.1)
+        self.hit_and_release_switch("s_r_flipper_button")
+        self.advance_time_and_run(0.1)
+        self.release_switch_and_run("s_l_flipper_button", 0.1)
+        self.assertNotEqual(140, self.tf.display.fg)
+        self.assertIsNone(self.tf.display.show)

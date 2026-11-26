@@ -134,10 +134,21 @@ class Show:
         self.on_start, self.on_end, self.queued_at, self.deff_args = on_start, on_end, queued_at, deff_args
 
 
+# the show deffs started by task_sleep_user_6480 [0x01006480] (battle and multiball intros, 140, 149, 146, 43):
+# one flipper button held and the other pressed ends the deff (deff_stop) while its priority is above 0x20 (QA V-ENG4)
+SKIPPABLE = frozenset((0x8c, 0x45, 0x4b, 0x51, 0x54, 0x55, 0x78, 0x6c, 0x68, 0x5c, 0x74, 0x70, 100, 0x60, 0x39, 0x3f,
+                       0x95, 0x2b, 0x92))
+FLIPPER_BUTTONS = ("s_l_flipper_button", "s_r_flipper_button")
+
+
 class Display:
 
     def __init__(self, os_):
         self.os = os_
+        sc = os_.machine.switch_controller
+        for i, name in enumerate(FLIPPER_BUTTONS):
+            if name in os_.machine.switches:
+                sc.add_switch_handler(name, (lambda other: lambda: self._flipper_skip(other))(FLIPPER_BUTTONS[1 - i]))
         self.media = media_table.load(PKG)
         self.prio, self.background = deff_table()
         self.flags = deff_flags()
@@ -290,6 +301,15 @@ class Display:
             if self.os.in_play and (deff_id != 19 or long_hold):
                 self._start_rule(deff_id, on_start)
             self._pump()
+
+    def _flipper_skip(self, other):
+        """[0x01006480] loop: a button pressed while the other is held stops the show's deff (0x00006860 /
+        0x00006878 read the buttons, 0x00006894 held, 0x000068b4 newly pressed)."""
+        sw = self.os.machine.switches.get(other) if hasattr(self.os.machine.switches, "get") else None
+        if sw is None or not sw.state or self.fg is None:
+            return
+        if self.show and self.show.deff_id == self.fg and self.fg in SKIPPABLE and self.fg_prio > HOLD_PRIORITY:
+            self.os.deff_stop(self.fg)
 
     def redraw(self, deff_id, **args):
         """A running deff draws new state (deff 40 after a side change): the ROM's deff function keeps running and
