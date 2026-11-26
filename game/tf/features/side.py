@@ -25,8 +25,7 @@ CHOICE_DEFF, CHOSEN_DEFF = 40, 41
 CHOICE_END_TICKS = 31              # task 0xc9's sleep before deff 41 (code)
 TOGGLE_SOUND = 0x257
 CHOSEN_SOUND = {AUTOBOT: 0x57, DECEPTICON: 0x58}
-BALL_START_LEFFS = (92,)         # leff 104 (lit battle) is the battles rule (tf/features/battles.py)
-CHOICE_LEFF = 95
+CHOICE_LEFF = 95                 # rule side_choice_running [0x01033e84] (QA L-095); 92 is skill_shot.py's rule
 
 
 class Side(Feature):
@@ -38,6 +37,7 @@ class Side(Feature):
         self.choosing = False
         os_.display.add_rule(lambda: self.choosing, CHOICE_DEFF, music=lambda: MUSIC["choose"][self.side()],
                              priority=0xff)
+        self._register_rules()
         sc = self.machine.switch_controller
         sc.add_switch_handler("s_shooter_lane", self._launched, state=0)
         for name in ("s_l_flipper_button", "s_r_flipper_button"):
@@ -59,6 +59,11 @@ class Side(Feature):
     def ball_end(self):
         self.choosing = False
 
+    def _register_rules(self):
+        os_ = self.os
+        # leff rule side_choice_running [0x01033e84] -> leff 95 (registered at [0x01036000] list 3, mask 0x20)
+        os_.lamp_rule(lambda: bool(os_.game) and self.choosing, leff=CHOICE_LEFF)
+
     def side_choosing(self):
         return self.choosing or None
 
@@ -71,10 +76,8 @@ class Side(Feature):
 
     def ball_start_media(self):
         os_ = self.os
-        for leff in BALL_START_LEFFS + ((CHOICE_LEFF,) if self.choosing else ()):
-            os_.leff_start(leff)
         if self.choosing:
-            os_.request_refresh()
+            os_.request_refresh()       # start_task_c8_side_choice_running_33ec8 [0x01033ec8]: set_dat_000315fc
 
     def _flipper(self):
         if self.choosing and self.os.game and not self.os.tilted:

@@ -53,6 +53,9 @@ class Bumblebee(Feature):
         # (0x02111cf4 + (p-1) > 8, registered by [0x010026cc], mask 0x20) (QA L-151)
         os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("bb_letters", 0) > 8, leff=151)
         os_.deff_live((DS_BG_DEFF, DS_DEFF), lambda: {"values": [self.count]})
+        # arcade_lamp_rule [0x010024dc] (list 4, mask 0x20, registered by [0x010026cc]): return_one_18b4
+        # [0x010018b4] is 1 in 1.80, so lamp 30 BUMBLEBEE (CAPTIVE BALL) flashes all game (QA L-R01, L-I30)
+        os_.lamp_update(lambda: os_.lamps.lamp_flash(30))
 
     def player_first_ball(self):
         level = self.os.adj[70]

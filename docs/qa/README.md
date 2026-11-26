@@ -170,6 +170,13 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - ~~R-F7~~ leffs 103 and 170 already pulse 18 x 3 and 17 times from agent A's decoded shows; leff 40
       [0x01024328] (Allspark banked) now pulses coil 32 for 100 ms every 4 ticks with the 14 patterns of
       0x040c6ff4 while the playfield is valid and ball search is off.
+    - ~~L-R01~~, ~~L-I30~~ arcade_lamp_rule [0x010024dc]: return_one_18b4 [0x010018b4] is 1, lamp 30 flashes all
+      game; the battle arrows leave it alone.
+    - ~~L-092~~, ~~L-095~~ leff rules: 92 while the skill shot task 0xb2 runs (check_task_b2_314ac [0x010314ac]),
+      95 while the side choice runs (side_choice_running [0x01033e84]); the window start requests the rules
+      [0x01031518].
+    - ~~L-076~~, ~~L-077~~: fixed with M8. L-018 / L-019 (tournament and ticket awards): not modelled
+      (rom_differences.md).
     - SC6 (medium): the animation sound tables (frame_sound_step_2fcb0 [0x0102fcb0]) need every animation as a
       deff variant; asked from agent A as one batched request.
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)

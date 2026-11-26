@@ -24,6 +24,7 @@ SKILL_DEFF = 42
 SUPER_DEFF, SUPER_TASK = 43, 0x65
 
 
+WINDOW_LEFF = 92
 SKILL_LANE_LAMP = {8: 50, 7: 49}     # the second lane award's lamp [0x010335d0] / [0x0103361c] (QA P13)
 
 class SkillShot(Feature):
@@ -41,6 +42,8 @@ class SkillShot(Feature):
             if name in self.machine.switches:
                 sc.add_switch_handler(name, self._flipper)
         os_.deff_live((SKILL_DEFF, SUPER_DEFF), lambda: {"values": [self.value]})
+        # leff rule check_task_b2_314ac [0x010314ac]: leff 92 while the skill shot task 0xb2 runs (QA L-092)
+        os_.lamp_rule(lambda: bool(os_.game) and self.top, leff=WINDOW_LEFF)
 
     def player_first_ball(self):
         self.pd.skill_hands_free = self.pd.skill_regular = self.pd.super_skill = 0
@@ -51,6 +54,7 @@ class SkillShot(Feature):
             self.seen_top, self.seen_super = set(), set()
             self.lane = LANE.get(self.pd.get("side", 2), 8)
             self.os.flag_clear(NOT_HANDS_FREE)
+            self.os.request_refresh()   # clear_flag_11_start_task_b2_31518 [0x01031518]: set_dat_000315fc
         elif serve_type == 1:
             self.cancel()
 

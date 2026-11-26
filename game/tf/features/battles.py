@@ -1133,8 +1133,9 @@ class Battles(Feature):
             else:
                 lamps.lamp_off(mine)
             lamps.lamp_off(other)
-        for lamp in ORANGE.values():                 # the battle's rule leff owns the arrows (arrow_blink)
-            lamps.lamp_off(lamp)
+        for shot, lamp in ORANGE.items():           # the battle's rule leff owns the arrows (arrow_blink)
+            if shot != BEE:                         # lamp 30 is arcade_lamp_rule's (bumblebee.py, QA L-R01)
+                lamps.lamp_off(lamp)
         # the battle inserts are the requirement inserts: wizard.py draw [0x01035ea8] (QA L-R07)
 
 
