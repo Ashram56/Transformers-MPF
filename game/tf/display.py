@@ -645,12 +645,48 @@ class Leffs:
                     self.info[int(row["leff"])] = (frozenset(), int(row["priority"]), None)
         self.running = {}           # leff id -> end handle (or None)
         self.pending = []           # refused lamp-rule leffs, started when an effect ends
+        # leff_start's conflict test [0x00007c10] (QA L-G04): the leff table's lamp group (+6, lamp_group_9570
+        # [0x00009570] over table 0x040d1510) and coil group (+8, leff_start_sub_611c [0x0000611c] over table
+        # 0x040cf65c) and flags (+4, bit 2: an equal-priority leff may replace it)
+        import json                         # noqa: PLC0415
+        groups = {}
+        for name in ("lamp_groups", "coil_groups"):
+            path = os.path.join(ROM, "rom_data", "io", name + ".json")
+            groups[name] = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+        self.claims = {}
+        for row in rows:
+            lamps_ = frozenset(groups["lamp_groups"].get(str(int(row["lamp_group"] or 0)), ()))
+            coils_ = frozenset(groups["coil_groups"].get(str(int(row["coil_group"] or 0)), ()))
+            self.claims[int(row["leff"])] = (lamps_, coils_, int(row["flags"] or "0", 16))
 
     def is_running(self, leff_id):
         return leff_id in self.running
 
+    def _conflicts(self, leff_id):
+        """The running leffs sharing a lamp of its lamp group or a coil of its coil group [0x00007c10]."""
+        lamps_, coils_, _ = self.claims.get(leff_id, (frozenset(), frozenset(), 0))
+        if not lamps_ and not coils_:
+            return []
+        out = []
+        for other in self.running:
+            if other == leff_id:
+                continue        # the same leff restarts (the game stops it first, as leaf_b780 / b7e4 callers do)
+            o_lamps, o_coils, _ = self.claims.get(other, (frozenset(), frozenset(), 0))
+            if o_lamps & lamps_ or o_coils & coils_:
+                out.append(other)
+        return out
+
+    def _refused_by(self, leff_id, other):
+        """[0x00007c10]: refused by a conflicting running leff of a higher priority, or of the same priority
+        whose flags lack bit 2 (may be replaced)."""
+        prio = self.info.get(leff_id, (frozenset(), 0, None))[1]
+        o_prio = self.info.get(other, (frozenset(), 0, None))[1]
+        return prio < o_prio or (prio == o_prio and not self.claims.get(other, (0, 0, 0))[2] & 2)
+
     def blocked(self, leff_id):
         outputs, prio, _ = self.info.get(leff_id, (frozenset(), 0, None))
+        if any(self._refused_by(leff_id, other) for other in self._conflicts(leff_id)):
+            return True
         return any(other != leff_id and o_out & outputs and o_prio > prio
                    for other in self.running for o_out, o_prio, _ in (self.info.get(other, (frozenset(), 0, None)),))
 
@@ -666,6 +702,10 @@ class Leffs:
             if loop and leff_id not in self.pending:
                 self.pending.append(leff_id)
             return False
+        for other in self._conflicts(leff_id):       # the conflicting lower (or replaceable) leffs are killed
+            self.os.leff_stop(other)
+            if any(r[1] == other and r[3] for r in self.os.rules) and other not in self.pending:
+                self.pending.append(other)          # its rule starts it again once it can run (game_flow.md 5.8)
         self.stop(leff_id)
         length = self.info.get(leff_id, (None, None, None))[2]
         handle = None
