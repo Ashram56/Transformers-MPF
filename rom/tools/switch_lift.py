@@ -34,7 +34,7 @@ import deff_lift  # noqa: E402
 from deff_lift import S  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SW_TABLE = 0x040e2c20          # switch records, 0x20 bytes, number n at + n * 0x20 (error_log_wrap_d2d4 [0x0000d2d4])
+SW_TABLE = 0x040e2c20          # switch records, 0x20 bytes, number n at + n * 0x20 (switch_rec_d2d4 [0x0000d2d4])
 DED_TABLE = 0x040e3740         # dedicated switches 0x81.. (D1..D32): record at + (n - 0x81) * 0x20 (same routine)
 
 
@@ -52,7 +52,7 @@ def func_of(addr):
 
 
 def record(sw):
-    """The switch's record, as error_log_wrap_d2d4 [0x0000d2d4] finds it."""
+    """The switch's record, as switch_rec_d2d4 [0x0000d2d4] finds it."""
     return SW_TABLE + sw * 0x20 if sw < 0x41 else DED_TABLE + (sw - 0x81) * 0x20
 SCORE_P1 = 0x021109e4          # player scores, u32 each (sw_energon_left [0x01033a28] adds into it)
 GAME_STATE = 0x00031468        # DAT_00031468, the game-state bits the dispatcher masks with
@@ -65,7 +65,7 @@ AFTER_TICKS = 8                # then 100 ms before the next command. The emulat
 #                                This is the test's input timing, not a value of the ROM; one row depends on it
 #                                (2-bank top, repeat: 75,000 once the Blackout battle timer has run out).
 RECORD = ("score", "sound", "deff", "leff", "coil", "coil_fn", "coil_group", "coil_group_fn", "pulse",
-          "pulse_queued", "audit", "error", "flag_set", "flag_clear", "sim")
+          "pulse_queued", "pulse_start", "audit", "error", "flag_set", "flag_clear", "sim")
 STATUS_AUDITS = {59, 60, 61, 62, 63, 64}       # switch-activity counters every closure adds (as switch_spec.py)
 
 
@@ -85,6 +85,38 @@ class SwitchRunner(ball_search.SearchRunner):
         # table 0x00031458, switches 137 / 139) are read by their ROM routines
         for name in ("current_player", "num_players", "player_side", "flipper_buttons_held"):
             self.stubs.pop(S(name), None)
+        # coil pulses run as ROM code (ball_search.py answers them in Python): coil_pulse_now [0x00002078]
+        # starts one now in the coil's slot (0x00035b10 + (coil - 1) * 0x28) with coil_slot_start [0x00001f10];
+        # coil_pulse_queue [0x00001f70] queues one in the list 0x00031434..0x00031438, which
+        # coil_pulse_queue_serve [0x00003758] serves in the OS loop: the head starts when no queued pulse runs
+        # (0x00031448), and once its slot no longer holds it (+0xc) the next waits 6 more ticks (0x0003144c);
+        # coil_pulse_pending [0x00001da4] says a pulse still runs or waits. Only the slot's end is Python: the
+        # 1 ms pass of the IO interrupt io_isr [0x000114b0] counts the slot's time (+0x18) down
+        # and then clears it (+0x27 and +0xc to 0, after the end callback +4 when there is one); the pass starts
+        # within the tick after the OS loop, so a pulse of n ms is over for the OS loop n // 16 + 1 ticks later
+        for name in ("FUN_00002078", "FUN_00001f70", "FUN_00001da4"):
+            self.stubs.pop(S(name), None)
+        self.slot_end = {}
+        self.in_fiq = False
+
+        def pulse_now(r):
+            r.op("pulse", coil=a(0) & 0xff, ms=a(1) & 0xffff)
+            return NOTE
+        st(0x00002078, "pulse_now", pulse_now)
+
+        def pulse_queued(r):
+            r.op("pulse_queued", coil=a(0) & 0xff, ms=a(1) & 0xffff)
+            return NOTE
+        st(0x00001f70, "pulse_queued", pulse_queued)
+
+        def slot_set(r):
+            idx = (a(0) - 0x00035b10) // 0x28
+            ms = a(1) & 0xffff
+            r.slot_end[idx] = r.now + ms // 16 + 1
+            if 0x00003758 <= r.caller() < 0x00003854:
+                r.op("pulse_start", coil=idx + 1, ms=ms, queued=1)
+            return NOTE
+        st(0x00001f10, "pulse_slot", slot_set)
         # random_below [0x0000ba94]: the emulator's draws cannot be known from the code (they depend on its
         # timing), so each draw is an input of the run like a switch hit: rand_inputs maps the ROM function
         # that draws to its answers in order; any other draw answers 0. Every draw is recorded.
@@ -131,10 +163,13 @@ class SwitchRunner(ball_search.SearchRunner):
 
         st(S("leff_start"), "leff_start", note("leff", ["leff"]))
         # sounds run as ROM code too (the channels at 0x00037b94 then say what plays, which the background
-        # music evaluation asks, ram_00037b94_user_255d4 [0x000255d4]); each call is recorded where it is resolved
+        # music evaluation asks, snd_call_playing [0x000255d4]); each call is recorded where it is resolved
         st(S("snd_play"), "snd_play", lambda r: NOTE)
         st(S("FUN_00025250"), "snd_play_sample", lambda r: NOTE)
-        st(S("snd_resolve_call"), "snd_resolve_call", note("sound", ["call"]))
+        # a call a channel's script chains from the sound FIQ (sound_fiq) is recorded apart: the tracer's sound
+        # events are the calls the game makes
+        st(S("snd_resolve_call"), "snd_resolve_call",
+           lambda r: (r.op("sound_chain" if r.in_fiq else "sound", call=a(0)), NOTE)[1])
         st(S("snd_play_after"), "snd_play_after", note("sound_after", ["call", "after"]))
         # the OS task list, answered on the runner's tasks (the ROM code would walk the OS's own, empty list)
         def others(r):
@@ -257,7 +292,7 @@ class SwitchRunner(ball_search.SearchRunner):
     # coil 2 or the scenario's `plunge` launches it (23 opens); Optimus Prime starts down (switch 44 closed).
     def set_raw(self, sw, closed):
         """The debounced state of switch sw, as switch_dispatch_debounce [0x0000dc44] leaves it: bit n-1 of
-        0x000368da, 0x000368ee and 0x00036902 (inverted for an opto, record +0x10 bit 4: error_log_wrap_d3e8
+        0x000368da, 0x000368ee and 0x00036902 (inverted for an opto, record +0x10 bit 4: switch_rec_d2d4_wrap_d3e8
         [0x0000d3e8]). Returns the raw bit."""
         rec = record(sw)
         opto = struct.unpack("<H", bytes(self.m.mem_read(rec + 0x10, 2)))[0] & 4
@@ -276,7 +311,7 @@ class SwitchRunner(ball_search.SearchRunner):
 
     def op(self, kind, **kw):
         d = super().op(kind, **kw)
-        if kind in ("pulse", "pulse_queued", "coil", "coil_fn") and kw.get("coil") in (1, 2):
+        if kind in ("pulse", "pulse_start", "coil", "coil_fn") and kw.get("coil") in (1, 2):
             self.sim.append(kw["coil"])
         return d
 
@@ -340,16 +375,56 @@ class SwitchRunner(ball_search.SearchRunner):
     def step(self, until):
         """Run the machine until tick `until`, one OS tick at a time as the main loop ram_00031550_user
         [0x00014f68] does: the tick's OS work event_post_user_2bd48 [0x0002bd48] (event 0x20, queued pulses,
-        the display queue deff_start_core_user, the lamp compositor, sounds, the switch debounce, ...), every
+        the display queue coil_rec_208f4, the lamp compositor, sounds, the switch debounce, ...), every
         task due, then the end-of-tick hooks leaf_b648 [0x0000b648]."""
         while self.now < until:
             self.clocks()
+            self.slot_ends()
             self.os_call(0x0002bd48)
             self.run_due()
             self.os_call(0x0000b648)
+            self.sound_fiq()
             self.simulate()
             self.now += 1
         self.clocks()
+
+    def slot_ends(self):
+        """The coil slots whose time is over, cleared as the 1 ms pass [0x000114b0] does (see __init__)."""
+        m = self.m
+        for idx, end in list(self.slot_end.items()):
+            if end > self.now:
+                continue
+            slot = 0x00035b10 + idx * 0x28
+            fn = rd32(m, slot + 4)
+            if fn and not self.call(fn, slot, rd32(m, slot + 8)) & 0xff:
+                continue                       # the end callback keeps the coil on: asked again next tick
+            m.mem_write(slot + 0x27, b"\0")
+            m.mem_write(slot + 0xc, b"\0\0\0\0")
+            b = m.mem_read(0x00035b00 + (idx >> 3), 1)[0] & ~(1 << (idx & 7))
+            m.mem_write(0x00035b00 + (idx >> 3), bytes([b]))
+            del self.slot_end[idx]
+
+    FIQ_PER_TICK = 64                  # the sound FIQ runs at 4 kHz (6 stereo frames of 24 kHz), 64 times a 16 ms tick
+
+    def sound_fiq(self):
+        """The sound FIQ's work, snd_fiq [0x00023f00] -> snd_fiq_mix [0x000261fc]: each of the 8
+        channels at 0x00037b94 (0xa0 each, active flag +0x98) steps its script (snd_chan_script_step
+        [0x000246e8], opcodes at 0x0003249c), the voices mix and the volume ramps at 0x00038274 move. A channel
+        frees itself when its samples end (opcode 0, snd_op_end [0x000240d4] -> snd_chan_free [0x00023fd0]),
+        so a call that waits for a free channel (the left eject's snd_play(0x157) retries, 0x0100a788 case 7)
+        sees the sound end as on the machine. Run only while a channel plays; the 24-byte output at 0x0109f000
+        (the Xilinx's audio buffer) is put back, since the runner maps it with the DMD pages (PAGE_BASE)."""
+        ch = self.m.mem_read(0x00037b94, 8 * 0xa0)
+        if not any(ch[n * 0xa0 + 0x98] for n in range(8)):
+            return
+        save = bytes(self.m.mem_read(0x0109f000, 24))
+        self.window_mmio(True)
+        self.in_fiq = True
+        for _ in range(self.FIQ_PER_TICK):
+            self.os_call(0x000261fc)
+        self.in_fiq = False
+        self.window_mmio(False)
+        self.m.mem_write(0x0109f000, save)
 
     def os_call(self, fn):
         self.cur = None
@@ -394,7 +469,7 @@ class SwitchRunner(ball_search.SearchRunner):
                 t.wake = self.now + 1
 
     def clocks(self):
-        """The OS clocks the IO pass table_040e3c14_reader [0x000114b0] keeps (64 passes a tick):
+        """The OS clocks the IO pass io_isr [0x000114b0] keeps (64 passes a tick):
         DAT_00031544 every pass, DAT_00031550 every 64 (the tick), DAT_0003154c every 40 (10 ms)."""
         w = lambda adr, v: self.m.mem_write(adr, struct.pack("<I", v & 0xffffffff))
         w(0x00031544, self.now * 64)

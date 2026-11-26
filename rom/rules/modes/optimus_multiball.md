@@ -75,11 +75,28 @@ Only while the battle can progress (flag 0x46 and no Megatron / Optimus / AHM / 
   multiball for the player's side, passing the center lane's shot multiplier (slot 4) [0x010262f0]
   (verified in emulator: 33.66 s, 2,000,000, opt_level 1 -> 2).
 - So the default (L = 1) needs 3 + 1 = 4 Optimus hits; each battle won adds 2 hits (max 8 + 1).
-- Optimus is raised for the battle and lowered after. The motor (coil 30, flag motor_or_long) belongs to the mech
-  object 0x000351e8 (methods through 0x00035250 +0x34 / +0xf4, positions 0x2b / 0x2c; 0x0100e798 asks for 0x2b; coil
-  test 0x01025568); how long it runs per move is the mech's, not decoded (code open). The 7.65 s of the traces is the
-  tracer's simulated motor (tools/trace/tf_ref.cpp), not the ROM. Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background
-  deff) is never started (open question).
+- Optimus is raised for the battle and lowered after. The motor (coil 30, flag motor_or_long) is an OS motor object at
+  0x000351e8 (class vtable 0x000339d4; 0x0100e798 asks for position 0x2b; coil test 0x01025568), read in the code run
+  after game start:
+  - coil +0 = 30; positions +8 = 0x040c702c {44 OPTIMUS PRIME DOWN, 43 OPTIMUS PRIME UP} (a position is the
+    switch that says the motor is there); +0xc = 2 positions; move task id +0x18 = 0x50; start delay +4 = 0.
+  - A move (`motor_goto` [0x00016f88] starts task 0x50, `motor_move_task` [0x00016c88]):
+    `motor_arm_target` [0x00016bbc] arms the target switch (the switch record of `switch_rec_d2d4`
+    [0x0000d2d4], its active level from the record's +4), a debounce of 2 polls (+0x5c) and the after-run of the
+    target from table +0x14 = 0x040c702e (DOWN 0, UP 0x9d = 157 polls); the motor runs; the task waits while it
+    runs, at most **0x1d4 = 468 ticks = 7.49 s** (vtable +0x24, `0x00016830`); then the arrival callbacks (vtable
+    +0x94 / +0xa4) or, short of the target, the fault ones (+0x8c / +0x9c, the per-position fault counts at
+    +0x1c = 0x02111f74, `motor_fault_count` [0x0001724c]).
+  - The poll `motor_poll_1ms` [0x00016a24] runs from the end of the IO interrupt `io_isr`
+    [0x000114b0] (through 0x00006bb4, every motor of the list 0x000315f4) and acts every 4th call (+0x34), i.e.
+    each 1 ms: once the target switch is seen in 2 polls, it runs the after-run (157 ms going up, none going down)
+    and stops the motor (vtable +0x10c).
+  - So a move lasts the mechanism's travel time (until the switch closes; physical, not in the ROM) + 2 ms, + 157 ms
+    when going up, and never more than 7.49 s. The 7.65 s motor runs of the traces are that cap (468 ticks of the
+    emulator's 16.26 ms tick = 7.61 s): the tracer's motor model (tools/trace/tf_ref.cpp, switch 43 / 44 after 1 s
+    of coil 30) never fired in any trace (no `optimus_up` / `optimus_down` event), so the ROM stopped the motor at
+    its timeout.
+- Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background deff) is never started (open question).
 
 ### 4.3 Multiball start [A 0x01027994 / D 0x01029a08]
 `multiball_start(balls = 3 if none in play else in_play + 2, 1, ball save 625 ticks = 10.2 s, grace 187 ticks =
@@ -165,7 +182,7 @@ PRIME CHALLENGE (D Optimus). Lit shots flash (inferred). Lamp 22 OPTIMUS PRIME s
 ## 11. Open questions
 - Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" is never started; the battle shows deff 19.
 - Adj 85 DISABLE OPTIMUS PRIME MOTOR is not read with `adj_get` (maybe read directly from NVRAM).
-- The Optimus position logic (0x0100e798, target 0x2b) and when exactly it rises / lowers were only seen as motor
-  runs; the watch address for the target did not change.
+- When exactly Optimus rises / lowers (0x0100e798, target 0x2b): the motor itself is decoded (4.2), the callers
+  of its moves are not all listed yet.
 - Second argument of `multiball_start` (1 here, 0 for Megatron / wizard).
 - 0x02111f90 and the 25,000 jackpot term are never incremented: dead features or set elsewhere by direct writes.

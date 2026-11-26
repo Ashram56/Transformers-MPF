@@ -20,6 +20,7 @@ current turn, in creation order, like the OS task list.
 
 Usage as a library: Runner(TF_ROM path).run(fn, inputs) -> list of ops.
 """
+import ctypes
 import os
 import struct
 
@@ -35,6 +36,8 @@ SCRATCH = 0x02600000                  # task structs, outside the ROM's RAM (the
 STACKS = 0x02700000                   # 8 MB; NVRAM uses 0x02100000-0x0211ffff): one 0x4000 stack per task
 TASK_STRUCT = 0x68                    # task_create memset(s, 0, 0x68) [0x0000aa04]
 TASK_CURRENT = 0x000314b0             # task_current: literal of task_sleep at 0x0000ad5c
+WINDOW = 0x800000
+BANK_REG, BANK_READBACK = 0x02580000, 0x01180000   # flash bank register and its read-back (0x00031534, 0x000315ec)
 PAGE_BASE = 0x01080000                # DMD pages, 30 x 0x1000 (CPU_BOARD_IO.md)
 MAX_TICKS = 4000                      # cap for effects that never end by themselves (background deffs)
 MAX_INSN = 60_000_000
@@ -84,9 +87,22 @@ class Runner:
         m.mem_map(0x01100000, 0x100000)                # switches, DMD page registers, bank read-back
         m.mem_map(0xfffe0000, 0x20000)                 # AT91 peripherals (timers, AIC): zero
         m.mem_map(0x02000000, 0x800000)
-        m.mem_map(0x04000000, 0x1000000)
+        m.mem_map(0x04000000, 0x800000)
         m.mem_write(0x04000000, self.rom[:0x800000])
         self.m = m
+        # the flash bank window 0x04800000 is host memory (a bank switch copies into it, set_bank); while the
+        # sound FIQ runs (window_mmio) it is read through Python instead, since the mixer changes bank for
+        # every voice it reads
+        self._win = ctypes.create_string_buffer(WINDOW)
+        self._bank_data = {}
+        m.mem_map_ptr(0x04800000, WINDOW, uc.UC_PROT_ALL, ctypes.addressof(self._win))
+        self._mmio = False
+        self._window = None
+        self.set_bank(0)
+        # the bank register itself (0x02580000, the literal at 0x00031534): the sound code writes it directly
+        # (the FIQ's sample reads, snd_op_voice_start [0x00024498]), not through FUN_00011274
+        m.hook_add(uc.UC_HOOK_MEM_WRITE, lambda m_, acc, adr, size, val, d: self.set_bank(val & 0xff),
+                   begin=BANK_REG, end=BANK_REG)
         self.base_ctx = m.context_save()
         self.ram0 = bytes(m.mem_read(0, 0x100000))
         self.bank = 0
@@ -110,13 +126,39 @@ class Runner:
     def set_bank(self, bank):
         """Flash bank in the 0x04800000 window: FUN_00011274(bank) [0x00011274]; a banked pointer is
         bank << 24 | offset (FUN_000112a0 [0x000112a0]); bank N is file offset N * 0x800000."""
-        old = self.bank
-        if bank != getattr(self, "_window", None):
-            data = self.rom[bank * 0x800000:(bank + 1) * 0x800000]
-            self.m.mem_write(0x04800000, data + b"\0" * (0x800000 - len(data)))
+        old = getattr(self, "bank", 0)
+        if bank != self._window and not self._mmio:
+            ctypes.memmove(self._win, self._bank(bank), WINDOW)
             self._window = bank
+        self.m.mem_write(BANK_READBACK, bytes([bank & 0xff]))   # read back by the FIQ (0x000315ec) to restore it
         self.bank = bank
         return old
+
+    def _bank(self, bank):
+        buf = self._bank_data.get(bank)
+        if buf is None:
+            data = self.rom[bank * WINDOW:(bank + 1) * WINDOW]
+            buf = self._bank_data[bank] = ctypes.create_string_buffer(data + b"\0" * (WINDOW - len(data)), WINDOW)
+        return buf
+
+    def window_mmio(self, on):
+        """Between two runs only: read the bank window through Python (each read from the bank the register
+        holds at that moment), or map it back as memory holding the current bank."""
+        m = self.m
+        if on and not self._mmio:
+            m.mem_unmap(0x04800000, WINDOW)
+
+            def rd(uc_, off, size, d):
+                a = self.bank * WINDOW + off
+                return int.from_bytes(self.rom[a:a + size], "little")
+            m.mmio_map(0x04800000, WINDOW, rd, None, lambda *a: None, None)
+            self._mmio = True
+        elif not on and self._mmio:
+            m.mem_unmap(0x04800000, WINDOW)
+            m.mem_map_ptr(0x04800000, WINDOW, uc.UC_PROT_ALL, ctypes.addressof(self._win))
+            self._mmio = False
+            self._window = None
+            self.set_bank(self.bank)
 
     # ---- state --------------------------------------------------------------------------------------
     def reset(self):

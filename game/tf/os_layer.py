@@ -77,8 +77,9 @@ SPECIAL_OVER_LIMIT_SCORE = 5000000
 # the coil registry's search routine of the Optimus coil [0x01033cb0], the game devices (FUN_0103be8c: left eject,
 # Megatron lockup, the trough's queued auto-launch), the pops [0x00003018], the slings [0x00003518], 64 ms each,
 # each one holding the search 64 // 16 + 1 = 5 ticks (FUN_00002160); the task runs the tick after its start, hence
-# the +1. The auto-launch time (14), the motor and the gate are observed (traces/game_flow.jsonl 32.65 / 102.01 /
-# 126.13 / 150.45 s, megatron_decepticon.jsonl 68.99 s): the queued pulse's wait and the event handlers are code open.
+# the +1. The auto-launch time (14) and the gate (32, 1,488 ms) are code: the queued pulse starts at 13, held off 7
+# ticks by coil_pulse_queue_serve [0x00003758], the gate pulse is leaf_2c074 [0x0102c074] at 31 (ball_feed.md). The
+# motor step is observed (traces/game_flow.jsonl 32.65 / 102.01 / 126.13 / 150.45 s, megatron_decepticon.jsonl 68.99 s).
 BALL_SEARCH_SWEEP = ((1, ("c_optimus_prime",)), (6, ("c_top_pop_bumper",)), (7, ("c_megatron_lockup", "c_left_eject")),
                      (11, ("c_right_pop_bumper",)), (14, ("c_auto_launch",)), (16, ("c_bottom_pop_bumper",)),
                      (21, ("c_left_slingshot",)), (26, ("c_right_slingshot",)))

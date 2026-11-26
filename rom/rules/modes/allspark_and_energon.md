@@ -71,8 +71,9 @@ The left eject is an OS ball device; its rule callback 0x0100a788 gets these eve
 - **4 / 9 = eject**: sound 0x158, leff 22; **3**: pulse coil 22 (`FUN_00002078(0x16,...)`).
 - **7 = eject retry / warning**: waits for the device, then sound 0x157 and leff 21.
 
-Trace (the code run agrees on the points and on 0x158 + leff 22 + coil 22, but its eject has no 0x157 + leff 21 warning
-step, `allspark_energon` eject_unlit in `traces/code_runs.csv`: open): the switch closes, the rule runs about 0.75 s later (device settle), 0x157 + leff 21 at the end of the
+Code run = trace (`allspark_energon` eject_unlit in `traces/code_runs.csv`: the 0x157 + leff 21 warning step comes from
+`left_eject_callback` [0x0100a788] event 7 once the coil pulses and the sound FIQ run as ROM code; 0x158 comes 53 ticks
+after 0x157 in both): the switch closes, the rule runs about 0.75 s later (device settle), 0x157 + leff 21 at the end of the
 wait, 0x158 + leff 22, coil 22 64 ms about 0.1 s after that. With no award showing the ball is held about 1.9 s
 (traces/allspark_energon.jsonl 35.51 -> 37.26); with the mystery award showing about 4.4 s (29.34 -> 33.70).
 
@@ -107,7 +108,7 @@ u16 audit at +0x14} [0x0000bae8, 0x0000bc2c]. Weights are recomputed at every pi
 SHOT MULT, 11 SUPER SPINNER, 12 SUPER POPS, 3 200,000, 2 EXTRA BALL, 1 SPECIAL, then again from 7 (inferred from
 the weight functions; Add-a-Ball and Add Time still force themselves in because they add 1000 too).
 
-Trace (random draws; the code run's draws answer 0 and give SPECIAL LIT first, `traces/code_runs.csv`; factory settings, no multiball, no timed mode): 30.09 item 4 BONUS X; 48.02 item 12 SUPER POPS (then
+Trace (random draws, fed to the code run as inputs: `#! random 0000bae8 206 1004 206` in `traces/allspark_energon.txt`, `random_below(1006)` [0x0000bae8] picks the first item whose cumulative weight passes the draw, so 206 is item 4 and 1004 item 12; code run = trace on the three awards, `traces/code_runs.csv`, whose last mark still differs on the end-of-ball bonus after the drain, 405,150 from `start_deff_25` [0x00019e44] in the trace; factory settings, no multiball, no timed mode): 30.09 item 4 BONUS X; 48.02 item 12 SUPER POPS (then
 deff 149 "SUPER POP BUMPERS"); 60.79 item 4 again (traces/allspark_energon.jsonl).
 
 ### 5.4 2-bank, Bumblebee and Optimus targets (only how they touch battles)
@@ -142,8 +143,8 @@ deff table entry references it).
 ## 8. Lamps
 Energon inserts: 48 ENERGON (LEFT), 54 ENERGON (CENTER), 35 ENERGON (RIGHT). The lamp rule 0x01030f80 (registered by
 0x010312e4), for the three entries of table 0x040c7630 against the player's lit mask 0x021120bc: an unlit target is
-on (error_log_wrap_77a0 [0x000077a0]) with its flash bit set (error_log_wrap_7814 [0x00007814], mask 0x00036388), a
-lit one is on with the flash bit cleared (solid, error_log_wrap_7858 [0x00007858]); a completed set clears the mask,
+on (error_log_wrap_7578_wrap_77a0 [0x000077a0]) with its flash bit set (error_log_wrap_7578_wrap_7814 [0x00007814], mask 0x00036388), a
+lit one is on with the flash bit cleared (solid, error_log_wrap_7578_wrap_7858 [0x00007858]); a completed set clears the mask,
 so all three flash again. The flash phase is the lamp compositor's: lamp_compositor_tick [0x000073cc] inverts it every
 10 ticks (counter 0x0003148c), a 20-tick period = 0.32 s (code; the trace's lamp events 18-26 s of
 traces/allspark_energon.jsonl confirm about 0.33 s). The Allspark has no "lit" insert of its

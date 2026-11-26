@@ -6405,5 +6405,28 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "shots0",
+  "why": "deff_094 [0x010189a8]: +0x34 = shots left picks the animation in table 0x040c6a60 (9 routines; above 8 it takes 8), +0x3c = 0 a hit; shots0 (all at 0) is the one packaged",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x3c": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "final",
+  "shots1",
+  "shots2",
+  "shots3",
+  "shots4",
+  "shots5",
+  "shots6",
+  "shots7",
+  "shots8"
+ ]
 }
