@@ -84,6 +84,9 @@ The agent files are read by models that will follow them literally. What to chan
 5. **Never weaken a check to pass.** A test that fails is a finding; a threshold is changed only with the owner's
    decision recorded.
 6. **Never trust a name or a value carried from another game** until its body or its table is read in this ROM.
+7. **Run, do not infer.** When a value depends on more than one routine (a timing through several tasks, a text
+   through a formatter), run it in the code runner instead of reasoning it out from the one routine you read
+   (tricks.md T32: an inferred end-of-ball delay was 1 s early).
 
 ## 6. Escalation: defer what you cannot finish to a more capable agent
 
