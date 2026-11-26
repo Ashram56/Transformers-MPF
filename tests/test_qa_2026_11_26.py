@@ -42,6 +42,40 @@ class TestConversionPure(unittest.TestCase):
 
 
 class TestConversionGame(TfTestCase):
+    def test_score_status_counters(self):
+        """deff 19 [0x0102f200] [0x0102fa40] with the counters of 0x0102f9ec (event 0x21, one per tick): after
+        0x3e idle ticks the current score blanks 7 of every 14 ticks; the last award fades over 0x1a ticks; a 2-way
+        combo slides "2-WAY" / "COMBO" up (QA V-SC2, V-SC7, V-SC8, V-SC9)."""
+        T = 0.016
+        st = score_screen.StatusCounters(T)
+        st.clear(0.0)
+        st.scored(250000, 0.0)
+        boxes = lambda d: [x["r"] for x in d if "r" in x and x.get("l") == 0]
+        texts = lambda d: {x["t"]: x for x in d if "t" in x}
+        d = score_screen.score_draw([250000], 1, 1, "FREE PLAY", status=(st, 0.0))
+        award = [x for x in d if x.get("t") == "250,000" and x["y"] == 13]
+        self.assertEqual(13, award[0]["l"])                 # award at row 13, palette entry 15 = 0x1a >> 1
+        self.assertEqual([], boxes(d))
+        d = score_screen.score_draw([250000], 1, 1, "FREE PLAY", status=(st, 30 * T))
+        self.assertEqual(2, sum(1 for x in d if x.get("t") == "250,000"))   # faded out: panel and main score
+        d = score_screen.score_draw([250000], 1, 1, "FREE PLAY", status=(st, 63 * T))
+        self.assertEqual([[0, 1, 40, 6], [41, 2, 87, 22]], boxes(d))     # panel row and main score blanked
+        self.assertEqual([], boxes(score_screen.score_draw([250000], 1, 1, "", status=(st, 70 * T))))
+        # a smaller score within 0x10 ticks keeps the award value [0x0102f998]
+        st.scored(1000, 5 * T)
+        self.assertEqual(250000, st.award)
+        st.scored(1000, 20 * T)
+        self.assertEqual(1000, st.award)
+        # playfield valid: the sweep, growing from the top row of the main score's box
+        self.assertEqual((2, 2), score_screen.main_box(250000, 0x3f, True))
+        self.assertIsNone(score_screen.main_box(250000, 0x3e, True))
+        st.combo(2, 3, 0.0)
+        d = score_screen.panel_draw([250000], 1, status=(st, 3 * T))
+        self.assertEqual(24, texts(d)["2-WAY"]["y"])        # (0x4b - 3) / 3
+        self.assertEqual(30, texts(d)["COMBO"]["y"])
+        self.assertEqual(32, texts(d)["3 COMBOS"]["y"])
+        self.assertNotIn("2-WAY", texts(score_screen.panel_draw([0], 1, status=(st, 0x5e * T))))
+
     def test_battle_hit_sound_once(self):
         """deff_094 [0x010189a8] plays snd_play2(0x181, ..) once per hit (QA SC1)."""
         os_ = self.tf

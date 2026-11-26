@@ -32,6 +32,7 @@ import re
 
 from mpf.core.custom_code import CustomCode
 
+from tf.score_screen import StatusCounters
 from tf.trace import Trace
 
 TICK = 0.016            # seconds per ROM tick: 64 x 250 us FIQ [0x000114b0] (owner, 2026-11-25: the code, not the measured 16.26 ms)
@@ -242,6 +243,7 @@ class TfOS(CustomCode):
         self.features = []
         self.players = []           # PlayerData per player
         self.pf_valid = False
+        self.status = StatusCounters(TICK)  # the score display's counters 0x021120a8-0x021120b8 (tf/score_screen.py)
         self._counting_seen = set()
         self.ball_save = None       # None, "armed" or "grace"
         self.ball_save_left = 0
@@ -995,6 +997,7 @@ class TfOS(CustomCode):
         points = self.score_event(points * self.pf_mult)
         self.ball_search_reload()
         self._add_score(points)
+        self.status.scored(points, self.now)         # event 0x4d with the points [0x0102f998]
         if not self.ball_scored:
             self.ball_scored = True
             if self.shoot_again:
@@ -1276,6 +1279,7 @@ class TfOS(CustomCode):
         if first_ball:
             self.hook("player_first_ball")           # event 0x26
         self.hook("ball_start")                      # event 0x11
+        self.status.clear(self.now)                  # event 0x13 at the end of ball_start [0x00019e40] -> [0x0102f958]
         if self.shoot_again:
             self.deff_start(26, player=self.player_num)   # its speech comes with the deff
             self.leff_start(16)

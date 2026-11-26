@@ -188,7 +188,7 @@ class MediaBridge:
             self.drawn_last = self.drawn_screen(deff_id)
             self.text_show("rom_screen", [], priority, draw=self.drawn_last)
             if self._drawn_timer is None and self.connected(need_data=False):
-                self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, 0.1)
+                self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, TICK)   # blink, fade
             return
         if not info:
             return
@@ -237,7 +237,14 @@ class MediaBridge:
         if not info or info.get("panel") is None:
             return {}
         from tf import score_screen
-        return {"draw": score_screen.panel_draw(self.scores(), self.os.player_num or 1, info["panel"])}
+        return {"draw": score_screen.panel_draw(self.scores(), self.os.player_num or 1, info["panel"],
+                                                **self.status_args())}
+
+    def status_args(self):
+        """The status counters, game state and playfield-valid flag the score drawing reads [0x0102f200]."""
+        status = getattr(self.os, "status", None)
+        return {"status": (status, self.machine.clock.get_time()) if status else None,
+                "state": getattr(self.os, "state", 0), "valid": getattr(self.os, "pf_valid", False)}
 
     def drawn_screen(self, deff_id):
         """The screen of a deff in DRAWN (tf/score_screen.py): the score display."""
@@ -246,7 +253,7 @@ class MediaBridge:
         ball = game.player.ball if game and game.player else 1
         ticks = int((self.machine.clock.get_time() - self.drawn_since.get(deff_id, 0)) / TICK)
         return score_screen.score_draw(self.scores(), self.os.player_num or 1, ball, self.credits_text(),
-                                       self.replay_text() if game else "", ticks)
+                                       self.replay_text() if game else "", ticks, **self.status_args())
 
     def deff_draw(self, deff_id, priority, draw):
         """A running deff whose next screen its captured frames do not hold (deff 4 dims after 30 s): the ROM

@@ -163,6 +163,7 @@ class Combos(Feature):
             mult = self.shot_mult(index)
             pd.combo_best = max(pd.get("combo_best", 1), (self.way << 16) | mult)
             os_.score_add(mult * (100000 + 25000 * self.way))
+            os_.status.combo(self.way, pd.combo_total, os_.now)   # the status panel's combo texts [0x0102f1c0]
             os_.leff_start(AWARD_LEFF)
             os_.audit(AWARD_AUDIT)
         restart = not os_.task_running(WINDOW_TASK)

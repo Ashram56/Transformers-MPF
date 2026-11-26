@@ -92,11 +92,12 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
 
 ### Open after the fixes (2026-11-26)
 
-- V-SC2, V-SC7, V-SC8, V-SC9 (score display boxes, last award value, combo text): deff 19's score code
-  `0x0102f200` / `0x0102fa40` reads three counters (RAM 0x021120b0, 0x021120b8, 0x021120a8) that the code
-  only resets (0x0102f958, 0x0102f998, 0x0102f1c0); no instruction adds to them by their address (the literal
-  pools at 0x0102f550, 0x0102f990-0x0102fa2c, 0x0102fb54 are all readers or resets). Who counts them is a
-  question for agent A before these can be drawn.
+- ~~V-SC2, V-SC7, V-SC8, V-SC9~~ fixed 2026-11-26 (after agent A's answer): the three counters count one per
+  tick (0x0102f9ec on event 0x21, rom/rules/event_hooks.csv), cleared by event 0x13 at the end of ball_start
+  [0x00019e40] -> [0x0102f958], award value from event 0x4d [0x0102f998], combo from [0x01002f0c]. The score
+  blanks 7 of 14 ticks after 0x3e idle ticks (sweep once the playfield is valid), the award fades over 0x1a
+  ticks, the combo texts slide (tf/score_screen.py StatusCounters; tests/test_qa_2026_11_26.py
+  test_score_status_counters). Deffs 26 and 40 draw the same panel but refresh it every 0.25 s only.
 - SC16 (voices): the sound board's voice allocation by priority and take-over (`0x00024ae4`).
 - Deff variant frames: the frames of each variant run (docs/rom_differences.md).
 - V001 attract pages, V010-V017 credit line, V002 volume display, the low rows of the reports.
