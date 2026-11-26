@@ -89,7 +89,8 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
   adjustment value formatters. `tools/deff_args.py` lists the stores of `deff_start` callers into the new deff
   task (+0x30...), the inputs of the game-state variants.
-- **Display effects (code + observed).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
+- **Display effects (code; the emulator capture told here was the first pass, replaced by the ROM-code op lists
+  above).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
   the 21 background effects (attract, status panel 40, mode backgrounds), bit 1 most foreground effects. The deff
   id is the u16 at task+0x24 of the deff task. Effects were captured by calling `deff_start(id)` from the
   `task_sleep` hook in a started game (`tools/emu/tracer.cpp`). 153 of 155 rendered; 8 and 22 are stubs. About 35
@@ -99,7 +100,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   (0x21660, 0x215ac, 0x217b4, 0x2174c message id; 0x21838, 0x21a78, 0x21b4c string or format), so 95% of text
   draws carry the format behind them (e.g. `%,02lu`, `VOLUME %d`). Effects 48, 95, 129 and 135 keep the earlier
   capture without sources (they did not render in the re-run).
-- **Printed values and fit fonts (code + observed).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
+- **Printed values and fit fonts (code; the `args_observed` column is the emulator's, kept only to compare).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
   DECOMP OUT_CSV [tracer logs]`) also walks tasks the effect starts. It has four more columns. `call_site` is the
   helper's return address (BL + 4, same as `call_site`/`lr` in captures). `args` gives one entry per printf
   vararg, paired with its % conversion (`%P` = the ROM's plural/ordinal chooser, which also takes an argument). Each
@@ -123,7 +124,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   64 ms in the knock task [0x00019420] when adj 44 Q24 OPTION is KNOCKER. The orbit gate (5) and the motors (8, 30)
   are held, not pulsed (their driver objects, `ball_feed.md`). Flippers: not in the CPU code; their measured times
   (40.5 ms, then 1 ms every 12 ms) are kept under the owner's waiver (2026-11-25, `docs/pinmame_waivers.md`).
-- **Music (code + observed).** Background deff and music come from an 18-entry priority table walked by
+- **Music (code).** Background deff and music come from an 18-entry priority table walked by
   0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
   0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
