@@ -457,3 +457,20 @@ class TestFinalPass(QaCase):
         self.assertIsNone(mode.page)
         self.assertEqual("DISPLAY HELP SCREEN", mode.current()["text"])
         self.assertTrue(any("i" in d for d in mode.draw()))
+
+    def test_f067_lamp_planes(self):
+        """The lamp strobe [0x000113fc] shows plane 0 one pass and plane 1 two: leff 37 [0x01023928] steps its lamps
+        through the planes 0, 1, 2, 3 (levels off, 1/3, 2/3, on: show colors 555555 / aaaaaa)."""
+        self.start()
+        lamps = self.tf.lamps
+        n = lamps.names["l_allspark_x"]
+        self.tf.leff_start(37)
+        seen = set()
+        for _ in range(40):
+            self.advance_time_and_run(TICK)
+            seen.add(lamps.level(n))
+        self.assertEqual({0, 1, 2, 3}, seen)
+        light = self.machine.lights["l_allspark_x"]
+        while lamps.level(n) != 1:
+            self.advance_time_and_run(TICK)
+        self.assertEqual((0x55, 0x55, 0x55), tuple(light.get_color().rgb))

@@ -35,6 +35,10 @@ MPF_KEY = "tf"
 # leff 96 as 3-17 ms on / off slices), unlike Tron's, which held a pulsed coil on ~0.24 s: no hold here.
 COIL_OFF_DELAY = 0.0
 WHITE, BLACK = "ffffff", "000000"
+# the lamp strobe [0x000113fc] shows plane 0 one pass and plane 1 two: a lamp lit in one plane only is at 1/3 (plane
+# 0) or 2/3 (plane 1) (QA L-G03; rom/tools/leff_package.py writes them 555555 / aaaaaa)
+PLANE_COLOR = {"555555": 1, "aaaaaa": 2}
+LEVEL_COLOR = {1: "555555", 2: "aaaaaa", 3: WHITE}
 
 
 def leff_rows(rom):
@@ -87,7 +91,7 @@ def parse_show(path):
 
 class Layer:
     """A lamp override layer (lamp_layer_create): owns `mask`, draws `image` (lamps on) over lower ones."""
-    __slots__ = ("prio", "mask", "image", "seq", "name")
+    __slots__ = ("prio", "mask", "image", "seq", "name", "planes")
 
     def __init__(self, prio, mask=(), name=None):
         self.prio = prio
@@ -95,6 +99,7 @@ class Layer:
         self.image = set()
         self.seq = 0
         self.name = name
+        self.planes = {}            # lamp -> 1 or 2: lit in one bit plane only (PLANE_COLOR)
 
 
 class ShowPlayer:
@@ -139,11 +144,16 @@ class ShowPlayer:
                 if self.rgb:
                     lm.rgb(target, value)
                     continue
+                plane = PLANE_COLOR.get(str(value).lower())
                 for n in lm.lamp_numbers(target):
                     if value != BLACK:
                         self.layer.image.add(n)
                     else:
                         self.layer.image.discard(n)
+                    if plane:
+                        self.layer.planes[n] = plane
+                    else:
+                        self.layer.planes.pop(n, None)
         for name, ms in flashers.items():
             lm.flasher(name, ms, owner=self.owner)
         if lights and not self.rgb:
@@ -829,22 +839,30 @@ class Lamps:
             self.clock.schedule_once(self._flush, 0)
 
     def composite(self, n):
-        on = n in self.image and not (self.flash_off and n in self.flash)
+        return self.level(n) > 0
+
+    def level(self, n):
+        """The lamp's strobe level: 0 off, 1 / 2 one bit plane (1/3, 2/3), 3 both [0x000113fc]."""
+        level = 3 if n in self.image and not (self.flash_off and n in self.flash) else 0
         for layer in self.layers:
             if n in layer.mask:
-                on = n in layer.image
-        return on
+                level = layer.planes.get(n, 3) if n in layer.image else 0
+        return level
 
     def _flush(self):
         self._dirty = False
         for n in range(1, LAMP_COUNT + 1):
-            state = 1 if self.composite(n) else 0
-            if state == self.raw[n]:
+            level = self.level(n)
+            state = 1 if level else 0
+            if level == self.raw[n]:
                 continue
-            self.raw[n] = state
+            was = self.raw[n]
+            self.raw[n] = level
             light = self.lights.get(n)
             if light is not None:
-                light.color(WHITE if state else BLACK, key=MPF_KEY)
+                light.color(LEVEL_COLOR.get(level, BLACK), key=MPF_KEY)
+            if bool(was) == bool(state):
+                continue
             if state:
                 if not self.out[n]:
                     self.out[n] = 1

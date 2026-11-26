@@ -35,7 +35,7 @@ leff,fn,flags,lamp_group,lamp_group_lamps,coil_group,priority,end_tick,run_ms,lo
 34,0x01003104,0x0001,0,,0,2,,,yes,,,0,0,,,,,,"no lamp or flasher of its own when run with no game state (it reads the game, or a caller's argument)",code
 35,0x010037ac,0x0006,0,,0,153,0,0,,,,0,0,,,,,0x1002f0c start_leff_35_2f0c | 0x1033244 start_leff_35_33244 | 0x1033488 start_leff_35_33488,ends by itself after 0 ticks (0 ms),code
 36,0x01023bf4,0x0006,0,,1,155,36,576,,,lampfx_036,18,6,,,,,0x1023b10 deff_049_multipliers_lit,ends by itself after 36 ticks (576 ms),code
-37,0x01023928,0x0001,0,,0,13,,,yes,0,lampfx_037,4,6,,,,,,runs until stopped: a cycle of 36 ticks (576 ms),code
+37,0x01023928,0x0001,0,,0,13,,,yes,0,lampfx_037,6,6,,,,,,runs until stopped: a cycle of 36 ticks (576 ms),code
 38,0x01023df8,0x0006,0,,1,159,0,0,,,,0,0,,,,,0x1023c5c deff_050,ends by itself after 0 ticks (0 ms),code
 39,0x010239bc,0x0001,0,,0,14,,,yes,,,0,0,,,,,,"no lamp or flasher of its own when run with no game state (it reads the game, or a caller's argument)",code
 40,0x01024328,0x0005,0,,39,7,,,yes,,,0,0,,,,,,"no lamp or flasher of its own when run with no game state (it reads the game, or a caller's argument)",code
@@ -93,7 +93,7 @@ leff,fn,flags,lamp_group,lamp_group_lamps,coil_group,priority,end_tick,run_ms,lo
 92,0x01031a04,0x0005,75,51 50 52 49,0,192,,,yes,,lampfx_092,1,4,,,,,,runs until stopped; sets this state and holds it,code
 93,0x01031d7c,0x0006,0,,1,193,105,1680,,,lampfx_093,15,0,c_flash_bumblebee c_flash_center_lane_arrow c_flash_decepticon c_flash_left_ramp c_flash_megatron c_flash_optimus_prime c_flash_pop_bumper c_flash_right_ramp c_flash_right_side c_flash_slingshot_left c_flash_slingshot_right,,,,0x1031aa4 deff_042_hands_free,ends by itself after 105 ticks (1680 ms),code
 94,0x01031eac,0x0006,0,,1,193,105,1680,,,lampfx_094,15,0,c_flash_bumblebee c_flash_center_lane_arrow c_flash_decepticon c_flash_left_ramp c_flash_megatron c_flash_optimus_prime c_flash_pop_bumper c_flash_right_ramp c_flash_right_side c_flash_slingshot_left c_flash_slingshot_right,,,,0x1031d8c deff_043_super_skill_shot,ends by itself after 105 ticks (1680 ms),code
-95,0x01034030,0x0005,0,,0,192,,,yes,1,lampfx_095,5,58,,,,,,runs until stopped: a cycle of 48 ticks (768 ms); after a lead-in of 15 ticks (steps 0-0),code
+95,0x01034030,0x0005,0,,0,192,,,yes,1,lampfx_095,7,58,,,,,,runs until stopped: a cycle of 48 ticks (768 ms); after a lead-in of 15 ticks (steps 0-0),code
 96,0x01034610,0x0006,0,,61,193,105,1680,,,lampfx_096,15,0,c_flash_megatron c_flash_optimus_prime,,,,0x1034424 deff_041_decepticon,ends by itself after 105 ticks (1680 ms),code
 97,0x0102dda4,0x0006,0,,0,129,20,320,,,,0,0,,,,,0x102db28 lamp_layer_2db28,ends by itself after 20 ticks (320 ms),code
 98,0x0102de08,0x0006,0,,0,128,10,160,,,,0,0,,,,,0x102db28 lamp_layer_2db28,ends by itself after 10 ticks (160 ms),code
@@ -145,11 +145,11 @@ leff,fn,flags,lamp_group,lamp_group_lamps,coil_group,priority,end_tick,run_ms,lo
 144,0x0102ed54,0x0006,0,,13,128,20,320,,,lampfx_144,3,0,c_flash_right_side,,,,0x10047b8 run_leff_144_check_task_5b_47b8 | 0x102e9c0 run_leff_143_play_snd_261_2e9c0,ends by itself after 20 ticks (320 ms),code
 145,0x01009a58,0x0006,0,,0,128,8,128,,,,0,0,,,,,0x10047b8 run_leff_144_check_task_5b_47b8,ends by itself after 8 ticks (128 ms),code
 146,0x01009ab0,0x0006,136,21 20,0,129,48,768,,,lampfx_146,1,2,,,,,,ends by itself after 48 ticks (768 ms),code
-147,0x0102eebc,0x0001,0,,0,5,,,yes,0,lampfx_147,4,2,,,,,,runs until stopped: a cycle of 36 ticks (576 ms),code
+147,0x0102eebc,0x0001,0,,0,5,,,yes,0,lampfx_147,6,2,,,,,,runs until stopped: a cycle of 36 ticks (576 ms),code
 148,0x0102ef90,0x0001,0,,14,5,,,yes,,,0,0,,,,,,"no lamp or flasher of its own when run with no game state (it reads the game, or a caller's argument)",code
 149,0x01001a08,0x0006,0,,40,129,14,224,,,lampfx_149,2,0,c_flash_left_ramp c_flash_right_ramp,,,,0x10019c8 start_leff_149,ends by itself after 14 ticks (224 ms),code
 150,0x01002474,0x0006,0,,41,130,35,560,,,lampfx_150,5,0,c_flash_left_ramp c_flash_right_ramp,,,,0x10023e8 deff_128,ends by itself after 35 ticks (560 ms),code
-151,0x0100252c,0x0001,0,,0,9,,,yes,0,lampfx_151,4,1,,,,,,runs until stopped: a cycle of 60 ticks (960 ms),code
+151,0x0100252c,0x0001,0,,0,9,,,yes,0,lampfx_151,6,1,,,,,,runs until stopped: a cycle of 60 ticks (960 ms),code
 152,0x01032460,0x0006,0,,43,133,8,128,,,lampfx_152,1,0,c_flash_right_side,,,,0x10320a4 play_sound_270,ends by itself after 8 ticks (128 ms),code
 153,0x010327b4,0x0006,0,,1,176,112,1792,,,lampfx_153,16,0,c_flash_bumblebee c_flash_center_lane_arrow c_flash_decepticon c_flash_left_ramp c_flash_megatron c_flash_optimus_prime c_flash_pop_bumper c_flash_right_ramp c_flash_right_side c_flash_slingshot_left c_flash_slingshot_right,,,,0x103267c deff_146_super,ends by itself after 112 ticks (1792 ms),code
 154,0x010327bc,0x0001,0,,44,7,,,yes,,,0,0,,,,,,"no lamp or flasher of its own when run with no game state (it reads the game, or a caller's argument)",code

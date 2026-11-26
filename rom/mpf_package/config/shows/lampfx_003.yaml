@@ -1,6 +1,6 @@
 #show_version=6
 # ROM lamp effect (leff) 3, function 0x0104a464, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_003.json). runs until stopped; sets this state and holds it.
-# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
 - duration: 16ms
   lights:
     l_allspark_orange: "000000"

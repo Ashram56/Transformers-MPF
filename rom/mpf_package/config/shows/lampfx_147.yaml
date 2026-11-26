@@ -1,19 +1,27 @@
 #show_version=6
 # ROM lamp effect (leff) 147, function 0x0102eebc, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_147.json). runs until stopped: a cycle of 36 ticks (576 ms).
-# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
 - duration: 96ms
   lights:
     l_right_2_bank_target_bot: "000000"
     l_right_2_bank_target_top: "000000"
-- duration: 192ms
+- duration: 96ms
   lights:
-    l_right_2_bank_target_bot: "7f7f7f"
-    l_right_2_bank_target_top: "7f7f7f"
+    l_right_2_bank_target_bot: "555555"
+    l_right_2_bank_target_top: "555555"
+- duration: 96ms
+  lights:
+    l_right_2_bank_target_bot: "aaaaaa"
+    l_right_2_bank_target_top: "aaaaaa"
 - duration: 96ms
   lights:
     l_right_2_bank_target_bot: "ffffff"
     l_right_2_bank_target_top: "ffffff"
-- duration: 192ms
+- duration: 96ms
   lights:
-    l_right_2_bank_target_bot: "7f7f7f"
-    l_right_2_bank_target_top: "7f7f7f"
+    l_right_2_bank_target_bot: "aaaaaa"
+    l_right_2_bank_target_top: "aaaaaa"
+- duration: 96ms
+  lights:
+    l_right_2_bank_target_bot: "555555"
+    l_right_2_bank_target_top: "555555"

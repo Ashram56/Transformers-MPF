@@ -1,6 +1,6 @@
 #show_version=6
 # ROM lamp effect (leff) 91, function 0x010378bc, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_091.json). ends by itself after 224 ticks (3584 ms).
-# Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
 - duration: 112ms
   coils:
     c_flash_decepticon:

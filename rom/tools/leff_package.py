@@ -5,7 +5,7 @@ effects started, each with its ROM address) and rom/mpf_package/config/shows/lam
 then rom/rom_data/io/lamp_effects.csv (one row per leff of the table 0x040cfe00; the columns the game reads).
 A leff that never ends by itself (it runs until stopped) is written as its lead-in then one cycle: the shortest
 period after which its lamp states and pulses repeat exactly, found in its tick sequence; the show's header and
-the column loop_step give the step the cycle starts at, where the player loops back (QA L-G11). Lamp levels: both planes "ffffff", one plane "7f7f7f", none "000000" (leff_lift.py).
+the column loop_step give the step the cycle starts at, where the player loops back (QA L-G11). Lamp levels: both planes "ffffff", plane 0 only "555555" (1/3), plane 1 only "aaaaaa" (2/3), none "000000" (leff_lift.py).
 
 Usage: TF_ROM=tf_180.bin leff_package.py LIFT_DIR [leff ...]
 """
@@ -27,7 +27,9 @@ SHOWS = os.path.join(ROMDIR, "mpf_package", "config", "shows")
 OPS_DIR = os.path.join(ROMDIR, "rom_data", "io", "leff_ops")
 CSV = os.path.join(ROMDIR, "rom_data", "io", "lamp_effects.csv")
 TICK_MS = 16.0                     # the OS tick from the code: 64 IO interrupts of 250 us [0x000114b0] (owner, 2026-11-25)
-COL = {0: "000000", 1: "7f7f7f", 2: "7f7f7f", 3: "ffffff"}
+# the lamp strobe [0x000113fc] shows plane 0 one pass and plane 1 two: a lamp lit in plane 0 only is at 1/3, in plane
+# 1 only at 2/3 (QA L-G03)
+COL = {0: "000000", 1: "555555", 2: "aaaaaa", 3: "ffffff"}
 COIL_GROUPS = 0x040cf65c           # coilgroup_pulse [0x00005fd4]: 0-terminated coil lists
 
 
@@ -170,7 +172,7 @@ def package(doc, lights, coils, sites):
         dump_show(os.path.join(SHOWS, show + ".yaml"),
                   ["ROM lamp effect (leff) %d, function %s, decoded from its code (rom/tools/leff_lift.py; "
                    "ticks in rom/rom_data/io/leff_ops/leff_%03d.json). %s." % (n, doc["fn"], n, note),
-                   "Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off."], body)
+                   "Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off."], body)
     os.makedirs(OPS_DIR, exist_ok=True)
     with open(os.path.join(OPS_DIR, "leff_%03d.json" % n), "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, separators=(",", ":"))
