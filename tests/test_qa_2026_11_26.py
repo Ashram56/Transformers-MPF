@@ -244,6 +244,21 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual((1, 0), (self.tf.pd.mtl_locked, mtl.locked_held))
         self.tf.adj[69] = saved
 
+    def test_locked_balls_kicked_in_another_multiball(self):
+        """[0x0100a1f8] -> [0x0103a2c0] -> device loop [0x010391a0]: the first ball as any kickout after the 46-tick
+        settle, each next one 62 + 31 ticks later with 0x13c and leff 24 ([0x0100a3b8] case 9)."""
+        self.start()
+        mtl = self.tf.features_by_name["megatron"]
+        released = []
+        self.machine.events.add_handler("tf_megatron_release", lambda **kwargs: released.append(self.tf.now))
+        mtl.locked_held = 2
+        self.tf.flag_set(0x3c)
+        mtl._keep_check()
+        self.advance_time_and_run(5)
+        self.assertEqual(2, len(released))
+        self.assertAlmostEqual(93 * 0.016, released[1] - released[0], delta=0.05)
+        self.tf.flag_clear(0x3c)
+
     def test_jackpot_speech_samples_in_order(self):
         """The jackpot deffs play their speech's samples in turn from the side's counter, 0 past the call's count
         ([0x0100c430] 0xca / 0xd2, [0x0100e29c] 0xe4 / 0xf7; QA M12)."""

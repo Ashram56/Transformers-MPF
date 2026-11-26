@@ -58,6 +58,7 @@ LOCK_LAMPS = (29, 57, 58)     # [0x0100b228]: 0x1d, 0x39, 0x3a
 ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)), (0x40, (29,)))
 SHOT_LAMPS = {62: ARROWS, 70: ARROWS + ((0x80, (59,)),)}
 SETTLE_TICKS = 46
+EJECT_SETTLE_TICKS, RETRY_SLEEP_TICKS = 62, 31   # device record 0x040d188c +0x14 / +0x18 (ball_feed.md)
 SERVE_TICKS = 155
 ENTRY_POINTS = 5120
 BACK_DOOR_S = 187 * 0.016
@@ -457,6 +458,7 @@ class Megatron(Feature):
         self.pending = 0            # entered balls not handled yet (still counted in play)
         self.locked_held = 0        # locked balls (not in play)
         self.kicking = 0            # balls waiting for their kick (_kick)
+        self.excess = 0             # further balls the device loop kicks after the first [0x010391a0]
         sc = self.machine.switch_controller
         for name in SWITCHES:
             if name in self.machine.switches:
@@ -598,15 +600,28 @@ class Megatron(Feature):
     def _keep_check(self, **kwargs):
         """[0x0100a1f8]: the device keeps no ball while a multiball (any_multiball_running 0x01006704) or the
         side mode (flag 0x3c) runs, so the locked balls go back into play; the lock count stays. Timed battles,
-        double and fast scoring keep them. The kicks use the multiball release spacing (inferred)."""
+        double and fast scoring keep them. game_device_3a2c0 [0x0103a2c0] lowers the device's target and starts
+        its task 0x1c, the device loop [0x010391a0] of record 0x040d188c: the count settled (+0x10, 46 ticks),
+        callback 7 (0x13b + leff 23, [0x0100a3b8] case 7) and the kick (case 9: 0x13c + leff 24, coil 3) as
+        for any kickout (_kick); while more balls than the target stay, after the count settles again (+0x14,
+        62 ticks) and task_sleep(+0x18, 31 ticks), callbacks 8 and 9 again (0x13c + leff 24, coil 3)."""
         os_ = self.os
         if not self.locked_held or not os_.game or not (os_.any_multiball() or os_.flag(0x3c)):
             return
         held, self.locked_held = self.locked_held, 0
         os_.game.balls_in_play += held
-        for i in range(held):
-            os_.machine.clock.schedule_once(lambda: self.machine.events.post(RELEASE_EVENT),
-                                            RELEASE_COILS[min(i, len(RELEASE_COILS) - 1)])
+        self.kicking += held
+        self.excess += held - 1
+        os_.after(SETTLE_TICKS, self._kick)
+
+    def _retry(self):
+        """The device loop's next try [0x010391a0]: callback 9 ([0x0100a3b8] case 9, sound and leff unless the
+        game state has 0x310), then case 3's coil 3."""
+        os_ = self.os
+        if os_.game and not os_.tilted:
+            os_.sound(0x13c)
+            os_.leff_start(24)
+        self._kicked()
 
     def sw_13(self):
         self.back_door_at = self.os.now
@@ -768,6 +783,10 @@ class Megatron(Feature):
     def _kicked(self):
         self.machine.events.post(RELEASE_EVENT)
         self.kicking = max(self.kicking - 1, 0)
+        if self.excess:
+            self.excess -= 1
+            self.os.after(EJECT_SETTLE_TICKS + RETRY_SLEEP_TICKS, self._retry)
+            return
         if not self.kicking:
             self.os.after(EJECT_OVER_TICKS, self.os.device_ejected)
 
