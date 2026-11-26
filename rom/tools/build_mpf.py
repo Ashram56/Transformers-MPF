@@ -44,7 +44,7 @@ for r in co:
     if n not in cn: continue
     L.append('  %s:\n    number: %d   # %s\n' % (cn[n], n, r['name']))
     src = r.get('mpf_source', '')
-    if 'motor_or_long' in r['flags_decoded'] or src.startswith('motor'):
+    if 'motor_or_long' in r['flags_decoded'] or src.startswith('motor') or src.endswith('not pulsed'):
         L.append('    default_hold_power: 1.0   # held on, not pulsed\n')
         if r.get('mpf_default_pulse_ms'): L.append('    # the game ran it %s ms at a time\n' % r['mpf_default_pulse_ms'])
         continue

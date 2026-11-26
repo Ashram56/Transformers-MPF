@@ -68,22 +68,33 @@ def _shaker(c):
                     "0x040c7620), not pulsed" % "/".join(map(str, lv)))
 
 
-def _kept(ms, hold, why):
-    return lambda c: (ms, hold, "code open: %s; %s ms%s kept from the emulator measurement until the owner decides "
-                      "(docs/pinmame_waivers.md, open)" % (why, ms, " and hold %s" % hold if hold else ""))
-
-
 SHAKER = 0x040c7620
+FLIPPERS = 0x040cf590   # flipper driver table (via 0x00030b9c), coil_init_6194 [0x00006194]: see flipper_drive.py
+
+
+def _flipper(i):
+    def f(c):
+        b = ROM[foff(FLIPPERS + 12 * i): foff(FLIPPERS + 12 * i) + 12]
+        pulse, cut, on, off = b[6], b[7], b[8], b[9]
+        return (pulse, "%.3f" % (on / (on + off)),
+                "code: flipper driver record (table 0x%08x, coil %d, button %d, EOS %d): pulse %d ms, then hold %d ms "
+                "on / %d ms off, in the 1 ms pass of io_isr [0x000114b0]; EOS opening cuts the pulse when at most %d ms "
+                "are left, a cut pulse that ends on a closed EOS pulses again (at most 2); rom/tools/flipper_drive.py"
+                % (FLIPPERS + 12 * i, b[3], b[1], b[5], pulse, on, off, cut))
+    return f
+
+
 SPECIAL = {
-    5: lambda c: ("", "", "motor/gate: enabled for a time, not pulsed (code open: its drive routine is not found yet)"),
+    5: lambda c: ("", "", "code: orbit gate, a driver object held 1,488 ms by drv_pulse_coil_2c074 [0x0102c074] "
+                  "(driver list 0x000315f0; ball search: event 0xc hook [0x0102badc]); not pulsed"),
     8: _shaker,
-    15: _kept("40.5", "0.083", "no flipper drive found in the CPU code (no flipper device: the OS device list "
-              "0x0003143c, table 0x040ddfa4, has count 1 at 0x040c4604, so none; the FPGA is not decoded)"),
-    16: _kept("40.6", "0.084", "as the left flipper"),
+    15: _flipper(0),
+    16: _flipper(1),
     24: lambda c: (64, "", "code: knocker, FUN_00002078(coil RAM 0x00030e98 = 24, 64 ms) in the knock task "
                    "FUN_00019420 [0x00019420] when adj 44 Q24 OPTION = KNOCKER (DAT_000375bc = 2); the device method "
                    "FUN_0102c074 drives it from a run-time record otherwise"),
-    30: lambda c: ("", "", "motor: enabled for a time, not pulsed (code open: its drive routine is not found yet)"),
+    30: lambda c: ("", "", "code: Optimus motor, turned on by motor_move_task [0x00016c88] (motor class +0xfc) until "
+                   "its position switch or the limit of 468 ticks [0x00016830]; not pulsed"),
 }
 
 
@@ -167,8 +178,8 @@ def main():
                 "%s at %s" % (r["how"], r["site"]) for r in onoff[:4])
         elif "flipper" in c["flags_decoded"]:
             ms = c["test_pulse_ms"]
-            src = ("code open: no flipper drive in the CPU code (the flipper device 0x0003143c is empty and its IO "
-                   "interrupt pass only resets its counter); coil test time %s ms (descriptor %s)" % (ms, c["desc_addr"]))
+            src = ("code: a flipper coil with no record in the flipper driver table 0x040cf590; coil test time %s ms "
+                   "(descriptor %s)" % (ms, c["desc_addr"]))
         else:
             ms = c["test_pulse_ms"]
             src = "code: no pulse in the game code; coil test time of the descriptor %s" % c["desc_addr"]

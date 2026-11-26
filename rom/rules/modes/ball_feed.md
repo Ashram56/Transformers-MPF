@@ -5,8 +5,8 @@ owner 2026-11-25). Fact tags: **code** unless said.
 
 ## Devices
 
-The game's ball devices are the 0x24-byte records of table `0x040d17fc` (index 1..4), registered at start-up by
-`0x01005fb8` (`FUN_00006194(device registry)` [0x00006194]). RAM after that init (run as ROM code,
+The game's ball devices are the 0x24-byte records of table `0x040d17fc` (index 1..4), read through the static array `0x00030c44` (entries, count 5, stride 0x24; the start-up hook
+`0x01005fb8` builds the flipper drivers, `coil_init_6194` [0x00006194], see `rom/README.md` Coils). RAM after the OS init (run as ROM code,
 `rom/tools/ball_search.py` `boot`): trough = device 1 (`DAT_00031624`), shooter lane = device 2 (`DAT_00031628`),
 no second feeder (`DAT_00031626` = 0).
 

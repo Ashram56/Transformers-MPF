@@ -39,12 +39,12 @@ coils:
     default_pulse_ms: 64   # code: slingshot 2: switch 27, dead 192 ms (0x040ddff0)
   c_left_flipper:
     number: 15   # LEFT FLIPPER
-    default_pulse_ms: 40   # code open: no flipper drive found in the CPU code (no flipper device: the OS device list 0x0003143c, table 0x040ddfa4, has count 1 at 0x040c4604, so none; the FPGA is not decoded); 40.5 ms and hold 0.083 kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
+    default_pulse_ms: 40   # code: flipper driver record (table 0x040cf590, coil 15, button 137, EOS 138): pulse 40 ms, then hold 1 ms on / 11 ms off, in the 1 ms pass of io_isr [0x000114b0]; EOS opening cuts the pulse when at most 8 ms are left, a cut pulse that ends on a closed EOS pulses again (at most 2); rom/tools/flipper_drive.py
     default_hold_power: 0.083
   c_right_flipper:
     number: 16   # RIGHT FLIPPER
-    default_pulse_ms: 41   # code open: as the left flipper; 40.6 ms and hold 0.084 kept from the emulator measurement until the owner decides (docs/pinmame_waivers.md, open)
-    default_hold_power: 0.084
+    default_pulse_ms: 40   # code: flipper driver record (table 0x040cf59c, coil 16, button 139, EOS 140): pulse 40 ms, then hold 1 ms on / 11 ms off, in the 1 ms pass of io_isr [0x000114b0]; EOS opening cuts the pulse when at most 8 ms are left, a cut pulse that ends on a closed EOS pulses again (at most 2); rom/tools/flipper_drive.py
+    default_hold_power: 0.083
   c_flash_decepticon:
     number: 17   # FLASH: DECEPTICON
     default_pulse_ms: 48   # code: 48 ms at 5 of 9 pulse sites (0x0100cc84, 0x0100eb50, 0x01026e9c, 0x01028348, 0x0102a468); all: 24x2 48x5 64x2

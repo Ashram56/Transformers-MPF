@@ -7,7 +7,7 @@ with the pass number at task +0x30, then sleeps 1 tick at a time until the page 
 (task_count_b3b0) or the right flipper (bits_changed_on_68b4(.., 2)) goes on: next entry. The left flipper
 (bit 1) goes back one entry (and one pass before entry 0). After the last entry the pass counts up by one.
 
-This tool boots the machine as switch_lift.py does (global constructors, OS init, device registration), runs
+This tool boots the machine as switch_lift.py does (global constructors, OS init, flipper drivers 0x01005fb8), runs
 the ROM's own factory resets (adjustments error_log_530_all_728 [0x00000728], game factory_reset_game_265e8
 [0x000265e8]: replay, high scores, last scores; high_score_tables_init_190bc [0x000190bc]) and then, per state:
 - evaluates the 39 conditions for passes 1 to 5;

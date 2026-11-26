@@ -5,7 +5,7 @@ game-state mask (+0x0e against DAT_00031468): task_create(id +0x14, fn +0x00, fl
 +0x30 = the switch number and +0x34 = the record's argument (+0x04), then event 0x6c (mask bit 0x2000) or
 0x6b (bit 0x1000) with the switch number. The switch records are 0x20 bytes at 0x040e2c20 + n * 0x20.
 
-This runs, in Unicorn (coderun runners), the OS init and the game's device registration (ball_search.boot),
+This runs, in Unicorn (coderun runners), the OS init and the game's start-up hook 0x01005fb8 (the flipper drivers; ball_search.boot),
 game_init [0x00019c64] (event 0x2f, the player and mode inits, ball_start [0x00019d30], serve_ball(3)), then
 the scenario of rules/traces/switches.txt: the validating left sling, then every playfield switch hit twice,
 2 s (125 ticks) apart, every task the game starts running on between hits. event_post, score_add, audit_add
@@ -537,7 +537,7 @@ def boot(r):
     """The start-up of os_start_308 [0x00000308]: the global constructors (0x0002c0f4 ->
     __do_global_ctors 0x0002c078, the 39 entries of 0x00033e40: each rule module's event hooks, e.g. the pop
     value at ball start 0x0102d1ec, hooked on event 0x11 by 0x0102dab8), game state 0x10, the OS init
-    0x00006ecc, then the device registration 0x01005fb8 as ball_search.boot."""
+    0x00006ecc, then the start-up hook 0x01005fb8 (flipper drivers) as ball_search.boot."""
     r.call(0x0002c0f4)
     r.m.mem_write(GAME_STATE, struct.pack("<H", 0x10))
     ball_search.boot(r)
