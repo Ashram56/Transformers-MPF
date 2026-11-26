@@ -18,7 +18,8 @@ Screens, as the walk shows them:
   previous;
 - installs and resets: the item (font 8), "PRESS 'SELECT' TO INSTALL" / "TO RESET", "PRESS 'BACK' TO CANCEL";
   SELECT does it (Adjustments.install, Audits.reset_*) and goes back to the menu;
-- SWITCH TEST runs live as the ROM's loop [0x0104cae4] (SwitchTest below);
+- SWITCH TEST runs live as the ROM's loop [0x0104cae4] (SwitchTest below), the single and cycling coil and flash
+  lamp tests as theirs [0x01046f4c] [0x01046a98] [0x010492b8] [0x01048de4] (SingleCoilTest and its variants);
 - every other screen (the other tests, help, USB) shows the texts the ROM drew for it in the walk.
 The menu items hidden at factory settings (service_menu.json shown_only_if: tournament, software errors) stay
 hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1).
@@ -91,12 +92,16 @@ class ServiceMode(Mode):
         def handler():
             if self.page is not None and self.page["kind"] == "switch_test" and call != BEEP_BACK:
                 return                      # in the switch test only BACK acts [0x0104cae4]; the others are switches
+            if self.page is not None and self.page["kind"] == "coil_test":
+                self.page["records"][call] += 1     # the button handlers post their records; the test's pass reads them
+                return
             self.os.sound(call)
             fn()
         return handler
 
     def mode_stop(self, **kwargs):
         self._close_switch_test()
+        self._close_coil_test()
         if getattr(self, "_custom_timer", None):
             self.machine.clock.unschedule(self._custom_timer)
             self._custom_timer = None
@@ -186,6 +191,14 @@ class ServiceMode(Mode):
             self._open_custom(path, back_to=None)
         elif text == "SWITCH TEST":
             self._open_switch_test(path)
+        elif text == "SINGLE COIL TEST":
+            self._open_coil_test(path, SingleCoilTest)
+        elif text == "SINGLE FLASH LAMP TEST":
+            self._open_coil_test(path, SingleFlashLampTest)
+        elif text == "CYCLING COIL TEST":
+            self._open_coil_test(path, CyclingCoilTest)
+        elif text == "CYCLING FLASH LAMP TEST":
+            self._open_coil_test(path, CyclingFlashLampTest)
         elif text in ("STANDARD ADJUSTMENTS", "FEATURE ADJUSTMENTS"):
             group = text.split()[0].lower()
             nums = self.os.adj.menu(group)
@@ -274,6 +287,133 @@ class ServiceMode(Mode):
                 self.show()
         self.page["timer"] = self.machine.clock.schedule_interval(frame, TICK)
 
+    def _open_coil_test(self, path, kind):
+        """SingleCoilTest [0x01046f4c]: one pass every 2 ticks; the button records (0x00036ac0 BACK, 0x00036ad0 MINUS,
+        0x00036ae0 PLUS, 0x00036af0 SELECT) are read in the pass."""
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        test = kind(coil_records(), lambda: not self.os.coin_door_open())
+        names = {num: name for name, num in self.os.lamps.coil_numbers.items()}
+        records = {BEEP_BACK: 0, BEEP_MINUS: 0, BEEP_PLUS: 0, BEEP_SELECT: 0}
+        page = {"kind": "coil_test", "test": test, "path": path, "records": records, "draw": [], "task": None}
+        self.page = page
+
+        def task_end():
+            page["task"] = None
+
+        def fire():
+            """coil_task_body_46e24 [0x01046e24]: the record's test function, else coil_pulse_now_wait(coil, test ms)."""
+            num = test.index
+            rec = test.coils[num]
+            if rec["fn"] == "0x100a374":            # pulse_megatron_lockup_a374: coil 3 for 0x40 ms, task 0x58 (0x3e)
+                self.os.lamps.flasher(names.get(3), 0x40)
+                self.os.task_start(0x58, 0x3e)
+                return None
+            if rec["fn"] == "0x1025568":            # optimus_motor_test: the motor to the other position, waited for
+                mech = self.os.features_by_name.get("optimus_mech")
+                if mech is None or mech.moving is not None:
+                    return None
+                mech._move(0x2c if mech.position() == 0x2b else 0x2b)
+                return "motor"
+            if names.get(num) and rec["ms"]:
+                self.os.lamps.flasher(names[num], rec["ms"])
+            return self.machine.clock.schedule_once(lambda *_: task_end(), max(rec["ms"] / 1000.0, TICK))
+
+        def stop_task():
+            """task_kill_own_children_ade4 and coil_slot_246c: the test task and its coil stop."""
+            task = page["task"]
+            if task == "motor":
+                mech = self.os.features_by_name.get("optimus_mech")
+                if mech is not None:
+                    mech._motor_off()
+            elif task is not None:
+                self.machine.clock.unschedule(task)
+            page["task"] = None
+            test.running = False
+
+        page["rest"] = 0
+
+        def cycle():
+            """[0x01046a98]: start the coil's task when none runs; when it has ended, rest 0x3e passes, then the
+            next coil. BACK stops the task and leaves."""
+            if not test.running:
+                page["task"] = fire()
+                test.running = True
+                page["rest"] = 0
+            ended = False
+            if test.running:
+                if page["rest"] == 0:
+                    if page["task"] == "motor":
+                        mech = self.os.features_by_name.get("optimus_mech")
+                        if mech is None or mech.moving is None:
+                            page["task"] = None
+                    ended = page["task"] is None
+                    if ended:
+                        page["rest"] = test.REST_PASSES
+                else:
+                    page["rest"] -= 1
+                    if page["rest"] == 0:
+                        test.index = test.next(test.index)
+                        test.running = False
+            if ended or records[BEEP_BACK]:
+                running = test.running
+                stop_task()
+                test.running = running and not records[BEEP_BACK]
+            if records[BEEP_BACK]:
+                self.os.sound(BEEP_BACK)
+                self._close_coil_test()
+                self.page = None
+
+        def tick(*_):
+            if self.page is not page:
+                return
+            draw, sounds = test.frame()
+            for call in sounds:
+                self.os.sound(call)
+            page["draw"] = draw
+            if test.CYCLING:
+                cycle()
+                return self.show()
+            if not test.running and records[BEEP_MINUS]:
+                records[BEEP_MINUS] -= 1
+                self.os.sound(BEEP_MINUS)
+                test.index = test.prev(test.index)
+            if not test.running and records[BEEP_PLUS]:
+                records[BEEP_PLUS] -= 1
+                self.os.sound(BEEP_PLUS)
+                test.index = test.next(test.index)
+            if records[BEEP_SELECT]:
+                records[BEEP_SELECT] = 0
+                if not test.running:
+                    page["task"] = fire()
+                    test.running = True
+            if page["task"] == "motor":
+                mech = self.os.features_by_name.get("optimus_mech")
+                if mech is None or mech.moving is None:
+                    page["task"] = None
+            done = False
+            if test.running and (page["task"] is None or records[BEEP_BACK]):
+                if records[BEEP_BACK]:
+                    records[BEEP_BACK] -= 1
+                    self.os.sound(BEEP_BACK)
+                records[BEEP_MINUS] = records[BEEP_PLUS] = records[BEEP_SELECT] = 0
+                done = True
+            if done or records[BEEP_BACK]:
+                stop_task()
+            if records[BEEP_BACK]:
+                self.os.sound(BEEP_BACK)            # snd_play_9_ecfc on the way out
+                self._close_coil_test()
+                self.page = None
+            self.show()
+        page["timer"] = self.machine.clock.schedule_interval(tick, SingleCoilTest.PASS_TICKS * TICK)
+        page["stop"] = stop_task
+        tick()
+
+    def _close_coil_test(self):
+        page = getattr(self, "page", None)
+        if page is not None and page.get("kind") == "coil_test":
+            page["stop"]()
+            self.machine.clock.unschedule(page["timer"])
+
     def _close_switch_test(self):
         page = getattr(self, "page", None)
         if page is not None and page.get("kind") == "switch_test":
@@ -321,7 +461,7 @@ class ServiceMode(Mode):
             return [rd.text(self.current()["text"], MENU_FONT, 64, MENU_Y, 2)]
         if page["kind"] == "custom":
             return page["editor"].draw()
-        if page["kind"] == "switch_test":
+        if page["kind"] in ("switch_test", "coil_test"):
             return page["draw"]
         if page["kind"] == "adj":
             if not page["list"]:
@@ -644,3 +784,119 @@ class SwitchTest:
                 self.frames = 0
         self.read = nxt
         return draw
+
+
+def coil_records():
+    """{coil: record} from rom/rom_data/io/coils.csv (the coil table, DAT_00030b48 entries 1-0x23): name +0xc,
+    test pulse +0x10, wire colours +0x14 / +0x16, flags (0x800 hidden in the tests), the test function +4."""
+    import csv                                   # noqa: PLC0415
+    with open(os.path.join(ROOT, "rom", "rom_data", "io", "coils.csv"), encoding="utf-8") as f:
+        return {int(r["coil"]): {"name": r["name"], "ms": int(r["test_pulse_ms"] or 0), "flags": int(r["flags_hex"], 16),
+                                 "fn": r["test_fn"], "wires": (r["wire_color_1"], r["wire_color_2"])}
+                for r in csv.DictReader(f)}
+
+
+class SingleCoilTest:
+    """SINGLE COIL TEST, play_sound_010_46f4c [0x01046f4c], ported line by line: one pass every 2 ticks
+    (deff_frame_sleep(2)) until BACK.
+
+    - Header (font 2, y 5): "COIL TEST" (msg 0x11b) with the power on (RAM 0x00031470 & 3); with it off "50V / 20V
+      DISABLED" (msg 0x11c) blinking 4 passes on, 4 off, with sound 0x010 at each blink, 5 times, then steady.
+    - The coil (font 6, y 0xe: "%s" msg 0x11e, +0x19 is 1 for every coil), "#%d" (msg 0x120, font 8, y 0x16), the
+      wire colours "%s / %s" (font 8, y 0x1e).
+    - MINUS / PLUS (sounds 0x00a / 0x00b): the previous / next coil of 1-0x23 not hidden (flag 0x800)
+      [0x01046e7c] [0x01046eec]; SELECT: the coil's test task coil_task_body_46e24 [0x01046e24] (the record's test
+      function, else coil_pulse_now_wait for the test pulse); while it runs the buttons are ignored (and dropped when
+      it ends); BACK while it runs stops it (sound 0x009) and the test stays; BACK otherwise leaves (sound 0x009).
+    """
+    PASS_TICKS = 2
+    COUNT = 0x23
+    TITLE = "COIL TEST"                     # msg 0x11b
+    MASK, WANT = 0x800, 0                   # shown: flags & 0x800 == 0 [0x01046eec]
+    CYCLING = False
+    REST_PASSES = 0x3e                      # cycling: passes between the end of a coil's task and the next coil
+
+    def __init__(self, coils, power_on):
+        self.coils = coils
+        self.power_on = power_on            # () -> bool: RAM 0x00031470 & 3 != 0
+        self.blinks = 5                     # local_44
+        self.index = self.next(0)
+        self.running = False                # bVar11
+        self.counter = 4                    # uVar12
+        self.disabled = not power_on()      # bVar2
+
+    def _shown(self, n):
+        rec = self.coils.get(n)
+        return rec is not None and rec["flags"] & self.MASK == self.WANT
+
+    def next(self, n):
+        start = n
+        while True:
+            n = n + 1 if n < self.COUNT else 1
+            if self._shown(n) or n == start:
+                return n
+
+    def prev(self, n):
+        start = n
+        while True:
+            n -= 1
+            if n == 0 or n > self.COUNT:
+                n = self.COUNT
+            if self._shown(n) or n == start:
+                return n
+
+    def frame(self):
+        """The drawing of one pass and the sounds it plays (the header's warning sound)."""
+        sounds = []
+        step = self.counter - 1
+        draw = []
+        if self.disabled:
+            if self.blinks and step == 3:
+                sounds.append(0x010)
+            if step >= 0 or self.blinks < 2:
+                draw.append(rd.text("50V / 20V DISABLED", 2, 0x40, 5, 2))
+        else:
+            draw.append(rd.text(self.TITLE, 2, 0x40, 5, 2))
+        rec = self.coils.get(self.index)
+        if rec:
+            draw.append(rd.text(rec["name"], 6, 0x40, 0xe, 2))
+            draw.append(rd.text("#{}".format(self.index), 8, 0x40, 0x16, 2))
+            draw.append(rd.text("{} / {}".format(*rec["wires"]), 8, 0x40, 0x1e, 2))
+        if step <= -4:
+            step = 4
+            self.blinks = max(self.blinks - 1, 0)
+        on = self.power_on()
+        became_off = (not on) and not self.disabled    # bVar2 ^ 1 while the power is off: it just went off
+        self.counter = step
+        if became_off:
+            self.counter, self.blinks = 4, 5
+        self.disabled = not on
+        return draw, sounds
+
+
+class SingleFlashLampTest(SingleCoilTest):
+    """SINGLE FLASH LAMP TEST, play_sound_010_492b8 [0x010492b8]: the single coil test's loop over the flashers
+    (flags & 0x1004 == 4 [0x01049248] [0x010491c8]), header "FLASH LAMP TEST" (msg 0x130) or "50V / 20V DISABLED"
+    (msg 0x131), the same texts (msgs 0x132 / 0x134) and test task (coil_task_body_49170 [0x01049170])."""
+    TITLE = "FLASH LAMP TEST"
+    MASK, WANT = 0x1004, 4
+
+    def __init__(self, coils, power_on):
+        SingleCoilTest.__init__(self, coils, power_on)
+
+
+class CyclingCoilTest(SingleCoilTest):
+    """CYCLING COIL TEST, play_sound_010_46a98 [0x01046a98]: the same screen ("CYCLING COIL TEST", msg 0x121, or the
+    power warning msg 0x122); no button but BACK is read. Each pass with no test task starts the coil's
+    (coil_task_body_469e0 [0x010469e0]); once it has ended, 0x3e passes later the next coil not hidden
+    (service_index_check_46a38 [0x01046a38]) takes its turn."""
+    TITLE = "CYCLING COIL TEST"
+    CYCLING = True
+
+
+class CyclingFlashLampTest(SingleCoilTest):
+    """CYCLING FLASH LAMP TEST [0x01048de4]: the cycling loop over the flashers (flags & 0x1004 == 4
+    [0x01048d74]), "CYCLING FLASH LAMP TEST" (msg 0x135) or the power warning (msg 0x136)."""
+    TITLE = "CYCLING FLASH LAMP TEST"
+    MASK, WANT = 0x1004, 4
+    CYCLING = True

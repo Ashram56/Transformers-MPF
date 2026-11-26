@@ -133,3 +133,68 @@ class TestFinalPass(QaCase):
         self.hit_and_release_switch("s_back")
         self.advance_time_and_run(0.1)
         self.assertIsNone(mode.page)
+
+    def test_f050_single_coil_test(self):
+        """SINGLE COIL TEST [0x01046f4c]: COIL TEST / the coil / #n / its wires; PLUS skips the hidden coils
+        (flag 0x800 [0x01046eec]); SELECT pulses the coil for its test time; BACK leaves."""
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("COIL MENU", "MAIN MENU / COIL MENU")
+        mode._open_page({"text": "SINGLE COIL TEST"})
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["COIL TEST", "TROUGH UP-KICKER", "#1", "YEL-VIO / BRN-BLK"], rom_draw.lines_of(mode.draw()))
+        for _ in range(3):
+            self.hit_and_release_switch("s_plus")
+            self.advance_time_and_run(0.05)
+        self.advance_time_and_run(0.05)                 # the pass draws before it reads the buttons
+        self.assertEqual("#5", rom_draw.lines_of(mode.draw())[2])     # coil 4 is hidden
+        n = len([e for e in self.tf.trace.of("coil") if e["on"]])
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        self.assertGreater(len([e for e in self.tf.trace.of("coil") if e["on"]]), n)
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
+
+    def test_f051_single_flash_lamp_test(self):
+        """SINGLE FLASH LAMP TEST [0x010492b8]: the flashers only (flags & 0x1004 == 4), from coil 17."""
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("FLASH LAMPS MENU", "MAIN MENU / FLASH LAMPS MENU")
+        mode._open_page({"text": "SINGLE FLASH LAMP TEST"})
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["FLASH LAMP TEST", "FLASH: DECEPTICON", "#17", "ORG / VIO-BRN"], rom_draw.lines_of(mode.draw()))
+        self.hit_and_release_switch("s_minus")
+        self.advance_time_and_run(0.1)
+        self.assertEqual("#32", rom_draw.lines_of(mode.draw())[2])     # wraps to the last flasher
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
+
+    def test_f052_cycling_coil_test(self):
+        """CYCLING COIL TEST [0x01046a98]: each coil's test pulse, then 0x3e passes of 2 ticks, then the next one."""
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("COIL MENU", "MAIN MENU / COIL MENU")
+        mode._open_page({"text": "CYCLING COIL TEST"})
+        self.advance_time_and_run(0.5)
+        self.assertEqual(["CYCLING COIL TEST", "TROUGH UP-KICKER", "#1", "YEL-VIO / BRN-BLK"],
+                         rom_draw.lines_of(mode.draw()))
+        self.advance_time_and_run(0x3e * 2 * TICK + 0.2)
+        self.assertEqual("#2", rom_draw.lines_of(mode.draw())[2])
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)
