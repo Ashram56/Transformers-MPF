@@ -36,7 +36,7 @@ them and they stay in the game.
 
 | Path | Why | Approval |
 |---|---|---|
-| `rom/rules/traces/tilt_ball_save.jsonl` | QA F15: does the ball save survive a tilt? The code read leaves it open (the hooks of events 0x65 / 0x66 not read); one reference trace, tilt during the ball save then a drain, used only to confirm the code | approved by Vincent 2026-11-25 |
+| `rom/rules/traces/tilt_ball_save.jsonl` | QA F15: does the ball save survive a tilt? Answered from the code since 2026-11-26: the tilt's `task_kill(0, 0x1000)` [0x0001dbb4] ends the save task 0x31 (flags 0x300, [0x00017acc]), so no save after a tilt (`rom/rules/modes/game_flow.md` 5.4, run in ROM code by `rom/tools/scenario_lift.py`). The reference trace, tilt during the ball save then a drain, only confirms it | approved by Vincent 2026-11-25 |
 
 Not waivers (allowed by the rule): the reference traces `rom/rules/traces/` and their scenarios confirm the game,
 they are not a source; `game/tools/dmd_capture.gd` saves the game's own DMD for `scripts/render_check.py`, it
