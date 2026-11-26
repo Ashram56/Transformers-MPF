@@ -2025,7 +2025,7 @@ class TfOS(CustomCode):
         self.kill_mb_save()
         self._mb_pending = 0
         self.task_kill(MB_TASK)
-        self.display.clear()
+        self.display.clear(keep_group=True)
         self.hook("ball_end")                        # event 0x1d: every mode stops
         for flipper in self.machine.flippers.values():
             flipper.disable()

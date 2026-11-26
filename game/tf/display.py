@@ -68,6 +68,18 @@ def deff_table():
             if row["background"] == "yes":
                 background.add(deff_id)
     return prio, background
+def deff_flags():
+    """{deff: flags} of the deff table 0x040ce7c4 (+4, rom/rom_data/dmd/deffs.csv). deff_start [0x000209b4] creates
+    the deff's task in group 0x2000 unless flags & 5."""
+    out = {}
+    path = os.path.join(ROM, "rom_data", "dmd", "deffs.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                out[int(row["deff"])] = int(row["flags"] or "0", 0)
+    return out
+
+
 def hold_from(d):
     """The tick the deff's priority drops to 0x20 for good: the first priority-0x20 op after which every priority op
     is 0x20 too (deff_prio_set_2108c through [0x010305a0]; deff 84 at tick 162 and again at 245, QA V084 / V089).
@@ -221,6 +233,7 @@ class Display:
         self.media = media_table.load(PKG)
         self.prio, self.background = deff_table()
         self.flags = deff_flags()
+        self.flags = deff_flags()
         self._last_sound_call = None
         self._after_pending = None   # (call it waits on, handle): a queued snd_play_after
         self._last_sound_end = None  # when the deff's last sound ends (its sound_after ops queue behind it)
@@ -236,7 +249,6 @@ class Display:
         self._sound_handles = []
         self._pump_handle = None
         self.idle_waits = []        # [task_id, deff_id, deadline, on_end, deff_args] (when_idle)
-        self.idle_deff = None       # the deff a when_idle task started (it runs in the task's group 0x2000)
         # Background deff rules (lamp_rule_init list 2, os.deff_rule): (priority, cond, deff, music, on_start).
         # The true rule with the highest priority owns the background deff and the music; without one, the
         # score display (deff 19) runs with the OS base music (os.base_music()).
@@ -609,8 +621,18 @@ class Display:
             self.music = music
             os_.sound(music)
 
-    def clear(self):
-        """Ball end / game end: drop the queue and the foreground deff (no trace event)."""
+    def clear(self, keep_group=False):
+        """Ball end / game end: drop the queue and the foreground deff (no trace event). keep_group: the end of
+        ball [0x00019e44] kills no deff task; a deff in group 0x2000 (deff_flags) plays on and holds the bonus."""
+        if keep_group and self.fg is not None and not self.flags.get(self.fg, 0) & 5:
+            self.shows = []
+            self.show = None
+            self.music = None
+            self.idle_waits = []
+            if self._pump_handle:
+                self.os.machine.clock.unschedule(self._pump_handle)
+                self._pump_handle = None
+            return
         self.shows = []
         self.show = None
         self.music = None
@@ -628,10 +650,8 @@ class Display:
         (battle_ratchet: deff 123 at 48.17 s, the bonus deff 25 when it ends, 50.11 s)."""
         if self.idle_waits:
             return True
-        if self.idle_deff is not None and self.fg == self.idle_deff:
-            return True
-        self.idle_deff = None
-        return False
+        # the deff task of a deff without flags 1 or 4 is in group 0x2000 too (deff_start [0x000209b4])
+        return self.fg is not None and not self.flags.get(self.fg, 0) & 5
 
     def when_idle(self, task_id, deff_id, timeout=SHOW_TIMEOUT, on_end=None, on_start=None, **deff_args):
         """FUN_0100fd88, used by the mode TOTAL tasks 0x4d-0x58: wait until no show task runs, no
@@ -662,7 +682,6 @@ class Display:
             args = dict(args)
             on_start = args.pop("_on_start", None)
             self.start(deff_id, **args)
-            self.idle_deff = deff_id
             if on_start:
                 on_start()
             self.os.ball_search_reload()

@@ -51,13 +51,12 @@ FS_DEFF, FS_BG_DEFF, FS_AWARD_DEFF, FS_VALUE_DEFF, FS_TIME_DEFF, FS_TOTAL_DEFF =
 FS_LEFF, FS_RULE_LEFFS, FS_AWARD_LEFF, FS_TOTAL_LEFF = 158, (160, 159), 164, 165
 FS_MUSIC, FS_AWARD_SOUND, FS_TOTAL_SOUND = 0x027, 0x28d, 0x290
 TASK, AWARD_TASK, TOTAL_TASK = "fast_scoring", 0x5b, 0x88
-TOTAL_SECONDS = 163 * 0.016          # deff 137's run: its op list's end_tick 163 (deff_137.json, code)
 AWARD_SHAKER = (1, 3)                # 200 ms, adj 96 MAXIMAL [0x01004644] (rom_data/io/shaker.csv)
 
 
 class TwoBank(Feature):
     name = "twobank"
-    HOOKS = ("player_first_ball", "sw_50", "sw_37", "scoring_switch", "ball_end", "ball_end_wait", "tilt", "scoring_boost",
+    HOOKS = ("player_first_ball", "sw_50", "sw_37", "scoring_switch", "ball_end", "tilt", "scoring_boost",
              "timed_mode", "add_time")
 
     def __init__(self, os_):
@@ -71,8 +70,6 @@ class TwoBank(Feature):
         self.last_hit = -1.0
         os_.lamp_update(self.draw)
         self.lingering = False          # task 0xad after the total (see above)
-        self.total_at = None            # when deff 137 last started
-        self.end_wait = 0.0
         for leff in READY_LEFFS:
             os_.lamp_rule(lambda: self.ready() and not self.running, leff=leff)
         os_.deff_rule(lambda: self.running, FS_BG_DEFF, music=FS_MUSIC, priority=0x57)   # QA V-ENG5 (os_layer deff_rule)
@@ -203,8 +200,7 @@ class TwoBank(Feature):
     def _show_total(self):
         """Task 0x88 [0x01004950]: deff 137 with the total once the display is free."""
         if self.total and not self.os.state & 0x310:
-            self.os.display.when_idle(TOTAL_TASK, FS_TOTAL_DEFF, values=[self.total],
-                                      on_start=lambda: setattr(self, "total_at", self.os.now))
+            self.os.display.when_idle(TOTAL_TASK, FS_TOTAL_DEFF, values=[self.total])
 
     def stop(self):
         self.os.task_kill(TASK)
@@ -275,25 +271,13 @@ class TwoBank(Feature):
             os_.task_start(AWARD_TASK, 1, self._award)
 
     def ball_end(self):
-        """[0x010049a8]: while the mode's tasks run, they stop and the total shows (again)."""
-        self.end_wait = 0.0
+        """[0x010049a8] (event 0x1d): while the mode's tasks 0xac-0xae run, they stop and task 0x88 shows the total
+        once the display is free [0x01004950]: after a total still playing (the end of ball kills no deff task)."""
         if self.running or self.lingering:
             self.stop()
             self.lingering = False
             if not self.os.tilted and self.total:
-                # the ball end clears the display, but the ROM's deff 137 plays out first (scoring.jsonl 153.46 -> 156.10)
-                showing = self.total_at is not None and self.os.now < self.total_at + TOTAL_SECONDS
-                left = max(0.0, self.total_at + TOTAL_SECONDS - self.os.now) if showing else 0.0
-                self.end_wait = left + TOTAL_SECONDS
-                if left:
-                    from tf.os_layer import TICK
-                    self.os.after(round(left / TICK), self._show_total)
-                else:
-                    self._show_total()
-
-    def ball_end_wait(self):
-        from tf.os_layer import TICK
-        return round(self.end_wait / TICK) if self.end_wait else None
+                self._show_total()
 
     def tilt(self):
         self.stop()
