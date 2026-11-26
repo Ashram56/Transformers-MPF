@@ -54,6 +54,8 @@ class Allspark(Feature):
         self.machine.switch_controller.add_switch_handler(SWITCH, self._entered)
         self.machine.events.add_handler("balldevice_bd_left_eject_ball_eject_success", self._eject_success)
         os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("allspark_lit", 0) > 0, leff=BANKED_LEFF)
+        from tf.lamps import flasher_coil_ramp                  # noqa: PLC0415
+        os_.lamps.leff_code(BANKED_LEFF, flasher_coil_ramp(32))     # leff_040 [0x01024328] (QA R-F7)
         os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("super_pops")), leff=SUPER_POPS_LEFF)
 
     def player_first_ball(self):

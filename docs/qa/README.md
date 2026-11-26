@@ -167,6 +167,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - ~~R-F9~~ the leff rules run in the ROM's list order: all priority 0, each registration at the head
       [0x00017580], the constructors run last first [0x0002c0c8] (`rom/tools/rule_order.py`,
       `rom/rom_data/rules/leff_rule_order.json`); the made-up `order=` keys are gone.
+    - ~~R-F7~~ leffs 103 and 170 already pulse 18 x 3 and 17 times from agent A's decoded shows; leff 40
+      [0x01024328] (Allspark banked) now pulses coil 32 for 100 ms every 4 ticks with the 14 patterns of
+      0x040c6ff4 while the playfield is valid and ball search is off.
+    - SC6 (medium): the animation sound tables (frame_sound_step_2fcb0 [0x0102fcb0]) need every animation as a
+      deff variant; asked from agent A as one batched request.
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
       [0x0101fd34].
   - Still open (in progress): the device, display, lamp and rules lows of the reports.

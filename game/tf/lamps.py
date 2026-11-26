@@ -277,6 +277,23 @@ def flasher_group_ramp(group, time=0x96, every=4):
     return run
 
 
+def flasher_coil_ramp(coil, time=100, every=4):
+    """leff_040 [0x01024328] (Allspark banked, QA R-F7): forever, every `every` ticks, when the playfield is valid
+    (byte_314d8_d8ac [0x0000d8ac]) and ball search (task 0x2b) does not run, coil_pulse_fn(coil, time, pattern) with
+    the next of the 14 patterns of 0x040c6ff4 (the values of RAMP_PATTERNS); otherwise the index goes back to 0.
+    The pattern's duty is MPF's pulse_power. -> fn(LeffTask)."""
+    def run(task, i=0):
+        lamps = task.lamps
+        os_ = lamps.os
+        if not (os_.pf_valid and not os_.task_running(0x2b)):
+            return task.sleep(every, run)
+        names = {num: name for name, num in lamps.coil_numbers.items()}
+        if coil in names:
+            lamps.flasher(names[coil], time, owner=task.leff_id, power=bin(RAMP_PATTERNS[i]).count("1") / 32)
+        task.sleep(every, lambda t: run(t, (i + 1) % len(RAMP_PATTERNS)))
+    return run
+
+
 def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, chase=8):
     """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
     lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is
