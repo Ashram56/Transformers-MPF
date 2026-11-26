@@ -186,6 +186,78 @@ class TestMediumFixes(TfTestCase):
         self.assertNotEqual(140, self.tf.display.fg)
         self.assertIsNone(self.tf.display.show)
 
+    def test_hit_deff_variants(self):
+        """deff 94 [0x010189a8]: the shots left (+0x34, table 0x040c6a60) pick the animation, its length and
+        sounds (QA SC2)."""
+        from tf.display import deff_variant
+        from tf.os_layer import TICK
+        v3, v8, fin = deff_variant(94, "shots3"), deff_variant(94, "shots8"), deff_variant(94, "final")
+        self.assertAlmostEqual(188 * TICK, v3.seconds)
+        self.assertIn((94 * TICK, 389), v3.sounds)
+        self.assertIn((266 * TICK, 390), v8.sounds)
+        self.assertAlmostEqual(430 * TICK, fin.seconds)
+        self.assertIsNone(deff_variant(94, "shots9"))
+        self.start()
+        self.advance_time_and_run(4)
+        self.tf.display.start(94, variant="shots3", values=[0])
+        self.advance_time_and_run(94 * TICK + 0.05)
+        self.assertIn(389, self.sounds())
+
+    def test_bonus_multiplier_pages(self):
+        """[0x01000ffc]: a multiplier above 1 adds task_sleep(4) and one page per multiplier (8 frames, 4 from 6X),
+        then 0x76 (QA SC9; scoring.jsonl 2X: 0x79 at tick 79 of deff 25)."""
+        from tf.features.bonus import x_extra_ticks
+        self.assertEqual((0, 12, 36, 44), (x_extra_ticks(1), x_extra_ticks(2), x_extra_ticks(5), x_extra_ticks(7)))
+
+    def test_side_award_speech(self):
+        """deff 83 [0x01011750]: routine +0x34 of table 0x040c6770 / 0x040c67a0 picks the speech (QA SC10)."""
+        from tf.display import deff_variant
+        self.assertIn(0x11e, [c for _, c in deff_variant(83, "decepticon_anim2").sounds])
+        self.assertIn(0x11a, [c for _, c in deff_variant(83, "decepticon_anim9").sounds])
+        self.assertIn(0x125, [c for _, c in deff_variant(83, "autobot_anim9").sounds])
+
+    def test_service_menu(self):
+        """SELECT opens the service menu (0x0000eb3c, deff 3 [0x0103f960]); PLUS walks a menu, SELECT edits an
+        adjustment and stores it, BACK climbs out (QA D-SM-MODE; screens from service_screens.json)."""
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        self.assertTrue(mode.active)
+        self.assertTrue(self.tf.in_service)
+        from tf import rom_draw
+        texts = lambda: rom_draw.lines_of(mode.draw())       # noqa: E731
+        self.assertIn("SERVICE MENU", texts())
+        self.hit_and_release_switch("s_select")
+        self.assertEqual(["GO TO DIAGNOSTICS MENU"], texts())
+        for _ in range(2):
+            self.hit_and_release_switch("s_plus")
+        self.assertEqual(["GO TO ADJUSTMENTS MENU"], texts())
+        self.hit_and_release_switch("s_select")
+        self.hit_and_release_switch("s_plus")
+        self.hit_and_release_switch("s_select")             # FEATURE ADJUSTMENTS
+        self.assertEqual("FEATURE ADJUSTMENT #1", texts()[0])
+        num = mode.page["list"][0]
+        before = self.tf.adj[num]
+        self.hit_and_release_switch("s_select")             # edit
+        self.hit_and_release_switch("s_plus")
+        self.hit_and_release_switch("s_select")             # store
+        self.assertNotEqual(before, self.tf.adj[num])
+        self.tf.adj[num] = before
+        for _ in range(3):
+            self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertFalse(mode.active)
+        self.assertFalse(self.tf.in_service)
+
+    def test_total_earnings(self):
+        """TOTAL EARNINGS [0x00026e7c]: units counter 7 x the current pricing's unit value, in its money format
+        [0x00026f74] ("USD 3.25" for 13 units at USA 10; QA D-AUD-11)."""
+        self.tf.audits.counts[7] = 13
+        self.assertEqual("USD 3.25", self.tf.audits.text(11))
+        self.tf.audits.counts[7] = 0
+        self.assertEqual("USD 0.00", self.tf.audits.text(11))
+
     def test_high_score_lists(self):
         """Tables 0x040cf948 / 0x040cfc48: 17 entries in 5 lists, the side lists and the two combo champions with
         adj 90-95 (QA D-HS-COMBO)."""

@@ -32,7 +32,7 @@ package's deff and leff data match the code mechanically. The departures are in 
 | SC1 | every battle hit sound plays twice (op list + Battle.hit_media) | battles.py:284 |
 | V-TXT1 | `%P1//S/%` plurals wrong ("SHOOT 11 SHOT", "3 COMBO") | media_bridge.py:35 |
 | V-SC1 | main score font and row from 1,000,000 up (table 0x040c75d0) | score_screen.py:18 |
-| D-SM-MODE / V003 | no service menu: SELECT starts mode `tf_service`, which does not exist | os_layer.py:1430 |
+| D-SM-MODE / V003 | ~~no service menu~~ fixed (see Fixed); its icons and live tests are open (docs/rom_differences.md) | - |
 | SC4 | ~~the hint speech slot 0x02111f54 is never played~~ fixed (see Fixed) | - |
 
 Medium and low: the findings tables of each report. Fixes follow, high first, each with a regression test.
@@ -64,6 +64,11 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | L-G04 | leff_start's conflict test: a running leff sharing a lamp of the new one's lamp group or a coil of its coil group refuses it when higher, or equal without flag bit 2; otherwise it is killed (a killed rule leff restarts when it can). Coil groups read from the ROM into rom/rom_data/io/coil_groups.json (rom/tools/coil_groups.py). Leff counts closer to the references in 5 scenarios, megatron_decepticon one more | `0x00007c10`, `0x00009570`, `0x0000611c`, tables `0x040d1510`, `0x040cf65c` |
 | V-ENG4 | the 19 show deffs of task_sleep_user_6480 (battle and multiball intros, 140, 149, 146, 43) end when one flipper is held and the other pressed, before their priority drop | `0x01006480`, `0x00006860`-`0x000068b4` |
 | D-HS-COMBO | the high scores have the ROM's 17 entries in 5 lists: HIGHEST SCORES, AUTOBOT / DECEPTICON HIGHEST SCORES by the player's side, COMBO CHAMPION and BEST COMBO CHAMPION with adj 90-95; the ROM's default names | tables `0x040cf948`, `0x040cfc48`, `0x00018d54`, `0x01007508`, `0x01007578`, `0x0100279c`, `0x010028f4`, `0x010028c4`, `0x01002a7c` |
+| SC2 | deff 94 (Starscream's hit) plays the animation of the shots left (+0x34, at most 8) or the final one, each with its own length and sounds, from agent A's op lists `deff_094__shotsN` / `__final` (`display.deff_variant`) | `0x010189a8`, table `0x040c6a60` |
+| SC9 | the bonus at a multiplier above 1 adds task_sleep(4) and one counting page per multiplier (8 frames, 4 from 6X), then sound 0x76 before 0x79; deff 25 and the bonus award come that much later (scoring.jsonl 2X confirms 0x79 at tick 79) | `0x01000ffc`, `0x010014b8` |
+| SC10 | the wizard side award deff 83 runs routine +0x34 of its side's table: speech 0x11c-0x121 / 0x11a (Decepticon), 0x122-0x127 (Autobot) at tick 63 through task `0x01006a9c` or after the animation, 0x119 queued after Autobot routines 6-11; op lists `deff_083__<side>_animN` run in the ROM code (`rom/tools/deff_variants.py`); wizard_all_hail_megatron speech counts now equal the reference | `0x01011750`, tables `0x040c6770` / `0x040c67a0`, `0x01006a9c`, `0x00025364` |
+| D-SM-MODE | SELECT opens the service menu (mode `tf_service`, `game/tf/service.py`): title, the 17 menus as 0xeb3c builds them, the adjustment editors (edit, store, default marker), the audits, the 13 installs and the resets; texts from agent A's walk of the ROM code (`rom/rom_data/settings/service_screens.json`); what it does not draw yet is a row of docs/rom_differences.md | `0x0000eb3c`, `0x0103f960`, `0x0000ed90`, `0x0104b3e4`, `0x0104b244`, `0x0104b584`, `0x0104b728`, `0x0104196c`, `0x01041b10` |
+| D-AUD-11 | TOTAL EARNINGS is the units counter 7 times the unit value of the pricing selected now, in its money format ("USD 3.25" for 13 units at USA 10), was coins x 25 cents | `0x00026e7c`, `0x00026f74` |
 | V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
 | R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
 | R-F5 | no 1 s Optimus time gate (the lockout is task 0x54) | `0x01025de4`, `0x010262f0` |

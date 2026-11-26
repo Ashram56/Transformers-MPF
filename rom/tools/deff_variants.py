@@ -117,6 +117,11 @@ VARIANTS = {
            "(Autobot) and 0x02111d68 = 0x297 (Decepticon) as current_player_wrap_ab5c [0x0100ab5c] sets them "
            "at player start" % sv)
           for side, sv in (("decepticon", 2), ("autobot", 1)) for n in (1, 2, 3)],
+    83: [("%s_anim%d" % (side, a), {"args": {0x30: (4, 0), 0x34: (2, a)}, "state": {"side": sv}},
+          "deff_083_soundwave [0x01011750]: +0x34 = the animation (0..11), table 0x040c6770 (Decepticon) / "
+          "0x040c67a0 (Autobot) by player_side %d; each routine starts its speech, some through the 62-tick task "
+          "leaf_6a9c [0x01006a9c]" % sv)
+         for side, sv in (("decepticon", 2), ("autobot", 1)) for a in range(12)],
     152: [("one", {"args": {0x30: (2, 1), 0x34: (2, 1), 0x38: (1, 8), 0x3c: (1, 1), 0x40: (2, 0)}},
            "deff_152 [0x01006e30]: images +0x40 + first-1 .. last-1 by +0x3c, +0x38 ticks each; no caller in "
            "the code starts it: one image")],

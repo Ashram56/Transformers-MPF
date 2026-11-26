@@ -48,6 +48,22 @@ def presets():
     return _PRESETS
 
 
+_MONEY = None
+
+
+def money_formats():
+    """adj 28 value -> (unit value in minor units, money format): the pricing record's unit table entry
+    (+0 + unit index x 0xc) and its money format message (+0x16), msg_get_user_26f74 [0x00026f74]."""
+    global _MONEY
+    if _MONEY is None:
+        _MONEY = {66: (25, "USD %,d.%02d")}
+        if os.path.exists(PRICING_JSON):
+            with open(PRICING_JSON, encoding="utf-8") as f:
+                for p in json.load(f)["presets"]:
+                    _MONEY[int(p["adj_value"])] = (int(p["unit_value_minor"]), p["money_formats"]["long"])
+    return _MONEY
+
+
 FREE_GAME_UNLIMITED = 10              # adj 25 FREE GAME LIMIT: 10 = UNLIMITED, 0 = NO FREE GAMES
 DELAY_OFF = 61                        # adj 62 COIN INPUT DELAY: 61 = OFF
 
@@ -75,6 +91,17 @@ class Credits:
             per_credit = max(1, int(var("custom_units_per_credit") or 3))
             return {1: max(1, int(var("custom_coin_units") or 1))}, (0,) * (per_credit - 1) + (1,)
         return presets().get(self.os.adj[28], presets()[66])
+
+    def money(self, units):
+        """msg_get_user_26f74 [0x00026f74]: units x the unit value of the pricing selected now, as money in its
+        format (TOTAL EARNINGS, audit 11: counter 7; "USD 3.25" for 13 units at USA 10). CUSTOM keeps the
+        factory preset's unit table and formats (0x00004764)."""
+        from tf.media_bridge import format_rom_text      # noqa: PLC0415
+        value, fmt = money_formats().get(self.os.adj[28], money_formats()[66])
+        if self.os.adj[28] == CUSTOM:
+            value, fmt = money_formats()[66]
+        total = units * value
+        return format_rom_text(fmt, [total // 100, total % 100])
 
     def slots(self):
         """The coin switches this machine has."""

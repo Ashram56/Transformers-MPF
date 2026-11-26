@@ -24,6 +24,7 @@ the side mode's start, the wizard multiball's start [0x0100a788]:
   then the total deff 90 (leff 91).
 Wizard shot numbering: 0 Allspark, 1 left orbit, 2 left ramp, 3 center lane, 4 right orbit, 5 right ramp.
 """
+from tf.display import deff_variant
 from tf.features import Feature
 from tf.lamps import hit_count_blink
 
@@ -43,6 +44,7 @@ SIDE_INTRO, SIDE_INTRO_TASK, SIDE_INTRO_LEFF = 81, 0x79, 78
 SIDE_INTRO_SOUND = {DECEPTICON: 0x11a, AUTOBOT: 0x119}
 SIDE_BG, SIDE_MUSIC, SIDE_RULE_LEFF, SIDE_LIT_LEFF = 82, 0x3c, 79, 80
 SIDE_HIT_DEFF, SIDE_HIT_LEFF, SIDE_HIT_SOUND = 83, 81, 0x11b
+SIDE_AFTER_SOUND = 0x119        # queued after the Autobot routines 6-11's speech [0x00025364]
 SIDE_DONE_DEFF, SIDE_DONE_LEFF, SIDE_DONE_TASK = 84, 82, 0x7b
 SIDE_DONE_SOUNDS = {DECEPTICON: (0x128, 0x12a), AUTOBOT: (0x128, 0x12b)}
 SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF, SIDE_TOTAL_TASK = 85, 83, 0x8f
@@ -286,10 +288,34 @@ class Wizard(Feature):
         # anim: the ROM's animation, the shot on its first hit, shot + 6 (the character's name) on the one
         # that completes it [0x01010174]; the PuP map reads it
         anim = i + 6 if self.side_counts[i] >= SIDE_HITS else i
-        os_.deff_start(SIDE_HIT_DEFF, values=[points, i], anim=anim)
+        # deff_083_soundwave [0x01011750] runs routine +0x34 of table 0x040c6770 (Decepticon) / 0x040c67a0
+        # (Autobot): its speech, 0x11c-0x121 / 0x11a and 0x122-0x127, at tick 63 through the task leaf_6a9c
+        # [0x01006a9c] or after the animation; Autobot routines 6-11 queue 0x119 after it (snd_play_after_wrap
+        # [0x00025364], e.g. 0x01011530). Its length and sounds from the op list of that routine (QA SC10)
+        side = self.pd.get("side", DECEPTICON)
+        variant = "%s_anim%d" % ("autobot" if side == AUTOBOT else "decepticon", anim)
+        info = deff_variant(SIDE_HIT_DEFF, variant)
+        kwargs = {}
+        if info:
+            after = side == AUTOBOT and anim >= 6
+            kwargs = {"variant": variant, "sounds": [(t, self._side_speech(c, after and c != SIDE_HIT_SOUND))
+                                                     for t, c in info.sounds]}
+        os_.deff_start(SIDE_HIT_DEFF, values=[points, i], anim=anim, **kwargs)
         os_.audit(SIDE_AWARD_AUDIT)
         os_.deff_media(SIDE_HIT_DEFF, SIDE_HIT_LEFF, SIDE_HIT_SOUND)
         os_.request_refresh()
+
+    def _side_speech(self, call, then_119):
+        os_ = self.os
+
+        def play():
+            end = os_.sound(call, in_deff=SIDE_HIT_DEFF)
+            if then_119:
+                if end is None or end <= os_.now:
+                    os_.sound(SIDE_AFTER_SOUND)
+                else:
+                    os_.machine.clock.schedule_once(lambda dt=0: os_.sound(SIDE_AFTER_SOUND), end - os_.now)
+        return play
 
     def side_super(self):
         os_ = self.os
