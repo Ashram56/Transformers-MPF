@@ -154,9 +154,20 @@ Music table rows: 3 = side mode (flag test 0x01010958) -> deff 82 + music 0x3c; 
 
 ## 8. Lamps
 Side mode lamp groups 0x37-0x3c: two inserts per shot (purple + red arrow: Allspark 13/14, left orbit 17/18, left
-ramp 46/45, center 42/41, right orbit 37/38, right ramp 32/33) - one per hit left (inferred). Wizard multiball
-groups 0x41-0x46: three inserts per shot (purple, red, orange) - one per hit left (inferred). The Allspark flashes
-when the super is lit (inferred). Character inserts (4-7, 23-26) show battle requirements (`battles.md`).
+ramp 46/45, center 42/41, right orbit 37/38, right ramp 32/33). Wizard multiball groups 0x41-0x46: three inserts
+per shot (purple, red, orange). Both are drawn by a rule leff (code): side mode leff 79 [0x010109a0] (table
+0x040c66e4: per shot its group and the address of its hit count ahm_c 0x00034eb4 + 4i), wizard multiball leff 87
+[0x01037060] (table 0x040c7ac8, wmb_c 0x00035aac + 4i). Every 3 ticks, for each shot, insert k of its group is on
+when k < the hits made on the shot (solid) and otherwise on and off in turn (the phase flips every pass): the
+inserts already earned stay lit, the ones still to make flash 3 ticks on, 3 off. Once every shot is done
+(`portal_mb_all_shots_done`, `wizard_items_ready_36318`: the super is lit) the leff releases the shot inserts
+(group 0x36 / 0x40) and runs the Allspark stack (group 0x3d / 0x47: ALLSPARK X, purple, red, orange): it fills it
+one insert per 8 ticks (`lamp_group_9164` [0x00009164]) then empties it one per 8 ticks (`lamp_group_941c`
+[0x0000941c]), a 64-tick (1.02 s) cycle, while the super stays lit. Character inserts (`lamp_layer_35ea8`
+[0x01035ea8], table 0x040c7a14, 11 entries: 27 MEGATRON, 7 STARSCREAM, 6 SHOCKWAVE, 5 BLACKOUT, 4 DEVASTATOR, 22
+OPTIMUS PRIME, 23 BUMBLEBEE, 24 IRONHIDE, 25 MUDFLAP / SKIDS, 26 RATCHET, 28 SENTINEL PRIME = requirements 0-10):
+off while the requirement (0x0211210c + 16 r) was never started, on with the flash bit (rule layer) once started,
+solid once completed.
 
 ## 9. Interactions
 - The side mode blocks: the Megatron lock (not held, no lighting), the Optimus battle, character battle starts;

@@ -89,7 +89,8 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
   adjustment value formatters. `tools/deff_args.py` lists the stores of `deff_start` callers into the new deff
   task (+0x30...), the inputs of the game-state variants.
-- **Display effects (code + observed).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
+- **Display effects (code; the emulator capture told here was the first pass, replaced by the ROM-code op lists
+  above).** Deff table record `{u32 fn, u16 flags, u8 priority}`. Flag bit 0 marks
   the 21 background effects (attract, status panel 40, mode backgrounds), bit 1 most foreground effects. The deff
   id is the u16 at task+0x24 of the deff task. Effects were captured by calling `deff_start(id)` from the
   `task_sleep` hook in a started game (`tools/emu/tracer.cpp`). 153 of 155 rendered; 8 and 22 are stubs. About 35
@@ -99,7 +100,7 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   (0x21660, 0x215ac, 0x217b4, 0x2174c message id; 0x21838, 0x21a78, 0x21b4c string or format), so 95% of text
   draws carry the format behind them (e.g. `%,02lu`, `VOLUME %d`). Effects 48, 95, 129 and 135 keep the earlier
   capture without sources (they did not render in the re-run).
-- **Printed values and fit fonts (code + observed).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
+- **Printed values and fit fonts (code; the `args_observed` column is the emulator's, kept only to compare).** `rom_data/dmd/deff_text_formats.csv` (`tools/deff_texts.py
   DECOMP OUT_CSV [tracer logs]`) also walks tasks the effect starts. It has four more columns. `call_site` is the
   helper's return address (BL + 4, same as `call_site`/`lr` in captures). `args` gives one entry per printf
   vararg, paired with its % conversion (`%P` = the ROM's plural/ordinal chooser, which also takes an argument). Each
@@ -123,16 +124,19 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   64 ms in the knock task [0x00019420] when adj 44 Q24 OPTION is KNOCKER. The orbit gate (5) and the motors (8, 30)
   are held, not pulsed (their driver objects, `ball_feed.md`). Flippers: not in the CPU code; their measured times
   (40.5 ms, then 1 ms every 12 ms) are kept under the owner's waiver (2026-11-25, `docs/pinmame_waivers.md`).
-- **Music (code + observed).** Background deff and music come from an 18-entry priority table walked by
+- **Music (code).** Background deff and music come from an 18-entry priority table walked by
   0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,
   0x1c/0x1d ball start, 0x1e/0x1f main play, 0x31/0x34 battle ready; modes and multiballs have their own
-  entries. Which value is Autobot is inferred (1 = Autobot).
+  entries. 1 = Autobot, 2 = Decepticon (code: see the side choice below).
 - **Lamp effects (observed, replaced by the code above).** Captured by injecting `leff_start(id)` with a ball in the shooter lane and reading,
   on every lamp compositor tick (0x73cc), only the lamps the effect's own task owns (shared leff layer 0x36394 /
   mask 0x363a8 and the layer list at 0x31480). 119 end by themselves, 59 run until stopped. 111 produce lamps or
   flasher pulses; the other 67 draw from game state, need a lamp parameter from their caller, or were refused.
-- **Side choice (code + observed).** Side byte 0x02112107 + player: 1 = Autobot, 2 = Decepticon (default).
+- **Side choice (code).** Side byte 0x02112107 + player (`player_side` [0x01033e30]): 1 = Autobot, 2 = Decepticon
+  (default). The texts the code picks by it say so: side 2 draws msg 0x5c8 ALL HAIL MEGATRON and side 1 msg 0x5c9
+  AUTOBOTS ROLL OUT (deff 82 [0x010107e8]; the same pairs 0x5dd / 0x5db in deff 84 [0x01011a54] and 0x5e0 / 0x5df
+  in deff 85 [0x01011d88]); side 1 draws HUNT FOR DECEPTICONS (msgs 0x6c3-0x6c5, deff 142 [0x010269d8]).
   Either flipper toggles it on the choose-side screen; the plunge confirms it 31 ticks later (deff 41).
 - **Names in the decompile.** OS functions were named by matching Tron's decompile (same OS). Game-code
   functions that matched a Tron game function keep Tron's name (for example `dbattle_can_progress`): the code

@@ -365,15 +365,39 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
   qualifying is allowed, registered in 0x010232d4) flashes the insert lamp of battle_lit (byte +0x1e of the
   record) every 4 ticks [leff_104 0x01023150].
 - Total task ids: Shockwave 0x81, Blackout 0x82, Devastator 0x83, Bumblebee 0x84, Ironhide 0x85, Mudflap 0x86,
-  Ratchet 0x87 [end fns]; Starscream's is created in 0x01017d40 (not decoded).
+  Ratchet 0x87 [end fns]; Starscream's is task 0x80: `mode_task_80_resume_17d40` [0x01017d40] creates it when
+  the game state has none of bits 0x310 and the total 0x3501c is not 0 (`task_create_unique_aaf8(0x80, 0x01017d30,
+  0x2002)`, +0x30 = the total), and it runs `deff_sequence_wait_664c(0x5f, 0xea6)`: deff 95 with the total (code).
 
 ## 8. Lamps
 - Mode-start arrows [0x01022854, lamp rule 0x0003515c]: for each of the 5 shots, if qualifying is allowed and the
   shot is in mode_start_lit: the side's colour flashes (red Autobot / purple Decepticon), the other colour off;
   otherwise both off.
-- Battle arrows: the orange insert of each lit battle shot (5.0 table), drawn by the battle's rule leff (lamp
-  groups from the shot table). The lit masks per hit are in the code runs (`tools/scenario_lift.py`, scenarios
-  battle_*); the flash pattern of the rule leffs was not decoded (code open).
+- Battle arrows (code): the orange insert of each battle shot, drawn by the battle's rule leff. Each one
+  allocates a lamp layer (`lamp_layer_alloc_7200`), claims the six orange arrows (seven for Bumblebee: the
+  captive ball insert) as its own (`lamp_group_86d4` on the layer mask +0x14), then every **3 ticks** walks its
+  table of (shot bit, lamp group), 12 bytes an entry: a shot whose bit is in the battle's lit mask is toggled
+  (`lamp_group_87fc` -> `lamp_bit_flash_78dc` [0x000078dc], both planes), any other is cleared
+  (`lamp_group_84cc` -> `lamp_bit_write_765c`). So a lit shot flashes 3 ticks on, 3 ticks off (96 ms period,
+  starting on), an unlit one is off. No layer: retry every 6 ticks.
+
+  | leff | battle | fn | lit mask | table | arrows (lamp groups) |
+  |---|---|---|---|---|---|
+  | 106 | Starscream | 0x010188cc | 0x35010 | 0x040c69f8 | 79-84 |
+  | 110 | Shockwave | 0x0101f5ec | 0x35148 | 0x040c6c74 | 85-90 |
+  | 114 | Blackout | 0x0101da60 | 0x350f4 | 0x040c6bd4 | 91-96 |
+  | 118 | Devastator | 0x01016f94 | 0x34fc0 | 0x040c691c | 97-102 |
+  | 123 | Bumblebee | 0x01015408 | 0x34f6c | 0x040c6888 | 110-116 (116 = BUMBLEBEE captive ball, bit 0x40) |
+  | 128 | Ironhide | 0x0101c12c | 0x350a8 | 0x040c6b50 | 117-122 |
+  | 132 | Mudflap & Skids | 0x0101a45c | 0x3505c | 0x040c6aa4 | 123-128 |
+  | 136 | Ratchet | 0x01013918 | 0x34f0c / 0x34f08 | 0x040c67d0 | 129-134 |
+
+  Bits 0x1 to 0x20 are ALLSPARK, LEFT ORBIT, LEFT RAMP, CENTER LANE, RIGHT RAMP, RIGHT ORBIT (orange). Ratchet
+  differs: a shot in its double mask 0x34f0c flashes, a shot only in its lit mask 0x34f08 is held **on**
+  (`lamp_group_8664` -> `lamp_bit_toggle_set_77a0`, sets the bit), any other is off. Bumblebee's second rule leff
+  124 [0x01015510] draws no lamp: every 8 ticks, while `byte_314d8_d8ac` and no ball search (task 0x2b), it
+  pulses its coil group (leff field +8, group 46) with 0x20. The lit masks per hit are in the code runs
+  (`tools/scenario_lift.py`, scenarios battle_*).
 - Character inserts (4-7 Decepticons, 23-26 Autobots) [0x01035ea8, wizard items]: off = never started, flashing =
   started but not completed, solid = completed; the lit battle additionally blinks via leff 104.
 
