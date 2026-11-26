@@ -43,22 +43,19 @@ SHOT_SWITCHES = {5: LEFT_ORBIT, 6: LEFT_ORBIT, 10: LEFT_RAMP, 11: CENTER, 51: CE
                  12: RIGHT_ORBIT, 1: BEE}
 SHOT_AUDIT = {LEFT_ORBIT: 65, RIGHT_ORBIT: 66, LEFT_RAMP: 67, RIGHT_RAMP: 68}
 ORANGE = {ALLSPARK: 15, LEFT_ORBIT: 19, LEFT_RAMP: 44, CENTER: 40, RIGHT_RAMP: 34, RIGHT_ORBIT: 39, BEE: 30}
-# Left orbit, switch-timeout token 7 (187 units) [0x01033354 sw 5, 0x010332e4 sw 6]: with the token down, sw 5 or
-# sw 6 counts the shot and sets it; with it up, sw 5 clears it and sw 6 sets it again, neither counts; sw 12 clears
-# it [0x01033530]. Its length is observed between 2.18 s (switches.jsonl: sw 5 and sw 6 again 2.17-2.18 s later,
-# not counted) and 2.35 s (combos.jsonl: sw 6 every 2.35-2.37 s, each counted), so about 12 ms per unit (inferred).
-ORBIT_TOKEN_S = 2.26
-# A left orbit that counts holds the orbit control gate (coil 5) open 91 ticks (1.48-1.52 s), so the ball goes round
-# (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
-# the ignored repeats leave it shut)
-GATE_TICKS = 91
-# sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
-# a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
-# 2.18 s after a plunge, 1.17 s after sw 13; switches.jsonl 58.86 s, 2.18 s after the center lane; counted 4.36 s
-# after it: no audit, no mode start, no combo); the 3 s are inferred. Within 187 ticks of the previous right orbit
-# shot it is ignored too (timer 9 [0x01033530], combos_and_multipliers.md 4.1).
-RIGHT_IGNORE_S = 3.0
-RIGHT_REPEAT_S = 187 * 0.016
+# Left orbit, switch-timeout token 7 [0x01033354 sw 5, 0x010332e4 sw 6]: with the token down, sw 5 or sw 6 counts
+# the shot and sets it; with it up, sw 5 clears it and sw 6 sets it again, neither counts; sw 12 clears it
+# [0x01033530]. 0xbb = 187 units of the OS loop [0x0002bd48], which runs once per 16 ms tick (io_isr [0x000114b0]
+# counts the tick; agent A, 2026-11-26): 2.99 s (QA R-F3; it was 2.26 s, fitted to the traces).
+ORBIT_TOKEN_S = 0xbb * 0.016
+# A left orbit that counts holds the orbit control gate (coil 5) open 93 ticks (1,488 ms in agent A's code run, from
+# 0x0102c0a8; QA R-F11), so the ball goes round; the ignored repeats leave it shut
+GATE_TICKS = 93
+# Right orbit sw 12 [0x01033530] (QA R-F3): with token 7 up (a left orbit just counted) it clears token 7 and counts
+# nothing; else with task 0x47 running it kills the task and counts nothing; else with token 9 up it clears token 9
+# and counts nothing; else it sets token 9 and counts the shot. Task 0x47 (leaf_abe8(0x47, 0xbb)) is started by the
+# shooter lane [0x01032dfc] and the center lane [0x01033b3c]. Tokens 7 and 9 and task 0x47 all last 0xbb = 187
+# units of the OS loop [0x0002bd48]: ORBIT_TOKEN_S for the three.
 
 # mode-start shots [table 0x040c6d00]: battle shot -> mode-start index (mask bit 1 << index)
 MS_SHOT = {ALLSPARK: 0, LEFT_ORBIT: 1, LEFT_RAMP: 2, RIGHT_RAMP: 3, RIGHT_ORBIT: 4}
@@ -741,6 +738,7 @@ class Battles(Feature):
         self.orbit_token = 0.0          # token 7 runs until then
         self.center_at = self.lane_at = -10.0
         self.launched_at = self.back_door_at = self.right_at = -10.0
+        self.task47_until = self.token9_until = 0.0      # task 0x47 and token 9 [0x01033530]
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._launched, state=0)
         self.ended_at_drain = False
         for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
@@ -957,6 +955,7 @@ class Battles(Feature):
 
     def _launched(self):
         self.launched_at = self.os.now
+        self.task47_until = self.os.now + ORBIT_TOKEN_S   # sw_shooter_lane [0x01032dfc] starts task 0x47
 
     def sw_13(self):
         self.back_door_at = self.os.now
@@ -991,18 +990,26 @@ class Battles(Feature):
         self.shot(CENTER, mb)
 
     def sw_11(self):
-        self.lane_at = self.os.now                  # the right orbit's debounce counts the lane only (optimus_* traces)
+        self.lane_at = self.os.now
+        self.task47_until = self.os.now + ORBIT_TOKEN_S   # sw_center_lane [0x01033b3c] starts task 0x47
         self._center()
 
     def sw_51(self):
         self._center(mb=False)                      # Optimus has its own multiball rules (hook sw_51)
 
     def sw_12(self):
+        """[0x01033530]: one of token 7, task 0x47, token 9 cancels the shot and is cleared, in that order."""
         now = self.os.now
-        self.orbit_token = 0.0
-        last = max(list(self.left_orbit_at.values()) + [self.back_door_at, self.lane_at, self.launched_at])
-        if now - last < RIGHT_IGNORE_S or now - self.right_at < RIGHT_REPEAT_S:
+        if now < self.orbit_token:
+            self.orbit_token = 0.0
             return
+        if now < self.task47_until:
+            self.task47_until = 0.0
+            return
+        if now < self.token9_until:
+            self.token9_until = 0.0
+            return
+        self.token9_until = now + ORBIT_TOKEN_S
         self.right_at = now
         self.os.right_orbit_awards()                # [0x01033488]: special, then extra ball
         self.shot(RIGHT_ORBIT)

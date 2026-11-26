@@ -652,11 +652,12 @@ class Megatron(Feature):
             self.os.after(EJECT_OVER_TICKS, self.os.device_ejected)
 
     def _serve(self):
-        """AUTOFIRE AFTER LOCK (adj 89): a new ball from the trough, launched."""
+        """AUTOFIRE AFTER LOCK (adj 89): a new ball from the trough, auto-launched only when adj 89 = 1
+        ([0x0100a074] adj_get(0x59) == 1; else the player plunges it) (QA D-ADJ-89)."""
         os_ = self.os
         if not os_.game or os_.tilted:
             return
-        self.machine.playfield.add_ball(balls=1, player_controlled=False)
+        self.machine.playfield.add_ball(balls=1, player_controlled=os_.adj[89] != 1)
 
     # ------------------------------------------------------------------ shots
 

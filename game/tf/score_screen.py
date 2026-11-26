@@ -5,7 +5,7 @@ draw with its font, position and flags, observed) and the code of deff 19 (0x010
 FUN_0102f200 (code):
 - the status panel, left of a separator at column 40: each player's score in font 0, right edge at x 38, on rows
   8p - 3 (player 2 of a 2-player game on row 21); the players not up are drawn with a dimmer palette (code: the
-  palette at sp+0x24 unless the player is up; its level is inferred);
+  palette at sp+0x24 unless the player is up: level 3, 0x0102f200);
 - the current player's score centred on x 84, font and baseline by value from table 0x040c75d0 (code, SCORE_TABLE);
 - the bottom row (baseline 30): BALL n left at x 42 and the credits right at x 127, alternating with
   REPLAY AT <level> centred on x 84: 156 ticks of BALL / credits, then 312 ticks of REPLAY, then 1250 ticks of
@@ -19,7 +19,7 @@ PANEL_X, PANEL_FONT, SEPARATOR_X = 38, 0, 40
 SCORE_TABLE = ((100000000, 22, 18), (1000000, 17, 18), (100000, 24, 21), (0, 26, 21))
 MAIN_X = 84
 ROW = 30
-OTHER_LEVEL = 6                       # the players not up (inferred)
+OTHER_LEVEL = 3                       # the players not up: palette entry 15 -> 3 (0x0102f200 local_21 = 3; QA V-SC6)
 FIRST_BALL_TICKS, REPLAY_TICKS, BALL_TICKS = 0x9c, 0x138, 0x4e2
 
 

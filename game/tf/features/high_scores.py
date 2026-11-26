@@ -41,7 +41,9 @@ SECOND_FRAMES = 63                       # 0x3e frames, then the second counts d
 COUNTDOWN, LAST_COUNTDOWN = 30, 15
 REPEAT_FIRST, REPEAT_NEXT = 31, 6        # held button: first repeat after 0x1f frames, then every 7
 DEFF_SECONDS = {31: 1.841, 33: 2.353}    # run lengths (event_map.csv run_ms) when the media table has none
-SOUNDS = {"left": None, "right": None, "select": None, "countdown": None, "enter_initials": None}
+# deff 32 [0x0103c840] / deff 36 [0x0103e460]: the OS words 0x00030eac / 0x00030eae / 0x00030eb0 (0x04c, 0x04d,
+# 0x04e in tf_180) on a step back, a step forward and an entered character (QA SC8)
+SOUNDS = {"left": 0x04c, "right": 0x04d, "select": 0x04e, "countdown": None, "enter_initials": None}
 
 
 class Entry:

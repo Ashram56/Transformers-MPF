@@ -57,6 +57,11 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | D-AUD-2, 13, 16, 22, 24, 27, 47, 72 | percentages over paid plays (c17); audits 13 and 72 are 0; average score per player, /10 x 10 | `0x00026c94` ... `0x00026c3c` |
 | D-SW-51-EDGE | the Optimus target's handler runs on the opening edge (+0xe 0x1800) | `0x0000dc44` |
 
+| R-F3, R-F11 | right orbit: token 7, task 0x47 (plunge, center lane), token 9 cancel the shot in that order; the 187-unit timers last 2.99 s (16 ms OS loop); gate held 93 ticks | `0x01033530`, `0x0002bd48`, `0x0102c0a8` |
+| SC8 | initials entry sounds 0x04c / 0x04d / 0x04e | `0x0103c840`, words `0x00030eac`-`0x00030eb0` |
+| D-ADJ-25, D-ADJ-89 | no free game cap (no reader of adj 25); the ball after a lock is auto-launched only when adj 89 = 1 | `0x0100a074` |
+| V-TXT3, V-SC6 | `%i` printed as a number ("3X BONUS"); players not up drawn at level 3 | `0x0002fef0`, `0x0102f200` |
+
 All 24 trace scenarios compare the same or better after these fixes (161 checks OK; the sounds and switches
 scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 and 51).
 

@@ -141,11 +141,8 @@ class Credits:
         return n
 
     def award(self, n=1):
-        """A free game (replay, special, match or high-score credit, FUN_000041a0) within adj 25 FREE GAME
-        LIMIT per game (inferred: the decompile has no reader of adj 25). Returns the credits added."""
-        limit = self.os.adj[25]
-        if limit != FREE_GAME_UNLIMITED:
-            n = max(0, min(n, limit - self.free_games))
+        """A free game (replay, special, match or high-score credit, FUN_000041a0). No cap: the code has no
+        reader of adj 25 FREE GAME LIMIT (no adj_get(25) call site; QA D-ADJ-25). Returns the credits added."""
         n = self.add(n) if n else 0
         self.free_games += n
         return n
