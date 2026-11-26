@@ -487,6 +487,7 @@ class Lamps:
         self._flash_handle = None
         self._dirty = False
         self.leff_players = {}      # leff id -> ShowPlayer
+        self.leff_copies = {}       # leff id -> [(ShowPlayer, layer)]: earlier copies still running (keep=True)
         self.gi = 1                 # the GI (owner 0x000314c4): on at power up, switched by 30 leffs (QA L-G07)
         self.gi_owner = None        # the leff that switched it last
         self.gi_by_code = set()     # code leffs that switch the GI themselves (leff_code gi=True)
@@ -638,10 +639,17 @@ class Lamps:
         if gi:
             self.gi_by_code.add(leff_id)
 
-    def leff_play(self, leff_id, lamp=None):
+    def leff_play(self, leff_id, lamp=None, keep=False):
         """A leff task started (display.Leffs accepted it): play its captured show on a layer at the ROM
-        priority. `lamp` is the lamp (or lamp list / light tag) a caller passes to the token effects."""
-        self.leff_end(leff_id)
+        priority. `lamp` is the lamp (or lamp list / light tag) a caller passes to the token effects.
+        keep: the running copy goes on beside the new one (leff_start [0x00007c10] creates a second task when
+        the leff claims no lamp or coil group, QA L-G05)."""
+        old = self.leff_players.get(leff_id)
+        if keep and old is not None and isinstance(old[0], ShowPlayer):
+            self.leff_players.pop(leff_id)
+            self.leff_copies.setdefault(leff_id, []).append(old)
+        else:
+            self.leff_end(leff_id)
         if leff_id not in self.gi_by_code:
             self._gi_play(leff_id)
         name, loops, prio = self.leff_info.get(leff_id, ("", 0, 0))
@@ -668,9 +676,10 @@ class Lamps:
                     mask.update(self.lamp_numbers(target))
         mask |= self._group_lamps(leff_id)
         layer = self.layer_create(prio, mask, name="leff_{}".format(leff_id))
-        self.leff_players[leff_id] = (ShowPlayer(self, steps, layer, loops, tokens, owner=leff_id,
-                                                 on_end=lambda: self._leff_show_done(leff_id),
-                                                 loop_step=self.leff_loop_step.get(leff_id, 0)), layer)
+        player = ShowPlayer(self, steps, layer, loops, tokens, owner=leff_id,
+                            loop_step=self.leff_loop_step.get(leff_id, 0))
+        player.on_end = lambda: self._leff_show_done(leff_id, player)
+        self.leff_players[leff_id] = (player, layer)
 
     def _group_lamps(self, leff_id):
         """leff_start [0x00007c10]: a leff with a lamp group (+6) clears the group's lamps in the leff image and flash
@@ -680,9 +689,14 @@ class Lamps:
         claims = getattr(leffs, "claims", {}) if leffs is not None else {}
         return set(claims.get(leff_id, (frozenset(),))[0])
 
-    def _leff_show_done(self, leff_id):
+    def _leff_show_done(self, leff_id, player=None):
         # a show that plays once ends with its task: the layer is released (display.Leffs keeps the
-        # leff's own length for the priority bookkeeping)
+        # leff's own length for the priority bookkeeping); an earlier copy frees only its own layer
+        for entry in self.leff_copies.get(leff_id, ()):
+            if player is not None and entry[0] is player:
+                self.leff_copies[leff_id].remove(entry)
+                self.layer_free(entry[1])
+                return
         entry = self.leff_players.pop(leff_id, None)
         if entry:
             if isinstance(entry[0], LeffTask):
@@ -748,6 +762,9 @@ class Lamps:
         if entry:
             entry[0].stop()
             self.layer_free(entry[1])
+        for player, layer in self.leff_copies.pop(leff_id, ()):     # leff_stop kills every task of the leff
+            player.stop()
+            self.layer_free(layer)
 
     def leff_lamps_end(self):
         for leff_id in list(self.leff_players):

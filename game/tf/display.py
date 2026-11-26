@@ -826,13 +826,22 @@ class Leffs:
             self.os.leff_stop(other)
             if any(r[1] == other and r[3] for r in self.os.rules) and other not in self.pending:
                 self.pending.append(other)          # its rule starts it again once it can run (game_flow.md 5.8)
-        self.stop(leff_id)
+        lamps_, coils_, _ = self.claims.get(leff_id, (frozenset(), frozenset(), 0))
+        keep = leff_id in self.running and not lamps_ and not coils_ and leff_id not in self.os.lamps.code_leffs
+        if keep:
+            # leff_start [0x00007c10]: a leff that claims no lamp or coil group gets a second task beside the
+            # running one (QA L-G05); the earlier copy plays on to its own end, the new one owns the length
+            handle = self.running.pop(leff_id)
+            if handle:
+                self.os.machine.clock.unschedule(handle)
+        else:
+            self.stop(leff_id)
         length = self.info.get(leff_id, (None, None, None))[2]
         handle = None
         if length and not loop and leff_id not in self.os.lamps.code_leffs:   # a code leff ends itself
             handle = self.os.machine.clock.schedule_once(lambda: self._ended(leff_id), length)
         self.running[leff_id] = handle
-        self.os.lamps.leff_play(leff_id, lamp)      # its captured lamp show, on a layer at its priority
+        self.os.lamps.leff_play(leff_id, lamp, keep=keep)   # its captured lamp show, on a layer at its priority
         return True
 
     def _ended(self, leff_id):

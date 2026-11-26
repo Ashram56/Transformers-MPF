@@ -474,3 +474,22 @@ class TestFinalPass(QaCase):
         while lamps.level(n) != 1:
             self.advance_time_and_run(TICK)
         self.assertEqual((0x55, 0x55, 0x55), tuple(light.get_color().rgb))
+
+    def test_f068_groupless_leff_twice(self):
+        """leff_start [0x00007c10]: a leff that claims no lamp or coil group (leff 43) started while it runs gets a
+        second task; the first plays on to its own end; leff_stop ends both (QA L-G05)."""
+        self.start()
+        lamps = self.tf.lamps
+        if 43 in lamps.code_leffs:
+            self.skipTest("leff 43 is drawn from its code")
+        self.tf.leff_start(43)
+        self.advance_time_and_run(0.5)
+        self.tf.leff_start(43)
+        self.assertEqual(1, len(lamps.leff_copies.get(43, ())))
+        self.advance_time_and_run(0.8)                  # the first copy's 1.12 s are over, not the second's
+        self.assertEqual(0, len(lamps.leff_copies.get(43, ())))
+        self.assertIn(43, lamps.leff_players)
+        self.tf.leff_start(43)
+        self.tf.leff_stop(43)
+        self.assertNotIn(43, lamps.leff_players)
+        self.assertFalse(lamps.leff_copies.get(43))
