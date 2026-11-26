@@ -151,8 +151,8 @@ VARIANT_TIMING = {}     # (deff, variant) -> (hold ticks, drop tick or None): th
 def deff_variant(deff_id, name):
     """A deff's run for one set of arguments, from the ROM extraction's op list
     rom/rom_data/dmd/deff_ops/deff_NNN__<name>.json (the deff's code run with those arguments): its length
-    (end_tick), the sounds and lamp effects its code starts. None without that op list. Deff 94 picks its
-    animation by the shots left (+0x34, table 0x040c6a60 [0x010189a8]): shots1..8, and final on completion."""
+    (end_tick), the sounds and lamp effects its code starts. None without that op list. The battle hit
+    deffs pick their animation by +0x34 (deff 94: table 0x040c6a60 [0x010189a8]): shotsK, and final on completion."""
     key = (deff_id, name)
     if key not in _VARIANTS:
         path = os.path.join(ROM, "rom_data", "dmd", "deff_ops", "deff_%03d__%s.json" % (deff_id, name))

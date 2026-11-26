@@ -289,9 +289,17 @@ class Battle:
         kwargs = {"run_seconds": self.completed_seconds} if completed else {}
         if left is not None:
             kwargs["left"] = left
-        # the hit deff's animation by the shots left (+0x34, at most 8) or the final one (+0x3c = 1): deff 94
-        # [0x010189a8] table 0x040c6a60; its op list gives the run's length and sounds (QA SC2)
-        variant = "final" if completed else "shots{}".format(min(left, 8)) if left else None
+        # the hit deff's animation by its +0x34 (anim_index) or the final one (+0x3c = 1): deff 94 [0x010189a8]
+        # table 0x040c6a60, 102 [0x0101dc18] 0x040c6c34, ...; past the table's last routine the deff takes the
+        # last (the op lists shots1..N); its op list gives the run's length and sounds (QA SC2)
+        variant = None
+        if completed:
+            variant = "final"
+        elif left is not None:
+            k = max(1, self.anim_index(left))
+            while k > 1 and not deff_variant(self.hit_deff, "shots{}".format(k)):
+                k -= 1
+            variant = "shots{}".format(k)
         if deff_variant(self.hit_deff, variant):
             kwargs.pop("run_seconds", None)
             kwargs["variant"] = variant
@@ -303,6 +311,11 @@ class Battle:
         # [0x00024ae4])
         os_.after(1, lambda: os_.sound(self.hit_sound, in_deff=self.hit_deff, index=index))
         self._speech(completed, left)
+
+    def anim_index(self, left):
+        """The hit deff's +0x34 set by its start function: speech base + 2 - shots left (start_deff_94
+        [0x01017b24] 0xb - left, start_deff_102 [0x0101cc6c] 0xc - left; +0x44 = +0x34 - 2)."""
+        return self.speech_base + 2 - left
 
     def _speech(self, completed, left):
         """The hit deff's delayed speech, from its child task (task_create_same_id: it dies with the deff)."""
@@ -603,6 +616,10 @@ class Bumblebee(Battle):
         points = UNLIT_POINTS * (m if self.pd.get("bb_phase", 1) == 1 else 1)
         self.os.score_add(points)
         self.total += points
+
+    def anim_index(self, left):
+        """start_deff_110 [0x01014638]: +0x34 = 7 - the shots still lit (bit_count_140b0)."""
+        return 7 - left
 
     def lit_hit(self, shot, m):
         os_ = self.os
