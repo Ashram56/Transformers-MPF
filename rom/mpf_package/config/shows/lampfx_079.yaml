@@ -1,6 +1,22 @@
 #show_version=6
-# ROM lamp effect (leff) 79, function 0x010109a0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_079.json). runs until stopped: a cycle of 6 ticks (96 ms); lead-in of 5 ticks left out.
+# ROM lamp effect (leff) 79, function 0x010109a0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_079.json). runs until stopped: a cycle of 6 ticks (96 ms); after a lead-in of 5 ticks (steps 0-0).
 # Colors: ffffff = on, 7f7f7f = one plane only (dim / blink phase), 000000 = off.
+- duration: 48ms
+  lights:
+    l_allspark_orange: "000000"
+    l_allspark_purple: "ffffff"
+    l_allspark_red: "ffffff"
+    l_allspark_x: "000000"
+    l_center_lane_purple: "ffffff"
+    l_center_lane_red: "ffffff"
+    l_left_orbit_purple: "ffffff"
+    l_left_orbit_red: "ffffff"
+    l_left_ramp_purple: "ffffff"
+    l_left_ramp_red: "ffffff"
+    l_right_orbit_purple: "ffffff"
+    l_right_orbit_red: "ffffff"
+    l_right_ramp_purple: "ffffff"
+    l_right_ramp_red: "ffffff"
 - duration: 48ms
   lights:
     l_allspark_orange: "000000"

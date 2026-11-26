@@ -3,9 +3,9 @@
 For each leff: rom/rom_data/io/leff_ops/leff_NNN.json (the lift: lamp states per tick, coil pulses, sounds,
 effects started, each with its ROM address) and rom/mpf_package/config/shows/lampfx_NNN.yaml (the MPF show),
 then rom/rom_data/io/lamp_effects.csv (one row per leff of the table 0x040cfe00; the columns the game reads).
-A leff that never ends by itself (it runs until stopped) is written as one cycle: the shortest period after
-which its lamp states and pulses repeat exactly, found in its tick sequence; the lead-in before the first
-cycle is left out. Lamp levels: both planes "ffffff", one plane "7f7f7f", none "000000" (leff_lift.py).
+A leff that never ends by itself (it runs until stopped) is written as its lead-in then one cycle: the shortest
+period after which its lamp states and pulses repeat exactly, found in its tick sequence; the show's header and
+the column loop_step give the step the cycle starts at, where the player loops back (QA L-G11). Lamp levels: both planes "ffffff", one plane "7f7f7f", none "000000" (leff_lift.py).
 
 Usage: TF_ROM=tf_180.bin leff_package.py LIFT_DIR [leff ...]
 """
@@ -141,7 +141,7 @@ def package(doc, lights, coils, sites):
     ev = events(doc, lights, coils)
     end, ran = doc.get("end_tick"), doc.get("ran_ticks")
     loops = end is None
-    note, body = "", []
+    note, body, loop_step = "", [], ""
     if not loops:
         body = steps_of(ev, 0, max(end, 1))
         note = "ends by itself after %d ticks (%d ms)" % (end, round(end * TICK_MS))
@@ -153,9 +153,12 @@ def package(doc, lights, coils, sites):
             for t in sorted(ev):
                 if t <= s0:
                     state0.update(ev[t]["lights"])
-            body = steps_of(ev, s0, s0 + per, state0)
+            lead = steps_of(ev, 0, s0) if s0 else []
+            body = lead + steps_of(ev, s0, s0 + per, state0)
+            loop_step = len(lead)
             note = "runs until stopped: a cycle of %d ticks (%d ms)%s" % (
-                per, round(per * TICK_MS), "; lead-in of %d ticks left out" % s0 if s0 else "")
+                per, round(per * TICK_MS), "; after a lead-in of %d ticks (steps 0-%d)" % (s0, len(lead) - 1)
+                if lead else "")
         elif ev:
             last = max(ev)
             body = steps_of(ev, 0, last + 1)
@@ -178,6 +181,7 @@ def package(doc, lights, coils, sites):
             "lamp_group_lamps": " ".join(map(str, doc["group_lamps"])), "coil_group": doc["coil_group"],
             "priority": doc["priority"], "end_tick": "" if end is None else end,
             "run_ms": round(end * TICK_MS) if end is not None else "", "loops": "yes" if loops else "",
+            "loop_step": loop_step,
             "show": show, "steps": len(body), "lamps_used": len(used), "coils_pulsed": " ".join(pulsed),
             "sounds": " ".join(sorted({"%x" % o["call"] for o in doc["ops"] if o["op"] == "sound"})),
             "deffs_started": " ".join(sorted({str(o["deff"]) for o in doc["ops"] if o["op"] == "deff"})),

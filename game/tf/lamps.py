@@ -100,8 +100,10 @@ class Layer:
 class ShowPlayer:
     """Plays a parsed show on a layer (lamps), MPF RGB lights (tubes) and flashers."""
 
-    def __init__(self, lamps, steps, layer=None, loops=0, tokens=None, on_end=None, rgb=False, owner=None):
+    def __init__(self, lamps, steps, layer=None, loops=0, tokens=None, on_end=None, rgb=False, owner=None,
+                 loop_step=0):
         self.lamps = lamps
+        self.loop_step = loop_step  # a looping leff's cycle starts here, after its lead-in (QA L-G11)
         self.owner = owner          # the leff id whose show this is (flasher arbitration)
         self.steps = steps
         self.layer = layer
@@ -123,7 +125,7 @@ class ShowPlayer:
         self.handle = None
         if self.index >= len(self.steps):
             if self.loops == -1 and self.steps:
-                self.index = 0
+                self.index = self.loop_step if self.loop_step < len(self.steps) else 0
             else:
                 self.done = True
                 if self.on_end:
@@ -356,9 +358,11 @@ class Lamps:
         self.show_dir = os.path.join(rom, "mpf_package", "config", "shows")
         self._shows = {}
         self.leff_info = {}         # leff id -> (show name, loops (-1 = until stopped), priority)
+        self.leff_loop_step = {}    # leff id -> the step its cycle starts at, after the lead-in (QA L-G11)
         for row in leff_rows(rom):
             self.leff_info[int(row["leff"])] = (row["show"], -1 if row["loops"] == "yes" else 0,
                                                 int(row["priority"] or 0))
+            self.leff_loop_step[int(row["leff"])] = int(row.get("loop_step") or 0)
         self.names = {}             # MPF light name -> lamp number (lamp matrix only)
         self.lights = {}            # lamp number -> MPF light
         self.groups = {}            # light tag (rom_group_N) -> lamp numbers
@@ -522,7 +526,8 @@ class Lamps:
         mask |= self._group_lamps(leff_id)
         layer = self.layer_create(prio, mask, name="leff_{}".format(leff_id))
         self.leff_players[leff_id] = (ShowPlayer(self, steps, layer, loops, tokens, owner=leff_id,
-                                                 on_end=lambda: self._leff_show_done(leff_id)), layer)
+                                                 on_end=lambda: self._leff_show_done(leff_id),
+                                                 loop_step=self.leff_loop_step.get(leff_id, 0)), layer)
 
     def _group_lamps(self, leff_id):
         """leff_start [0x00007c10]: a leff with a lamp group (+6) clears the group's lamps in the leff image and flash
