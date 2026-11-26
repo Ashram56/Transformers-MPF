@@ -273,7 +273,6 @@ class Display:
         [deff_start_user_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
         held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
         self.fg_prio = HOLD_PRIORITY
-        held = deff_id
         if not self.show and deff_id in self.hold_tail:
             # a measured hold (set_hold_tail): its rules pass restarts the mode's background deff behind
             # it (traces/quorra_multiball: deff 65 again 2.78 s into deff 68)
@@ -295,10 +294,9 @@ class Display:
             if show.on_end:
                 show.on_end()
             deff_id, _, on_start = self.select()
-            # a deff whose priority drops long before its end (deff 140 at tick 105 of 198-281, 0x0100b90c with
-            # adj 69 = NO) gives the DMD to the waiting score deff 19 there (agent A, megatron_autobot 18.71 -> 20.44 s)
-            long_hold = held in HOLD_AT_BY_DEFF and HOLD_AT_IF.get(held, lambda o: True)(self.os)
-            if self.os.in_play and (deff_id != 19 or long_hold):
+            # from the priority drop to 0x20 the waiting effect or the score deff 19 takes the DMD (agent A,
+            # timing.json priority_changes; deff 140 at tick 105, megatron_autobot 18.71 -> 20.44 s)
+            if self.os.in_play:
                 self._start_rule(deff_id, on_start)
             self._pump()
 
