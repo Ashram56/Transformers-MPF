@@ -145,6 +145,8 @@ def deff_variant(deff_id, name):
             info.seconds = (d.get("end_tick") or 0) * TICK
             ops = d.get("ops", ())
             info.sounds = [(o["t"] * TICK, int(o["call"])) for o in ops if o.get("op") == "sound"]
+            # snd_play_after [0x000253d4]: queued after the sample the deff started just before (deff 144's 0x2b6)
+            info.after = [(o["t"] * TICK, int(o["call"])) for o in ops if o.get("op") == "sound_after"]
             info.leffs = [int(o["leff"]) for o in ops if o.get("op") == "leff" and not o.get("t")]
             prio = [o["t"] for o in ops if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
             end = d.get("end_tick")
@@ -198,6 +200,9 @@ class Display:
         self.media = media_table.load(PKG)
         self.prio, self.background = deff_table()
         self.flags = deff_flags()
+        self._last_sound_call = None
+        self._after_pending = None   # (call it waits on, handle): a queued snd_play_after
+        self._last_sound_end = None  # when the deff's last sound ends (its sound_after ops queue behind it)
         self.own_sounds = set()     # (deff, call) a feature plays itself, with its argument: not again from the op list
         self.fg = None              # running foreground deff id
         self.show_held = False      # a show ended in this deff's hold: its rules refresh is due at its exit
@@ -311,14 +316,20 @@ class Display:
             events = [(t, "sound", c) for t, c in info.sounds
                       if (not seconds or t < seconds) and (deff_id, c) not in self.own_sounds]
         events += [(t, "tube", n) for t, n in info.tubes if not seconds or t < seconds]
-        for offset, kind, value in sorted(events, key=lambda e: e[0]):
+        if sounds is None:
+            events += [(t, "after", c) for t, c in getattr(info, "after", ())
+                       if (not seconds or t < seconds) and (deff_id, c) not in self.own_sounds]
+        for offset, kind, value in sorted(events, key=lambda e: (e[0], e[1] == "after")):
             fire = (lambda k, v: lambda: self.fg == deff_id and (
-                self._deff_sound(v, deff_id) if k == "sound" else v() if k == "call" else os_.tube_start(v)))(
+                self._deff_sound(v, deff_id) if k == "sound" else v() if k == "call"
+                else self._deff_after(v) if k == "after" else os_.tube_start(v)))(
                 kind, value)
             if offset <= 0:
                 fire()
             else:
-                self._sound_handles.append(os_.machine.clock.schedule_once(fire, offset))
+                # a queued sound right after the sound it waits on (same-time callbacks keep no order)
+                self._sound_handles.append(os_.machine.clock.schedule_once(fire, offset + (1e-4 if kind == "after"
+                                                                                            else 0)))
 
     def _hold(self, deff_id):
         """Last 10 ticks of deff_id (cancelled with it when it is replaced): its priority drops to 0x20,
@@ -399,10 +410,28 @@ class Display:
         `seconds` the deff runs at priority 0x20, so any other deff may replace it (measured per deff)."""
         self.hold_tail[deff_id] = seconds
 
+    def _deff_after(self, call):
+        """snd_play_after [0x000253d4]: `call` queued on the sample the deff started last; nothing when that sample
+        did not start, and dropped when the same call starts again before it ends (the new sample replaces it)."""
+        end, parent = self._last_sound_end, self._last_sound_call
+        if end is None:
+            return None
+        os_ = self.os
+
+        def play(_dt=None):
+            self._after_pending = None
+            os_.sound(call)
+        self._after_pending = (parent, os_.machine.clock.schedule_once(play, max(0.0, end - os_.now)))
+        return None
+
     def _deff_sound(self, call, deff_id):
         """A deff's own sound. When it is a mode rule's music call (intro deff 64 plays the Quorra music
         0x066), that music is playing, so the rule does not start it again (traces/quorra_multiball)."""
-        self.os.sound(call, in_deff=deff_id)
+        if self._after_pending and self._after_pending[0] == call:
+            self.os.machine.clock.unschedule(self._after_pending[1])
+            self._after_pending = None
+        self._last_sound_end = self.os.sound(call, in_deff=deff_id)
+        self._last_sound_call = call
         if any((r[3]() if callable(r[3]) else r[3]) == call for r in self.rules):
             self.music = call
         return True

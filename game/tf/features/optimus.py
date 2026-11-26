@@ -161,8 +161,9 @@ class Side:
         os_.score_add(points)
         self.total += points
         kwargs = {} if anim is None else {"anim": anim}
-        if anim and deff_variant(deff, "video%d" % anim):
-            # the picked video's own length, sounds and leffs (op lists deff_066 / 071 / 072__videoN; QA V066-V072)
+        if anim is not None and deff_variant(deff, "video%d" % anim):
+            # the picked animation's own length, sounds and leffs (deff_NNN__videoK, rom/rom_data/dmd/deff_anim_tables.csv;
+            # QA V066-V072, SC6: deffs 59, 60, 65, 77); index 0 is the base op list
             kwargs["variant"] = "video%d" % anim
         os_.deff_start(deff, values=[points], **kwargs)
         os_.audit(audit)
@@ -425,6 +426,7 @@ class Optimus(Feature):
         os_.flag_set(BATTLE_FLAG)
         pd.opt_battle = True
         pd.opt_left = min(2 * pd.get("opt_level", 1) + 1, MAX_LEFT)
+        self.hit_no = 1                   # dbattle_set_hits_needed [0x010261cc]: DAT_00035294 = 1
         os_.audit(BATTLE_AUDIT)
         os_.score_add(BATTLE_POINTS)
         os_.deff_start(BATTLE_DEFF)
@@ -449,7 +451,15 @@ class Optimus(Feature):
         self.hit_at = os_.now
         if pd.get("opt_left", 0) > 0:
             pd.opt_left -= 1
-            os_.deff_start(HIT_DEFF, values=[pd.opt_left + 1])
+            # start_deff_144 [0x010262f0]: task +0x34 = DAT_00035294 (1 at the battle start, + 1 a hit) picks the
+            # animation of the side's table, 0x040c70c4 (Decepticon, at most 6) or 0x040c70e0 (Autobot, at most 11)
+            # (QA SC6, rom/rom_data/dmd/deff_anim_tables.csv)
+            hit_no = getattr(self, "hit_no", 1)
+            self.hit_no = hit_no + 1
+            name = ("autobot_left%d" % min(hit_no, 11) if pd.get("side", DECEPTICON) == AUTOBOT
+                    else "decepticon_left%d" % min(hit_no, 6))
+            kwargs = {"variant": name} if deff_variant(HIT_DEFF, name) else {}
+            os_.deff_start(HIT_DEFF, values=[pd.opt_left + 1], **kwargs)
             os_.leff_start(HIT_LEFF)
             os_.sound(HIT_SOUND)
             os_.request_refresh()

@@ -146,7 +146,7 @@ class Side:
         os_.score_add(points)
         self.total += points
         kwargs = {} if anim is None else {"anim": anim}
-        if anim and deff_variant(deff, "video%d" % anim):
+        if anim is not None and deff_variant(deff, "video%d" % anim):
             # the picked video's own length, sounds and leffs (op lists deff_066 / 071 / 072__videoN; QA V066-V072)
             kwargs["variant"] = "video%d" % anim
         os_.deff_start(deff, values=[points], **kwargs)
@@ -161,7 +161,8 @@ class Side:
         leaf_6a20); another starts task_sleep_user_f360 [0x0100f360]: after 0x8c ticks (0x4d for animation 3)
         sample `anim` of 0x0f5 (0 past its count) and, for animation 3, 0x0f6 when it ends."""
         os_ = self.os
-        os_.display.own_sounds.add((JACKPOT_DEFF, JACKPOT_RETRY_SOUND))
+        os_.display.own_sounds.update({(JACKPOT_DEFF, JACKPOT_RETRY_SOUND), (JACKPOT_DEFF, JACKPOT_SPEECH),
+                                       (JACKPOT_DEFF, JACKPOT_SPEECH_AFTER)})   # the video op lists carry them too
         if not anim:
             os_.after(1, lambda: os_.display.running(JACKPOT_DEFF)
                       and os_.sound_retry(JACKPOT_RETRY_SOUND, JACKPOT_RETRY_TICKS, in_deff=JACKPOT_DEFF))

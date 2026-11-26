@@ -13,7 +13,7 @@ import re
 
 
 class DeffInfo:
-    __slots__ = ("id", "name", "seconds", "sounds", "tubes", "leffs")
+    __slots__ = ("id", "name", "seconds", "sounds", "tubes", "leffs", "after")
 
     def __init__(self, deff_id, name):
         self.id, self.name = deff_id, name
@@ -21,6 +21,7 @@ class DeffInfo:
         self.sounds = []        # (offset s, call)
         self.tubes = []         # (offset s, tube show)
         self.leffs = []         # lamp-matrix effects started with the deff
+        self.after = []         # (offset s, call) queued after the deff's previous sound (snd_play_after)
 
 
 def load(pkg):
