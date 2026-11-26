@@ -50,6 +50,12 @@ BATTLE_FLAG, BATTLE_AUDIT, BATTLE_POINTS = 0x46, 0x6b, 200000
 BATTLE_DEFF, BATTLE_LEFF, BATTLE_SOUND = 142, 174, 0x2ab
 BATTLE_MUSIC = {DECEPTICON: 0x34, AUTOBOT: 0x31}
 BATTLE_RULE_LEFFS = (20, 176, 175)
+# leff_020 [0x01006f1c]: the GI beat of the battle music, table 0x040c5edc (call, ticks since the music started)
+MUSIC_BEATS = ((0x31, (36, 43, 50, 219, 261, 268, 275, 445, 487, 494, 501, 557, 614, 670, 712, 720, 727, 783, 811,
+                       839, 868, 896, 938, 945, 952, 980, 1009, 1023, 1037, 1051, 1065, 1079, 1093, 1107, 10000)),
+               (0x34, (21, 35, 105, 132, 146, 216, 244, 258, 285, 299, 327, 549, 605, 661, 716, 772, 786, 800, 813,
+                       841, 855, 869, 883, 911, 925, 938, 966, 980, 994, 1008, 1022, 1036, 1077, 1091, 1105, 1119,
+                       1161, 1175, 1189, 1203, 10000)))
 BATTLE_DONE_LEFF = 177
 HIT_DEFF, HIT_LEFF, HIT_SOUND = 144, 178, 0x2aa
 MAX_LEFT = 8
@@ -364,6 +370,8 @@ class Optimus(Feature):
             os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.super_leff)
         for i, leff in enumerate(BATTLE_RULE_LEFFS):
             os_.lamp_rule(self.battle_progress, leff=leff)
+        from tf.lamps import music_gi_beat                    # noqa: PLC0415
+        os_.lamps.leff_code(20, music_gi_beat(MUSIC_BEATS), gi=True)
         os_.lamp_rule(lambda: self.battle_progress() and self.pd.get("opt_left", 0) <= 0, leff=BATTLE_DONE_LEFF)
 
     def player_first_ball(self):

@@ -386,6 +386,45 @@ def gi_lamp_flash(gi_passes=12, toggles=0x50, every=2):
     return run
 
 
+def music_gi_beat(table):
+    """leff_020 [0x01006f1c] (Optimus battle): the GI blinks on the beat of the battle music. table: [(music call,
+    (ticks...))], the records of 0x040c5edc (+0 times, +4 count, +0xc call). Each tick, snd_chan_25854 [0x00025854]
+    on the record's call: not playing, the index goes back to 0 and the time base to now; playing, when the ticks
+    since the base reach times[index] the index steps and, while it stays below the count, io_owner_hold_6ef4
+    [0x01006ef4] blinks the GI (claimed if free, off 2 ticks). The record is the one whose call plays
+    (snd_call_playing); the first pass blinks once. -> fn(LeffTask)."""
+    def blink(task):
+        lamps = task.lamps
+        if lamps.gi_owner not in (None, task.leff_id):
+            return
+        lamps._gi_cancel()
+        lamps.gi_owner = task.leff_id
+        lamps.gi_set(0, task.leff_id)
+
+        def back(dt=0):
+            lamps.gi_set(1, task.leff_id)
+            if lamps.gi_owner == task.leff_id:
+                lamps.gi_owner = None
+        lamps._gi_handles.append(lamps.clock.schedule_once(back, 2 * TICK))
+
+    def run(task, rec=0, idx=0, base=None, first=True):
+        os_ = task.lamps.os
+        call, times = table[rec]
+        if base is None or not os_.sound_playing(call):
+            idx, base = 0, os_.now
+            rec = next((r for r, (c, _) in enumerate(table) if os_.sound_playing(c)), 0)
+            if first:
+                blink(task)
+                first = False
+        elif times[idx] * TICK <= os_.now - base:
+            idx += 1
+            if idx < len(times):
+                blink(task)
+            idx = min(idx, len(times) - 1)
+        task.sleep(1, lambda t: run(t, rec, idx, base, first))
+    return run
+
+
 def hit_count_blink(rows, counts_fn, super_fn, super_lamps, all_lamps, blink=3, chase=8):
     """The side mode / wizard multiball rule leffs (leff_079 [0x010109a0], leff_087 [0x01037060]): per shot its
     lamps, the first `count` (hits made) solid and the others flashing every `blink` ticks; while the super is
@@ -439,6 +478,7 @@ class Lamps:
         self.leff_players = {}      # leff id -> ShowPlayer
         self.gi = 1                 # the GI (owner 0x000314c4): on at power up, switched by 30 leffs (QA L-G07)
         self.gi_owner = None        # the leff that switched it last
+        self.gi_by_code = set()     # code leffs that switch the GI themselves (leff_code gi=True)
         self._gi_handles = []
         self.tube_players = {}      # tube show id -> ShowPlayer
         self.code_leffs = {}        # leff id -> (layer priority, fn(LeffTask)): leffs drawn by code
@@ -580,16 +620,19 @@ class Lamps:
             self._shows[name] = parse_show(path) if os.path.exists(path) else []
         return self._shows[name]
 
-    def leff_code(self, leff_id, fn, priority=None):
+    def leff_code(self, leff_id, fn, priority=None, gi=False):
         """Draw leff `leff_id` with code instead of its captured show (fn(LeffTask), layer `priority`,
-        default the leff's ROM priority)."""
+        default the leff's ROM priority). gi: fn switches the GI itself (its op list's GI frames are not played)."""
         self.code_leffs[leff_id] = (priority, fn)
+        if gi:
+            self.gi_by_code.add(leff_id)
 
     def leff_play(self, leff_id, lamp=None):
         """A leff task started (display.Leffs accepted it): play its captured show on a layer at the ROM
         priority. `lamp` is the lamp (or lamp list / light tag) a caller passes to the token effects."""
         self.leff_end(leff_id)
-        self._gi_play(leff_id)
+        if leff_id not in self.gi_by_code:
+            self._gi_play(leff_id)
         name, loops, prio = self.leff_info.get(leff_id, ("", 0, 0))
         if leff_id in self.code_leffs:
             layer_prio, fn = self.code_leffs[leff_id]

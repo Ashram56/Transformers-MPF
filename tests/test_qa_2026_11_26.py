@@ -253,6 +253,24 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual((names[0x1f], 100), pulsed[0][:2])
         self.assertLess(pulsed[0][2], pulsed[1][2])
 
+    def test_optimus_music_gi_beat(self):
+        """leff_020 [0x01006f1c]: the GI blinks 2 ticks on the battle music's beat (table 0x040c5edc)."""
+        self.start()
+        from tf.os_layer import TICK
+        lamps = self.tf.lamps
+        self.tf.sound(0x31)
+        self.assertTrue(self.tf.sound_playing(0x31))
+        changes = []
+        self.machine.events.add_handler("tf_gi", lambda **kwargs: changes.append((self.tf.now, kwargs["on"])))
+        t0 = self.tf.now
+        lamps.leff_play(20)
+        self.advance_time_and_run(60 * TICK)
+        offs = [round((t - t0) / TICK) for t, on in changes if not on]
+        self.assertEqual(0, offs[0])
+        self.assertTrue(any(abs(o - 37) <= 1 for o in offs[1:]), offs)
+        lamps.leff_end(20)
+        self.assertEqual(1, lamps.gi)
+
     def test_lock_lamps_flash_while_lock_lit(self):
         """Lamp rule [0x0100b228]: lamps 29, 57, 58 flash while a lock is lit, else off (QA L-R02)."""
         self.start()

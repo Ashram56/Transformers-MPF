@@ -415,7 +415,7 @@ class TfOS(CustomCode):
             self.lamps.leff_code(leff_id, lamp_hold(True))
         for leff_id in (141, 145):                                 # fn 0x01009a58: the lamp off for 8 ticks
             self.lamps.leff_code(leff_id, lamp_hold(False))
-        self.lamps.leff_code(38, gi_lamp_flash())                  # leff_038 [0x01023df8]
+        self.lamps.leff_code(38, gi_lamp_flash(), gi=True)                  # leff_038 [0x01023df8]
         from tf import switches                   # noqa: E402
         self.switches = switches.SwitchLayer(self)
         from tf.features import load_features     # noqa: E402
