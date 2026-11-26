@@ -98,9 +98,27 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
   blanks 7 of 14 ticks after 0x3e idle ticks (sweep once the playfield is valid), the award fades over 0x1a
   ticks, the combo texts slide (tf/score_screen.py StatusCounters; tests/test_qa_2026_11_26.py
   test_score_status_counters). Deffs 26 and 40 draw the same panel but refresh it every 0.25 s only.
-- SC16 (voices): the sound board's voice allocation by priority and take-over (`0x00024ae4`).
-- Deff variant frames: the frames of each variant run (docs/rom_differences.md).
-- V001 attract pages, V010-V017 credit line, V002 volume display, the low rows of the reports.
+- ~~SC16 (voices)~~ fixed 2026-11-26: snd_start_sample [0x00024ae4] voice allocation. Each sample's script
+  bytes 1-2 (voice mask, voices taken; rom/rom_data/sound/sample_voices.csv from rom/tools/sample_voices.py);
+  a playing sample's voices are taken over when its call's priority (+0x10) is lower, or equal with its
+  take-over flag (+0x11); free voices first, then the slot that has played longest; else the sample does not
+  start (os_layer._voice_plan, sound_refused). The hint task logs each refused try (allspark_energon: sound
+  events match up to #57, was #20); the battle hit sound plays from the hit deff's first run, after the
+  Allspark warning (battle_blackout: #15, was #11). Test test_sound_voices.
+- ~~Deff variant frames~~ fixed 2026-11-26: the 73 variant op lists are rendered from the code
+  (rom/tools/deff_package.py --ops-variants into deffs/deff_NNN/variants/<name>/); gen_media writes one slide
+  per variant (media_data "variants") and media_bridge plays the variant's slide.
+- ~~V010, V015, V017 (credit line)~~ fixed 2026-11-26: deff_017_insert_coins [0x01000000] draws the credit line
+  (msg_get_user_44a4 [0x000044a4]) and, every other 15-tick frame, PRESS START (0x31a) when leaf_19988
+  [0x00019988] allows a start, else INSERT COINS (0x31b): two live slots (gen_media credit_slots).
+  V010/V013/V015/V017 and every deff whose code has no priority drop keep their priority to the end
+  (display.deff_holds: hold 0).
+- ~~V002 (volume)~~ fixed 2026-11-26: coin-door MINUS / PLUS outside the service menu [0x0000f008]: deff 2 (task
+  0xb [0x0000eeb0], with 0x01e in attract by on_event_62 [0x01006054]); with deff 2 up the volume
+  (0x02110250, 0-0x3f, 0x28 [0x00025fb0]) steps by one; BACK takes deff 2 away.
+- ~~V014~~ fixed 2026-11-26: in attract both flipper buttons start deff 14 [0x00026608]; one stops it.
+- V001 attract pages: asked agent A for the page table 0x00030d10 and a lift of each page with real state.
+- The low rows of the reports (list in progress).
 
 ## Pass of 2026-11-25
 

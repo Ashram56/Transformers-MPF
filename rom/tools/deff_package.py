@@ -7,7 +7,12 @@ Times: ticks of the OS task loop (task_sleep); one tick is 64 IO interrupts of 2
 nominal; ms here are ticks x TICK_MS, the game's tick (game/tf/os_layer.py TICK, 16.26 ms: the tick is a
 minimum, the loop runs late when a pass is long).
 
+Every variant of a deff drawn from game state (deff_variants.py, deff_NNN__<name>.json) gets its own frames and
+timing in deff_NNN/variants/<name>/ (deff_package.py --ops-variants renders them from the op lists already in
+rom_data/dmd/deff_ops/, without the lift).
+
 Usage: TF_ROM=tf_180.bin deff_package.py LIFT_DIR [deff ...]
+       TF_ROM=tf_180.bin deff_package.py --ops-variants [deff ...]
 """
 import glob
 import json
@@ -36,12 +41,16 @@ def compact_ops(doc):
     return out
 
 
-def package(doc):
+def package(doc, variant=None):
+    """variant: a variant's name (deff_NNN__<name>.json): its frames and timing go in deff_NNN/variants/<name>/
+    and its op list stays where save_variant wrote it."""
     n = doc["deff"]
     frames = deff_render.render(doc)
     end = doc.get("end_tick")
     last = end if end is not None else doc.get("ran_ticks")
     folder = os.path.join(PKG_DEFFS, "deff_%03d" % n)
+    if variant:
+        folder = os.path.join(folder, "variants", variant)
     fdir = os.path.join(folder, "frames")
     os.makedirs(fdir, exist_ok=True)
     for p in glob.glob(os.path.join(fdir, "*.png")):
@@ -100,8 +109,12 @@ def package(doc):
     if doc.get("variant"):          # a deff drawn from game state: the state this one ran with (deff_variants.py)
         timing["variant"] = doc["variant"]
         timing["other_variants"] = doc.get("other_variants", [])
+    if variant:
+        timing["note"] = timing["note"].replace("deff_%03d.json" % n, "deff_%03d__%s.json" % (n, variant))
     with open(os.path.join(folder, "timing.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(timing, f, indent=1)
+    if variant:
+        return len(recs)
     os.makedirs(OPS_DIR, exist_ok=True)
     with open(os.path.join(OPS_DIR, "deff_%03d.json" % n), "w", encoding="utf-8", newline="\n") as f:
         json.dump({k: v for k, v in doc.items() if k != "ops"} | {"ops": compact_ops(doc)}, f,
@@ -120,7 +133,20 @@ def save_variant(doc, name):
         f.write("\n")
 
 
+def ops_variants(ids):
+    """The variants' frames from their saved op lists (rom_data/dmd/deff_ops/deff_NNN__<name>.json)."""
+    for p in sorted(glob.glob(os.path.join(OPS_DIR, "deff_*__*.json"))):
+        doc = json.load(open(p))
+        if ids and doc["deff"] not in ids or "error" in doc:
+            continue
+        name = os.path.basename(p)[:-5].split("__", 1)[1]
+        print(doc["deff"], name, package(doc, name), "frames")
+
+
 def main():
+    if sys.argv[1] == "--ops-variants":
+        ops_variants([int(x) for x in sys.argv[2:]])
+        return
     src = sys.argv[1]
     ids = [int(x) for x in sys.argv[2:]]
     for p in sorted(glob.glob(os.path.join(src, "deff_*.json"))):
@@ -130,6 +156,8 @@ def main():
         base = os.path.basename(p)[:-5]
         if "__" in base:
             save_variant(doc, base.split("__", 1)[1])
+            if "error" not in doc:
+                print(doc["deff"], base.split("__", 1)[1], package(doc, base.split("__", 1)[1]), "frames")
             continue
         doc["other_variants"] = sorted(os.path.basename(q)[:-5].split("__", 1)[1]
                                        for q in glob.glob(os.path.join(src, base + "__*.json")))

@@ -74,6 +74,8 @@ def format_values(sources, values):
     return out
 
 
+CREDIT_LINE_DEFFS = (10, 15, 17)    # deff_017_insert_coins [0x01000000] (scripts/gen_media.py credit_slots)
+
 # Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
 DRAWN = (19,)
 
@@ -141,6 +143,9 @@ class MediaBridge:
         live = getattr(self.os, "deff_values", {}).get(deff_id)
         if live:                                       # values the deff reads from RAM, now (over the passed ones)
             args = dict(args, **live())
+        if deff_id in CREDIT_LINE_DEFFS:               # [0x01000000]: the credit line and PRESS START / INSERT COINS
+            args = dict(args, slot_texts={0: self.credits_text(), 1: "PRESS START" if self.can_start() else
+                                          "INSERT COINS"})
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
         if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
             passed["values"] = format_values(info["values"], args.get("values") or [])
@@ -180,7 +185,9 @@ class MediaBridge:
             with open(path, "a", encoding="utf-8") as f:
                 f.write("{}\t{}\t{}\n".format(deff_id, where, text))
 
-    def deff_start(self, deff_id, priority, **args):
+    def deff_start(self, deff_id, priority, variant=None, **args):
+        """variant: the state the deff runs with (tf/display.py deff_variant): its own slide when the package has
+        that variant's frames (media_data "variants")."""
         info = self.data["deffs"].get(deff_id) if self.data else None
         if deff_id in DRAWN:                             # drawn live from its draw calls
             self.drawn.add(deff_id)
@@ -192,7 +199,8 @@ class MediaBridge:
             return
         if not info:
             return
-        slide = self.deff_slide(info)
+        slide = (info.get("variants") or {}).get(variant) if variant else None
+        slide = slide or self.deff_slide(info)
         old = self.slides.get(deff_id)
         if old not in (None, slide):               # the other side's slide of the same deff (a side change)
             self._remove(old)
@@ -296,6 +304,13 @@ class MediaBridge:
         if whole == 0:
             return "CREDITS %d/%d" % (num, den)
         return "CREDITS %d %d/%d" % (whole, num, den)
+
+    def can_start(self):
+        """leaf_19988 [0x00019988]: free play (0x00004464: the pricing's adjustment is 1), else the credit record's
+        +4 (0x000041d4: whole credits)."""
+        if getattr(self.os, "free_play", False):
+            return True
+        return int(getattr(self.os, "credits", 0) or 0) > 0
 
     def replay_text(self):
         """adj_replay_award_2f804 [0x0102f804] (deff 19): the current player's first replay level not yet awarded ("REPLAY AT <level>",

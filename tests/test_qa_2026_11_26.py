@@ -232,6 +232,21 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual(n + 1, self.sounds().count(0x145))
         self.assertEqual(1, self.tf.pd.hint_index)
 
+    def test_sound_voices(self):
+        """snd_start_sample [0x00024ae4]: a speech call of priority 1 without take-over (0x0b1) is refused while
+        another such speech holds voice 0x02; a priority 193 take-over speech (0x11e) takes the voice and
+        stops it (QA SC16)."""
+        self.start()
+        tf = self.tf
+        tf.sound_refused(0x0b1)
+        tf._slots = [x for x in tf._slots if not x["voices"] & 0x02]   # nothing else on the speech voice
+        self.assertIsNotNone(tf.sound(0x0b1))
+        self.assertTrue(tf.sound_refused(0x0b1))
+        self.assertIsNone(tf.sound(0x0b1))
+        self.assertFalse(tf.sound_refused(0x11e))
+        self.assertIsNotNone(tf.sound(0x11e))
+        self.assertEqual([0x11e], [s["call"] for s in tf._slots if s["voices"] & 0x02])
+
     def test_intro_flipper_skip(self):
         """[0x01006480]: one flipper held, the other pressed, ends a show deff (QA V-ENG4)."""
         self.start()

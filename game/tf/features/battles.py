@@ -290,8 +290,11 @@ class Battle:
             kwargs["variant"] = variant
         os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # PuP
         lengths = os_.sample_lengths(self.hit_sound)
-        os_.sound(self.hit_sound, in_deff=self.hit_deff,
-                  index=(self.hits - 1) % len(lengths) if lengths else None)
+        index = (self.hits - 1) % len(lengths) if lengths else None
+        # from the deff's own task, at its first run: after the switch's other handlers (the Allspark warning
+        # 0x157 of the same left eject takes its voice first, then this one takes it over, snd_start_sample
+        # [0x00024ae4])
+        os_.after(1, lambda: os_.sound(self.hit_sound, in_deff=self.hit_deff, index=index))
 
     def complete(self):
         os_ = self.os

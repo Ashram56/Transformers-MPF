@@ -83,6 +83,8 @@ def deff_holds():
             prio = [o for o in d.get("ops", ()) if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
             if prio and d.get("end_tick") is not None:
                 holds[d["deff"]] = d["end_tick"] - prio[-1]["t"]
+            elif d.get("end_tick") is not None:
+                holds[d["deff"]] = 0          # no priority drop in its code: it keeps its priority to the end
     return holds
 
 
@@ -244,7 +246,7 @@ class Display:
         self.fg_prio = self.prio.get(deff_id, 0)
         self.bg = None
         os_.machine.events.post("tf_deff_{}".format(deff_id), **args)
-        os_.media.deff_start(deff_id, self.prio.get(deff_id, 0), **args)
+        os_.media.deff_start(deff_id, self.prio.get(deff_id, 0), variant=variant, **args)
         info = deff_variant(deff_id, variant) or self.media.get(deff_id)
         self.fg_info = info
         if info:

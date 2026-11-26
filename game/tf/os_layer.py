@@ -36,6 +36,7 @@ from tf.score_screen import StatusCounters
 from tf.trace import Trace
 
 TICK = 0.016            # seconds per ROM tick: 64 x 250 us FIQ [0x000114b0] (owner, 2026-11-25: the code, not the measured 16.26 ms)
+VOLUME_DEFF, VOLUME_DEFAULT, VOLUME_MAX = 2, 0x28, 0x3f   # deff 2 [0x01040050]; [0x00025fb0]; [0x0000f008]
 SECOND = 62             # ticks the ROM treats as one second
 START_HOLD_TICKS = 62   # adj 36 GAME RESTART: START held this long (timer 4, 0x3e ticks)
 
@@ -187,21 +188,34 @@ def sample_lengths(base):
     return out
 
 
-def sample_channels(base):
-    """{sound call: [(channel mask, priority) of each sample it picks from]}: the sample's mask (samples.csv) and
-    the low byte of the call's flags word (sound_calls.csv flags_0x10; meaning inferred: 0x157 with 0x9e is
-    refused while a 0x0c-mask jackpot sample of a 0x1c1 call plays, played over a 0x10-mask one)."""
+def sample_voices(base):
+    """({sound call: (sample ids, priority +0x10, take-over +0x11)}, {sample: (voice mask, voices, loops)}): the call
+    records (sound_calls.csv) and each sample script's bytes 1-2 (sample_voices.csv, rom/tools/sample_voices.py)
+    that snd_start_sample [0x00024ae4] reads; loops: the sample has a loop point (samples.csv loop_start_s)."""
     import csv
-    masks = {}
+    calls, samples, loops = {}, {}, set()
     with open(os.path.join(base, "samples.csv"), encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            masks[int(row["sample"], 16)] = int(row.get("mask") or "0", 16)
-    out = {}
+            if row.get("loop_start_s"):
+                loops.add(int(row["sample"], 16))
+    path = os.path.join(base, "sample_voices.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                n = int(row["sample"], 16)
+                samples[n] = (int(row["voice_mask"], 16), int(row["voices"]), n in loops)
     with open(os.path.join(base, "sound_calls.csv"), encoding="utf-8") as f:
         for row in csv.DictReader(f):
             ids = [int(x, 16) for x in (row["samples"] or "").split()]
-            prio = int(row.get("flags_0x10") or "0", 16) & 0xff
-            out[int(row["call"], 16)] = [(masks.get(i, 0), prio) for i in ids]
+            calls[int(row["call"], 16)] = (ids, int(row["priority"] or 0), int(row["replace_equal"] or 0))
+    return calls, samples
+
+
+def sum_bits(slots):
+    """The voices of a list of sound slots, or-ed."""
+    out = 0
+    for s in slots:
+        out |= s["voices"]
     return out
 
 
@@ -324,6 +338,11 @@ class TfOS(CustomCode):
             sw.add_switch_handler(slot, (lambda name: lambda: self.credit_model.coin(name))(slot))
         sw.add_switch_handler("s_start_button", self._start_held, ms=START_HOLD_TICKS * TICK * 1000)
         sw.add_switch_handler("s_back", self._service_back)
+        for name, step in (("s_minus", -1), ("s_plus", 1)):
+            if name in self.machine.switches:
+                sw.add_switch_handler(name, (lambda d: lambda: self._volume_button(d))(step))
+        self.volume = VOLUME_DEFAULT        # RAM 0x02110250 (ram_02110250_user [0x00025cd0])
+        self.deff_live([VOLUME_DEFF], lambda: {"values": [self.volume]})
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob)
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob_open, state=0)
         sw.add_switch_handler("s_l_flipper_button", lambda: self._flipper_launch(1))
@@ -644,13 +663,71 @@ class TfOS(CustomCode):
             i = index
         else:
             i = self._sample_pick(call, len(lengths))
+        if not self._voice_take(call, i or 0, lengths[i or 0]):
+            return None                            # no voice: the sample does not start (nor enter the memories)
         self._sample_remember(call, i or 0)
         self.media.sound(call, i or 0)             # the media controller plays the same sample
-        channels = self.sample_channels(call)
-        if channels and (i or 0) < len(channels):
-            self._playing = [p for p in getattr(self, "_playing", []) if p[0] > self.now]
-            self._playing.append((self.now + lengths[i or 0],) + channels[i or 0])
         return self.now + lengths[i or 0]
+
+    def _voice_plan(self, call, i):
+        """snd_start_sample [0x00024ae4], the voice part: the sample may use the voices of its script's byte-1 mask.
+        A playing sample (slot 0x00037c2c, 0xa0 bytes each) on those voices can be taken over when its call's
+        priority (+0x10, slot +0x2a) is below the new call's, or equal and its call has the take-over flag (+0x11,
+        slot +0x2b). The sample starts when the free voices plus the voices of those slots reach the number its
+        byte 2 asks; it takes the free voices first, then the voices of the slot that has played longest
+        (0x00037c18) and stops that slot (snd_chan_free_locked). Returns None (refused: the sound does not play),
+        or (voices taken, slot to stop or None)."""
+        if not hasattr(self, "_voice_calls"):
+            self._voice_calls, self._voice_samples = sample_voices(
+                os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "sound"))
+            self._slots = []
+        ids, prio, _ = self._voice_calls.get(call, ([], 0, 0))
+        if i >= len(ids) or ids[i] not in self._voice_samples:
+            return 0, None
+        mask, need, _ = self._voice_samples[ids[i]]
+        self._slots = [s for s in self._slots if s["end"] > self.now]
+        busy, free_slots = 0, []
+        for s in self._slots:
+            if s["voices"] & mask:
+                if s["prio"] < prio or (s["prio"] == prio and s["takeover"] & 1):
+                    free_slots.append(s)
+                busy |= s["voices"]
+        free = mask & ~busy
+        if bin(free | sum_bits(free_slots)).count("1") < need:
+            return None
+        taken = 0
+        for bit in range(8):
+            if need and free >> bit & 1:
+                taken |= 1 << bit
+                need -= 1
+        victim = None
+        if need:
+            victim = free_slots[0]
+            for s in free_slots:                     # the one that has played longest (ties: the later slot)
+                if s["start"] <= victim["start"]:
+                    victim = s
+            for bit in range(8):
+                if need and (victim["voices"] & mask) >> bit & 1:
+                    taken |= 1 << bit
+                    need -= 1
+        return taken, victim
+
+    def _voice_take(self, call, i, length):
+        """Start sample i of `call` on the sound board's voices, or refuse it (_voice_plan)."""
+        plan = self._voice_plan(call, i)
+        if plan is None:
+            self.trace.log("sound_refused", call="0x{:03x}".format(call))
+            return False
+        taken, victim = plan
+        if victim is not None:
+            self._slots.remove(victim)
+            if victim["call"] != call:
+                self.media.sound_stop(victim["call"])
+        ids, prio, takeover = self._voice_calls.get(call, ([], 0, 0))
+        loops = i < len(ids) and self._voice_samples.get(ids[i], (0, 0, False))[2]
+        self._slots.append({"voices": taken, "prio": prio, "takeover": takeover, "start": self.now,
+                            "end": float("inf") if loops else self.now + length, "call": call})
+        return True
 
     def _sound_memory(self, call):
         """(sample ids, no-repeat memory length +0x0e, speech flag +0x12) of a call's record (table 0x040dee08,
@@ -717,19 +794,15 @@ class TfOS(CustomCode):
             del memory[:-keep]
 
     def sound_refused(self, call):
-        """The sound board refuses `call` while a sample of a higher priority call plays on one of its channels
-        (inferred from the Allspark's warning 0x157, [0x0100a788] event 7: refused during the jackpot speech)."""
-        channels = self.sample_channels(call)
-        if not channels:
+        """snd_start_sample [0x00024ae4] would not start `call` now: no voice of its first sample is free or can be
+        taken over (_voice_plan)."""
+        if not self.sample_lengths(call):
             return False
-        mask, prio = channels[0]
-        return any(end > self.now and m & mask and p > prio for end, m, p in getattr(self, "_playing", []))
-
-    def sample_channels(self, call):
-        if not hasattr(self, "_sample_channels"):
-            self._sample_channels = sample_channels(os.path.join(self.machine.machine_path, "..", "rom",
-                                                                 "rom_data", "sound"))
-        return self._sample_channels.get(call, [])
+        refused = self._voice_plan(call, 0) is None
+        if refused and os.environ.get("TF_DEBUG_VOICES"):
+            print("REFUSED", hex(call), self.now, [(hex(x["call"]), x["voices"], x["prio"], x["takeover"], x["end"])
+                                                  for x in self._slots])
+        return refused
 
     def sound_stop(self, call):
         """FUN_000257b4(call): stop the sample a sound call plays (Tron: the arcade reel's roll)."""
@@ -1544,11 +1617,35 @@ class TfOS(CustomCode):
         if self._service_confirm:
             self._service_confirm_close()          # BACK answers no
             return
+        if self.display.running(VOLUME_DEFF):     # case 1 with deff 2 up: it goes away (the volume is kept)
+            self.deff_stop(VOLUME_DEFF)
+            return
         if self.display.running(POWER_OFF_DEFF):
             self.deff_stop(POWER_OFF_DEFF)
             self.sound(POWER_OFF_CANCEL_SOUND)
             return
         self.credit_model.service_credit()
+
+    def _volume_button(self, step):
+        """Coin-door MINUS (case 2) / PLUS (case 4) outside the service menu [0x0000f008]: without the volume display,
+        task 0xb [0x0000eeb0]: event 0x62 (in attract, on_event_62 [0x01006054] plays 0x01e so the volume can be
+        heard) and deff 2; with it up, the volume (0x02110250, 0-0x3f, 0x28 at a reset [0x00025fb0]) goes down or
+        up by one (error_log_user_25d14 [0x00025d14]) and deff 2 starts again."""
+        if self.in_service or self._service_confirm:
+            return
+        if not self.display.running(VOLUME_DEFF):
+            self.task_kill(0xb)
+            if self.state & ST_ATTRACT:
+                self.sound(0x01e)
+            self.deff_start(VOLUME_DEFF)
+            return
+        if step < 0 and self.volume:
+            self.volume -= 1
+        elif step > 0 and self.volume != VOLUME_MAX:
+            self.volume += 1
+        self.trace.log("volume", value=self.volume)
+        self.machine.events.post("tf_volume", volume=self.volume)
+        self.deff_start(VOLUME_DEFF)
 
     def _service_select(self):
         """Coin-door SELECT: the service menu (tf/service.py). In attract mode it opens at once. In a game the

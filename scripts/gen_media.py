@@ -13,7 +13,8 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs), plus deff_NNN_side1.tscn for
                                      the effects that draw the player's side (SIDE_VARIANTS: the capture is the
                                      Decepticon side, the Autobot one is made from it with the ROM's own image or
-                                     message)
+                                     message), and deff_NNN__<variant>.tscn for each variant drawn from game
+                                     state (rom/mpf_package/media/dmd/deffs/deff_NNN/variants/<variant>/)
 
 The score display (deff 19) is drawn live from its draw calls (tf/score_screen.py).
 
@@ -214,6 +215,41 @@ def value_texts(timing, frames, deff_id=None, fits=None):
     return slots, per_frame
 
 
+# deff_017_insert_coins [0x01000000] (deffs 10, 15, 17): every 15 ticks the credit line (msg_get_user_44a4
+# [0x000044a4], text_draw_str at 0x010000a0) and, on even frames, PRESS START (msg 0x31a) or INSERT COINS (0x31b)
+# by leaf_19988 [0x00019988] (0x010000ec), font list 0x040c5b74 fitted to 83 columns, centred on x 0x54
+CREDIT_LINE_DEFFS = (10, 15, 17)
+
+
+def credit_slots(timing, frames):
+    """Two live slots for the credit deffs: 0 the credit line (on every frame), 1 PRESS START / INSERT COINS (on the
+    frames that draw it, whose dots are cleared): the code run drew them with an empty credit record."""
+    import gen_fonts
+    fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
+                                                     encoding="utf-8"))["fonts"]}
+    get = gen_fonts.load_images()
+    texts = {t["call_site"]: t for p in timing.get("pages") or [] for t in p["texts"]}
+    line, start = texts.get("10000a0"), texts.get("10000ec")
+    if not line or not start:
+        return [], [[] for _ in frames]
+    slots = [{"t": "", "f": line["font"], "x": line["x"], "y": line["y"], "a": line["flags"], "source": "%s"},
+             {"t": start["str"], "f": start["font"], "x": start["x"], "y": start["y"], "a": start["flags"],
+              "source": "%s"}]
+    canvas = [[None] * 128 for _ in range(32)]
+    gen_fonts.render(get, fonts[start["font"]], start["str"], start["x"], start["y"], start["flags"], canvas)
+    lit = [(x, y, v) for y, row in enumerate(canvas) for x, v in enumerate(row) if v]
+    per_frame = []
+    for img, _ in frames:
+        px = img.load()
+        if lit and all(round(px[x, y][0] / 17) == v for x, y, v in lit):
+            for x, y, _ in lit:
+                px[x, y] = (0, 0, 0, 255)
+            per_frame.append([0, 1])
+        else:
+            per_frame.append([0])
+    return slots, per_frame
+
+
 def loop_period(frames):
     """The shortest run of frames that repeats through the whole recording, or None (a looping deff's capture
     stops mid-cycle: looping the whole recording would jump back from the middle of the cycle)."""
@@ -348,6 +384,8 @@ def build_deffs(only_data):
         panel = panel_level(timing, frames)
         loop = rows.get(deff_id, {}).get("background_loop") == "yes"
         slots, per_frame = value_texts(timing, frames, deff_id, fits)
+        if deff_id in CREDIT_LINE_DEFFS:
+            slots, per_frame = credit_slots(timing, frames)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
                         "panel": panel, "args": [], "values": [v["source"] for v in slots]}
         if deff_id in SIDE_VARIANTS:
@@ -367,6 +405,34 @@ def build_deffs(only_data):
         if deff_id in SIDE_VARIANTS:
             name = "deff_{:03d}_side1".format(deff_id)
             write_slide(deff_id, side_frames(deff_id, frames), loop, rel, panel, (slots, per_frame), name=name)
+    for vfolder in sorted(glob.glob(os.path.join(DEFFS, "deff_*", "variants", "*"))):
+        # a variant drawn from game state (rom/tools/deff_package.py --ops-variants): its own slide
+        deff_id = int(os.path.basename(os.path.dirname(os.path.dirname(vfolder))).split("_")[1])
+        vname = os.path.basename(vfolder)
+        if deff_id not in out:
+            continue
+        with open(os.path.join(vfolder, "timing.json"), encoding="utf-8") as f:
+            timing = json.load(f)
+        if not timing.get("frames"):
+            continue
+        slide = "deff_{:03d}__{}".format(deff_id, vname)
+        out[deff_id].setdefault("variants", {})[vname] = slide
+        if only_data:
+            continue
+        frames = capture_frames(vfolder, timing)
+        panel = out[deff_id]["panel"]
+        loop = out[deff_id]["loop"]
+        slots, per_frame = value_texts(timing, frames, deff_id, fits)
+        if panel is not None:
+            for img, _ in frames:
+                ImageDraw.Draw(img).rectangle((0, 0, PANEL_WIDTH - 1, 31), fill=(0, 0, 0, 255))
+        if loop:
+            period = loop_period(frames)
+            frames = frames[:period] if period else frames
+            per_frame = per_frame[:len(frames)]
+        rel = "media/dmd/deff_{:03d}/{}".format(deff_id, vname)
+        os.makedirs(os.path.join(GAME, rel), exist_ok=True)
+        write_slide(deff_id, frames, loop, rel, panel, (slots, per_frame), name=slide)
     return out
 
 

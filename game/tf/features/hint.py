@@ -80,6 +80,8 @@ class Hint(Feature):
         if not call or index >= len(os_.sample_lengths(call)):
             return
         if os_.sound_refused(call):
+            # snd_play2 is still called (and refused by snd_start_sample [0x00024ae4]: no voice)
+            os_.trace.log("sound", call="0x{:03x}".format(call), in_deff=0)
             if tries < TRIES - 1:
                 os_.task_start(TASK, 1, lambda: self._speak(tries + 1))
             return
