@@ -18,6 +18,7 @@ megatron_decepticon.jsonl).
 - Adj 85 DISABLE OPTIMUS PRIME MOTOR is not read by the code (open question in the spec); not used.
 """
 from tf.features import Feature
+from tf.os_layer import TICK
 
 ORDER = 60
 UP, DOWN = 0x2b, 0x2c
@@ -25,7 +26,11 @@ MOTOR = "c_optimus_prime_motor"
 KICKER, KICKER_NUM, KICKER_MS = "c_optimus_prime", 12, 64
 MOTOR_NUM = 30
 SWITCH = {UP: "s_optimus_prime_up", DOWN: "s_optimus_prime_down"}
-MOVE_S = 7.65                   # the motor's time limit when no position switch closes (observed in the simulator)
+# motor_move_task [0x00016c88]: the task waits at most 0x1d4 = 468 ticks (vtable +0x24, 0x00016830); the poll
+# [0x00016a24] stops the motor once the target switch is seen in 2 polls (1 ms each), after an after-run of 157 polls
+# going up (table 0x040c702e: DOWN 0, UP 0x9d) (optimus_multiball.md 4.2, QA CC motor)
+MOVE_TICKS = 468
+AFTER_RUN_S = {UP: 0.002 + 0.157, DOWN: 0.002}
 HIT_TASK, HIT_DELAY, HIT_TAIL = 0x54, 15, 47
 
 
@@ -95,7 +100,7 @@ class OptimusMech(Feature):
         self.moving = target
         self.machine.coils[MOTOR].enable()
         self.os.trace.log("coil", coil=MOTOR_NUM, on=1)
-        self._stop = self.machine.clock.schedule_once(lambda: self._motor_off(), MOVE_S)
+        self._stop = self.machine.clock.schedule_once(lambda: self._motor_off(), MOVE_TICKS * TICK)
 
     def _set_switches(self, pos):
         sc = self.machine.switch_controller
@@ -105,8 +110,10 @@ class OptimusMech(Feature):
 
     def _arrived(self, pos):
         if self.moving == pos:
-            self._motor_off()
-            self._check()
+            if self._stop is not None:
+                self.machine.clock.unschedule(self._stop)
+            self._stop = self.machine.clock.schedule_once(lambda: (self._motor_off(), self._check()),
+                                                          AFTER_RUN_S[pos])
 
     def _motor_off(self):
         if self._stop is not None:
