@@ -108,13 +108,13 @@ GAME = {
     "eb_lamp": 55,              # EXTRA BALL
     "special_lamp": 53,         # SPECIAL
     # the base music is the side's (tf/features/side.py)
-    "music_plunger": 0x1d,      # ball start, Decepticon (observed at each ball start)
-    "music_play": 0x1f,         # main play, Decepticon (observed after the first award)
+    "music_plunger": 0x1d,      # ball start, Decepticon: side_choice_deff_ids_68e4 [0x010068e4]
+    "music_play": 0x1f,         # main play, Decepticon: side_deff_ids_6970 [0x01006970]
     "add_player_sound": 0x048,
     "game_start_sound": None,   # none observed (traces/sounds.jsonl: only the side choice music 0x1b)
-    "tilt_warning_speech": 0x052,   # observed 0.51 s (31 ticks) after sound 0x016
-    "tilt_speech": 0x053,       # observed 1.01 s (62 ticks) after sound 0x017
-    "tilt_speech_ticks": 62,
+    "tilt_warning_speech": 0x052,   # task 0x98 [0x01005e44], 0x1f ticks after the warning (event 0x69)
+    "tilt_speech": 0x053,       # task 0x99 [0x01005e80], 0x3e ticks after the tilt (event 0x65)
+    "tilt_speech_ticks": 0x3e + 1,
     "launch_sound": 0x056,      # observed on every plunge and auto-launch, 0.08 s after the lane opens
     "launch_sound_ticks": 4,
 }
@@ -311,7 +311,7 @@ class TfOS(CustomCode):
         self._search_paused = None      # countdown seconds left while a flipper button is held
         self.ball_search_count = 0
         self.ball_held = False       # a ball sits in a device the rules hold (not in play) waiting for its kickout
-        self.ball_validated = False  # the playfield was validated on this ball (the play music)
+        self.ball_validated = False  # game flag 0x10 for the music rule (set at validation, cleared with the ball)
         self._mb_end_deferred = False
         self.device_ejecting = False    # a held ball's eject not yet confirmed by a playfield switch (no ball search)
         self.device_busy = False        # a held ball released, eject not yet confirmed by the ball device
@@ -707,12 +707,14 @@ class TfOS(CustomCode):
         return self.display.show_running()
 
     def base_music(self):
-        """Music of the score-display deff rules (inferred from the traces; routine not identified): the plunger music until the
-        playfield is validated on this ball, then the play music; a feature may replace it (hook base_music)."""
+        """Music of the score-display deff rules, bg_entry_eval [0x000178b0] on records 0x00034cd4 / 0x00034cec: the
+        ball-start music while game flag 0x10 is clear and the playfield is not valid (test_flag_10_68b4 [0x010068b4],
+        side_choice_deff_ids_68e4 [0x010068e4]), else the play music (side_deff_ids_6970 [0x01006970]); the side's
+        calls and the Optimus battle music come from the hooks (tf/features/side.py, optimus.py)."""
         music = self.hook("base_music")
         if music is not None:
             return music
-        return GAME["music_play"] if self.ball_validated else GAME["music_plunger"]
+        return GAME["music_plunger"] if not self.ball_validated and not self.pf_valid else GAME["music_play"]
 
     def music(self, call):
         """Play a background music call and remember it (display.rules_refresh plays it again on a change)."""
@@ -1892,7 +1894,9 @@ class TfOS(CustomCode):
             self.deff_start(23)
             self.leff_start(11)
             self.sound(0x016)
-            self.after(31, lambda: self.sound(GAME["tilt_warning_speech"]))
+            # event 0x69 hook [0x01005e5c]: task 0x98 [0x01005e44] sleeps 0x1f, then snd_play(0x52); it runs
+            # first on the next tick (32 in the code run, rom/tools/scenario_lift.py tilt_ball_save)
+            self.task_start(0x98, 0x1f + 1, lambda: self.sound(GAME["tilt_warning_speech"]))
             return
         self._tilt()
 
@@ -1913,7 +1917,8 @@ class TfOS(CustomCode):
         self.deff_start(21)
         self.leff_start(9)
         self.sound(0x017)
-        self.after(GAME["tilt_speech_ticks"], lambda: self.sound(GAME["tilt_speech"]))
+        # event 0x65 hook [0x01005e98]: task 0x99 [0x01005e80] sleeps 0x3e, then snd_play(0x53)
+        self.task_start(0x99, GAME["tilt_speech_ticks"], lambda: self.sound(GAME["tilt_speech"]))
         for flipper in self.machine.flippers.values():
             flipper.disable()
 

@@ -75,7 +75,11 @@ class Side(Feature):
             return None
         if self.choosing:
             return MUSIC["choose"][self.side()]
-        return MUSIC["play" if self.os.ball_validated else "ball_start"][self.side()]
+        # the two score-display rules (bg_entry_eval [0x000178b0]): record 0x00034cd4 (priority 0x10) while game
+        # flag 0x10 is clear and the playfield is not valid (test_flag_10_68b4 [0x010068b4]): side_choice_deff_ids_68e4
+        # [0x010068e4], the ball-start music; else record 0x00034cec (priority 4): side_deff_ids_6970 [0x01006970]
+        os_ = self.os
+        return MUSIC["ball_start" if not os_.ball_validated and not os_.pf_valid else "play"][self.side()]
 
     def ball_start_media(self):
         os_ = self.os

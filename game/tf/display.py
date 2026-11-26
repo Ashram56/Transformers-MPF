@@ -22,7 +22,8 @@ game/tron/display.py, where the trace references below come from) and the same O
 - Mode deff rules (lamp_rule_init list 2, os.deff_rule -> add_rule): on each rules refresh the true rule
   with the highest priority starts its background deff (even behind a show) when it changed, and its
   music call when that music is not already playing. With no mode rule true the score display rule runs
-  with os.base_music() (inferred from the traces; tf_180's music rule routine is not identified yet). Every
+  with os.base_music() (bg_entry_eval [0x000178b0]: records 0x00034cd4 and 0x00034cec, deff 19 and the ball-start
+  or play music of the player's side, side_choice_deff_ids_68e4 [0x010068e4], side_deff_ids_6970 [0x01006970]). Every
   start of a rule's deff is traced with rule=1 (tf_180's caller 0x0001794c).
 - Each decoded deff holds for its own tail (HOLD_TICKS_BY_DEFF: 1, 2 or 10 ticks, the ticks after its
   deff_hold_frames priority 0x20 in agent A's op list, rom/rom_data/dmd/deff_ops/; QA F7); 10 for the others.
