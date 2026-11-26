@@ -80,7 +80,10 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   0x01006bb8, dissolve 0x01034758) and `tools/deff_package.py` writes `frames/` and `timing.json` (`"tag": "code"`).
   All 153 effects come from this. The 38 whose drawing depends on game state run once per state their caller
   sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
-  pick), each state cited to the routine that sets it; the first one is packaged. `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
+  pick), each state cited to the routine that sets it; the first one is packaged. Deff 1 (attract) is a walk over
+  the page table 0x00030d10: `tools/attract_pages.py` runs each of its 39 pages alone in 7 NVRAM states (op lists
+  `deff_001__page<NN>[_<state>].json`, the table, conditions, lengths and the source of every text in
+  `rom_data/dmd/attract_pages.json`, spec `rules/modes/attract.md`). `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect
   (the compositor 0x000073cc re-done each tick; looping ones cut to their shortest exact cycle, which also showed
   that the captured period of leff 1 was wrong: 4220 ticks, not 4819 ms). `tools/switch_lift.py` plays a ball in the ROM's code (OS tick loop [0x0002bd48], the module constructors [0x0002c0f4], the switch dispatcher [0x0000dc44]) and writes `rules/switch_handlers.csv`; `tools/scenario_lift.py` plays every reference scenario the same way (the tracer's ball model and inputs, random draws as `#! random` inputs) and writes `rules/traces/code_runs.csv` (each mark against the trace). `tools/coil_pulses.py` reads the coil
   times from the code (`rom_data/io/coil_pulses.csv`, one row per call site), `tools/adj_format.py` runs the
