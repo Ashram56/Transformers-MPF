@@ -6,7 +6,8 @@ draw list of the pass (records: the button records 0x00036ac0 BACK, 0x00036ad0 M
 left) and close() (what the loop does on its way out).
 
 - KNOCKER TEST [0x010405ec], BALL TROUGH TEST [0x010402c0], SOUND/SPEAKER TEST [0x01047ee0],
-  DOT MATRIX TEST [0x01047a50], ACTIVE SWITCH TEST [0x0104b95c], OPTIMUS PRIME MOTOR TEST [0x01025844].
+  DOT MATRIX TEST [0x01047a50], ACTIVE SWITCH TEST [0x0104b95c], OPTIMUS PRIME MOTOR TEST [0x01025844],
+  BEGIN BURN-IN [0x010476b8].
 """
 from tf import rom_draw as rd
 from tf.features.optimus_mech import SWITCH
@@ -375,3 +376,145 @@ class MotorTest(Test):
     def _prev(self, here):
         lst = self.POSITIONS
         return lst[lst.index(here) - 1] if here in lst and lst.index(here) > 0 else 0
+
+
+class BurnInTest(Test):
+    """BEGIN BURN-IN, start_leff_8 [0x010476b8], every 2 ticks: "BURN-IN" (msg 0x254) or the power warning (msg
+    0x255, PowerBlink 4), font 2, y 4; "TOTAL BURN-IN TIME:" (msg 0x256, font 8, y 0xe) and the time kept in the
+    NVRAM word 0x10248 (stored_value_248_get_10a10, ticks: "%d:%02d" msg 0x257 or "%d:%02d:%02d" msg 0x258, font 8,
+    y 0x17); "PRESS 'SELECT' TO START" (msg 0x259, fit fonts 2, 0 [0x040c9c54], y 0x1f). SELECT (sound 0x00c):
+    event 0x17 (no hook in tf_180), the burn-in until BACK, one tick added to the time each tick:
+    - the coils: task_coil_test_loop_47388 [0x01047388], each coil not hidden (service_index_check_46a38) and
+      without flag 0x400 fires its test task, then 0x3e ticks, then the next;
+    - the display: deff_device_failure_4743c [0x0104743c], the DOT MATRIX TEST's frames every 6 ticks;
+    - the lamps: leff 8 (leff_008 [0x0104759c]): every lamp in its layer, the odd ones (row bytes 0xaa) then the
+      even ones (0x55), 8 ticks each;
+    - the sounds: task_sound_test_loop_475fc [0x010475fc], each sound test entry played until it ends (at most
+      0x3a9 x 2 ticks), 6 ticks, stopped, the next.
+    BACK ends it (the tasks killed, leff 8, the sound and the coil stopped, event 0x18, sound 0x009) and the screen
+    comes back; BACK again leaves."""
+    VAR = "tf_burn_in_ticks"                  # NVRAM word 0x10248
+
+    def __init__(self, svc):
+        Test.__init__(self, svc)
+        self.power = PowerBlink(4, lambda: not self.os.coin_door_open())
+        self.running = None
+        variables = svc.machine.variables
+        variables.configure_machine_var(self.VAR, persist=True)
+        if variables.get_machine_var(self.VAR) is None:
+            variables.set_machine_var(self.VAR, 0)
+
+    @property
+    def ticks(self):
+        return int(self.svc.machine.variables.get_machine_var(self.VAR) or 0)
+
+    def step(self, records):
+        if self.running is not None:
+            return self._burn(records)
+        warn, title = self.power.frame(self.os)
+        draw = []
+        if warn:
+            draw.append(rd.text("50V / 20V DISABLED", 2, 0x40, 4, 2))
+        if title:
+            draw.append(rd.text("BURN-IN", 2, 0x40, 4, 2))
+        draw.append(rd.text("TOTAL BURN-IN TIME:", 8, 0x40, 0xe, 2))
+        s = self.ticks // 0x3e
+        h, m, sec = s // 3600, s // 60 % 60, s % 60
+        draw.append(rd.text("{}:{:02d}:{:02d}".format(h, m, sec) if h else "{}:{:02d}".format(m, sec), 8, 0x40, 0x17, 2))
+        draw.append(rd.fit("PRESS 'SELECT' TO START", 0x40, 0x1f, (2, 0), 2))
+        if records[SELECT]:
+            records[SELECT] = 0
+            records[BACK] = 0
+            self.os.sound(SELECT)
+            self._start()
+            return draw
+        self.leave(records)
+        return draw
+
+    # ------------------------------------------------------------------ the burn-in
+
+    def _start(self):
+        from tf.service import coil_records                 # noqa: PLC0415
+        os_ = self.os
+        self.running = {"frames": DotMatrixTest._frames(), "draw": [], "coil": 0, "coil_wait": 0, "sound": 0,
+                        "sound_left": 0, "sound_gap": 0, "frame_wait": 0, "coils": coil_records()}
+        os_.lamps.leff_code(8, _leff_burn_in)
+        os_.leff_start(8)
+        self._next_coil()
+        self._next_sound()
+
+    def _next_coil(self):
+        """service_index_check_46a38: the next coil not hidden (flag 0x800); one with flag 0x400 is skipped."""
+        run = self.running
+        coils = run["coils"]
+        n = run["coil"]
+        for _ in range(0x23):
+            n = n + 1 if n < 0x23 else 1
+            rec = coils.get(n)
+            if rec is not None and not rec["flags"] & 0x800:
+                break
+        run["coil"] = n
+        rec = coils.get(n)
+        ms = 0
+        if rec is not None and not rec["flags"] & 0x400 and rec["ms"]:
+            names = {num: name for name, num in self.os.lamps.coil_numbers.items()}
+            if names.get(n):
+                self.os.lamps.flasher(names[n], rec["ms"])
+            ms = rec["ms"]
+        run["coil_wait"] = -(-ms // 16) + 0x3e         # the coil's task, then 0x3e ticks
+
+    def _next_sound(self):
+        run = self.running
+        run["sound"] = run["sound"] + 1 if run["sound"] < len(SoundTest.ENTRIES) else 1
+        call = SoundTest.ENTRIES[run["sound"] - 1][0]
+        self.os.sound(call)
+        run["sound_left"] = 0x3a9 * 2
+        run["sound_gap"] = 0
+
+    def _burn(self, records):
+        run = self.running
+        ticks = self.PASS_TICKS
+        self.svc.machine.variables.set_machine_var(self.VAR, self.ticks + ticks)
+        run["coil_wait"] -= ticks
+        if run["coil_wait"] <= 0:
+            self._next_coil()
+        call = SoundTest.ENTRIES[run["sound"] - 1][0]
+        if run["sound_gap"]:
+            run["sound_gap"] -= ticks
+            if run["sound_gap"] <= 0:
+                self.os.sound_stop(call)
+                self._next_sound()
+        else:
+            run["sound_left"] -= ticks
+            if run["sound_left"] <= 0 or not self.os.sound_playing(call):
+                run["sound_gap"] = 6
+        run["frame_wait"] -= ticks
+        if run["frame_wait"] <= 0:
+            run["draw"] = next(run["frames"])
+            run["frame_wait"] = DotMatrixTest.PASS_TICKS
+        if records[BACK]:
+            records[BACK] = 0
+            self._stop()
+            self.os.sound(BACK)
+        return run["draw"]
+
+    def _stop(self):
+        run, self.running = self.running, None
+        if run is None:
+            return
+        self.os.leff_stop(8)
+        self.os.sound_stop(SoundTest.ENTRIES[run["sound"] - 1][0])
+        self.power = PowerBlink(4, lambda: not self.os.coin_door_open())
+
+    def close(self):
+        self._stop()
+
+
+def _leff_burn_in(task):
+    """leff_008 [0x0104759c]: a layer owning every lamp; row bytes 0xaa (lamps (n - 1) & 7 even: 1, 3, 5, ...) and
+    0x55 in turn, 8 ticks each, until killed."""
+    def run(t, odd=True):
+        for n in range(1, 0x51):
+            t.set(n, ((n - 1) & 1 == 0) == odd)
+        t.sleep(8, lambda t2: run(t2, not odd))
+    run(task)

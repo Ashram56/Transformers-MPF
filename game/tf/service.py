@@ -1186,7 +1186,7 @@ def _leff_all_on(task):
 
 LOOP_TESTS = {"KNOCKER TEST": "KnockerTest", "BALL TROUGH TEST": "TroughTest", "SOUND/SPEAKER TEST": "SoundTest",
               "DOT MATRIX TEST": "DotMatrixTest", "ACTIVE SWITCH TEST": "ActiveSwitchTest",
-              "OPTIMUS PRIME MOTOR TEST": "MotorTest"}
+              "OPTIMUS PRIME MOTOR TEST": "MotorTest", "BEGIN BURN-IN": "BurnInTest"}
 LAMP_LEFFS = {3: _leff_blink, 4: _leff_all_on, 5: _leff_blink, 6: _leff_blink}
 LAMP_TESTS = {"SINGLE LAMP TEST": SingleLampTest, "TEST ALL LAMPS": AllLampsTest, "LAMP ROW TEST": RowLampTest,
               "LAMP COLUMN TEST": ColumnLampTest}

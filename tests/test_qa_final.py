@@ -364,3 +364,22 @@ class TestFinalPass(QaCase):
         self.assertIn("MOVE TO SWITCH 43: FAILED", rd.lines_of(mode.draw()))
         self._leave(mode)
         self.assertFalse(self.tf.features_by_name["optimus_mech"].claimed)
+
+    def test_f059_burn_in(self):
+        """BEGIN BURN-IN [0x010476b8]: SELECT starts the coils, the display frames, leff 8 and the sounds; the time
+        (NVRAM word 0x10248) counts the ticks; BACK stops and shows the time; BACK again leaves."""
+        mode, rd = self._diag_page("BEGIN BURN-IN")
+        self.assertEqual(["BURN-IN", "TOTAL BURN-IN TIME:", "0:00", "PRESS 'SELECT' TO START"], rd.lines_of(mode.draw()))
+        coils = len([e for e in self.tf.trace.of("coil") if e["on"]])
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(2.5)
+        self.assertIn(8, [e["id"] for e in self.tf.trace.of("leff_start")])
+        self.assertIn("0x01f", self.sounds())
+        self.assertGreater(len([e for e in self.tf.trace.of("coil") if e["on"]]), coils)
+        self.assertNotEqual(self.tf.lamps.composite(1), self.tf.lamps.composite(2))     # odd / even in turn
+        self.assertEqual(self.tf.lamps.composite(1), self.tf.lamps.composite(3))
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["BURN-IN", "TOTAL BURN-IN TIME:", "0:02", "PRESS 'SELECT' TO START"], rd.lines_of(mode.draw()))
+        self.assertFalse(self.tf.leffs.is_running(8))
+        self._leave(mode)
