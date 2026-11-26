@@ -9,7 +9,7 @@ Coin task FUN_00003f00, one per coin switch closure [0x00019c40]:
   METER CLICKS count the units;
 - each unit steps the unit counter (it wraps at the ladder length; -1 after a reset) and adds the credits of
   the ladder at that step (FUN_00003d40: never above adj 33 CREDIT LIMIT): audit 1 TOTAL PAID CREDITS by the
-  ladder's credits, event 0x19 (a sound, flag 47); deff 10 per unit; event 0x1a (a sound) when no
+  ladder's credits, event 0x19 (a sound, flag 0x12); deff 10 per unit; event 0x1a (a sound) when no
   unit gave a credit.
 - The credit text (FUN_000044a4): "FREE PLAY" on adj 34, else "CREDITS n", "CREDITS a/b" or
   "CREDITS n a/b" (units since the last credit over the units of the ladder step that gives the next one;
@@ -25,6 +25,7 @@ import os
 # coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots (observed, keys 3-6 of PinMAME)
 SLOTS = {"s_left_coin_slot": (0, 2), "s_center_coin_slot": (1, 3), "s_right_coin_slot": (2, 4),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
+CREDIT_FLAG, MORE_COINS_SOUND = 0x12, 0x045    # [0x01005ebc] sets flag 0x12; play_sound_045 [0x01005f00]
 CREDIT_SOUND, COIN_SOUND = 0x043, 0x042   # observed (traces/sounds.jsonl): 0x043 on the coin that completes a credit, 0x042 on the others
 METER_AUDIT, PAID_CREDITS_AUDIT, SERVICE_CREDITS_AUDIT = 7, 1, 0x24
 # The 68 pricing presets (rom/rom_data/settings/pricing.json, by adj 28 value; code, checked in the emulator
@@ -140,8 +141,8 @@ class Credits:
                 self.add(credits)
                 os_.audit(PAID_CREDITS_AUDIT, credits)
                 credited = True
-                os_.sound(CREDIT_SOUND)             # event 0x19 (credit added) handler
-                os_.flag_set(47)
+                os_.sound(CREDIT_SOUND)             # event 0x19 (credit added) handler [0x01005ebc]
+                os_.flag_set(CREDIT_FLAG)
             self.save()
             os_.deff_start(10, credits=self.text())
         if not credited:
@@ -210,6 +211,18 @@ class Credits:
             if a % d == 0 and b % d == 0:
                 a, b = a // d, b // d
         return a, b
+
+    def start_refused(self):
+        """Event 0x2d in attract (state & 0x118 == 0x10) [0x01005f84] -> play_sound_045 [0x01005f00]: with flag
+        0x12 (a credit was added) and FUN_000041f8 giving no credit (record +4) but a partial credit, sound
+        0x045, and flag 0x12 is cleared."""
+        os_ = self.os
+        if os_.game or os_.in_service or not os_.flag(CREDIT_FLAG):
+            return
+        frac = self.fraction()
+        if self.credits == 0 and frac and frac[0]:
+            os_.sound(MORE_COINS_SOUND)
+            os_.flag_clear(CREDIT_FLAG)
 
     def text(self):
         """FUN_000044a4: the credit text of the attract page and of deffs 10, 15 and 17."""

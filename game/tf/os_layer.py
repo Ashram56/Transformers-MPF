@@ -1272,6 +1272,7 @@ class TfOS(CustomCode):
         if self.credit_model.can_start():
             return True
         self.machine.events.post("tf_start_refused")    # event 0x2d
+        self.credit_model.start_refused()
         if not self.display.running(15):
             self.deff_start(15, credits=self.credit_model.text())
         return False

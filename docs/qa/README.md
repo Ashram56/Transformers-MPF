@@ -118,7 +118,33 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
   (0x02110250, 0-0x3f, 0x28 [0x00025fb0]) steps by one; BACK takes deff 2 away.
 - ~~V014~~ fixed 2026-11-26: in attract both flipper buttons start deff 14 [0x00026608]; one stops it.
 - V001 attract pages: asked agent A for the page table 0x00030d10 and a lift of each page with real state.
-- The low rows of the reports (list in progress).
+- Low rows fixed 2026-11-26:
+  - ~~CC6~~ knocker [0x00019378 / 0x00019420]: a queue served one at a time on event 0x21, coil 64 ms then
+    0x2e ticks, sound 0x19 (adj 35) then 0x1f ticks.
+  - ~~R-F6~~ deff 44 [0x0102de6c]: 0x05a at frame 25 when a multiplier is lit.
+  - ~~SC7~~ deff 77 [0x0100f3b4]: anim 0 retries 0x0f4 through task 0x95 [0x010069d4] (0x2e tries, each logged);
+    else task [0x0100f360] plays 0x0f5 after 0x8c ticks (0x4d for anim 3, which then chains 0x0f6).
+  - ~~SC11~~ event 0x19 (credit added) sets flag 0x12 [0x01005ebc] (the game set flag 47); event 0x2d
+    [0x01005f84] -> play_sound_045 [0x01005f00]: 0x045 when that flag is set, no credit and a partial credit.
+    0x267 with 5,000 and leff 149 [0x010019c8] has no caller (no BL, no literal, no PC-relative ADD in the game
+    code): dead code, nothing to play.
+  - ~~SC12~~ task 0x9b [0x01006138]: 0x24 only if it does not play; at sample 0x28f's script cue (op 0x0d,
+    snd_op_set_8c [0x000245a8], 26.19 s) voice 0 fades (1 step per 2 ticks to 0x100, start 0 inferred) and the
+    sample stops at its end.
+  - ~~SC13~~ service beeps: BACK 0x009, MINUS 0x00a, PLUS 0x00b, SELECT 0x00c (0x0000ecfc-0x0000ed2c), reset
+    done 0x00d (0x0000ed3c) [0x0103f960] [0x0104196c].
+  - ~~SC15~~ music entry 0 [0x010068e4]: battle music whenever the battle can progress, validation not needed.
+  - ~~SC17~~ deff_126_0_more_sub [0x01006ae0] (os_layer.speech_once): 0x265 at deff 126 frame 15 (flag 0x30,
+    else 0x264) [0x0102eaec], 0x25f from Energon task 0x97 (flag 0x47) [0x01030984]; at most twice a game, not
+    while task 0x96 runs, in a multiball or on the last ball; the flag only when the sample started (snd_play's
+    return, [0x01006b5c]).
+  - ~~SC18~~ deff 140 [0x0100b7f0]: the side's lock call plays its samples in order (per-player count,
+    snd_play2 [0x00025250]), the third lock chains the call's last sample (snd_play_after [0x00025284]).
+  - ~~CC4~~ Megatron release [0x0100a3b8 case 3]: coil 3 one tick after each ball's 0x13d, 25 ticks per ball.
+  - ~~CC5~~ lock entry [0x0100a3b8 case 2]: up to 3 coil-3 nudges of 4 ms, 0x5d ticks apart, while the jam
+    switch 42 is closed or the device count moves.
+  - ~~V014~~, ~~V002~~: above.
+  - Still open (in progress): the device, display, lamp and rules lows of the reports.
 
 ## Pass of 2026-11-25
 

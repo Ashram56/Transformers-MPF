@@ -47,6 +47,10 @@ VARIANTS = random.Random()
 ORDER = 38
 AUTOBOT, DECEPTICON = 1, 2
 SWITCHES = ("s_m_tron_lock_1_back", "s_megatron_lock_2", "s_megatron_lock_3", "s_megatron_lock_4")
+# [0x0100a3b8 case 2], a ball entered in play (state & 0x316 == 0): while the jam switch 42 is closed or the count
+# of the device's switches (list 0x000313ac: 42, 41, 40, 39, 38) differs from the first, up to 3 pulses of coil 3
+# for 4 ms, 0x5d ticks apart
+JAM_SWITCH, NUDGE_MS, NUDGE_TICKS, NUDGES = "s_megatron_jam", 4, 0x5d, 3
 SWITCH_NUMS = (41, 40, 39, 38)
 RELEASE_EVENT = "tf_megatron_release"
 # shot tables {mask bit, lamp group} [0x040c63e4 A, 0x040c65dc D]: the orange arrows, Megatron, Optimus (D)
@@ -81,7 +85,9 @@ KICK_ONE_COIL = 0.61
 # multiball release (megatron_decepticon.jsonl 35.86-37.19 s): per ball its media and coil offsets
 RELEASE = (((0.0, 0x13b, 23), (0.016, 0x13c, 24), (0.017, 0x13d, 25)), ((0.242, 0x13b, None), (0.419, 0x13d, 25),
            (0.500, 0x13c, 24)), ((0.820, 0x13d, 25),), ((1.221, 0x13d, 25),))
-RELEASE_COILS = (0.13, 0.61, 0.93, 1.33)
+# [0x0100a3b8 case 3] with task 0x57: per ball 0x13d, leff 25, coil_pulse_now_wait(3, 64 ms), task_sleep(0x14):
+# the coil one tick after the ball's 0x13d, 25 ticks per ball (the 0x13d offsets above)
+RELEASE_COILS = (0.017 + 0.016, 0.419 + 0.016, 0.820 + 0.016, 1.221 + 0.016)
 EJECT_OVER_TICKS = 66       # a kick's eject is over (the multiball end that waited for it: optimus_autobot.jsonl
                             # kick 72.45 s, end 73.53 s; inferred as the device's eject check)
 RELEASE_AFTER_INTRO = 0.07
@@ -544,8 +550,26 @@ class Megatron(Feature):
         if os_.in_play:
             os_.playfield_switch(38)
         self.pending += 1
+        if os_.in_play and not os_.tilted and self._jam():
+            self._nudge(0, self._jam_count())
         back_door = os_.now - self.back_door_at < BACK_DOOR_S
         os_.after(SETTLE_TICKS, lambda: self._handle(back_door))
+
+    def _jam(self):
+        return JAM_SWITCH in self.machine.switches and bool(self.machine.switches[JAM_SWITCH].state)
+
+    def _jam_count(self):
+        return self._count() + int(self._jam())
+
+    def _nudge(self, n, first):
+        """[0x0100a3b8 case 2]: coil 3 for 4 ms while jammed or moving, at most 3 times, 0x5d ticks apart."""
+        if n >= NUDGES or not (self._jam() or self._jam_count() != first) or not self.os.game:
+            return
+        coil = self.machine.coils.get("c_megatron_lockup") if hasattr(self.machine.coils, "get") else None
+        if coil is not None:
+            coil.pulse(NUDGE_MS)
+        self.os.lamps.coil_log(3, NUDGE_MS)
+        self.os.after(NUDGE_TICKS, lambda: self._nudge(n + 1, first))
 
     def _keep_check(self, **kwargs):
         """[0x0100a1f8]: the device keeps no ball while a multiball (any_multiball_running 0x01006704) or the
