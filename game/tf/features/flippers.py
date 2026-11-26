@@ -46,6 +46,10 @@ class Flippers(Feature):
                 os_.after(PRESS_TICKS, lambda: os_.deff_start(14))
             else:
                 os_.after(PRESS_TICKS, lambda: os_.deff_stop(14))
+            walker = getattr(os_, "attract_walker", None)
+            if walker is not None and os_.display.running(1):
+                # deff_001 [0x0103c584]: the right flipper (bit 2) ends the page, the left (bit 1) goes back one
+                os_.after(1, walker.next if audit == 0x2d else walker.back)
             return
         flippers_live = not os_.state & 0x205            # flippers off while tilted and at end of ball
         # one switch scan handles the right button before the left one

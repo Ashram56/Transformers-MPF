@@ -3,8 +3,10 @@
 Started at power-up and after every game (OS event 0x08, attract_start [0x00000a84]): deff 1 and leff 1. On tf_180 both
 are in the deff and leff tables with Tron's priorities and flags (deff 1: priority 1, background; leff 1:
 priority 1); what leff 1 draws (game code 0x01009e78) comes with the ROM extraction's lamp effects, and the
-attract pages with its display effects. Tron's attract timings (power-up to deff 1: 0.992 s) are kept.
+attract pages with its display effects (tf/attract_pages.py: the page table 0x00030d10 walked as deff 1 does,
+each page drawn from its op list with live texts). Tron's attract timings (power-up to deff 1: 0.992 s) are kept.
 """
+from tf.attract_pages import Walker
 from tf.features import Feature
 
 ORDER = 6
@@ -20,6 +22,7 @@ class Attract(Feature):
         self.machine.events.add_handler("init_phase_5", self._power_up)
         self.machine.events.add_handler("game_starting", self.stop)
         self._handle = None
+        os_.attract_walker = self.walker = Walker(os_)
 
     def _power_up(self, **kwargs):
         self._handle = self.machine.clock.schedule_once(lambda: self.start(), BOOT_SECONDS)
@@ -28,6 +31,7 @@ class Attract(Feature):
         if self._handle:
             self.machine.clock.unschedule(self._handle)
             self._handle = None
+        self.walker.stop()
         if self.os.leffs.is_running(1):
             self.os.leff_stop(1)
 
@@ -42,6 +46,7 @@ class Attract(Feature):
         self._show()
 
     def _show(self):
+        self.walker.start(self.machine.clock.get_time())   # deff_001_game_over [0x0103c584]: entry 0, pass 1
         self.os.deff_start(1)
         self.os.leff_start(1, loop=True)
 

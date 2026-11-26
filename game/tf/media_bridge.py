@@ -77,7 +77,8 @@ def format_values(sources, values):
 CREDIT_LINE_DEFFS = (10, 15, 17)    # deff_017_insert_coins [0x01000000] (scripts/gen_media.py credit_slots)
 
 # Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
-DRAWN = (19,)
+DRAWN = (19, 1)      # the score display and the attract pages (tf/attract_pages.py)
+DRAWN_SLIDES = {19: "rom_screen", 1: "attract_pages"}
 
 
 class MediaBridge:
@@ -108,7 +109,7 @@ class MediaBridge:
         self.kept = None                           # the last one, stopped but left up until the next plays
         self.drawn = set()                         # deffs shown by deff_draw (rom_screen) in place of their frames
         self.drawn_since = {}                      # deff in DRAWN -> when it started
-        self.drawn_last = None
+        self.drawn_last = {}
         self._drawn_timer = None
 
     # ------------------------------------------------------------------ transport
@@ -192,8 +193,8 @@ class MediaBridge:
         if deff_id in DRAWN:                             # drawn live from its draw calls
             self.drawn.add(deff_id)
             self.drawn_since[deff_id] = self.machine.clock.get_time()
-            self.drawn_last = self.drawn_screen(deff_id)
-            self.text_show("rom_screen", [], priority, draw=self.drawn_last)
+            self.drawn_last[deff_id] = self.drawn_screen(deff_id)
+            self.text_show(DRAWN_SLIDES[deff_id], [], priority, draw=self.drawn_last[deff_id])
             if self._drawn_timer is None and self.connected(need_data=False):
                 self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, TICK)   # blink, fade
             return
@@ -232,7 +233,7 @@ class MediaBridge:
             if self._drawn_timer is not None and not self.drawn & set(DRAWN):
                 self.machine.clock.unschedule(self._drawn_timer)
                 self._drawn_timer = None
-            self._remove("rom_screen")
+            self._remove(DRAWN_SLIDES.get(deff_id, "rom_screen"))
         elif info:
             self._remove(self.slides.pop(deff_id, info["slide"]))
 
@@ -255,8 +256,16 @@ class MediaBridge:
                 "state": getattr(self.os, "state", 0), "valid": getattr(self.os, "pf_valid", False)}
 
     def drawn_screen(self, deff_id):
-        """The screen of a deff in DRAWN (tf/score_screen.py): the score display."""
+        """The screen of a deff in DRAWN: the score display (tf/score_screen.py), the attract pages
+        (tf/attract_pages.py, with the status panel in attract state: the last game's scores)."""
         from tf import score_screen
+        if deff_id == 1:
+            from tf import attract_pages
+            walker = getattr(self.os, "attract_walker", None)
+            if walker is None:
+                return []
+            panel = score_screen.panel_draw(list(getattr(self.os, "last_scores", []) or []), 0, state=0x10)
+            return attract_pages.screen(self.os, walker.entry, walker.tick(self.machine.clock.get_time()), panel)
         game = self.os.game
         ball = game.player.ball if game and game.player else 1
         ticks = int((self.machine.clock.get_time() - self.drawn_since.get(deff_id, 0)) / TICK)
@@ -330,9 +339,10 @@ class MediaBridge:
         for deff_id in DRAWN:
             if deff_id in self.drawn:
                 draw = self.drawn_screen(deff_id)
-                if draw != self.drawn_last:
-                    self.drawn_last = draw
-                    self._send("slides_play", {"rom_screen": {"action": "update", "key": "rom_screen",
+                if draw != self.drawn_last.get(deff_id):
+                    self.drawn_last[deff_id] = draw
+                    slide = DRAWN_SLIDES[deff_id]
+                    self._send("slides_play", {slide: {"action": "update", "key": slide,
                                                               "expire": None}}, need_data=False, draw=draw)
 
     def score_changed(self, *_):

@@ -253,6 +253,7 @@ class TfOS(CustomCode):
         self.trace = Trace(self.machine)
         self.tasks = {}
         self.flags = set()
+        self.last_scores = []        # the last game's scores (0x02110900 players, 0x021109e4 scores): attract panel
         self.speech_once_count = 0
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
@@ -2080,6 +2081,7 @@ class TfOS(CustomCode):
             self.audit(self.audits.score_range_counter(player.score))
         self.audits.add_extra("game_seconds", self.game_seconds)
         self.audits.add_extra("score_total", sum(p.score for p in players))
+        self.last_scores = [p.score for p in players]
         self.audits.add_extra("score_count", len(players))   # [0x0001ce58] counts each player (QA D-AUD-47)
         self._replay_statistics(len(players))
         self.hook("game_over")

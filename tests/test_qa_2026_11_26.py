@@ -91,6 +91,38 @@ class TestConversionGame(TfTestCase):
         self.assertEqual(before, after)
 
 
+class TestAttractPages(TfTestCase):
+    def test_attract_walk(self):
+        """deff 1 [0x0103c584] walks table 0x00030d10: pass 1 at factory settings starts GAME OVER (tick 0),
+        CREDITS (127), REPLAY AT (254), the ten high scores (381-1524), the combo champions, the logo (1905), the
+        animation (2139), LEARN MORE (2401); pass 2 skips GAME OVER (rom/rules/modes/attract.md, QA V001)."""
+        from tf import attract_pages, rom_draw as rd
+        import json
+        factory = json.load(open(os.path.join(ROOT, "rom/rom_data/dmd/attract_pages.json")))["schedule_factory"]
+        w = self.tf.attract_walker
+        seen = []
+        w.start(0.0)
+        t = 0
+        for _ in range(len(factory)):
+            seen.append({"t": t, "entry": w.entry})
+            t += attract_pages.length(w.entry) + 1
+            w.started = t * 0.016
+            w.next()
+        self.assertEqual([(e["t"], e["entry"]) for e in factory][:len(seen)],
+                         [(e["t"], e["entry"]) for e in seen][:len(factory)])
+        self.assertGreaterEqual(w.passes, 2)
+        self.assertNotEqual(seen[-1]["entry"], 0)
+        panel = []
+        self.assertIn("GAME OVER", rd.lines_of(attract_pages.screen(self.tf, 0, 10, panel)))
+        lines = rd.lines_of(attract_pages.screen(self.tf, 6, 10, panel))
+        self.assertEqual(["AUTOBOT", "GRAND CHAMPION", "OPT", "75,000,000"], lines)
+        hs = self.tf.features_by_name["high_scores"]
+        hs.entries[5] = {"name": "VIN", "score": 123456780}
+        self.assertEqual(["AUTOBOT", "GRAND CHAMPION", "VIN", "123,456,780"],
+                         rd.lines_of(attract_pages.screen(self.tf, 6, 10, panel)))
+        self.assertIn(self.tf.media.credits_text(), rd.lines_of(attract_pages.screen(self.tf, 1, 10, panel)))
+
+
 class TestMediumFixes(TfTestCase):
     def start(self):
         self.fill_trough()
