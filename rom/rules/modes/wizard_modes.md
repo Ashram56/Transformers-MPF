@@ -19,8 +19,16 @@ The game keeps 11 **wizard requirements** per player: Megatron multiball, the 4 
 multiball, the 4 Autobot battles, and the side mode below. Each is "collected" when started and "completed" when
 won (battle completed, multiball super jackpot). Starting 5 of them lights an extra ball.
 The qualify lamps are lamp rules 76 (0x4c) and 77 (0x4d) on the layers 0x34e44 / 0x34e58, registered with the
-condition `zuse_qualify_enabled` [0x01011ed4]: both sides, not Autobot only (QA M8; the earlier reading came from
-an Autobot-side trace).
+condition `zuse_qualify_enabled` [0x0100ff80] (registered by 0x01011ed4): no multiball, no timed mode, game flag
+0x3d clear (`test_flag_3d_ff58` [0x0100ff58]) and the side's five requirements completed (`zuse_qualify_enabled_35db4`
+[0x01035db4]: byte 1 of 0x0211210c + 16 r + 4 (p-1) set for r = 0-4 on side 2 Decepticon, r = 5-9 on side 1
+Autobot). The side only picks the range: both sides, not Autobot only (QA M8, code). A rule leff is started or
+killed only when the rules are evaluated (`rule_leff_record_eval_177b4` [0x000177b4]), which happens on the tick
+after some code asked for it (`set_dat_000315fc` [0x00017650], 112 call sites; `rules_eval_if_requested_17664`
+[0x00017664]); an NVRAM poke asks for nothing. Run in ROM code (the scenarios wizard_all_hail_megatron and
+wizard_multiball stopped after their pokes) the condition is true on both sides, and neither run starts 76 / 77
+before the next request; the Autobot trace shows them because something in the emulator asked for an evaluation in
+that second, not because of the side.
 - Completing your own side's five (Decepticon: Megatron multiball + Starscream, Shockwave, Blackout, Devastator;
   Autobot: Optimus multiball + Bumblebee, Ironhide, Mudflap & Skids, Ratchet) makes the **Allspark** (left eject)
   start **All Hail Megatron** (Decepticon) / **Autobots Roll Out** (Autobot): a single-ball mode, 1,000,000 to
