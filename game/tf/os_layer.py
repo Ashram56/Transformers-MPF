@@ -804,6 +804,20 @@ class TfOS(CustomCode):
                                                   for x in self._slots])
         return refused
 
+    def sound_retry(self, call, tries, in_deff=0):
+        """leaf_6a20 [0x01006a20] -> task 0x95 [0x010069d4]: snd_play(call) once a tick until it starts (a voice
+        is free, snd_start_sample [0x00024ae4]) or `tries` calls were made; every call is a snd_play."""
+        self.task_kill(0x95)
+
+        def step(left):
+            if self.sound_refused(call):
+                self.trace.log("sound", call="0x{:03x}".format(call), in_deff=in_deff)
+                if left > 1:
+                    self.task_start(0x95, 1, lambda: step(left - 1))
+                return
+            self.sound(call, in_deff=in_deff)
+        step(tries)
+
     def sound_stop(self, call):
         """FUN_000257b4(call): stop the sample a sound call plays (Tron: the arcade reel's roll)."""
         self.media.sound_stop(call)
@@ -1159,12 +1173,26 @@ class TfOS(CustomCode):
         return added
 
     def knock(self, forced=False):
-        """Knocker queue [0x00019378 / 0x00019420]: sound 0x019 unless adj 35 KNOCKER VOLUME is OFF (a forced
-        knock still sounds); with adj 44 Q24 OPTION = KNOCKER the Q24 output (coil 24) fires too."""
+        """Knocker queue: adj_q24_option [0x00019378] adds a knock to the count 0x000375d0; adj_knocker_volume
+        [0x00019420] (event 0x21, every tick) serves one when its wait 0x000375c8 is 0: with adj 44 Q24 OPTION =
+        KNOCKER the Q24 output (coil 24) for 64 ms (0x40) and a wait of 46 ticks (0x2e); sound 0x019 unless adj
+        35 KNOCKER VOLUME is OFF (a forced knock still sounds), and then a wait of 31 ticks (0x1f) (QA CC6)."""
+        self._knocks = getattr(self, "_knocks", []) + [forced]
+        if not self.task_running("knocker"):
+            self._knock_serve()
+
+    def _knock_serve(self):
+        if not getattr(self, "_knocks", None):
+            return
+        forced = self._knocks.pop(0)
+        wait = 0
         if self.adj_value(44) == 2:
             self.machine.coils["c_optional_coil"].pulse()
+            wait = 0x2e
         if self.adj_value(35) or forced:
             self.sound(0x019)
+            wait = 0x1f
+        self.task_start("knocker", max(wait, 1), self._knock_serve)
 
     def _score_flush(self):
         pending, self._score_pending = self._score_pending, {}

@@ -1,7 +1,8 @@
 """Flipper buttons in play: flipper audits and INSTANT INFO (OS code, game_flow.md; not a rules mode).
 
 - FUN_00026608: each flipper button press while the flippers are live counts audit 0x2c LEFT / 0x2d
-  RIGHT FLIPPER USED and stops the score refresh deff 14 (the ROM sees the right button first when both
+  RIGHT FLIPPER USED; with the other button held in attract it starts deff 14 (the last scores), else it
+  stops deff 14 (the ROM sees the right button first when both
   close together).
 - FUN_0001914c (every tick): while a flipper button is held and gf_state & 0x211 is 0, a counter runs;
   at 93 ticks (0x5d, ball not scored yet) or 468 ticks (0x1d4, ball scored) deff 27 INSTANT INFO starts.
@@ -36,7 +37,15 @@ class Flippers(Feature):
         if os_.state & 0x40:                             # high-score entry owns the buttons
             return
         if not os_.game:
-            os_.after(PRESS_TICKS, lambda: os_.deff_stop(14))    # attract: the button also steps the pages
+            # start_deff_14_26608 [0x00026608]: with the other button held and the attract deff 1 up, deff 14
+            # (the last game's scores) starts; a press with the other button up stops it (the button also steps
+            # the attract pages, deff_001 [0x0103c584])
+            other = [n for n, a in BUTTONS if a != audit]
+            both = bool(other) and other[0] in self.machine.switches and self.machine.switches[other[0]].state
+            if both and os_.display.running(1):
+                os_.after(PRESS_TICKS, lambda: os_.deff_start(14))
+            else:
+                os_.after(PRESS_TICKS, lambda: os_.deff_stop(14))
             return
         flippers_live = not os_.state & 0x205            # flippers off while tilted and at end of ball
         # one switch scan handles the right button before the left one

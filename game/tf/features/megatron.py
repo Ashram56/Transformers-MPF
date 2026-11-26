@@ -90,6 +90,10 @@ RELEASE_AFTER_INTRO = 0.07
 UNCAPTURED = {79: (3.0, (74,), ((0.0, 0xf9), (0.58, 0xfa), (1.57, 0xfb))), 139: (2.0, (167,), ((0.0, 0x293),))}
 
 
+JACKPOT_DEFF, JACKPOT_RETRY_SOUND, JACKPOT_RETRY_TICKS = 77, 0x0f4, 0x2e     # [0x0100f3b4]
+JACKPOT_SPEECH, JACKPOT_SPEECH_AFTER = 0x0f5, 0x0f6                         # [0x0100f360]
+
+
 class Side:
     """Shared parts of the two multiballs."""
     flag = grace_flag = 0
@@ -142,7 +146,29 @@ class Side:
         os_.deff_start(deff, values=[points], **kwargs)
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
+        if deff == JACKPOT_DEFF:
+            self._jackpot_sounds(anim or 0)
         os_.request_refresh()
+
+    def _jackpot_sounds(self, anim):
+        """deff_077_jackpot [0x0100f3b4] (QA SC7): animation 0 retries 0x0f4 up to 0x2e ticks (task 0x95,
+        leaf_6a20); another starts task_sleep_user_f360 [0x0100f360]: after 0x8c ticks (0x4d for animation 3)
+        sample `anim` of 0x0f5 (0 past its count) and, for animation 3, 0x0f6 when it ends."""
+        os_ = self.os
+        os_.display.own_sounds.add((JACKPOT_DEFF, JACKPOT_RETRY_SOUND))
+        if not anim:
+            os_.after(1, lambda: os_.display.running(JACKPOT_DEFF)
+                      and os_.sound_retry(JACKPOT_RETRY_SOUND, JACKPOT_RETRY_TICKS, in_deff=JACKPOT_DEFF))
+            return
+        index = min(anim, 9)
+        if index >= len(os_.sample_lengths(JACKPOT_SPEECH)):
+            index = 0
+
+        def speak():
+            end = os_.sound(JACKPOT_SPEECH, in_deff=JACKPOT_DEFF, index=index)
+            if anim == 3 and end:
+                os_.sound_chain(JACKPOT_SPEECH_AFTER, end)
+        os_.after(0x4d if anim == 3 else 0x8c, speak)
 
     def multiball_end(self):
         os_ = self.os

@@ -391,7 +391,9 @@ class Optimus(Feature):
         return bool(self.os.game) and bool(self.pd.get("opt_battle")) and not self.mb_blocked()
 
     def base_music(self):
-        if self.battle_progress() and self.os.ball_validated:
+        """Music table entry 0 side_choice_running_user [0x010068e4]: 0x31 / 0x34 whenever the battle can
+        progress, before the playfield is valid too (QA SC15)."""
+        if self.battle_progress():
             return BATTLE_MUSIC[self.pd.get("side", DECEPTICON)]
         return None
 

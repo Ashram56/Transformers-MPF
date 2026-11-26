@@ -45,6 +45,7 @@ WINDOW_TICKS, GRACE_TICKS, STEP_TICKS = 312, 124, 7
 WINDOW_TASK = 0x92
 AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
+MULT_LIT_SPEECH, MULT_LIT_SPEECH_TICKS = 0x05a, 75     # [0x0102de6c] frame 0x19 x 3 ticks (QA R-F6)
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
 # deff 50 [0x01023c5c] (its capture has one frame and no length): sound 0x05b, then 0x05c at tick 120 for 2X (0x05d
 # for 3X), 169 ticks in all (op list deff_050.json, the ALLSPARK 2X run; switches.jsonl 133.93 s confirms: 0x05c
@@ -236,6 +237,9 @@ class Combos(Feature):
                 self._rove_start()
         if lanes or code:
             os_.deff_start(MULT_LIT_DEFF, values=[code, count])
+            if count:       # deff_044_multipliers [0x0102de6c]: frame 25 (3 ticks each) plays 0x05a when +0x34 != 0
+                os_.after(MULT_LIT_SPEECH_TICKS, lambda: os_.display.running(MULT_LIT_DEFF)
+                          and os_.sound(MULT_LIT_SPEECH, in_deff=MULT_LIT_DEFF))
         if code:
             os_.request_refresh()
         return code
