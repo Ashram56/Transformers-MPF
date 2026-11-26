@@ -133,7 +133,8 @@ multiplier goes to that shot **before** its mode shots and its combo award, whic
 - Use: the multiplier multiplies the combo award and the mode-progress shot award 0x01020074 for that shot.
 - Reset: every ball each shot goes back to 1X unless its hold flag (game flags 0x16-0x1b) is set; mult_lit
   cleared [0x01023418]. Tilt / ball end: 0x01023048 (event 0x65 / 0x1d).
-- deff 49 "%uX / MULTIPLIER(S) LIT" (leff 36) exists [0x01023b10]; its starter was not found.
+- deff 49 "%uX / MULTIPLIER(S) LIT" (leff 36) exists [0x01023b10] but is never started in 1.80 (code: nothing in the
+  image references it outside the deff table, `rules/deff_starters.csv`).
 
 ## 7. Bonus (end of ball) [0x01000ffc] [0x01000f38] [0x01000d58]
 **bonus = (670 × bonus_count + held_bonus) × bonus_mult**, added with playfield multiplier 1.
@@ -172,6 +173,9 @@ multiplier goes to that shot **before** its mode shots and its combo award, whic
 - `traces/scoring.txt` → `scoring.jsonl` t 36.45-46.72: both lane groups completed (Decepticon), bonus 2X.
 
 ## 11. Open questions
-- deff 48 / 49 never shown: starter not found (maybe a dead path in 1.80 or a status-panel-only display).
+- deff 48 / 49 are never shown in 1.80 (code): nothing in the image references them outside the deff table
+  (`rules/deff_starters.csv` lists every starter; these two have none).
 - Lane-change rotation direction and the shot multiplier collection were read from code, not traced.
-- The left orbit's own "came from the right" check, if any, was not decoded (sw6 always counted).
+- The left orbit has no "came from the right" check (code): `sw_left_orbit_top` [0x010332e4] only tests its own
+  switch timer 7; within 187 ticks (3.0 s) of the previous left orbit it restarts the timer and does nothing else
+  (`switch_handlers.csv` sw 6 repeat: 0 points), otherwise it starts the timer, leff 35 and the orbit gate.

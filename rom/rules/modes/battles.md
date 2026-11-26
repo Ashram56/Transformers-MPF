@@ -365,7 +365,9 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
   qualifying is allowed, registered in 0x010232d4) flashes the insert lamp of battle_lit (byte +0x1e of the
   record) every 4 ticks [leff_104 0x01023150].
 - Total task ids: Shockwave 0x81, Blackout 0x82, Devastator 0x83, Bumblebee 0x84, Ironhide 0x85, Mudflap 0x86,
-  Ratchet 0x87 [end fns]; Starscream's is created in 0x01017d40 (not decoded).
+  Ratchet 0x87 [end fns]; Starscream's is task 0x80: `mode_task_80_resume_17d40` [0x01017d40] creates it when
+  the game state has none of bits 0x310 and the total 0x3501c is not 0 (`task_create_unique_aaf8(0x80, 0x01017d30,
+  0x2002)`, +0x30 = the total), and it runs `deff_sequence_wait_664c(0x5f, 0xea6)`: deff 95 with the total (code).
 
 ## 8. Lamps
 - Mode-start arrows [0x01022854, lamp rule 0x0003515c]: for each of the 5 shots, if qualifying is allowed and the

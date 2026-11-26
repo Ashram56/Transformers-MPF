@@ -99,8 +99,11 @@ The switch descriptor's top byte (`flags_0x0c` in `rom_data/io/switches.csv`): *
 validates): 7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34; **0x10 = valid** (3 different needed): 1, 2, 4, 5, 6,
 13, 35, 37, 46, 49, 50. **Slingshots and pops also count as valid** (code: their handlers 0x01033104, 0x010331a4 and 0x01032f8c post
 event 0x6b, the valid-playfield hook; basic.jsonl confirms: sw26, sw27 then pop 30 validate, music 0x01f starts).
-Switches 3 and 38-42 (eject, lock, trough) carry dispatcher flag 0x1000; whether they validate is open (the
-earlier "do not count" was inferred). The skill-shot end count (obj 0x31400) counts slings and pops too (below). Code run = trace: one sling then drain → re-served for a manual
+Switches 3 and 38-42 (left eject, Megatron lock) have the top byte 0x1f: bit 0x10 is set, so they validate like
+the 0x10 switches (code): the descriptor's u16 at +0xe is the dispatcher's mask word, and `switch_dispatch_debounce`
+[0x0000dc44] posts event 0x6b (valid, hook 0x0000e230 -> `switch_timeout_obj_add`) for a switch with 0x1000 there and
+0x6c (force) for one with 0x2000, when the game state is 0 or shares a bit with that word [0x0000ddf8]. Each of these
+switches is one of the three different valid switches. The skill-shot end count (obj 0x31400) counts slings and pops too (below). Code run = trace: one sling then drain → re-served for a manual
 plunge, same player and ball, no bonus, no ball save (t 25.25 → 26.44 drain → 27.61 eject); sw7 or sw12
 alone validates (t 18.78, 30.57).
 

@@ -33,7 +33,7 @@ None for the Energon targets themselves [0x010309a4].
 | allspark_lit | 0x02111f50 + (p-1) (written as 0x02111f4f + p) | 1 | per player | 0 at game start [0x01023fc8]; +1 per Energon set [0x0102402c]; -1 per collection [0x010243b4] | banked Allspark awards (they stack) |
 | allspark_last_award | 0x02111f48 + 2*(p-1) | 2 | per player | 0 at game start [0x01023fc8] | item number (1-12) of the last mystery award; that item gets weight 0 next time (no repeat) [0x01024808] |
 | allspark_comp_step | 0x02111f44 + (p-1) | 1 | per player | 9 at game start [0x01023fc8] | competition sequence step: before an award, 0 becomes 10; after it, -1 [0x010243b4] |
-| (task 0xb0) | – | – | 10 ticks | started after a completed set [0x010309a4 `FUN_0000abe8(0xb0,10,0)`] | for 10 ticks (162 ms) Energon hits do nothing (inferred: debounce of a ball rattling between targets) |
+| (task 0xb0) | – | – | 10 ticks | started after a completed set [0x010309a4 `FUN_0000abe8(0xb0,10,0)`] | for 10 ticks (160 ms) Energon hits do nothing (code; the code gives no reason) |
 
 (verified in emulator: traces/allspark_energon.jsonl, vars energon_mask, energon_sets, allspark_lit, allspark_last)
 
@@ -95,7 +95,7 @@ Only if allspark_lit > 0:
 | 4 | %iX BONUS MULTIPLIER | 150 | last award | competition step 8 | bonus multiplier +1 [0x01000e44(1)] | MYSTERY: BONUS X |
 | 5 | ADD-A-BALL | 300 -> only offered during a multiball, and once | no multiball (0x01006760) or flag 0x14 set | always when offered (weight + 1000) | add one ball (0x0103aff4), set flag 0x14, notify Mudflap/Optimus/Megatron/wizard multiballs [0x01024a60] | MYSTERY: ADD-A-BALL |
 | 6 | ADD MORE TIME | 250 -> only during a timed mode, once per mode | no timed mode (0x010067bc) or flag 0x13 set | always when offered (+1000) | every running battle +15 s (cap 90 s), Bumblebee phase 1 value restored / phase 2 +5 s, double and fast scoring time; sets flag 0x13 [0x01024b14] | MYS. ADD MORE TIME |
-| 7 | POPS SCORE %,02lu | 150 | last award, or 0x0102c8a4 true (super pops running, inferred) | competition step 9 | pop bumper value up (0x0102c624) | MYSTERY: POPS GROW |
+| 7 | POPS SCORE %,02lu | 150 | last award, or 0x0102c8a4 true (game flag 0x4d: super pops lit, code) | competition step 9 | pop bumper value up (0x0102c624) | MYSTERY: POPS GROW |
 | 8 | BONUS HOLD | 100 | last award, or flag 0x4b set (already held) | competition step 7 | set flag 0x4b | MYSTERY: BONUS HOLD |
 | 9 | BONUS X HOLD | 100 | last award, or flag 0x4a set | competition step 6 | set flag 0x4a | MYSTERY: BONUS X HOLD |
 | 10 | SHOT MULTIPLER(S) LIT | 100 | last award, or 0x01023494 returns 0: only when a shot multiplier is already lit or the roving 3X runs (with all six at 2X it returns 3 and starts the roving 3X; QA P4) | competition step 5 | light shot multipliers (0x010236e8) | MYSTERY: SHOT MULTIP. LIT |
@@ -105,8 +105,11 @@ Only if allspark_lit > 0:
 Item table: ROM 0x040dde30, 0x18 bytes each {weight fn, award fn, weight store, name, u16 base weight at +0x10,
 u16 audit at +0x14} [0x0000bae8, 0x0000bc2c]. Weights are recomputed at every pick. The competition sequence
 (starting value 9, so the first award of a game is item 7): 7 POPS, 4 BONUS X, 8 BONUS HOLD, 9 BONUS X HOLD, 10
-SHOT MULT, 11 SUPER SPINNER, 12 SUPER POPS, 3 200,000, 2 EXTRA BALL, 1 SPECIAL, then again from 7 (inferred from
-the weight functions; Add-a-Ball and Add Time still force themselves in because they add 1000 too).
+SHOT MULT, 11 SUPER SPINNER, 12 SUPER POPS, 3 200,000, 2 EXTRA BALL, 1 SPECIAL, then again from 7 (code: in
+competition mode (`adj_competition_mode` [0x00017ea0]) each item's weight function adds 1000 to its base weight
+when the player's step 0x02111f44 + (p-1) is its own, before its other tests, e.g. BONUS HOLD [0x01024c68]: step 7
+-> 100 + 1000 even when flag 0x4b is set; only the last-award test [0x01024808] comes after. Add-a-Ball and Add
+Time still force themselves in because they add 1000 too, and win on their higher base weight).
 
 Trace (random draws, fed to the code run as inputs: `#! random 0000bae8 206 1004 206` in `traces/allspark_energon.txt`, `random_below(1006)` [0x0000bae8] picks the first item whose cumulative weight passes the draw, so 206 is item 4 and 1004 item 12; code run = trace on the three awards, `traces/code_runs.csv`, whose last mark still differs on the end-of-ball bonus after the drain, 405,150 from `start_deff_25` [0x00019e44] in the trace; factory settings, no multiball, no timed mode): 30.09 item 4 BONUS X; 48.02 item 12 SUPER POPS (then
 deff 149 "SUPER POP BUMPERS"); 60.79 item 4 again (traces/allspark_energon.jsonl).

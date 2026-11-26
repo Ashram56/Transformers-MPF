@@ -137,8 +137,7 @@ DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, All
 | Optimus sw 51 | phase 3 | super x the center lane's shot multiplier [0x01029bf4] (QA M4); opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
 Code run = trace (traces/optimus_decepticon.jsonl, `traces/code_runs.csv`): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
 J 150,000 (quirk, caller 0x01029e14); J/DJ pairs to 66.89; 69.06 super **2,850,000** (= 6 x 450,000 + the quirk
-jackpot). The quirk is probably there because the center lane and Optimus share one shot position (inferred);
-reproduce it or not by choice.
+jackpot). The quirk is the ROM's (code, caller 0x01029e14); the recreation reproduces it.
 
 ## 6. How it ends
 - Down to one ball: flag 0x1f / 0x22 cleared (the end task runs 218 ticks [0x01027f18]; add-a-ball can revive it then; 187 ticks is the
@@ -165,7 +164,10 @@ deff 64 + music 0x35; rows 0 and 17 give music 0x31 / 0x34 while the battle can 
 ## 8. Lamps
 Lamp groups (`rom_data/io/lamp_groups.json`): A 0x17-0x1d, D 0x1e-0x24 = the orange arrows (15 Allspark, 19 left
 orbit, 44 left ramp, 40 center, 34 right ramp, 39 right orbit) plus 29 CHALLENGE MEGATRON (A super) or 59 OPTIMUS
-PRIME CHALLENGE (D Optimus). Lit shots flash (inferred). Lamp 22 OPTIMUS PRIME shows the battle (inferred).
+PRIME CHALLENGE (D Optimus). Drawn by the rule leffs 46 [0x010285e8] (A, table 0x040c729c, lit mask opa_lit
+0x00035300) and 54 [0x0102a72c] (D, table 0x040c7400, opd_lit 0x00035378), 7 entries each (code): every 3 ticks it walks its table of (shot bit, lamp group), 12 bytes an entry: a shot in the lit mask is claimed (`lamp_group_86d4` on the layer mask) and drawn on and off in turn (`lamp_group_8664` / `lamp_group_84cc`, the phase flips every pass, starting on): **3 ticks on, 3 off** (96 ms period); a shot not lit is released (`lamp_group_853c`), so the lamp below it shows. No layer: retry every 6 ticks.
+Lamp 22 OPTIMUS PRIME is the character insert of requirement 5 (`lamp_layer_35ea8` [0x01035ea8], table
+0x040c7a14): off while never started, flashing once started (req byte 0), solid once completed (byte 1).
 
 ## 9. Interactions
 - The battle cannot progress during Megatron, Optimus, AHM or wizard multiballs; the access count also stops

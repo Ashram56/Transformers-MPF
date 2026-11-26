@@ -34,7 +34,7 @@ It ends when one ball is left; a "MEGATRON MULTIBALL TOTAL" screen follows.
 | 68 | MEGATRON M.B. LOCK DIFFICULTY | 0 (EASY) | 0-2 (EASY/MEDIUM/HARD) | starting lock level per player at game start [0x0100ada4]; see 4.1 |
 | 69 | MEGATRON M.B. VIRTUAL LOCK | NO | NO/YES (FRANCE: YES) | YES: the lock keeps no balls, every locked ball is kicked out again (locks are counted virtually) [0x0100a1f8] |
 | 88 | SAVE MEGATRON PROGRESS | YES | NO/YES | YES: Autobot multiball phase, lit shots, jackpot count and the "since last super" sum are kept per player into the next Megatron multiball [0x0100c200] |
-| 89 | AUTOFIRE AFTER LOCK | YES | NO/YES | a new ball is served and auto-launched (coil 2) after a lock (verified in emulator: megatron_decepticon.jsonl 17.14 lock -> 19.65 trough coil 1 -> 20.30 coil 2) (inferred: adj read not located) |
+| 89 | AUTOFIRE AFTER LOCK | YES | NO/YES | the serve after a lock (serve type 5) is auto-launched: the event 0xf hook on_event_0f_a074 [0x0100a074] sets the serve's auto-launch byte when adj 89 = YES (code; megatron_decepticon.jsonl 17.14 lock -> 19.65 trough coil 1 -> 20.30 coil 2 confirms) |
 Nothing else (values, counts, timers) is adjustable.
 
 ## 3. State
@@ -188,9 +188,15 @@ Megatron (`wizard_modes.md`), not to this multiball.
 ## 8. Lamps
 Shot inserts by lamp group (`rom_data/io/lamp_groups.json`): A uses groups 0x25-0x2b, D 0x2c-0x33: the orange arrow
 of each shot (15 Allspark, 19 left orbit, 44 left ramp, 40 center, 34 right ramp, 39 right orbit), 29 CHALLENGE
-MEGATRON for the lock and 59 OPTIMUS PRIME CHALLENGE for Optimus (D) [tables 0x040c63e4, 0x040c65dc]. Lit shot =
-flashing (inferred from the leff shapes; not captured lamp by lamp). Megatron inserts 27 / 57 / 58 show the lock
-(inferred).
+MEGATRON for the lock and 59 OPTIMUS PRIME CHALLENGE for Optimus (D) [tables 0x040c63e4, 0x040c65dc]. They are
+drawn by the rule leffs 62 [0x0100cf28] (A, lit mask mta_mask 0x00034da8, 7 entries) and 70 [0x0100ee54] (D,
+mtd_mask 0x00034e1c, 8 entries) (code): every 3 ticks it walks its table of (shot bit, lamp group), 12 bytes an entry: a shot in the lit mask is claimed (`lamp_group_86d4` on the layer mask) and drawn on and off in turn (`lamp_group_8664` / `lamp_group_84cc`, the phase flips every pass, starting on): **3 ticks on, 3 off** (96 ms period); a shot not lit is released (`lamp_group_853c`), so the lamp below it shows. No layer: retry every 6 ticks.
+The lock (code): the lamp rule `lamp_layer_b228` [0x0100b228] (registered by 0x0100bc0c, record 0x00034d3c, state
+mask 0x20): when `no_mode_and_flag_b0b8` [0x0100b0b8] (game flags 0x25, 0x29, 0x1f, 0x22, 0x3c, 0x3e all clear,
+and mtl_lit 0x02111d50 + (p-1) != 0), lamps 29 CHALLENGE MEGATRON, 57 MEGATRON (BOTTOM) and 58 MEGATRON (TOP) are
+on with their flash bit set (rule layer 0x00036374, flash mask 0x00036388: the compositor's 10-tick phase,
+`allspark_and_energon.md` 8); otherwise off and released. Lamp 27 MEGATRON is not the lock: it is the character
+insert of requirement 0 (`lamp_layer_35ea8` [0x01035ea8], `wizard_modes.md` 8).
 
 ## 9. Interactions
 - Blocks: lock lighting and locking while any Megatron/Optimus/AHM/wizard multiball runs [0x0100ae6c, 0x0100b0b8];
