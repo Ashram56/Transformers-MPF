@@ -14,7 +14,7 @@ multiball with the center lane's multiplier.
 Multiball: multiball_start(3 if no ball is in play else in play + 2, save 625, grace 187); adj 87 restores the
 saved phase / remaining / lit shots, NO resets them (and the super base); 250,000 x the center multiplier; flag 0x14
 cleared (no other multiball); flag 0x1f (A) / 0x22 (D), 0x49; audit 0x6c / 0x70; wizard requirement 5 collected; the
-intro (A deff 57 + leff 45, D deff 63 + leff 53) when the battle's speech ends (observed 1.32 s / 3.52 s), then
+intro (A deff 57 + leff 45, D deff 63 + leff 53) by show task 0x71 / 0x72 once the display is free, then
 the background (A deff 58 + music 0x32 + leff 46, D deff 64 + music 0x35 + leff 54).
 J = min(150,000 + 100,000 x supers, 500,000), DJ = min(2 J, 1,000,000), both x the shot's multiplier; super =
 max(1,000,000, [100, 100, 75, 50]% (by the multiballs since the last super) of the jackpots since then).
@@ -71,7 +71,7 @@ OPTIMUS_BIT = 0x40
 class Side:
     """Shared parts of the two Optimus multiballs."""
     key = ""
-    flag = intro = intro_leff = intro_delay = intro_task = bg = music = rule_leff = super_leff = 0
+    flag = intro = intro_leff = intro_task = bg = music = rule_leff = super_leff = 0
     start_audit = total_deff = total_leff = total_task = 0
     JP = DJ = SUPER = ()
 
@@ -136,7 +136,7 @@ class Side:
         self.put("since", self.get("since") + 1)
         os_.audit(self.start_audit)
         os_.hook("wizard_req", WIZARD_REQ, 1)
-        os_.after(round(self.intro_delay / TICK), self._intro)
+        self._intro()
 
     def _intro(self):
         os_ = self.os
@@ -147,8 +147,10 @@ class Side:
             self.shown = True
             os_.deff_media(self.intro, self.intro_leff)
             os_.request_refresh()
-        # the intro replaces a lower priority deff at once (deff 144 still speaking in optimus_autobot.jsonl)
-        os_.show(self.intro_task, self.intro, on_start=started, threshold=os_.display.prio.get(self.intro, 0))
+        # task 0x71 / 0x72 created at the multiball start [0x01027994] [0x01029a08]: deff_sequence_flippers_6480
+        # [0x01006480](57 / 63, 0xea6, 0x9f): waits while the deff priority is 0x9f or more (deff 144 0xa2 until
+        # its hold tail) and an older show task waits, at most 0xea6 ticks
+        os_.show(self.intro_task, self.intro, on_start=started)
 
     def award(self, points, media, anim=None, index=None):
         """anim: which of the deff's animations the ROM shows (the PuP map reads it); its length and sounds come
@@ -251,7 +253,7 @@ class Side:
 
 class Autobot(Side):
     key = "opa_"
-    flag, intro, intro_leff, intro_delay, intro_task = 0x1f, 57, 45, 1.32, 0x71
+    flag, intro, intro_leff, intro_task = 0x1f, 57, 45, 0x71
     bg, music, rule_leff, super_leff = 58, 0x32, 46, 47
     start_audit, total_deff, total_leff, total_task = 0x6c, 62, 51, 0x89
     JP = (59, 48, 0x7f, 0x6d)
@@ -297,7 +299,7 @@ class Autobot(Side):
 
 class Decepticon(Side):
     key = "opd_"
-    flag, intro, intro_leff, intro_delay, intro_task = 0x22, 63, 53, 3.52, 0x72   # task 0x72 [0x01029a08] (QA M14)
+    flag, intro, intro_leff, intro_task = 0x22, 63, 53, 0x72   # task 0x72 [0x01029a08] (QA M14)
     bg, music, rule_leff, super_leff = 64, 0x35, 54, 55
     start_audit, total_deff, total_leff, total_task = 0x70, 68, 59, 0x8a
     JP = (65, 56, 0xa5, 0x71)
