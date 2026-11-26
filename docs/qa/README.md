@@ -127,7 +127,8 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
   0xb [0x0000eeb0], with 0x01e in attract by on_event_62 [0x01006054]); with deff 2 up the volume
   (0x02110250, 0-0x3f, 0x28 [0x00025fb0]) steps by one; BACK takes deff 2 away.
 - ~~V014~~ fixed 2026-11-26: in attract both flipper buttons start deff 14 [0x00026608]; one stops it.
-- V001 attract pages: asked agent A for the page table 0x00030d10 and a lift of each page with real state.
+- ~~V001 attract pages~~ fixed 2026-11-26: deff_001_game_over [0x0103c584] walks the page table 0x00030d10 (39
+  entries); each page replays agent A's op list of its code run, its data texts re-read live (tf/attract_pages.py).
 - Low rows fixed 2026-11-26:
   - ~~CC6~~ knocker [0x00019378 / 0x00019420]: a queue served one at a time on event 0x21, coil 64 ms then
     0x2e ticks, sound 0x19 (adj 35) then 0x1f ticks.

@@ -442,3 +442,18 @@ class TestFinalPass(QaCase):
         self.assertEqual([375000], done)
         calls = self.sounds()
         self.assertLess(calls.index("0x076"), calls.index("0x079"))
+
+    def test_f063_help_does_nothing(self):
+        """DISPLAY HELP SCREEN's action [0x01045a74] is an empty function: SELECT leaves the menu (and its icons) up."""
+        self.advance_time_and_run(1)
+        for _ in range(2):
+            self.hit_and_release_switch("s_select")
+            self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode._open_menu("GAME-SPECIFIC TESTS", "MAIN MENU / GO TO DIAGNOSTICS MENU / GAME-SPECIFIC TESTS")
+        while mode.current()["kind"] != "help":
+            mode._move(1)
+        mode._select()
+        self.assertIsNone(mode.page)
+        self.assertEqual("DISPLAY HELP SCREEN", mode.current()["text"])
+        self.assertTrue(any("i" in d for d in mode.draw()))

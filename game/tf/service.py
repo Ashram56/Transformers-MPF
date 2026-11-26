@@ -22,7 +22,8 @@ Screens, as the walk shows them:
   lamp tests as theirs [0x01046f4c] [0x01046a98] [0x010492b8] [0x01048de4] (SingleCoilTest and its variants);
 - the lamp tests [0x0104a6c8] [0x01049cf4] [0x0104aeac] [0x0104a0d0] (LampTest below) and the knocker, trough,
   sound, dot matrix, active switch and Optimus motor tests (tf/service_tests.py) as theirs too;
-- every other screen (help, USB, the remaining pages) shows the texts the ROM drew for it in the walk.
+- DISPLAY HELP SCREEN does nothing: its action [0x01045a74] is an empty function in tf_180 (the menu stays);
+- every other screen (USB, the remaining pages) shows the texts the ROM drew for it in the walk.
 The menu items hidden at factory settings (service_menu.json shown_only_if: tournament, software errors) stay
 hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1), and INSTALL REDEMPTION SYSTEM too (0x0002840c:
 no redemption system installed). A menu draws its items' icons (menu_draw, [0x0103f47c]).
@@ -162,6 +163,8 @@ class ServiceMode(Mode):
         elif kind == "exit":
             self.stop()
             return
+        elif kind == "help":
+            pass                # DISPLAY HELP SCREEN: its action [0x01045a74] is an empty function (mov pc, lr) in tf_180
         else:
             self._open_page(item)
         self.show()
