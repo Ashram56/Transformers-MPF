@@ -49,6 +49,9 @@ class Bumblebee(Feature):
         self.count = 0
         os_.deff_rule(lambda: self.running, DS_BG_DEFF, music=DS_MUSIC, priority=0x58)   # QA V-ENG5 (os_layer deff_rule)
         os_.lamp_rule(lambda: self.running, leff=DS_BG_LEFF, order=0x010039a0)
+        # leff 151 while every BUMBLEBEE letter is lit (more than 8): rule current_player_user_18bc [0x010018bc]
+        # (0x02111cf4 + (p-1) > 8, registered by [0x010026cc], mask 0x20) (QA L-151)
+        os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("bb_letters", 0) > 8, leff=151, order=0x010018bc)
         os_.deff_live((DS_BG_DEFF, DS_DEFF), lambda: {"values": [self.count]})
 
     def player_first_ball(self):

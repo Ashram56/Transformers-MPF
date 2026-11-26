@@ -28,6 +28,7 @@ FAST_SOUND = 0x15d
 DEFF = 46
 LEFF = 26
 OWN_LEFF = {30: 27, 31: 28, 32: 29}
+OWN_LAMP = {27: 60, 28: 61, 29: 62}     # table 0x040c74d2 (stride 8): leff, then its lamp at +2
 KEEP_BASE = 0x40
 SUPER_TASK, SUPER_LIT_DEFF, SUPER_DEFF, SUPER_DONE_DEFF = 0x64, 149, 150, 151
 SUPER_SOUND, SUPER_LEFF, SUPER_AUDIT = 0x163, 33, 0x9d
@@ -43,7 +44,26 @@ class Pops(Feature):
         self.total = 0
         self.super_total = 0
         os_.deff_live((DEFF,), lambda: {"values": [self.total]})
+        for leff, lamp in OWN_LAMP.items():
+            os_.lamps.leff_code(leff, self._bumper_blink(lamp))
         os_.deff_live((SUPER_DEFF,), lambda: {"values": [self.pd.get("super_pop_left", 0), self.super_total]})
+
+    @staticmethod
+    def _bumper_blink(lamp):
+        """leff_029 [0x0102d138] (leffs 27-29, lamp from table 0x040c74d4 put in the task at +0x30 [0x0102ca98]):
+        the bumper lamp toggled 4 times, 3 ticks apart (0x000078dc), then held 6 ticks on the second brightness
+        plane (0x000077a0 plane 2, drawn on), then the leff ends and the lamp is released (QA L-I60-62)."""
+        def step(task, n=0):
+            if n < 4:
+                task.toggle(lamp)
+                task.sleep(3, lambda t: step(t, n + 1))
+            elif n == 4:
+                task.set(lamp, True)
+                task.sleep(6, lambda t: step(t, 5))
+            else:
+                task.release(lamp)
+                task.end()
+        return step
 
     def player_first_ball(self):
         self.pd.super_pop_count = 0

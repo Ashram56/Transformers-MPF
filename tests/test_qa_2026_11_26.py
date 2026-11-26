@@ -142,3 +142,15 @@ class TestMediumFixes(TfTestCase):
         self.assertTrue(lamps.lamp_test(22) and not lamps.lamp_flashing(22))
         self.assertFalse(lamps.lamp_test(28))
         self.assertEqual(wizard.REQ_LAMPS[1:5], (7, 6, 5, 4))
+
+    def test_bumper_lamps(self):
+        """leff_029 [0x0102d138]: a pop's own leff blinks its bumper lamp 60 / 61 / 62 (QA L-I60-62)."""
+        from tf.switches import SW
+        self.start()
+        seen = set()
+        self.hit_and_release_switch(SW[30])
+        for _ in range(10):
+            self.advance_time_and_run(0.016)
+            if self.tf.lamps.lights.get(60) and self.tf.lamps.lights[60].stack:
+                seen.add(60)
+        self.assertIn(60, seen)

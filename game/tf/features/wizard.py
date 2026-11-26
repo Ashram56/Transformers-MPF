@@ -106,6 +106,11 @@ class Wizard(Feature):
             os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("side") == AUTOBOT and self.side_qualifies(),
                           leff=leff, order=0x0100ff80 + i)
         os_.lamp_update(self.draw, priority=1)
+        # leffs 84 and 85 while every requirement is completed, no multiball runs and flag 0x3c is clear: rule
+        # items_all_collected_user [0x010363b4] (items_all_collected [0x01035d50]) (QA L-084, L-085)
+        for i, leff in enumerate((84, 85)):
+            os_.lamp_rule(lambda: bool(os_.game) and self.all_done() and not os_.any_multiball() and not os_.flag(0x3c),
+                          leff=leff, order=0x010363b4 + i)
         for r in range(REQS):
             os_.register_poke(0x0211210c + 16 * r, self._poke_req(r), stride=4)
         os_.register_poke(0x34eb4, self._poke_side_count, players=6, stride=4)

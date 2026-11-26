@@ -231,10 +231,10 @@ def shot_blink(rows, mask_fn, blink=3):
 
 
 # coilgroup_pulse groups of the super-lit leffs: tf_180 coil group table 0x040cf65c (group -> ROM coil numbers)
-COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25)}
+COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25), 36: (32,), 44: (19,)}
 # leff -> coil group (rom/rom_data/io/lamp_effects.csv coil_group): leff_047 [0x010286f8], leff_055 [0x0102a83c],
 # leff_063 [0x0100d038], leff_071 [0x0100ef64]
-SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31}
+SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31, 85: 36}   # + leff_085 [0x0103692c] (QA L-085)
 
 
 def flasher_group_pulse(group, every=8, time=0x20):
@@ -250,6 +250,30 @@ def flasher_group_pulse(group, every=8, time=0x20):
                 if num in names:
                     lamps.flasher(names[num], time, owner=task.leff_id)
         task.sleep(every, run)
+    return run
+
+
+# leff_154 [0x010327bc]: coil_pulse_fn_user_6044(group, 0x96, pattern) through table 0x040c7680 (14 patterns), 4 ticks
+# apart, a brightness ramp up and down
+RAMP_PATTERNS = (0x80008000, 0x80808080, 0x88808880, 0x88888888, 0xa888a888, 0xa8a8a8a8, 0xaaa8aaa8, 0xaaaaaaaa,
+                 0xaaa8aaa8, 0xa8a8a8a8, 0xa888a888, 0x88888888, 0x88808880, 0x80808080)
+
+
+def flasher_group_ramp(group, time=0x96, every=4):
+    """leff_154 [0x010327bc] (super spinner lit): forever, while the playfield is valid and ball search does not run
+    (else wait 4 ticks), pulse the group with each of the 14 patterns of 0x040c7680, 4 ticks apart. The pattern's
+    duty is MPF's pulse_power. -> fn(LeffTask)."""
+    def run(task, i=0):
+        lamps = task.lamps
+        os_ = lamps.os
+        if i == 0 and not (os_.pf_valid and not os_.task_running(0x2b)):
+            return task.sleep(every, run)
+        names = {num: name for name, num in lamps.coil_numbers.items()}
+        power = bin(RAMP_PATTERNS[i]).count("1") / 32
+        for num in COIL_GROUPS[group]:
+            if num in names:
+                lamps.flasher(names[num], time, owner=task.leff_id, power=power)
+        task.sleep(every, lambda t: run(t, (i + 1) % len(RAMP_PATTERNS)))
     return run
 
 
@@ -516,18 +540,19 @@ class Lamps:
         if light is not None:
             light.color(value.lstrip("#"), key=MPF_KEY)
 
-    def flasher(self, name, ms=30, owner=None):
+    def flasher(self, name, ms=30, owner=None, power=None):
         """coil_pulse(coil, time) for a flasher: pulse the MPF coil, log coil on/off like the ROM traces.
         owner: the leff pulsing it. While a running leff with a higher priority uses the same flasher,
         a lower leff's pulses do not reach it (the ROM's flasher ownership: traces/portal_multiball.jsonl
-        35.4 s, the disc flashers of leff 167 stop while leff 169 runs)."""
+        35.4 s, the disc flashers of leff 167 stop while leff 169 runs). power: the duty of a patterned pulse
+        (coil_pulse_fn's 32-bit on/off pattern, bits set / 32) as MPF's pulse_power."""
         if owner is not None and self.os.leffs.flasher_outranked(owner, name):
             return
         coil = getattr(self.machine, "coils", {}).get(name)
         num = self.coil_numbers.get(name)
         if coil is not None:
             try:
-                coil.pulse(int(ms))
+                coil.pulse(int(ms), pulse_power=power) if power is not None else coil.pulse(int(ms))
             except Exception:       # noqa: BLE001 (a disabled driver in a test machine)
                 pass
         if num is not None:
