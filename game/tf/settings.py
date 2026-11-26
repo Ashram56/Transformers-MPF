@@ -145,6 +145,7 @@ class Audits:
         data = self.store.get_data() or {}
         self.counts = {int(k): int(v) for k, v in (data.get("counters") or {}).items()}
         self.extra = {k: float(v) for k, v in (data.get("extra") or {}).items()}
+        self.money = None       # units -> money text of the current pricing (Credits.money, set by the OS)
 
     def save(self):
         self.store.save_all(data={"counters": dict(self.counts), "extra": dict(self.extra)})
@@ -181,7 +182,7 @@ class Audits:
             3: lambda: int(self.extra.get("ball_seconds", 0) // self[8]) if self[8] else 0,   # AVERAGE BALL TIME
             4: lambda: int(self.extra.get("game_seconds", 0) // plays) if plays else 0,       # AVERAGE GAME TIME
             10: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)),             # TOTAL COINS [FUN_00026e10]
-            11: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)) * 25,        # TOTAL EARNINGS, cents (inferred)
+            11: lambda: self[7],                                           # TOTAL EARNINGS: units counter 7 [0x00026e7c]
             13: lambda: 0,                                                 # SOFTWARE METER: returns 0 [0x0002af18] (QA D-AUD-13)
             16: lambda: pct(self[9], self[17]),                            # EXTRA BALL PERCENTAGE [0x00026c48]
             21: lambda: replays,                                           # TOTAL REPLAYS
@@ -204,8 +205,8 @@ class Audits:
         name = self.info[number]["name"]
         if "PERCENT" in name and self.info[number]["computed"]:
             return "{}%".format(v)
-        if number == 11:
-            return "${}.{:02d}".format(v // 100, v % 100)
+        if number == 11 and self.money:
+            return self.money(v)                    # units as money of the current pricing [0x00026f74] (QA D-AUD-11)
         if number in (3, 4):
             return "{}:{:02d}".format(v // 60, v % 60)
         return "{:,}".format(v)

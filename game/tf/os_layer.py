@@ -288,6 +288,7 @@ class TfOS(CustomCode):
         self.audits = Audits(self.machine)                     # ROM audit counters, persisted
         from tf.credits import Credits             # noqa: E402
         self.credit_model = Credits(self)                      # credits and pricing, persisted
+        self.audits.money = self.credit_model.money
         self._restart = False       # adj 36 GAME RESTART: the running game ends into a new one
         self._valid_at = None       # when the playfield was validated on this ball (play-time audits)
         self.game_seconds = 0.0     # validated play time of the running game

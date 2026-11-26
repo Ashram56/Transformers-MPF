@@ -101,6 +101,8 @@ def reference_inputs(name):
             key = ("drain", None)
         elif e.get("ev") == "button":
             key = ("button", e.get("button") or e.get("name"))
+        elif e.get("ev") == "end":
+            key = ("end", None)
         if key:
             out.setdefault(key, []).append(e["t"] - t0)
     return out
@@ -282,6 +284,7 @@ class ScenarioRun(TfTestCase):
                     self.command(["mark", line[5:].strip()])     # free text (may hold quotes)
                 elif line:
                     self.command(shlex.split(line))
+        self.sync(("end", None))     # run as long as the reference did: its last events are compared too
         self.log("end")
         trace.close()
         return out_path

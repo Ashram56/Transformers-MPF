@@ -76,7 +76,7 @@ def deff_holds():
     if os.path.isdir(folder):
         import json                         # noqa: PLC0415
         for name in sorted(os.listdir(folder)):
-            if not name.endswith(".json"):
+            if not name.endswith(".json") or "__" in name:     # a variant's own: deff_variant
                 continue
             with open(os.path.join(folder, name), encoding="utf-8") as f:
                 d = json.load(f)
@@ -97,7 +97,7 @@ def deff_drops():
     if os.path.isdir(folder):
         import json                         # noqa: PLC0415
         for name in sorted(os.listdir(folder)):
-            if name.endswith(".json"):
+            if name.endswith(".json") and "__" not in name:
                 with open(os.path.join(folder, name), encoding="utf-8") as f:
                     d = json.load(f)
                 prio = [o["t"] for o in d.get("ops", ()) if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
@@ -107,6 +107,36 @@ def deff_drops():
 
 
 HOLD_AT_BY_DEFF = deff_drops()
+_VARIANTS = {}
+VARIANT_TIMING = {}     # (deff, variant) -> (hold ticks, drop tick or None): the variant's own priority 0x20 ops
+
+
+def deff_variant(deff_id, name):
+    """A deff's run for one set of arguments, from the ROM extraction's op list
+    rom/rom_data/dmd/deff_ops/deff_NNN__<name>.json (the deff's code run with those arguments): its length
+    (end_tick), the sounds and lamp effects its code starts. None without that op list. Deff 94 picks its
+    animation by the shots left (+0x34, table 0x040c6a60 [0x010189a8]): shots1..8, and final on completion."""
+    key = (deff_id, name)
+    if key not in _VARIANTS:
+        path = os.path.join(ROM, "rom_data", "dmd", "deff_ops", "deff_%03d__%s.json" % (deff_id, name))
+        info = None
+        if name and os.path.exists(path):
+            import json                     # noqa: PLC0415
+            from tf.os_layer import TICK    # noqa: PLC0415
+            with open(path, encoding="utf-8") as f:
+                d = json.load(f)
+            info = media_table.DeffInfo(deff_id, "deff_%03d__%s" % (deff_id, name))
+            info.seconds = (d.get("end_tick") or 0) * TICK
+            ops = d.get("ops", ())
+            info.sounds = [(o["t"] * TICK, int(o["call"])) for o in ops if o.get("op") == "sound"]
+            info.leffs = [int(o["leff"]) for o in ops if o.get("op") == "leff" and not o.get("t")]
+            prio = [o["t"] for o in ops if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
+            end = d.get("end_tick")
+            if prio and end is not None:
+                early = [t for t in prio if end - t > HOLD_TICKS]
+                VARIANT_TIMING[key] = (end - prio[-1], early[0] if early else None)
+        _VARIANTS[key] = info
+    return _VARIANTS[key]
 # the drop's own condition: deff 140 drops only with adj 69 MEGATRON M.B. VIRTUAL LOCK = NO (adj_get(0x45) == 0
 # [0x0100b8f8]); the op lists were run at factory settings
 HOLD_AT_IF = {140: lambda os_: not os_.adj[69]}
@@ -168,13 +198,16 @@ class Display:
         # The true rule with the highest priority owns the background deff and the music; without one, the
         # score display (deff 19) runs with the OS base music (os.base_music()).
         self.rules = []
+        self.fg_info = None         # the running foreground deff's DeffInfo (its variant's, deff_variant)
         self.hold_tail = {}         # deff id -> seconds of its hold when not HOLD_TICKS (set_hold_tail)
         self.music = None           # music call the background rules last played
 
     # ------------------------------------------------------------------ start / stop
 
-    def start(self, deff_id, hold=False, refresh=True, run_seconds=None, sounds=None, media=False, **args):
+    def start(self, deff_id, hold=False, refresh=True, run_seconds=None, sounds=None, media=False, variant=None,
+              **args):
         """run_seconds: the run length when this call's variant differs from the recorded one.
+        variant: the op list of this call's arguments (deff_variant), which gives the length, sounds and leffs.
         media: a held deff still plays its own sounds and lamp effects (deff 4, which runs until stopped).
         sounds: [(offset s, fn)] the deff's own sound calls when the rules make them (snd_play2 with an
         argument, a counter), played instead of the capture's sounds once the deff gets the display."""
@@ -212,7 +245,8 @@ class Display:
         self.bg = None
         os_.machine.events.post("tf_deff_{}".format(deff_id), **args)
         os_.media.deff_start(deff_id, self.prio.get(deff_id, 0), **args)
-        info = self.media.get(deff_id)
+        info = deff_variant(deff_id, variant) or self.media.get(deff_id)
+        self.fg_info = info
         if info:
             seconds = run_seconds or info.seconds
             forced = os_.forced.get("deff_{}_seconds".format(deff_id))
@@ -226,10 +260,13 @@ class Display:
                 self.fg_handle = os_.machine.clock.schedule_once(lambda: self._ended(deff_id), seconds)
                 from tf.os_layer import TICK
                 hold_ticks = HOLD_TICKS_BY_DEFF.get(deff_id, HOLD_TICKS)
+                drop = HOLD_AT_BY_DEFF.get(deff_id)
+                if variant and (deff_id, variant) in VARIANT_TIMING:
+                    hold_ticks, drop = VARIANT_TIMING[(deff_id, variant)]
                 hold_at = seconds - self.hold_tail.get(deff_id, hold_ticks * TICK)
-                if deff_id in HOLD_AT_BY_DEFF and deff_id not in self.hold_tail \
+                if drop is not None and deff_id not in self.hold_tail \
                         and HOLD_AT_IF.get(deff_id, lambda o: True)(os_):
-                    hold_at = HOLD_AT_BY_DEFF[deff_id] * TICK     # a drop counted from the start (deff 140)
+                    hold_at = drop * TICK     # a drop counted from the start (deff 140; deff 83 animations 7, 8, 10)
                 self._sound_handles.append(os_.machine.clock.schedule_once(
                     lambda: self._hold(deff_id), max(0.0, hold_at)))
         if replaced is not None and self.show is replaced:
@@ -249,7 +286,7 @@ class Display:
         if self.fg != deff_id:
             return
         os_ = self.os
-        info = self.media[deff_id]
+        info = self.fg_info or self.media[deff_id]
         for leff in info.leffs:
             os_.leff_start(leff)
         if sounds is not None:
@@ -371,7 +408,8 @@ class Display:
         return deff_id in (self.fg, self.bg)
 
     def _end_fg(self, stopped=False, exit_handler=True):
-        info = self.media.get(self.fg) if self.fg is not None else None
+        info = (self.fg_info or self.media.get(self.fg)) if self.fg is not None else None
+        self.fg_info = None
         if info:
             for leff in info.leffs:                # the deff's exit handler stops its lamp effects
                 if self.os.leffs.is_running(leff):

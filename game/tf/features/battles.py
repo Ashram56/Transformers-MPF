@@ -33,6 +33,7 @@ Observed, not in the spec text:
 - deffs without a capture get their length, lamp effects and sounds from the traces (UNCAPTURED).
 """
 from tf.features import Feature
+from tf.display import deff_variant
 
 ORDER = 40
 AUTOBOT, DECEPTICON = 1, 2
@@ -281,6 +282,12 @@ class Battle:
         kwargs = {"run_seconds": self.completed_seconds} if completed else {}
         if left is not None:
             kwargs["left"] = left
+        # the hit deff's animation by the shots left (+0x34, at most 8) or the final one (+0x3c = 1): deff 94
+        # [0x010189a8] table 0x040c6a60; its op list gives the run's length and sounds (QA SC2)
+        variant = "final" if completed else "shots{}".format(min(left, 8)) if left else None
+        if deff_variant(self.hit_deff, variant):
+            kwargs.pop("run_seconds", None)
+            kwargs["variant"] = variant
         os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # PuP
         lengths = os_.sample_lengths(self.hit_sound)
         os_.sound(self.hit_sound, in_deff=self.hit_deff,
