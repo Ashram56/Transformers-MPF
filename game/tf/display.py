@@ -89,6 +89,29 @@ def deff_holds():
 HOLD_TICKS_BY_DEFF = deff_holds()
 
 
+def deff_drops():
+    """The deffs whose priority drops to 0x20 long before their end (more than HOLD_TICKS): tick of the drop from
+    the deff's start, the same in every variant (deff 140: tick 105, 0x0100b90c). {} without the op lists."""
+    drops = {}
+    folder = os.path.join(ROM, "rom_data", "dmd", "deff_ops")
+    if os.path.isdir(folder):
+        import json                         # noqa: PLC0415
+        for name in sorted(os.listdir(folder)):
+            if name.endswith(".json"):
+                with open(os.path.join(folder, name), encoding="utf-8") as f:
+                    d = json.load(f)
+                prio = [o["t"] for o in d.get("ops", ()) if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
+                if prio and d.get("end_tick") is not None and d["end_tick"] - prio[-1] > HOLD_TICKS:
+                    drops[d["deff"]] = prio[-1]
+    return drops
+
+
+HOLD_AT_BY_DEFF = deff_drops()
+# the drop's own condition: deff 140 drops only with adj 69 MEGATRON M.B. VIRTUAL LOCK = NO (adj_get(0x45) == 0
+# [0x0100b8f8]); the op lists were run at factory settings
+HOLD_AT_IF = {140: lambda os_: not os_.adj[69]}
+
+
 def deff_flags():
     """Each deff's flags word from tf_180's deff table 0x040ce7c4 (rom/rom_data/dmd/deffs.csv)."""
     flags = {}
@@ -192,9 +215,12 @@ class Display:
                 self.fg_handle = os_.machine.clock.schedule_once(lambda: self._ended(deff_id), seconds)
                 from tf.os_layer import TICK
                 hold_ticks = HOLD_TICKS_BY_DEFF.get(deff_id, HOLD_TICKS)
+                hold_at = seconds - self.hold_tail.get(deff_id, hold_ticks * TICK)
+                if deff_id in HOLD_AT_BY_DEFF and deff_id not in self.hold_tail \
+                        and HOLD_AT_IF.get(deff_id, lambda o: True)(os_):
+                    hold_at = HOLD_AT_BY_DEFF[deff_id] * TICK     # a drop counted from the start (deff 140)
                 self._sound_handles.append(os_.machine.clock.schedule_once(
-                    lambda: self._hold(deff_id),
-                    max(0.0, seconds - self.hold_tail.get(deff_id, hold_ticks * TICK))))
+                    lambda: self._hold(deff_id), max(0.0, hold_at)))
         if replaced is not None and self.show is replaced:
             self.show = None
             self.os.ball_search_reload()            # the show task's end (below, _end_show)
@@ -236,6 +262,7 @@ class Display:
         [deff_start_user_6350 0x01006350]; its rules pass restarts a mode's background deff behind the
         held deff (traces/end_of_line_multiball.jsonl: deff 57 at the hold of deff 56 and at its end)."""
         self.fg_prio = HOLD_PRIORITY
+        held = deff_id
         if not self.show and deff_id in self.hold_tail:
             # a measured hold (set_hold_tail): its rules pass restarts the mode's background deff behind
             # it (traces/quorra_multiball: deff 65 again 2.78 s into deff 68)
@@ -257,7 +284,10 @@ class Display:
             if show.on_end:
                 show.on_end()
             deff_id, _, on_start = self.select()
-            if self.os.in_play and deff_id != 19:
+            # a deff whose priority drops long before its end (deff 140 at tick 105 of 198-281, 0x0100b90c with
+            # adj 69 = NO) gives the DMD to the waiting score deff 19 there (agent A, megatron_autobot 18.71 -> 20.44 s)
+            long_hold = held in HOLD_AT_BY_DEFF and HOLD_AT_IF.get(held, lambda o: True)(self.os)
+            if self.os.in_play and (deff_id != 19 or long_hold):
                 self._start_rule(deff_id, on_start)
             self._pump()
 
