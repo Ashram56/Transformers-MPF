@@ -6,7 +6,9 @@ extends Control
 ## - {"i", "x", "y"}: ROM image i (rom/mpf_package/media/rom_images_all.zip, img_NNNNN.png), top left at x, y;
 ## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15);
 ## - {"i", "x", "y", "inv": true}: the image drawn through the service tests' palette 0x040c95c8 (levels 0 and 15 swap);
-## - {"chk": phase}: the DOT MATRIX TEST's checkerboard.
+## - {"chk": phase}: the DOT MATRIX TEST's checkerboard;
+## - {"px": hex}: a whole 128x32 screen, one byte per dot (level * 17), row by row: a deff replayed live from its
+##   op list (tf/op_player.py).
 
 const RomFonts = preload("res://tf/rom_fonts.gd")
 const DMD_COLOR := Color(1, 0.45, 0.05, 1)
@@ -97,6 +99,8 @@ func _draw_items(items: Array) -> void:
 				add_child(r)
 		elif d.has("chk"):
 			add_child(_checker(int(d["chk"])))
+		elif d.has("px"):
+			add_child(_dots(str(d["px"])))
 		elif d.has("r"):
 			var rect := ColorRect.new()
 			var level := int(d.get("l", 15)) / 15.0
@@ -104,6 +108,18 @@ func _draw_items(items: Array) -> void:
 			rect.position = Vector2(int(d["r"][0]), int(d["r"][1]))
 			rect.size = Vector2(int(d["r"][2]), int(d["r"][3]))
 			add_child(rect)
+
+
+func _dots(hex: String) -> TextureRect:
+	## A replayed screen (tf/op_player.py dots_hex): 4096 dots, grey level * 17, tinted with the DMD colour.
+	var data := hex.hex_decode()
+	var r := TextureRect.new()
+	if data.size() == 128 * 32:
+		r.texture = ImageTexture.create_from_image(Image.create_from_data(128, 32, false, Image.FORMAT_L8, data))
+	r.size = Vector2(128, 32)
+	r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	r.modulate = DMD_COLOR
+	return r
 
 
 func _checker(phase: int) -> TextureRect:

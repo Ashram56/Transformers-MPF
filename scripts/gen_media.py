@@ -10,6 +10,8 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/tf/media_data.json            sound pools (one per ROM sound call) and display effect facts for
                                      tf/media_bridge.py
 - game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each captured display effect
+- game/media/live_ops/deff_NNN[__<variant>].json  the op lists of the deffs replayed live (LIVE_OPS:
+                                     tf/op_player.py), compacted from rom/rom_data/dmd/deff_ops/
 - game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs), plus deff_NNN_side1.tscn for
                                      the effects that draw the player's side (SIDE_VARIANTS: the capture is the
                                      Decepticon side, the Autobot one is made from it with the ROM's own image or
@@ -441,6 +443,45 @@ def build_deffs(only_data):
     return out
 
 
+# Deffs replayed live from their op lists (tf/op_player.py; the same list as tf/media_bridge.py LIVE): the deffs
+# whose printf values move or fade with their pages (copy_rect, remap, dissolve, moving texts)
+LIVE_OPS = (25, 46, 48, 52, 94, 98, 102, 106, 110, 114, 118, 122, 129, 132)
+OPS_SRC = os.path.join(ROOT, "rom", "rom_data", "dmd", "deff_ops")
+OP_KEEP = {"fill", "rect", "frame", "copy", "copy_rect", "invert", "remap", "bitmap", "bitmap_masked", "text",
+           "show", "dissolve"}
+OP_DROP = ("at", "task", "helper", "msg", "varargs", "printf")
+
+
+def build_live_ops():
+    """game/media/live_ops/<name>.json: the drawing ops of each LIVE_OPS deff and variant, in tick order; a
+    text keeps its call site ("site": the printf's address without 0x and leading zeros, as site_values)."""
+    out_dir = os.path.join(GAME, "media", "live_ops")
+    os.makedirs(out_dir, exist_ok=True)
+    # the dissolve tables [0x01034758] the op lists name (rom/tools/export_op_data.py)
+    with open(os.path.join(ROOT, "rom", "rom_data", "dmd", "dissolve_tables.json"), encoding="utf-8") as f:
+        tables = json.load(f)
+    n = 0
+    for deff_id in LIVE_OPS:
+        for path in sorted(glob.glob(os.path.join(OPS_SRC, "deff_%03d.json" % deff_id)) +
+                           glob.glob(os.path.join(OPS_SRC, "deff_%03d__*.json" % deff_id))):
+            with open(path, encoding="utf-8") as f:
+                doc = json.load(f)
+            ops = []
+            for o in doc["ops"]:
+                if o["op"] not in OP_KEEP:
+                    continue
+                c = {k: v for k, v in o.items() if k not in OP_DROP}
+                if o["op"] == "text" and o.get("printf"):
+                    c["site"] = "%x" % int(o["at"], 16)
+                if o["op"] == "dissolve":
+                    c["table"] = tables[o["table"]]
+                ops.append(c)
+            with open(os.path.join(out_dir, os.path.basename(path)), "w", encoding="utf-8", newline="\n") as f:
+                json.dump({"deff": deff_id, "end_tick": doc.get("end_tick"), "ops": ops}, f, separators=(",", ":"))
+            n += 1
+    return n
+
+
 def main():
     import gen_fonts
     import toolchain
@@ -448,6 +489,7 @@ def main():
     if not only_data or not os.path.exists(os.path.join(GAME, "fonts", "fonts.json")):
         gen_fonts.build()
     data = {"pools": build_sounds(only_data), "deffs": build_deffs(only_data)}
+    build_live_ops()
     with open(os.path.join(GAME, "tf", "media_data.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(data, f, indent=0, sort_keys=True)
     if not only_data:

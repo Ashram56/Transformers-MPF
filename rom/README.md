@@ -44,6 +44,8 @@ CONTRIBUTING.md (first batch: Stern-SAM-Decryption PR #6); facts of this game st
 | `mpf_package/mpf_names.json` | SAM number to MPF device name, for the VPX extraction agent and the recreation |
 | `mpf_package/media/sounds/{speech,sfx,music}/XXXX.wav` | Every sample, file name = ROM sample id |
 | `mpf_package/media/rom_images_all.zip` | Every ROM image as PNG (`img_NNNNN.png`, NNNNN = image number the code draws) |
+| `mpf_package/media/rom_images_mask.zip` | The exact bytes of the 264 images whose dots carry mask nibbles other than 0xff, which the PNGs turn into level 15 (`img_NNNNN.bin`: u16 w, u16 h, w*h bytes; `tools/export_op_data.py`); read by the game's op player (`game/tf/op_player.py`) |
+| `rom_data/dmd/dissolve_tables.json` | The 80-byte tables of the dissolve [0x01034758] that the op lists name (0x040c76e8), by address (`tools/export_op_data.py`); the op player's dissolve |
 | `mpf_package/media/dmd_library/` | 274 full-height animations: `frames/*.png`, `animation.gif`, `animation_128x32.gif`, `index.json` |
 | `tools/` | The readers and exporters (Python), emulator probes (C++, libpinmame with the ARM hook), Ghidra scripts |
 

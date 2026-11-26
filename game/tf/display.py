@@ -827,7 +827,7 @@ class Leffs:
             if any(r[1] == other and r[3] for r in self.os.rules) and other not in self.pending:
                 self.pending.append(other)          # its rule starts it again once it can run (game_flow.md 5.8)
         lamps_, coils_, _ = self.claims.get(leff_id, (frozenset(), frozenset(), 0))
-        keep = leff_id in self.running and not lamps_ and not coils_ and leff_id not in self.os.lamps.code_leffs
+        keep = leff_id in self.running and not lamps_ and not coils_
         if keep:
             # leff_start [0x00007c10]: a leff that claims no lamp or coil group gets a second task beside the
             # running one (QA L-G05); the earlier copy plays on to its own end, the new one owns the length

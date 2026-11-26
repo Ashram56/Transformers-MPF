@@ -98,6 +98,7 @@ class RomRandom:
 
 
 BALL_SEARCH_TICKS = 104     # search task 0x2b
+LOCATE_ROUNDS, LOCATE_CHECKS, LOCATE_EVERY = 4, 0x34, 6    # task_ball_search [0x0103b5e4]
 # its device tasks: created at tick 5, once coil_reset_one_2558 [0x00002558] has waited out coil 12's 64 ms pulse
 # (coil_pulse_now_wait, one-tick sleeps at 0x000021a0; rom/rom_data/io/ball_search_ops.json), one tick later in
 # the game as BALL_SEARCH_SWEEP; then device 4's +0x14 settle (62, table 0x040d17fc) and the task's start tick
@@ -339,6 +340,8 @@ class TfOS(CustomCode):
         self._search_at = 0.0
         self._search_paused = None      # countdown seconds left while a flipper button is held
         self.ball_search_count = 0
+        self._locating = False          # task_ball_search [0x0103b5e4] runs (START with the balls not located)
+        self.balls_installed = 4        # balls_installed_check_3a1c4: the trough's four, then the count it learns
         self.ball_held = False       # a ball sits in a device the rules hold (not in play) waiting for its kickout
         self.ball_validated = False  # game flag 0x10 for the music rule (set at validation, cleared with the ball)
         self._mb_end_deferred = False
@@ -1362,6 +1365,9 @@ class TfOS(CustomCode):
         """start_button_handler [0x0001a6e4] in attract: a game needs a credit or free play; otherwise event
         0x2d and deff 15 (credit text, PRESS START / INSERT COINS) unless it already runs."""
         if self.credit_model.can_start():
+            if self.state & ST_ATTRACT and not self.balls_located():
+                self.locate_balls()                  # ball_search_needed_3b840 [0x0103b840]: no game this press
+                return False
             return True
         self.machine.events.post("tf_start_refused")    # event 0x2d
         self.credit_model.start_refused()
@@ -1468,12 +1474,15 @@ class TfOS(CustomCode):
         self.game_seconds = 0.0
         self._valid_at = None
         self.shoot_again = False
+        lost = self.flag(0xb)                         # set when a ball search at START found fewer balls
         self.flags.clear()
         self.speech_once_count = 0                   # RAM 0x34d1c: game_init [0x00019c64] clears it (run as ROM code)
         self.tasks_kill_all()
         self.credit_model.take(1)                         # FUN_0000434c: the game's credit
         self.credit_model.free_games = 0
         self.audit(0x11)
+        if lost:                                     # [0x0001a6e4]: game_flag_test(0xb) -> clear, audit 0x27
+            self.audit(0x27)
         hs = self.features_by_name.get("high_scores")
         if hs:
             hs.game_started()                        # FUN_000184f8: adj 61 HSTD RESET COUNT
@@ -1648,6 +1657,58 @@ class TfOS(CustomCode):
                        lambda: self.machine.playfield.add_ball(player_controlled=False))
             return {"balls": 0}
         return {"balls": balls}
+
+    # ------------------------------------------------------------------ locating the balls at START
+
+    def balls_counted(self):
+        """balls_count_all / trough_count_3a188: the balls in every ball device, and in the trough."""
+        devices = [d for d in self.machine.ball_devices.values() if not d.is_playfield()]
+        trough = self.machine.ball_devices.get("bd_trough")
+        return sum(d.balls for d in devices), trough.balls if trough else 0
+
+    def balls_located(self):
+        """ball_search_needed_3b840 [0x0103b840] (inverted): some ball counted, and every counted ball in the
+        trough or as many counted as installed (balls_installed_check_3a1c4)."""
+        total, trough = self.balls_counted()
+        return total != 0 and (total == trough or total == self.balls_installed)
+
+    def locate_balls(self):
+        """task_ball_search [0x0103b5e4] (task 0x2b, from the START button [0x0001a6e4] when the balls are not
+        located): up to 4 rounds of 0x34 checks 6 ticks apart; the first check of a round that does not find
+        them shows deff 11 (LOCATING PINBALLS), audits 0x25 and fires the search (count_15_0m_17_49m's sequence:
+        the coils of the search, the devices' kicks); once located, or after the 4 rounds, the balls counted
+        become the installed count (fewer: game flag 0xb, audit 0x27 at the next game) and deff 11 stops."""
+        if self._locating:
+            return
+        self._locating = True
+        self._locate_step(1, 0)
+
+    def _locate_step(self, rnd, check):
+        if not self._locating:
+            return
+        if self.balls_located():
+            return self._locate_end()               # the remaining rounds break at their first check
+        if check == 0:
+            self.deff_start(11)
+            self.audit(0x25)
+            self.task_start(0x2b, BALL_SEARCH_TICKS)
+            self.task_start("search_run", BALL_SEARCH_RUN_TICKS)
+            self._search_sweep()
+            self.hook("ball_search")
+        check += 1
+        if check >= LOCATE_CHECKS:
+            rnd, check = rnd + 1, 0
+            if rnd > LOCATE_ROUNDS:
+                return self._locate_end()
+        self.after(LOCATE_EVERY, lambda: self._locate_step(rnd, check))
+
+    def _locate_end(self):
+        self._locating = False
+        total, _ = self.balls_counted()
+        if total < self.balls_installed:
+            self.flag_set(0xb)
+        self.balls_installed = total                 # balls_installed_store_3a228
+        self.deff_stop(11)
 
     # ------------------------------------------------------------------ ball search (5.2)
 

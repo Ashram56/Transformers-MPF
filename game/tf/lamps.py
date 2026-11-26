@@ -212,9 +212,12 @@ class LeffTask:
         self.set(lamp, lamp not in self.layer.image)
 
     def end(self):
-        """The leff function returned: its task ends (display.Leffs frees its outputs)."""
-        self.lamps._leff_show_done(self.leff_id)
-        self.lamps.os.leffs._ended(self.leff_id)
+        """The leff function returned: its task ends (display.Leffs frees its outputs); an earlier copy of a leff
+        started again (QA L-G05) frees only its own layer."""
+        current = self.lamps.leff_players.get(self.leff_id)
+        self.lamps._leff_show_done(self.leff_id, self)
+        if current is not None and current[0] is self:
+            self.lamps.os.leffs._ended(self.leff_id)
 
     def stop(self):
         if self.handle:
@@ -645,7 +648,7 @@ class Lamps:
         keep: the running copy goes on beside the new one (leff_start [0x00007c10] creates a second task when
         the leff claims no lamp or coil group, QA L-G05)."""
         old = self.leff_players.get(leff_id)
-        if keep and old is not None and isinstance(old[0], ShowPlayer):
+        if keep and old is not None:
             self.leff_players.pop(leff_id)
             self.leff_copies.setdefault(leff_id, []).append(old)
         else:
@@ -697,8 +700,9 @@ class Lamps:
                 self.leff_copies[leff_id].remove(entry)
                 self.layer_free(entry[1])
                 return
-        entry = self.leff_players.pop(leff_id, None)
-        if entry:
+        entry = self.leff_players.get(leff_id)
+        if entry and (player is None or entry[0] is player):
+            self.leff_players.pop(leff_id)
             if isinstance(entry[0], LeffTask):
                 entry[0].stop()
             self.layer_free(entry[1])

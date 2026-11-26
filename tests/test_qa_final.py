@@ -493,3 +493,100 @@ class TestFinalPass(QaCase):
         self.tf.leff_stop(43)
         self.assertNotIn(43, lamps.leff_players)
         self.assertFalse(lamps.leff_copies.get(43))
+
+    def test_f070_code_leff_started_twice(self):
+        """leff_start [0x00007c10] for a code-drawn leff without groups (leff 139, fn 0x0100999c: the caller's lamp
+        on for 8 ticks): the second start for another lamp runs beside the first, which still holds its lamp to its
+        own 8 ticks (QA L-G05)."""
+        self.start()
+        lamps = self.tf.lamps
+        a, b = 20, 21
+        self.tf.leff_start(139, lamp=a)
+        self.advance_time_and_run(4 * TICK)
+        self.tf.leff_start(139, lamp=b)
+        self.assertEqual(1, len(lamps.leff_copies.get(139, ())))
+        self.advance_time_and_run(2 * TICK)
+        self.assertEqual((3, 3), (lamps.level(a), lamps.level(b)))
+        self.advance_time_and_run(4 * TICK)             # the first copy's 8 ticks are over, not the second's
+        self.assertEqual(0, len(lamps.leff_copies.get(139, ())))
+        self.assertFalse([layer for layer in lamps.layers if a in layer.mask])    # lamp a back to the rules
+        self.assertEqual(3, lamps.level(b))
+        self.advance_time_and_run(6 * TICK)
+        self.assertNotIn(139, lamps.leff_players)
+
+    def test_f071_locating_pinballs_at_start(self):
+        """START [0x0001a6e4] with the balls not located (ball_search_needed_3b840 [0x0103b840]: balls counted
+        in devices, not all in the trough, fewer than installed) starts no game: task_ball_search [0x0103b5e4]
+        shows deff 11 and searches, 4 rounds of 0x34 checks 6 ticks apart, then learns the count (game flag
+        0xb); the next START plays, with audit 0x27 (QA V011)."""
+        self.fill_trough()
+        self.advance_time_and_run(1)
+        counted = [(3, 2)]
+        self.tf.balls_counted = lambda: counted[0]
+        before = self.tf.audits.get(0x27, 0) or 0
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(self.machine.game)
+        self.assertIn(11, self.deffs())
+        self.assertTrue(self.tf._locating)
+        self.advance_time_and_run(4 * 0x34 * 6 * TICK + 0.5)
+        self.assertFalse(self.tf._locating)
+        self.assertEqual(3, self.tf.balls_installed)
+        self.assertTrue(self.tf.flag(0xb))
+        self.assertEqual(4, sum(1 for e in self.tf.trace.of("deff_start") if e.get("id") == 11))   # one per round
+        counted[0] = (3, 3)
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(1)
+        self.assertIsNotNone(self.machine.game)
+        self.assertEqual(before + 1, self.tf.audits.get(0x27, 0))
+
+    def test_f069_bonus_replayed_live_from_its_ops(self):
+        """Deff 25 runs as its op list replayed live (tf/op_player.py): the page change os_hook_call_203d0(10)
+        [0x010357e0] [0x01035810] [0x0103582c] moves the subtotal page drawn with the game's values, where the
+        captured frames held the code run's "00"; the screen is a "px" item under the live status panel."""
+        import os
+        from tf import op_player
+        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_025__x3.json")):
+            self.skipTest("no generated live ops (scripts/gen_media.py)")
+        self.start()
+        pd, done = self.tf.pd, []
+        pd["bonus_x"], pd["bonus_count"], pd["bonus_held"] = 3, 0, 125000
+        self.tf.features_by_name["bonus"].run(done.append)
+        self.assertIn(25, self.tf.media.ops)
+        self.advance_time_and_run(60 * TICK)
+        draw = self.tf.media.ops_screen(25)
+        self.assertIn("px", draw[0])
+        self.assertTrue(any("t" in d for d in draw[1:]))              # the panel's score text
+        # the same ticks with the code run's values: the moving page differs right of the panel
+        live = self.tf.media.ops[25]["player"].frame
+        code = op_player.OpPlayer.load("deff_025__x3")
+        code.advance(60)
+        diff = [i % 128 for i, (a, b) in enumerate(zip(live, code.frame)) if a != b]
+        self.assertTrue(diff)
+        self.assertGreaterEqual(min(diff), op_player.W - 87)
+
+    def test_f069_moving_values_of_every_live_deff(self):
+        """The deffs whose printf values move or fade (media_bridge LIVE: fast scoring 132 [0x01004de8] slides its
+        "%,02lu POINTS" in with copy_rect) take the rules' values in their replayed frames; LIVE and gen_media's
+        LIVE_OPS list the same deffs."""
+        import os
+        import sys
+        from tf import media_bridge, op_player
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
+        import gen_media
+        self.assertEqual(tuple(gen_media.LIVE_OPS), tuple(media_bridge.LIVE))
+        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_132.json")):
+            self.skipTest("no generated live ops (scripts/gen_media.py)")
+        self.start()
+        media = self.tf.media
+        self.tf.features_by_name["twobank"].value = 25000        # deff_live: the value now
+        media.deff_start(132, 100, values=[25000])
+        self.assertIn(132, media.ops)
+        self.assertEqual({"1004dc4|%,02lu POINTS": 25000}, media.ops_site_values(132))
+        self.advance_time_and_run(120 * TICK)                   # the POINTS line is up from tick 106
+        media.ops_screen(132)
+        code = op_player.OpPlayer.load("deff_132")
+        code.advance(media.ops[132]["player"].ops[media.ops[132]["player"].i - 1]["t"])
+        self.assertNotEqual(code.frame, media.ops[132]["player"].frame)
+        media.deff_stop(132)
+        self.assertNotIn(132, media.ops)

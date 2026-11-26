@@ -32,7 +32,7 @@ in [Ashram56/Stern-SAM-Decryption](https://github.com/Ashram56/Stern-SAM-Decrypt
 | `game/config/config.yaml`, `hardware.yaml`, `free_play.yaml` | MPF config | `hw_virtual.yaml` (default), `hw_vpx.yaml` (VPX) are hardware overlays |
 | `game/config/rom/` | **Generated** device config (switches, coils, lights, settings, P-ROC numbers) | git-ignored; `scripts/gen_config.py` writes it from `rom/mpf_package/config/`. Never edit it, fix the generator or the package |
 | `game/config/interim/` | Tables read from the ROM until the package carries them | `scripts/interim_tables.py`, `interim_fonts.py` (need the ROM, section 6) |
-| `game/tf/` | The game's Python: OS layer (`os_layer.py`: ball search, task timing), display (`display.py`, `score_screen.py`, `rom_draw.py`), lamps, switches, settings, credits, traces, virtual and VPX hardware | Godot side: `rom_screen.gd`, `rom_fonts.gd`, `deff_values.gd` |
+| `game/tf/` | The game's Python: OS layer (`os_layer.py`: ball search, task timing), display (`display.py`, `score_screen.py`, `rom_draw.py`, `op_player.py`: the deffs whose values move, replayed live from their op lists), lamps, switches, settings, credits, traces, virtual and VPX hardware | Godot side: `rom_screen.gd`, `rom_fonts.gd`, `deff_values.gd` |
 | `game/tf/features/` | One file per rule feature: `battles.py`, `megatron.py`, `optimus.py`, `wizard.py`, `combos.py`, `energon.py`, `allspark.py`, `bonus.py`, `side.py`, `skill_shot.py`, `pops.py`, `spinner.py`, ... | Each follows its spec in `rom/rules/modes/` |
 | `game/modes/attract/`, `game/slides/` | MPF modes and GMC slides | |
 | `game/monitor/` | MPF Monitor layout (`monitor.yaml`) and playfield picture from the VPX table | |
