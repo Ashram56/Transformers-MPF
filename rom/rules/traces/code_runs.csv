@@ -237,7 +237,7 @@ switches,sw_50,7911,5030,30 (handler) + 5000 (0x102e9c0),0x01f 0x1cb 0x261,103,1
 switches,sw_50_again,8048,75030,30 (handler) + 75000 (0x102e9c0),0x1cc 0x263,126,144,differs: sounds (trace 0x263 0x265 0x266)
 switches,sw_51,8185,30,30 (handler),0x05b 0x05c,50,38,same
 switches,sw_51_again,8322,30,30 (handler),,,,differs: sounds (trace 0x1cb 0x1cc); deffs (trace 103); leffs (trace 116)
-switches,eject,8459,5070,5070 (0x100a788),0x066 0x067 0x140 0x141 0x144 0x157,52 55,21 41,differs: sounds (trace 0x140 0x141 0x144 0x157 0x158 0x161 0x162); deffs (trace 149 52); leffs (trace 21 22 31 32 41)
+switches,eject,8459,5070,5070 (0x100a788),0x140 0x141 0x144 0x157 0x161 0x162,149 52,21 31 32 41,differs: sounds (trace 0x140 0x141 0x144 0x157 0x158 0x161 0x162); leffs (trace 21 22 31 32 41)
 tilt_ball_save,validate,219,1220,1220 (handler),0x01f 0x058,41,96,same
 tilt_ball_save,tilt_warning_1,243,0,,0x016 0x052,23,11,same
 tilt_ball_save,tilt_warning_2,320,0,,0x016 0x052,23,11,same

@@ -98,6 +98,20 @@
   }
  ],
  "deffs": [],
+ "priority_changes": [
+  {
+   "tick": 150,
+   "t_ms": 2400.0,
+   "priority": 32,
+   "at": "0x010305a0"
+  },
+  {
+   "tick": 151,
+   "t_ms": 2416.0,
+   "priority": 32,
+   "at": "0x010305a0"
+  }
+ ],
  "pages": [
   {
    "tick": 0,

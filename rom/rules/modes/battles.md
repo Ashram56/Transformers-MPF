@@ -213,6 +213,15 @@ pop bumpers, top lanes (sw 7, 8) and Bumblebee phase-1 hits; 372 ticks by 0x0100
 Code run = trace: Starscream 45 s adj: started 25.12, first decrement 34.20, 0 at 81.13, run killed 82.20 (music 0x1f),
 total deff 95 at 84.23.
 
+Timer and tick length: the timer counts OS ticks, so its end moves with the tick. In `traces/switches` Blackout
+(45 s) runs from sw_14 (67.58 s) to its stop at 138.17 s: 4,342 passes of the emulator's 16.26 ms, which the code
+run (16.0 ms ticks, owner 2026-11-25) plays 1.13 s earlier against the scenario's wall-clock hits (code run tick
+about 7,880 against sw_50 at 7,911; trace 0.69 s after sw_50). The total task 0x82 [0x0101ce60] then waits for a
+free display (`deff_start_user_664c` [0x0100664c], up to 3,750 checks): in the code run it starts deff 103 before
+sw_50_again's deff 126 takes the display, in the trace after deff 126 and deff 50 (4.5 s later). Hence the code run's
+deff 103 + 0x1cb + leff 116 about 400 ticks before the trace's (`traces/code_runs.csv` switches sw_50 /
+sw_51_again). No pause is missing: the game, with its 16.26 ms tick, agrees with the trace.
+
 **Add time** (ADD MORE TIME mystery, `0x01024b14`, once per mode via flag 0x13): +15 s, capped at 90 s, restart the
 timer task: Starscream 0x01017a78, Shockwave 0x0101e528, Blackout 0x0101cbc0, Devastator 0x01015ee0, Ironhide
 0x0101af10, Ratchet 0x0101245c; Bumblebee phase 1 restores the full value [0x0101449c], phase 2 +5 s cap 15

@@ -110,9 +110,12 @@ VARIANTS = {
     125: [("target%d" % t, {"args": {0x30: (4, t)}},
            "energon set completed, 0x01030a90 (deff_start(0x7d)): +0x30 = the bit of the target that completed it")
           for t in (1, 2, 4)],
-    140: [("%s_lock%d" % (side, n), {"args": {0x30: (1, n)}, "state": {"side": sv}},
+    140: [("%s_lock%d" % (side, n), {"args": {0x30: (1, n)}, "state": {"side": sv},
+                                      "ram": {0x02111d58: struct.pack("<I", 0x294), 0x02111d68: struct.pack("<I", 0x297)}},
            "deff_140_locked [0x0100b7f0]: +0x30 = the lock number (sound table 0x040c62aa, follow-ups 0x040c62cc / "
-           "0x040c62c0 / 0x040c62b4 by side), player_side %d" % sv)
+           "0x040c62c0 / 0x040c62b4 by side), player_side %d; the per-player lock speech calls 0x02111d58 = 0x294 "
+           "(Autobot) and 0x02111d68 = 0x297 (Decepticon) as current_player_wrap_ab5c [0x0100ab5c] sets them "
+           "at player start" % sv)
           for side, sv in (("decepticon", 2), ("autobot", 1)) for n in (1, 2, 3)],
     152: [("one", {"args": {0x30: (2, 1), 0x34: (2, 1), 0x38: (1, 8), 0x3c: (1, 1), 0x40: (2, 0)}},
            "deff_152 [0x01006e30]: images +0x40 + first-1 .. last-1 by +0x3c, +0x38 ticks each; no caller in "
