@@ -2,7 +2,7 @@
 5.2-5.3; code [0x0100a754] [0x0100a788] [0x010243b4] [table 0x040dde30] + observed in
 traces/allspark_energon.jsonl and the battle traces).
 
-The eject holds its ball (ball hold hold_left_eject). The device settles 47 ticks (observed 0.76 s), then the
+The eject holds its ball (ball hold hold_left_eject). The device settles 46 ticks (record 0x040d1868 +0x10) from the tick after the switch, then the
 rule runs (not when tilted): audit 0x45; every battle with shot 0 (tf/features/battles.py); the mystery award if
 an Allspark is banked; mode-start shot 0; combo shot 0; the handler's bonus count and 5,070. The kickout waits
 while a show runs (the award, a battle intro), then sound 0x157 + leff 21, 54 ticks later 0x158 + leff 22 and
@@ -36,7 +36,8 @@ AWARD_TASK, AWARD_DEFF = 0x5e, 52
 AWARD_SOUNDS = (0x140, 0x141)
 ITEM_SOUND = {5: 0x143, 6: 0x142}
 ITEM_SOUND_OTHER = 0x144
-ITEM_SOUND_AT, END_SOUND_AT = 0.2, 1.63
+# deff_052_special [0x01024524]: 2 ticks a frame (dmd_page_303cc(2)); the item's sound at frame 6, 0x141 at frame 0x32
+ITEM_SOUND_AT, END_SOUND_AT = 6 * 2 * 0.016, 0x32 * 2 * 0.016
 BASE_WEIGHT = {1: 1, 2: 5, 3: 200, 4: 150, 5: 300, 6: 250, 7: 150, 8: 100, 9: 100, 10: 100, 11: 100, 12: 100}
 COMPETITION_ITEM = {0: 1, 1: 2, 2: 3, 3: 12, 4: 11, 5: 10, 6: 9, 7: 8, 8: 4, 9: 7}
 ITEM_AUDIT = 74                         # + item: MYSTERY: LIGHT SPECIAL (75) .. SUPER POPS LIT (86)
