@@ -78,7 +78,10 @@ BALL_SEARCH_EVENT_TICKS = 36
 BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
                                 # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
 BALL_SEARCH_TICKS = 104     # search task 0x2b
-SEARCH_DEVICES_TICKS = 63   # its device tasks: device 4's +0x14 settle (62, table 0x040d17fc) + the task's start tick
+# its device tasks: created at tick 5, once coil_reset_one_2558 [0x00002558] has waited out coil 12's 64 ms pulse
+# (coil_pulse_now_wait, one-tick sleeps at 0x000021a0; rom/rom_data/io/ball_search_ops.json), one tick later in
+# the game as BALL_SEARCH_SWEEP; then device 4's +0x14 settle (62, table 0x040d17fc) and the task's start tick
+SEARCH_DEVICES_TICKS = 5 + 1 + 62 + 1
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
 # the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate.
