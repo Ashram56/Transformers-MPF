@@ -267,6 +267,7 @@ class Wizard(Feature):
         os_.audit(SIDE_START_AUDIT)
         self.wizard_req(SIDE_REQ, 1)
         self.wizard_req(SIDE_REQ, 2)
+        os_.hook("hint_set", 1)                     # hint_speech_set(1) [0x0100fff0] (QA SC4)
         sound = SIDE_INTRO_SOUND.get(side, 0x11a)
         os_.show(SIDE_INTRO_TASK, SIDE_INTRO, sounds=[(0, lambda: os_.sound(sound, in_deff=SIDE_INTRO))],
                  on_start=lambda: os_.deff_media(SIDE_INTRO, SIDE_INTRO_LEFF))

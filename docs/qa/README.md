@@ -33,7 +33,7 @@ package's deff and leff data match the code mechanically. The departures are in 
 | V-TXT1 | `%P1//S/%` plurals wrong ("SHOOT 11 SHOT", "3 COMBO") | media_bridge.py:35 |
 | V-SC1 | main score font and row from 1,000,000 up (table 0x040c75d0) | score_screen.py:18 |
 | D-SM-MODE / V003 | no service menu: SELECT starts mode `tf_service`, which does not exist | os_layer.py:1430 |
-| SC4 | the hint speech slot 0x02111f54 is never played (its reader is to be decoded by agent A) | - |
+| SC4 | ~~the hint speech slot 0x02111f54 is never played~~ fixed (see Fixed) | - |
 
 Medium and low: the findings tables of each report. Fixes follow, high first, each with a regression test.
 
@@ -57,6 +57,7 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | L-I60-62 | the pop leffs 27-29 blink their bumper lamp 60 / 61 / 62 | `0x0102d138`, table `0x040c74d2` |
 | L-151, L-154, L-084, L-085 | rule leffs started: 151 (all BUMBLEBEE letters), 154 (super spinner lit, flasher ramp of 14 patterns), 84 / 85 (all requirements completed, no multiball, flag 0x3c clear); 44 / 52 / 60 / 68 need nothing: their conditions return 0 in tf_180 | `0x010018bc`, `0x01032094`, `0x010327bc`, `0x010363b4`, `0x0103692c`; `0x0100c90c`, `0x0100e7c8`, `0x0102805c`, `0x0102a16c` |
 | L-G06 | rule leffs follow their record's mode mask (not evaluated, so left running, outside it); end of ball kills those without task flag 0x100, ball start kills all | `0x000176ec`, `0x00019e44`, `0x00019d30`, rules/leff_rules.csv |
+| SC4 | hint speech task 0xc6: set by the side choice, the side mode start and the Allspark shot; started by the left eject after the show tasks and by deff 141 at frame 10 (battle_ironhide, battle_shockwave and combos now match the reference's sounds 16 / 16) | `0x01025030`, `0x01024fe8`, `0x0102523c`, `0x01025294`, `0x010250f4` |
 | V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
 | R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
 | R-F5 | no 1 s Optimus time gate (the lockout is task 0x54) | `0x01025de4`, `0x010262f0` |

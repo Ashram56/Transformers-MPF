@@ -97,10 +97,20 @@ class Allspark(Feature):
             self.award()
         os_.hook("mode_start_shot", 0)
         os_.hook("combo_shot", 0)
+        os_.hook("hint_set_allspark")               # [0x01024fe8], then hint_speech_start once tasks 0x5d-0x7e end
+        self._hint_wait()                           # [0x0100a788] (QA SC4)
         os_.hook("scoring_switch", None)            # FUN_010047b8 and FUN_01003a64 [0x0100a788] (QA P10)
         os_.hook("bonus_add")
         os_.base_score(POINTS)
         os_.request_refresh()
+
+    def _hint_wait(self):
+        """[0x0100a788]: task_sleep(6) while a show task 0x5d-0x7e runs, then hint_speech_start [0x01025294]."""
+        os_ = self.os
+        if os_.show_running():
+            os_.after(6, self._hint_wait)
+            return
+        os_.hook("hint_start")
 
     def _kickout(self):
         """Event 7: wait for the show tasks, then the warning (0x157, leff 21) and the eject."""

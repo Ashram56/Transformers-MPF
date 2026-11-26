@@ -160,3 +160,14 @@ class TestMediumFixes(TfTestCase):
         info = self.tf.leff_rule_info
         self.assertEqual((0x20, False), info[37])        # kept: task flag 0x100
         self.assertEqual((0x20, True), info[40])         # killed by task_kill(0, 0x100) [0x00019e44]
+
+    def test_hint_speech(self):
+        """Task 0xc6 [0x010250f4]: the Allspark shot's hint 0x145 plays 125 ticks after hint_speech_start (QA SC4)."""
+        self.start()
+        self.tf.hook("hint_set_allspark")
+        self.assertTrue(self.tf.flag(0x48))
+        n = self.sounds().count(0x145)
+        self.assertTrue(self.tf.hook("hint_start"))
+        self.advance_time_and_run(2.1)
+        self.assertEqual(n + 1, self.sounds().count(0x145))
+        self.assertEqual(1, self.tf.pd.hint_index)

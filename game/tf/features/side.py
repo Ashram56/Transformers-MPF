@@ -98,6 +98,7 @@ class Side(Feature):
         self.choosing = False
         side = self.side()
         self.os.deff_start(CHOSEN_DEFF, sounds=[(0, lambda: self.os.sound(CHOSEN_SOUND[side], in_deff=CHOSEN_DEFF))])
+        self.os.hook("hint_set", 0)                  # start_deff_41 [0x01033f54]: hint_speech_set(0) (QA SC4)
         self.os.request_refresh()                    # deff 19 and its music right after deff 41's sound
 
 

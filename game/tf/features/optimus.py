@@ -40,6 +40,7 @@ AUTOBOT, DECEPTICON = 1, 2
 CENTER = 3
 TICK = 0.016
 
+HINT_FRAME_TICKS = 30      # deff 141 [0x01025f18]: hint_speech_start at frame 10, 3 ticks a frame
 ACCESS_POINTS, ACCESS_FLAG, ACCESS_DEFF, ACCESS_LEFF, ACCESS_SOUND = 2500, 0x48, 141, 170, 0x2a3
 BLOCKED_POINTS, BLOCKED_LEFF, BLOCKED_SOUND = 1000, 169, 0x2a1
 NEEDED = 4
@@ -407,6 +408,7 @@ class Optimus(Feature):
             os_.score_add(ACCESS_POINTS)
             os_.flag_set(ACCESS_FLAG)
             os_.deff_start(ACCESS_DEFF, values=[NEEDED - pd.opt_access])
+            os_.after(HINT_FRAME_TICKS, lambda: os_.hook("hint_start"))   # deff 141 frame 10 [0x01025f18] (QA SC4)
             os_.leff_start(ACCESS_LEFF)
             os_.sound(ACCESS_SOUND)
             return
