@@ -383,3 +383,30 @@ class TestFinalPass(QaCase):
         self.assertEqual(["BURN-IN", "TOTAL BURN-IN TIME:", "0:02", "PRESS 'SELECT' TO START"], rd.lines_of(mode.draw()))
         self.assertFalse(self.tf.leffs.is_running(8))
         self._leave(mode)
+
+    def test_f060_menu_icons(self):
+        """post_event_5b_bitmap_draw2_3f47c [0x0103f47c]: the main menu's icons centred at y 1 (current image +0xe,
+        the others +0xe + 1, table 0x00030cf8), the current item's text; a long menu scrolls between arrows 0xc /
+        0xd; INSTALL REDEMPTION SYSTEM is shown with no redemption system installed (0x0002840c)."""
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        draw = mode.draw()
+        self.assertEqual([(0, 10), (3, 28), (5, 46), (7, 64), (11, 82), (17, 100)],
+                         [(d["i"], d["x"]) for d in draw if "i" in d])
+        self.assertEqual("GO TO DIAGNOSTICS MENU", [d["t"] for d in draw if "t" in d][0])
+        self.hit_and_release_switch("s_select")             # DIAGNOSTICS: 14 items, more than the row holds
+        self.advance_time_and_run(0.1)
+        icons = [d["i"] for d in mode.draw() if "i" in d]
+        self.assertEqual(0xd, icons[-1])
+        self.assertNotIn(0xc, icons)
+        for _ in range(8):
+            self.hit_and_release_switch("s_plus")
+            self.advance_time_and_run(0.05)
+        self.assertEqual([(12, 1), (31, 19), (33, 37), (34, 55), (37, 73), (39, 91), (13, 109)],
+                         [(d["i"], d["x"]) for d in mode.draw() if "i" in d])     # as the ROM draws it, code run
+        mode._open_menu("REDEMPTION", "MAIN MENU / GO TO REDEMPTION MENU")
+        self.assertEqual("INSTALL REDEMPTION SYSTEM", mode.current()["text"])

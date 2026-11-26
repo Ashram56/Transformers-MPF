@@ -32,7 +32,7 @@ All addresses are hex. 0x04xxxxxx are ROM tables, 0x30000-0x34057 is the RAM cop
 | pricing presets | RAM 0x32324 | 68 + CUSTOM (NVRAM 0x2110808) | 69 pricing.csv |
 | countries | 0x040ceca4 | 29 x 32 | pricing.json `countries`, presets.csv |
 | high-score table | 0x040cf948 | 18 x 32 | adjustment readers (49-59, 90-95) |
-| menu items / menus | 0x040e3c40 / 0x040e4794 | 131 x 20 / 18 x 12 | service_texts.csv, menus_runtime.json |
+| menu items / menus | 0x040e3c40 / 0x040e4794 | 131 x 20 / 18 x 12 | service_texts.csv, menus_runtime.json, menu_items.csv (icon +0xe, text +0xc: post_event_5b_bitmap_draw2_3f47c [0x0103f47c]) |
 
 ## Files
 ### pricing.json / pricing.csv

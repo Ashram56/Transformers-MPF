@@ -42,7 +42,7 @@ package's deff and leff data match the code mechanically. The departures are in 
 | SC1 | every battle hit sound plays twice (op list + Battle.hit_media) | battles.py:284 |
 | V-TXT1 | `%P1//S/%` plurals wrong ("SHOOT 11 SHOT", "3 COMBO") | media_bridge.py:35 |
 | V-SC1 | main score font and row from 1,000,000 up (table 0x040c75d0) | score_screen.py:18 |
-| D-SM-MODE / V003 | ~~no service menu~~ fixed (see Fixed); its icons and live tests are open (docs/rom_differences.md) | - |
+| D-SM-MODE / V003 | ~~no service menu~~ fixed (see Fixed); the live tests are done (QA final F049-F059); its icons are open (docs/rom_differences.md) | - |
 | SC4 | ~~the hint speech slot 0x02111f54 is never played~~ fixed (see Fixed) | - |
 
 Medium and low: the findings tables of each report. Fixes follow, high first, each with a regression test.

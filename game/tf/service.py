@@ -24,7 +24,8 @@ Screens, as the walk shows them:
   sound, dot matrix, active switch and Optimus motor tests (tf/service_tests.py) as theirs too;
 - every other screen (help, USB, the remaining pages) shows the texts the ROM drew for it in the walk.
 The menu items hidden at factory settings (service_menu.json shown_only_if: tournament, software errors) stay
-hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1).
+hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1), and INSTALL REDEMPTION SYSTEM too (0x0002840c:
+no redemption system installed). A menu draws its items' icons (menu_draw, [0x0103f47c]).
 """
 import json
 import os
@@ -35,7 +36,9 @@ from tf import rom_draw as rd
 from tf.settings import ROOT, service_data
 
 SCREENS_JSON = os.path.join(ROOT, "rom", "rom_data", "settings", "service_screens.json")
-ALWAYS_SHOWN = {98}             # 0x010088ac: always 1
+# 98 GO TO REDEMPTION MENU: 0x010088ac returns 1; 117 INSTALL REDEMPTION SYSTEM: 0x0002840c, shown while
+# 0x0001b348() == 0 (no redemption system installed: always here, none is modelled)
+ALWAYS_SHOWN = {98, 117}
 WIDTH_DOTS = 0x80
 CUSTOM_PRICING = 68             # adj 28 GAME PRICING = CUSTOM
 MENU_Y, MENU_FONT = 30, 2
@@ -548,7 +551,8 @@ class ServiceMode(Mode):
             return draw_of(screens().get("title", ()))
         page = self.page
         if page is None:
-            return [rd.text(self.current()["text"], MENU_FONT, 64, MENU_Y, 2)]
+            menu, index, _ = self.stack[-1]
+            return menu_draw(self.items(menu), index)
         if page["kind"] == "custom":
             return page["editor"].draw()
         if page["kind"] in ("switch_test", "coil_test", "lamp_test", "loop"):
@@ -751,6 +755,71 @@ class CustomPricing:
         help_ = self.HELP[2] if self.end else self.HELP[1 if self.help and self.any_before(self.pos) else 0]
         draw.append(rd.text(help_, 2, 0x40, 0x1f, 2))
         return draw
+
+
+def menu_icons():
+    """{item: icon image} from rom/rom_data/settings/menu_items.csv (the item table 0x00030cf8: image +0xe)."""
+    import csv                                   # noqa: PLC0415
+    global _MENU_ICONS
+    if _MENU_ICONS is None:
+        path = os.path.join(ROOT, "rom", "rom_data", "settings", "menu_items.csv")
+        with open(path, encoding="utf-8") as f:
+            _MENU_ICONS = {int(r["item"]): int(r["image"]) for r in csv.DictReader(f)}
+    return _MENU_ICONS
+
+
+_MENU_ICONS = None
+LEFT_ARROW, RIGHT_ARROW = 0xc, 0xd
+
+
+def menu_draw(items, current):
+    """A menu, post_event_5b_bitmap_draw2_3f47c [0x0103f47c]: each item's icon at y 1, the current item's image +0xe
+    with its text (font 2, centred at (64, 0x1e)), the others image +0xe + 1, one dot apart, centred when the row
+    fits the 128 dots (events 0x5b / 0x5c around each item have no hook in tf_180). A longer row shows fit - 2 items
+    (fit: how many fit from the first), from the current one minus (fit - 3) / 2 (at most the last fit - 2), after
+    image 0xc (left arrow, at (1, 1)) when the row does not start at the first, and image 0xd (right arrow) after
+    them when it does not reach the end."""
+    icons = menu_icons()
+    sizes = _image_sizes()
+    imgs = [icons.get(it["item"], 0) for it in items]
+    widths = [sizes.get(n, (17, 23))[0] for n in imgs]
+    n = len(items)
+    total = 0
+    fit = 0
+    for i, w in enumerate(widths):
+        total += w + (1 if i else 0)
+        if total < 0x81:
+            fit = i + 1
+    draw = []
+
+    def item(i, x):
+        cur = i == current
+        img = imgs[i] if cur else imgs[i] + 1
+        draw.append(rd.image(img, x, 1))
+        if cur:
+            draw.append(rd.text(items[i]["text"], MENU_FONT, 64, MENU_Y, 2))
+        return x + sizes.get(img, (17, 23))[0] + 1
+
+    if total < 0x81:
+        x = (0x80 - total) // 2
+        for i in range(n):
+            x = item(i, x)
+        return draw
+    half = int((fit - 3) / 2)
+    shown = fit - 2
+    last_start = n - shown
+    start = 0
+    if half < current:
+        draw.append(rd.image(LEFT_ARROW, 1, 1))
+        start = last_start if current >= last_start + half else current - half
+    x = sizes.get(LEFT_ARROW, (17, 20))[0] + 2
+    i = start
+    while i - start < shown and i < n:
+        x = item(i, x)
+        i += 1
+    if current < last_start + half:
+        draw.append(rd.image(RIGHT_ARROW, x, 1))
+    return draw
 
 
 def _image_sizes():
