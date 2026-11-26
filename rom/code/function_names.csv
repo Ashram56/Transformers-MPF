@@ -5,7 +5,7 @@ address,name,was,rule,evidence
 0x00000300,leaf_300,FUN_00000300,leaf,"no call to a named function, no table or RAM symbol"
 0x00000308,start_deff_5_user,FUN_00000308,uses,"calls start_deff_5 [0x00006ecc], attract_start [0x00000a84], fatal_halt [0x00004f58]"
 0x000003d8,error_log_user_3d8,FUN_000003d8,uses,calls error_log [0x00004f78]
-0x0000043c,error_log_user_43c,FUN_0000043c,uses,"calls error_log [0x00004f78], event_post [0x00006e50], nvram_unlock [0x00009ec8]"
+0x0000043c,post_event_4_nvram_unlock_43c,FUN_0000043c,purpose,event_post(0x4); calls nvram_unlock; calls adj_get; event_post(0x5)
 0x00000530,error_log_user_530,FUN_00000530,uses,"calls error_log [0x00004f78], adj_get [0x00000340]"
 0x00000598,leaf_598,FUN_00000598,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x000005c8,adj_get_wrap_5c8,FUN_000005c8,wrapper,only calls adj_get [0x00000340]
@@ -149,12 +149,12 @@ address,name,was,rule,evidence
 0x000055a0,leaf_55a0,FUN_000055a0,leaf,"no call to a named function, no table or RAM symbol"
 0x000055a4,leaf_55a4,FUN_000055a4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x000055c0,error_log_user_55c0,FUN_000055c0,uses,calls error_log_wrap [0x0000e3a0]
-0x00005604,task_kill_user_5604,FUN_00005604,uses,"calls task_kill [0x0000ae1c], fatal_halt [0x00004f58], task_create [0x0000aa04]"
+0x00005604,post_event_1b_start_task_2_5604,FUN_00005604,purpose,calls task_kill; task_create(0x2); event_post(0x1b); calls dmd_page_alloc_pair
 0x00005614,ram_00031450_user,FUN_00005614,ram,uses RAM 0x00031450
 0x00005630,start_deff_7,FUN_00005630,deff,deff_start(7)
 0x00005718,ram_02110004_user,FUN_00005718,ram,uses RAM 0x02110004
 0x00005724,start_deff_5_sub_5724,FUN_00005724,sub,called only by start_deff_5 [0x00006ecc]
-0x00005788,event_post_user_5788,FUN_00005788,uses,"calls event_post [0x00006e50], set_dat_02110081 [0x00004eb4]"
+0x00005788,post_event_24_set_dat_02110081_5788,FUN_00005788,purpose,event_post(0x24); calls set_dat_02110081
 0x000057e4,ram_02110000_user,FUN_000057e4,ram,"uses RAM 0x02110000, 0x0211000c"
 0x00005810,leaf_5810,FUN_00005810,leaf,"no call to a named function, no table or RAM symbol"
 0x00005870,ram_0003630c_user,FUN_00005870,ram,"uses RAM 0x0003630c, 0x00031454"
@@ -178,7 +178,7 @@ address,name,was,rule,evidence
 0x000064f0,coil_slot_64ac_wrap_64f0,FUN_000064f0,wrapper,only calls coil_slot_64ac [0x000064ac]
 0x00006540,coil_slot_6540,FUN_00006540,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00006588,coil_slot_6540_wrap_6588,FUN_00006588,wrapper,only calls coil_slot_6540 [0x00006540]
-0x000065c4,event_post_user_65c4,FUN_000065c4,uses,"calls event_post [0x00006e50], error_log_wrap [0x000064ac], error_log_wrap [0x00006540]"
+0x000065c4,post_event_28_65c4,FUN_000065c4,purpose,event_post(0x28); event_post(0x29)
 0x00006668,ram_0003145c_user_6668,FUN_00006668,ram,uses RAM 0x0003145c
 0x000066a4,coil_slot_66a4,FUN_000066a4,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00006778,ram_0003145c_user_6778,FUN_00006778,ram,uses RAM 0x0003145c
@@ -197,9 +197,9 @@ address,name,was,rule,evidence
 0x00006d74,msg_get_user_6d74,FUN_00006d74,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x00006eb8,leaf_6eb8,FUN_00006eb8,leaf,"no call to a named function, no table or RAM symbol"
 0x00006ecc,start_deff_5,FUN_00006ecc,deff,deff_start(5)
-0x00006fe8,event_post_wrap_6fe8,FUN_00006fe8,wrapper,only calls event_post [0x00006e50]
-0x00007028,event_post_user_7028,FUN_00007028,uses,"calls event_post_wrap [0x00006fe8], task_kill [0x0000ae1c], fatal_halt [0x00004f58]"
-0x0000704c,event_post_wrap_704c,FUN_0000704c,wrapper,only calls event_post [0x00006e50]
+0x00006fe8,post_event_3d_6fe8,FUN_00006fe8,purpose,event_post(0x3d)
+0x00007028,post_event_1b_start_task_2_7028,FUN_00007028,purpose,calls task_kill; task_create(0x2); event_post(0x1b); calls dmd_page_alloc_pair
+0x0000704c,post_event_3d_704c,FUN_0000704c,purpose,event_post(0x3d)
 0x00007088,table_040c7f68_reader,FUN_00007088,table,reads ROM table 0x040c7f68
 0x00007144,memset_wrap_7144,FUN_00007144,wrapper,only calls memset [0x0002fd80]
 0x000071ac,leaf_71ac,FUN_000071ac,leaf,"no call to a named function, no table or RAM symbol"
@@ -287,7 +287,7 @@ address,name,was,rule,evidence
 0x00009c0c,leaf_9c0c,FUN_00009c0c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00009c50,start_deff_5_sub_9c50,FUN_00009c50,sub,called only by start_deff_5 [0x00006ecc]
 0x00009ca8,memset_user_9ca8,FUN_00009ca8,uses,"calls memset [0x0002fd80], error_log [0x00004f78], task_sleep [0x0000acfc]"
-0x00009e38,task_running_user_9e38,FUN_00009e38,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
+0x00009e38,check_task_5_9e38,FUN_00009e38,purpose,task_running(0x5)
 0x00009f10,ram_0003149a_user,FUN_00009f10,ram,"uses RAM 0x0003149a, 0x00031590"
 0x00009f3c,nvram_unlock_user_9f3c,FUN_00009f3c,uses,calls nvram_unlock [0x00009ec8]
 0x00009f60,leaf_9f60,FUN_00009f60,leaf,"no call to a named function, no table or RAM symbol"
@@ -303,7 +303,7 @@ address,name,was,rule,evidence
 0x0000a89c,ram_000314a4_user,FUN_0000a89c,ram,uses RAM 0x000314a4
 0x0000a910,leaf_a910,FUN_0000a910,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000a958,default_user_a958,FUN_0000a958,uses,calls default [0x00004ef4]
-0x0000a9bc,event_post_user_a9bc,FUN_0000a9bc,uses,calls event_post [0x00006e50]
+0x0000a9bc,post_event_49_a9bc,FUN_0000a9bc,purpose,event_post(0x49)
 0x0000aaf8,task_running_user_aaf8,FUN_0000aaf8,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
 0x0000ab4c,task_kill_user_ab4c,FUN_0000ab4c,uses,"calls task_kill [0x0000ae1c], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
 0x0000abe8,leaf_abe8,FUN_0000abe8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -322,7 +322,7 @@ address,name,was,rule,evidence
 0x0000b56c,ram_021100d4_user_b56c,FUN_0000b56c,ram,"uses RAM 0x021100d4, 0x02110084, 0x02110088"
 0x0000b598,error_log_wrap_b598,FUN_0000b598,wrapper,only calls error_log [0x00004f78]
 0x0000b648,leaf_b648,FUN_0000b648,leaf,"no call to a named function, no table or RAM symbol"
-0x0000b654,event_post_user_b654,FUN_0000b654,uses,calls event_post [0x00006e50]
+0x0000b654,post_event_49_b654,FUN_0000b654,purpose,event_post(0x49)
 0x0000b698,leaf_b698,FUN_0000b698,leaf,"no call to a named function, no table or RAM symbol"
 0x0000b780,leaf_b780,FUN_0000b780,leaf,"no call to a named function, no table or RAM symbol"
 0x0000b7e4,leaf_b7e4,FUN_0000b7e4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -357,7 +357,7 @@ address,name,was,rule,evidence
 0x0000c37c,error_log_user_c37c,FUN_0000c37c,uses,calls error_log [0x00004f78]
 0x0000c610,leaf_c610,FUN_0000c610,leaf,"no call to a named function, no table or RAM symbol"
 0x0000c624,leaf_c624,FUN_0000c624,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0000c694,error_log_user_c694,FUN_0000c694,uses,"calls error_log_wrap [0x0000bff4], event_post [0x00006e50]"
+0x0000c694,post_event_4b_c694,FUN_0000c694,purpose,event_post(0x4b)
 0x0000c768,leaf_c768,FUN_0000c768,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000c7fc,leaf_c7fc,FUN_0000c7fc,leaf,"no call to a named function, no table or RAM symbol"
 0x0000c818,leaf_c818,FUN_0000c818,leaf,"no call to a named function, no table or RAM symbol"
@@ -389,8 +389,8 @@ address,name,was,rule,evidence
 0x0000d82c,switch_rec_d2d4_wrap_d7bc_wrap_d82c,FUN_0000d82c,wrapper,only calls switch_rec_d2d4_wrap_d7bc [0x0000d7bc]
 0x0000d8a0,task_of_serve_ball_sub_d8a0,FUN_0000d8a0,sub,called only by task_of_serve_ball [0x0103b128]
 0x0000d8ac,ram_000314d8_user,FUN_0000d8ac,ram,uses RAM 0x000314d8
-0x0000d8c4,event_post_wrap_d8c4,FUN_0000d8c4,wrapper,only calls event_post [0x00006e50]
-0x0000d8d0,event_post_wrap_d8d0,FUN_0000d8d0,wrapper,only calls event_post [0x00006e50]
+0x0000d8c4,post_event_6a_d8c4,FUN_0000d8c4,purpose,event_post(0x6a)
+0x0000d8d0,post_event_6a_d8d0,FUN_0000d8d0,purpose,event_post(0x6a)
 0x0000d8e4,msg_get_user_d8e4,FUN_0000d8e4,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x0000d930,error_log_user_d930,FUN_0000d930,uses,"calls error_log_wrap [0x0000d2d4], strcpy [0x0002fe30]"
 0x0000d974,play_sound_00f_4817c_sub_d974,FUN_0000d974,sub,called only by play_sound_00f_4817c [0x0104817c]
@@ -419,7 +419,7 @@ address,name,was,rule,evidence
 0x0000e778,fatal_halt_user_e778,FUN_0000e778,uses,"calls fatal_halt [0x00004f58], strcmp [0x0002fe00]"
 0x0000eaec,leaf_eaec,FUN_0000eaec,leaf,"no call to a named function, no table or RAM symbol"
 0x0000eb00,deff_003_transformers_sub_eb00,FUN_0000eb00,sub,called only by deff_003_transformers [0x0103f960]
-0x0000eb3c,error_log_user_eb3c,FUN_0000eb3c,uses,"calls error_log_wrap [0x0000e3a0], memset [0x0002fd80], event_post [0x00006e50]"
+0x0000eb3c,post_event_5d_eb3c,FUN_0000eb3c,purpose,event_post(0x5d)
 0x0000ecb8,leaf_ecb8,FUN_0000ecb8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000ecfc,snd_resolve_call_user_ecfc,FUN_0000ecfc,uses,calls snd_resolve_call [0x00025044]
 0x0000ed0c,snd_resolve_call_user_ed0c,FUN_0000ed0c,uses,calls snd_resolve_call [0x00025044]
@@ -444,7 +444,7 @@ address,name,was,rule,evidence
 0x0000f4e0,error_log_user_f4e0,FUN_0000f4e0,uses,calls error_log [0x00004f78]
 0x0000f59c,play_sound_00f_4817c_sub_f59c,FUN_0000f59c,sub,called only by play_sound_00f_4817c [0x0104817c]
 0x0000f644,error_log_wrap_f644,FUN_0000f644,wrapper,only calls error_log [0x00004f78]
-0x0000f6a0,play_sound_00f_4817c_sub_f6a0,FUN_0000f6a0,sub,called only by play_sound_00f_4817c [0x0104817c]
+0x0000f6a0,check_task_6_f6a0,FUN_0000f6a0,purpose,task_running(0x6)
 0x0000f740,play_sound_00f_4817c_sub_f740,FUN_0000f740,sub,called only by play_sound_00f_4817c [0x0104817c]
 0x0000f768,leaf_f768,FUN_0000f768,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000f790,leaf_f790,FUN_0000f790,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -453,8 +453,8 @@ address,name,was,rule,evidence
 0x0000f888,error_log_user_f888,FUN_0000f888,uses,"calls error_log_wrap [0x0000d2d4], error_log_wrap [0x00001e50], fatal_halt [0x00004f58]"
 0x0000f9c0,start_deff_5_sub_f9c0,FUN_0000f9c0,sub,called only by start_deff_5 [0x00006ecc]
 0x0000fa04,on_event_05_5c30_sub_fa04,FUN_0000fa04,sub,called only by on_event_05_5c30 [0x01005c30]
-0x0000fa8c,event_post_user_fa8c,FUN_0000fa8c,uses,"calls event_post [0x00006e50], task_sleep [0x0000acfc]"
-0x0000fd20,task_running_user_fd20,FUN_0000fd20,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
+0x0000fa8c,post_event_64_fa8c,FUN_0000fa8c,purpose,event_post(0x64); event_post(0x64); event_post(0x64)
+0x0000fd20,check_task_6_fd20,FUN_0000fd20,purpose,task_running(0x6)
 0x0000fdb0,leaf_fdb0,FUN_0000fdb0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000fdf0,start_deff_5_sub_fdf0,FUN_0000fdf0,sub,called only by start_deff_5 [0x00006ecc]
 0x0000fe38,error_log_wrap_fe38,FUN_0000fe38,wrapper,only calls error_log [0x00004f78]
@@ -469,7 +469,7 @@ address,name,was,rule,evidence
 0x00010364,error_log_user_10364,FUN_00010364,uses,calls error_log [0x00004f78]
 0x00010440,error_log_user_10440,FUN_00010440,uses,calls error_log [0x00004f78]
 0x000104ec,error_log_user_104ec,FUN_000104ec,uses,"calls error_log_wrap [0x0000b598], task_sleep [0x0000acfc]"
-0x00010884,task_kill_user_10884,FUN_00010884,uses,"calls task_kill [0x0000ae1c], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
+0x00010884,kill_task_12_10884,FUN_00010884,purpose,task_kill(0x12)
 0x0001089c,leaf_1089c,FUN_0001089c,leaf,"no call to a named function, no table or RAM symbol"
 0x0001095c,leaf_1095c,FUN_0001095c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0001097c,ram_02110248_user_1097c,FUN_0001097c,ram,"uses RAM 0x02110248, 0x0211024c"
@@ -508,7 +508,7 @@ address,name,was,rule,evidence
 0x000113fc,ram_00031478_user,FUN_000113fc,ram,"uses RAM 0x00031478, 0x0003147c, 0x00031474"
 0x000114b0,io_isr,FUN_000114b0,hand,"the 4 kHz IO interrupt: 1 ms coil slot pass (time, patterns, end), switch rows (0x000368da), line sync, then motor_poll_all"
 0x00012880,ram_00031548_user,FUN_00012880,ram,uses RAM 0x00031548
-0x000128c4,start_deff_5_sub_128c4,FUN_000128c4,sub,called only by start_deff_5 [0x00006ecc]
+0x000128c4,post_event_3e_128c4,FUN_000128c4,purpose,event_post(0x3e); event_post(0x3f)
 0x00012b24,table_040c8ad0_reader,FUN_00012b24,table,reads ROM table 0x040c8ad0
 0x00012b88,table_040c8adc_reader,FUN_00012b88,table,reads ROM table 0x040c8adc
 0x00012bec,leaf_12bec,FUN_00012bec,leaf,"no call to a named function, no table or RAM symbol"
@@ -640,7 +640,7 @@ address,name,was,rule,evidence
 0x000165c0,on_event_2b_165c0,FUN_000165c0,hook,"event_hook_add(&DAT_00037578, 0x2b, ..) in FUN_00017348 [0x00017348]"
 0x00016628,on_event_0c_16628,FUN_00016628,hook,"event_hook_add(&DAT_0003757c, 0xc, ..) in FUN_00017348 [0x00017348]"
 0x00016674,task_0x2b_of_FUN_0001673c,FUN_00016674,task,"task entry started by FUN_0001673c [0x0001673c] (task_create, id 0x2b)"
-0x0001673c,task_create_wrap_1673c,FUN_0001673c,wrapper,only calls task_create [0x0000aa04]
+0x0001673c,start_task_2b_1673c,FUN_0001673c,purpose,task_create(0x2b)
 0x00016768,motor_16768,FUN_00016768,subsystem,"uses 0x000315f4: the list of motors, motor_poll_all [0x00016b7c]"
 0x00016810,motor_set_position,FUN_00016810,hand,"OS motor class (vtable 0x000339d4 +0x18): writes the current position +0x20, interrupts off"
 0x0001687c,motor_claim,FUN_0001687c,hand,"waits up to n ticks while vtable +0x2c says the motor is owned, then makes the current task its owner (+0x2c) with an exit call 0x000169f0"
@@ -674,20 +674,20 @@ address,name,was,rule,evidence
 0x000177b4,leff_start_user_177b4,FUN_000177b4,uses,calls leff_start [0x00007c10]
 0x00017834,ram_00033dd4_user_17834,FUN_00017834,ram,uses RAM 0x00033dd4
 0x000178a0,ram_00033dd4_user_178a0,FUN_000178a0,ram,"uses RAM 0x00033dd4, 0x00033e1c"
-0x000179dc,ball_save_task_sub,FUN_000179dc,sub,called only by ball_save_task [0x00017a28]
+0x000179dc,post_event_a_179dc,FUN_000179dc,purpose,event_post(0xa); event_post(0xb)
 0x00017b24,task_running_range_wrap_17b24,FUN_00017b24,wrapper,only calls task_running_range [0x0000b2ac]
 0x00017be4,task_kill_range_user_17be4,FUN_00017be4,uses,calls task_kill_range [0x0000af20]
 0x00017c00,ram_00031604_user_17c00,FUN_00017c00,ram,uses RAM 0x00031604
 0x00017c24,ram_00031604_user_17c24,FUN_00017c24,ram,uses RAM 0x00031604
 0x00017c2c,start_deff_5_sub_267fc_sub_17c2c,FUN_00017c2c,sub,called only by start_deff_5_sub_267fc [0x000267fc]
-0x00017c60,task_running_user_17c60,FUN_00017c60,uses,"calls task_running [0x0000b248], get_dat_00031621 [0x00019328], ball_search_start [0x0103b8e0]"
+0x00017c60,check_task_29_get_dat_00031621_17c60,FUN_00017c60,purpose,task_running(0x29); task_running(0x2a); task_running(0x2b); calls get_dat_00031621; calls ball_search_start
 0x00017d2c,ball_start_sub_17d2c,FUN_00017d2c,sub,called only by ball_start [0x00019d30]
-0x00017d60,task_running_user_17d60,FUN_00017d60,uses,calls task_running [0x0000b248]
+0x00017d60,check_task_2b_17d60,FUN_00017d60,purpose,task_running(0x2b)
 0x00017da4,set_dat_00031600,FUN_00017da4,setter,writes DAT_00031600
-0x00017db4,task_running_user_17db4,FUN_00017db4,uses,"calls task_running [0x0000b248], switch_timeout_obj_add [0x00010058]"
+0x00017db4,check_task_2b_switch_timeout_obj_add_17db4,FUN_00017db4,purpose,task_running(0x2b); calls switch_timeout_obj_add
 0x00017ea0,adj_competition_mode,FUN_00017ea0,adj,adj_get(42) COMPETITION MODE
 0x00017ed4,adj_player_competition,FUN_00017ed4,adj,adj_get(46) PLAYER COMPETITION
-0x00017fa0,adj_player_competition_user,FUN_00017fa0,uses,"calls adj_player_competition [0x00017ed4], task_kill [0x0000ae1c], error_log [0x00004f78]"
+0x00017fa0,kill_task_3b_adj_player_competition_17fa0,FUN_00017fa0,purpose,calls adj_player_competition; task_kill(0x3b)
 0x00017fdc,memset_wrap_17fdc,FUN_00017fdc,wrapper,only calls memset [0x0002fd80]
 0x0001801c,lamp_layer_1801c,FUN_0001801c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0001803c,adj_extra_ball_limit,FUN_0001803c,adj,adj_get(26) EXTRA BALL LIMIT
@@ -700,7 +700,7 @@ address,name,was,rule,evidence
 0x000183ac,lamp_layer_183ac,FUN_000183ac,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x00018460,adj_hstd_reset_count_18460,FUN_00018460,adj,adj_get(61) HSTD RESET COUNT
 0x00018480,game_init_sub_184f8_sub_18480,FUN_00018480,sub,called only by game_init_sub_184f8 [0x000184f8]
-0x000184f8,game_init_sub_184f8,FUN_000184f8,sub,called only by game_init [0x00019c64]
+0x000184f8,adj_hstd_reset_count_184f8,FUN_000184f8,purpose,adj_get(61) HSTD RESET COUNT; adj_get(48) ALLOW HIGH SCORES; adj_get(61) HSTD RESET COUNT
 0x0001855c,error_log_wrap_1855c,FUN_0001855c,wrapper,only calls error_log [0x00004f78]
 0x000185c8,error_log_user_185c8,FUN_000185c8,uses,"calls error_log_wrap [0x0000e3a0], error_log [0x00004f78]"
 0x00018644,error_log_user_18644,FUN_00018644,uses,calls error_log_wrap [0x0001855c]
@@ -735,10 +735,10 @@ address,name,was,rule,evidence
 0x000199bc,tournament_get_type_user_199bc,FUN_000199bc,uses,calls tournament_get_type [0x0001e8c0]
 0x00019a0c,lamp_layer_19a0c,FUN_00019a0c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x00019b28,lamp_layer_19b28,FUN_00019b28,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
-0x00019c40,task_create_wrap_19c40,FUN_00019c40,wrapper,only calls task_create [0x0000aa04]
+0x00019c40,start_task_13_19c40,FUN_00019c40,purpose,task_create(0x13)
 0x00019e44,start_deff_25,FUN_00019e44,deff,deff_start(25)
 0x0001a110,task_sleep_wrap_1a110,FUN_0001a110,wrapper,only calls task_sleep [0x0000acfc]
-0x0001a144,start_deff_25_sub_1a144,FUN_0001a144,sub,called only by start_deff_25 [0x00019e44]
+0x0001a144,post_event_2a_kill_task_0_1a144,FUN_0001a144,purpose,event_post(0x2a); task_kill(0x0); calls start_deff_34; calls high_score_entry; calls start_deff_38; event_post(0x2b)
 0x0001a6e4,sw_start_button,FUN_0001a6e4,switch,handler of switch(es) START BUTTON (switch table)
 0x0001a6fc,sw_tournament_start,FUN_0001a6fc,switch,handler of switch(es) TOURNAMENT START (switch table)
 0x0001a714,start_deff_5_sub_267fc_sub_1a714,FUN_0001a714,sub,called only by start_deff_5_sub_267fc [0x000267fc]
@@ -748,7 +748,7 @@ address,name,was,rule,evidence
 0x0001a928,error_log_wrap_1a928,FUN_0001a928,wrapper,only calls error_log [0x00004f78]
 0x0001a980,error_log_wrap_1a980,FUN_0001a980,wrapper,only calls error_log [0x00004f78]
 0x0001a9c8,ram_02110900_user,FUN_0001a9c8,ram,uses RAM 0x02110900
-0x0001a9e4,event_post_user_1a9e4,FUN_0001a9e4,uses,calls event_post [0x00006e50]
+0x0001a9e4,post_event_45_1a9e4,FUN_0001a9e4,purpose,event_post(0x45); event_post(0x46)
 0x0001aa9c,adj_balls_per_game_1aa9c,FUN_0001aa9c,adj,adj_get(31) BALLS PER GAME
 0x0001aacc,current_player_user_1aacc,FUN_0001aacc,uses,"calls current_player [0x0001aa40], adj_balls_per_game [0x0001aa9c]"
 0x0001aae4,error_log_user_1aae4,FUN_0001aae4,uses,calls error_log [0x00004f78]
@@ -784,21 +784,21 @@ address,name,was,rule,evidence
 0x0001b8c4,nvram_unlock_user_1b8c4,FUN_0001b8c4,uses,calls nvram_unlock [0x00009ec8]
 0x0001ba30,num_players_user_1ba30,thunk_FUN_0002234c,uses,"calls num_players [0x0001a94c], error_log_wrap [0x0001cacc], nvram_unlock [0x00009ec8]"
 0x0001bbb0,num_players_user_1bbb0,thunk_FUN_0002234c,uses,"calls num_players [0x0001a94c], error_log_wrap [0x0001cacc], nvram_unlock [0x00009ec8]"
-0x0001bc2c,strcmp_user_1bc2c,FUN_0001bc2c,uses,"calls strcmp [0x0002fe00], task_running [0x0000b248], task_create [0x0000aa04]"
+0x0001bc2c,check_task_36_strcmp_1bc2c,FUN_0001bc2c,purpose,calls strcmp; calls strcmp; task_running(0x36); task_create(0x36); calls strcmp; task_running(0x36)
 0x0001bdcc,nvram_unlock_user_1bdcc,FUN_0001bdcc,uses,"calls nvram_unlock [0x00009ec8], memset [0x0002fd80], error_log [0x00004f78]"
 0x0001be5c,error_log_user_1be5c,FUN_0001be5c,uses,calls error_log [0x00004f78]
 0x0001beb0,adj_dynamic_replay_start,FUN_0001beb0,adj,adj_get(16) DYNAMIC REPLAY START
 0x0001bf54,adj_dynamic_replay_start_user_1bf54,FUN_0001bf54,uses,calls adj_dynamic_replay_start [0x0001beb0]
 0x0001bfd0,memset_user_1bfd0,FUN_0001bfd0,uses,calls memset [0x0002fd80]
 0x0001c028,ram_0211097c_user,FUN_0001c028,ram,"uses RAM 0x0211097c, 0x02110982"
-0x0001c07c,adj_get_user_1c07c,FUN_0001c07c,uses,"calls adj_get [0x00000340], error_log [0x00004f78]"
-0x0001c174,task_running_user_1c174,FUN_0001c174,uses,"calls task_running [0x0000b248], current_player [0x0001aa40], error_log [0x00004f78]"
+0x0001c07c,adj_replay_levels_adj_get_1c07c,FUN_0001c07c,purpose,adj_get(14) REPLAY LEVELS; adj_get(11) REPLAY TYPE; calls adj_get; adj_get(21) REPLAY BOOST; adj_get(15) AUTO REPLAY START; adj_get(21) REPLAY BOOST
+0x0001c174,check_task_29_1c174,FUN_0001c174,purpose,task_running(0x29)
 0x0001c21c,adj_replay_award_1c21c,FUN_0001c21c,adj,adj_get(13) REPLAY AWARD
 0x0001c2b8,adj_dynamic_replay_start_user_1c2b8,FUN_0001c2b8,uses,"calls adj_dynamic_replay_start [0x0001beb0], memset [0x0002fd80]"
 0x0001c2c8,start_deff_5_sub_267fc_sub_1c2c8,FUN_0001c2c8,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x0001c2ec,game_init_sub_1c2ec,FUN_0001c2ec,sub,called only by game_init [0x00019c64]
 0x0001c6b8,adj_replay_percentage,FUN_0001c6b8,adj,adj_get(12) REPLAY PERCENTAGE
-0x0001c888,start_deff_25_sub_1a144_sub_1c888,FUN_0001c888,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
+0x0001c888,adj_dynamic_replay_start_nvram_unlock_1c888,FUN_0001c888,purpose,calls nvram_unlock; adj_get(16) DYNAMIC REPLAY START; adj_get(12) REPLAY PERCENTAGE; calls nvram_unlock; calls adj_replay_percentage
 0x0001caac,current_player_wrap_1caac,FUN_0001caac,wrapper,only calls current_player [0x0001aa40]
 0x0001cacc,error_log_wrap_1a928_wrap_1cacc,FUN_0001cacc,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001cc84,current_player_user_1cc84,FUN_0001cc84,uses,"calls current_player [0x0001aa40], error_log_wrap [0x0001a928]"
@@ -809,12 +809,12 @@ address,name,was,rule,evidence
 0x0001ce0c,game_init_sub_1ce0c,FUN_0001ce0c,sub,called only by game_init [0x00019c64]
 0x0001ce20,ball_start_sub_1ce20,FUN_0001ce20,sub,called only by ball_start [0x00019d30]
 0x0001ce44,set_dat_0003243d,FUN_0001ce44,setter,writes DAT_0003243d
-0x0001ce58,start_deff_25_sub_1a144_sub_1ce58,FUN_0001ce58,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
+0x0001ce58,post_event_4e_audit_add_1ce58,FUN_0001ce58,purpose,event_post(0x4e); calls audit_add; event_post(0x4f)
 0x0001cf9c,strcmp_user_1cf9c,FUN_0001cf9c,uses,"calls strcmp [0x0002fe00], num_players [0x0001a94c], atoi [0x0002fa24]"
 0x0001d09c,vsprintf_user_1d09c,FUN_0001d09c,uses,calls vsprintf [0x0002fef0]
 0x0001d0e0,ram_00037608_user,FUN_0001d0e0,ram,uses RAM 0x00037608
 0x0001d178,error_log_wrap_1d178,FUN_0001d178,wrapper,only calls error_log [0x00004f78]
-0x0001d360,error_log_user_1d360,FUN_0001d360,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000e3a0], event_post [0x00006e50]"
+0x0001d360,post_event_52_coil_pulse_now_wait_1d360,FUN_0001d360,purpose,event_post(0x52); calls coil_pulse_now_wait; event_post(0x53); event_post(0x52); calls coil_pulse_now_wait; event_post(0x53)
 0x0001d4c8,leaf_1d4c8,FUN_0001d4c8,leaf,"no call to a named function, no table or RAM symbol"
 0x0001d50c,task_0x39_of_FUN_0001d534,FUN_0001d50c,task,"task entry started by FUN_0001d534 [0x0001d534] (task_create, id 0x39)"
 0x0001d534,start_deff_24,FUN_0001d534,deff,deff_start(24)
@@ -830,7 +830,7 @@ address,name,was,rule,evidence
 0x0001da14,set_dat_00037628,FUN_0001da14,setter,writes DAT_00037628
 0x0001da38,adj_coin_door_disable_tilt,FUN_0001da38,adj,adj_get(64) COIN DOOR DISABLE TILT
 0x0001da8c,adj_tilt_warnings,FUN_0001da8c,adj,adj_get(32) TILT WARNINGS
-0x0001dc58,task_running_user_1dc58,FUN_0001dc58,uses,"calls task_running [0x0000b248], error_log_wrap [0x0000d464], task_kill [0x0000ae1c]"
+0x0001dc58,check_task_29_adj_tilt_warnings_1dc58,FUN_0001dc58,purpose,task_running(0x29); task_kill(0x2e); calls adj_tilt_warnings
 0x0001dd14,leaf_1dd14,FUN_0001dd14,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0001dd44,nvram_unlock_user_1dd44,FUN_0001dd44,uses,"calls nvram_unlock [0x00009ec8], memset [0x0002fd80]"
 0x0001dd8c,nvram_unlock_user_1dd8c,FUN_0001dd8c,uses,"calls nvram_unlock [0x00009ec8], memset [0x0002fd80]"
@@ -839,7 +839,7 @@ address,name,was,rule,evidence
 0x0001e194,error_log_user_1e194,FUN_0001e194,uses,"calls error_log_wrap [0x0001a928], error_log_wrap [0x0001e994], tournament_get [0x0001ec30]"
 0x0001e24c,random_below_user_1e24c,FUN_0001e24c,uses,calls random_below [0x0000ba94]
 0x0001e2e4,ram_02100000_user,FUN_0001e2e4,ram,uses RAM 0x02100000
-0x0001e328,start_deff_34_sub,FUN_0001e328,sub,called only by start_deff_34 [0x0001e810]
+0x0001e328,show_deff_35_post_event_33_1e328,FUN_0001e328,purpose,event_post(0x33); deff_start(35); event_post(0x34); event_post(0x35); deff_start(36); event_post(0x36)
 0x0001e810,start_deff_34,FUN_0001e810,deff,deff_start(34)
 0x0001e934,tournament_1e934,FUN_0001e934,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
 0x0001e994,error_log_wrap_1a928_wrap_1e994,FUN_0001e994,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
@@ -860,9 +860,9 @@ address,name,was,rule,evidence
 0x0001f2f0,error_log_wrap_1a928_wrap_1f2f0,FUN_0001f2f0,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001f320,ram_0003154c_user,FUN_0001f320,ram,uses RAM 0x0003154c
 0x0001f340,start_deff_5_sub_267fc_sub_1f340,thunk_FUN_0001f320,sub,called only by start_deff_5_sub_267fc [0x000267fc]
-0x0001f344,audit_add_user_1f344,FUN_0001f344,uses,"calls audit_add [0x00000c3c], current_player [0x0001aa40]"
+0x0001f344,count_0_1_minute_games_1f344,FUN_0001f344,purpose,audit_add(59) 0 - 1 MINUTE GAMES; audit_add(60) 1 - 1.5 MINUTE GAMES; audit_add(61) 1.5 - 2 MINUTE GAMES; audit_add(62) 2 - 2.5 MINUTE GAMES; audit_add(63) 2.5 - 3 MINUTE GAMES; audit_add(64) 3 - 3.5 MINUTE GAMES
 0x0001f550,game_init_sub_1f550,FUN_0001f550,sub,called only by game_init [0x00019c64]
-0x0001f564,start_deff_25_sub_1a144_sub_1f564,FUN_0001f564,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
+0x0001f564,post_event_31_audit_add_1f564,FUN_0001f564,purpose,event_post(0x31); calls audit_add; event_post(0x32)
 0x0001f634,dmd_page_1f634,FUN_0001f634,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
 0x0001f8bc,error_log_user_1f8bc,FUN_0001f8bc,uses,calls error_log [0x00004f78]
 0x0001f910,leaf_1f910,FUN_0001f910,leaf,"no call to a named function, no table or RAM symbol"
@@ -1040,7 +1040,7 @@ address,name,was,rule,evidence
 0x000267fc,start_deff_5_sub_267fc,FUN_000267fc,sub,called only by start_deff_5 [0x00006ecc]
 0x000268a4,lamp_layer_268a4,FUN_000268a4,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x000268b4,game_device_268b4,FUN_000268b4,subsystem,"uses 0x040d1804: the game's ball device records (0x24 each), balldev_count_switches"
-0x000268d4,start_deff_3_sub_268d4,FUN_000268d4,sub,called only by start_deff_3 [0x0000ed90]
+0x000268d4,kill_task_2b_268d4,FUN_000268d4,purpose,task_kill(0x2b)
 0x000268fc,vsprintf_user_268fc,FUN_000268fc,uses,"calls vsprintf [0x0002fef0], msg_get [0x000099f0]"
 0x0002696c,vsprintf_user_2696c,FUN_0002696c,uses,"calls vsprintf [0x0002fef0], msg_get [0x000099f0]"
 0x000269b8,vsprintf_user_269b8,FUN_000269b8,uses,"calls vsprintf [0x0002fef0], msg_get [0x000099f0]"
@@ -1072,7 +1072,7 @@ address,name,was,rule,evidence
 0x000274f0,draw_d_p1_st_nd_274f0,FUN_000274f0,msg,"draws msg 0x4d4 ""%d%P1/ST/ND/RD/TH/% PLACE"""
 0x00027508,tournament_get_type_user_27508,FUN_00027508,uses,"calls tournament_get_type [0x0001e8c0], tournament_get [0x0001ec30]"
 0x00027540,draw_d_p1_st_nd_27540,FUN_00027540,msg,"draws msg 0x4d4 ""%d%P1/ST/ND/RD/TH/% PLACE"""
-0x00027570,font_height_user_27570,FUN_00027570,uses,"calls font_height [0x00021244], text_draw_msg_page [0x000215ac], dmd_page_alloc [0x0001ffd4]"
+0x00027570,draw_tournament_font_height_27570,FUN_00027570,purpose,calls font_height; text_draw_msg_page(0x4bb) 'TOURNAMENT'; text_draw_msg_page(0x4bc) 'LEADERS:'; calls dmd_page_alloc; calls bitmap_draw2
 0x00027670,tournament_get_type_user_27670,FUN_00027670,uses,"calls tournament_get_type [0x0001e8c0], tournament_get [0x0001ec30]"
 0x000276a8,draw_prize_pool,FUN_000276a8,msg,"draws msg 0x4bd ""PRIZE POOL:"""
 0x000277d0,tournament_get_type_wrap_277d0,FUN_000277d0,wrapper,only calls tournament_get_type [0x0001e8c0]
@@ -1121,9 +1121,9 @@ address,name,was,rule,evidence
 0x00029028,msg_get_user_29028,FUN_00029028,uses,"calls msg_get [0x000099f0], vsprintf [0x0002fef0]"
 0x00029058,text_draw_msg_page_user_29058,FUN_00029058,uses,"calls text_draw_msg_page [0x000215ac], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x000291b4,ram_000384a4_user,FUN_000291b4,ram,uses RAM 0x000384a4
-0x00029224,text_draw_msg_page_user_29224,FUN_00029224,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
-0x00029338,text_draw_msg_page_user_29338,FUN_00029338,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
-0x0002942c,text_draw_msg_page_user_2942c,FUN_0002942c,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x00029224,draw_monetary_value_29224,FUN_00029224,purpose,text_draw_msg_page(0x3b6) 'MONETARY VALUE:'; text_printf_msg(0x3b7) '1 TICKET = %d.%02d'
+0x00029338,draw_face_value_29338,FUN_00029338,purpose,text_draw_msg_page(0x3b8) 'FACE VALUE:'; text_printf_msg(0x3b9) '%u TICKET%P1//S/%'
+0x0002942c,draw_price_per_play_2942c,FUN_0002942c,purpose,text_draw_msg_page(0x3ba) 'PRICE PER PLAY:'; text_printf_msg(0x3bb) '%d.%02d'
 0x00029540,table_040c97f8_reader,FUN_00029540,table,reads ROM table 0x040c97f8
 0x000295a0,msg_get_user_295a0,FUN_000295a0,uses,"calls msg_get [0x000099f0], vsprintf [0x0002fef0]"
 0x000295f0,table_040c9820_reader,FUN_000295f0,table,reads ROM table 0x040c9820
@@ -1132,7 +1132,7 @@ address,name,was,rule,evidence
 0x000296f0,draw_award_tickets_for_score,FUN_000296f0,msg,"draws msg 0x3c0 ""AWARD TICKETS FOR SCORE?"""
 0x000297fc,table_040c9868_reader,FUN_000297fc,table,reads ROM table 0x040c9868
 0x0002986c,table_040c988c_reader,FUN_0002986c,table,reads ROM table 0x040c988c
-0x000298dc,text_draw_msg_page_user_298dc,FUN_000298dc,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x000298dc,draw_adjust_target_score_298dc,FUN_000298dc,purpose,text_draw_msg_page(0x3c7) 'ADJUST TARGET SCORE EVERY:'; text_printf_msg(0x3c8) '%u GAME%P1//S/%'
 0x000299e0,table_040c98d4_reader,FUN_000299e0,table,reads ROM table 0x040c98d4
 0x00029a50,table_040c98f8_reader,FUN_00029a50,table,reads ROM table 0x040c98f8
 0x00029ac0,table_040c991c_reader,FUN_00029ac0,table,reads ROM table 0x040c991c
@@ -1150,7 +1150,7 @@ address,name,was,rule,evidence
 0x0002a268,memset_user_2a268,FUN_0002a268,uses,calls memset [0x0002fd80]
 0x0002a3bc,table_040c99d8_reader_2a3bc,FUN_0002a3bc,table,reads ROM table 0x040c99d8
 0x0002a40c,table_040c99d8_reader_2a40c,FUN_0002a40c,table,reads ROM table 0x040c99d8
-0x0002a45c,error_log_user_2a45c,FUN_0002a45c,uses,"calls error_log_wrap [0x0002a14c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x0002a45c,draw_redemption_setup_text_draw_msg_page_2a45c,FUN_0002a45c,purpose,calls text_draw_msg_page; calls deff_frame_sleep; text_draw_msg_page(0x3b1) 'REDEMPTION SETUP'; text_draw_msg_page(0x3da) 'SETTINGS HAVE BEEN MODIFIED'; text_draw_msg_page(0x3db) 'RESET BOOKKEEPING DATA?'; calls deff_frame_sleep
 0x0002ae7c,msg_get_user_2ae7c,FUN_0002ae7c,uses,"calls msg_get [0x000099f0], vsprintf [0x0002fef0]"
 0x0002af20,vsprintf_wrap_2af20,FUN_0002af20,wrapper,only calls vsprintf [0x0002fef0]
 0x0002af68,error_log_user_2af68,FUN_0002af68,uses,"calls error_log_wrap [0x0000e3a0], msg_get [0x000099f0], strlen [0x0002fe4c]"
@@ -1177,10 +1177,10 @@ address,name,was,rule,evidence
 0x0002bbdc,memset_wrap_2bbdc,FUN_0002bbdc,wrapper,only calls memset [0x0002fd80]
 0x0002bc08,memset_wrap_2bc08,FUN_0002bc08,wrapper,only calls memset [0x0002fd80]
 0x0002bc3c,memset_wrap_2bc3c,FUN_0002bc3c,wrapper,only calls memset [0x0002fd80]
-0x0002bd48,event_post_user_2bd48,FUN_0002bd48,uses,"calls event_post [0x00006e50], start_deff_7 [0x00005630], lamp_compositor_tick [0x000073cc]"
+0x0002bd48,post_event_20_coil_pulse_queue_serve_2bd48,FUN_0002bd48,purpose,event_post(0x20); calls coil_pulse_queue_serve; calls start_deff_7; calls lamp_compositor_tick; calls set_dat_000314b4_ba64; calls start_deff_2_f2a8
 0x0002bdb8,leaf_2bdb8,FUN_0002bdb8,leaf,"no call to a named function, no table or RAM symbol"
 0x0002bdbc,ram_000338a2_user,FUN_0002bdbc,ram,"uses RAM 0x000338a2, 0x000338a4, 0x000338a8"
-0x0002be10,adj_get_wrap_2be10,FUN_0002be10,wrapper,only calls adj_get [0x00000340]
+0x0002be10,adj_replay_type_adj_get_2be10,FUN_0002be10,purpose,adj_get(11) REPLAY TYPE; adj_get(11) REPLAY TYPE; adj_get(11) REPLAY TYPE; adj_get(11) REPLAY TYPE; adj_get(11) REPLAY TYPE; adj_get(11) REPLAY TYPE
 0x0002c000,tournament_2c000,FUN_0002c000,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
 0x0002c018,flipper_buttons_held_wrap_6840_wrap_2c018,FUN_0002c018,wrapper,only calls flipper_buttons_held_wrap_6840 [0x00006840]
 0x0002c028,ram_000339c4_user,FUN_0002c028,ram,uses RAM 0x000339c4
@@ -1226,7 +1226,7 @@ address,name,was,rule,evidence
 0x01000120,text_draw_str_fit_page_user,FUN_01000120,uses,"calls text_draw_str_fit_page [0x00021b4c], font_height [0x00021244], text_draw_str_page [0x00021838]"
 0x01000260,adj_custom_message_260,FUN_01000260,adj,adj_get(2) CUSTOM MESSAGE
 0x0100028c,text_width_user_28c,FUN_0100028c,uses,"calls text_width [0x00021378], strlen [0x0002fe4c], font_height [0x00021244]"
-0x010003e4,font_height_user_3e4,FUN_010003e4,uses,"calls font_height [0x00021244], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x010003e4,draw_learn_more_about_font_height_3e4,FUN_010003e4,purpose,calls font_height; text_draw_msg_page(0x360) 'LEARN MORE ABOUT'; text_draw_msg_page(0x361) 'STERN PINBALL AT'; text_draw_msg_page(0x362) 'WWW.STERNPINBALL.COM'; calls deff_frame_sleep
 0x010004d4,tournament_get_type_user_4d4,FUN_010004d4,uses,calls tournament_get_type [0x0001e8c0]
 0x01000534,tournament_get_type_user_534,FUN_01000534,uses,calls tournament_get_type [0x0001e8c0]
 0x01000594,tournament_get_type_user_594,FUN_01000594,uses,calls tournament_get_type [0x0001e8c0]
@@ -1248,9 +1248,9 @@ address,name,was,rule,evidence
 0x01000f18,current_player_wrap_f18,FUN_01000f18,wrapper,only calls current_player [0x0001aa40]
 0x01000f38,current_player_user_f38,FUN_01000f38,uses,calls current_player_wrap [0x01000f18]
 0x01000f50,on_event_16,FUN_01000f50,hook,"event_hook_add(&DAT_00034b48, 0x16, ..) in FUN_0100172c [0x0100172c]"
-0x01000f68,error_log_user_f68,FUN_01000f68,uses,"calls error_log_wrap [0x00005b58], current_player [0x0001aa40]"
+0x01000f68,test_flag_4b_f68,FUN_01000f68,purpose,game_flag_test(0x4b)
 0x01000fb8,leaf_fb8,FUN_01000fb8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01000ffc,error_log_user_ffc,FUN_01000ffc,uses,"calls error_log_wrap [0x0000b598], player_side [0x01033e30], snd_play [0x000251f4]"
+0x01000ffc,draw_bonus_play_snd_77_ffc,FUN_01000ffc,purpose,calls snd_play; calls dmd_page_alloc; calls bitmap_draw2; text_draw_msg_page(0x52f) 'BONUS'; calls deff_status_frames; calls dmd_page_alloc_pair
 0x0100172c,event_hook_add_user_172c,FUN_0100172c,uses,"calls event_hook_add [0x00006da8], fatal_halt [0x00004f58]"
 0x0100173c,ram_00034b4c_user,FUN_0100173c,ram,"uses RAM 0x00034b4c, 0x00034b48, 0x00034b44"
 0x0100174c,draw_total_bonus,FUN_0100174c,msg,"draws msg 0x324 ""TOTAL BONUS"""
@@ -1259,8 +1259,8 @@ address,name,was,rule,evidence
 0x010018bc,current_player_user_18bc,FUN_010018bc,uses,calls current_player [0x0001aa40]
 0x010019c8,start_leff_149,FUN_010019c8,leff,leff_start(149)
 0x01001a70,start_deff_128,FUN_01001a70,deff,deff_start(128)
-0x01001b38,deff_128_sub_1b38,FUN_01001b38,sub,called only by deff_128 [0x010023e8]
-0x01001f90,deff_128_sub_1f90,FUN_01001f90,sub,called only by deff_128 [0x010023e8]
+0x01001b38,draw_spell_dmd_page_alloc_pair_1b38,FUN_01001b38,purpose,calls dmd_page_alloc_pair; calls bitmap_draw; text_draw_msg_page(0x693) 'SPELL'; text_draw_msg_page(0x694) 'FOR DOUBLE SCORING'; calls bitmap_draw; calls bitmap_draw
+0x01001f90,draw_spell_dmd_page_alloc_pair_1f90,FUN_01001f90,purpose,calls dmd_page_alloc_pair; calls bitmap_draw; text_draw_msg_page(0x693) 'SPELL'; text_draw_msg_page(0x694) 'FOR DOUBLE SCORING'; calls bitmap_draw; calls bitmap_draw
 0x010026cc,event_hook_add_user_26cc,FUN_010026cc,uses,calls event_hook_add [0x00006da8]
 0x010026dc,leff_rule_dtor_user_26dc,FUN_010026dc,uses,calls leff_rule_dtor [0x000177a4]
 0x010026ec,error_log_wrap_1a928_wrap_26ec,FUN_010026ec,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
@@ -1277,7 +1277,7 @@ address,name,was,rule,evidence
 0x01002b28,task_running_range_wrap_2b28,FUN_01002b28,wrapper,only calls task_running_range [0x0000b2ac]
 0x01002b40,task_0x92_of_FUN_01002be4_sub,FUN_01002b40,sub,called only by task_0x92_of_FUN_01002be4 [0x01002b5c]
 0x01002b5c,task_0x92_of_FUN_01002be4,FUN_01002b5c,task,"task entry started by FUN_01002be4 [0x01002be4] (task_create, id 0x92)"
-0x01002be4,task_running_range_user_2be4,FUN_01002be4,uses,"calls task_running_range_wrap [0x01002b28], task_kill_range [0x0000af20], any_multiball_running_wrap [0x01002afc]"
+0x01002be4,start_task_92_task_kill_range_2be4,FUN_01002be4,purpose,calls task_kill_range; task_create(0x92); calls set_dat_000315fc
 0x01002c7c,leaf_2c7c,FUN_01002c7c,leaf,"no call to a named function, no table or RAM symbol"
 0x01002ca4,count_wizard_mb_req_8_sub_2cf0_sub_2ca4,FUN_01002ca4,sub,called only by count_wizard_mb_req_8_sub_2cf0 [0x01002cf0]
 0x01002cf0,count_wizard_mb_req_8_sub_2cf0,FUN_01002cf0,sub,called only by count_wizard_mb_req_8 [0x01002d14]
@@ -1289,13 +1289,13 @@ address,name,was,rule,evidence
 0x0100329c,bitmap_draw2_user_329c,FUN_0100329c,uses,"calls bitmap_draw2 [0x00023c7c], deff_frame_sleep [0x00020220]"
 0x010032f8,bitmap_draw2_user_32f8,FUN_010032f8,uses,"calls bitmap_draw2 [0x00023c7c], deff_frame_sleep [0x00020220]"
 0x010037b0,msg_get_user_37b0,FUN_010037b0,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
-0x010038b0,task_running_wrap_38b0,FUN_010038b0,wrapper,only calls task_running [0x0000b248]
+0x010038b0,check_task_c3_38b0,FUN_010038b0,purpose,task_running(0xc3)
 0x010038c4,task_running_range_wrap_38c4,FUN_010038c4,wrapper,only calls task_running_range [0x0000b2ac]
 0x010038dc,task_0xc3_of_FUN_010039a0,FUN_010038dc,task,"task entry started by FUN_010039a0 [0x010039a0] (FUN_0000ab4c, id 0xc3)"
 0x010039a0,start_deff_129,FUN_010039a0,deff,deff_start(129)
 0x01003a64,play_sound_27c,FUN_01003a64,sound,snd_play(0x27c)
 0x01003a8c,adj_double_scoring_timer,FUN_01003a8c,adj,adj_get(80) DOUBLE SCORING TIMER
-0x01003b40,deff_129_double_sub,FUN_01003b40,sub,called only by deff_129_double [0x01003c5c]
+0x01003b40,draw_all_scores_font_height_3b40,FUN_01003b40,purpose,calls font_height; calls font_height; calls palette_identity; calls dmd_page_alloc; text_draw_msg_page(0x699) 'ALL SCORES'; text_draw_msg_page(0x69a) 'DOUBLED'
 0x01003ec8,task_running_wrap_38b0_wrap_3ec8,FUN_01003ec8,wrapper,only calls task_running_wrap_38b0 [0x010038b0]
 0x01003eec,leff_157_sub,FUN_01003eec,sub,called only by leff_157 [0x01003f20]
 0x01003f74,leff_rule_dtor_user_3f74,FUN_01003f74,uses,calls leff_rule_dtor [0x000177a4]
@@ -1307,28 +1307,28 @@ address,name,was,rule,evidence
 0x0100415c,on_event_1d_415c,FUN_0100415c,hook,"event_hook_add(&DAT_00034bf0, 0x1d, ..) in FUN_01005a74 [0x01005a74]"
 0x010041f4,task_0x70_of_FUN_01004394,FUN_010041f4,task,"task entry started by FUN_01004394 [0x01004394] (FUN_0000ab4c, id 0x70)"
 0x01004220,task_0xac_of_FUN_01004394,FUN_01004220,task,"task entry started by FUN_01004394 [0x01004394] (FUN_0000ab4c, id 0xac)"
-0x010042a4,task_running_range_user_42a4,FUN_010042a4,uses,"calls task_running_range_wrap [0x0100462c], any_multiball_running [0x01006704], error_log_wrap [0x0100ff6c]"
-0x010042ec,zfs_ready_unused_sub,FUN_010042ec,sub,called only by zfs_ready_unused [0x01004334]
+0x010042a4,test_flag_3f_any_multiball_running_42a4,FUN_010042a4,purpose,calls any_multiball_running; game_flag_test(0x3f)
+0x010042ec,test_flag_3f_any_multiball_running_42ec,FUN_010042ec,purpose,calls any_multiball_running; game_flag_test(0x3f)
 0x01004370,adj_fast_scoring_timer_user,FUN_01004370,uses,calls adj_fast_scoring_timer [0x01004394]
 0x01004394,adj_fast_scoring_timer,FUN_01004394,adj,adj_get(81) FAST SCORING TIMER
 0x01004520,start_deff_135,FUN_01004520,deff,deff_start(135)
 0x0100457c,start_deff_136,FUN_0100457c,deff,deff_start(136)
-0x01004618,task_running_wrap_4618,FUN_01004618,wrapper,only calls task_running [0x0000b248]
+0x01004618,check_task_ac_4618,FUN_01004618,purpose,task_running(0xac)
 0x0100462c,task_running_range_wrap_462c,FUN_0100462c,wrapper,only calls task_running_range [0x0000b2ac]
 0x01004644,start_deff_134,FUN_01004644,deff,deff_start(134)
 0x0100476c,task_0x5b_of_FUN_010047b8,FUN_0100476c,task,"task entry started by FUN_010047b8 [0x010047b8] (task_create, id 0x5b)"
-0x010047b8,task_running_range_user_47b8,FUN_010047b8,uses,"calls task_running_range_wrap [0x0100462c], error_log_wrap [0x01004050], sw_is_disabled_wrap [0x01004080]"
+0x010047b8,run_leff_144_check_task_5b_47b8,FUN_010047b8,purpose,calls start_deff_136; calls start_deff_135; leff_start(144); leff_start(145); task_running(0x5b); calls start_deff_134
 0x01004950,ram_00031468_user_4950,FUN_01004950,ram,"uses RAM 0x00031468, 0x00034c6c"
 0x010049a8,task_running_range_user_49a8,FUN_010049a8,uses,"calls task_running_range_wrap [0x0100462c], task_kill_range [0x0000af20]"
 0x010049d8,current_player_wrap_49d8,FUN_010049d8,wrapper,only calls current_player [0x0001aa40]
-0x010049fc,task_running_user_49fc,FUN_010049fc,uses,"calls task_running_wrap [0x01004618], task_running [0x0000b248]"
+0x010049fc,check_task_70_49fc,FUN_010049fc,purpose,task_running(0x70)
 0x01004a34,adj_fast_scoring_timer_sub,FUN_01004a34,sub,called only by adj_fast_scoring_timer [0x01004394]
-0x01004cb8,deff_132_fast_sub,FUN_01004cb8,sub,called only by deff_132_fast [0x01004de8]
+0x01004cb8,draw_all_targets_font_height_4cb8,FUN_01004cb8,purpose,calls font_height; calls font_height; calls palette_identity; calls dmd_page_alloc; text_draw_msg_page(0x6a6) 'ALL TARGETS'; text_draw_msg_page(0x6a7) 'SCORE'
 0x01004f28,task_sleep_user_4f28,FUN_01004f28,uses,calls task_sleep [0x0000acfc]
 0x01004fc0,ram_00034c78_user_4fc0,FUN_01004fc0,ram,uses RAM 0x00034c78
 0x01004fdc,ram_00034c78_user_4fdc,FUN_01004fdc,ram,uses RAM 0x00034c78
 0x010050f0,draw_luk_50f0,FUN_010050f0,msg,"draws msg 0x6ad ""%luK"""
-0x01005220,dmd_page_alloc_pair_user_5220,FUN_01005220,uses,"calls dmd_page_alloc_pair [0x000200a0], text_printf_msg [0x00021660], dmd_show_pages [0x00020134]"
+0x01005220,draw_all_targets_dmd_page_alloc_pair_5220,FUN_01005220,purpose,"calls dmd_page_alloc_pair; text_printf_msg(0x6ab) 'ALL TARGETS=%,02lu'; calls dmd_show_pages"
 0x01005498,leaf_5498,FUN_01005498,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010054c8,leaf_54c8,FUN_010054c8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01005870,task_sleep_user_5870,FUN_01005870,uses,calls task_sleep [0x0000acfc]
@@ -1345,21 +1345,21 @@ address,name,was,rule,evidence
 0x01006290,on_event_13_6290,FUN_01006290,hook,"event_hook_add(&DAT_00034ccc, 0x13, ..) in FUN_010075e8 [0x010075e8]"
 0x010062a0,on_event_61,FUN_010062a0,hook,"event_hook_add(&DAT_00034cd0, 0x61, ..) in FUN_010075e8 [0x010075e8]"
 0x010062b0,task_sleep_wrap_62b0,FUN_010062b0,wrapper,only calls task_sleep [0x0000acfc]
-0x010062f0,task_running_user_62f0,FUN_010062f0,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
+0x010062f0,check_task_59_62f0,FUN_010062f0,purpose,task_running(0x59)
 0x01006350,deff_start_user_6350,FUN_01006350,uses,"calls deff_start [0x000209b4], set_dat_000315fc [0x00017650], task_sleep [0x0000acfc]"
 0x01006480,task_sleep_user_6480,FUN_01006480,uses,"calls task_sleep_wrap [0x00020f08], task_sleep [0x0000acfc], deff_start [0x000209b4]"
 0x01006634,task_running_range_wrap_6634,FUN_01006634,wrapper,only calls task_running_range [0x0000b2ac]
 0x0100664c,deff_start_user_664c,FUN_0100664c,uses,"calls deff_start [0x000209b4], task_running_range_wrap [0x01006634], task_sleep [0x0000acfc]"
 0x01006760,leaf_6760,FUN_01006760,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0100683c,task_running_range_user_683c,FUN_0100683c,uses,"calls task_running_range_wrap [0x01006634], task_running [0x0000b248]"
-0x010068b4,error_log_user_68b4,FUN_010068b4,uses,calls error_log_wrap [0x00005b58]
+0x0100683c,check_task_59_683c,FUN_0100683c,purpose,task_running(0x59)
+0x010068b4,test_flag_10_68b4,FUN_010068b4,purpose,game_flag_test(0x10)
 0x010068e4,side_choice_running_user,FUN_010068e4,uses,"calls side_choice_running [0x01033e84], player_side [0x01033e30], dbattle_can_progress [0x010260d8]"
 0x01006970,player_side_user,FUN_01006970,uses,"calls player_side [0x01033e30], dbattle_can_progress [0x010260d8]"
 0x010069d4,task_0x95_of_FUN_01006a20,FUN_010069d4,task,"task entry started by FUN_01006a20 [0x01006a20] (FUN_0000ab4c, id 0x95)"
 0x01006a20,leaf_6a20,FUN_01006a20,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01006a58,task_sleep_user_6a58,FUN_01006a58,uses,"calls task_sleep [0x0000acfc], snd_resolve_call [0x00025044]"
 0x01006a9c,leaf_6a9c,FUN_01006a9c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01006ae0,deff_126_0_more_sub,FUN_01006ae0,sub,called only by deff_126_0_more [0x0102eaec]
+0x01006ae0,check_task_96_game_flag_test_6ae0,FUN_01006ae0,purpose,calls game_flag_test; task_running(0x96); calls any_multiball_running; calls snd_play; calls game_flag_set
 0x01006bb4,motor_poll_all_isr,thunk_FUN_00016b7c,hand,"same as 0x00016b7c, called at the end of the IO interrupt io_isr [0x000114b0]"
 0x01006bb8,memcpy_wrap_6bb8,FUN_01006bb8,wrapper,only calls memcpy [0x0002fd48]
 0x01006cf4,memcpy_wrap_6cf4,FUN_01006cf4,wrapper,only calls memcpy [0x0002fd48]
@@ -1398,7 +1398,7 @@ address,name,was,rule,evidence
 0x0100955c,lamp_layer_955c,FUN_0100955c,subsystem,"uses 0x00036394: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0100959c,task_sleep_wrap_959c,FUN_0100959c,wrapper,only calls task_sleep [0x0000acfc]
 0x010095e0,task_0x5a_of_FUN_0100963c,FUN_010095e0,task,"task entry started by FUN_0100963c [0x0100963c] (task_create, id 0x5a)"
-0x0100963c,task_create_wrap_963c,FUN_0100963c,wrapper,only calls task_create [0x0000aa04]
+0x0100963c,start_task_5a_963c,FUN_0100963c,purpose,task_create(0x5a)
 0x0100966c,leaf_966c,FUN_0100966c,leaf,"no call to a named function, no table or RAM symbol"
 0x01009758,leaf_9758,FUN_01009758,leaf,"no call to a named function, no table or RAM symbol"
 0x010097ac,leaf_97ac,FUN_010097ac,leaf,"no call to a named function, no table or RAM symbol"
@@ -1415,12 +1415,12 @@ address,name,was,rule,evidence
 0x0100a1f8,adj_megatron_m_b_virtual,FUN_0100a1f8,adj,adj_get(69) MEGATRON M.B. VIRTUAL LOCK
 0x0100a294,sw_matrix_d464_wrap_a294,FUN_0100a294,wrapper,only calls sw_matrix_d464 [0x0000d464]
 0x0100a2dc,sw_megatron_lock_4_etc,FUN_0100a2dc,switch,handler of switch(es) M.TRON LOCK #1-BACK; MEGATRON JAM; MEGATRON LOCK #2; MEGATRON LOCK #3 (switch table)
-0x0100a31c,task_running_user_a31c,FUN_0100a31c,uses,"calls task_running [0x0000b248], start_deff_83 [0x01010174], play_sound_27c [0x01003a64]"
-0x0100a374,leaf_a374,FUN_0100a374,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0100a3b8,error_log_user_a3b8,FUN_0100a3b8,uses,"calls error_log_wrap [0x0000d464], error_log_wrap [0x0100a294], task_sleep [0x0000acfc]"
+0x0100a31c,clear_flag_9_post_event_4c_a31c,FUN_0100a31c,purpose,task_running(0x4f); calls start_deff_83; calls play_sound_27c; calls count_optimus_m_b_a; event_post(0x4c); calls replay_check
+0x0100a374,pulse_megatron_lockup_a374,FUN_0100a374,purpose,coil_pulse_now(3) MEGATRON LOCKUP
+0x0100a3b8,run_leff_23_pulse_megatron_lockup_a3b8,FUN_0100a3b8,purpose,sw_matrix_d464(42) MEGATRON JAM; sw_matrix_d464(42) MEGATRON JAM; coil_pulse_now(3) MEGATRON LOCKUP; calls adj_megatron_m_b_virtual; calls set_dat_000315fc; task_running(0x58)
 0x0100a754,sw_left_eject,FUN_0100a754,switch,handler of switch(es) LEFT EJECT (switch table)
 0x0100a788,left_eject_callback,FUN_0100a788,hand,"game device 3 callback (table 0x040d17fc +0xc): the Allspark award, warning 0x157 + leff 21 (case 7), eject 0x158 + leff 22 and coil 22"
-0x0100aa44,portal_mb_down_to_one_ball_user,FUN_0100aa44,uses,"calls portal_mb_down_to_one_ball [0x01019550], error_log_wrap [0x0103657c], game_flag_clear [0x00005a38]"
+0x0100aa44,clear_flag_3e_portal_mb_down_to_one_ball_aa44,FUN_0100aa44,purpose,calls portal_mb_down_to_one_ball; game_flag_clear(0x3e); calls set_dat_000315fc
 0x0100aa7c,event_hook_add_user_aa7c,FUN_0100aa7c,uses,calls event_hook_add [0x00006da8]
 0x0100ab5c,current_player_wrap_ab5c,FUN_0100ab5c,wrapper,only calls current_player [0x0001aa40]
 0x0100acb4,current_player_wrap_acb4,FUN_0100acb4,wrapper,only calls current_player [0x0001aa40]
@@ -1444,16 +1444,16 @@ address,name,was,rule,evidence
 0x0100b744,leaf_b744,FUN_0100b744,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100b77c,leaf_b77c,FUN_0100b77c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100b7b8,deff_140_locked_sub_b7b8,FUN_0100b7b8,sub,called only by deff_140_locked [0x0100b7f0]
-0x0100bb3c,coil_pulse_fn_user_bb3c,FUN_0100bb3c,uses,"calls coil_pulse_fn [0x00005e70], task_sleep [0x0000acfc]"
-0x0100bb78,coil_pulse_user,FUN_0100bb78,uses,"calls coil_pulse [0x00005e20], task_sleep [0x0000acfc]"
+0x0100bb3c,pulse_flash_megatron_bb3c,FUN_0100bb3c,purpose,coil_pulse_fn(28) FLASH: MEGATRON
+0x0100bb78,pulse_flash_megatron_bb78,FUN_0100bb78,purpose,coil_pulse(28) FLASH: MEGATRON; coil_pulse(21) FLASH: POP BUMPER
 0x0100bc0c,event_hook_add_user_bc0c,FUN_0100bc0c,uses,calls event_hook_add [0x00006da8]
 0x0100bcc0,current_player_wrap_bcc0,FUN_0100bcc0,wrapper,only calls current_player [0x0001aa40]
 0x0100bd1c,current_player_user_bd1c,FUN_0100bd1c,uses,"calls current_player_wrap [0x0100bcc0], current_player [0x0001aa40]"
 0x0100bd54,on_event_26_bd54,FUN_0100bd54,hook,"event_hook_add(&DAT_00034d48, 0x26, ..) in FUN_0100db24 [0x0100db24]"
 0x0100bdcc,error_log_wrap_bdcc,FUN_0100bdcc,wrapper,only calls error_log [0x00004f78]
-0x0100be3c,game_flag_test_wrap_be3c,FUN_0100be3c,wrapper,only calls game_flag_test [0x00005b58]
-0x0100be50,error_log_user_be50,FUN_0100be50,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
-0x0100be84,error_log_user_be84,FUN_0100be84,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
+0x0100be3c,test_flag_25_be3c,FUN_0100be3c,purpose,game_flag_test(0x25)
+0x0100be50,test_flag_25_check_task_bb_be50,FUN_0100be50,purpose,game_flag_test(0x25); task_running(0xbb)
+0x0100be84,test_flag_25_task_running_range_be84,FUN_0100be84,purpose,game_flag_test(0x25); calls task_running_range
 0x0100bf14,ram_00034db0_user,FUN_0100bf14,ram,"uses RAM 0x00034db0, 0x00034dac, 0x0007a120"
 0x0100bf70,ram_000f4240_user,FUN_0100bf70,ram,uses RAM 0x000f4240
 0x0100bf90,current_player_wrap_bf90,FUN_0100bf90,wrapper,only calls current_player [0x0001aa40]
@@ -1466,15 +1466,15 @@ address,name,was,rule,evidence
 0x0100c1b8,leaf_c1b8,FUN_0100c1b8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100c1d4,task_0x74_of_FUN_0100c200,FUN_0100c1d4,task,"task entry started by FUN_0100c200 [0x0100c200] (FUN_0000ab4c, id 0x74)"
 0x0100c200,adj_save_megatron_progress_c200,FUN_0100c200,adj,adj_get(88) SAVE MEGATRON PROGRESS
-0x0100c430,error_log_user_c430,FUN_0100c430,uses,"calls error_log_wrap [0x0100bdcc], score_add [0x0001caf0], current_player [0x0001aa40]"
+0x0100c430,show_deff_71_count_optimus_m_b_a_c430,FUN_0100c430,purpose,score_add; deff_start(71); calls snd_call_sample_count; audit_add(119) OPTIMUS M.B.A. SUPER JACKPOTS; calls set_dat_00034dac; score_add
 0x0100c790,on_event_1d_c8dc_sub_c790,FUN_0100c790,sub,called only by on_event_1d_c8dc [0x0100c8dc]
 0x0100c7e8,task_0xbb_of_FUN_0100c814,FUN_0100c7e8,task,"task entry started by FUN_0100c814 [0x0100c814] (FUN_0000ab4c, id 0xbb)"
-0x0100c814,error_log_user_c814,FUN_0100c814,uses,"calls error_log_wrap [0x0100be3c], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
-0x0100c858,task_running_range_user_c858,FUN_0100c858,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
+0x0100c814,clear_flag_25_set_dat_000315fc_c814,FUN_0100c814,purpose,game_flag_clear(0x25); calls set_dat_000315fc
+0x0100c858,set_flag_25_task_running_range_c858,FUN_0100c858,purpose,calls task_running_range; calls task_kill_range; game_flag_set(0x25)
 0x0100c894,ram_00034da4_user,FUN_0100c894,ram,"uses RAM 0x00034da4, 0x00034da8"
 0x0100c8dc,on_event_1d_c8dc,FUN_0100c8dc,hook,"event_hook_add(&DAT_00034d4c, 0x1d, ..) in FUN_0100db24 [0x0100db24]"
 0x0100c998,deff_069_sub,FUN_0100c998,sub,called only by deff_069 [0x0100c9e4]
-0x0100cee0,error_log_user_cee0,FUN_0100cee0,uses,"calls error_log_wrap [0x0100be3c], task_running [0x0000b248]"
+0x0100cee0,check_task_74_cee0,FUN_0100cee0,purpose,task_running(0x74)
 0x0100cf18,adj_save_megatron_progress_c200_sub_cf18,FUN_0100cf18,sub,called only by adj_save_megatron_progress_c200 [0x0100c200]
 0x0100d004,game_flag_test_wrap_be3c_wrap_d004,FUN_0100d004,wrapper,only calls game_flag_test_wrap_be3c [0x0100be3c]
 0x0100d07c,leaf_d07c,FUN_0100d07c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1493,25 +1493,25 @@ address,name,was,rule,evidence
 0x0100dd50,on_event_26_dd50,FUN_0100dd50,hook,"event_hook_add(&DAT_00034dbc, 0x26, ..) in FUN_0100fcc0 [0x0100fcc0]"
 0x0100dd94,error_log_wrap_dd94,FUN_0100dd94,wrapper,only calls error_log [0x00004f78]
 0x0100ddc8,random_below_wrap_ddc8,FUN_0100ddc8,wrapper,only calls random_below [0x0000ba94]
-0x0100de78,game_flag_test_wrap_de78,FUN_0100de78,wrapper,only calls game_flag_test [0x00005b58]
-0x0100de8c,error_log_user_de8c,FUN_0100de8c,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
-0x0100dec0,error_log_user_dec0,FUN_0100dec0,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
+0x0100de78,test_flag_29_de78,FUN_0100de78,purpose,game_flag_test(0x29)
+0x0100de8c,test_flag_29_check_task_bf_de8c,FUN_0100de8c,purpose,game_flag_test(0x29); task_running(0xbf)
+0x0100dec0,test_flag_29_task_running_range_dec0,FUN_0100dec0,purpose,game_flag_test(0x29); calls task_running_range
 0x0100df50,ram_00034e2e_user,FUN_0100df50,ram,"uses RAM 0x00034e2e, 0x0003d090"
 0x0100df8c,ram_0007a120_user,FUN_0100df8c,ram,uses RAM 0x0007a120
 0x0100df98,current_player_wrap_df98,FUN_0100df98,wrapper,only calls current_player [0x0001aa40]
 0x0100e024,current_player_wrap_e024,FUN_0100e024,wrapper,only calls current_player [0x0001aa40]
 0x0100e090,task_0x75_of_FUN_0100e0bc,FUN_0100e090,task,"task entry started by FUN_0100e0bc [0x0100e0bc] (FUN_0000ab4c, id 0x75)"
 0x0100e0bc,adj_save_megatron_progress_e0bc,FUN_0100e0bc,adj,adj_get(88) SAVE MEGATRON PROGRESS
-0x0100e29c,error_log_user_e29c,FUN_0100e29c,uses,"calls error_log_wrap [0x0100dd94], current_player [0x0001aa40], score_add [0x0001caf0]"
+0x0100e29c,show_deff_77_count_optimus_m_b_super_e29c,FUN_0100e29c,purpose,score_add; score_add; deff_start(77); calls snd_call_sample_count; audit_add(123) OPTIMUS M.B.D. SUPER JACKPOTS; score_add
 0x0100e61c,on_event_1d_e768_sub_e61c,FUN_0100e61c,sub,called only by on_event_1d_e768 [0x0100e768]
 0x0100e674,task_0xbf_of_FUN_0100e6a0,FUN_0100e674,task,"task entry started by FUN_0100e6a0 [0x0100e6a0] (FUN_0000ab4c, id 0xbf)"
-0x0100e6a0,error_log_user_e6a0,FUN_0100e6a0,uses,"calls error_log_wrap [0x0100de78], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
-0x0100e6e4,task_running_range_user_e6e4,FUN_0100e6e4,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
+0x0100e6a0,clear_flag_29_set_dat_000315fc_e6a0,FUN_0100e6a0,purpose,game_flag_clear(0x29); calls set_dat_000315fc
+0x0100e6e4,set_flag_29_task_running_range_e6e4,FUN_0100e6e4,purpose,calls task_running_range; calls task_kill_range; game_flag_set(0x29)
 0x0100e720,ram_00034e18_user_e720,FUN_0100e720,ram,"uses RAM 0x00034e18, 0x00034e1c"
 0x0100e768,on_event_1d_e768,FUN_0100e768,hook,"event_hook_add(&DAT_00034dc0, 0x1d, ..) in FUN_0100fcc0 [0x0100fcc0]"
 0x0100e798,optimus_wanted_position,FUN_0100e798,hand,"0x2b (up) when the Optimus battle runs (0x00034e18 == 3), else 0"
 0x0100e854,deff_075_sub,FUN_0100e854,sub,called only by deff_075 [0x0100e890]
-0x0100ee0c,error_log_user_ee0c,FUN_0100ee0c,uses,"calls error_log_wrap [0x0100de78], task_running [0x0000b248]"
+0x0100ee0c,check_task_75_ee0c,FUN_0100ee0c,purpose,task_running(0x75)
 0x0100ee44,adj_save_megatron_progress_e0bc_sub_ee44,FUN_0100ee44,sub,called only by adj_save_megatron_progress_e0bc [0x0100e0bc]
 0x0100ef30,game_flag_test_wrap_de78_wrap_ef30,FUN_0100ef30,wrapper,only calls game_flag_test_wrap_de78 [0x0100de78]
 0x0100efa8,ram_00001c94_user,FUN_0100efa8,ram,uses RAM 0x00001c94
@@ -1529,8 +1529,8 @@ address,name,was,rule,evidence
 0x0100fcc0,leff_rule_dtor_user_fcc0,FUN_0100fcc0,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0100fe5c,on_event_26_fe5c,FUN_0100fe5c,hook,"event_hook_add(&DAT_00034e38, 0x26, ..) in FUN_01011ed4 [0x01011ed4]"
 0x0100feb4,error_log_wrap_feb4,FUN_0100feb4,wrapper,only calls error_log [0x00004f78]
-0x0100ff58,game_flag_test_wrap_ff58,FUN_0100ff58,wrapper,only calls game_flag_test [0x00005b58]
-0x0100ff6c,game_flag_test_wrap_ff6c,FUN_0100ff6c,wrapper,only calls game_flag_test [0x00005b58]
+0x0100ff58,test_flag_3d_ff58,FUN_0100ff58,purpose,game_flag_test(0x3d)
+0x0100ff6c,test_flag_3c_ff6c,FUN_0100ff6c,purpose,game_flag_test(0x3c)
 0x0100ffc4,task_0x79_of_FUN_0100fff0,FUN_0100ffc4,task,"task entry started by FUN_0100fff0 [0x0100fff0] (FUN_0000ab4c, id 0x79)"
 0x0100fff0,count_megatron_m_b_a,FUN_0100fff0,audit,audit_add(126) MEGATRON M.B.A. STARTED
 0x01010100,table_040c66e8_reader,FUN_01010100,table,reads ROM table 0x040c66e8
@@ -1538,11 +1538,11 @@ address,name,was,rule,evidence
 0x01010174,start_deff_83,FUN_01010174,deff,deff_start(83)
 0x01010304,leaf_10304,FUN_01010304,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01010330,ram_00031468_user_10330,FUN_01010330,ram,"uses RAM 0x00031468, 0x00034ecc"
-0x010103c0,start_deff_83_sub,FUN_010103c0,sub,called only by start_deff_83 [0x01010174]
-0x010103f8,on_event_1d_10428_sub_103f8,FUN_010103f8,sub,called only by on_event_1d_10428 [0x01010428]
+0x010103c0,clear_flag_3c_set_dat_000315fc_103c0,FUN_010103c0,purpose,game_flag_clear(0x3c); calls set_dat_000315fc
+0x010103f8,clear_flag_3c_103f8,FUN_010103f8,purpose,game_flag_clear(0x3c)
 0x01010428,on_event_1d_10428,FUN_01010428,hook,"event_hook_add(&DAT_00034e40, 0x1d, ..) in FUN_01011ed4 [0x01011ed4]"
-0x01010508,task_running_user_10508,FUN_01010508,uses,calls task_running [0x0000b248]
-0x01010958,error_log_user_10958,FUN_01010958,uses,"calls error_log_wrap [0x0100ff6c], task_running [0x0000b248]"
+0x01010508,check_task_79_10508,FUN_01010508,purpose,task_running(0x79)
+0x01010958,check_task_79_10958,FUN_01010958,purpose,task_running(0x79)
 0x01010990,count_megatron_m_b_a_sub_10990,FUN_01010990,sub,called only by count_megatron_m_b_a [0x0100fff0]
 0x01010b98,leaf_10b98,FUN_01010b98,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01010cd8,leaf_10cd8,FUN_01010cd8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1556,12 +1556,12 @@ address,name,was,rule,evidence
 0x01012118,on_event_26_12118,FUN_01012118,hook,"event_hook_add(&DAT_00034ed4, 0x26, ..) in FUN_01013f0c [0x01013f0c]"
 0x01012144,error_log_wrap_12144,FUN_01012144,wrapper,only calls error_log [0x00004f78]
 0x01012178,table_040c67d0_reader,FUN_01012178,table,reads ROM table 0x040c67d0
-0x010121e0,task_running_wrap_121e0,FUN_010121e0,wrapper,only calls task_running [0x0000b248]
+0x010121e0,check_task_aa_121e0,FUN_010121e0,purpose,task_running(0xaa)
 0x010121f4,task_running_range_wrap_121f4,FUN_010121f4,wrapper,only calls task_running_range [0x0000b2ac]
 0x01012214,task_0x6f_of_FUN_01012318,FUN_01012214,task,"task entry started by FUN_01012318 [0x01012318] (task_create, id 0x6f)"
 0x010122e0,adj_ratchet_timer_sub_122e0,FUN_010122e0,sub,called only by adj_ratchet_timer [0x01012318]
 0x01012318,adj_ratchet_timer,FUN_01012318,adj,adj_get(79) RATCHET TIMER
-0x0101245c,task_running_range_user_1245c,FUN_0101245c,uses,"calls task_running_range_wrap [0x010121f4], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x0101245c,kill_task_ab_set_dat_000315fc_1245c,FUN_0101245c,purpose,task_kill(0xab); calls set_dat_000315fc
 0x01012508,start_deff_122,FUN_01012508,deff,deff_start(122)
 0x01012770,ram_00031468_user_12770,FUN_01012770,ram,"uses RAM 0x00031468, 0x00034f18"
 0x010127c8,start_deff_122_sub,FUN_010127c8,sub,called only by start_deff_122 [0x01012508]
@@ -1569,51 +1569,51 @@ address,name,was,rule,evidence
 0x01012808,play_sound_234,FUN_01012808,sound,snd_play(0x234)
 0x010128c0,dmd_page_alloc_pair_user_128c0,FUN_010128c0,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x01012978,play_sound_238,FUN_01012978,sound,snd_play(0x238)
-0x01012a48,dmd_page_alloc_pair_user_12a48,FUN_01012a48,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01012b8c,dmd_page_alloc_pair_user_12b8c,FUN_01012b8c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x01012d18,dmd_page_alloc_pair_user_12d18,FUN_01012d18,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01012e80,dmd_page_alloc_pair_user_12e80,FUN_01012e80,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x01012fa0,dmd_page_alloc_pair_user_12fa0,FUN_01012fa0,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x01012a48,play_snd_239_dmd_page_alloc_pair_12a48,FUN_01012a48,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x239); calls dmd_show_pages; snd_play(0x23a); snd_play(0x239)
+0x01012b8c,play_snd_23c_dmd_page_alloc_pair_12b8c,FUN_01012b8c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x23c); snd_play(0x23b); snd_play(0x23c)
+0x01012d18,play_snd_240_dmd_page_alloc_pair_12d18,FUN_01012d18,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x240); calls dmd_show_pages; snd_play(0x242); snd_play(0x240)
+0x01012e80,play_snd_245_dmd_page_alloc_pair_12e80,FUN_01012e80,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x245); snd_play(0x244); snd_play(0x245)
+0x01012fa0,play_snd_246_dmd_page_alloc_pair_12fa0,FUN_01012fa0,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x246); snd_play(0x246); snd_play(0x246)
 0x01013174,dmd_page_alloc_pair_user_13174,FUN_01013174,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101322c,dmd_page_alloc_pair_user_1322c,FUN_0101322c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x01013394,dmd_page_alloc_pair_user_13394,FUN_01013394,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x01013494,dmd_page_alloc_pair_user_13494,FUN_01013494,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x010138d0,task_running_user_138d0,FUN_010138d0,uses,"calls task_running_wrap [0x010121e0], task_running [0x0000b248]"
+0x0101322c,play_snd_249_dmd_page_alloc_pair_1322c,FUN_0101322c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x249); snd_play(0x248); snd_play(0x248)
+0x01013394,play_snd_24c_dmd_page_alloc_pair_13394,FUN_01013394,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x24c); snd_play(0x24b); snd_play(0x24d)
+0x01013494,play_snd_250_dmd_page_alloc_pair_13494,FUN_01013494,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x250); snd_play(0x24e); snd_play(0x251)
+0x010138d0,check_task_6f_138d0,FUN_010138d0,purpose,task_running(0x6f)
 0x01013908,adj_ratchet_timer_sub_13908,FUN_01013908,sub,called only by adj_ratchet_timer [0x01012318]
 0x01013f0c,leff_rule_dtor_user_13f0c,FUN_01013f0c,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01014010,current_player_wrap_14010,FUN_01014010,wrapper,only calls current_player [0x0001aa40]
 0x01014050,on_event_26_14050,FUN_01014050,hook,"event_hook_add(&DAT_00034f24, 0x26, ..) in FUN_01015a14 [0x01015a14]"
 0x0101407c,error_log_wrap_1407c,FUN_0101407c,wrapper,only calls error_log [0x00004f78]
 0x010140b0,start_deff_110_sub_140b0,FUN_010140b0,sub,called only by start_deff_110 [0x01014638]
-0x010140f4,task_running_wrap_140f4,FUN_010140f4,wrapper,only calls task_running [0x0000b248]
+0x010140f4,check_task_a4_140f4,FUN_010140f4,purpose,task_running(0xa4)
 0x01014108,task_running_range_wrap_14108,FUN_01014108,wrapper,only calls task_running_range [0x0000b2ac]
 0x01014120,leaf_14120,FUN_01014120,leaf,"no call to a named function, no table or RAM symbol"
 0x01014148,task_0xa4_of_FUN_0101449c_sub,FUN_01014148,sub,called only by task_0xa4_of_FUN_0101449c [0x010141a4]
 0x010141a4,task_0xa4_of_FUN_0101449c,FUN_010141a4,task,"task entry started by FUN_0101449c [0x0101449c] (FUN_0000ab4c, id 0xa4)"
 0x010142b0,task_0x6c_of_FUN_010142dc,FUN_010142b0,task,"task entry started by FUN_010142dc [0x010142dc] (task_create, id 0x6c)"
 0x010142dc,adj_bumblebee_timer,FUN_010142dc,adj,adj_get(76) BUMBLEBEE TIMER
-0x0101449c,task_running_range_user_1449c,FUN_0101449c,uses,"calls task_running_range_wrap [0x01014108], current_player [0x0001aa40], task_kill [0x0000ae1c]"
-0x0101456c,task_running_range_user_1456c,FUN_0101456c,uses,"calls task_running_range_wrap [0x01014108], current_player [0x0001aa40], task_kill [0x0000ae1c]"
+0x0101449c,kill_task_a5_set_dat_000315fc_1449c,FUN_0101449c,purpose,task_kill(0xa5); calls set_dat_000315fc
+0x0101456c,kill_task_a5_set_dat_000315fc_1456c,FUN_0101456c,purpose,task_kill(0xa5); calls set_dat_000315fc
 0x01014638,start_deff_110,FUN_01014638,deff,deff_start(110)
 0x01014918,ram_00031468_user_14918,FUN_01014918,ram,"uses RAM 0x00031468, 0x00034f80"
 0x01014970,start_deff_110_sub_14970,FUN_01014970,sub,called only by start_deff_110 [0x01014638]
 0x010149a0,leaf_149a0,FUN_010149a0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010149b8,deff_108_bumblebee_sub,FUN_010149b8,sub,called only by deff_108_bumblebee [0x0101504c]
 0x01014a5c,play_sound_1fb,FUN_01014a5c,sound,snd_play(0x1fb)
-0x01014b30,dmd_page_alloc_pair_user_14b30,FUN_01014b30,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x01014b30,play_snd_1f0_dmd_page_alloc_pair_14b30,FUN_01014b30,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1f0); calls dmd_show_pages; snd_play(0x1f1); snd_play(0x1f2)
 0x01014c28,play_sound_1f4,FUN_01014c28,sound,snd_play(0x1f4)
-0x01014cec,dmd_page_alloc_pair_user_14cec,FUN_01014cec,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x01014cec,play_snd_1f5_dmd_page_alloc_pair_14cec,FUN_01014cec,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1f5); calls dmd_show_pages; snd_play(0x1f6)
 0x01014dd0,play_sound_1f7,FUN_01014dd0,sound,snd_play(0x1f7)
-0x01014e98,dmd_page_alloc_pair_user_14e98,FUN_01014e98,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x01014e98,play_snd_1f0_dmd_page_alloc_pair_14e98,FUN_01014e98,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1f0); calls dmd_show_pages; snd_play(0x1f8); snd_play(0x1f4)
 0x01014f84,play_sound_1f9,FUN_01014f84,sound,snd_play(0x1f9)
-0x010153c0,task_running_user_153c0,FUN_010153c0,uses,"calls task_running_wrap [0x010140f4], task_running [0x0000b248]"
+0x010153c0,check_task_6c_153c0,FUN_010153c0,purpose,task_running(0x6c)
 0x010153f8,adj_bumblebee_timer_sub,FUN_010153f8,sub,called only by adj_bumblebee_timer [0x010142dc]
 0x010154dc,task_running_wrap_140f4_wrap_154dc,FUN_010154dc,wrapper,only calls task_running_wrap_140f4 [0x010140f4]
 0x01015a14,leff_rule_dtor_user_15a14,FUN_01015a14,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01015b50,current_player_wrap_15b50,FUN_01015b50,wrapper,only calls current_player [0x0001aa40]
 0x01015b78,on_event_26_15b78,FUN_01015b78,hook,"event_hook_add(&DAT_00034f8c, 0x26, ..) in FUN_010175dc [0x010175dc]"
 0x01015ba4,error_log_wrap_15ba4,FUN_01015ba4,wrapper,only calls error_log [0x00004f78]
-0x01015bf0,task_running_wrap_15bf0,FUN_01015bf0,wrapper,only calls task_running [0x0000b248]
+0x01015bf0,check_task_a2_15bf0,FUN_01015bf0,purpose,task_running(0xa2)
 0x01015c04,task_running_range_wrap_15c04,FUN_01015c04,wrapper,only calls task_running_range [0x0000b2ac]
 0x01015c24,task_0x6b_of_FUN_01015dc0,FUN_01015c24,task,"task entry started by FUN_01015dc0 [0x01015dc0] (task_create, id 0x6b)"
 0x01015c5c,table_040c691c_reader,FUN_01015c5c,table,reads ROM table 0x040c691c
@@ -1621,15 +1621,15 @@ address,name,was,rule,evidence
 0x01015cc8,start_deff_106_sub_15cc8,FUN_01015cc8,sub,called only by start_deff_106 [0x01015f8c]
 0x01015d88,adj_devastator_timer_sub_15d88,FUN_01015d88,sub,called only by adj_devastator_timer [0x01015dc0]
 0x01015dc0,adj_devastator_timer,FUN_01015dc0,adj,adj_get(75) DEVASTATOR TIMER
-0x01015ee0,task_running_range_user_15ee0,FUN_01015ee0,uses,"calls task_running_range_wrap [0x01015c04], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x01015ee0,kill_task_a3_set_dat_000315fc_15ee0,FUN_01015ee0,purpose,task_kill(0xa3); calls set_dat_000315fc
 0x01015f8c,start_deff_106,FUN_01015f8c,deff,deff_start(106)
 0x010161e4,start_leff_120,FUN_010161e4,leff,leff_start(120)
 0x010162e4,ram_00031468_user_162e4,FUN_010162e4,ram,"uses RAM 0x00031468, 0x00034fd0"
 0x0101633c,start_deff_106_sub_1633c,FUN_0101633c,sub,called only by start_deff_106 [0x01015f8c]
 0x0101636c,leaf_1636c,FUN_0101636c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0101637c,dmd_page_alloc_pair_user_1637c,FUN_0101637c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x0101637c,play_snd_1d8_dmd_page_alloc_pair_1637c,FUN_0101637c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1d8); calls dmd_show_pages; calls dmd_page_alloc_pair; calls bitmap_draw2
 0x010164dc,deff_104_devastator_sub,FUN_010164dc,sub,called only by deff_104_devastator [0x01016c24]
-0x01016534,dmd_page_alloc_pair_user_16534,FUN_01016534,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x01016534,play_snd_1da_dmd_page_alloc_pair_16534,FUN_01016534,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x1da); snd_play(0x1db)
 0x01016624,play_sound_1dc_16624,FUN_01016624,sound,snd_play(0x1dc)
 0x010166ec,play_sound_1dc_166ec,FUN_010166ec,sound,snd_play(0x1dc)
 0x010167c8,play_sound_1dd,FUN_010167c8,sound,snd_play(0x1dd)
@@ -1637,74 +1637,74 @@ address,name,was,rule,evidence
 0x010169c8,play_sound_1df,FUN_010169c8,sound,snd_play(0x1df)
 0x01016a90,play_sound_1e0,FUN_01016a90,sound,snd_play(0x1e0)
 0x01016b54,play_sound_1e1,FUN_01016b54,sound,snd_play(0x1e1)
-0x01016f4c,task_running_user_16f4c,FUN_01016f4c,uses,"calls task_running_wrap [0x01015bf0], task_running [0x0000b248]"
+0x01016f4c,check_task_6b_16f4c,FUN_01016f4c,purpose,task_running(0x6b)
 0x01016f84,adj_devastator_timer_sub_16f84,FUN_01016f84,sub,called only by adj_devastator_timer [0x01015dc0]
 0x01017068,task_sleep_user_17068,FUN_01017068,uses,"calls task_sleep [0x0000acfc], snd_play_after [0x00025284]"
 0x010175dc,leff_rule_dtor_user_175dc,FUN_010175dc,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x010176e0,current_player_wrap_176e0,FUN_010176e0,wrapper,only calls current_player [0x0001aa40]
 0x01017708,on_event_26_17708,FUN_01017708,hook,"event_hook_add(&DAT_00034fdc, 0x26, ..) in FUN_01018ea8 [0x01018ea8]"
 0x01017734,error_log_wrap_17734,FUN_01017734,wrapper,only calls error_log [0x00004f78]
-0x01017780,task_running_wrap_17780,FUN_01017780,wrapper,only calls task_running [0x0000b248]
+0x01017780,check_task_9c_17780,FUN_01017780,purpose,task_running(0x9c)
 0x01017794,task_running_range_wrap_17794,FUN_01017794,wrapper,only calls task_running_range [0x0000b2ac]
 0x010177b4,task_0x68_of_FUN_0101795c,FUN_010177b4,task,"task entry started by FUN_0101795c [0x0101795c] (task_create, id 0x68)"
 0x010177ec,table_040c6a40_reader,FUN_010177ec,table,reads ROM table 0x040c6a40
 0x01017824,task_0x9c_of_FUN_0101795c,FUN_01017824,task,"task entry started by FUN_0101795c [0x0101795c] (FUN_0000ab4c, id 0x9c)"
 0x01017924,adj_starscream_timer_sub_17924,FUN_01017924,sub,called only by adj_starscream_timer [0x0101795c]
 0x0101795c,adj_starscream_timer,FUN_0101795c,adj,adj_get(72) STARSCREAM TIMER
-0x01017a78,task_running_range_user_17a78,FUN_01017a78,uses,"calls task_running_range_wrap [0x01017794], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x01017a78,kill_task_9d_set_dat_000315fc_17a78,FUN_01017a78,purpose,task_kill(0x9d); calls set_dat_000315fc
 0x01017b24,start_deff_94,FUN_01017b24,deff,deff_start(94)
 0x01017d40,ram_00031468_user_17d40,FUN_01017d40,ram,"uses RAM 0x00031468, 0x0003501c"
 0x01017d98,start_deff_94_sub,FUN_01017d98,sub,called only by start_deff_94 [0x01017b24]
 0x01017dc8,leaf_17dc8,FUN_01017dc8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01017dd8,deff_092_starscream_sub,FUN_01017dd8,sub,called only by deff_092_starscream [0x010185e0]
-0x01017e78,dmd_page_alloc_pair_user_17e78,FUN_01017e78,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x01017e78,play_snd_18c_dmd_page_alloc_pair_17e78,FUN_01017e78,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x18c); snd_play(0x18d)
 0x01017f64,play_sound_182,FUN_01017f64,sound,snd_play(0x182)
-0x0101802c,dmd_page_alloc_pair_user_1802c,FUN_0101802c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x0101802c,play_snd_183_dmd_page_alloc_pair_1802c,FUN_0101802c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x183); calls dmd_show_pages; snd_play(0x184)
 0x01018148,play_sound_185,FUN_01018148,sound,snd_play(0x185)
-0x01018210,dmd_page_alloc_pair_user_18210,FUN_01018210,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01018334,dmd_page_alloc_pair_user_18334,FUN_01018334,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01018404,dmd_page_alloc_pair_user_18404,FUN_01018404,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x010184e4,dmd_page_alloc_pair_user_184e4,FUN_010184e4,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01018884,task_running_user_18884,FUN_01018884,uses,"calls task_running_wrap [0x01017780], task_running [0x0000b248]"
+0x01018210,play_snd_185_dmd_page_alloc_pair_18210,FUN_01018210,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x185); calls dmd_show_pages; snd_play(0x186); snd_play(0x187)
+0x01018334,play_snd_189_dmd_page_alloc_pair_18334,FUN_01018334,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x189); snd_play(0x18a); calls dmd_show_pages
+0x01018404,play_snd_185_dmd_page_alloc_pair_18404,FUN_01018404,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x185); calls dmd_show_pages; snd_play(0x188)
+0x010184e4,play_snd_18a_dmd_page_alloc_pair_184e4,FUN_010184e4,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x18a); calls dmd_show_pages; snd_play(0x18b); snd_play(0x185)
+0x01018884,check_task_68_18884,FUN_01018884,purpose,task_running(0x68)
 0x010188bc,adj_starscream_timer_sub_188bc,FUN_010188bc,sub,called only by adj_starscream_timer [0x0101795c]
 0x01018ea8,leff_rule_dtor_user_18ea8,FUN_01018ea8,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01018fac,current_player_wrap_18fac,FUN_01018fac,wrapper,only calls current_player [0x0001aa40]
 0x01018fd4,on_event_26_18fd4,FUN_01018fd4,hook,"event_hook_add(&DAT_00035028, 0x26, ..) in FUN_0101aa58 [0x0101aa58]"
 0x01019000,error_log_wrap_19000,FUN_01019000,wrapper,only calls error_log [0x00004f78]
-0x01019058,game_flag_test_wrap_19058,FUN_01019058,wrapper,only calls game_flag_test [0x00005b58]
-0x0101906c,error_log_user_1906c,FUN_0101906c,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
+0x01019058,test_flag_1e_19058,FUN_01019058,purpose,game_flag_test(0x1e)
+0x0101906c,test_flag_1e_check_task_a9_1906c,FUN_0101906c,purpose,game_flag_test(0x1e); task_running(0xa9)
 0x010190a8,task_0x6e_of_FUN_01019150,FUN_010190a8,task,"task entry started by FUN_01019150 [0x01019150] (FUN_0000ab4c, id 0x6e)"
 0x010190e0,current_player_wrap_190e0,FUN_010190e0,wrapper,only calls current_player [0x0001aa40]
 0x01019150,adj_mudflap_skids_timer,FUN_01019150,adj,adj_get(78) MUDFLAP/SKIDS TIMER
 0x01019294,start_deff_118,FUN_01019294,deff,deff_start(118)
 0x010194ac,ram_00031468_user_194ac,FUN_010194ac,ram,"uses RAM 0x00031468, 0x00035064"
-0x01019518,error_log_user_19518,FUN_01019518,uses,"calls error_log_wrap [0x01019058], game_flag_clear [0x00005a38], task_kill_range [0x0000af20]"
-0x01019594,task_running_user_19594,FUN_01019594,uses,"calls task_running [0x0000b248], task_kill [0x0000ae1c], game_flag_set [0x00005a88]"
+0x01019518,clear_flag_1e_task_kill_range_19518,FUN_01019518,purpose,game_flag_clear(0x1e); calls task_kill_range
+0x01019594,set_flag_1e_check_task_a9_19594,FUN_01019594,purpose,task_running(0xa9); task_kill(0xa9); game_flag_set(0x1e)
 0x010195d8,deff_116_mudflap_sub,FUN_010195d8,sub,called only by deff_116_mudflap [0x0101a104]
 0x01019630,play_sound_22f,FUN_01019630,sound,snd_play(0x22f)
-0x01019720,dmd_page_alloc_pair_user_19720,FUN_01019720,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x01019720,play_snd_21e_dmd_page_alloc_pair_19720,FUN_01019720,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x21e); snd_play(0x21d); snd_play(0x21d)
 0x01019848,play_sound_21f,FUN_01019848,sound,snd_play(0x21f)
 0x0101991c,play_sound_220,FUN_0101991c,sound,snd_play(0x220)
 0x01019a4c,play_sound_221,FUN_01019a4c,sound,snd_play(0x221)
-0x01019b20,dmd_page_alloc_pair_user_19b20,FUN_01019b20,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x01019c04,dmd_page_alloc_pair_user_19c04,FUN_01019c04,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x01019b20,play_snd_222_dmd_page_alloc_pair_19b20,FUN_01019b20,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x222); calls dmd_show_pages; snd_play(0x223)
+0x01019c04,play_snd_224_dmd_page_alloc_pair_19c04,FUN_01019c04,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x224); snd_play(0x225)
 0x01019ce0,play_sound_226,FUN_01019ce0,sound,snd_play(0x226)
-0x01019dd0,dmd_page_alloc_pair_user_19dd0,FUN_01019dd0,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x01019f10,dmd_page_alloc_pair_user_19f10,FUN_01019f10,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101a020,dmd_page_alloc_pair_user_1a020,FUN_0101a020,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101a414,error_log_user_1a414,FUN_0101a414,uses,"calls error_log_wrap [0x01019058], task_running [0x0000b248]"
+0x01019dd0,play_snd_227_dmd_page_alloc_pair_19dd0,FUN_01019dd0,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x227); snd_play(0x227); snd_play(0x227)
+0x01019f10,play_snd_229_dmd_page_alloc_pair_19f10,FUN_01019f10,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x229); snd_play(0x22a); snd_play(0x229)
+0x0101a020,play_snd_22c_dmd_page_alloc_pair_1a020,FUN_0101a020,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x22c); snd_play(0x22d)
+0x0101a414,check_task_6e_1a414,FUN_0101a414,purpose,task_running(0x6e)
 0x0101a44c,adj_mudflap_skids_timer_sub,FUN_0101a44c,sub,called only by adj_mudflap_skids_timer [0x01019150]
 0x0101aa58,leff_rule_dtor_user_1aa58,FUN_0101aa58,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0101ab5c,current_player_wrap_1ab5c,FUN_0101ab5c,wrapper,only calls current_player [0x0001aa40]
 0x0101abd0,current_player_wrap_1abd0,FUN_0101abd0,wrapper,only calls current_player [0x0001aa40]
 0x0101ac18,on_event_26_1ac18,FUN_0101ac18,hook,"event_hook_add(&DAT_00035070, 0x26, ..) in FUN_0101c700 [0x0101c700]"
 0x0101ac44,error_log_wrap_1ac44,FUN_0101ac44,wrapper,only calls error_log [0x00004f78]
-0x0101ac90,task_running_wrap_1ac90,FUN_0101ac90,wrapper,only calls task_running [0x0000b248]
+0x0101ac90,check_task_a6_1ac90,FUN_0101ac90,purpose,task_running(0xa6)
 0x0101aca4,task_running_range_wrap_1aca4,FUN_0101aca4,wrapper,only calls task_running_range [0x0000b2ac]
 0x0101acc4,task_0x6d_of_FUN_0101adc8,FUN_0101acc4,task,"task entry started by FUN_0101adc8 [0x0101adc8] (task_create, id 0x6d)"
 0x0101ad90,adj_ironhide_timer_sub_1ad90,FUN_0101ad90,sub,called only by adj_ironhide_timer [0x0101adc8]
 0x0101adc8,adj_ironhide_timer,FUN_0101adc8,adj,adj_get(77) IRONHIDE TIMER
-0x0101af10,task_running_range_user_1af10,FUN_0101af10,uses,"calls task_running_range_wrap [0x0101aca4], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x0101af10,kill_task_a7_set_dat_000315fc_1af10,FUN_0101af10,purpose,task_kill(0xa7); calls set_dat_000315fc
 0x0101afbc,start_deff_114,FUN_0101afbc,deff,deff_start(114)
 0x0101b2d0,ram_00031468_user_1b2d0,FUN_0101b2d0,ram,"uses RAM 0x00031468, 0x000350b4"
 0x0101b328,start_deff_114_sub,FUN_0101b328,sub,called only by start_deff_114 [0x0101afbc]
@@ -1712,55 +1712,55 @@ address,name,was,rule,evidence
 0x0101b368,leaf_1b368,FUN_0101b368,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0101b3a0,leaf_1b3a0,FUN_0101b3a0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0101b3dc,play_sound_202,FUN_0101b3dc,sound,snd_play(0x202)
-0x0101b4b0,deff_112_ironhide_sub,FUN_0101b4b0,sub,called only by deff_112_ironhide [0x0101be20]
+0x0101b4b0,play_snd_203_dmd_page_alloc_pair_1b4b0,FUN_0101b4b0,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x203); snd_play(0x204)
 0x0101b584,play_sound_205,FUN_0101b584,sound,snd_play(0x205)
-0x0101b64c,dmd_page_alloc_pair_user_1b64c,FUN_0101b64c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x0101b64c,play_snd_209_dmd_page_alloc_pair_1b64c,FUN_0101b64c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x209); calls dmd_show_pages; calls dmd_page_alloc_pair; calls bitmap_draw2
 0x0101b7e4,play_sound_20a,FUN_0101b7e4,sound,snd_play(0x20a)
 0x0101b8a4,dmd_page_alloc_pair_user_1b8a4,FUN_0101b8a4,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101b95c,dmd_page_alloc_pair_user_1b95c,FUN_0101b95c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101ba48,dmd_page_alloc_pair_user_1ba48,FUN_0101ba48,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101bb70,dmd_page_alloc_pair_user_1bb70,FUN_0101bb70,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101bc54,dmd_page_alloc_pair_user_1bc54,FUN_0101bc54,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x0101b95c,play_snd_20b_dmd_page_alloc_pair_1b95c,FUN_0101b95c,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x20b); snd_play(0x20c)
+0x0101ba48,play_snd_20d_dmd_page_alloc_pair_1ba48,FUN_0101ba48,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x20d); snd_play(0x20d); snd_play(0x20e)
+0x0101bb70,play_snd_20f_dmd_page_alloc_pair_1bb70,FUN_0101bb70,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x20f); snd_play(0x210)
+0x0101bc54,play_snd_211_dmd_page_alloc_pair_1bc54,FUN_0101bc54,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x211); snd_play(0x212)
 0x0101bd44,play_sound_213,FUN_0101bd44,sound,snd_play(0x213)
-0x0101c0e4,task_running_user_1c0e4,FUN_0101c0e4,uses,"calls task_running_wrap [0x0101ac90], task_running [0x0000b248]"
+0x0101c0e4,check_task_6d_1c0e4,FUN_0101c0e4,purpose,task_running(0x6d)
 0x0101c11c,adj_ironhide_timer_sub_1c11c,FUN_0101c11c,sub,called only by adj_ironhide_timer [0x0101adc8]
 0x0101c700,leff_rule_dtor_user_1c700,FUN_0101c700,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0101c804,current_player_wrap_1c804,FUN_0101c804,wrapper,only calls current_player [0x0001aa40]
 0x0101c82c,on_event_26_1c82c,FUN_0101c82c,hook,"event_hook_add(&DAT_000350c0, 0x26, ..) in FUN_0101e124 [0x0101e124]"
 0x0101c858,error_log_wrap_1c858,FUN_0101c858,wrapper,only calls error_log [0x00004f78]
-0x0101c8a4,task_running_wrap_1c8a4,FUN_0101c8a4,wrapper,only calls task_running [0x0000b248]
+0x0101c8a4,check_task_a0_1c8a4,FUN_0101c8a4,purpose,task_running(0xa0)
 0x0101c8b8,task_running_range_wrap_1c8b8,FUN_0101c8b8,wrapper,only calls task_running_range [0x0000b2ac]
 0x0101c8d8,task_0x6a_of_FUN_0101caa4,FUN_0101c8d8,task,"task entry started by FUN_0101caa4 [0x0101caa4] (task_create, id 0x6a)"
 0x0101c910,random_below_wrap_1c910,FUN_0101c910,wrapper,only calls random_below [0x0000ba94]
 0x0101ca6c,adj_blackout_timer_sub_1ca6c,FUN_0101ca6c,sub,called only by adj_blackout_timer [0x0101caa4]
 0x0101caa4,adj_blackout_timer,FUN_0101caa4,adj,adj_get(74) BLACKOUT TIMER
-0x0101cbc0,task_running_range_user_1cbc0,FUN_0101cbc0,uses,"calls task_running_range_wrap [0x0101c8b8], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x0101cbc0,kill_task_a1_set_dat_000315fc_1cbc0,FUN_0101cbc0,purpose,task_kill(0xa1); calls set_dat_000315fc
 0x0101cc6c,start_deff_102,FUN_0101cc6c,deff,deff_start(102)
 0x0101ce60,ram_00031468_user_1ce60,FUN_0101ce60,ram,"uses RAM 0x00031468, 0x00035108"
 0x0101ceb8,start_deff_102_sub,FUN_0101ceb8,sub,called only by start_deff_102 [0x0101cc6c]
 0x0101cee8,leaf_1cee8,FUN_0101cee8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0101cef8,dmd_page_alloc_pair_user_1cef8,FUN_0101cef8,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x0101cfd8,dmd_page_alloc_pair_user_1cfd8,FUN_0101cfd8,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101d0c8,dmd_page_alloc_pair_user_1d0c8,FUN_0101d0c8,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
-0x0101d210,dmd_page_alloc_pair_user_1d210,FUN_0101d210,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x0101cef8,play_snd_1ac_dmd_page_alloc_pair_1cef8,FUN_0101cef8,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1ac); calls dmd_show_pages; snd_play(0x1ad)
+0x0101cfd8,play_snd_1ae_dmd_page_alloc_pair_1cfd8,FUN_0101cfd8,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x1ae); snd_play(0x1af)
+0x0101d0c8,play_snd_1c6_dmd_page_alloc_pair_1d0c8,FUN_0101d0c8,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1c6); calls dmd_show_pages; snd_play(0x1b1); snd_play(0x1c7)
+0x0101d210,play_snd_1b4_dmd_page_alloc_pair_1d210,FUN_0101d210,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1b4); calls dmd_show_pages; snd_play(0x1b4); snd_play(0x1b3)
 0x0101d380,play_sound_1c2_1d380,FUN_0101d380,sound,snd_play(0x1c2)
 0x0101d43c,play_sound_1bd,FUN_0101d43c,sound,snd_play(0x1bd)
-0x0101d504,dmd_page_alloc_pair_user_1d504,FUN_0101d504,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], snd_play [0x000251f4]"
+0x0101d504,play_snd_1bf_dmd_page_alloc_pair_1d504,FUN_0101d504,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; snd_play(0x1bf); calls dmd_show_pages; snd_play(0x1c0)
 0x0101d5dc,play_sound_1c2_1d5dc,FUN_0101d5dc,sound,snd_play(0x1c2)
 0x0101d6a8,dmd_page_alloc_pair_user_1d6a8,FUN_0101d6a8,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101da18,task_running_user_1da18,FUN_0101da18,uses,"calls task_running_wrap [0x0101c8a4], task_running [0x0000b248]"
+0x0101da18,check_task_6a_1da18,FUN_0101da18,purpose,task_running(0x6a)
 0x0101da50,adj_blackout_timer_sub_1da50,FUN_0101da50,sub,called only by adj_blackout_timer [0x0101caa4]
 0x0101db34,task_sleep_user_1db34,FUN_0101db34,uses,"calls task_sleep [0x0000acfc], snd_play_after_wrap [0x0002539c], snd_play_after [0x00025284]"
 0x0101e124,leff_rule_dtor_user_1e124,FUN_0101e124,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0101e228,current_player_wrap_1e228,FUN_0101e228,wrapper,only calls current_player [0x0001aa40]
 0x0101e250,on_event_26_1e250,FUN_0101e250,hook,"event_hook_add(&DAT_00035114, 0x26, ..) in FUN_0101fbb0 [0x0101fbb0]"
 0x0101e27c,error_log_wrap_1e27c,FUN_0101e27c,wrapper,only calls error_log [0x00004f78]
-0x0101e2c8,task_running_wrap_1e2c8,FUN_0101e2c8,wrapper,only calls task_running [0x0000b248]
+0x0101e2c8,check_task_9e_1e2c8,FUN_0101e2c8,purpose,task_running(0x9e)
 0x0101e2dc,task_running_range_wrap_1e2dc,FUN_0101e2dc,wrapper,only calls task_running_range [0x0000b2ac]
 0x0101e2fc,task_0x69_of_FUN_0101e400,FUN_0101e2fc,task,"task entry started by FUN_0101e400 [0x0101e400] (task_create, id 0x69)"
 0x0101e3c8,adj_shockwave_timer_sub_1e3c8,FUN_0101e3c8,sub,called only by adj_shockwave_timer [0x0101e400]
 0x0101e400,adj_shockwave_timer,FUN_0101e400,adj,adj_get(73) SHOCKWAVE TIMER
-0x0101e528,task_running_range_user_1e528,FUN_0101e528,uses,"calls task_running_range_wrap [0x0101e2dc], task_kill [0x0000ae1c], set_dat_000315fc [0x00017650]"
+0x0101e528,kill_task_9f_set_dat_000315fc_1e528,FUN_0101e528,purpose,task_kill(0x9f); calls set_dat_000315fc
 0x0101e5d4,start_deff_98,FUN_0101e5d4,deff,deff_start(98)
 0x0101e854,ram_00031468_user_1e854,FUN_0101e854,ram,"uses RAM 0x00031468, 0x00035154"
 0x0101e8ac,start_deff_98_sub,FUN_0101e8ac,sub,called only by start_deff_98 [0x0101e5d4]
@@ -1768,17 +1768,17 @@ address,name,was,rule,evidence
 0x0101e8f4,deff_096_sub,FUN_0101e8f4,sub,called only by deff_096 [0x0101f274]
 0x0101e934,dmd_page_alloc_pair_user_1e934,FUN_0101e934,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0101e9ec,play_sound_196,FUN_0101e9ec,sound,snd_play(0x196)
-0x0101eab4,dmd_page_alloc_pair_user_1eab4,FUN_0101eab4,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x0101eab4,play_snd_197_dmd_page_alloc_pair_1eab4,FUN_0101eab4,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x197); snd_play(0x198)
 0x0101eba0,dmd_page_alloc_pair_user_1eba0,FUN_0101eba0,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101ec58,dmd_page_alloc_pair_user_1ec58,FUN_0101ec58,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
+0x0101ec58,play_snd_197_dmd_page_alloc_pair_1ec58,FUN_0101ec58,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x197); snd_play(0x198)
 0x0101ed44,play_sound_19d,FUN_0101ed44,sound,snd_play(0x19d)
 0x0101ee0c,dmd_page_alloc_pair_user_1ee0c,FUN_0101ee0c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0101eeb4,dmd_page_alloc_pair_user_1eeb4,FUN_0101eeb4,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0101ef64,dmd_page_alloc_pair_user_1ef64,FUN_0101ef64,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0101f01c,dmd_page_alloc_pair_user_1f01c,FUN_0101f01c,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0101f0d4,dmd_page_alloc_pair_user_1f0d4,FUN_0101f0d4,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101f184,dmd_page_alloc_pair_user_1f184,FUN_0101f184,uses,"calls dmd_page_alloc_pair [0x000200a0], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
-0x0101f5a4,task_running_user_1f5a4,FUN_0101f5a4,uses,"calls task_running_wrap [0x0101e2c8], task_running [0x0000b248]"
+0x0101f184,play_snd_1a2_dmd_page_alloc_pair_1f184,FUN_0101f184,purpose,calls dmd_page_alloc_pair; calls bitmap_draw2; calls dmd_show_pages; snd_play(0x1a2); snd_play(0x1a3)
+0x0101f5a4,check_task_69_1f5a4,FUN_0101f5a4,purpose,task_running(0x69)
 0x0101f5dc,adj_shockwave_timer_sub_1f5dc,FUN_0101f5dc,sub,called only by adj_shockwave_timer [0x0101e400]
 0x0101fbb0,leff_rule_dtor_user_1fbb0,FUN_0101fbb0,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0101fcb4,error_log_wrap_1fcb4,FUN_0101fcb4,wrapper,only calls error_log [0x00004f78]
@@ -1789,34 +1789,34 @@ address,name,was,rule,evidence
 0x0101fe98,adj_mode_start_difficulty_user,FUN_0101fe98,uses,"calls adj_mode_start_difficulty [0x0101fd14], current_player [0x0001aa40]"
 0x0101ffa0,start_deff_91_sub_1ffa0,FUN_0101ffa0,sub,called only by start_deff_91 [0x01020074]
 0x01020074,start_deff_91,FUN_01020074,deff,deff_start(91)
-0x010201a8,palette_identity_user_201a8,FUN_010201a8,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x010204b4,palette_identity_user_204b4,FUN_010204b4,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x010206dc,palette_identity_user_206dc,FUN_010206dc,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01020850,palette_identity_user_20850,FUN_01020850,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x010209c4,palette_identity_user_209c4,FUN_010209c4,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01020b38,palette_identity_user_20b38,FUN_01020b38,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
+0x010201a8,draw_more_palette_identity_201a8,FUN_010201a8,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls text_draw_msg_page
+0x010204b4,draw_more_palette_identity_204b4,FUN_010204b4,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls text_draw_msg_page
+0x010206dc,draw_more_palette_identity_206dc,FUN_010206dc,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01020850,draw_more_palette_identity_20850,FUN_01020850,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x010209c4,draw_more_palette_identity_209c4,FUN_010209c4,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01020b38,draw_more_palette_identity_20b38,FUN_01020b38,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
 0x01020cac,leaf_20cac,FUN_01020cac,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01020cf4,leaf_20cf4,FUN_01020cf4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01020d3c,leaf_20d3c,FUN_01020d3c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01020d88,leaf_20d88,FUN_01020d88,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01020dd0,palette_identity_user_20dd0,FUN_01020dd0,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x01020f9c,palette_identity_user_20f9c,FUN_01020f9c,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x01021168,palette_identity_user_21168,FUN_01021168,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x01021318,palette_identity_user_21318,FUN_01021318,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x010214dc,palette_identity_user_214dc,FUN_010214dc,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
-0x010216e0,palette_identity_user_216e0,FUN_010216e0,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], bitmap_draw [0x00023d28]"
+0x01020dd0,draw_more_palette_identity_20dd0,FUN_01020dd0,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw2
+0x01020f9c,draw_more_palette_identity_20f9c,FUN_01020f9c,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw2
+0x01021168,draw_more_palette_identity_21168,FUN_01021168,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw2
+0x01021318,draw_more_palette_identity_21318,FUN_01021318,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw2
+0x010214dc,draw_more_palette_identity_214dc,FUN_010214dc,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw
+0x010216e0,draw_more_palette_identity_216e0,FUN_010216e0,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc; calls dmd_page_alloc; calls bitmap_draw; calls bitmap_draw
 0x010218e0,leaf_218e0,FUN_010218e0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01021910,leaf_21910,FUN_01021910,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0102193c,palette_identity_user_2193c,FUN_0102193c,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01021ab4,palette_identity_user_21ab4,FUN_01021ab4,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
+0x0102193c,draw_more_palette_identity_2193c,FUN_0102193c,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01021ab4,draw_more_palette_identity_21ab4,FUN_01021ab4,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
 0x01021c2c,leaf_21c2c,FUN_01021c2c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01021c70,leaf_21c70,FUN_01021c70,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01021cb0,palette_identity_user_21cb0,FUN_01021cb0,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01021e24,palette_identity_user_21e24,FUN_01021e24,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01021f98,palette_identity_user_21f98,FUN_01021f98,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x0102210c,palette_identity_user_2210c,FUN_0102210c,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x01022280,palette_identity_user_22280,FUN_01022280,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
-0x010223f4,palette_identity_user_223f4,FUN_010223f4,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
+0x01021cb0,draw_more_palette_identity_21cb0,FUN_01021cb0,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01021e24,draw_more_palette_identity_21e24,FUN_01021e24,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01021f98,draw_more_palette_identity_21f98,FUN_01021f98,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x0102210c,draw_more_palette_identity_2210c,FUN_0102210c,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x01022280,draw_more_palette_identity_22280,FUN_01022280,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
+0x010223f4,draw_more_palette_identity_223f4,FUN_010223f4,purpose,calls palette_identity; calls palette_identity; calls dmd_page_alloc_pair; calls bitmap_draw; calls bitmap_draw2; text_printf_msg(0x608) '%u MORE'
 0x01022568,leaf_22568,FUN_01022568,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010225a8,leaf_225a8,FUN_010225a8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01022854,lamp_layer_22854,FUN_01022854,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
@@ -1841,11 +1841,11 @@ address,name,was,rule,evidence
 0x010232d0,on_event_26_22c20_sub_232d0,FUN_010232d0,sub,called only by on_event_26_22c20 [0x01022c20]
 0x010232d4,leff_rule_dtor_user_232d4,FUN_010232d4,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01023418,on_event_11,FUN_01023418,hook,"event_hook_add(&DAT_00035188, 0x11, ..) in FUN_01023ea0 [0x01023ea0]"
-0x01023494,current_player_user_23494,FUN_01023494,uses,"calls current_player [0x0001aa40], task_running [0x0000b248]"
-0x01023538,task_running_user_23538,FUN_01023538,uses,"calls task_running [0x0000b248], current_player [0x0001aa40], error_log [0x00004f78]"
+0x01023494,check_task_b6_23494,FUN_01023494,purpose,task_running(0xb6)
+0x01023538,check_task_b6_23538,FUN_01023538,purpose,task_running(0xb6)
 0x010235d0,start_deff_50_sub,FUN_010235d0,sub,called only by start_deff_50 [0x010237ac]
 0x01023650,task_sleep_user_23650,FUN_01023650,uses,"calls task_sleep [0x0000acfc], set_dat_000315fc [0x00017650]"
-0x010236e8,current_player_user_236e8,FUN_010236e8,uses,"calls current_player [0x0001aa40], task_running [0x0000b248], set_dat_000315fc [0x00017650]"
+0x010236e8,check_task_b6_set_dat_000315fc_236e8,FUN_010236e8,purpose,task_running(0xb6); calls set_dat_000315fc
 0x0102378c,current_player_wrap_2378c,FUN_0102378c,wrapper,only calls current_player [0x0001aa40]
 0x010237ac,start_deff_50,FUN_010237ac,deff,deff_start(50)
 0x01023890,leff_037_sub,FUN_01023890,sub,called only by leff_037 [0x01023928]
@@ -1860,10 +1860,10 @@ address,name,was,rule,evidence
 0x01024808,current_player_wrap_24808,FUN_01024808,wrapper,only calls current_player [0x0001aa40]
 0x010248b0,leaf_248b0,FUN_010248b0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01024924,leaf_24924,FUN_01024924,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01024a20,error_log_user_24a20,FUN_01024a20,uses,calls error_log_wrap [0x00005b58]
-0x01024a60,error_log_user_24a60,FUN_01024a60,uses,"calls error_log_wrap [0x00005b58], game_flag_set [0x00005a88]"
-0x01024ad4,any_timed_mode_running_user_24ad4,FUN_01024ad4,uses,"calls any_timed_mode_running [0x010067bc], error_log_wrap [0x00005b58]"
-0x01024b14,any_timed_mode_running_user_24b14,FUN_01024b14,uses,"calls any_timed_mode_running [0x010067bc], error_log_wrap [0x00005b58], start_deff_136 [0x0100457c]"
+0x01024a20,test_flag_14_24a20,FUN_01024a20,purpose,game_flag_test(0x14)
+0x01024a60,test_flag_14_24a60,FUN_01024a60,purpose,game_flag_test(0x14); game_flag_set(0x14)
+0x01024ad4,test_flag_13_any_timed_mode_running_24ad4,FUN_01024ad4,purpose,calls any_timed_mode_running; game_flag_test(0x13)
+0x01024b14,test_flag_13_any_timed_mode_running_24b14,FUN_01024b14,purpose,calls any_timed_mode_running; game_flag_test(0x13); calls start_deff_136; calls adj_double_scoring_timer; game_flag_set(0x13)
 0x01024c58,start_deff_47_wrap,FUN_01024c58,wrapper,only calls start_deff_47 [0x0102c624]
 0x01024d80,adj_competition_mode_user_24d80,FUN_01024d80,uses,"calls adj_competition_mode [0x00017ea0], current_player [0x0001aa40], current_player_wrap [0x01024808]"
 0x01024e90,leaf_24e90,FUN_01024e90,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1893,7 +1893,7 @@ address,name,was,rule,evidence
 0x01025de4,start_deff_141,FUN_01025de4,deff,deff_start(141)
 0x0102606c,leaf_2606c,FUN_0102606c,leaf,"no call to a named function, no table or RAM symbol"
 0x01026098,current_player_user_26098,FUN_01026098,uses,calls current_player [0x0001aa40]
-0x010260c4,game_flag_test_wrap_260c4,FUN_010260c4,wrapper,only calls game_flag_test [0x00005b58]
+0x010260c4,test_flag_46_260c4,FUN_010260c4,purpose,game_flag_test(0x46)
 0x01026140,error_log_user_26140,FUN_01026140,uses,"calls error_log_wrap [0x010260c4], current_player [0x0001aa40]"
 0x0102628c,start_deff_142,FUN_0102628c,deff,deff_start(142)
 0x010262f0,start_deff_144,FUN_010262f0,deff,deff_start(144)
@@ -1917,16 +1917,16 @@ address,name,was,rule,evidence
 0x010268fc,leaf_268fc,FUN_010268fc,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01026934,leaf_26934,FUN_01026934,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01026968,leaf_26968,FUN_01026968,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01027068,palette_identity_user_27068,FUN_01027068,uses,"calls palette_identity [0x00023e58], dmd_page_alloc [0x0001ffd4], text_draw_msg_fit [0x0002174c]"
+0x01027068,draw_optimus_hit_palette_identity_27068,FUN_01027068,purpose,calls palette_identity; calls dmd_page_alloc; text_draw_msg_fit(0x6cb) 'OPTIMUS HIT'
 0x010273e8,leff_rule_dtor_user_273e8,FUN_010273e8,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01027510,current_player_wrap_27510,FUN_01027510,wrapper,only calls current_player [0x0001aa40]
 0x01027594,current_player_wrap_27594,thunk_FUN_01027510,wrapper,only calls current_player [0x0001aa40]
 0x01027598,on_event_26_27598,FUN_01027598,hook,"event_hook_add(&DAT_00035298, 0x26, ..) in FUN_010293bc [0x010293bc]"
 0x01027628,error_log_wrap_27628,FUN_01027628,wrapper,only calls error_log [0x00004f78]
 0x0102767c,game_flag_test_wrap_27698_wrap_2767c,FUN_0102767c,wrapper,only calls game_flag_test_wrap_27698 [0x01027698]
-0x01027698,game_flag_test_wrap_27698,FUN_01027698,wrapper,only calls game_flag_test [0x00005b58]
-0x010276ac,error_log_user_276ac,FUN_010276ac,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
-0x010276e0,error_log_user_276e0,FUN_010276e0,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
+0x01027698,test_flag_1f_27698,FUN_01027698,purpose,game_flag_test(0x1f)
+0x010276ac,test_flag_1f_check_task_b7_276ac,FUN_010276ac,purpose,game_flag_test(0x1f); task_running(0xb7)
+0x010276e0,test_flag_1f_task_running_range_276e0,FUN_010276e0,purpose,game_flag_test(0x1f); calls task_running_range
 0x01027718,game_flag_test_wrap_27698_wrap_2767c_wrap_27718,FUN_01027718,wrapper,only calls game_flag_test_wrap_27698_wrap_2767c [0x0102767c]
 0x01027734,current_player_wrap_27734,FUN_01027734,wrapper,only calls current_player [0x0001aa40]
 0x01027754,current_player_wrap_27754,FUN_01027754,wrapper,only calls current_player [0x0001aa40]
@@ -1937,15 +1937,15 @@ address,name,was,rule,evidence
 0x010278ec,current_player_wrap_278ec,FUN_010278ec,wrapper,only calls current_player [0x0001aa40]
 0x01027968,task_0x71_of_FUN_01027994,FUN_01027968,task,"task entry started by FUN_01027994 [0x01027994] (FUN_0000ab4c, id 0x71)"
 0x01027994,adj_save_optimus_prime_progress_27994,FUN_01027994,adj,adj_get(87) SAVE OPTIMUS PRIME PROGRESS
-0x01027b74,error_log_user_27b74,FUN_01027b74,uses,"calls error_log_wrap [0x01027628], current_player [0x0001aa40], current_player_wrap [0x0102779c]"
+0x01027b74,show_deff_59_count_mudflap_skids_started_27b74,FUN_01027b74,purpose,score_add; deff_start(59); calls snd_call_sample_count; audit_add(109) MUDFLAP/SKIDS STARTED; score_add; deff_start(60)
 0x01027ec0,on_event_1d_27fc4_sub_27ec0,FUN_01027ec0,sub,called only by on_event_1d_27fc4 [0x01027fc4]
 0x01027f18,task_0xb7_of_FUN_01027f44,FUN_01027f18,task,"task entry started by FUN_01027f44 [0x01027f44] (FUN_0000ab4c, id 0xb7)"
-0x01027f44,error_log_user_27f44,FUN_01027f44,uses,"calls error_log_wrap [0x01027698], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
-0x01027f88,task_running_range_user_27f88,FUN_01027f88,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
+0x01027f44,clear_flag_1f_set_dat_000315fc_27f44,FUN_01027f44,purpose,game_flag_clear(0x1f); calls set_dat_000315fc
+0x01027f88,set_flag_1f_task_running_range_27f88,FUN_01027f88,purpose,calls task_running_range; calls task_kill_range; game_flag_set(0x1f)
 0x01027fc4,on_event_1d_27fc4,FUN_01027fc4,hook,"event_hook_add(&DAT_0003529c, 0x1d, ..) in FUN_010293bc [0x010293bc]"
 0x01027ff4,leaf_27ff4,FUN_01027ff4,leaf,"no call to a named function, no table or RAM symbol"
 0x0102806c,deff_057_sub,FUN_0102806c,sub,called only by deff_057 [0x010280bc]
-0x010285a0,error_log_user_285a0,FUN_010285a0,uses,"calls error_log_wrap [0x01027698], task_running [0x0000b248]"
+0x010285a0,check_task_71_285a0,FUN_010285a0,purpose,task_running(0x71)
 0x010285d8,adj_save_optimus_prime_progress_2799_sub_285d8,FUN_010285d8,sub,called only by adj_save_optimus_prime_progress_27994 [0x01027994]
 0x010286c4,game_flag_test_wrap_27698_wrap_286c4,FUN_010286c4,wrapper,only calls game_flag_test_wrap_27698 [0x01027698]
 0x0102873c,ram_00001c34_user,FUN_0102873c,ram,uses RAM 0x00001c34
@@ -1969,9 +1969,9 @@ address,name,was,rule,evidence
 0x010296a4,leaf_296a4,FUN_010296a4,leaf,"no call to a named function, no table or RAM symbol"
 0x010296d0,current_player_wrap_296d0,FUN_010296d0,wrapper,only calls current_player [0x0001aa40]
 0x010296f0,game_flag_test_wrap_2970c_wrap_296f0,FUN_010296f0,wrapper,only calls game_flag_test_wrap_2970c [0x0102970c]
-0x0102970c,game_flag_test_wrap_2970c,FUN_0102970c,wrapper,only calls game_flag_test [0x00005b58]
-0x01029720,error_log_user_29720,FUN_01029720,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
-0x01029754,error_log_user_29754,FUN_01029754,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
+0x0102970c,test_flag_22_2970c,FUN_0102970c,purpose,game_flag_test(0x22)
+0x01029720,test_flag_22_check_task_b9_29720,FUN_01029720,purpose,game_flag_test(0x22); task_running(0xb9)
+0x01029754,test_flag_22_task_running_range_29754,FUN_01029754,purpose,game_flag_test(0x22); calls task_running_range
 0x0102978c,game_flag_test_wrap_2970c_wrap_296f0_wrap_2978c,FUN_0102978c,wrapper,only calls game_flag_test_wrap_2970c_wrap_296f0 [0x010296f0]
 0x010297a8,current_player_wrap_297a8,FUN_010297a8,wrapper,only calls current_player [0x0001aa40]
 0x010297c8,current_player_wrap_297c8,FUN_010297c8,wrapper,only calls current_player [0x0001aa40]
@@ -1982,15 +1982,15 @@ address,name,was,rule,evidence
 0x01029960,current_player_wrap_29960,FUN_01029960,wrapper,only calls current_player [0x0001aa40]
 0x010299dc,task_0x72_of_FUN_01029a08,FUN_010299dc,task,"task entry started by FUN_01029a08 [0x01029a08] (FUN_0000ab4c, id 0x72)"
 0x01029a08,adj_save_optimus_prime_progress_29a08,FUN_01029a08,adj,adj_get(87) SAVE OPTIMUS PRIME PROGRESS
-0x01029bf4,error_log_user_29bf4,FUN_01029bf4,uses,"calls error_log_wrap [0x01029670], current_player [0x0001aa40], current_player_wrap [0x01029810]"
+0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,FUN_01029bf4,purpose,score_add; deff_start(65); calls snd_call_sample_count; audit_add(113) DOUBLE SCORING STARTED; score_add; deff_start(65)
 0x01029fa4,on_event_1d_2a0a8_sub_29fa4,FUN_01029fa4,sub,called only by on_event_1d_2a0a8 [0x0102a0a8]
 0x01029ffc,task_0xb9_of_FUN_0102a028,FUN_01029ffc,task,"task entry started by FUN_0102a028 [0x0102a028] (FUN_0000ab4c, id 0xb9)"
-0x0102a028,error_log_user_2a028,FUN_0102a028,uses,"calls error_log_wrap [0x0102970c], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
-0x0102a06c,task_running_range_user_2a06c,FUN_0102a06c,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
+0x0102a028,clear_flag_22_set_dat_000315fc_2a028,FUN_0102a028,purpose,game_flag_clear(0x22); calls set_dat_000315fc
+0x0102a06c,set_flag_22_task_running_range_2a06c,FUN_0102a06c,purpose,calls task_running_range; calls task_kill_range; game_flag_set(0x22)
 0x0102a0a8,on_event_1d_2a0a8,FUN_0102a0a8,hook,"event_hook_add(&DAT_00035310, 0x1d, ..) in FUN_0102b330 [0x0102b330]"
 0x0102a0d8,ram_00035370_user,FUN_0102a0d8,ram,uses RAM 0x00035370
 0x0102a17c,deff_063_sub,FUN_0102a17c,sub,called only by deff_063 [0x0102a1b8]
-0x0102a6e4,error_log_user_2a6e4,FUN_0102a6e4,uses,"calls error_log_wrap [0x0102970c], task_running [0x0000b248]"
+0x0102a6e4,check_task_72_2a6e4,FUN_0102a6e4,purpose,task_running(0x72)
 0x0102a71c,adj_save_optimus_prime_progress_29a0_sub_2a71c,FUN_0102a71c,sub,called only by adj_save_optimus_prime_progress_29a08 [0x01029a08]
 0x0102a808,game_flag_test_wrap_2970c_wrap_2a808,FUN_0102a808,wrapper,only calls game_flag_test_wrap_2970c [0x0102970c]
 0x0102a880,leaf_2a880,FUN_0102a880,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2026,7 +2026,7 @@ address,name,was,rule,evidence
 0x0102bab4,leaf_2bab4,FUN_0102bab4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0102badc,on_event_0c_2badc,FUN_0102badc,hook,"event_hook_add(&DAT_0003755c, 0xc, ..) in FUN_0102c2b8 [0x0102c2b8]"
 0x0102bb28,task_0x2b_of_FUN_0102bbac,FUN_0102bb28,task,"task entry started by FUN_0102bbac [0x0102bbac] (task_create, id 0x2b)"
-0x0102bbac,task_create_wrap_2bbac,FUN_0102bbac,wrapper,only calls task_create [0x0000aa04]
+0x0102bbac,start_task_2b_2bbac,FUN_0102bbac,purpose,task_create(0x2b)
 0x0102bbd8,ram_000315f0_user,FUN_0102bbd8,ram,uses RAM 0x000315f0
 0x0102bc18,leaf_2bc18,FUN_0102bc18,leaf,"no call to a named function, no table or RAM symbol"
 0x0102bc28,leaf_2bc28,FUN_0102bc28,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2045,9 +2045,9 @@ address,name,was,rule,evidence
 0x0102c54c,current_player_wrap_2c54c,FUN_0102c54c,wrapper,only calls current_player [0x0001aa40]
 0x0102c56c,current_player_wrap_2c56c,FUN_0102c56c,wrapper,only calls current_player [0x0001aa40]
 0x0102c624,start_deff_47,FUN_0102c624,deff,deff_start(47)
-0x0102c804,start_leff_33_sub_2c804,FUN_0102c804,sub,called only by start_leff_33 [0x0102c8c8]
+0x0102c804,clear_flag_9_play_snd_15b_2c804,FUN_0102c804,purpose,snd_play(0x15b); snd_play(0x15c); snd_play(0x15d); event_post(0x4c); calls replay_check; calls score_award_check
 0x0102c878,start_leff_33_sub_2c878,FUN_0102c878,sub,called only by start_leff_33 [0x0102c8c8]
-0x0102c8a4,game_flag_test_wrap_2c8a4,FUN_0102c8a4,wrapper,only calls game_flag_test [0x00005b58]
+0x0102c8a4,test_flag_4d_2c8a4,FUN_0102c8a4,purpose,game_flag_test(0x4d)
 0x0102c8b8,game_flag_test_wrap_2c8a4_wrap_2c8b8,FUN_0102c8b8,wrapper,only calls game_flag_test_wrap_2c8a4 [0x0102c8a4]
 0x0102c8c8,start_leff_33,FUN_0102c8c8,leff,leff_start(33)
 0x0102ca30,task_0x51_of_FUN_0102ca98,FUN_0102ca30,task,"task entry started by FUN_0102ca98 [0x0102ca98] (task_create, id 0x51)"
@@ -2073,7 +2073,7 @@ address,name,was,rule,evidence
 0x0102e930,current_player_wrap_2e930,FUN_0102e930,wrapper,only calls current_player [0x0001aa40]
 0x0102e95c,any_multiball_running_user_2e95c,FUN_0102e95c,uses,"calls any_multiball_running [0x01006704], any_timed_mode_running [0x010067bc], current_player_wrap [0x0102e930]"
 0x0102e994,any_multiball_running_user_2e994,FUN_0102e994,uses,"calls any_multiball_running [0x01006704], any_timed_mode_running [0x010067bc]"
-0x0102e9c0,leff_start_user_2e9c0,FUN_0102e9c0,uses,"calls leff_start [0x00007c10], snd_play [0x000251f4], score_add [0x0001caf0]"
+0x0102e9c0,run_leff_143_play_snd_261_2e9c0,FUN_0102e9c0,purpose,leff_start(143); snd_play(0x261); score_add; task_running(0xb1); calls adj_fast_scoring_timer; calls deff_start
 0x0102ed18,coilgroup_pulse_user_2ed18,FUN_0102ed18,uses,"calls coilgroup_pulse [0x00005fd4], task_sleep [0x0000acfc]"
 0x0102ede0,lamp_layer_2ede0,FUN_0102ede0,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0102eff8,leff_rule_dtor_user_2eff8,FUN_0102eff8,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
@@ -2085,7 +2085,7 @@ address,name,was,rule,evidence
 0x0102f1c0,ram_021120ac_user,FUN_0102f1c0,ram,"uses RAM 0x021120ac, 0x021120a8"
 0x0102f1e0,get_dat_021120ae,FUN_0102f1e0,getter,returns DAT_021120ae
 0x0102f1f0,set_dat_021120ae,FUN_0102f1f0,setter,writes DAT_021120ae
-0x0102f200,current_player_user_2f200,FUN_0102f200,uses,"calls current_player [0x0001aa40], num_players [0x0001a94c], palette_identity [0x00023e58]"
+0x0102f200,draw_way_palette_identity_2f200,FUN_0102f200,purpose,calls palette_identity; calls palette_identity; calls get_dat_021120b4; calls get_dat_021120b4; calls get_dat_021120ac; calls get_dat_021120ac
 0x0102f6d4,draw_ball_d,FUN_0102f6d4,msg,"draws msg 0x31d ""BALL %d"""
 0x0102f724,deff_019_replay_at_20_000_000_sub_2f724,FUN_0102f724,sub,called only by deff_019_replay_at_20_000_000 [0x0102fb8c]
 0x0102f770,deff_019_replay_at_20_000_000_sub_2f770,FUN_0102f770,sub,called only by deff_019_replay_at_20_000_000 [0x0102fb8c]
@@ -2107,7 +2107,7 @@ address,name,was,rule,evidence
 0x010303cc,dmd_page_303cc,FUN_010303cc,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
 0x010304ac,dmd_page_304ac,FUN_010304ac,subsystem,"uses 0x00037654: the DMD page allocator, dmd_page_alloc"
 0x0103058c,dmd_page_3058c,FUN_0103058c,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
-0x0103070c,error_log_user_3070c,FUN_0103070c,uses,"calls error_log_wrap [0x00001ecc], error_log [0x00004f78]"
+0x0103070c,pulse_shaker_motor_optional_coil_slot_time_3070c,FUN_0103070c,purpose,calls coil_slot_time; coil_pulse_now(8) SHAKER MOTOR (OPTIONAL)
 0x010307a0,adj_shaker_motor_optional,FUN_010307a0,adj,adj_get(96) SHAKER MOTOR (OPTIONAL)
 0x010307e8,error_log_wrap_307e8,FUN_010307e8,wrapper,only calls error_log [0x00004f78]
 0x0103081c,error_log_user_3081c,FUN_0103081c,uses,"calls error_log_wrap [0x010307e8], error_log [0x00004f78]"
@@ -2115,7 +2115,7 @@ address,name,was,rule,evidence
 0x01030908,on_event_26_30908,FUN_01030908,hook,"event_hook_add(&DAT_000356d0, 0x26, ..) in FUN_010312e4 [0x010312e4]"
 0x01030934,ram_0003d090_user,FUN_01030934,ram,uses RAM 0x0003d090
 0x0103096c,any_multiball_running_wrap_3096c,FUN_0103096c,wrapper,only calls any_multiball_running [0x01006704]
-0x010309a4,any_multiball_running_user_309a4,FUN_010309a4,uses,"calls any_multiball_running_wrap [0x0103096c], leff_start [0x00007c10], snd_play [0x000251f4]"
+0x010309a4,show_deff_125_run_leff_139_309a4,FUN_010309a4,purpose,leff_start(139); snd_play(0x25c); score_add; task_running(0xb0); deff_start(125); leff_start(142)
 0x01030eb8,coilgroup_pulse_user_30eb8,FUN_01030eb8,uses,"calls coilgroup_pulse [0x00005fd4], task_sleep [0x0000acfc]"
 0x01030f80,lamp_layer_30f80,FUN_01030f80,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x010312e4,event_hook_add_user_312e4,FUN_010312e4,uses,calls event_hook_add [0x00006da8]
@@ -2123,20 +2123,20 @@ address,name,was,rule,evidence
 0x010313cc,on_event_6b_313cc,FUN_010313cc,hook,"event_hook_add(&DAT_000356e0, 0x6b, ..) in FUN_01031eb4 [0x01031eb4]"
 0x01031420,on_event_6c_31420,FUN_01031420,hook,"event_hook_add(&DAT_000356e4, 0x6c, ..) in FUN_01031eb4 [0x01031eb4]"
 0x01031470,on_event_6a_31470,FUN_01031470,hook,"event_hook_add(&DAT_000356e8, 0x6a, ..) in FUN_01031eb4 [0x01031eb4]"
-0x010314ac,task_running_wrap_314ac,FUN_010314ac,wrapper,only calls task_running [0x0000b248]
+0x010314ac,check_task_b2_314ac,FUN_010314ac,purpose,task_running(0xb2)
 0x010314c0,task_running_range_wrap_314c0,FUN_010314c0,wrapper,only calls task_running_range [0x0000b2ac]
 0x010314d8,task_0xb2_of_FUN_01031518,FUN_010314d8,task,"task entry started by FUN_01031518 [0x01031518] (task_create, id 0xb2)"
-0x01031518,on_event_0f_31928_sub_31518,FUN_01031518,sub,called only by on_event_0f_31928 [0x01031928]
+0x01031518,clear_flag_11_start_task_b2_31518,FUN_01031518,purpose,task_create(0xb2); calls switch_timeout_obj_clear; game_flag_clear(0x11); calls set_dat_000315fc
 0x01031590,current_player_wrap_31590,FUN_01031590,wrapper,only calls current_player [0x0001aa40]
 0x010315e0,current_player_wrap_315e0,FUN_010315e0,wrapper,only calls current_player [0x0001aa40]
 0x01031630,start_deff_42,FUN_01031630,deff,deff_start(42)
 0x01031704,leaf_31704,FUN_01031704,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01031724,task_running_range_wrap_31724,FUN_01031724,wrapper,only calls task_running_range [0x0000b2ac]
 0x0103173c,task_0xb4_of_FUN_0103177c,FUN_0103173c,task,"task entry started by FUN_0103177c [0x0103177c] (task_create, id 0xb4)"
-0x0103177c,on_event_0f_31928_sub_3177c,FUN_0103177c,sub,called only by on_event_0f_31928 [0x01031928]
+0x0103177c,start_task_b4_switch_timeout_obj_clear_3177c,FUN_0103177c,purpose,task_create(0xb4); calls switch_timeout_obj_clear; calls set_dat_000315fc
 0x010317cc,current_player_wrap_317cc,FUN_010317cc,wrapper,only calls current_player [0x0001aa40]
 0x0103181c,task_0x65_of_FUN_01031848,FUN_0103181c,task,"task entry started by FUN_01031848 [0x01031848] (FUN_0000ab4c, id 0x65)"
-0x01031848,sw_megatron_back_door_sub,FUN_01031848,sub,called only by sw_megatron_back_door [0x01033c80]
+0x01031848,add_score_set_dat_000315fc_31848,FUN_01031848,purpose,score_add; calls set_dat_000315fc
 0x010318c0,leaf_318c0,FUN_010318c0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010318cc,on_event_26_318cc,FUN_010318cc,hook,"event_hook_add(&DAT_000356ec, 0x26, ..) in FUN_01031eb4 [0x01031eb4]"
 0x01031928,on_event_0f_31928,FUN_01031928,hook,"event_hook_add(&DAT_000356f0, 0xf, ..) in FUN_01031eb4 [0x01031eb4]"
@@ -2148,22 +2148,22 @@ address,name,was,rule,evidence
 0x01032094,play_sound_270_sub,FUN_01032094,sub,called only by play_sound_270 [0x010320a4]
 0x010320a4,play_sound_270,FUN_010320a4,sound,snd_play(0x270)
 0x01032230,task_0x49_of_FUN_01032294,FUN_01032230,task,"task entry started by FUN_01032294 [0x01032294] (task_create, id 0x49)"
-0x01032280,game_flag_test_wrap_32280,FUN_01032280,wrapper,only calls game_flag_test [0x00005b58]
-0x01032294,sw_right_orbit_spinner_sub_32294,FUN_01032294,sub,called only by sw_right_orbit_spinner [0x01033a08]
+0x01032280,test_flag_4c_32280,FUN_01032280,purpose,game_flag_test(0x4c)
+0x01032294,sw_right_orbit_check_task_49_32294,FUN_01032294,purpose,task_running(0x49); calls play_sound_270; task_create(0x49); task_running(0x4b); sw_is_disabled(12) RIGHT ORBIT; calls start_leff_35_33488
 0x010324dc,on_event_26_324dc,FUN_010324dc,hook,"event_hook_add(&DAT_00035718, 0x26, ..) in FUN_01032c48 [0x01032c48]"
 0x01032510,current_player_wrap_32510,FUN_01032510,wrapper,only calls current_player [0x0001aa40]
 0x0103255c,current_player_wrap_3255c,FUN_0103255c,wrapper,only calls current_player [0x0001aa40]
 0x01032590,task_99_of_FUN_010325bc,FUN_01032590,task,"task entry started by FUN_010325bc [0x010325bc] (task_create, id 99)"
-0x010325bc,current_player_user_325bc,FUN_010325bc,uses,"calls current_player_wrap [0x01032510], current_player [0x0001aa40], current_player_wrap [0x0103255c]"
+0x010325bc,set_flag_4c_start_task_63_325bc,FUN_010325bc,purpose,game_flag_set(0x4c); task_create(0x63); calls nvram_unlock
 0x01032830,deff_147_super_spinner_sub_32830,FUN_01032830,sub,called only by deff_147_super_spinner [0x010329c8]
 0x010328e8,bitmap_draw2_wrap_328e8,FUN_010328e8,wrapper,only calls bitmap_draw2 [0x00023c7c]
 0x01032944,deff_147_super_spinner_sub_32944,FUN_01032944,sub,called only by deff_147_super_spinner [0x010329c8]
 0x01032c48,leff_rule_dtor_user_32c48,FUN_01032c48,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
-0x01032d2c,current_player_user_32d2c,FUN_01032d2c,uses,"calls current_player_wrap [0x01000dfc], current_player [0x0001aa40], error_log_wrap [0x0001a928]"
+0x01032d2c,clear_flag_9_post_event_4c_32d2c,FUN_01032d2c,purpose,event_post(0x4c); calls replay_check; calls score_award_check; game_flag_clear(0x9); event_post(0x50); event_post(0x4d)
 0x01032d5c,lamp_layer_32d5c,FUN_01032d5c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01032dac,lamp_layer_32dac,FUN_01032dac,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01032dfc,sw_shooter_lane,FUN_01032dfc,switch,handler of switch(es) SHOOTER LANE (switch table)
-0x01032eb0,task_sleep_user_32eb0,FUN_01032eb0,uses,"calls task_sleep [0x0000acfc], task_running [0x0000b248], error_log_wrap [0x00002e34]"
+0x01032eb0,check_task_56_32eb0,FUN_01032eb0,purpose,task_running(0x56); task_running(0x56)
 0x01032f08,leaf_32f08,FUN_01032f08,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01032f8c,sw_top_bumper_etc,FUN_01032f8c,switch,handler of switch(es) BOTTOM BUMPER; RIGHT BUMPER; TOP BUMPER (switch table)
 0x01033094,leaf_33094,FUN_01033094,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2204,8 +2204,8 @@ address,name,was,rule,evidence
 0x01033e50,error_log_wrap_1a928_wrap_33e50,FUN_01033e50,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x01033e74,leaf_33e74,FUN_01033e74,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01033e98,task_200_of_FUN_01033ec8,FUN_01033e98,task,"task entry started by FUN_01033ec8 [0x01033ec8] (task_create, id 200)"
-0x01033ec8,on_event_26_33f94_sub_33ec8,FUN_01033ec8,sub,called only by on_event_26_33f94 [0x01033f94]
-0x01033f2c,sw_shooter_lane_sub_33f2c,FUN_01033f2c,sub,called only by sw_shooter_lane [0x01032dfc]
+0x01033ec8,start_task_c8_side_choice_running_33ec8,FUN_01033ec8,purpose,calls side_choice_running; task_create(0xc8); calls switch_timeout_obj_clear; calls set_dat_000315fc
+0x01033f2c,kill_task_c9_33f2c,FUN_01033f2c,purpose,task_kill(0xc9)
 0x01033f44,sw_shooter_lane_sub_33f44,FUN_01033f44,sub,called only by sw_shooter_lane [0x01032dfc]
 0x01033f54,start_deff_41,FUN_01033f54,deff,deff_start(41)
 0x01033f94,on_event_26_33f94,FUN_01033f94,hook,"event_hook_add(&DAT_000359e8, 0x26, ..) in FUN_01034618 [0x01034618]"
@@ -2243,14 +2243,14 @@ address,name,was,rule,evidence
 0x010363b4,items_all_collected_user,FUN_010363b4,uses,"calls items_all_collected [0x01035d50], any_multiball_running [0x01006704], error_log_wrap [0x0100ff6c]"
 0x010363ec,count_wizard_mb_req_4,FUN_010363ec,audit,audit_add(151) WIZARD MB: REQ. 4 COMPLETED
 0x01036534,table_040c7acc_reader,FUN_01036534,table,reads ROM table 0x040c7acc
-0x0103657c,game_flag_test_wrap_3657c,FUN_0103657c,wrapper,only calls game_flag_test [0x00005b58]
-0x01036590,error_log_user_36590,FUN_01036590,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
-0x010365c4,error_log_user_365c4,FUN_010365c4,uses,"calls error_log_wrap [0x0103628c], score_add [0x0001caf0], deff_start [0x000209b4]"
-0x010367c4,task_running_user_367c4,FUN_010367c4,uses,"calls task_running [0x0000b248], task_kill [0x0000ae1c], game_flag_set [0x00005a88]"
+0x0103657c,test_flag_3e_3657c,FUN_0103657c,purpose,game_flag_test(0x3e)
+0x01036590,test_flag_3e_check_task_c5_36590,FUN_01036590,purpose,game_flag_test(0x3e); task_running(0xc5)
+0x010365c4,show_deff_89_count_wizard_mb_req_6_365c4,FUN_010365c4,purpose,score_add; deff_start(89); audit_add(153) WIZARD MB: REQ. 6 COMPLETED; score_add; deff_start(88); audit_add(152) WIZARD MB: REQ. 5 COMPLETED
+0x010367c4,set_flag_3e_check_task_c5_367c4,FUN_010367c4,purpose,task_running(0xc5); task_kill(0xc5); game_flag_set(0x3e); calls set_dat_000315fc
 0x01036814,on_event_1d_3686c_sub_36814,FUN_01036814,sub,called only by on_event_1d_3686c [0x0103686c]
 0x0103686c,on_event_1d_3686c,FUN_0103686c,hook,"event_hook_add(&DAT_00035a38, 0x1d, ..) in FUN_010378c4 [0x010378c4]"
-0x01036970,task_running_user_36970,FUN_01036970,uses,calls task_running [0x0000b248]
-0x01037018,error_log_user_37018,FUN_01037018,uses,"calls error_log_wrap [0x0103657c], task_running [0x0000b248]"
+0x01036970,check_task_7c_36970,FUN_01036970,purpose,task_running(0x7c)
+0x01037018,check_task_7c_37018,FUN_01037018,purpose,task_running(0x7c)
 0x01037050,count_wizard_mb_req_4_sub_37050,FUN_01037050,sub,called only by count_wizard_mb_req_4 [0x010363ec]
 0x010378c4,leff_rule_dtor_user_378c4,FUN_010378c4,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01037ac4,error_log_user_37ac4,FUN_01037ac4,uses,calls error_log [0x00004f78]
@@ -2298,8 +2298,8 @@ address,name,was,rule,evidence
 0x0103a758,adj_timed_plunger,FUN_0103a758,adj,adj_get(39) TIMED PLUNGER
 0x0103a7a4,task_0x16_of_FUN_0103a7fc,FUN_0103a7a4,task,"task entry started by FUN_0103a7fc [0x0103a7fc] (FUN_0000ab4c, id 0x16)"
 0x0103a7d8,ram_00031628_user,FUN_0103a7d8,ram,"uses RAM 0x00031628, 0x00031454"
-0x0103a7fc,error_log_user_3a7fc,FUN_0103a7fc,uses,calls error_log_wrap [0x00005b58]
-0x0103a848,task_kill_wrap,FUN_0103a848,wrapper,only calls task_kill [0x0000ae1c]
+0x0103a7fc,test_flag_e_3a7fc,FUN_0103a7fc,purpose,game_flag_test(0xe)
+0x0103a848,kill_task_16_3a848,FUN_0103a848,purpose,task_kill(0x16)
 0x0103a87c,game_device_3a87c,FUN_0103a87c,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103aa5c,game_device_3aa5c,FUN_0103aa5c,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103ab6c,adj_coindoor_ball_saver,FUN_0103ab6c,adj,adj_get(41) COINDOOR BALL SAVER
@@ -2311,21 +2311,21 @@ address,name,was,rule,evidence
 0x0103b4fc,game_device_3b4fc,FUN_0103b4fc,subsystem,"uses 0x040d181c: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103b778,count_15_0m_17_49m,FUN_0103b778,audit,audit_add(37) 15.0M-17.49M SCORES
 0x0103b840,task_running_range_user_3b840,FUN_0103b840,uses,"calls task_running_range_wrap [0x0103a4d0], balls_count_all [0x01037e5c], error_log_wrap [0x0103a188]"
-0x0103b89c,task_running_user_3b89c,FUN_0103b89c,uses,"calls task_running [0x0000b248], task_sleep [0x0000acfc]"
+0x0103b89c,check_task_2b_3b89c,FUN_0103b89c,purpose,task_running(0x2b)
 0x0103b9cc,game_device_3b9cc,FUN_0103b9cc,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103bb88,lamp_layer_268a4_sub_3bb88,FUN_0103bb88,sub,called only by lamp_layer_268a4 [0x000268a4]
-0x0103bba0,error_log_user_3bba0,FUN_0103bba0,uses,calls error_log_wrap [0x00005b58]
-0x0103bc34,error_log_user_3bc34,FUN_0103bc34,uses,calls error_log_wrap [0x00005b58]
+0x0103bba0,test_flag_c_3bba0,FUN_0103bba0,purpose,game_flag_test(0xc); game_flag_test(0xd)
+0x0103bc34,test_flag_c_3bc34,FUN_0103bc34,purpose,game_flag_test(0xc)
 0x0103bc90,game_device_3bc90,FUN_0103bc90,subsystem,"uses 0x040d181c: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103bcf4,on_event_6a_3bcf4,FUN_0103bcf4,hook,"event_hook_add(&DAT_000375d4, 0x6a, ..) in FUN_0103c2a8 [0x0103c2a8]"
 0x0103bd5c,on_event_65_3bd5c,FUN_0103bd5c,hook,"event_hook_add(&DAT_000375d8, 0x65, ..) in FUN_0103c2a8 [0x0103c2a8]"
 0x0103bdd8,game_device_3bdd8,FUN_0103bdd8,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
-0x0103be8c,game_flag_set_user,FUN_0103be8c,uses,calls game_flag_set [0x00005a88]
+0x0103be8c,set_flag_a_3be8c,FUN_0103be8c,purpose,game_flag_set(0xa)
 0x0103bffc,game_device_3bffc,FUN_0103bffc,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103c074,on_event_3d_sub_3c074,FUN_0103c074,sub,called only by on_event_3d [0x0103c0f0]
 0x0103c0b8,on_event_3d_sub_3c0b8,FUN_0103c0b8,sub,called only by on_event_3d [0x0103c0f0]
 0x0103c0f0,on_event_3d,FUN_0103c0f0,hook,"event_hook_add(&DAT_000375dc, 0x3d, ..) in FUN_0103c2a8 [0x0103c2a8]"
-0x0103c120,task_running_user_3c120,FUN_0103c120,uses,"calls task_running [0x0000b248], error_log_wrap [0x0103a188], msg_get [0x000099f0]"
+0x0103c120,check_task_15_msg_get_3c120,FUN_0103c120,purpose,task_running(0x15); calls msg_get
 0x0103c1e8,game_device_3c1e8,FUN_0103c1e8,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103c2a8,event_hook_add_user_3c2a8,FUN_0103c2a8,uses,calls event_hook_add [0x00006da8]
 0x0103c7bc,sw_matrix_d464_wrap_3c7bc,FUN_0103c7bc,wrapper,only calls sw_matrix_d464 [0x0000d464]
@@ -2334,17 +2334,17 @@ address,name,was,rule,evidence
 0x0103d40c,draw_s_selected_sub_3d40c,FUN_0103d40c,sub,called only by draw_s_selected [0x0103d588]
 0x0103d4c8,text_width_user_3d4c8,FUN_0103d4c8,uses,"calls text_width [0x00021378], text_draw_str_page [0x00021838]"
 0x0103d588,draw_s_selected,FUN_0103d588,msg,"draws msg 0x4ea ""%s SELECTED"""
-0x0103d828,deff_014_sub,FUN_0103d828,sub,called only by deff_014 [0x0103c6f8]
-0x0103d838,flipper_buttons_held_user,FUN_0103d838,uses,"calls flipper_buttons_held_wrap [0x00006860], draw_s_selected [0x0103d588], current_player [0x0001aa40]"
+0x0103d828,check_task_11_text_printf_page_3d828,FUN_0103d828,purpose,task_running(0x11); calls text_printf_page; calls text_draw_str_page; calls msg_get; calls text_draw_str_page
+0x0103d838,clear_flag_8_kill_task_11_3d838,FUN_0103d838,purpose,calls draw_s_selected; calls deff_frame_sleep; calls get_dat_0003243d; task_kill(0x11); task_running(0x11); game_flag_clear(0x8)
 0x0103e340,sw_matrix_d464_wrap_3e340,FUN_0103e340,wrapper,only calls sw_matrix_d464 [0x0000d464]
 0x0103e368,strlen_wrap_3e368,FUN_0103e368,wrapper,only calls strlen [0x0002fe4c]
-0x0103e8f8,text_printf_msg_wrap,FUN_0103e8f8,wrapper,only calls text_printf_msg [0x00021660]
-0x0103ed60,deff_004_50v_20v_disabled_sub,FUN_0103ed60,sub,called only by deff_004_50v_20v_disabled [0x0103ee10]
-0x0103f47c,deff_003_transformers_sub_3f47c,FUN_0103f47c,sub,called only by deff_003_transformers [0x0103f960]
+0x0103e8f8,draw_player_3e8f8,FUN_0103e8f8,purpose,text_printf_msg(0x4c8) 'PLAYER %d'; text_printf_msg(0x4c9) 'YOU ARE IN %P1/1ST/2ND/3RD/4TH'
+0x0103ed60,draw_close_coin_door_3ed60,FUN_0103ed60,purpose,text_draw_msg_page(0x1d4) 'CLOSE COIN DOOR'; text_draw_msg_page(0x1d5) 'OR PULL INTERLOCK SWITCH'; text_draw_msg_page(0x1d6) 'TO RESTORE POWER'
+0x0103f47c,post_event_5b_bitmap_draw2_3f47c,FUN_0103f47c,purpose,event_post(0x5b); calls bitmap_draw2; calls text_draw_msg_page; event_post(0x5c); calls bitmap_draw2; event_post(0x5b)
 0x0103f888,deff_003_transformers_sub_3f888,FUN_0103f888,sub,called only by deff_003_transformers [0x0103f960]
 0x0104015c,play_sound_010_402c0_sub_4015c,FUN_0104015c,sub,called only by play_sound_010_402c0 [0x010402c0]
 0x010402c0,play_sound_010_402c0,FUN_010402c0,sound,snd_play(0x10)
-0x010405ec,text_draw_msg_page_user_405ec,FUN_010405ec,uses,"calls text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c], deff_frame_sleep [0x00020220]"
+0x010405ec,draw_knocker_test_deff_frame_sleep_405ec,FUN_010405ec,purpose,text_draw_msg_page(0x3aa) 'KNOCKER TEST'; text_draw_msg_fit(0x3ab) 'PRESS 'SELECT' TO ACTIVATE'; text_draw_msg_page(0x3ac) 'KNOCKER'; text_draw_msg_page(0x3ad) 'ACTIVATING KNOCKER'; calls deff_frame_sleep; calls adj_q24_option
 0x01040720,ram_00033550_user,FUN_01040720,ram,"uses RAM 0x00033550, 0x000311e4"
 0x01040764,ram_00033560_user,FUN_01040764,ram,"uses RAM 0x00033560, 0x0003126c"
 0x010407a8,ram_00033570_user,FUN_010407a8,ram,"uses RAM 0x00033570, 0x000335c8"
@@ -2352,29 +2352,29 @@ address,name,was,rule,evidence
 0x01040830,ram_00033620_user,FUN_01040830,ram,"uses RAM 0x00033620, 0x00033678"
 0x01040874,draw_settings_installed,FUN_01040874,msg,"draws msg 0x3ea ""SETTINGS INSTALLED:"""
 0x010408fc,msg_get_user_408fc,FUN_010408fc,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
-0x01040984,text_draw_msg_page_user_40984,FUN_01040984,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x01040984,draw_total_plays_40984,FUN_01040984,purpose,text_draw_msg_page(0x3eb) 'TOTAL PLAYS:'
 0x010409fc,msg_get_user_409fc,FUN_010409fc,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
 0x01040a8c,draw_redemption_earnings,FUN_01040a8c,msg,"draws msg 0x3ef ""REDEMPTION EARNINGS:"""
 0x01040b60,msg_get_user_40b60,FUN_01040b60,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
-0x01040c54,text_draw_msg_page_user_40c54,FUN_01040c54,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x01040c54,draw_total_tickets_awarded_40c54,FUN_01040c54,purpose,text_draw_msg_page(0x3ed) 'TOTAL TICKETS AWARDED:'
 0x01040ccc,msg_get_user_40ccc,FUN_01040ccc,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
-0x01040d5c,text_draw_msg_page_user_40d5c,FUN_01040d5c,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x01040d5c,draw_payout_percentage_40d5c,FUN_01040d5c,purpose,text_draw_msg_page(0x3f0) 'PAYOUT PERCENTAGE:'
 0x01040e4c,msg_get_user_40e4c,FUN_01040e4c,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
 0x01040f70,leaf_40f70,FUN_01040f70,leaf,"no call to a named function, no table or RAM symbol"
-0x01040ff0,text_draw_msg_page_user_40ff0,FUN_01040ff0,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x01040ff0,draw_feature_payout_percentage_40ff0,FUN_01040ff0,purpose,text_draw_msg_page(0x3f2) 'FEATURE PAYOUT PERCENTAGE:'
 0x010410f8,msg_get_user_410f8,FUN_010410f8,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
-0x01041240,text_draw_msg_page_user_41240,FUN_01041240,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660]"
+0x01041240,draw_target_score_adjusts_41240,FUN_01041240,purpose,text_draw_msg_page(0x3f4) 'TARGET SCORE ADJUSTS IN:'; text_printf_msg(0x3f5) '%u SAMPLES + %u GAME%P1//S/%'; text_printf_msg(0x3f6) '%u GAME%P1//S/%'
 0x01041348,msg_get_user_41348,FUN_01041348,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], strlen [0x0002fe4c]"
 0x01041454,ram_0003354c_user,FUN_01041454,ram,uses RAM 0x0003354c
 0x01041480,table_040c95f4_reader,FUN_01041480,table,reads ROM table 0x040c95f4
-0x010414e4,text_draw_msg_page_user_414e4,FUN_010414e4,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
-0x010417b4,text_draw_msg_page_user_417b4,FUN_010417b4,uses,"calls text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c], deff_frame_sleep [0x00020220]"
-0x0104196c,text_draw_msg_fit_user_4196c,FUN_0104196c,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
-0x01041b10,text_draw_msg_fit_user_41b10,FUN_01041b10,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x010414e4,draw_redemption_data_deff_frame_sleep_414e4,FUN_010414e4,purpose,text_draw_msg_page(0x3e9) 'REDEMPTION DATA'; text_draw_msg_page(0x3f7) 'USE -/+ TO VIEW OR 'BACK' TO E'; calls deff_frame_sleep
+0x010417b4,draw_uninstall_redemption_deff_frame_sleep_417b4,FUN_010417b4,purpose,text_draw_msg_page(0x3e2) 'UNINSTALL REDEMPTION'; text_draw_msg_page(0x3e3) 'ARE YOU SURE?'; text_draw_msg_fit(0x3e4) 'PRESS 'SELECT' TO CONFIRM'; calls deff_frame_sleep; text_draw_msg_page(0x3e5) 'REDEMPTION'; text_draw_msg_page(0x3e6) 'UNINSTALLED'
+0x0104196c,draw_reset_grand_champion_deff_frame_sleep_4196c,FUN_0104196c,purpose,text_draw_msg_fit(0x349) 'RESET GRAND CHAMPION'; text_draw_msg_page(0x34a) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x34b) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_fit(0x34c) 'GRAND CHAMPION SCORES'; text_draw_msg_page(0x34d) 'RESET'
+0x01041b10,draw_reset_high_scores_deff_frame_sleep_41b10,FUN_01041b10,purpose,text_draw_msg_fit(0x34f) 'RESET HIGH SCORES'; text_draw_msg_page(0x350) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x351) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_fit(0x352) 'HIGH SCORES'; text_draw_msg_page(0x353) 'RESET'
 0x01041cb4,draw_d_p1_st_nd_41cb4,FUN_01041cb4,msg,"draws msg 0x4d4 ""%d%P1/ST/ND/RD/TH/% PLACE"""
 0x010420ac,text_draw_msg_page_user_420ac,FUN_010420ac,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220], draw_d_p1_st_nd [0x01041cb4]"
-0x01042204,text_draw_msg_page_user_42204,FUN_01042204,uses,"calls text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c], deff_frame_sleep [0x00020220]"
-0x010423ac,text_draw_msg_page_user_423ac,FUN_010423ac,uses,"calls text_draw_msg_page [0x000215ac], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
+0x01042204,draw_stop_tournament_deff_frame_sleep_42204,FUN_01042204,purpose,text_draw_msg_page(0x4b5) 'STOP TOURNAMENT'; text_draw_msg_page(0x4b6) 'ARE YOU SURE?'; text_draw_msg_fit(0x4b7) 'PRESS 'SELECT' TO CONFIRM'; calls deff_frame_sleep; text_draw_msg_page(0x4b8) 'TOURNAMENT'; text_draw_msg_page(0x4b9) 'STOPPED'
+0x010423ac,draw_start_tournament_quick_msg_get_423ac,FUN_010423ac,purpose,text_draw_msg_page(0x3fc) 'START TOURNAMENT - QUICK'; calls msg_get; calls msg_get; calls msg_get; calls msg_get; calls msg_get
 0x0104325c,draw_current_pricing,FUN_0104325c,msg,"draws msg 0x4a0 ""CURRENT PRICING:"""
 0x010433b8,msg_get_user_433b8,FUN_010433b8,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], vsprintf_wrap [0x0002fdac]"
 0x01043730,msg_get_user_43730,FUN_01043730,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac], text_width [0x00021378]"
@@ -2384,19 +2384,19 @@ address,name,was,rule,evidence
 0x01043b20,palette_identity_user_43b20,FUN_01043b20,uses,"calls palette_identity [0x00023e58], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x01043c58,palette_identity_user_43c58,FUN_01043c58,uses,"calls palette_identity [0x00023e58], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x01043d90,msg_get_user_43d90,FUN_01043d90,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac], text_width [0x00021378]"
-0x01043e80,text_draw_msg_page_user_43e80,FUN_01043e80,uses,"calls text_draw_msg_page [0x000215ac], adj_time_format [0x0000cbf8], draw_current_pricing [0x0104325c]"
-0x01044cf8,text_draw_msg_page_user_44cf8,FUN_01044cf8,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x01043e80,draw_start_tournament_custom_adj_time_format_cbf8_43e80,FUN_01043e80,purpose,text_draw_msg_page(0x49c) 'START TOURNAMENT - CUSTOM'; text_draw_msg_page(0x49d) 'CURRENT DATE/TIME:'; calls adj_time_format_cbf8; calls adj_time_format_cbf8; calls adj_time_format_cbf8; calls draw_current_pricing
+0x01044cf8,draw_start_tournament_text_draw_msg_page_44cf8,FUN_01044cf8,purpose,text_draw_msg_page(0x3f8) 'START TOURNAMENT'; calls text_draw_msg_page; text_draw_msg_page(0x3fb) 'PRESS 'SELECT' TO BEGIN'; calls deff_frame_sleep
 0x01044f04,deff_frame_sleep_user_44f04,FUN_01044f04,uses,"calls deff_frame_sleep [0x00020220], snd_resolve_call [0x00025044]"
 0x01044f3c,leaf_44f3c,FUN_01044f3c,leaf,"no call to a named function, no table or RAM symbol"
-0x01044f7c,text_draw_msg_page_user_44f7c,FUN_01044f7c,uses,"calls text_draw_msg_page [0x000215ac], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
+0x01044f7c,draw_custom_pricing_msg_get_44f7c,FUN_01044f7c,purpose,text_draw_msg_page(0x4df) 'CUSTOM PRICING'; text_draw_msg_page(0x4e0) 'INSTALL'; calls msg_get; calls msg_get; calls text_width; calls text_draw_str_page
 0x010457c4,adj_game_pricing,FUN_010457c4,adj,adj_get(28) GAME PRICING
 0x010457e4,leaf_457e4,FUN_010457e4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01045814,text_draw_str_page_user_45814,FUN_01045814,uses,"calls text_draw_str_page [0x00021838], error_log_wrap [0x00004678]"
 0x010459d8,error_log_user_459d8,FUN_010459d8,uses,calls error_log_wrap [0x0000e3a0]
 0x01045a78,error_log_wrap_e3a0_wrap_45a78,FUN_01045a78,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01045ac4,leaf_45ac4,FUN_01045ac4,leaf,"no call to a named function, no table or RAM symbol"
-0x01045b1c,event_post_user_45b1c,FUN_01045b1c,uses,"calls event_post [0x00006e50], adj_get_wrap [0x0002be10]"
-0x01045c08,adj_get_user_45c08,FUN_01045c08,uses,"calls adj_get [0x00000340], error_log_wrap [0x0000e3a0], text_printf_msg [0x00021660]"
+0x01045b1c,post_event_2_45b1c,FUN_01045b1c,purpose,event_post(0x2); event_post(0x3)
+0x01045c08,post_event_0_adj_get_45c08,FUN_01045c08,purpose,calls adj_get; calls text_printf_msg; event_post(0x0); calls text_draw_str_page; calls text_draw_str_page; event_post(0x1)
 0x010464bc,ram_000338ac_user,FUN_010464bc,ram,"uses RAM 0x000338ac, 0x0003379e, 0x000337a0"
 0x01046508,draw_lifetime_s_wrap_46508,FUN_01046508,wrapper,only calls draw_lifetime_s [0x01046598]
 0x01046540,draw_lifetime_s_sub,FUN_01046540,sub,called only by draw_lifetime_s [0x01046598]
@@ -2415,12 +2415,12 @@ address,name,was,rule,evidence
 0x010476b8,start_leff_8,FUN_010476b8,leff,leff_start(8)
 0x01047a50,deff_frame_sleep_user_47a50,FUN_01047a50,uses,calls deff_frame_sleep [0x00020220]
 0x01047c54,leaf_47c54,FUN_01047c54,leaf,"no call to a named function, no table or RAM symbol"
-0x01047c88,text_draw_msg_page_user_47c88,FUN_01047c88,uses,"calls text_draw_msg_page [0x000215ac], text_printf_msg [0x00021660], strcpy [0x0002fe30]"
+0x01047c88,draw_software_errors_text_draw_str_page_47c88,FUN_01047c88,purpose,text_draw_msg_page(0x25a) 'SOFTWARE ERRORS'; text_printf_msg(0x25b) 'SOFTWARE ERROR %u/%u'; text_printf_msg(0x25c) '#%u (TYPE %d)'; calls text_draw_str_page; calls text_draw_msg_fit; calls deff_frame_sleep
 0x01047e9c,error_log_user_47e9c,FUN_01047e9c,uses,calls error_log_wrap [0x0000e3a0]
-0x01047ee0,error_log_user_47ee0,FUN_01047ee0,uses,"calls error_log_wrap [0x0000e3a0], text_draw_msg_page [0x000215ac], text_draw_str_page [0x00021838]"
+0x01047ee0,draw_sound_speaker_test_text_draw_str_page_47ee0,FUN_01047ee0,purpose,text_draw_msg_page(0x238) 'SOUND / SPEAKER TEST'; calls text_draw_str_page; calls snd_call_playing; calls text_printf_msg_fit_page; calls deff_frame_sleep; calls snd_play
 0x0104817c,play_sound_00f_4817c,FUN_0104817c,sound,snd_play(0xf)
 0x010487ac,draw_ticket_dispenser_test,FUN_010487ac,msg,"draws msg 0x23c ""TICKET DISPENSER TEST"""
-0x01048a9c,text_printf_msg_user,FUN_01048a9c,uses,"calls text_printf_msg [0x00021660], text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c]"
+0x01048a9c,draw_technician_alert_text_draw_msg_fit_48a9c,FUN_01048a9c,purpose,text_printf_msg(0x24a) 'TECHNICIAN ALERT - (%d/%d)'; text_draw_msg_page(0x24b) 'NO'; text_draw_msg_page(0x24c) 'TECHNICIAN ALERTS'; calls text_draw_msg_fit; calls text_draw_msg_page; calls deff_frame_sleep
 0x01048d1c,leaf_48d1c,FUN_01048d1c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01048d74,error_log_wrap_e3a0_wrap_48d74,FUN_01048d74,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01048de4,play_sound_010_48de4,FUN_01048de4,sound,snd_play(0x10)
@@ -2430,8 +2430,8 @@ address,name,was,rule,evidence
 0x010492b8,play_sound_010_492b8,FUN_010492b8,sound,snd_play(0x10)
 0x010496f4,ram_000337a8_user,FUN_010496f4,ram,"uses RAM 0x000337a8, 0x0003115c"
 0x01049734,ram_000337b0_user,FUN_01049734,ram,"uses RAM 0x000337b0, 0x00030f3c"
-0x01049774,text_draw_msg_fit_user_49774,FUN_01049774,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
-0x01049910,text_draw_msg_fit_user_49910,FUN_01049910,uses,"calls text_draw_msg_fit [0x0002174c], adj_get_wrap [0x000005c8], text_draw_msg_page [0x000215ac]"
+0x01049774,draw_install_factory_deff_frame_sleep_49774,FUN_01049774,purpose,text_draw_msg_fit(0x1f8) 'INSTALL FACTORY'; text_draw_msg_page(0x1fc) 'PRESS 'SELECT' TO INSTALL'; text_draw_msg_page(0x1fd) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_fit(0x1f9) 'FACTORY SETTINGS'; text_draw_msg_page(0x1fa) 'INSTALLED'
+0x01049910,draw_installed_text_draw_msg_fit_49910,FUN_01049910,purpose,calls text_draw_msg_fit; text_draw_msg_page(0x1fb) '(INSTALLED)'; text_draw_msg_page(0x1fc) 'PRESS 'SELECT' TO INSTALL'; text_draw_msg_page(0x1fd) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; calls text_draw_msg_fit
 0x01049b6c,ram_000337c8_user,FUN_01049b6c,ram,"uses RAM 0x000337c8, 0x0003104c"
 0x01049bac,ram_000337d0_user,FUN_01049bac,ram,"uses RAM 0x000337d0, 0x000337d8"
 0x01049bec,ram_000337e0_user,FUN_01049bec,ram,"uses RAM 0x000337e0, 0x00030fc4"
@@ -2450,12 +2450,12 @@ address,name,was,rule,evidence
 0x0104ae10,leaf_4ae10,FUN_0104ae10,leaf,"no call to a named function, no table or RAM symbol"
 0x0104ae1c,leaf_4ae1c,FUN_0104ae1c,leaf,"no call to a named function, no table or RAM symbol"
 0x0104aeac,start_leff_5,FUN_0104aeac,leff,leff_start(5)
-0x0104b244,text_draw_msg_fit_user_4b244,FUN_0104b244,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
-0x0104b3e4,text_draw_msg_fit_user_4b3e4,FUN_0104b3e4,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
-0x0104b584,text_draw_msg_page_user_4b584,FUN_0104b584,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220], text_draw_msg_fit [0x0002174c]"
-0x0104b728,text_draw_msg_fit_user_4b728,FUN_0104b728,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x0104b244,draw_reset_game_audits_deff_frame_sleep_4b244,FUN_0104b244,purpose,text_draw_msg_fit(0x149) 'RESET GAME AUDITS'; text_draw_msg_page(0x14a) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x14b) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_fit(0x14c) 'RESET GAME AUDITS'; text_draw_msg_page(0x14d) 'COMPLETE'
+0x0104b3e4,draw_reset_coin_audits_deff_frame_sleep_4b3e4,FUN_0104b3e4,purpose,text_draw_msg_fit(0x143) 'RESET COIN AUDITS'; text_draw_msg_page(0x144) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x145) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_fit(0x146) 'RESET COIN AUDITS'; text_draw_msg_page(0x147) 'COMPLETE'
+0x0104b584,draw_reset_credits_deff_frame_sleep_4b584,FUN_0104b584,purpose,text_draw_msg_page(0x14f) 'RESET CREDITS'; text_draw_msg_page(0x150) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x151) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; text_draw_msg_page(0x152) 'RESET CREDITS COMPLETE'; text_draw_msg_fit(0x153) 'PRESS 'SELECT' TO CONTINUE'
+0x0104b728,draw_factory_reset_set_flag_3_4b728,FUN_0104b728,purpose,text_draw_msg_fit(0x13a) 'FACTORY RESET'; text_draw_msg_page(0x13b) 'PRESS 'SELECT' TO RESET'; text_draw_msg_page(0x13c) 'PRESS 'BACK' TO CANCEL'; calls deff_frame_sleep; game_flag_set(0x3); text_draw_msg_fit(0x13d) 'FACTORY RESET'
 0x0104b8c0,draw_game_code_update,FUN_0104b8c0,msg,"draws msg 0x18c ""GAME CODE UPDATE"""
-0x0104b95c,error_log_user_4b95c,FUN_0104b95c,uses,"calls error_log_wrap [0x0000d2d4], bitmap_draw2 [0x00023c7c], text_draw_msg_fit [0x0002174c]"
+0x0104b95c,draw_active_switches_sw_bumblebee_target_4b95c,FUN_0104b95c,purpose,switch_rec_d2d4(1) BUMBLEBEE TARGET; switch_rec_d2d4(64) NOT USED; calls bitmap_draw2; calls bitmap_draw2; calls bitmap_draw2; calls bitmap_draw2
 0x0104beb8,draw_switch_alerts,FUN_0104beb8,msg,"draws msg 0x118 ""SWITCH ALERTS"""
 0x0104c904,sw_is_disabled_wrap_4c904,FUN_0104c904,wrapper,only calls sw_is_disabled [0x0000d480]
 0x0104c988,bitmap_draw2_user_4c988,FUN_0104c988,uses,"calls bitmap_draw2 [0x00023c7c], sw_is_disabled_wrap [0x0104c904], bitmap_draw [0x00023d28]"
@@ -2464,21 +2464,21 @@ address,name,was,rule,evidence
 0x0104d198,strlen_wrap_4d14c_wrap_4d198,FUN_0104d198,wrapper,only calls strlen_wrap_4d14c [0x0104d14c]
 0x0104d1c8,leaf_4d1c8,FUN_0104d1c8,leaf,"no call to a named function, no table or RAM symbol"
 0x0104d1dc,leaf_4d1dc,FUN_0104d1dc,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0104d234,text_draw_msg_page_user_4d234,FUN_0104d234,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220], text_draw_msg_fit [0x0002174c]"
+0x0104d234,draw_set_custom_message_deff_frame_sleep_4d234,FUN_0104d234,purpose,text_draw_msg_page(0x22c) 'SET CUSTOM MESSAGE'; text_draw_msg_page(0x22d) 'RESTORE FACTORY DEFAULT'; text_draw_msg_page(0x22e) 'CUSTOM MESSAGE?'; calls deff_frame_sleep; text_draw_msg_page(0x231) 'CUSTOM MESSAGE'; text_draw_msg_page(0x232) 'RESTORED'
 0x0104d950,adj_custom_message_4d950,FUN_0104d950,adj,adj_get(2) CUSTOM MESSAGE
 0x0104d970,leaf_4d970,FUN_0104d970,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0104da1c,text_draw_msg_page_user_4da1c,FUN_0104da1c,uses,"calls text_draw_msg_page [0x000215ac], adj_time_format [0x0000cbf8], deff_frame_sleep [0x00020220]"
+0x0104da1c,draw_set_date_time_adj_time_format_cbf8_4da1c,FUN_0104da1c,purpose,text_draw_msg_page(0x1ff) 'SET DATE/TIME'; text_draw_msg_page(0x200) 'CURRENT DATE/TIME:'; calls adj_time_format_cbf8; calls deff_frame_sleep; text_draw_msg_page(0x201) 'DATE/TIME SET'; calls adj_time_format_cbf8
 0x0104ddd4,get_dat_00038ae0_4ddd4,FUN_0104ddd4,getter,returns DAT_00038ae0
 0x0104dde4,vsprintf_user_4dde4,FUN_0104dde4,uses,"calls vsprintf_wrap [0x0002fdac], strcmp [0x0002fe00], strcpy [0x0002fe30]"
 0x0104de80,leaf_4de80,FUN_0104de80,leaf,"no call to a named function, no table or RAM symbol"
 0x0104de88,strcmp_user_4de88,FUN_0104de88,uses,calls strcmp [0x0002fe00]
 0x0104df2c,ram_000337ec_user,FUN_0104df2c,ram,uses RAM 0x000337ec
-0x0104df4c,error_log_user_4df4c,FUN_0104df4c,uses,"calls error_log_wrap [0x0000b598], get_dat_00038ae0 [0x0104ddd4], malloc [0x0002b4dc]"
+0x0104df4c,draw_audit_data_dump_get_dat_00038ae0_4ddd4_4df4c,FUN_0104df4c,purpose,calls get_dat_00038ae0_4ddd4; calls malloc; text_draw_msg_fit(0x156) 'AUDIT DATA DUMP'; text_draw_msg_page(0x157) 'INSERT USB MEMORY STICK'; text_draw_msg_page(0x158) 'OR'; text_draw_msg_page(0x159) 'PRESS 'BACK' TO EXIT'
 0x0104e638,get_dat_00038ae0_4e638,FUN_0104e638,getter,returns DAT_00038ae0
 0x0104e648,strcmp_user_4e648,FUN_0104e648,uses,calls strcmp [0x0002fe00]
 0x0104e6fc,msg_get_user_4e6fc,FUN_0104e6fc,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
-0x0104e7bc,error_log_user_4e7bc,FUN_0104e7bc,uses,"calls error_log_wrap [0x0000b598], get_dat_00038ae0 [0x0104e638], text_draw_msg_fit [0x0002174c]"
-0x0104ef44,text_draw_msg_fit_user_4ef44,FUN_0104ef44,uses,"calls text_draw_msg_fit [0x0002174c], text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220]"
+0x0104e7bc,draw_game_code_backup_get_dat_00038ae0_4e638_4e7bc,FUN_0104e7bc,purpose,calls get_dat_00038ae0_4e638; text_draw_msg_fit(0x16e) 'GAME CODE BACKUP'; text_draw_msg_page(0x16f) 'INSERT USB MEMORY STICK'; text_draw_msg_page(0x170) 'OR'; text_draw_msg_page(0x171) 'PRESS 'BACK' TO EXIT'; text_draw_msg_page(0x176) 'SCANNING FILE SYSTEM'
+0x0104ef44,draw_game_code_update_deff_frame_sleep_4ef44,FUN_0104ef44,purpose,text_draw_msg_fit(0x18d) 'GAME CODE UPDATE'; text_draw_msg_page(0x1bc) 'PRESS 'SELECT' TO REBOOT'; text_draw_msg_page(0x1bd) 'OR POWER-CYCLE GAME'; calls deff_frame_sleep; text_draw_msg_fit(0x18d) 'GAME CODE UPDATE'; text_draw_msg_page(0x1be) 'REBOOTING . . .'
 0x0104f118,leaf_4f118,FUN_0104f118,leaf,"no call to a named function, no table or RAM symbol"
 0x0104f178,leaf_4f178,FUN_0104f178,leaf,"no call to a named function, no table or RAM symbol"
 0x0104f1e8,ram_000387e8_user_4f1e8,FUN_0104f1e8,ram,"uses RAM 0x000387e8, 0x000387d4, 0x000387e0"
@@ -2538,7 +2538,7 @@ address,name,was,rule,evidence
 0x010513dc,memset_user_513dc,FUN_010513dc,uses,"calls memset [0x0002fd80], task_sleep [0x0000acfc]"
 0x01051474,memset_user_51474,FUN_01051474,uses,"calls memset [0x0002fd80], memcpy [0x0002fd48], task_sleep [0x0000acfc]"
 0x01051560,task_0x14_of_FUN_01051594_51560,FUN_01051560,task,"task entry started by FUN_01051594 [0x01051594] (FUN_0000ab4c, id 0x14)"
-0x01051594,strcmp_user_51594,FUN_01051594,uses,"calls strcmp [0x0002fe00], task_running [0x0000b248], strlen [0x0002fe4c]"
+0x01051594,check_task_14_strcmp_51594,FUN_01051594,purpose,calls strcmp; calls strcmp; calls strcmp; calls strcmp; task_running(0x14); task_running(0x14)
 0x010517e8,vsprintf_user_517e8,FUN_010517e8,uses,calls vsprintf [0x0002fef0]
 0x01051844,table_040ca1f0_reader,FUN_01051844,table,reads ROM table 0x040ca1f0
 0x010518dc,leaf_518dc,FUN_010518dc,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"

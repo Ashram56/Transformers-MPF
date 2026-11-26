@@ -138,6 +138,12 @@ def main():
         w = csv.DictWriter(f, fieldnames=["address", "name", "was", "rule", "evidence"], lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
+    rename(ren)
+
+
+def rename(ren):
+    """Rename functions (old -> new) in the decompile and in the .md, .py and .csv files of rom/, docs/ and game/tf/
+    that name them (function_names.csv and function_names_hand.csv excepted: they keep the old name in `was`)."""
     if not ren:
         return
     pat = re.compile(r"\b(" + "|".join(sorted(map(re.escape, ren), key=len, reverse=True)) + r")\b")
@@ -148,7 +154,8 @@ def main():
             continue
         for fn in fs:
             p = os.path.join(d, fn)
-            if fn.endswith((".md", ".py")) and os.path.abspath(p) != os.path.abspath(__file__):
+            if (fn.endswith((".md", ".py", ".csv")) and os.path.abspath(p) != os.path.abspath(__file__)
+                    and os.path.abspath(p) not in (os.path.abspath(NAMES), os.path.abspath(HAND))):
                 files.append(p)
     for p in files:
         t = open(p, encoding="utf-8").read()

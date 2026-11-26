@@ -209,7 +209,7 @@ class SwitchRunner(ball_search.SearchRunner):
             r.op("task", fn="0x%08x" % t.fn, id=tid)
             return t.struct
         st(S("task_running_user_aaf8"), "task_create_once", create_once)
-        def remove(r):                         # event_post_user_a9bc(task) [0x0000a9bc]: end that task now
+        def remove(r):                         # post_event_49_a9bc(task) [0x0000a9bc]: end that task now
             t = next((t for t in r.tasks if t.alive and t.struct == a(0)), None)
             if t is not None and t is not r.cur:
                 r.exit(t)
@@ -343,7 +343,7 @@ class SwitchRunner(ball_search.SearchRunner):
                 self.exit(t)
 
     def exit(self, t):
-        """A task ends (returns or is killed) as in the OS exit path event_post_user_b654 [0x0000b654] ->
+        """A task ends (returns or is killed) as in the OS exit path post_event_49_b654 [0x0000b654] ->
         leaf_a910 [0x0000a910]: a deff task (flags 4) that is no child (+0x14 = 0) ends the active deff,
         leaf_209d4 [0x000209d4] clears deff_active_id 0x32464, its priority 0x32466 and flags 0x32467.
         Then the per-task exit calls at +0x48 (leaf_a84c [0x0000a84c], set by error_log_wrap_b598 [0x0000b598]) run."""
@@ -374,7 +374,7 @@ class SwitchRunner(ball_search.SearchRunner):
 
     def step(self, until):
         """Run the machine until tick `until`, one OS tick at a time as the main loop ram_00031550_user
-        [0x00014f68] does: the tick's OS work event_post_user_2bd48 [0x0002bd48] (event 0x20, queued pulses,
+        [0x00014f68] does: the tick's OS work post_event_20_coil_pulse_queue_serve_2bd48 [0x0002bd48] (event 0x20, queued pulses,
         the display queue coil_rec_208f4, the lamp compositor, sounds, the switch debounce, ...), every
         task due, then the end-of-tick hooks leaf_b648 [0x0000b648]."""
         while self.now < until:

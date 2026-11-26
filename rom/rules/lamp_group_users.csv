@@ -198,10 +198,10 @@ group,lamps,user_address,user,via,found_by,how
 52,12 13 14 15,0x01010428,on_event_1d_10428,lamp_group_941c,static,id in r0 at 0x01010498
 53,1 2 3,0x00007200,error_log_user_7200,lamp_group_86d4,code run,"called from 0x00007260 (task 0x3), 2 calls"
 53,1 2 3,0x010264b8,,leff 170,leff run,"leff 170 draws it (coil_group_fn, rom_data/io/leff_ops)"
-54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,task_running_user_10508,lamp_group_83dc,static,id in r0 at 0x01010780
-54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,task_running_user_10508,lamp_group_8440,static,id in r0 at 0x010107a8
-54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,task_running_user_10508,lamp_group_853c,static,id in r0 at 0x010107d8
-54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,task_running_user_10508,lamp_group_86d4,static,id in r0 at 0x01010778
+54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,check_task_79_10508,lamp_group_83dc,static,id in r0 at 0x01010780
+54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,check_task_79_10508,lamp_group_8440,static,id in r0 at 0x010107a8
+54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,check_task_79_10508,lamp_group_853c,static,id in r0 at 0x010107d8
+54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010508,check_task_79_10508,lamp_group_86d4,static,id in r0 at 0x01010778
 54,13 14 17 18 46 45 42 41 32 33 37 38,0x01010990,count_megatron_m_b_a_sub_10990,lamp_group_853c,static,id in r0 at 0x01010a08
 55,13 14,0x01010990,count_megatron_m_b_a_sub_10990,lamp_group_83dc,code run,"called from 0x01010abc (task 0x3), 1067 calls"
 55,13 14,0x01010990,count_megatron_m_b_a_sub_10990,lamp_group_8440,code run,"called from 0x01010ad4 (task 0x3), 2134 calls"
@@ -234,10 +234,10 @@ group,lamps,user_address,user,via,found_by,how
 62,12 13 14 15,0x0103686c,on_event_1d_3686c,lamp_group_9164,static,id in r0 at 0x010368dc
 62,12 13 14 15,0x0103686c,on_event_1d_3686c,lamp_group_941c,static,id in r0 at 0x01036900
 63,1 2 3,0x00007200,error_log_user_7200,lamp_group_86d4,code run,"called from 0x00007260 (task 0x3), 1 calls"
-64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,task_running_user_36970,lamp_group_83dc,static,id in r0 at 0x01036ce8
-64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,task_running_user_36970,lamp_group_8440,static,id in r0 at 0x01036d10
-64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,task_running_user_36970,lamp_group_853c,static,id in r0 at 0x01036d40
-64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,task_running_user_36970,lamp_group_86d4,static,id in r0 at 0x01036ce0
+64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,check_task_7c_36970,lamp_group_83dc,static,id in r0 at 0x01036ce8
+64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,check_task_7c_36970,lamp_group_8440,static,id in r0 at 0x01036d10
+64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,check_task_7c_36970,lamp_group_853c,static,id in r0 at 0x01036d40
+64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01036970,check_task_7c_36970,lamp_group_86d4,static,id in r0 at 0x01036ce0
 64,13 14 15 17 18 19 46 45 44 42 41 40 32 33 34 37 38 39,0x01037050,count_wizard_mb_req_4_sub_37050,lamp_group_853c,static,id in r0 at 0x010370c8
 65,13 14 15,0x01037050,count_wizard_mb_req_4_sub_37050,lamp_group_83dc,code run,"called from 0x0103717c (task 0x3), 1458 calls"
 65,13 14 15,0x01037050,count_wizard_mb_req_4_sub_37050,lamp_group_8440,code run,"called from 0x01037194 (task 0x3), 4374 calls"
@@ -454,9 +454,9 @@ group,lamps,user_address,user,via,found_by,how
 136,21 20,0x0102ede0,lamp_layer_2ede0,lamp_group_84cc,static,id in r0 at 0x0102ef10
 136,21 20,0x0102ede0,lamp_layer_2ede0,lamp_group_8664,static,id in r0 at 0x0102ef20
 136,21 20,0x0102ede0,lamp_layer_2ede0,lamp_group_86d4,static,id in r0 at 0x0102eef0
-137,30,0x01001f90,deff_128_sub_1f90,lamp_group_84cc,static,id in r0 at 0x01002580
-137,30,0x01001f90,deff_128_sub_1f90,lamp_group_8664,static,id in r0 at 0x01002590
-137,30,0x01001f90,deff_128_sub_1f90,lamp_group_86d4,static,id in r0 at 0x01002560
+137,30,0x01001f90,draw_spell_dmd_page_alloc_pair_1f90,lamp_group_84cc,static,id in r0 at 0x01002580
+137,30,0x01001f90,draw_spell_dmd_page_alloc_pair_1f90,lamp_group_8664,static,id in r0 at 0x01002590
+137,30,0x01001f90,draw_spell_dmd_page_alloc_pair_1f90,lamp_group_86d4,static,id in r0 at 0x01002560
 139,21 20,0x00007bec,leaf_7bec,lamp_group_84cc,code run,"called from 0x00007dc4 (task 0x2), 1 calls"
 139,21 20,0x00007bec,leaf_7bec,lamp_group_86d4,code run,"called from 0x00007dd0 (task 0x2), 1 calls"
 139,21 20,0x00007bec,leaf_7bec,lamp_group_9570,code run,"called from 0x00007c90 (task 0x4), 2 calls"

@@ -86,7 +86,7 @@ ball's travel (switch 0xe closing), which is physics, not code.
 Each direct pulse (`FUN_00002160` [0x00002160]) holds the search until the 1 ms IO pass ends it: 64 // 16 + 1 =
 5 ticks. The game's `BALL_SEARCH_SWEEP` is this table one tick later (the task runs the tick after its start).
 The queued auto-launch pulse (code, `rom/tools/switch_lift.py` runs the queue as ROM code: `coils` scenario,
-search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick work `event_post_user_2bd48`
+search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick work `post_event_20_coil_pulse_queue_serve_2bd48`
 [0x0002bd48] and starts the head of the list 0x00031434 when no queued pulse runs (0x00031448 == 0) and the
 hold-off 0x0003144c is 0; when a queued pulse is over it sets the hold-off to 6, so the next one starts 7 ticks
 later. In the search the queue is still held off from the trough's previous pulse: queued at 6, started at 13,
