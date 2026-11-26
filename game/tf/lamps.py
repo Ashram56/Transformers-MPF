@@ -231,10 +231,11 @@ def shot_blink(rows, mask_fn, blink=3):
 
 
 # coilgroup_pulse groups of the super-lit leffs: tf_180 coil group table 0x040cf65c (group -> ROM coil numbers)
-COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25), 36: (32,), 44: (19,)}
+COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25), 36: (32,), 44: (19,), 57: (31, 25)}
 # leff -> coil group (rom/rom_data/io/lamp_effects.csv coil_group): leff_047 [0x010286f8], leff_055 [0x0102a83c],
 # leff_063 [0x0100d038], leff_071 [0x0100ef64]
-SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31, 85: 36}   # + leff_085 [0x0103692c] (QA L-085)
+SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31, 85: 36,   # + leff_085 [0x0103692c] (QA L-085)
+                         177: 57}   # leff_177 [0x01027024] (Optimus battle ready, QA L-I59): the same loop, group 57
 
 
 def flasher_group_pulse(group, every=8, time=0x20):

@@ -18,15 +18,17 @@
 - Inferred: the end of ball and the tilt stop it (the OS resets the multiplier there).
 """
 from tf.features import Feature
+from tf.os_layer import TICK
 
 LETTERS = 9
 START_LETTERS = {0: 2, 1: 1, 2: 0}
 LETTER_DEFF, LETTER_SOUND, LETTER_LEFF = 128, 0x26b, 150
 DS_DEFF, DS_BG_DEFF, DS_SOUND, DS_LEFF, DS_BG_LEFF, DS_MUSIC, DS_AUDIT = 129, 130, 0x27a, 156, 157, 0x026, 105
-# deff 129's sounds (observed, scoring.jsonl 51.98-55.41 s): 0x27a, then the 0x27b ticks, the later ones
-# logged outside the deff (OS caller 0x255b8)
-DS_DEFF_SOUNDS = ((0.0, 0x27a, DS_DEFF), (0.33, 0x27b, DS_DEFF), (1.43, 0x27b, 0), (2.41, 0x27b, 0),
-                  (3.43, 0x27b, 0))
+# deff_129_double [0x01003c5c] (QA V129): snd_play(0x27a), then at tick 20 snd_play_arg_25250(0x27b, 0) and its
+# samples 1, 2 and 0 each queued after the previous one (snd_play_after_handle_2539c [0x0002539c]; the OS plays
+# them, in_deff 0)
+DS_TICK_SOUND = 20
+DS_TICK_CHAIN = (1, 2, 0)
 SWITCH_SOUNDS = (0x27c, 0x27d)
 COUNT_TICKS = 66                     # 11 x task_sleep(6)
 END_TICKS = 125                      # sleep 0x7d [0x0100396c]
@@ -92,11 +94,20 @@ class Bumblebee(Feature):
         os_.flag_clear(0x13)                         # ADD MORE TIME offered again [0x010039a0] (QA P5)
         os_.pf_mult = 2
         os_.deff_start(DS_DEFF, values=[self.count], sounds=[
-            (t, (lambda d: lambda: os_.sound(c, in_deff=d))(d)) for t, c, d in DS_DEFF_SOUNDS])
+            (0.0, lambda: os_.sound(DS_SOUND, in_deff=DS_DEFF)),
+            (DS_TICK_SOUND * TICK, lambda: self._tick_sounds(os_.sound(0x27b, in_deff=DS_DEFF, index=0)))])
         os_.leff_start(DS_LEFF)
         os_.audit(DS_AUDIT)
         os_.request_refresh()
         os_.task_start(TASK, COUNT_TICKS, self._tick)
+
+    def _tick_sounds(self, end, chain=DS_TICK_CHAIN):
+        """The 0x27b samples queued one after the other [0x0002539c]."""
+        if end is None or not chain:
+            return
+        os_ = self.os
+        os_.machine.clock.schedule_once(
+            lambda _dt=None: self._tick_sounds(os_.sound(0x27b, index=chain[0]), chain[1:]), max(0.0, end - os_.now))
 
     def add_time(self):
         """ADD MORE TIME [0x01003a8c]: counts added; in the tail the countdown restarts (multiplier 2)."""

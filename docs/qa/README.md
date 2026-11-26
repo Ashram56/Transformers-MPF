@@ -187,6 +187,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       (snd_play_after_if) after the running sample ends, picks the Optimus hit animation by hit number
       [0x010262f0] (reset at the battle start [0x010261cc]) and the Megatron ones from the index 0 up.
       0x092 and 0x0df-0x0e1 stay unplayed: no caller in the code.
+    - ~~V129~~ deff_129_double [0x01003c5c]: 0x27a, then at tick 20 the 0x27b samples 0, 1, 2, 0 each queued after
+      the previous one (snd_play_after_handle_2539c [0x0002539c]); the trace-timed list is gone.
+    - ~~L-I59~~ leff_177 [0x01027024] (Optimus battle ready): the super-lit loop of leff_085 on coil group 57 (31, 25).
+    - Deff 65's animation index: task_create clears the task block (memset 0x68), and [0x01029bf4] sets +0x38 only
+      for deff 66; deff 65 runs animation 0, as the game does (agent A's deff_anim_tables.csv note is for 66).
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
       [0x0101fd34].
   - Still open (in progress): the device, display, lamp and rules lows of the reports.
