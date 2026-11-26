@@ -104,3 +104,32 @@ class TestFinalPass(QaCase):
         self.advance_time_and_run(3)
         self.assertIn(28, [e["id"] for e in self.tf.trace.of("deff_start")])
         self.assertIn(17, [e["id"] for e in self.tf.trace.of("leff_start")])
+
+    def test_f049_switch_test(self):
+        """SWITCH TEST [0x0104cae4]: the grid (images 0xa4 / 0xa7), a dot (0xa5) per closed switch, the new closure's
+        name, LAST SW. #n and wire colours at x 89, sound 0x00f; PLUS is a switch there (LAST SW. D-23), BACK leaves."""
+        from tf import rom_draw
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        self.advance_time_and_run(0.1)
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("SWITCH MENU", "MAIN MENU / SWITCH MENU")
+        mode._open_page({"text": "SWITCH TEST"})
+        self.advance_time_and_run(0.1)
+        self.assertEqual(["SWITCH TEST", "NONE"], rom_draw.lines_of(mode.draw()))
+        self.hit_switch_and_run("s_left_slingshot", 0.1)
+        draw = mode.draw()
+        self.assertEqual(["SWITCH TEST", "LEFT SLINGSHOT", "LAST SW. #26", "GRN-RED / TAN-RED"],
+                         rom_draw.lines_of(draw))
+        self.assertTrue(any(d.get("i") == 0xa5 for d in draw))
+        self.assertIn("0x00f", self.sounds())
+        self.release_switch_and_run("s_left_slingshot", 0.1)
+        self.assertEqual(["SWITCH TEST", "NONE", "LAST SW. #26"], rom_draw.lines_of(mode.draw()))
+        self.hit_and_release_switch("s_plus")
+        self.advance_time_and_run(0.1)
+        self.assertEqual("SWITCH TEST", rom_draw.lines_of(mode.draw())[0])
+        self.assertEqual("switch_test", mode.page["kind"])
+        self.hit_and_release_switch("s_back")
+        self.advance_time_and_run(0.1)
+        self.assertIsNone(mode.page)

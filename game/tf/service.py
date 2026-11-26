@@ -18,7 +18,8 @@ Screens, as the walk shows them:
   previous;
 - installs and resets: the item (font 8), "PRESS 'SELECT' TO INSTALL" / "TO RESET", "PRESS 'BACK' TO CANCEL";
   SELECT does it (Adjustments.install, Audits.reset_*) and goes back to the menu;
-- every other screen (tests, help, USB) shows the texts the ROM drew for it in the walk.
+- SWITCH TEST runs live as the ROM's loop [0x0104cae4] (SwitchTest below);
+- every other screen (the other tests, help, USB) shows the texts the ROM drew for it in the walk.
 The menu items hidden at factory settings (service_menu.json shown_only_if: tournament, software errors) stay
 hidden; GO TO REDEMPTION MENU is always shown (0x010088ac returns 1).
 """
@@ -88,11 +89,14 @@ class ServiceMode(Mode):
 
     def _beep(self, call, fn):
         def handler():
+            if self.page is not None and self.page["kind"] == "switch_test" and call != BEEP_BACK:
+                return                      # in the switch test only BACK acts [0x0104cae4]; the others are switches
             self.os.sound(call)
             fn()
         return handler
 
     def mode_stop(self, **kwargs):
+        self._close_switch_test()
         if getattr(self, "_custom_timer", None):
             self.machine.clock.unschedule(self._custom_timer)
             self._custom_timer = None
@@ -144,6 +148,10 @@ class ServiceMode(Mode):
         if self.title:
             self.stop()
             return
+        if self.page is not None and self.page["kind"] == "switch_test":
+            self._close_switch_test()
+            self.page = None
+            return self.show()
         if self.page is not None and self.page["kind"] == "custom":
             if self.page["editor"].installed is not None or not self.page["editor"].back():
                 self._close_custom()
@@ -176,6 +184,8 @@ class ServiceMode(Mode):
         path = "{} / {}".format(self.menu_path(), text)
         if text == "SET CUSTOM PRICING":
             self._open_custom(path, back_to=None)
+        elif text == "SWITCH TEST":
+            self._open_switch_test(path)
         elif text in ("STANDARD ADJUSTMENTS", "FEATURE ADJUSTMENTS"):
             group = text.split()[0].lower()
             nums = self.os.adj.menu(group)
@@ -231,6 +241,45 @@ class ServiceMode(Mode):
                      "path": path}
         self._custom_timer = self.machine.clock.schedule_interval(lambda *_: self._custom_frame(), 2 * TICK)
 
+    def _open_switch_test(self, path):
+        """SwitchTest [0x0104cae4]: its loop once a tick; every switch change reaches it (MPF's switch monitor),
+        the switches already closed are drawn but not taken as new."""
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        test = SwitchTest()
+        numbers = {}
+        for sw in self.machine.switches.values():
+            num = str(sw.config.get("number", ""))
+            if num.isdigit():
+                numbers[sw.name] = int(num)
+            elif num[:1] == "D" and num[1:].isdigit():
+                numbers[sw.name] = 0x80 + int(num[1:])
+        for name, num in numbers.items():
+            if self.machine.switch_controller.is_active(self.machine.switches[name]):
+                test.closed.add(num)
+
+        def monitor(change):
+            num = numbers.get(change.name)
+            if num is None or self.page is None or self.page.get("test") is not test:
+                return
+            if change.state:
+                self.os.sound(test.closing(num))
+            else:
+                test.opening(num)
+        self.machine.switch_controller.add_monitor(monitor)
+        self.page = {"kind": "switch_test", "test": test, "path": path, "monitor": monitor, "draw": test.tick()}
+
+        def frame(*_):
+            if self.page is not None and self.page.get("test") is test:
+                self.page["draw"] = test.tick()
+                self.show()
+        self.page["timer"] = self.machine.clock.schedule_interval(frame, TICK)
+
+    def _close_switch_test(self):
+        page = getattr(self, "page", None)
+        if page is not None and page.get("kind") == "switch_test":
+            self.machine.switch_controller.remove_monitor(page["monitor"])
+            self.machine.clock.unschedule(page["timer"])
+
     def _custom_frame(self):
         if self.page is None or self.page["kind"] != "custom":
             return
@@ -272,6 +321,8 @@ class ServiceMode(Mode):
             return [rd.text(self.current()["text"], MENU_FONT, 64, MENU_Y, 2)]
         if page["kind"] == "custom":
             return page["editor"].draw()
+        if page["kind"] == "switch_test":
+            return page["draw"]
         if page["kind"] == "adj":
             if not page["list"]:
                 return []
@@ -469,4 +520,127 @@ class CustomPricing:
             draw.append(rd.text(summary, 0, 0x40, 0x17, 2))
         help_ = self.HELP[2] if self.end else self.HELP[1 if self.help and self.any_before(self.pos) else 0]
         draw.append(rd.text(help_, 2, 0x40, 0x1f, 2))
+        return draw
+
+
+def _image_sizes():
+    """{image: (w, h)} from rom/rom_data/dmd/images.csv (the ROM's image table)."""
+    import csv                                   # noqa: PLC0415
+    path = os.path.join(ROOT, "rom", "rom_data", "dmd", "images.csv")
+    with open(path, encoding="utf-8") as f:
+        return {int(r["image"]): (int(r["w"]), int(r["h"])) for r in csv.DictReader(f)}
+
+
+def switch_records():
+    """{ROM switch number: (name, wire 1, wire 2)}: the switch table records (rom/rom_data/io/switches.csv and
+    dedicated_switches.csv: name +8, wire colour messages +0x16 / +0x18); dedicated Dn is 0x80 + n."""
+    import csv                                   # noqa: PLC0415
+    out = {}
+    io = os.path.join(ROOT, "rom", "rom_data", "io")
+    with open(os.path.join(io, "switches.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            out[int(r["number"])] = (r["name"], r.get("msg_0x16_text", ""), r["msg_0x18_text"])
+    with open(os.path.join(io, "dedicated_switches.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            out[int(r["rom_switch_number"])] = (r["name"], r.get("msg_0x16_text", ""), r["msg_0x18_text"])
+    return out
+
+
+class SwitchTest:
+    """SWITCH TEST, play_sound_00f_4cae4 [0x0104cae4], run once a tick until BACK (record 0x00036ac0, posted by the
+    BACK button's handler 0x0000f290 arg 1).
+
+    - The grid on the background page: image 0xa4 (a 52 x 1 line) above, image 0xa7 (50 x 3) once per row of 16
+      matrix switches (1-0x40: 4 rows, switch_rec_d2d4 gives number - 1, >> 4), 0xa4, the rows of the dedicated
+      switches (0x81-0xa0: 2), 0xa4; centred in the 32 rows; "SWITCH TEST" fit (fonts 2, 0; 0x4c wide) at
+      x = 50 + (128 - 50) / 2 = 89, y 8.
+    - Every tick: a 3 x 3 dot (image 0xa5) for each closed switch at x 2 + 3 k, 3 rows a grid row; a switch
+      newly closed since the last tick goes into a ring of 8 (dropped when full) with sound 0x00f.
+    - The text column at x 89, font 0, centred: with the ring caught up, "NONE" (y 0xf) and "LAST SW. #%d"
+      (msg 0x113, matrix) or "LAST SW. D-%d" (msg 0x114, dedicated, number - 0x80) of the last one (y 0x15); else the
+      entry's name (y 0xf), its number line (y 0x15) and "%s / %s" of its two wire colours (y 0x1b) when both
+      are set. An entry shows 3 ticks at least; the last one stays while its switch is closed, then the ring is
+      caught up.
+    """
+    RING = 8
+    TOP, ROW, DOT = 0xa4, 0xa7, 0xa5
+    MATRIX, DEDICATED = (1, 0x40), (0x81, 0xa0)
+    SOUND = 0x00f
+
+    def __init__(self):
+        sizes = _image_sizes()
+        self.top_h = sizes[self.TOP][1]
+        self.row_w, self.row_h = sizes[self.ROW]
+        self.records = switch_records()
+        self.rows = [((hi - 1) >> 4) - ((lo - 1) >> 4) + 1 for lo, hi in (self.MATRIX, self.DEDICATED)]
+        height = self.row_h * sum(self.rows) + self.top_h * 3
+        self.y0 = (0x20 - height) // 2 if height < 0x21 else 0
+        self.x_text = self.row_w + (0x80 - self.row_w) // 2
+        self.ring = [0] * self.RING
+        self.write = self.read = 0
+        self.frames = 0
+        self.closed = set()
+
+    def closing(self, num):
+        """A switch closed since the last tick: into the ring unless it is full. Returns the sound to play."""
+        self.closed.add(num)
+        nxt = (self.write + 1) % self.RING
+        if nxt != self.read:
+            self.ring[self.write] = num
+            self.write = nxt
+        return self.SOUND
+
+    def opening(self, num):
+        self.closed.discard(num)
+
+    @staticmethod
+    def number_text(num):
+        return "LAST SW. #{}".format(num) if num < 0x80 else "LAST SW. D-{}".format(num - 0x80)
+
+    def tick(self):
+        """One pass of the loop: the drawing, then the ring's read position."""
+        draw = []
+        y = self.y0
+        starts = []
+        draw.append(rd.image(self.TOP, 0, y))
+        y += self.top_h
+        for rows in self.rows:
+            starts.append(y)
+            for _ in range(rows):
+                draw.append(rd.image(self.ROW, 1, y))
+                y += self.row_h
+            draw.append(rd.image(self.TOP, 0, y))
+            y += self.top_h
+        draw.append(rd.fit("SWITCH TEST", self.x_text, 8, (2, 0), 2, width=0x4c))
+        for (lo, hi), rows, y_start in zip((self.MATRIX, self.DEDICATED), self.rows, starts):
+            x, yy = 2, y_start
+            for num in range(lo, lo + rows * 16):
+                if num in self.closed:
+                    draw.append(rd.image(self.DOT, x, yy))
+                x += 3
+                if x >= self.row_w:
+                    x, yy = 2, yy + 3
+        nxt = self.read
+        if self.read == self.write:
+            draw.append(rd.text("NONE", 0, self.x_text, 0xf, 2))
+            last = self.ring[(self.read - 1) % self.RING]
+            if last:
+                draw.append(rd.text(self.number_text(last), 0, self.x_text, 0x15, 2))
+        else:
+            num = self.ring[self.read]
+            name, wire1, wire2 = self.records.get(num, ("", "", ""))
+            draw.append(rd.text(name, 0, self.x_text, 0xf, 2))
+            draw.append(rd.text(self.number_text(num), 0, self.x_text, 0x15, 2))
+            if wire1 and wire2:
+                draw.append(rd.text("{} / {}".format(wire1, wire2), 0, self.x_text, 0x1b, 2))
+            self.frames += 1
+            if self.frames > 2:
+                following = (self.read + 1) % self.RING
+                if following == self.write:
+                    if num not in self.closed:
+                        nxt = following
+                else:
+                    nxt = following
+                self.frames = 0
+        self.read = nxt
         return draw
