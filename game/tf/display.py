@@ -68,6 +68,20 @@ def deff_table():
             if row["background"] == "yes":
                 background.add(deff_id)
     return prio, background
+def hold_from(d):
+    """The tick the deff's priority drops to 0x20 for good: the first priority-0x20 op after which every priority op
+    is 0x20 too (deff_prio_set_2108c through [0x010305a0]; deff 84 at tick 162 and again at 245, QA V084 / V089).
+    None when it never drops."""
+    ops = [o for o in d.get("ops", ()) if o.get("op") == "prio"]
+    at = None
+    for o in ops:
+        if o.get("prio") == HOLD_PRIORITY:
+            at = o["t"] if at is None else at
+        else:
+            at = None
+    return at
+
+
 def deff_holds():
     """Each decoded deff's hold tail [FUN_0103058c / FUN_0002108c(n, 0x20)]: the ticks from its last priority-0x20
     op to its end (rom/rom_data/dmd/deff_ops/deff_NNN.json, agent A's op lists; QA F7). {} without them."""
@@ -102,9 +116,9 @@ def deff_drops():
             if name.endswith(".json") and "__" not in name:
                 with open(os.path.join(folder, name), encoding="utf-8") as f:
                     d = json.load(f)
-                prio = [o["t"] for o in d.get("ops", ()) if o.get("op") == "prio" and o.get("prio") == HOLD_PRIORITY]
-                if prio and d.get("end_tick") is not None and d["end_tick"] - prio[-1] > HOLD_TICKS:
-                    drops[d["deff"]] = prio[-1]
+                prio = hold_from(d)
+                if prio is not None and d.get("end_tick") is not None and d["end_tick"] - prio > HOLD_TICKS:
+                    drops[d["deff"]] = prio
     return drops
 
 

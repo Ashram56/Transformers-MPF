@@ -177,6 +177,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       [0x01031518].
     - ~~L-076~~, ~~L-077~~: fixed with M8. L-018 / L-019 (tournament and ticket awards): not modelled
       (rom_differences.md).
+    - ~~V084~~, ~~V089~~ the priority drops at the first 0x20 op of the final run (deff 84 tick 162, deff 89 tick
+      140, deff_prio_set through [0x010305a0]): wizard_all_hail_megatron deff and leff starts now match.
+      V047's interim 128 (tick 44) stays open.
+    - V005, V007, V011, V012, V016, V018, V034-V037, V033, V-SC4, V-TXT2, L-G03, L-G05, L-G11: rows in
+      rom_differences.md (machine states and tournament / ticket hardware not modelled, MPF limits).
     - SC6 (medium): the animation sound tables (frame_sound_step_2fcb0 [0x0102fcb0]) need every animation as a
       deff variant; asked from agent A as one batched request.
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
