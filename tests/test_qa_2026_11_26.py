@@ -185,3 +185,13 @@ class TestMediumFixes(TfTestCase):
         self.release_switch_and_run("s_l_flipper_button", 0.1)
         self.assertNotEqual(140, self.tf.display.fg)
         self.assertIsNone(self.tf.display.show)
+
+    def test_high_score_lists(self):
+        """Tables 0x040cf948 / 0x040cfc48: 17 entries in 5 lists, the side lists and the two combo champions with
+        adj 90-95 (QA D-HS-COMBO)."""
+        hs = self.tf.features_by_name["high_scores"]
+        hs.reset(3)
+        self.assertEqual(17, len(hs.entries))
+        self.assertEqual(("OPT", 20), (hs.entries[5]["name"], hs.entries[15]["score"]))
+        self.assertEqual("TRIPLE 5-WAY", hs.score_text(16, (5 << 16) | 3))
+        self.assertEqual("21 COMBOS", hs.score_text(15, 21))

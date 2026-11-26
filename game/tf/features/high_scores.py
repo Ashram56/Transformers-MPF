@@ -1,6 +1,6 @@
 """High-score table and initials entry (game_flow.md 5.5; OS code, not a rules mode).
 
-Table [0x0001855c / 0x000185c8]: one list of five entries, GRAND CHAMPION then HIGH SCORE #1-#4; an entry is a
+Table [0x0001855c / 0x000185c8]: in each list GRAND CHAMPION then HIGH SCORE #1-#4 (below); an entry is a
 name and a score, kept in MPF's data file "tf_high_scores" like the ROM's NVRAM records.
 - Reset of an entry [0x00018730]: the default name (3 initials, or the 10-letter name on adj 60) and the
   score of its adjustment (adj 49 GRAND CHAMPION SCORE, adj 50-53 HIGH SCORE #1-#4). RESET GRAND CHAMPION
@@ -23,17 +23,35 @@ After the letters come three specials: BACK (deletes a letter), END and SPACE; o
 BACK and END can be picked, END at first. 3 initials (adj 60 = 0) or 10 letters. A 30 s countdown (63
 frames a second) restarts on every button; at its end 15 more seconds are shown, then the entry ends with
 what is entered (plus the letter under the cursor).
-This is Tron 1.74's OS model (the same SAM OS), re-cited to tf_180's routines (QA F13). Not read yet for tf_180 (ROM data): the letter
-set, the default names and the sounds of the entry.
+This is Tron 1.74's OS model (the same SAM OS), re-cited to tf_180's routines (QA F13). tf_180 has 17 entries in five
+lists (tables 0x040cf948 / 0x040cfc48, QA D-HS-COMBO): HIGHEST SCORES, AUTOBOT and DECEPTICON HIGHEST SCORES (the
+player's side), COMBO CHAMPION (combos made) and BEST COMBO CHAMPION (way and multiplier), each list placing its
+players apart; the initials are asked once per player. Not read yet for tf_180: the letter set.
 """
 from tf.features import Feature
 
 ORDER = 7
-TITLES = ("GRAND CHAMPION", "HIGH SCORE #1", "HIGH SCORE #2", "HIGH SCORE #3", "HIGH SCORE #4")
-SCORE_ADJ = (49, 50, 51, 52, 53)
-AWARD_ADJ = (55, 56, 57, 58, 59)
-FLAGS = (1, 2, 2, 2, 2)                  # reset groups: 1 grand champion, 2 high scores
-DEFAULT_NAMES = ("???", "???", "???", "???", "???")    # tf_180's default names: ROM data not read yet
+# The 17 entries of table 0x040cf948 (0x20 bytes each; QA D-HS-COMBO): title (+0x14), default name with 3 initials
+# (+4) and with 10 letters on adj 60 (+8), reset groups (+0x18: 1 grand champion, 2 high scores), score adj (+0x1a),
+# award kind adj (+0x1c) and award count adj (+0x1e)
+_HS = ("HIGH SCORE #1", "HIGH SCORE #2", "HIGH SCORE #3", "HIGH SCORE #4")
+TITLES = ("GRAND CHAMPION",) + _HS + ("GRAND CHAMPION",) + _HS + ("GRAND CHAMPION",) + _HS + (
+    "COMBO CHAMPION", "BEST COMBO CHAMPION")
+NAMES = (("G S", "STERN"), ("L R", "ROPP"), ("J R", "ROTHARMEL"), ("D T", "THORNE"), ("P P", "POWERS"),
+         ("OPT", "OPTIMUS"), ("JAZ", "JAZZ"), ("PWL", "PROWL"), ("IRN", "IRONHIDE"), ("BEE", "BUMBLEBEE"),
+         ("MEG", "MEGATRON"), ("STR", "STARSCREAM"), ("SND", "SOUNDWAVE"), ("SHK", "SHOCKWAVE"), ("BLK", "BLACKOUT"),
+         ("LON", "ROPP"), ("LON", "ROPP"))
+SCORE_ADJ = (49, 50, 51, 52, 53) * 3 + (90, 93)
+KIND_ADJ = (54,) * 15 + (91, 94)
+AWARD_ADJ = (55, 56, 57, 58, 59) * 3 + (92, 95)
+FLAGS = (1, 3, 3, 3, 3) * 3 + (3, 3)
+# The five lists of table 0x040cfc48 (0x24 bytes each): title, entries (0-based here), the player's value (+4) and
+# who may enter (+0x10); lists 1-3 skip a player with 0x021109f3[p] set (+0x20 = 1, not modelled: never set here)
+LISTS = (("HIGHEST SCORES", range(0, 5), "score", None),                  # 0x0001cacc, 0x01007500
+         ("AUTOBOT HIGHEST SCORES", range(5, 10), "score", 1),            # 0x01007508: player_side 1
+         ("DECEPTICON HIGHEST SCORES", range(10, 15), "score", 2),        # 0x01007578: player_side 2
+         ("COMBO CHAMPION", range(15, 16), "combo_total", None),          # 0x0100279c: 0x02111d08[p]
+         ("BEST COMBO CHAMPION", range(16, 17), "combo_best", None))      # 0x010028f4: 0x02111d10[p]
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 SPECIALS = ("BACK", "END", "SPACE")
 FRAME_TICKS = 1
@@ -195,7 +213,8 @@ class HighScores(Feature):
         self.store.save_all(data={"entries": [dict(e) for e in self.entries], "reset_count": self.count})
 
     def default_name(self, i):
-        return DEFAULT_NAMES[i]
+        """[0x00018730]: +8 on adj 60 = 1 (10 letters), else +4."""
+        return NAMES[i][1 if self.adj[60] == 1 else 0]
 
     def reset(self, mask):
         """FUN_000189fc: reset the entries of the flag mask (1 grand champion, 2 high scores)."""
@@ -225,7 +244,18 @@ class HighScores(Feature):
         """(title, name, score) of each entry, or [] when high scores are off (FUN_000186d0)."""
         if self.adj[48] != 1:
             return []
-        return [(TITLES[i], e["name"], e["score"]) for i, e in enumerate(self.entries)]
+        return [(TITLES[i], e["name"], self.score_text(i, e["score"])) for i, e in enumerate(self.entries)]
+
+    @staticmethod
+    def score_text(i, score):
+        """The entry's score as the formatters print it: combos 0x010028c4 (msg 0x6e0 "%,02lu COMBO%P1//S/%"),
+        best combo 0x01002a7c (msg 0x6e1 "%P1//DOUBLE /TRIPLE //%%u-WAY" with mult = low nibble, way = high word)."""
+        if i == 15:
+            return "{:,} COMBO{}".format(score, "" if score == 1 else "S")
+        if i == 16:
+            mult, way = score & 0xf, score >> 16
+            return "{}{}-WAY".format({2: "DOUBLE ", 3: "TRIPLE "}.get(mult, ""), way)
+        return score
 
     # ------------------------------------------------------------------ entry at game over
 
@@ -235,19 +265,40 @@ class HighScores(Feature):
             done()
             return
         os_.state |= 0x40
-        self.scores = [p.score for p in self.machine.game.player_list]
-        self.placed = [False] * len(self.scores)
-        self.names = [None] * len(self.scores)
+        self.players = self.machine.game.player_list
+        self.names = [None] * len(self.players)
         self._done = done
-        self._next(0)
+        self._list(0)
+
+    def value(self, lst, n):
+        key = LISTS[lst][2]
+        player = self.players[n - 1]
+        if key == "score":
+            return player.score
+        return os_pd(self.os, n).get(key, 0)
+
+    def _list(self, lst):
+        """high_score_entry [0x00018d54]: the lists in order, each with its own placed players."""
+        if lst >= len(LISTS):
+            self.os.state &= ~0x40
+            self.save()
+            self._done()
+            return
+        self.lst = lst
+        self.placed = [False] * len(self.players)
+        self._next(LISTS[lst][1][0])
 
     def best(self, i):
-        """FUN_00018b70: the best unplaced player beating entry i (ties: the earlier player), or 0."""
+        """FUN_00018b70: the best unplaced player of the list who may enter it, beating entry i (ties: the
+        earlier player), or 0."""
+        side = LISTS[self.lst][3]
         best = 0
-        for n, score in enumerate(self.scores, 1):
-            if not self.placed[n - 1] and score > self.entries[i]["score"]:
-                if not best or score > self.scores[best - 1]:
-                    best = n
+        for n in range(1, len(self.players) + 1):
+            if self.placed[n - 1] or (side is not None and os_pd(self.os, n).get("side") != side):
+                continue
+            v = self.value(self.lst, n)
+            if v > self.entries[i]["score"] and (not best or v > self.value(self.lst, best)):
+                best = n
         return best
 
     def _deff(self, deff_id, then, **args):
@@ -257,10 +308,8 @@ class HighScores(Feature):
         self.machine.clock.schedule_once(lambda: then(), seconds)
 
     def _next(self, i):
-        if i >= len(TITLES):
-            self.os.state &= ~0x40
-            self.save()
-            self._done()
+        if i > LISTS[self.lst][1][-1]:
+            self._list(self.lst + 1)
             return
         player = self.best(i)
         if not player:
@@ -273,6 +322,9 @@ class HighScores(Feature):
             post("tf_high_score", stage=0x34, player=player, entry=i)
             post("tf_high_score", stage=0x35, player=player, entry=i)
             self.entry = Entry(self, player, entered)
+        if self.names[player - 1] is not None:      # the initials once per player [0x00018d54]
+            self._place(i, player)
+            return
 
         def entered(name):
             self.entry = None
@@ -284,11 +336,12 @@ class HighScores(Feature):
     def _place(self, i, player):
         """FUN_00018c04: the entry and the ones below move down, the award, deff 33."""
         os_ = self.os
-        self.entries[i + 1:] = self.entries[i:-1]
-        self.entries[i] = {"name": self.names[player - 1], "score": self.scores[player - 1]}
+        last = LISTS[self.lst][1][-1]
+        self.entries[i + 1:last + 1] = self.entries[i:last]
+        self.entries[i] = {"name": self.names[player - 1], "score": self.value(self.lst, player)}
         self.save()
         count = self.adj[AWARD_ADJ[i]]
-        kind = self.adj[54]
+        kind = self.adj[KIND_ADJ[i]]
         if count:
             if kind == 0:
                 os_.award_credit(count)
@@ -306,7 +359,12 @@ class HighScores(Feature):
             post("tf_high_score", stage=0x38, player=player, entry=i)
             self._next(i + 1)
         self._deff(33, shown, player=player, title=TITLES[i], name=self.entries[i]["name"],
-                   score=self.entries[i]["score"], award=kind if count else None, count=count)
+                   score=self.score_text(i, self.entries[i]["score"]), award=kind if count else None, count=count)
+
+
+def os_pd(os_, n):
+    """Rule state of player n (1-based)."""
+    return os_.players[n - 1] if n - 1 < len(os_.players) else {}
 
 
 feature = HighScores
