@@ -107,10 +107,6 @@ VARIANTS = {
           "deff_060 [0x01028da0]: +0x38 = the shot (show_deff_59_count_mudflap_skids_started_27b74 [0x01027b74] "
           "param_1) indexes table 0x040c7344 and the sound table 0x000313d8 (0x09a..0x09f) when below 6; "
           "shot 6 draws image 0x597 with no animation") for k in range(7)],
-    65: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (2, 0), 0x38: (1, k)}},
-          "deff_065 [0x0102aa70]: +0x38 = popcount of 0x00035378 (show_deff_65_count_double_scoring_started_29bf4 "
-          "[0x01029bf4]) indexes table 0x040c7490; entries 3..5 are deff 66's table 0x040c749c")
-         for k in range(6)],
     77: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (2, 0), 0x38: (2, k)}},
           "deff_077_jackpot [0x0100f3b4]: +0x38 indexes table 0x040c6674 (10 routines, above 9 it takes 9); "
           "show_deff_77_count_optimus_m_b_super_e29c [0x0100e29c] passes 0 when its mode word is 0x40, else "
