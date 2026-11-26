@@ -4,7 +4,7 @@ Runs the ROM in the scenario runner (scenario_lift.py: the ROM's own code in Uni
 the machine, presses SELECT (152) and walks every menu as an operator would: PLUS (151) to the next item until
 the first one comes back, SELECT on each item, PLUS through the item's screens (audits, adjustments, tests; at
 most 60 per item), BACK (149) out. Each screen keeps the texts the ROM drew 0.9 s after the press (text, font,
-flags, x, y), as the deff runner records them. The menu engine is 0x0000eb3c (lists 0x00030d04 / 0x00030cf8),
+flags, x, y) and its images (image, x, y), as the deff runner records them. The menu engine is 0x0000eb3c (lists 0x00030d04 / 0x00030cf8),
 the service deff deff_003 [0x0103f960] started by start_deff_3 [0x0000ed90].
 
 Usage: TF_ROM=tf_180.bin service_walk.py OUT.json   (about 15 minutes)
@@ -26,6 +26,29 @@ out = sys.argv[1]
 screens = []
 cur = {}
 
+def frame_images(ops):
+    """The images of the last frame shown: the pages of the last 'show' (fg, bg), each one's bitmap ops after its
+    last 'fill' and before that show (a page not filled in the window keeps every bitmap drawn on it)."""
+    shows = [i for i, o in enumerate(ops) if o['op'] == 'show']
+    if not shows:
+        return []
+    end = shows[-1]
+    out = []
+    for page in (ops[end].get('bg'), ops[end].get('fg')):
+        start = 0
+        for i in range(end):
+            if ops[i]['op'] == 'fill' and ops[i].get('page') == page:
+                start = i
+        seen = []
+        for o in ops[start:end]:
+            if o['op'] in ('bitmap', 'bitmap_masked') and o.get('page') == page:
+                item = {'image': o.get('img'), 'x': o.get('x'), 'y': o.get('y')}
+                if item not in seen:
+                    seen.append(item)
+        out += seen
+    return out
+
+
 def look(wait=0.9):
     r.ops = []
     r.step(r.now + ticks(wait))
@@ -33,6 +56,7 @@ def look(wait=0.9):
     for o in r.ops:
         if o['op'] == 'text':
             last[(o.get('x'), o.get('y'), o.get('page'))] = o
+    cur['images'] = frame_images(r.ops)
     texts = sorted(last.values(), key=lambda o: (o.get('y') or 0, o.get('x') or 0))
     cur['texts'] = [{k: o.get(k) for k in ('text', 'font', 'flags', 'x', 'y')} for o in texts]
     cur['ops'] = [o for o in r.ops if o['op'] in DRAW][-60:]
@@ -47,19 +71,19 @@ def press(sw, path):
     r.pulse(sw, 100)
     k = look()
     screens.append({'path': path, 'button': {SEL: 'SELECT', PLUS: 'PLUS', BACK: 'BACK'}[sw], 'tick': r.now,
-                    'texts': cur['texts'], 'ops': cur['ops']})
+                    'texts': cur['texts'], 'images': cur['images'], 'ops': cur['ops']})
     print(path, '|', ' / '.join(k)[:150], flush=True)
     return k
 
 HOW = ("rom/tools/service_walk.py: the service menu walked in ROM code (code run, factory settings): SELECT (152) "
        "from attract, PLUS (151) through each menu until its first item repeats, SELECT on each item, PLUS through "
        "the item's screens (at most 60), BACK (149). Each screen lists the texts the ROM drew (text, font, flags, "
-       "x, y) 0.9 s after the press.")
+       "x, y) and the images it drew (bitmap_draw / bitmap_draw2: image, x, y) 0.9 s after the press.")
 
 
 def save():
     doc = {"rom": "tf_180", "how": HOW, "tick_ms": 16.0,
-           "screens": [{k: x[k] for k in ("path", "button", "tick", "texts")} for x in screens]}
+           "screens": [{k: x[k] for k in ("path", "button", "tick", "texts", "images")} for x in screens]}
     with open(out, "w") as f:
         json.dump(doc, f, indent=0)
 

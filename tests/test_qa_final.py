@@ -410,3 +410,12 @@ class TestFinalPass(QaCase):
                          [(d["i"], d["x"]) for d in mode.draw() if "i" in d])     # as the ROM draws it, code run
         mode._open_menu("REDEMPTION", "MAIN MENU / GO TO REDEMPTION MENU")
         self.assertEqual("INSTALL REDEMPTION SYSTEM", mode.current()["text"])
+
+    def test_f061_walked_screen_images(self):
+        """service_walk.py frame_images: a walked screen draws the images of its last frame (ENTER CUSTOM MESSAGE:
+        images 199-202 at y 26) before its texts."""
+        from tf import service
+        path = "MAIN MENU / GO TO UTILITIES MENU / ENTER CUSTOM MESSAGE [select]"
+        draw = service.draw_of(service.screens()[path], path)
+        self.assertEqual([199, 200, 201, 202], sorted(d["i"] for d in draw if "i" in d))
+        self.assertTrue(any("t" in d for d in draw))

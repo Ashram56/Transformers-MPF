@@ -60,11 +60,18 @@ def screens():
                         if item not in seen:
                             seen.append(item)
                     _SCREENS.setdefault(s["path"], seen)
+                    _IMAGES.setdefault(s["path"], [(i["image"], i["x"], i["y"]) for i in s.get("images", ())])
     return _SCREENS
 
 
-def draw_of(texts):
-    return [rd.text(t, font, x, y, flags) for t, font, flags, x, y in texts]
+_IMAGES = {}
+
+
+def draw_of(texts, path=None):
+    """A walked screen: its images (bitmap_draw / bitmap_draw2 as the walk saw them), then its texts."""
+    screens()
+    images = [rd.image(n, x, y) for n, x, y in _IMAGES.get(path, ())] if path is not None else []
+    return images + [rd.text(t, font, x, y, flags) for t, font, flags, x, y in texts]
 
 
 # the service loops' button sounds (deff 3 [0x0103f960] and the item screens): snd_resolve_call through
@@ -548,7 +555,7 @@ class ServiceMode(Mode):
 
     def draw(self):
         if self.title:
-            return draw_of(screens().get("title", ()))
+            return draw_of(screens().get("title", ()), "title")
         page = self.page
         if page is None:
             menu, index, _ = self.stack[-1]
@@ -578,7 +585,7 @@ class ServiceMode(Mode):
                     ] + self._value_lines(self.os.audits.text(num))
         texts = screens().get(page["path"] + " [select]")
         if texts:
-            return draw_of(texts)
+            return draw_of(texts, page["path"] + " [select]")
         return [rd.text(page["path"].rsplit(" / ", 1)[-1], MENU_FONT, 64, MENU_Y, 2)]
 
     @staticmethod
