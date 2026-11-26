@@ -33,7 +33,7 @@ leff 72, sound 0xe4, audit 0x7b); after 10 the center lane scores 3 double jackp
 audit 0x7d, requirement 0 completed) and the jackpots start over.
 End: down to one ball the running flag goes (music back), 218 ticks later the total (A deff 74 + leff 67, D deff
 80 + leff 75) when the display is free; an ADD-A-BALL before then revives it.
-Not modelled: task 0x57, adj 69 virtual lock. The rule leff (62 / 70) flashes the lit shots from the side's mask.
+Not modelled: task 0x57. Adj 69 virtual lock: the device keeps no ball [0x0100a278]. The rule leff (62 / 70) flashes the lit shots from the side's mask.
 """
 import random
 
@@ -608,6 +608,10 @@ class Megatron(Feature):
                 os_.ball_search_count = 0
         if keep == "multiball":
             return
+        if keep and os_.adj[69] == 1:
+            # adj 69 MEGATRON M.B. VIRTUAL LOCK = YES: the device's target count is 0 (adj_get(0x45) == 1
+            # [0x0100a278]), so the locked ball is kicked back into play; the lock still counts (QA D-ADJ-69-use)
+            keep = False
         if keep:
             self.locked_held += 1
             os_.after(SERVE_TICKS, self._serve)

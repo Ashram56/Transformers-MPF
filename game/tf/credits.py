@@ -26,7 +26,7 @@ import os
 SLOTS = {"s_left_coin_slot": (0, 2), "s_center_coin_slot": (1, 3), "s_right_coin_slot": (2, 4),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
 CREDIT_FLAG, MORE_COINS_SOUND = 0x12, 0x045    # [0x01005ebc] sets flag 0x12; play_sound_045 [0x01005f00]
-CREDIT_SOUND, COIN_SOUND = 0x043, 0x042   # observed (traces/sounds.jsonl): 0x043 on the coin that completes a credit, 0x042 on the others
+CREDIT_SOUND, COIN_SOUND, SERVICE_CREDIT_SOUND = 0x043, 0x042, 0x044   # event 0x19 [0x01005ebc] snd_play(0x43); event 0x1a [0x01005ed8] snd_play(0x42); event 0x51 [0x01005eec] snd_play(0x44) (QA D-CR-SNDS)
 METER_AUDIT, PAID_CREDITS_AUDIT, SERVICE_CREDITS_AUDIT = 7, 1, 0x24
 # The 68 pricing presets (rom/rom_data/settings/pricing.json, by adj 28 value; code, checked in the emulator
 # for USA 10): units per slot of the preset's coin door and the credit ladder. Factory default 66 = USA 10.
@@ -186,8 +186,9 @@ class Credits:
 
     def service_credit(self):
         """BACK outside the service menu [0x0000f008 case 1]: one service credit, audit 0x24 SERVICE
-        CREDITS when it was added, deff 17."""
+        CREDITS when it was added, deff 17. Event 0x51 comes first: its hook [0x01005eec] plays 0x044."""
         if self.add(1):
+            self.os.sound(SERVICE_CREDIT_SOUND)
             self.os.audit(SERVICE_CREDITS_AUDIT)
         self.os.deff_start(17, credits=self.text())
 

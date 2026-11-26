@@ -220,6 +220,19 @@ class TestMediumFixes(TfTestCase):
         self.tf.rules_refresh()
         self.assertFalse(any(lamps.lamp_test(n) for n in (29, 57, 58)))
 
+    def test_virtual_lock_keeps_no_ball(self):
+        """adj 69 MEGATRON M.B. VIRTUAL LOCK = YES: the device's target count is 0 [0x0100a278]; the lock counts and
+        the ball is kicked back (QA D-ADJ-69-use)."""
+        self.start()
+        mtl = self.tf.features_by_name["megatron"]
+        saved = self.tf.adj[69]
+        self.tf.adj[69] = 1
+        self.tf.pd.mtl_lit, self.tf.pd.mtl_locked = 1, 0
+        mtl.pending = 1
+        mtl._handle(back_door=False)
+        self.assertEqual((1, 0), (self.tf.pd.mtl_locked, mtl.locked_held))
+        self.tf.adj[69] = saved
+
     def test_requirement_inserts(self):
         """Lamp rule [0x01035ea8]: the 11 requirement inserts, solid completed, flashing collected (QA L-R07)."""
         from tf.features import wizard
