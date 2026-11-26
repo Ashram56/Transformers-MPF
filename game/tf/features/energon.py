@@ -94,11 +94,16 @@ class Energon(Feature):
         os_.score_add(points)
 
     def draw(self):
+        """Lamp rule [0x01030f80]: in a multiball all three off; else lit solid (0x00007858), not lit flashing
+        (QA L-R06, L-G13)."""
         lamps = self.os.lamps
         lit = self.pd.get("energon_lit", 0)
+        multiball = self.os.any_multiball()
         for i, lamp in enumerate(LAMPS):
-            if lit & (1 << i):
-                lamps.lamp_on(lamp)
+            if multiball:
+                lamps.lamp_off_all(lamp)
+            elif lit & (1 << i):
+                lamps.lamp_on_solid(lamp)
             else:
                 lamps.lamp_flash(lamp)
 

@@ -47,7 +47,7 @@ class Bumblebee(Feature):
         self.counting = False                    # task 0xc3
         self.warned = False                      # 0x285 played in this run of task 0xc3
         self.count = 0
-        os_.deff_rule(lambda: self.running, DS_BG_DEFF, music=DS_MUSIC, priority=0x80)
+        os_.deff_rule(lambda: self.running, DS_BG_DEFF, music=DS_MUSIC, priority=0x58)   # QA V-ENG5 (os_layer deff_rule)
         os_.lamp_rule(lambda: self.running, leff=DS_BG_LEFF, order=0x010039a0)
         os_.deff_live((DS_BG_DEFF, DS_DEFF), lambda: {"values": [self.count]})
 

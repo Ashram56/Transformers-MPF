@@ -460,7 +460,12 @@ class TfOS(CustomCode):
             self.deff_values[deff_id] = values
 
     def deff_rule(self, cond, deff_id, music=None, priority=0, on_start=None):
-        """lamp_rule_init(list 2, cond, deff, music, priority): mode background deff + music (display.py)."""
+        """lamp_rule_init(list 2, cond, deff, music, priority): mode background deff + music (display.py).
+        Order (QA V-ENG5, SC14): the ROM's deff rule bytes put the multiballs (7) above the battles, fast and
+        double scoring (5) [FUN_00017834, leaf_17580], and the music table [0x000178b0] takes the first true of
+        Megatron, wizard side, Optimus, wizard multiball, double scoring, fast scoring, battles. The game's
+        priorities keep that order on its own scale (above PREVALID_PRIO): Megatron 0x78, wizard side 0x77,
+        Optimus 0x76, WMB 0x75, double scoring 0x58, fast scoring 0x57, battles 0x40."""
         self.display.add_rule(cond, deff_id, music, priority, on_start)
 
     def request_refresh(self, *_):
@@ -1005,7 +1010,7 @@ class TfOS(CustomCode):
         self.pf_valid = True
         if self._valid_at is None:
             self._valid_at = self.now                # validated play time (game-time / ball-time audits)
-        self.flag_set(0x1c)                          # event 0x6a handler [0x0100f25c]
+        self.flag_set(0x10)                          # event 0x6a hook LAB_010060a4 sets game flag 0x10 (QA R-F4)
         self.request_refresh()                       # ... which also requests a rules refresh
         self.hook("playfield_valid")
         self.ball_validated = True
@@ -1793,6 +1798,7 @@ class TfOS(CustomCode):
             self.audit(self.audits.score_range_counter(player.score))
         self.audits.add_extra("game_seconds", self.game_seconds)
         self.audits.add_extra("score_total", sum(p.score for p in players))
+        self.audits.add_extra("score_count", len(players))   # [0x0001ce58] counts each player (QA D-AUD-47)
         self._replay_statistics(len(players))
         self.hook("game_over")
         queue.wait()

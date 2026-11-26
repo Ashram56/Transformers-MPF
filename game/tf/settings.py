@@ -177,22 +177,24 @@ class Audits:
         plays = self.plays()
         replays = sum(self[c] for c in (10, 11, 12, 13))               # FUN_00026f1c
         computed = {
-            2: lambda: pct(self[18], plays),                              # FREE GAME PERCENTAGE
+            2: lambda: pct(self.value(28), self[17]),                     # FREE GAME PERCENTAGE [0x00026c94] (QA D-AUD-2)
             3: lambda: int(self.extra.get("ball_seconds", 0) // self[8]) if self[8] else 0,   # AVERAGE BALL TIME
             4: lambda: int(self.extra.get("game_seconds", 0) // plays) if plays else 0,       # AVERAGE GAME TIME
             10: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)),             # TOTAL COINS [FUN_00026e10]
             11: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)) * 25,        # TOTAL EARNINGS, cents (inferred)
-            13: lambda: self[7],                                           # SOFTWARE METER (inferred)
-            16: lambda: pct(self[9], self[8]),                             # EXTRA BALL PERCENTAGE
+            13: lambda: 0,                                                 # SOFTWARE METER: returns 0 [0x0002af18] (QA D-AUD-13)
+            16: lambda: pct(self[9], self[17]),                            # EXTRA BALL PERCENTAGE [0x00026c48]
             21: lambda: replays,                                           # TOTAL REPLAYS
-            22: lambda: pct(replays, plays),                               # REPLAY PERCENTAGE
-            24: lambda: pct(self[14], plays),                              # SPECIAL PERCENTAGE
-            27: lambda: pct(self[16], plays),                              # HIGH SCORE PERCENT
+            22: lambda: pct(replays, self[17]),                            # REPLAY PERCENTAGE [0x00026d34]
+            24: lambda: pct(self[14], self[17]),                           # SPECIAL PERCENTAGE [0x00026d80]
+            27: lambda: pct(self[16], self[17]),                           # HIGH SCORE PERCENT [0x00026ce0]
             28: lambda: replays + self[14] + self[15] + self[16],          # TOTAL FREE PLAYS [FUN_00026e94]
             29: lambda: plays,                                             # TOTAL PLAYS
-            47: lambda: int(self.extra.get("score_total", 0) // plays) if plays else 0,       # AVERAGE SCORES
+            # AVERAGE SCORES [0x00026c3c]: sum / count, /10 x 10; one count per player [0x0001ce58] (QA D-AUD-47)
+            47: lambda: (self.extra.get("score_total", 0) // self.extra["score_count"]) // 10 * 10
+            if self.extra.get("score_count") else 0,
             53: lambda: max(0, self[8] - self[40] - self[41]),             # CENTER DRAINS [FUN_00026dcc]
-            72: lambda: pct(replays, plays),                               # RECENT REPLAY PERCENT (inferred)
+            72: lambda: 0,                                                 # RECENT REPLAY PERCENT: returns 0 [0x00026d2c]
         }
         return computed.get(number, lambda: 0)()
 

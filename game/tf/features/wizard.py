@@ -81,8 +81,8 @@ class Wizard(Feature):
         self.side_counts = [0] * 6
         self.wmb_total = self.wmb_sum = 0
         self.wmb_counts = [0] * 6
-        os_.deff_rule(lambda: self.side_running, SIDE_BG, music=SIDE_MUSIC, priority=0x70)
-        os_.deff_rule(lambda: self.wmb_running, WMB_BG, music=WMB_MUSIC, priority=0x70)
+        os_.deff_rule(lambda: self.side_running, SIDE_BG, music=SIDE_MUSIC, priority=0x77)   # QA V-ENG5
+        os_.deff_rule(lambda: self.wmb_running, WMB_BG, music=WMB_MUSIC, priority=0x75)   # QA V-ENG5
         # NEXT SHOT = 500,000 + 50,000 x shots made [0x01010100 / 0x01036534]; SUPER = the super's base
         # (RAM 0x34eac) [deff 82 0x010107e8, deff 87 0x01036d50]
         os_.deff_live((SIDE_BG,), lambda: {"values": [SIDE_POINTS + SIDE_STEP * sum(self.side_counts),

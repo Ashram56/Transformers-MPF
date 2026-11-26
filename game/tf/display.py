@@ -407,7 +407,7 @@ class Display:
 
     def select(self):
         """The true rule with the highest priority: (deff, music, on_start), else the score display."""
-        valid = self.os.flag(0x1c) or self.os.pf_valid
+        valid = self.os.pf_valid
         for prio, cond, deff_id, music, on_start in self.rules:
             if prio < PREVALID_PRIO and not valid:
                 break                              # only the score display rule before validation (inferred)

@@ -400,7 +400,7 @@ class Megatron(Feature):
                 sc.add_switch_handler(name, self._switch)
                 sc.add_switch_handler(name, self._switch, state=0)
         for side in self.sides.values():
-            os_.deff_rule((lambda s: lambda: s.active)(side), side.bg, music=side.music, priority=0x60)
+            os_.deff_rule((lambda s: lambda: s.active)(side), side.bg, music=side.music, priority=0x78)   # QA V-ENG5
             os_.lamp_rule((lambda s: lambda: s.active)(side), leff=side.rule_leff, order=0x0100cee0 + side.flag)
             # the rule leff flashes the lit shots (leff_062 / leff_070 [0x0100cf28 / 0x0100ee54])
             os_.lamps.leff_code(side.rule_leff,

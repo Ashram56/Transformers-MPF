@@ -472,4 +472,4 @@ class TestLowFixes(QaCase):
         self.start()
         self.assertFalse(self.tf.pf_valid)
         self.tf._tilt()
-        self.assertTrue(self.tf.pf_valid and self.tf.flag(0x1c))
+        self.assertTrue(self.tf.pf_valid and self.tf.flag(0x10))

@@ -47,11 +47,15 @@ SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
 # traces/switches.jsonl 124.35 / 124.42 s confirms: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
 NO_BONUS = {6}
-# handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
-DELAY = {51: 5}
+DELAY = {}
+# switches whose handler runs on the opening edge only: sw 51 OPTIMUS PRIME, +0xe = 0x1800 (0x800 opening, no
+# 0x400 closing), debounce 0 / 0, switch_dispatch_debounce [0x0000dc44]; the traces' "0.08 s" was the release of
+# their 60 ms hit (QA D-SW-51-EDGE)
+OPENING_ONLY = {51}
 
 
 RAMP_ENTRANCE_TIMERS = {4: 0xc, 35: 0xd}     # left / right ramp entrance: switch-timeout tokens
+RAMP_ENTRANCE_SOUNDS = {4: 0x273, 35: 0x272}  # snd_play on every hit [0x010337e8 / 0x010338dc] (QA R-F1, SC5)
 
 class SwitchLayer:
 
@@ -61,6 +65,9 @@ class SwitchLayer:
         sc = self.machine.switch_controller
         for num, name in SW.items():
             if name in self.machine.switches:
+                if num in OPENING_ONLY:
+                    sc.add_switch_handler(name, self._dispatch(num), state=0)
+                    continue
                 sc.add_switch_handler(name, self._dispatch(num))
                 if num in BOTH_EDGES:
                     sc.add_switch_handler(name, self._dispatch(num), state=0)
@@ -85,6 +92,7 @@ class SwitchLayer:
         # sw 11 while task 0x54 runs: only its 30 and bonus count, the shot block is skipped [0x01033b3c] (QA M5)
         locked = num == 11 and os_.task_running(0x54)
         if num in RAMP_ENTRANCE_TIMERS:     # FUN_0000ff00(0xc / 0xd, 0x5d) [0x010337e8 / 0x010338dc] (QA M9)
+            os_.sound(RAMP_ENTRANCE_SOUNDS[num])
             os_.timer_set(RAMP_ENTRANCE_TIMERS[num], 0x5d)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])

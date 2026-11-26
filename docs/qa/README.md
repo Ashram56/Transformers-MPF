@@ -48,7 +48,17 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | V-SC1 | main score font and row by value, table 0x040c75d0 (font 17 row 18 from 1,000,000) | `0x0102f11c`, `0x0102fa40` |
 | R-F8, V-ENG2, L-G12 (citations) | the Tron 1.74 addresses still cited are replaced by tf_180 routines or marked inferred | see the commit |
 
-All 24 trace scenarios compare the same before and after these fixes (161 checks OK both ways).
+| R-F1, SC5 | the ramp entrances play 0x273 / 0x272 on every hit | `0x010337e8`, `0x010338dc` |
+| R-F2, SC3 | deff 91's call by the lit battle bit (0x170-0x177), not by side | `0x01022608` |
+| L-G13, L-R06 | completed battle inserts and lit Energon targets solid (flash bit cleared); Energon inserts off in a multiball | `0x00007858`, `0x01030f80` |
+| V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
+| R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
+| R-F5 | no 1 s Optimus time gate (the lockout is task 0x54) | `0x01025de4`, `0x010262f0` |
+| D-AUD-2, 13, 16, 22, 24, 27, 47, 72 | percentages over paid plays (c17); audits 13 and 72 are 0; average score per player, /10 x 10 | `0x00026c94` ... `0x00026c3c` |
+| D-SW-51-EDGE | the Optimus target's handler runs on the opening edge (+0xe 0x1800) | `0x0000dc44` |
+
+All 24 trace scenarios compare the same or better after these fixes (161 checks OK; the sounds and switches
+scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 and 51).
 
 ## Pass of 2026-11-25
 

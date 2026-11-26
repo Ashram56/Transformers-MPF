@@ -50,7 +50,6 @@ BATTLE_MUSIC = {DECEPTICON: 0x34, AUTOBOT: 0x31}
 BATTLE_RULE_LEFFS = (20, 176, 175)
 BATTLE_DONE_LEFF = 177
 HIT_DEFF, HIT_LEFF, HIT_SOUND = 144, 178, 0x2aa
-HIT_IGNORE_S = 1.0
 MAX_LEFT = 8
 START_AWARD = 2000000
 
@@ -333,7 +332,7 @@ class Optimus(Feature):
         for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
             os_.display.set_media(deff_id, seconds, leffs, sounds)
         for side in self.sides.values():
-            os_.deff_rule((lambda s: lambda: s.active and s.shown)(side), side.bg, music=side.music, priority=0x60)
+            os_.deff_rule((lambda s: lambda: s.active and s.shown)(side), side.bg, music=side.music, priority=0x76)   # QA V-ENG5
             os_.lamp_rule((lambda s: lambda: s.active and s.shown)(side), leff=side.rule_leff,
                           order=0x01028000 + side.flag)
             # the rule leff flashes the lit shots (leff_046 / leff_054 [0x010285e8 / 0x0102a72c])
@@ -395,7 +394,7 @@ class Optimus(Feature):
     def sw_11(self):
         """[0x01025de4]."""
         os_ = self.os
-        if os_.tilted or not os_.game or os_.now - self.hit_at < HIT_IGNORE_S:
+        if os_.tilted or not os_.game:    # no time gate: the lockout is task 0x54 (tf/switches.py; QA R-F5)
             return
         pd = self.pd
         if self.mb_blocked() or pd.get("opt_battle"):
@@ -430,7 +429,7 @@ class Optimus(Feature):
     # ------------------------------------------------------------------ Optimus
 
     def sw_51(self):
-        """[0x010262f0] (5 ticks after the switch, tf/switches.py)."""
+        """[0x010262f0] (one tick after the switch opens, tf/switches.py OPENING_ONLY)."""
         os_ = self.os
         if os_.tilted or not os_.game:
             return
@@ -438,7 +437,7 @@ class Optimus(Feature):
         if side.active:
             side.optimus()
             return
-        if not self.battle_progress() or os_.now - self.hit_at < HIT_IGNORE_S:
+        if not self.battle_progress():    # no time gate here either: task 0x54 / 0x4e (QA R-F5)
             return
         pd = self.pd
         self.hit_at = os_.now

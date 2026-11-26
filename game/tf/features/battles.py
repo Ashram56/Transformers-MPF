@@ -68,7 +68,9 @@ MS_DIFFICULTY = {0: (5, 5), 1: (5, 4), 2: (4, 4), 3: (4, 3), 4: (4, 2)}       # 
 MS_WALK = (1, 2, 3, 4, 0)
 MS_NEEDED = 4
 MS_DEFF, MS_LEFF = 91, 103
-MS_SOUND = {AUTOBOT: 0x174, DECEPTICON: 0x170}
+# deff 91 [0x01022608] plays its call by the lit battle bit (task+0x38 = DAT_02111ecc[p], pd.battle_lit), 0x170 for
+# any other value (QA R-F2, SC3)
+MS_SOUND = {2: 0x171, 4: 0x172, 8: 0x173, 0x10: 0x174, 0x20: 0x175, 0x40: 0x176, 0x80: 0x177}
 LIT_LEFF = 104
 SIDE_DONE_FLAG = 0x3d
 ADD_TIME_FLAG = 0x13
@@ -82,7 +84,7 @@ GRACE_TICKS = 125
 MODES_STARTED_AUDIT = 0x58
 WIZARD_PLAYED_AUDIT, WIZARD_DONE_AUDIT = 0x81, 0x8c
 ADD_TIME, MAX_TIME = 15, 90
-RULE_PRIORITY = 0x40                  # below double / fast scoring (music table entries 7-8 before 9-16)
+RULE_PRIORITY = 0x40                  # below double / fast scoring (music table [0x000178b0]; QA V-ENG5)
 TOTAL_TICKS = 120                     # a total started at the drain holds the bonus (battle_ratchet: 1.94 s)
 
 # deffs the package has no capture (or no end) of: (seconds, leffs, sounds), from the reference traces
@@ -892,7 +894,6 @@ class Battles(Feature):
         pd = self.pd
         if os_.tilted or not self.qualify_allowed() or not pd.get("ms_lit", 0) & (1 << ms):
             return
-        side = pd.get("side", DECEPTICON)
         value = min(10000 + 10000 * pd.get("battles_started_n", 0) + 5000 * pd.get("ms_hits", 0), 75000)
         shot = MS_BATTLE_SHOT[ms]
         os_.score_add(value * os_.shot_mult(shot))
@@ -908,7 +909,8 @@ class Battles(Feature):
                 if pick is not None:
                     pd.ms_lit |= 1 << pick
             left = pd.ms_needed - pd.ms_hits
-            os_.deff_start(MS_DEFF, values=[left], sounds=[(0, lambda: os_.sound(MS_SOUND[side], in_deff=MS_DEFF))])
+            call = MS_SOUND.get(pd.get("battle_lit", 0), 0x170)
+            os_.deff_start(MS_DEFF, values=[left], sounds=[(0, lambda: os_.sound(call, in_deff=MS_DEFF))])
             os_.leff_start(MS_LEFF)
             os_.request_refresh()
             return
@@ -1091,7 +1093,7 @@ class Battles(Feature):
         started, completed = pd.get("battle_started", 0), pd.get("battle_completed", 0)
         for b in self.battles:
             if completed & b.bit:
-                lamps.lamp_on(b.insert)
+                lamps.lamp_on_solid(b.insert)          # 0x00007858 clears the flash bit (QA L-G13)
             elif started & b.bit:
                 lamps.lamp_flash(b.insert)
             else:

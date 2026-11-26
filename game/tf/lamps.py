@@ -239,12 +239,12 @@ SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31}
 
 def flasher_group_pulse(group, every=8, time=0x20):
     """The super-lit leffs (QA M6): forever, every `every` ticks, coilgroup_pulse(group, 0x20) [0x00005fd4] while
-    the playfield is valid (DAT_000314d8, FUN_0000d8ac; flag 0x1c here) and ball search (task 0x2b) is not
+    the playfield is valid (DAT_000314d8, FUN_0000d8ac; os.pf_valid) and ball search (task 0x2b) is not
     running. The group is the leff table's coil group, read by FUN_000081f4. -> fn(LeffTask)."""
     def run(task):
         lamps = task.lamps
         os_ = lamps.os
-        if os_.flag(0x1c) and not os_.task_running(0x2b):
+        if os_.pf_valid and not os_.task_running(0x2b):
             names = {num: name for name, num in lamps.coil_numbers.items()}
             for num in COIL_GROUPS[group]:
                 if num in names:
@@ -346,13 +346,13 @@ class Lamps:
         self.changed()
 
     def lamp_on_solid(self, n):
-        """lamp_on_solid [0x83f4]: on, flash bit cleared."""
+        """0x00007858: on, flash bit cleared (the lamp rules' solid write)."""
         self.image.add(n)
         self.flash.discard(n)
         self.changed()
 
     def lamp_off_all(self, n):
-        """lamp_off_all [0x82b0]: off, flash bit cleared."""
+        """0x00007714: off, flash bit cleared (the lamp rules' off write)."""
         self.image.discard(n)
         self.flash.discard(n)
         self.changed()
