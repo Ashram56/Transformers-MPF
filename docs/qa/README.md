@@ -74,6 +74,7 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | V124, V125 | deffs 124 / 125 last 156 / 142 ticks, 0x13f at tick 70, from their op lists (were 1.0 s / 2.0 s inferred) | `0x01030b94`, `0x01031038` |
 | L-R05, L-I20 21 | the 2-bank lamps 21 / 20 flash outside multiballs and timed modes, off in them (the player mask that would make them solid is only ever cleared in the code) | `0x0102ede0`, `0x0102e994`, table `0x040c7568` |
 | L-G07 | the 30 leffs whose code switches the GI (owner 0x000314c4) turn it off and on at their op lists' ticks, and give it back at their end; the VPX bridge reports GI string 0 at 0 while it is off | leff_081 `0x010119d8`, leff op lists frames `gi` |
+| L-G08 | a leff with a lamp group owns the group's lamps (off) from its start, as leff_start clears them in the leff image and flash mask | `0x00007c10`, `0x000084cc`, `0x000086d4` |
 | D-AUD-11 | TOTAL EARNINGS is the units counter 7 times the unit value of the pricing selected now, in its money format ("USD 3.25" for 13 units at USA 10), was coins x 25 cents | `0x00026e7c`, `0x00026f74` |
 | V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
 | R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
@@ -88,6 +89,17 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 
 All 24 trace scenarios compare the same or better after these fixes (161 checks OK; the sounds and switches
 scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 and 51).
+
+### Open after the fixes (2026-11-26)
+
+- V-SC2, V-SC7, V-SC8, V-SC9 (score display boxes, last award value, combo text): deff 19's score code
+  `0x0102f200` / `0x0102fa40` reads three counters (RAM 0x021120b0, 0x021120b8, 0x021120a8) that the code
+  only resets (0x0102f958, 0x0102f998, 0x0102f1c0); no instruction adds to them by their address (the literal
+  pools at 0x0102f550, 0x0102f990-0x0102fa2c, 0x0102fb54 are all readers or resets). Who counts them is a
+  question for agent A before these can be drawn.
+- SC16 (voices): the sound board's voice allocation by priority and take-over (`0x00024ae4`).
+- Deff variant frames: the frames of each variant run (docs/rom_differences.md).
+- V001 attract pages, V010-V017 credit line, V002 volume display, the low rows of the reports.
 
 ## Pass of 2026-11-25
 

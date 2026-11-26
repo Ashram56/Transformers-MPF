@@ -482,7 +482,8 @@ class Lamps:
         name, loops, prio = self.leff_info.get(leff_id, ("", 0, 0))
         if leff_id in self.code_leffs:
             layer_prio, fn = self.code_leffs[leff_id]
-            layer = self.layer_create(prio if layer_prio is None else layer_prio, name="leff_{}".format(leff_id))
+            layer = self.layer_create(prio if layer_prio is None else layer_prio, self._group_lamps(leff_id),
+                                      name="leff_{}".format(leff_id))
             task = LeffTask(self, leff_id, layer)
             task.data["lamp"] = lamp
             self.leff_players[leff_id] = (task, layer)
@@ -500,9 +501,18 @@ class Lamps:
             for light in lights:
                 for target in (tokens.get(light.strip("()"), ()) if light.startswith("(") else (light,)):
                     mask.update(self.lamp_numbers(target))
+        mask |= self._group_lamps(leff_id)
         layer = self.layer_create(prio, mask, name="leff_{}".format(leff_id))
         self.leff_players[leff_id] = (ShowPlayer(self, steps, layer, loops, tokens, owner=leff_id,
                                                  on_end=lambda: self._leff_show_done(leff_id)), layer)
+
+    def _group_lamps(self, leff_id):
+        """leff_start [0x00007c10]: a leff with a lamp group (+6) clears the group's lamps in the leff image and flash
+        mask (lamp_group_84cc / lamp_group_86d4 on 0x00036394 / 0x000363a8), so the leff owns them, off, from its
+        start (QA L-G08)."""
+        leffs = getattr(self.os, "leffs", None)
+        claims = getattr(leffs, "claims", {}) if leffs is not None else {}
+        return set(claims.get(leff_id, (frozenset(),))[0])
 
     def _leff_show_done(self, leff_id):
         # a show that plays once ends with its task: the layer is released (display.Leffs keeps the

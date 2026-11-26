@@ -134,6 +134,15 @@ class TestMediumFixes(TfTestCase):
         lamps.leff_end(81)
         self.assertEqual(1, lamps.gi)
 
+    def test_leff_owns_its_lamp_group(self):
+        """leff_start [0x00007c10]: a leff with a lamp group owns the group's lamps from its start (QA L-G08)."""
+        self.start()
+        leff = next(l for l, c in sorted(self.tf.leffs.claims.items()) if c[0] and l in self.tf.lamps.leff_info)
+        self.tf.lamps.leff_play(leff)
+        entry = self.tf.lamps.leff_players.get(leff)
+        if entry:
+            self.assertTrue(set(self.tf.leffs.claims[leff][0]) <= entry[1].mask)
+
     def test_lock_lamps_flash_while_lock_lit(self):
         """Lamp rule [0x0100b228]: lamps 29, 57, 58 flash while a lock is lit, else off (QA L-R02)."""
         self.start()
