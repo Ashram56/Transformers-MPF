@@ -128,6 +128,7 @@ class Side:
         self.total = self.start_points
         os_.flag_set(self.flag)
         os_.flag_clear(self.grace_flag)
+        self.seq = 0            # the jackpot speech sample counter (DAT_00034db8 A / DAT_00034e2c D), 0 at the start
         self.active = self.alive = True
         os_.audit(self.start_audit)
         os_.hook("wizard_req", WIZARD_REQ, 1)
@@ -139,9 +140,19 @@ class Side:
     def setup(self):
         pass
 
-    def award(self, points, deff, leff, sound, audit, anim=None):
+    def sample(self, call, advance=True):
+        """The deff's +0x34, the sample of its first speech call: the side's counter, 0 past the call's sample
+        count (snd_call_sample_count), then + 1 (QA M12: [0x0100c430] 0xca / 0xd2, [0x0100e29c] 0xe4 / 0xf7)."""
+        seq = getattr(self, "seq", 0)
+        if seq >= len(self.os.sample_lengths(call)):
+            seq = 0
+        self.seq = seq + 1 if advance else seq
+        return seq
+
+    def award(self, points, deff, leff, sound, audit, anim=None, index=None):
         """anim: which of the deff's animations the ROM shows (the PuP map reads it); its length and sounds come
-        from its op list, the frames are still the recorded animation's (docs/rom_differences.md)."""
+        from its op list, the frames are still the recorded animation's (docs/rom_differences.md). index: the
+        sample of `sound` the deff plays (snd_play_arg_25250(sound, +0x34))."""
         os_ = self.os
         os_.score_add(points)
         self.total += points
@@ -151,7 +162,14 @@ class Side:
             kwargs["variant"] = "video%d" % anim
         os_.deff_start(deff, values=[points], **kwargs)
         os_.audit(audit)
-        os_.deff_media(deff, leff, sound)
+        if index is None:
+            os_.deff_media(deff, leff, sound)
+        else:
+            os_.display.own_sounds.add((deff, sound))       # its op lists carry it too: played here with its sample
+            os_.deff_media(deff, leff, None)
+            # once the deff's code runs: nothing if it is replaced at once (megatron_autobot.jsonl 81.07 s, deff 70)
+            os_.machine.clock.schedule_once(lambda: os_.display.fg == deff and os_.sound(sound, in_deff=deff,
+                                                                                           index=index), 0)
         if deff == JACKPOT_DEFF:
             self._jackpot_sounds(anim or 0)
         os_.request_refresh()
@@ -261,9 +279,12 @@ class Autobot(Side):
         pd = self.pd
         if shot == SHOT and self.phase == 1:
             points = self.j()
-            self.award(points, *self.JP, anim=VARIANTS.randrange(5))   # deff 71: random_below(5) [0x0100d214]
+            self.award(points, *self.JP, anim=VARIANTS.randrange(5),   # deff 71: random_below(5) [0x0100d214]
+                       index=self.sample(self.JP[2]))
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.jp += 1
+            if self.jp < 10:
+                self.seq = 0                                  # [0x0100c430]: back to 0 below 10 jackpots
             self.m = min(self.m + 1, 6)
             self.phase, self.mask = 2, 0x3f
             self._arm_timeout()
@@ -271,7 +292,8 @@ class Autobot(Side):
                 self._super_lit()
         elif shot < 6 and self.phase == 2 and self.mask & (1 << shot):
             points = min(2 * self.j(), 1000000) * self.mult(shot)
-            self.award(points, *self.DJ, anim=VARIANTS.randrange(4))   # deff 72: random_below(4) [0x0100d550]
+            self.award(points, *self.DJ, anim=VARIANTS.randrange(4),   # deff 72: random_below(4) [0x0100d550]
+                       index=self.sample(self.DJ[2]))
             pd.mt_sum = pd.get("mt_sum", 0) + points
             self.mask &= ~(1 << shot)
             self.jp += 1
@@ -376,17 +398,20 @@ class Decepticon(Side):
         if not (self.active or self.alive):   # the rules run while the flag is set or the end task runs
             return                             # (gates [0x0100be84] A / [0x0100dec0] D). QA 2026-11-25 M1
         if self.phase == 1 and shot < 6 and self.mask & (1 << shot):
-            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP, anim=self.draw())
+            self.award(min(100000 + 25000 * self.jp, 250000) * self.mult(shot), *self.JP, anim=self.draw(),
+                       index=self.sample(self.JP[2]))
             self.mask &= ~(1 << shot)
             self._jackpot()
         elif self.phase == 1 and shot == SHOT:
-            self.award(100000, *self.JP, anim=0)          # the Megatron shot: deff 77 index 0 [0x0100e29c]
+            self.seq = 0                                  # the Megatron shot: counter 0, not advanced [0x0100e29c]
+            self.award(100000, *self.JP, anim=0, index=self.sample(self.JP[2], advance=False))   # deff 77 index 0
             self.mask = 0x7f
             self._jackpot()
         elif self.phase == 2 and shot == self.CENTER:
-            self.award(500000 * self.mult(self.CENTER), *self.DJ)
+            self.award(500000 * self.mult(self.CENTER), *self.DJ, index=self.sample(self.DJ[2]))
             self.dj += 1
             if self.dj >= 3:
+                self.seq = 0                                # [0x0100e29c]: the third double jackpot
                 self.phase, self.mask = 3, 0x80             # leff 71 runs by its lamp rule [0x0100ef30]
                 self.os.request_refresh()
         else:
@@ -396,6 +421,7 @@ class Decepticon(Side):
     def _jackpot(self):
         self.jp += 1
         if self.jp >= 10:
+            self.seq = 0                                    # [0x0100e29c]: the tenth jackpot
             self.phase, self.mask, self.dj = 2, 0x08, 0
 
     def optimus(self):
@@ -412,6 +438,7 @@ class Decepticon(Side):
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
         self.supers += 1
+        self.seq = 0                                        # the super jackpot [0x0100e29c]
         self.phase, self.mask, self.jp, self.dj = 1, 0x7f, 0, 0
         self.save()
         os_.request_refresh()

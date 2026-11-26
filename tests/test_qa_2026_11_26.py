@@ -233,6 +233,18 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual((1, 0), (self.tf.pd.mtl_locked, mtl.locked_held))
         self.tf.adj[69] = saved
 
+    def test_jackpot_speech_samples_in_order(self):
+        """The jackpot deffs play their speech's samples in turn from the side's counter, 0 past the call's count
+        ([0x0100c430] 0xca / 0xd2, [0x0100e29c] 0xe4 / 0xf7; QA M12)."""
+        self.start()
+        side = self.tf.features_by_name["megatron"].sides[1]          # the Autobot side
+        side.seq = 0
+        n = len(self.tf.sample_lengths(0xd2))
+        picks = [side.sample(0xd2) for _ in range(n + 1)]
+        self.assertEqual(list(range(n)) + [0], picks)
+        side.seq = 0                                   # the Decepticon's Megatron shot: 0, not advanced
+        self.assertEqual((0, 0), (side.sample(0xe4, advance=False), side.seq))
+
     def test_requirement_inserts(self):
         """Lamp rule [0x01035ea8]: the 11 requirement inserts, solid completed, flashing collected (QA L-R07)."""
         from tf.features import wizard

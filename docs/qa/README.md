@@ -204,6 +204,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       D-SW-51-disp (D-SW-51-EDGE), D-ADJ-25-use / D-CR-FGL (D-ADJ-25), L-I04-07 / L-I23-26 / L-I35 / L-I48 /
       L-I54 (L-G13, L-R06), CC2 / CC3 (CC1-CC3): fixed under the grouped ids.
     - D-SW-DOOR, D-CR-CUSTOM, L-002-008, L-R10, L-I02: rows in rom_differences.md.
+    - ~~M12~~ (2026-11-25) the jackpot speech samples come from the mode's counter, not a random pick: deffs 71 / 72
+      (0xca / 0xd2, DAT_00034db8, back to 0 below 10 jackpots [0x0100c430]), 77 / 78 (0xe4 / 0xf7, DAT_00034e2c, 0 on
+      the Megatron shot, the tenth jackpot, the third double and the super [0x0100e29c]), 59 (0x7f, DAT_00035308,
+      0 at the start and the super [0x01027b74]); deff 65 plays sample 0 (its +0x34 is never set).
+    - ~~M11~~ (2026-11-25): adj 89 and adj 69 both read now (D-ADJ-89, D-ADJ-69-use).
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
       [0x0101fd34].
   - Still open (in progress): the device, display, lamp and rules lows of the reports.
@@ -275,7 +280,7 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F14, F16-F18, M8, M11, M12, M14, P19 | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| F14, F16, F17, M14, P19 (F18, M8, M11, M12 fixed) | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 M8 stays open on purpose: the code starts leffs 76 / 77 on zuse_qualify_enabled for either side [0x01011ed4], but
 the Decepticon reference (wizard_all_hail_megatron.jsonl 16.38 s) shows no 76 / 77 after its requirements are poked

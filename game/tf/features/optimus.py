@@ -135,6 +135,7 @@ class Side:
         os_.flag_set(self.flag)
         os_.flag_set(MB_FLAG)
         self.active = self.alive = True
+        self.seq = 0            # deff 59's speech sample counter DAT_00035308, 0 at the start [0x01027994]
         self.shown = False
         self.put("since", self.get("since") + 1)
         os_.audit(self.start_audit)
@@ -153,9 +154,10 @@ class Side:
         # the intro replaces a lower priority deff at once (deff 144 still speaking in optimus_autobot.jsonl)
         os_.show(self.intro_task, self.intro, on_start=started, threshold=os_.display.prio.get(self.intro, 0))
 
-    def award(self, points, media, anim=None):
+    def award(self, points, media, anim=None, index=None):
         """anim: which of the deff's animations the ROM shows (the PuP map reads it); its length and sounds come
-        from its op list, the frames are still the recorded animation's (docs/rom_differences.md)."""
+        from its op list, the frames are still the recorded animation's (docs/rom_differences.md). index: the
+        sample of `sound` the deff plays (snd_play_arg_25250(sound, +0x34), QA M12)."""
         os_ = self.os
         deff, leff, sound, audit = media
         os_.score_add(points)
@@ -167,11 +169,21 @@ class Side:
             kwargs["variant"] = "video%d" % anim
         os_.deff_start(deff, values=[points], **kwargs)
         os_.audit(audit)
-        os_.deff_media(deff, leff, sound)
+        if index is None:
+            os_.deff_media(deff, leff, sound)
+            return
+        os_.display.own_sounds.add((deff, sound))           # its op lists carry it too: played here with its sample
+        os_.deff_media(deff, leff, None)
+        os_.machine.clock.schedule_once(lambda: os_.display.fg == deff and os_.sound(sound, in_deff=deff,
+                                                                                       index=index), 0)
+
+    def jackpot_index(self):
+        """The jackpot deff's +0x34: deff 65 leaves it 0 (task_create clears the block; [0x01029bf4] sets none)."""
+        return 0
 
     def jackpot(self, shot):
         points = self.j() * self.mult(shot)
-        self.award(points, self.JP, self.jackpot_anim(shot))
+        self.award(points, self.JP, self.jackpot_anim(shot), index=self.jackpot_index())
         self.put("sum", self.get("sum") + points)
 
     def double(self, shot):
@@ -189,6 +201,7 @@ class Side:
         os_ = self.os
         points = max(1000000, self.get("sum") * PCT[min(self.get("since"), 3)] // 100) * mult
         self.award(points, self.SUPER)
+        self.seq = 0                                        # the super [0x01027b74]
         os_.hook("wizard_req", WIZARD_REQ, 2)
         self.put("supers", self.get("supers") + 1)
         self.put("sum", 0)
@@ -246,6 +259,14 @@ class Autobot(Side):
     bg, music, rule_leff, super_leff = 58, 0x32, 46, 47
     start_audit, total_deff, total_leff, total_task = 0x6c, 62, 51, 0x89
     JP = (59, 48, 0x7f, 0x6d)
+
+    def jackpot_index(self):
+        """Deff 59's +0x34 [0x01027b74]: the counter, 0 past 0x7f's sample count, then + 1."""
+        seq = getattr(self, "seq", 0)
+        if seq >= len(self.os.sample_lengths(self.JP[2])):
+            seq = 0
+        self.seq = seq + 1
+        return seq
     DJ = (60, 49, 0x84, 0x6e)
     SUPER = (61, 50, 0x8f, 0x6f)
 
