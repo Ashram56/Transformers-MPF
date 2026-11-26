@@ -1873,7 +1873,7 @@ class TfOS(CustomCode):
         self.audit(0x2a)
         if not self.pf_valid:
             self._validate()                         # tilt() [0x0001db40] calls FUN_0000d8c4 (QA F12)
-        self.kill_ball_save()
+        self.kill_ball_save()                        # task_kill(0, 0x1000) [0x0001dbb4] ends save task 0x31 (flags 0x300; QA F15)
         self.machine.events.post("tf_tilt")
         self.hook("tilt")                            # event 0x65
         self.deff_start(21)

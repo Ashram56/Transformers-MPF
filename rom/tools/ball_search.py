@@ -79,8 +79,8 @@ IO_REGIONS = ((0xfff00000, 0xe0000), (0x02800000, 0x800000), (0x03000000, 0x1000
 
 
 def boot(r):
-    """The OS init FUN_00006ecc [0x00006ecc] (coil slots, pop and sling tables, heap) and the game's device
-    registration 0x01005fb8 (FUN_00006194(device registry) [0x00006194]), run as ROM code."""
+    """The OS init FUN_00006ecc [0x00006ecc] (coil slots, pop and sling tables, heap) and the game's start-up
+    hook 0x01005fb8 (coil_init_6194 [0x00006194]: the flipper drivers of table 0x040cf590), run as ROM code."""
     r.call(0x00006ecc)
     r.call(0x01005fb8)
 

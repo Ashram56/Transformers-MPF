@@ -122,8 +122,12 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
 - **Coils (code).** `rom_data/io/coil_pulses.csv` (`tools/coil_pulses.py`): one row per pulse call site with its
   constant time; `rom_data/io/coils.csv` gives each coil's time from them. Coil 24 (OPTIONAL COIL) is the knocker,
   64 ms in the knock task [0x00019420] when adj 44 Q24 OPTION is KNOCKER. The orbit gate (5) and the motors (8, 30)
-  are held, not pulsed (their driver objects, `ball_feed.md`). Flippers: not in the CPU code; their measured times
-  (40.5 ms, then 1 ms every 12 ms) are kept under the owner's waiver (2026-11-25, `docs/pinmame_waivers.md`).
+  are held, not pulsed (their driver objects, `ball_feed.md`). Flippers (code, 2026-11-26): driven by the CPU in the 1 ms
+  pass of io_isr [0x000114b0] from the flipper driver table 0x040cf590 (via 0x00030b9c, built by coil_init_6194
+  [0x00006194] from the event 0x27 hook 0x01005fb8): button 137 / 139, EOS 138 / 140, pulse 40 ms, then hold 1 ms on,
+  11 ms off (the right one 6 ms out of phase); an EOS that opens in the pulse cuts it when at most 8 ms are left, and a
+  cut pulse that ends on a closed EOS pulses again (at most 2). Off while tilted, at the end of ball and in attract
+  (post_event_28_65c4 [0x000065c4]). `tools/flipper_drive.py` runs io_isr as ROM code (`rom_data/io/flipper_drive.json`).
 - **Music (code).** Background deff and music come from an 18-entry priority table walked by
   0x178b0 (entry: state mask, condition function, deff, sound call, optional chooser function). The side the
   player picks (u8 at 0x02112107 + player) selects between paired calls: 0x1a/0x1b choose-side screen,

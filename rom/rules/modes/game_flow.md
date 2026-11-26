@@ -162,13 +162,16 @@ t 40.65 (10.06 s after sw12 at 30.59).
 | Trigger | Condition | Effect | Display | Sound | Lamp |
 |---|---|---|---|---|---|
 | Plumb bob | not tilted, coin-door rule, warnings < adj 32 | warnings +1 | deff 23 "DANGER" (prio 241) | 0x016, then speech **0x052** 0.51 s later (game hook) | leff 11 |
-| Plumb bob | warnings ≥ adj 32 | **TILT**: event 0x66, state \|= 0x200, audit 42, flippers/slings off, tasks with flag 0x1000 killed, sounds stopped, event 0x65 (game hooks stop modes: 0x0100414c fast scoring, 0x01023130 shot multipliers, 0x0102b898, 0x0103bd5c, 0x01005e98), ball search 15 s | deff 21 "TILT" | 0x017, speech **0x053** 1.0 s later | leff 9 |
+| Plumb bob | warnings ≥ adj 32 | **TILT**: event 0x66, state \|= 0x200, audit 42, flippers/slings off, every task without flag 0x1000 killed (`task_kill(0, 0x1000)` [0x0001dbb4], keep mask: [0x0000ae1c] kills id 0 tasks whose flags & mask == 0), sounds stopped, event 0x65 (game hooks stop modes: 0x0100414c fast scoring, 0x01023130 shot multipliers, 0x0102b898, 0x0103bd5c, 0x01005e98), ball search 15 s | deff 21 "TILT" | 0x017, speech **0x053** 1.0 s later | leff 9 |
 | Bob held closed | — | a warning every 62 ticks, **tilt after 124 ticks** (task 0x2e 0x0001dc14, FUN_0001dc58) | | | |
 | Bob ignored | while task 0x29 runs or state & 0x310 [0x0001da8c] | — | | | |
 | Slam tilt (dedicated) | — | state \|= 0x200, task 0x39 resets the game (OS) | deff 24 "SLAM TILT" (prio 251) | 0x018 | leff 12 |
-- While tilted: no score, no bonus (the ball save is **not** killed by the tilt in the code: its task has flags 0
-  [0x00017acc] and the tilt kills only 0x1000 tasks; 0x01039ed4 calls `ball_save_try(0)` with no tilt check: open,
-  QA F15); ball(s) drain; next ball starts with warnings 0.
+- While tilted: no score, no bonus, **no ball save** (QA F15, code): the save task 0x31 `ball_save_task` [0x00017a28]
+  has flags 0x300 [0x00017acc], so the tilt's `task_kill(0, 0x1000)` [0x0001dbb4] ends it; the drain path
+  [0x01039ed4] then finds no task 0x31 / 0x32 (`ball_save_try(0)` [0x00017b3c] needs one) and ends the ball.
+  Run in ROM code (`scenario_lift.py tilt_ball_save`): task 0x31 started at the serve, killed at the tilt (tick 397),
+  drain at 436 → audit 8 at 467, next ball served at 655; the trace only confirms it. Ball(s) drain; next ball
+  starts with warnings 0.
 - Code run = trace: bobs at t 83.19 / 85.31 → deff 23, warnings 1, 2; t 87.45 → deff 21, state 512; drain t 91.70
   → audit 8 at 92.23 (0.53 s), no deff 25, next player at once (state 0, warnings 0).
 
