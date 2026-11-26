@@ -67,6 +67,9 @@ WMB_SUPER_LIT_LEFF = 88
 UNCAPTURED = {WMB_HIT_DEFF: (2.55, (WMB_HIT_LEFF,), ((0.0, WMB_HIT_SOUND), (0.52, 0x132)))}
 
 
+REQ_LAMPS = (27, 7, 6, 5, 4, 22, 23, 24, 25, 26, 28)   # table 0x040c7a14 (stride 0x10), byte 0
+
+
 class Wizard(Feature):
     name = "wizard"
     HOOKS = ("player_first_ball", "add_ball_open", "wizard_req", "eject_modes", "mb_shot", "wizard_shot", "multiball_end", "add_ball", "ball_end",
@@ -102,6 +105,7 @@ class Wizard(Feature):
         for i, leff in enumerate(QUALIFY_LEFFS[AUTOBOT]):
             os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("side") == AUTOBOT and self.side_qualifies(),
                           leff=leff, order=0x0100ff80 + i)
+        os_.lamp_update(self.draw, priority=1)
         for r in range(REQS):
             os_.register_poke(0x0211210c + 16 * r, self._poke_req(r), stride=4)
         os_.register_poke(0x34eb4, self._poke_side_count, players=6, stride=4)
@@ -149,6 +153,20 @@ class Wizard(Feature):
             req[r][1] = min(req[r][1] + 1, 255)
             os_.audit(COMPLETED_AUDIT + r)
         os_.request_refresh()
+
+    def draw(self):
+        """Lamp rule current_player_user_35ea8 [0x01035ea8] (registered with priority 1): the 11 requirement inserts
+        (table 0x040c7a14, byte 0: 27 Megatron, 7 6 5 4 the Decepticon battles, 22 Optimus, 23 24 25 26 the Autobot
+        battles, 28 Sentinel) are solid (0x00007858) once completed, flash (0x000077a0 + 0x00007814) once
+        collected, else off (0x00007714) (QA L-R07)."""
+        lamps = self.os.lamps
+        for (collected, completed), lamp in zip(self.reqs(), REQ_LAMPS):
+            if completed:
+                lamps.lamp_on_solid(lamp)
+            elif collected:
+                lamps.lamp_flash(lamp)
+            else:
+                lamps.lamp_off_all(lamp)
 
     def reset(self):
         """Wizard reset [0x01035ad0]: requirements, battles, saved Megatron / Optimus progress."""

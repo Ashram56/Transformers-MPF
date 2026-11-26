@@ -70,6 +70,20 @@ class Combos(Feature):
         os_.display.set_media(MULT_DEFF, MULT_SECONDS, (), ((0.0, MULT_SOUND), (MULT_SOUND_2X_AT, MULT_SOUND_2X)))
         os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
         os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
+        os_.lamp_update(self.draw)
+
+    def draw(self):
+        """Lamp rule current_player_user_23a84 [0x01023a84] (registered by [0x01023ea0], list 4): for entries 1-6
+        of table 0x040c6f58, the X lamp (+0x12) is solid (0x00007858) while the player's multiplier byte
+        (+4: 0x02111f28 + 4 x shot) is at least the threshold (+8, 2 for every shot), else off (0x00007714)
+        (QA L-R04)."""
+        mult = self.pd.get("shot_mult") or [1] * 6
+        lamps = self.os.lamps
+        for shot, lamp in enumerate(X_LAMPS):
+            if mult[shot] < 2:
+                lamps.lamp_off_all(lamp)
+            else:
+                lamps.lamp_on_solid(lamp)
 
     def shot_mult(self, shot):
         """[0x01023538]: the shot's multiplier, 3 while the roving 3X is on it."""

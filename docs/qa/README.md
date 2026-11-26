@@ -51,6 +51,9 @@ Medium and low: the findings tables of each report. Fixes follow, high first, ea
 | R-F1, SC5 | the ramp entrances play 0x273 / 0x272 on every hit | `0x010337e8`, `0x010338dc` |
 | R-F2, SC3 | deff 91's call by the lit battle bit (0x170-0x177), not by side | `0x01022608` |
 | L-G13, L-R06 | completed battle inserts and lit Energon targets solid (flash bit cleared); Energon inserts off in a multiball | `0x00007858`, `0x01030f80` |
+| L-R04 | a shot's X lamp (12 16 47 43 31 36) solid at 2X or more, else off | `0x01023a84`, table `0x040c6f58` |
+| L-R02 | lamps 29, 57, 58 flash while a Megatron lock is lit and nothing blocks it, else off | `0x0100b228`, `0x0100b0b8` |
+| L-R07 | the 11 requirement inserts (27 Megatron, 22 Optimus, 28 Sentinel, the 8 battles) drawn from the requirements: solid completed, flashing collected | `0x01035ea8`, table `0x040c7a14` |
 | V-ENG5, SC14 | rule and music order: Megatron, wizard side, Optimus, WMB above double scoring, fast scoring, battles | `0x000178b0`, FUN_00017834 |
 | R-F4 | validation sets game flag 0x10 (event 0x6a hook); the playfield-valid tests read pf_valid instead of the made-up flag 0x1c | LAB_010060a4, `0x0000d8c4` |
 | R-F5 | no 1 s Optimus time gate (the lockout is task 0x54) | `0x01025de4`, `0x010262f0` |

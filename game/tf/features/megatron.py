@@ -49,6 +49,7 @@ SWITCHES = ("s_m_tron_lock_1_back", "s_megatron_lock_2", "s_megatron_lock_3", "s
 SWITCH_NUMS = (41, 40, 39, 38)
 RELEASE_EVENT = "tf_megatron_release"
 # shot tables {mask bit, lamp group} [0x040c63e4 A, 0x040c65dc D]: the orange arrows, Megatron, Optimus (D)
+LOCK_LAMPS = (29, 57, 58)     # [0x0100b228]: 0x1d, 0x39, 0x3a
 ARROWS = ((0x01, (15,)), (0x02, (19,)), (0x04, (44,)), (0x08, (40,)), (0x10, (34,)), (0x20, (39,)), (0x40, (29,)))
 SHOT_LAMPS = {62: ARROWS, 70: ARROWS + ((0x80, (59,)),)}
 SETTLE_TICKS = 46
@@ -410,6 +411,19 @@ class Megatron(Feature):
             os_.lamp_rule((lambda s: lambda: s.active and s.phase == 3)(side), leff=side.SUPER_LIT_LEFF,
                           order=side.SUPER_RULE)
         self.machine.events.add_handler("tf_rules_refresh", self._keep_check)
+        os_.lamp_update(self.draw_lock)
+
+    def draw_lock(self):
+        """Lamp rule error_log_user_b228 [0x0100b228] (registered by [0x0100bc0c], list 4, mask 0x20): lamps 29, 57
+        and 58 flash (0x000077a0 + 0x00007814) while a lock is lit and no multiball or mode blocks it
+        (error_log_user_b0b8 [0x0100b0b8]: 0x02111d50[player]), else off (0x00007714) (QA L-R02)."""
+        lamps = self.os.lamps
+        lit = self.lock_lit()
+        for lamp in LOCK_LAMPS:
+            if lit:
+                lamps.lamp_flash(lamp)
+            else:
+                lamps.lamp_off_all(lamp)
 
     def player_first_ball(self):
         pd = self.pd

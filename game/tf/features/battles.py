@@ -1097,14 +1097,7 @@ class Battles(Feature):
                 lamps.lamp_flash(lamp)
             else:
                 lamps.lamp_off(lamp)
-        started, completed = pd.get("battle_started", 0), pd.get("battle_completed", 0)
-        for b in self.battles:
-            if completed & b.bit:
-                lamps.lamp_on_solid(b.insert)          # 0x00007858 clears the flash bit (QA L-G13)
-            elif started & b.bit:
-                lamps.lamp_flash(b.insert)
-            else:
-                lamps.lamp_off(b.insert)
+        # the battle inserts are the requirement inserts: wizard.py draw [0x01035ea8] (QA L-R07)
 
 
 def feature(os_):

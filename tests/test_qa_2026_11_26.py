@@ -106,3 +106,39 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual(60, a.value(16))
         self.assertEqual(0, a.value(13))
         self.assertEqual(0, a.value(72))
+
+    def test_x_lamps_follow_multipliers(self):
+        """Lamp rule [0x01023a84]: a shot's X lamp is solid at 2X or more, off below (QA L-R04)."""
+        from tf.features import combos
+        self.start()
+        self.tf.pd.shot_mult = [1, 2, 1, 1, 1, 2]
+        self.tf.rules_refresh()
+        lamps = self.tf.lamps
+        self.assertEqual([False, True, False, False, False, True],
+                         [lamps.lamp_test(n) and not lamps.lamp_flashing(n) for n in combos.X_LAMPS])
+
+    def test_lock_lamps_flash_while_lock_lit(self):
+        """Lamp rule [0x0100b228]: lamps 29, 57, 58 flash while a lock is lit, else off (QA L-R02)."""
+        self.start()
+        lamps = self.tf.lamps
+        self.tf.pd.mtl_lit = 1
+        self.tf.rules_refresh()
+        self.assertTrue(all(lamps.lamp_flashing(n) for n in (29, 57, 58)))
+        self.tf.pd.mtl_lit = 0
+        self.tf.rules_refresh()
+        self.assertFalse(any(lamps.lamp_test(n) for n in (29, 57, 58)))
+
+    def test_requirement_inserts(self):
+        """Lamp rule [0x01035ea8]: the 11 requirement inserts, solid completed, flashing collected (QA L-R07)."""
+        from tf.features import wizard
+        self.start()
+        req = [[0, 0] for _ in range(11)]
+        req[0] = [1, 0]
+        req[5] = [1, 1]
+        self.tf.pd.wiz_req = req
+        self.tf.rules_refresh()
+        lamps = self.tf.lamps
+        self.assertTrue(lamps.lamp_flashing(27))
+        self.assertTrue(lamps.lamp_test(22) and not lamps.lamp_flashing(22))
+        self.assertFalse(lamps.lamp_test(28))
+        self.assertEqual(wizard.REQ_LAMPS[1:5], (7, 6, 5, 4))
