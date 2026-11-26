@@ -47,10 +47,13 @@ class Side(Feature):
         return self.pd.get("side", DECEPTICON) if self.os.game else DECEPTICON
 
     def player_first_ball(self):
-        """The starting side by adj 65 TRANSFORMERS SELECT: 0 random, 1 Autobot, 2 Decepticon (game_flow.md 2;
-        the ROM's random source was not identified)."""
+        """on_event_26_33f94 [0x01033f94] (event 0x26, the player's first ball, ball_start [0x00019d30]): Autobot
+        in competition mode (adj_competition_mode [0x00017ea0]: adj 42 = 1 or game flag 0xf), else adj 65
+        TRANSFORMERS SELECT: 0 random_below(2) + 1, 1 Autobot, 2 Decepticon."""
         select = self.os.adj[65]
-        if select in (AUTOBOT, DECEPTICON):
+        if self.os.adj[42] == 1 or self.os.flag(0xf):
+            self.pd["side"] = AUTOBOT
+        elif select in (AUTOBOT, DECEPTICON):
             self.pd["side"] = select
         else:
             self.pd["side"] = AUTOBOT if self.os.pick("side", [1, 1]) == 0 else DECEPTICON

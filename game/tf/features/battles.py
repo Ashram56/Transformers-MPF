@@ -81,7 +81,6 @@ MODES_STARTED_AUDIT = 0x58
 WIZARD_PLAYED_AUDIT, WIZARD_DONE_AUDIT = 0x81, 0x8c
 ADD_TIME, MAX_TIME = 15, 90
 RULE_PRIORITY = 0x40                  # below double / fast scoring (music table [0x000178b0]; QA V-ENG5)
-TOTAL_TICKS = 120                     # a total started at the drain holds the bonus (battle_ratchet: 1.94 s)
 
 
 
@@ -832,7 +831,7 @@ def arrow_blink(rows, flash_fn, steady_fn=lambda: 0):
 
 class Battles(Feature):
     name = "battles"
-    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
+    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "side_changed", "ball_end", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
              "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
@@ -1175,9 +1174,6 @@ class Battles(Feature):
         for b in self.battles:
             if b.end(show_total=not self.os.tilted):
                 self.ended_at_drain = True
-
-    def ball_end_wait(self):
-        return TOTAL_TICKS if self.ended_at_drain else None
 
     def tilt(self):
         for b in self.battles:

@@ -236,6 +236,7 @@ class Display:
         self._sound_handles = []
         self._pump_handle = None
         self.idle_waits = []        # [task_id, deff_id, deadline, on_end, deff_args] (when_idle)
+        self.idle_deff = None       # the deff a when_idle task started (it runs in the task's group 0x2000)
         # Background deff rules (lamp_rule_init list 2, os.deff_rule): (priority, cond, deff, music, on_start).
         # The true rule with the highest priority owns the background deff and the music; without one, the
         # score display (deff 19) runs with the OS base music (os.base_music()).
@@ -621,6 +622,17 @@ class Display:
 
     # ------------------------------------------------------------------ mode totals (tasks 0x4d-0x58)
 
+    def totals_busy(self):
+        """task_group_any_b424(0x2000) [0x0000b424] for the end of ball [0x00019e44]: a mode TOTAL task (created
+        with flags 0x2002, e.g. task 0x88 [0x01004950]) waits for the display, or the deff it started runs
+        (battle_ratchet: deff 123 at 48.17 s, the bonus deff 25 when it ends, 50.11 s)."""
+        if self.idle_waits:
+            return True
+        if self.idle_deff is not None and self.fg == self.idle_deff:
+            return True
+        self.idle_deff = None
+        return False
+
     def when_idle(self, task_id, deff_id, timeout=SHOW_TIMEOUT, on_end=None, on_start=None, **deff_args):
         """FUN_0100fd88, used by the mode TOTAL tasks 0x4d-0x58: wait until no show task runs, no
         foreground deff is on screen and this is the oldest such task waiting, then play deff_id;
@@ -650,6 +662,7 @@ class Display:
             args = dict(args)
             on_start = args.pop("_on_start", None)
             self.start(deff_id, **args)
+            self.idle_deff = deff_id
             if on_start:
                 on_start()
             self.os.ball_search_reload()

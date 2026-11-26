@@ -2044,8 +2044,16 @@ class TfOS(CustomCode):
         # [0x00019e44]: wait while any flag-0x2000 task runs (the modes' TOTAL displays), at most DAT_00033324 =
         # 937 ticks (QA F10): the longest wait, not the last feature's
         waits = [fn() for fn in self.hooks.get("ball_end_wait", ())]
-        wait_ticks = min(max([w for w in waits if w] or [0]), END_BALL_WAIT_MAX)
-        self.after(wait_ticks, lambda: self._ball_ending_bonus(queue))
+        least = min(max([w for w in waits if w] or [0]), END_BALL_WAIT_MAX)
+        self._ball_end_poll(queue, 0, least)
+
+    def _ball_end_poll(self, queue, ticks, least):
+        """[0x00019e44]: task_sleep(1) while a flag-0x2000 task runs (display.totals_busy), at most END_BALL_WAIT_MAX
+        ticks; `least`: the ticks a feature still holds the end of ball (hook ball_end_wait)."""
+        if ticks < END_BALL_WAIT_MAX and (ticks < least or self.display.totals_busy()):
+            self.after(1, lambda: self._ball_end_poll(queue, ticks + 1, least))
+            return
+        self._ball_ending_bonus(queue)
 
     def _ball_ending_bonus(self, queue):
         if self.tilted:
