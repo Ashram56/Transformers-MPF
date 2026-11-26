@@ -36964,5 +36964,28 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "video0",
+  "why": "deff_077_jackpot [0x0100f3b4]: +0x38 indexes table 0x040c6674 (10 routines, above 9 it takes 9); show_deff_77_count_optimus_m_b_super_e29c [0x0100e29c] passes 0 when its mode word is 0x40, else random_pick_34e34_ddc8 [0x0100ddc8]: 1..9, each once before the mask 0x00034e34 resets",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x38": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "video1",
+  "video2",
+  "video3",
+  "video4",
+  "video5",
+  "video6",
+  "video7",
+  "video8",
+  "video9"
+ ]
 }

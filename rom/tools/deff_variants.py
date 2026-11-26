@@ -99,6 +99,22 @@ VARIANTS = {
          "Devastator, DAT_000313b4 = 1: the rover text msg 0x645 [0x01016d7c]")],
     113: battle_bg(0x02111e8c, 10, "Ironhide: 10 shots at start FUN_0101abd0 [0x0101abd0]"),
     121: battle_bg(0x02111e2c, 11, "Ratchet: 11 shots at start FUN_010120d4 [0x010120d4]"),
+    59: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (2, 0), 0x38: (4, k)}},
+          "deff_059 [0x01028950]: +0x38 = the shot (show_deff_59_count_mudflap_skids_started_27b74 [0x01027b74] "
+          "param_1, 0..6 from the shot handlers) indexes table 0x040c732c; entry 6 is the first of deff 60's table "
+          "(0x040c7344), the ROM reads past its 6 entries") for k in range(7)],
+    60: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (1, 0), 0x38: (4, k)}},
+          "deff_060 [0x01028da0]: +0x38 = the shot (show_deff_59_count_mudflap_skids_started_27b74 [0x01027b74] "
+          "param_1) indexes table 0x040c7344 and the sound table 0x000313d8 (0x09a..0x09f) when below 6; "
+          "shot 6 draws image 0x597 with no animation") for k in range(7)],
+    65: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (2, 0), 0x38: (1, k)}},
+          "deff_065 [0x0102aa70]: +0x38 = popcount of 0x00035378 (show_deff_65_count_double_scoring_started_29bf4 "
+          "[0x01029bf4]) indexes table 0x040c7490; entries 3..5 are deff 66's table 0x040c749c")
+         for k in range(6)],
+    77: [("video%d" % k, {"args": {0x30: (4, 0), 0x34: (2, 0), 0x38: (2, k)}},
+          "deff_077_jackpot [0x0100f3b4]: +0x38 indexes table 0x040c6674 (10 routines, above 9 it takes 9); "
+          "show_deff_77_count_optimus_m_b_super_e29c [0x0100e29c] passes 0 when its mode word is 0x40, else "
+          "random_pick_34e34_ddc8 [0x0100ddc8]: 1..9, each once before the mask 0x00034e34 resets") for k in range(10)],
     94: [("shots%d" % n, {"args": {0x30: (4, 0), 0x34: (2, n), 0x3c: (1, 0)}},
           "deff_094 [0x010189a8]: +0x34 = shots left picks the animation in table 0x040c6a60 (9 routines; above 8 "
           "it takes 8), +0x3c = 0 a hit; shots0 (all at 0) is the one packaged") for n in range(0, 9)] + [
@@ -126,6 +142,27 @@ VARIANTS = {
            "deff_152 [0x01006e30]: images +0x40 + first-1 .. last-1 by +0x3c, +0x38 ticks each; no caller in "
            "the code starts it: one image")],
 }
+def battle_hit(deff, fn, table, top, starter):
+    """A battle's hit deff, as deff_094: +0x34 = shots left picks the animation (above top it takes top), +0x3c
+    the last hit (animation 1, then the end frames)."""
+    why = ("deff_%03d [0x%08x]: +0x34 = shots left picks the animation in table 0x%08x (%d routines; above %d it "
+           "takes %d), +0x3c = 0 a hit; set by %s" % (deff, fn, table, top + 1, top, top, starter))
+    return ([("shots%d" % n, {"args": {0x30: (4, 0), 0x34: (2, n), 0x3c: (1, 0)}}, why) for n in range(top + 1)] +
+            [("final", {"args": {0x30: (4, 0), 0x34: (2, 0), 0x3c: (1, 1)}},
+              why.split(":")[0] + ": +0x3c != 0, the last hit: animation 1 of the table, then the end frames")])
+
+
+VARIANTS.update({
+    98: battle_hit(98, 0x0101f6c8, 0x040c6cbc, 12, "start_deff_98 [0x0101e5d4] (0xc - hits)"),
+    106: battle_hit(106, 0x010170b8, 0x040c6994, 10, "start_deff_106 [0x01015f8c] (0xb - hits)"),
+    110: battle_hit(110, 0x0101555c, 0x040c68dc, 7, "start_deff_110 [0x01014638] (7 - hits; the last hit 1)"),
+    118: battle_hit(118, 0x0101a538, 0x040c6aec, 12, "start_deff_118 [0x01019294] (0xc - hits)"),
+    144: [("%s_left%d" % (side, n), {"args": {0x30: (1, 0), 0x34: (2, n)}, "state": {"side": sv}},
+           "deff_144_more_to_start [0x0102712c]: +0x34 = DAT_00035294 (start_deff_144 [0x010262f0]) picks the "
+           "animation, table 0x040c70e0 (12, above 11 it takes 11) for player_side 1, 0x040c70c4 (7, above 6 it "
+           "takes 6) for side 2; +0x30 = the count + 1, printed live by the game (0 here)")
+          for side, sv, top in (("decepticon", 2, 6), ("autobot", 1, 11)) for n in range(top + 1)],
+})
 # the others read only values the game draws live (scores, counts): one run with the state at 0
 DEFAULT = [1, 3, 19, 25, 34, 48, 58, 64, 70, 76, 81, 87, 123, 126, 127, 135, 139, 147, 149, 150]
 for _d in DEFAULT:

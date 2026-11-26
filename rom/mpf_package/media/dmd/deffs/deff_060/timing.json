@@ -18569,5 +18569,25 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "video0",
+  "why": "deff_060 [0x01028da0]: +0x38 = the shot (show_deff_59_count_mudflap_skids_started_27b74 [0x01027b74] param_1) indexes table 0x040c7344 and the sound table 0x000313d8 (0x09a..0x09f) when below 6; shot 6 draws image 0x597 with no animation",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x38": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "video1",
+  "video2",
+  "video3",
+  "video4",
+  "video5",
+  "video6"
+ ]
 }

@@ -11149,5 +11149,24 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "video0",
+  "why": "deff_065 [0x0102aa70]: +0x38 = popcount of 0x00035378 (show_deff_65_count_double_scoring_started_29bf4 [0x01029bf4]) indexes table 0x040c7490; entries 3..5 are deff 66's table 0x040c749c",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x38": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "video1",
+  "video2",
+  "video3",
+  "video4",
+  "video5"
+ ]
 }

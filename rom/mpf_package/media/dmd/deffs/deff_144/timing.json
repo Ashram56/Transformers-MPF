@@ -17342,5 +17342,38 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "decepticon_left0",
+  "why": "deff_144_more_to_start [0x0102712c]: +0x34 = DAT_00035294 (start_deff_144 [0x010262f0]) picks the animation, table 0x040c70e0 (12, above 11 it takes 11) for player_side 1, 0x040c70c4 (7, above 6 it takes 6) for side 2; +0x30 = the count + 1, printed live by the game (0 here)",
+  "args": {
+   "0x30": 0,
+   "0x34": 0
+  },
+  "ram": {},
+  "state": {
+   "side": 2
+  },
+  "pages": null
+ },
+ "other_variants": [
+  "autobot_left0",
+  "autobot_left1",
+  "autobot_left10",
+  "autobot_left11",
+  "autobot_left2",
+  "autobot_left3",
+  "autobot_left4",
+  "autobot_left5",
+  "autobot_left6",
+  "autobot_left7",
+  "autobot_left8",
+  "autobot_left9",
+  "decepticon_left1",
+  "decepticon_left2",
+  "decepticon_left3",
+  "decepticon_left4",
+  "decepticon_left5",
+  "decepticon_left6"
+ ]
 }
