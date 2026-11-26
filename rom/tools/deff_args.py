@@ -28,10 +28,10 @@ def main():
             var, d = m.group(1), int(m.group(2), 0)
             stores = []
             for nxt in lines[i + 1:i + 25]:
+                if re.search(r"\b" + var + r" = ", nxt):
+                    break          # the variable holds another task now (a new deff_start included)
                 for sm in re.finditer(r"\*\((\w+) \*\)\(" + var + r" \+ (0x[0-9a-f]+)\) = ([^;]+);", nxt):
                     stores.append(sm.groups())
-                if re.search(r"\b" + var + r" = ", nxt) and "deff_start" not in nxt:
-                    break
             if not stores:
                 rows.append([d, "0x" + addr, name, var, "", "", ""])
             for t, off, expr in stores:
