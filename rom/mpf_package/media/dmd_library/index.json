@@ -9,7 +9,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_001_img00208",
@@ -19,11 +19,12 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 18 37)",
   "frame_ms": 112,
-  "frame_ms_tag": "observed (median of 8 steps)",
+  "frame_ms_tag": "code (median of 9 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
-   18
+   18,
+   37
   ]
  },
  {
@@ -34,9 +35,12 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 35)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 1 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   35
+  ]
  },
  {
   "name": "anim_003_img00212",
@@ -46,9 +50,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 18)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 4 steps)",
+  "frame_ms_tag": "code (median of 4 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    18
   ]
@@ -61,9 +65,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_1ac_dmd_page_alloc_pair_1cef8)"
  },
  {
   "name": "anim_005_img01535",
@@ -73,9 +77,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_1ae_dmd_page_alloc_pair_1cfd8)"
  },
  {
   "name": "anim_006_img01591",
@@ -85,9 +89,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_1b4_dmd_page_alloc_pair_1d210)"
  },
  {
   "name": "anim_007_img01627",
@@ -97,9 +101,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_1c6_dmd_page_alloc_pair_1d0c8)"
  },
  {
   "name": "anim_008_img01695",
@@ -109,9 +113,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0102878c)"
  },
  {
   "name": "anim_009_img01743",
@@ -121,9 +125,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 01028b98)"
  },
  {
   "name": "anim_010_img01770",
@@ -133,9 +137,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01028b98)"
  },
  {
   "name": "anim_011_img01781",
@@ -145,9 +149,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01028b98)"
  },
  {
   "name": "anim_012_img01804",
@@ -157,9 +161,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 81,
-  "frame_ms_tag": "observed (median of 69 steps)",
+  "x_tag": "code (deff op lists: deffs 100 102)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 69 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    100,
    102
@@ -173,9 +177,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1c2_1d380)"
  },
  {
   "name": "anim_014_img01869",
@@ -185,9 +189,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 112,
+  "frame_ms_tag": "code (image loop, task_sleep(7), at show_image_loop_74d_1d6a8)"
  },
  {
   "name": "anim_015_img01892",
@@ -197,9 +201,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1bd)"
  },
  {
   "name": "anim_016_img01917",
@@ -209,9 +213,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_1bf_dmd_page_alloc_pair_1d504)"
  },
  {
   "name": "anim_017_img01965",
@@ -221,10 +225,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 83 101 103)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 73 steps)",
+  "frame_ms_tag": "code (median of 367 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    101,
    103
   ]
@@ -239,7 +244,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_019_img02029",
@@ -251,7 +256,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_020_img02059",
@@ -261,11 +266,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 92 94)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 74 steps)",
+  "frame_ms_tag": "code (median of 147 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
-   92
+   92,
+   94
   ]
  },
  {
@@ -276,9 +282,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 55 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_022_img02191",
@@ -290,7 +299,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_023_img02216",
@@ -300,9 +309,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 76 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_024_img02294",
@@ -312,9 +324,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 17 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_025_img02312",
@@ -326,7 +341,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_026_img02345",
@@ -338,7 +353,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_027_img02376",
@@ -348,9 +363,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 90 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_028_img02423",
@@ -360,9 +378,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 31 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_029_img02456",
@@ -372,9 +393,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 42 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_030_img02500",
@@ -384,9 +408,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 54 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_031_img02556",
@@ -396,9 +423,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 34 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_032_img02592",
@@ -408,9 +438,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 94)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 50 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   94
+  ]
  },
  {
   "name": "anim_033_img02644",
@@ -420,9 +453,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 010287e8)"
  },
  {
   "name": "anim_034_img02680",
@@ -432,9 +465,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01028c38)"
  },
  {
   "name": "anim_035_img02711",
@@ -446,7 +479,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_036_img02744",
@@ -456,10 +489,11 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder",
+  "x_tag": "code (deff op lists: deffs 83 91)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 40 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    91
   ]
  },
@@ -473,7 +507,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_038_img02806",
@@ -483,9 +517,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_197_dmd_page_alloc_pair_1eab4)"
  },
  {
   "name": "anim_039_img02830",
@@ -495,9 +529,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at show_image_loop_b0e_1eba0)"
  },
  {
   "name": "anim_040_img02861",
@@ -507,10 +541,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 45 steps)",
+  "x_tag": "code (deff op lists: deffs 96 98)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 90 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   96,
    98
   ]
  },
@@ -522,9 +557,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at show_image_loop_b5b_1e934)"
  },
  {
   "name": "anim_042_img02938",
@@ -534,9 +569,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_196)"
  },
  {
   "name": "anim_043_img02973",
@@ -546,9 +581,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_197_dmd_page_alloc_pair_1ec58)"
  },
  {
   "name": "anim_044_img03037",
@@ -558,9 +593,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_19d)"
  },
  {
   "name": "anim_045_img03072",
@@ -570,9 +605,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at show_image_loop_c00_1ee0c)"
  },
  {
   "name": "anim_046_img03112",
@@ -582,9 +617,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at show_image_loop_c28_1eeb4)"
  },
  {
   "name": "anim_047_img03154",
@@ -594,9 +629,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at show_image_loop_c52_1ef64)"
  },
  {
   "name": "anim_048_img03195",
@@ -606,9 +641,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at show_image_loop_c8a_1f01c)"
  },
  {
   "name": "anim_049_img03260",
@@ -618,9 +653,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at show_image_loop_cbc_1f0d4)"
  },
  {
   "name": "anim_050_img03297",
@@ -630,9 +665,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_1a2_dmd_page_alloc_pair_1f184)"
  },
  {
   "name": "anim_051_img03347",
@@ -644,7 +679,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_052_img03390",
@@ -654,9 +689,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 010288a0)"
  },
  {
   "name": "anim_053_img03421",
@@ -666,9 +701,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 01028cf0)"
  },
  {
   "name": "anim_054_img03465",
@@ -678,9 +713,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_sound_202)"
  },
  {
   "name": "anim_055_img03497",
@@ -690,9 +725,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 112 114)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 135 steps)",
+  "frame_ms_tag": "code (median of 135 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    112,
    114
@@ -706,9 +741,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_sound_205)"
  },
  {
   "name": "anim_057_img03583",
@@ -718,9 +753,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_209_dmd_page_alloc_pair_1b64c)"
  },
  {
   "name": "anim_058_img03591",
@@ -732,7 +767,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_059_img03631",
@@ -742,9 +777,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_20a)"
  },
  {
   "name": "anim_060_img03666",
@@ -754,9 +789,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at show_image_loop_e52_1b8a4)"
  },
  {
   "name": "anim_061_img03689",
@@ -766,9 +801,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_20b_dmd_page_alloc_pair_1b95c)"
  },
  {
   "name": "anim_062_img03717",
@@ -778,9 +813,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_20d_dmd_page_alloc_pair_1ba48)"
  },
  {
   "name": "anim_063_img03742",
@@ -790,9 +825,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_20f_dmd_page_alloc_pair_1bb70)"
  },
  {
   "name": "anim_064_img03762",
@@ -802,9 +837,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_211_dmd_page_alloc_pair_1bc54)"
  },
  {
   "name": "anim_065_img03802",
@@ -814,9 +849,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_sound_213)"
  },
  {
   "name": "anim_066_img03827",
@@ -826,9 +861,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0101b368 0101b3a0)"
  },
  {
   "name": "anim_067_img03857",
@@ -840,7 +875,7 @@
   "x_on_128": 30,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_068_img03861",
@@ -849,10 +884,13 @@
   "frames": 4,
   "w": 98,
   "h": 32,
-  "x_on_128": 30,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 125,
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 13 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_069_img03865",
@@ -862,10 +900,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 129,
-  "frame_ms_tag": "observed (median of 38 steps)",
+  "x_tag": "code (deff op lists: deffs 83 113 115)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 192 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    113,
    115
   ]
@@ -878,9 +917,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_sound_1fb)"
  },
  {
   "name": "anim_071_img03944",
@@ -890,10 +929,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 108 110)",
   "frame_ms": 64,
-  "frame_ms_tag": "observed (median of 30 steps)",
+  "frame_ms_tag": "code (median of 60 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   108,
    110
   ]
  },
@@ -905,10 +945,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 108 110)",
   "frame_ms": 32,
-  "frame_ms_tag": "observed (median of 77 steps)",
+  "frame_ms_tag": "code (median of 154 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   108,
    110
   ]
  },
@@ -920,9 +961,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_snd_1f0_dmd_page_alloc_pair_14b30)"
  },
  {
   "name": "anim_074_img04099",
@@ -932,9 +973,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_1f4)"
  },
  {
   "name": "anim_075_img04119",
@@ -944,9 +985,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_1f5_dmd_page_alloc_pair_14cec)"
  },
  {
   "name": "anim_076_img04146",
@@ -956,9 +997,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_1f7)"
  },
  {
   "name": "anim_077_img04186",
@@ -970,7 +1011,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_078_img04225",
@@ -980,9 +1021,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_1f9)"
  },
  {
   "name": "anim_079_img04275",
@@ -992,9 +1033,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100f13c)"
  },
  {
   "name": "anim_080_img04318",
@@ -1004,9 +1045,12 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 128)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 8 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   128
+  ]
  },
  {
   "name": "anim_081_img04336",
@@ -1016,9 +1060,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 33 steps)",
+  "x_tag": "code (deff op lists: deffs 57)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 33 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    57
   ]
@@ -1031,9 +1075,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 70 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_083_img04441",
@@ -1045,7 +1092,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_084_img04487",
@@ -1055,9 +1102,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 43 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_085_img04531",
@@ -1069,7 +1119,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_086_img04553",
@@ -1079,9 +1129,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 69)",
   "frame_ms": 80,
-  "frame_ms_tag": "observed (median of 40 steps)",
+  "frame_ms_tag": "code (median of 40 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    69
   ]
@@ -1094,9 +1144,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0102a880)"
  },
  {
   "name": "anim_088_img04635",
@@ -1106,9 +1156,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0102a8d0)"
  },
  {
   "name": "anim_089_img04661",
@@ -1118,9 +1168,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0102a928)"
  },
  {
   "name": "anim_090_img04718",
@@ -1132,7 +1182,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_091_img04736",
@@ -1142,9 +1192,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 82,
-  "frame_ms_tag": "observed (median of 36 steps)",
+  "x_tag": "code (deff op lists: deffs 61)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 36 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    61
   ]
@@ -1157,9 +1207,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 71)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 23 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   71
+  ]
  },
  {
   "name": "anim_093_img04797",
@@ -1169,9 +1222,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 71)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 22 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   71
+  ]
  },
  {
   "name": "anim_094_img04820",
@@ -1181,9 +1237,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 71)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 18 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   71
+  ]
  },
  {
   "name": "anim_095_img04839",
@@ -1193,9 +1252,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 71)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 39 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   71
+  ]
  },
  {
   "name": "anim_096_img04879",
@@ -1205,9 +1267,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 49,
-  "frame_ms_tag": "observed (median of 32 steps)",
+  "x_tag": "code (deff op lists: deffs 71)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 32 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    71
   ]
@@ -1220,9 +1282,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 72)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 31 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   72
+  ]
  },
  {
   "name": "anim_098_img04944",
@@ -1232,9 +1297,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 72)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 20 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   72
+  ]
  },
  {
   "name": "anim_099_img04965",
@@ -1244,9 +1312,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 49,
-  "frame_ms_tag": "observed (median of 43 steps)",
+  "x_tag": "code (deff op lists: deffs 72)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 43 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    72
   ]
@@ -1259,9 +1327,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 72)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 25 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   72
+  ]
  },
  {
   "name": "anim_101_img05035",
@@ -1271,9 +1342,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 82,
-  "frame_ms_tag": "observed (median of 36 steps)",
+  "x_tag": "code (deff op lists: deffs 73)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 36 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    73
   ]
@@ -1286,9 +1357,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 33 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_103_img05106",
@@ -1300,7 +1374,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_104_img05126",
@@ -1310,9 +1384,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 010288fc)"
  },
  {
   "name": "anim_105_img05144",
@@ -1322,9 +1396,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 01028d4c)"
  },
  {
   "name": "anim_106_img05182",
@@ -1334,9 +1408,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (frame player speed 2 at 01028844)"
  },
  {
   "name": "anim_107_img05234",
@@ -1348,7 +1422,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_108_img05262",
@@ -1358,9 +1432,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (frame player speed 2 at 01028c94)"
  },
  {
   "name": "anim_109_img05383",
@@ -1370,9 +1444,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 142)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 22 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   142
+  ]
  },
  {
   "name": "anim_110_img05406",
@@ -1382,9 +1459,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 72 steps)",
+  "x_tag": "code (deff op lists: deffs 63)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 72 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    63
   ]
@@ -1397,9 +1474,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 81,
-  "frame_ms_tag": "observed (median of 26 steps)",
+  "x_tag": "code (deff op lists: deffs 144)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 26 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    144
   ]
@@ -1412,9 +1489,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (frame player speed 2 at 010265a4)"
  },
  {
   "name": "anim_113_img05551",
@@ -1424,9 +1501,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 010265dc)"
  },
  {
   "name": "anim_114_img05576",
@@ -1436,9 +1513,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 01026618)"
  },
  {
   "name": "anim_115_img05610",
@@ -1448,9 +1525,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 01026618)"
  },
  {
   "name": "anim_116_img05650",
@@ -1460,9 +1537,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 0102666c)"
  },
  {
   "name": "anim_117_img05661",
@@ -1472,9 +1549,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (frame player speed 6 at 010266a4)"
  },
  {
   "name": "anim_118_img05676",
@@ -1484,9 +1561,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 010266dc)"
  },
  {
   "name": "anim_119_img05702",
@@ -1496,9 +1573,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 14 steps)",
+  "x_tag": "code (deff op lists: deffs 65)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 14 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    65
   ]
@@ -1511,9 +1588,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 66)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 12 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   66
+  ]
  },
  {
   "name": "anim_121_img05730",
@@ -1523,9 +1603,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0102aa18)"
  },
  {
   "name": "anim_122_img05765",
@@ -1535,9 +1615,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 79)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 11 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   79
+  ]
  },
  {
   "name": "anim_123_img05777",
@@ -1547,9 +1630,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 0102a9c0)"
  },
  {
   "name": "anim_124_img05788",
@@ -1559,9 +1642,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 66)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 22 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   66
+  ]
  },
  {
   "name": "anim_125_img05811",
@@ -1571,9 +1657,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 66)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 23 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   66
+  ]
  },
  {
   "name": "anim_126_img05835",
@@ -1583,9 +1672,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 79)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 56 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   79
+  ]
  },
  {
   "name": "anim_127_img05892",
@@ -1595,9 +1687,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 46 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_128_img05939",
@@ -1607,9 +1702,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 57 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_129_img05997",
@@ -1621,7 +1719,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_130_img06097",
@@ -1631,9 +1729,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100b5ec)"
  },
  {
   "name": "anim_131_img06128",
@@ -1643,9 +1741,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100b624)"
  },
  {
   "name": "anim_132_img06169",
@@ -1655,9 +1753,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0100b660)"
  },
  {
   "name": "anim_133_img06194",
@@ -1667,9 +1765,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 49,
-  "frame_ms_tag": "observed (median of 46 steps)",
+  "x_tag": "code (deff op lists: deffs 75)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 46 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    75
   ]
@@ -1682,9 +1780,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 49,
-  "frame_ms_tag": "observed (median of 90 steps)",
+  "x_tag": "code (deff op lists: deffs 67)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 90 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    67
   ]
@@ -1697,9 +1795,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 0100f198)"
  },
  {
   "name": "anim_136_img06395",
@@ -1711,7 +1809,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_137_img06460",
@@ -1721,9 +1819,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 82,
-  "frame_ms_tag": "observed (median of 38 steps)",
+  "x_tag": "code (deff op lists: deffs 77)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 38 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    77
   ]
@@ -1736,9 +1834,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 56 steps)",
+  "x_tag": "code (deff op lists: deffs 77)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 56 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    77
   ]
@@ -1751,11 +1849,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 98,
-  "frame_ms_tag": "observed (median of 34 steps)",
+  "x_tag": "code (deff op lists: deffs 116 118)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (median of 68 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
-   116
+   116,
+   118
   ]
  },
  {
@@ -1766,9 +1865,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_sound_22f)"
  },
  {
   "name": "anim_141_img06627",
@@ -1778,9 +1877,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_snd_21e_dmd_page_alloc_pair_19720)"
  },
  {
   "name": "anim_142_img06682",
@@ -1790,9 +1889,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_sound_21f)"
  },
  {
   "name": "anim_143_img06717",
@@ -1802,9 +1901,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_220)"
  },
  {
   "name": "anim_144_img06760",
@@ -1814,9 +1913,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_221)"
  },
  {
   "name": "anim_145_img06783",
@@ -1826,9 +1925,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_snd_222_dmd_page_alloc_pair_19b20)"
  },
  {
   "name": "anim_146_img06834",
@@ -1838,9 +1937,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_snd_224_dmd_page_alloc_pair_19c04)"
  },
  {
   "name": "anim_147_img06874",
@@ -1850,9 +1949,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (image loop, task_sleep(3), at play_sound_226)"
  },
  {
   "name": "anim_148_img06907",
@@ -1864,7 +1963,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_149_img06967",
@@ -1876,7 +1975,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_150_img07040",
@@ -1888,7 +1987,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_151_img07070",
@@ -1898,9 +1997,12 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 25 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_152_img07122",
@@ -1912,7 +2014,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_153_img07196",
@@ -1924,7 +2026,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_154_img07204",
@@ -1934,9 +2036,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 126)",
   "frame_ms": 80,
-  "frame_ms_tag": "observed (median of 15 steps)",
+  "frame_ms_tag": "code (median of 15 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    126
   ]
@@ -1949,9 +2051,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 59)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (median of 20 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   59
+  ]
  },
  {
   "name": "anim_156_img07241",
@@ -1961,9 +2066,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 60)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 19 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   60
+  ]
  },
  {
   "name": "anim_157_img07261",
@@ -1973,9 +2081,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 60)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 27 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   60
+  ]
  },
  {
   "name": "anim_158_img07289",
@@ -1985,9 +2096,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100efa8)"
  },
  {
   "name": "anim_159_img07317",
@@ -1999,7 +2110,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_160_img07349",
@@ -2011,7 +2122,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_161_img07370",
@@ -2021,9 +2132,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 0100f050)"
  },
  {
   "name": "anim_162_img07390",
@@ -2033,9 +2144,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100f050)"
  },
  {
   "name": "anim_163_img07420",
@@ -2045,9 +2156,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 0100f0d4)"
  },
  {
   "name": "anim_164_img07434",
@@ -2057,9 +2168,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (frame player speed 2 at 0100f0d4)"
  },
  {
   "name": "anim_165_img07489",
@@ -2069,9 +2180,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0100f1f4)"
  },
  {
   "name": "anim_166_img07529",
@@ -2081,9 +2192,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0100f24c)"
  },
  {
   "name": "anim_167_img07553",
@@ -2093,9 +2204,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0100f294)"
  },
  {
   "name": "anim_168_img07594",
@@ -2105,9 +2216,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_snd_1d8_dmd_page_alloc_pair_1637c)"
  },
  {
   "name": "anim_169_img07607",
@@ -2119,7 +2230,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_170_img07630",
@@ -2129,11 +2240,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 104 106)",
   "frame_ms": 96,
-  "frame_ms_tag": "observed (median of 34 steps)",
+  "frame_ms_tag": "code (median of 68 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
-   104
+   104,
+   106
   ]
  },
  {
@@ -2144,9 +2256,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_sound_1dc_16624)"
  },
  {
   "name": "anim_172_img07682",
@@ -2156,9 +2268,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1dc_166ec)"
  },
  {
   "name": "anim_173_img07707",
@@ -2168,9 +2280,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1dd)"
  },
  {
   "name": "anim_174_img07753",
@@ -2180,9 +2292,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1de)"
  },
  {
   "name": "anim_175_img07784",
@@ -2192,9 +2304,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_1df)"
  },
  {
   "name": "anim_176_img07806",
@@ -2206,7 +2318,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_177_img07831",
@@ -2218,7 +2330,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_178_img07925",
@@ -2228,9 +2340,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (image loop, task_sleep(6), at play_snd_1da_dmd_page_alloc_pair_16534)"
  },
  {
   "name": "anim_179_img07975",
@@ -2242,7 +2354,7 @@
   "x_on_128": 11,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_180_img07983",
@@ -2254,7 +2366,7 @@
   "x_on_128": 20,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_181_img07989",
@@ -2263,10 +2375,13 @@
   "frames": 6,
   "w": 98,
   "h": 32,
-  "x_on_128": 30,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 4294967230,
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 34 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_182_img07995",
@@ -2275,10 +2390,13 @@
   "frames": 6,
   "w": 110,
   "h": 32,
-  "x_on_128": 18,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 115,
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 34 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_183_img08025",
@@ -2288,9 +2406,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 46)",
   "frame_ms": 32,
-  "frame_ms_tag": "observed (median of 17 steps)",
+  "frame_ms_tag": "code (median of 33 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    46
   ]
@@ -2303,9 +2421,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder",
+  "x_tag": "code (deff op lists: deffs 46)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 8 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    46
   ]
@@ -2318,9 +2436,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 65,
-  "frame_ms_tag": "observed (median of 54 steps)",
+  "x_tag": "code (deff op lists: deffs 120 122)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 54 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    120,
    122
@@ -2334,9 +2452,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_sound_238)"
  },
  {
   "name": "anim_187_img08121",
@@ -2348,7 +2466,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_188_img08157",
@@ -2360,7 +2478,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_189_img08238",
@@ -2370,9 +2488,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_23c_dmd_page_alloc_pair_12b8c)"
  },
  {
   "name": "anim_190_img08295",
@@ -2382,9 +2500,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_240_dmd_page_alloc_pair_12d18)"
  },
  {
   "name": "anim_191_img08340",
@@ -2394,9 +2512,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_245_dmd_page_alloc_pair_12e80)"
  },
  {
   "name": "anim_192_img08365",
@@ -2406,9 +2524,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (image loop, task_sleep(5), at play_snd_246_dmd_page_alloc_pair_12fa0)"
  },
  {
   "name": "anim_193_img08391",
@@ -2420,7 +2538,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_194_img08412",
@@ -2432,7 +2550,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_195_img08470",
@@ -2444,7 +2562,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_196_img08500",
@@ -2456,7 +2574,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_197_img08564",
@@ -2466,9 +2584,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_24c_dmd_page_alloc_pair_13394)"
  },
  {
   "name": "anim_198_img08598",
@@ -2478,9 +2596,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (image loop draws at x = 41)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (image loop, task_sleep(4), at play_snd_250_dmd_page_alloc_pair_13494)"
  },
  {
   "name": "anim_199_img08656",
@@ -2492,7 +2610,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_200_img08694",
@@ -2504,7 +2622,7 @@
   "x_on_128": 20,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_201_img08714",
@@ -2516,7 +2634,7 @@
   "x_on_128": 49,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_202_img08726",
@@ -2525,10 +2643,13 @@
   "frames": 20,
   "w": 80,
   "h": 32,
-  "x_on_128": 48,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 125,
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 16 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_203_img08746",
@@ -2540,7 +2661,7 @@
   "x_on_128": 22,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_204_img08754",
@@ -2550,9 +2671,9 @@
   "w": 86,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 40)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder",
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)",
   "deffs": [
    40
   ]
@@ -2565,9 +2686,9 @@
   "w": 86,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 91)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder",
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)",
   "deffs": [
    91
   ]
@@ -2580,9 +2701,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
+  "x_tag": "code (deff op lists: deffs 44 45)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)",
+  "deffs": [
+   44,
+   45
+  ]
  },
  {
   "name": "anim_207_img08795",
@@ -2592,9 +2717,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 25)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 32 steps)",
+  "frame_ms_tag": "code (median of 32 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    25
   ]
@@ -2607,9 +2732,12 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 1)",
+  "frame_ms": 32,
+  "frame_ms_tag": "code (median of 256 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   1
+  ]
  },
  {
   "name": "anim_209_img08941",
@@ -2619,9 +2747,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01026718)"
  },
  {
   "name": "anim_210_img08953",
@@ -2631,9 +2759,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 01026750)"
  },
  {
   "name": "anim_211_img08982",
@@ -2643,9 +2771,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0102678c)"
  },
  {
   "name": "anim_212_img09030",
@@ -2655,9 +2783,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (frame player speed 3 at 010267c8)"
  },
  {
   "name": "anim_213_img09077",
@@ -2667,9 +2795,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01026800)"
  },
  {
   "name": "anim_214_img09094",
@@ -2679,9 +2807,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 0102683c)"
  },
  {
   "name": "anim_215_img09110",
@@ -2691,9 +2819,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 01026874)"
  },
  {
   "name": "anim_216_img09127",
@@ -2703,9 +2831,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 010268c0)"
  },
  {
   "name": "anim_217_img09156",
@@ -2715,9 +2843,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 010268fc)"
  },
  {
   "name": "anim_218_img09182",
@@ -2727,9 +2855,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (frame player speed 4 at 01026934)"
  },
  {
   "name": "anim_219_img09217",
@@ -2739,9 +2867,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (frame player draws at x = 0x29 [0x0102ff60])",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (frame player speed 5 at 01026968)"
  },
  {
   "name": "anim_220_img09245",
@@ -2753,7 +2881,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_221_img09268",
@@ -2763,9 +2891,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 42)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 15 steps)",
+  "frame_ms_tag": "code (median of 15 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    42
   ]
@@ -2780,7 +2908,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_223_img09376",
@@ -2790,9 +2918,12 @@
   "w": 218,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 15 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_224_img09388",
@@ -2802,9 +2933,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 52)",
   "frame_ms": 32,
-  "frame_ms_tag": "observed (median of 49 steps)",
+  "frame_ms_tag": "code (median of 49 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    52
   ]
@@ -2817,9 +2948,14 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 51 124 125)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 54 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   51,
+   124,
+   125
+  ]
  },
  {
   "name": "anim_226_img09457",
@@ -2829,9 +2965,14 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 51 124 125)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 45 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   51,
+   124,
+   125
+  ]
  },
  {
   "name": "anim_227_img09473",
@@ -2840,10 +2981,15 @@
   "frames": 22,
   "w": 86,
   "h": 32,
-  "x_on_128": 42,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 41,
+  "x_tag": "code (deff op lists: deffs 51 124 125)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 63 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   51,
+   124,
+   125
+  ]
  },
  {
   "name": "anim_228_img09504",
@@ -2853,9 +2999,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83 121)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 291 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83,
+   121
+  ]
  },
  {
   "name": "anim_229_img09509",
@@ -2865,9 +3015,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83 93)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (median of 10 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83,
+   93
+  ]
  },
  {
   "name": "anim_230_img09515",
@@ -2877,9 +3031,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83 93)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 139 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83,
+   93
+  ]
  },
  {
   "name": "anim_231_img09520",
@@ -2889,10 +3047,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 129,
-  "frame_ms_tag": "observed (median of 8 steps)",
+  "x_tag": "code (deff op lists: deffs 83 109)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 32 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    109
   ]
  },
@@ -2904,10 +3063,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 129,
-  "frame_ms_tag": "observed (median of 18 steps)",
+  "x_tag": "code (deff op lists: deffs 83 97)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 87 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    97
   ]
  },
@@ -2919,10 +3079,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 129,
-  "frame_ms_tag": "observed (median of 12 steps)",
+  "x_tag": "code (deff op lists: deffs 83 97)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 55 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    97
   ]
  },
@@ -2934,10 +3095,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 83 105)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 60 steps)",
+  "frame_ms_tag": "code (median of 453 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    105
   ]
  },
@@ -2949,10 +3111,11 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 83 105)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 13 steps)",
+  "frame_ms_tag": "code (median of 105 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   83,
    105
   ]
  },
@@ -2964,9 +3127,9 @@
   "w": 86,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 38)",
   "frame_ms": 80,
-  "frame_ms_tag": "observed (median of 15 steps)",
+  "frame_ms_tag": "code (median of 15 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    38
   ]
@@ -2979,9 +3142,9 @@
   "w": 86,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 38)",
   "frame_ms": 80,
-  "frame_ms_tag": "observed (median of 3 steps)",
+  "frame_ms_tag": "code (median of 3 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    38
   ]
@@ -2996,7 +3159,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_239_img09595",
@@ -3008,7 +3171,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_240_img09599",
@@ -3020,7 +3183,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_241_img09603",
@@ -3032,7 +3195,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_242_img09607",
@@ -3044,7 +3207,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_243_img09611",
@@ -3056,7 +3219,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_244_img09615",
@@ -3068,7 +3231,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_245_img09619",
@@ -3080,7 +3243,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_246_img09623",
@@ -3092,7 +3255,7 @@
   "x_on_128": 42,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_247_img09627",
@@ -3102,9 +3265,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 140)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 26 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   140
+  ]
  },
  {
   "name": "anim_248_img09654",
@@ -3114,9 +3280,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83 117)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 144 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83,
+   117
+  ]
  },
  {
   "name": "anim_249_img09658",
@@ -3126,9 +3296,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 3 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_250_img09662",
@@ -3138,9 +3311,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
+  "x_tag": "code (deff op lists: deffs 119)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)",
+  "deffs": [
+   119
+  ]
  },
  {
   "name": "anim_251_img09665",
@@ -3150,9 +3326,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 46,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 58)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 69 steps)",
+  "frame_ms_tag": "code (median of 164 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    58
   ]
@@ -3164,10 +3340,13 @@
   "frames": 8,
   "w": 87,
   "h": 32,
-  "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 46,
+  "x_tag": "code (deff op lists: deffs 64)",
+  "frame_ms": 128,
+  "frame_ms_tag": "code (median of 164 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   64
+  ]
  },
  {
   "name": "anim_253_img09681",
@@ -3177,9 +3356,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
+  "x_tag": "code (deff op lists: deffs 62 68)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)",
+  "deffs": [
+   62,
+   68
+  ]
  },
  {
   "name": "anim_254_img09687",
@@ -3189,12 +3372,14 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 70 74 76 80)",
   "frame_ms": 128,
-  "frame_ms_tag": "observed (median of 69 steps)",
+  "frame_ms_tag": "code (median of 328 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
+   70,
    74,
-   76
+   76,
+   80
   ]
  },
  {
@@ -3205,9 +3390,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 54)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 104 steps)",
+  "frame_ms_tag": "code (median of 104 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    54
   ]
@@ -3220,9 +3405,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 97,
-  "frame_ms_tag": "observed (median of 23 steps)",
+  "x_tag": "code (deff op lists: deffs 26)",
+  "frame_ms": 96,
+  "frame_ms_tag": "code (median of 23 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    26
   ]
@@ -3235,9 +3420,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 13 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_258_img09839",
@@ -3246,10 +3434,13 @@
   "frames": 2,
   "w": 71,
   "h": 32,
-  "x_on_128": 57,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_on_128": 125,
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 9 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_259_img09843",
@@ -3259,9 +3450,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 6 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_260_img09850",
@@ -3273,7 +3467,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_261_img09861",
@@ -3285,7 +3479,7 @@
   "x_on_128": 0,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_262_img09906",
@@ -3295,9 +3489,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 82,
-  "frame_ms_tag": "observed (median of 15 steps)",
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 30 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    83
   ]
@@ -3310,9 +3504,12 @@
   "w": 129,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 16 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_264_img09941",
@@ -3322,9 +3519,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 83)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 14 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   83
+  ]
  },
  {
   "name": "anim_265_img09949",
@@ -3334,9 +3534,9 @@
   "w": 129,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 84)",
   "frame_ms": 96,
-  "frame_ms_tag": "observed (median of 26 steps)",
+  "frame_ms_tag": "code (median of 26 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    84
   ]
@@ -3349,9 +3549,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 81,
-  "frame_ms_tag": "observed (median of 14 steps)",
+  "x_tag": "code (deff op lists: deffs 81)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 14 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    81
   ]
@@ -3366,7 +3566,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_268_img10001",
@@ -3376,9 +3576,12 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
-  "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "x_tag": "code (deff op lists: deffs 88)",
+  "frame_ms": 64,
+  "frame_ms_tag": "code (median of 15 steps in the deff op lists, 16 ms ticks)",
+  "deffs": [
+   88
+  ]
  },
  {
   "name": "anim_269_img10018",
@@ -3390,7 +3593,7 @@
   "x_on_128": 41,
   "x_tag": "inferred (87-wide animations drawn at x=41 as on Tron; check against deff captures)",
   "frame_ms": 50,
-  "frame_ms_tag": "placeholder"
+  "frame_ms_tag": "placeholder; code: no deff op list draws it and no frame player or image loop names it with constants (played through a table, or unused)"
  },
  {
   "name": "anim_270_img10041",
@@ -3400,9 +3603,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 81,
-  "frame_ms_tag": "observed (median of 27 steps)",
+  "x_tag": "code (deff op lists: deffs 89)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 27 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    89
   ]
@@ -3415,9 +3618,9 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 49,
-  "frame_ms_tag": "observed (median of 73 steps)",
+  "x_tag": "code (deff op lists: deffs 86)",
+  "frame_ms": 48,
+  "frame_ms_tag": "code (median of 73 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    86
   ]
@@ -3430,12 +3633,13 @@
   "w": 87,
   "h": 32,
   "x_on_128": 41,
-  "x_tag": "observed (deff captures)",
-  "frame_ms": 81,
-  "frame_ms_tag": "observed (median of 30 steps)",
+  "x_tag": "code (deff op lists: deffs 28 29 56)",
+  "frame_ms": 80,
+  "frame_ms_tag": "code (median of 44 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    28,
-   29
+   29,
+   56
   ]
  },
  {
@@ -3446,9 +3650,9 @@
   "w": 128,
   "h": 32,
   "x_on_128": 0,
-  "x_tag": "observed (deff captures)",
+  "x_tag": "code (deff op lists: deffs 30)",
   "frame_ms": 48,
-  "frame_ms_tag": "observed (median of 5 steps)",
+  "frame_ms_tag": "code (median of 5 steps in the deff op lists, 16 ms ticks)",
   "deffs": [
    30
   ]

@@ -85,8 +85,9 @@ The first six columns are the original ones. Added:
 The first eleven columns are the original ones (`tag` now gives the evidence). Added:
 - `menu_label`: STANDARD ADJUSTMENT #n follows the order list 0x338ac (64 ids); FEATURE ADJUSTMENT #n = adj 64+n
   (0x1005d18 -> 0x1045c08(0, 65, 98)). Titles msg 0x140 / 0x506.
-- `factory_default_usa`: the value after boot with a fresh NVRAM (factory install, country U.S.A.), observed with
-  adj_get 0x340 and equal to adj_default 0x3d8 for all 98 (emu/t1.log). Only adj 10 PLAYER LANGUAGE SELECT differs from
+- `factory_default_usa`: the value after the factory reset 0x728 with country U.S.A., read with adj_get 0x340 in a
+  code run (`rom/tools/country_defaults.py`: the reset and adj_get run as ROM code in Unicorn; equal to adj_default
+  0x3d8 for all 98, as emu/t1.log confirmed). Only adj 10 PLAYER LANGUAGE SELECT differs from
   the table default (U.S.A. OS list 0x332dc sets it to YES).
 - `wraps`: no if record byte +0x1e has bit 0 set (97, 98: the value stops at min/max), as in the menu code 0x1045c08.
 - `formatter` / `labels` / `labels_source`: value labels, from a msg list (drawn by 0x76c) or by running the formatter
@@ -95,7 +96,7 @@ The first eleven columns are the original ones (`tag` now gives the evidence). A
 - `visible_if`: the rule in adj_visible 0x2be10 (same rules as Tron's 0x34124). The game registers no hook on the
   menu events 0-3, so nothing else hides adjustments.
 - `country_overrides`: values set per country by the OS list (+4) and the game list (+8). (+0xc is a list of custom
-  attract-message strings, used only by CHUCK-E-CHEESE; +0x10 points to the redemption defaults.) `[observed]` means the value was read back after the factory reset for that country (emu/t4.log).
+  attract-message strings, used only by CHUCK-E-CHEESE; +0x10 points to the redemption defaults.) `[code]` means the value was read back with adj_get after the ROM's factory reset 0x728 for that country, run as ROM code (`rom/tools/country_defaults.py`; emu/t4.log confirmed the same values).
 - `readers`: adj_get 0x340 call sites with a constant id, plus the struct-based sites (credit system, meter table
   0x40cf768, high-score table 0x40cf948, replay levels 16+n, two device-disable predicates). `(observed)`: hit in emu/t2/t6.
 
@@ -105,7 +106,7 @@ The first eleven columns are the original ones (`tag` now gives the evidence). A
   DIRECTOR'S CUT, 3-BALL and 5-BALL set the game adjustments 66-83 (game lists 0x30eb4 ..). HOME PLAY is empty.
   INSTALL FACTORY (0x1049774) runs 0x728.
 - `kind=country`: factory overrides per country. Precedence in 0x3d8 -> 0x53dc: country game list > list 0x33790 (empty)
-  > country OS list > table default. Rows are `observed` when the value after `country N` + 0x728 matched (all 85 rows).
+  > country OS list > table default. Rows are tagged `code` when the value after country N + 0x728, run as ROM code by `rom/tools/country_defaults.py`, matches (all 85 rows, 29 countries).
 
 ### service_texts.csv
 One row per (msg, drawing site) in the service menus, as in Tron:
