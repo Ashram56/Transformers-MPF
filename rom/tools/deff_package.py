@@ -82,6 +82,10 @@ def package(doc):
     leffs = [{"tick": o["t"], "t_ms": round(o["t"] * TICK_MS, 1), "leff": o["leff"], "at": o["at"]}
              for o in doc["ops"] if o["op"] == "leff"]
     deffs = [{"tick": o["t"], "deff": o["deff"], "at": o["at"]} for o in doc["ops"] if o["op"] == "deff"]
+    # deff_prio_set (most often 0x010305a0 near the end): the effect lowers its own priority, so a waiting
+    # effect or the score display (deff 19) takes the DMD from that tick (deff 140: tick 105 [0x0100b90c])
+    prio = [{"tick": o["t"], "t_ms": round(o["t"] * TICK_MS, 1), "priority": o["prio"], "at": o["at"]}
+            for o in doc["ops"] if o["op"] == "prio"]
     timing = {"deff": n, "fn": doc["fn"], "flags": doc["flags"], "priority": doc["priority"],
               "background": bool(doc["flags"] & 1), "tag": "code",
               "note": "decoded from the deff's function in tf_180 (rom/tools/deff_lift.py): op list "
@@ -91,7 +95,7 @@ def package(doc):
               "ran_ticks": doc.get("ran_ticks"), "tick_ms": TICK_MS,
               "panel": any(t["call_site"] in [s[2:].lstrip("0") for s in PANEL_SITES]
                            for p in pages for t in p["texts"]),
-              "frames": recs, "sounds": sounds, "leffs": leffs, "deffs": deffs, "pages": pages,
+              "frames": recs, "sounds": sounds, "leffs": leffs, "deffs": deffs, "priority_changes": prio, "pages": pages,
               "inputs": doc.get("reads", [])[:50], "detached_tasks": doc.get("detached", [])}
     if doc.get("variant"):          # a deff drawn from game state: the state this one ran with (deff_variants.py)
         timing["variant"] = doc["variant"]
