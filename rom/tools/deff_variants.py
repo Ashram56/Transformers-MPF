@@ -153,6 +153,9 @@ VARIANTS.update({
     106: battle_hit(106, 0x010170b8, 0x040c6994, 10, "start_deff_106 [0x01015f8c] (0xb - hits)"),
     110: battle_hit(110, 0x0101555c, 0x040c68dc, 7, "start_deff_110 [0x01014638] (7 - hits; the last hit 1)"),
     118: battle_hit(118, 0x0101a538, 0x040c6aec, 12, "start_deff_118 [0x01019294] (0xc - hits)"),
+    102: battle_hit(102, 0x0101dc18, 0x040c6c34, 11, "start_deff_102 [0x0101cc6c] (0xc - hits)"),
+    114: battle_hit(114, 0x0101c208, 0x040c6b98, 10, "start_deff_114 [0x0101afbc] (0xb - hits)"),
+    122: battle_hit(122, 0x01013a1c, 0x040c6818, 11, "start_deff_122 [0x01012508] (0xc - hits)"),
     144: [("%s_left%d" % (side, n), {"args": {0x30: (1, 0), 0x34: (2, n)}, "state": {"side": sv}},
            "deff_144_more_to_start [0x0102712c]: +0x34 = DAT_00035294 (start_deff_144 [0x010262f0]) picks the "
            "animation, table 0x040c70e0 (12, above 11 it takes 11) for player_side 1, 0x040c70c4 (7, above 6 it "
