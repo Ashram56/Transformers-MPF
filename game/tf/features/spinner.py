@@ -32,7 +32,7 @@ class Spinner(Feature):
         self.sample = 0
         self.super_total = 0
         os_.deff_live((SUPER_DEFF,), lambda: {"values": [self.pd.get("super_spin_left", 0), self.super_total]})
-        # leff 154 while the super spinner is lit (flag 0x4c): rule play_sound_270_sub [0x01032094] -> [0x01032280]
+        # leff 154 while the super spinner is lit (flag 0x4c): rule flag_4c_test_32094 [0x01032094] -> [0x01032280]
         # (QA L-154)
         os_.lamp_rule(lambda: bool(os_.game) and os_.flag(0x4c), leff=154, order=0x01032094)
 

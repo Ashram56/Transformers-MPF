@@ -14,7 +14,7 @@ FUN_0102f200 (code):
 from tf import rom_draw as rd
 
 PANEL_X, PANEL_FONT, SEPARATOR_X = 38, 0, 40
-# table_040c75d0_reader [0x0102f11c]: the current player's score font and baseline by value, table 0x040c75d0
+# table_75d0_find_2f11c [0x0102f11c]: the current player's score font and baseline by value, table 0x040c75d0
 # (threshold, font, y; last entry 0x040c760c), drawn at x 0x54 with flags 2 [0x0102fa40] (QA V-SC1)
 SCORE_TABLE = ((100000000, 22, 18), (1000000, 17, 18), (100000, 24, 21), (0, 26, 21))
 MAIN_X = 84

@@ -109,7 +109,7 @@ class Wizard(Feature):
                           leff=leff, order=0x0100ff80 + i)
         os_.lamp_update(self.draw, priority=1)
         # leffs 84 and 85 while every requirement is completed, no multiball runs and flag 0x3c is clear: rule
-        # items_all_collected_user [0x010363b4] (items_all_collected [0x01035d50]) (QA L-084, L-085)
+        # items_all_collected_idle_363b4 [0x010363b4] (items_all_collected [0x01035d50]) (QA L-084, L-085)
         for i, leff in enumerate((84, 85)):
             os_.lamp_rule(lambda: bool(os_.game) and self.all_done() and not os_.any_multiball() and not os_.flag(0x3c),
                           leff=leff, order=0x010363b4 + i)
@@ -289,7 +289,7 @@ class Wizard(Feature):
         # that completes it [0x01010174]; the PuP map reads it
         anim = i + 6 if self.side_counts[i] >= SIDE_HITS else i
         # deff_083_soundwave [0x01011750] runs routine +0x34 of table 0x040c6770 (Decepticon) / 0x040c67a0
-        # (Autobot): its speech, 0x11c-0x121 / 0x11a and 0x122-0x127, at tick 63 through the task leaf_6a9c
+        # (Autobot): its speech, 0x11c-0x121 / 0x11a and 0x122-0x127, at tick 63 through the task snd_play_delayed_6a9c
         # [0x01006a9c] or after the animation; Autobot routines 6-11 queue 0x119 after it (snd_play_after_wrap
         # [0x00025364], e.g. 0x01011530). Its length and sounds from the op list of that routine (QA SC10)
         side = self.pd.get("side", DECEPTICON)

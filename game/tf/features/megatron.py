@@ -416,7 +416,7 @@ class Megatron(Feature):
     def draw_lock(self):
         """Lamp rule error_log_user_b228 [0x0100b228] (registered by [0x0100bc0c], list 4, mask 0x20): lamps 29, 57
         and 58 flash (0x000077a0 + 0x00007814) while a lock is lit and no multiball or mode blocks it
-        (error_log_user_b0b8 [0x0100b0b8]: 0x02111d50[player]), else off (0x00007714) (QA L-R02)."""
+        (no_mode_and_flag_b0b8 [0x0100b0b8]: 0x02111d50[player]), else off (0x00007714) (QA L-R02)."""
         lamps = self.os.lamps
         lit = self.lock_lit()
         for lamp in LOCK_LAMPS:
