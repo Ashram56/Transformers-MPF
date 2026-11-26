@@ -80,7 +80,11 @@ Fact tags as in `agents/rom_extraction.md`: **code** (read from the ROM or its t
   0x01006bb8, dissolve 0x01034758) and `tools/deff_package.py` writes `frames/` and `timing.json` (`"tag": "code"`).
   All 153 effects come from this. The 38 whose drawing depends on game state run once per state their caller
   sets (`tools/deff_variants.py`: the task arguments stored after `deff_start`, the RAM they read, a random
-  pick), each state cited to the routine that sets it; the first one is packaged. Deff 1 (attract) is a walk over
+  pick), each state cited to the routine that sets it; the first one is packaged. The 15 deffs that pick an animation
+  routine from a table (jackpots, supers, battle hits, locks: each routine plays its frames and the sounds of its
+  sound table, frame_sound_step_2fcb0 [0x0102fcb0]) have one op list per entry; `rom_data/dmd/deff_anim_tables.csv`
+  gives per deff the table, how the index is chosen (task argument, random_below, no-repeat pick) and each op
+  list's length and sounds. No call to sounds 0x092 and 0x0df-0x0e1 was found in the decompile (the 0x92 there is a lamp group). Deff 1 (attract) is a walk over
   the page table 0x00030d10: `tools/attract_pages.py` runs each of its 39 pages alone in 7 NVRAM states (op lists
   `deff_001__page<NN>[_<state>].json`, the table, conditions, lengths and the source of every text in
   `rom_data/dmd/attract_pages.json`, spec `rules/modes/attract.md`). `tools/leff_lift.py` and `tools/leff_package.py` do the same for every lamp effect

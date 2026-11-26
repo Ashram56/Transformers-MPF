@@ -14491,5 +14491,30 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "shots0",
+  "why": "deff_106 [0x010170b8]: +0x34 = shots left picks the animation in table 0x040c6994 (11 routines; above 10 it takes 10), +0x3c = 0 a hit; set by start_deff_106 [0x01015f8c] (0xb - hits)",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x3c": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "final",
+  "shots1",
+  "shots10",
+  "shots2",
+  "shots3",
+  "shots4",
+  "shots5",
+  "shots6",
+  "shots7",
+  "shots8",
+  "shots9"
+ ]
 }

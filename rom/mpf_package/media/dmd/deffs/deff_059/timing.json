@@ -14654,5 +14654,25 @@
    1
   ]
  ],
- "detached_tasks": []
+ "detached_tasks": [],
+ "variant": {
+  "name": "video0",
+  "why": "deff_059 [0x01028950]: +0x38 = the shot (show_deff_59_count_mudflap_skids_started_27b74 [0x01027b74] param_1, 0..6 from the shot handlers) indexes table 0x040c732c; entry 6 is the first of deff 60's table (0x040c7344), the ROM reads past its 6 entries",
+  "args": {
+   "0x30": 0,
+   "0x34": 0,
+   "0x38": 0
+  },
+  "ram": {},
+  "state": {},
+  "pages": null
+ },
+ "other_variants": [
+  "video1",
+  "video2",
+  "video3",
+  "video4",
+  "video5",
+  "video6"
+ ]
 }
