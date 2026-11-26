@@ -109,6 +109,13 @@ class Battle:
     music = 0
     rule_leff = 0
     hit_sound = 0
+    # the hit deff's speech: (call, delay ticks, also on the last hit): snd_play_delayed_6a9c(call, +0x44, delay, 1)
+    # [0x01006a9c] or a child task, sample +0x44 = 2 less than the animation index +0x34 (base - shots left), 0
+    # past the call's sample count (QA SC6 battles)
+    speech = None
+    speech_base = 10
+    speech_follow = ()                  # the calls its follow-ups play (their op-list copies are not played)
+    speech_final_delay = None           # the child's sleep on the last hit, when it differs
     shots = 10
     completed_seconds = 8.5
     multiball = False
@@ -295,6 +302,45 @@ class Battle:
         # 0x157 of the same left eject takes its voice first, then this one takes it over, snd_start_sample
         # [0x00024ae4])
         os_.after(1, lambda: os_.sound(self.hit_sound, in_deff=self.hit_deff, index=index))
+        self._speech(completed, left)
+
+    def _speech(self, completed, left):
+        """The hit deff's delayed speech, from its child task (task_create_same_id: it dies with the deff)."""
+        if not self.speech:
+            return
+        os_ = self.os
+        call, delay, final_too = self.speech
+        os_.display.own_sounds.update((self.hit_deff, c) for c in (call,) + self.speech_follow)
+        if completed and not final_too:
+            return
+        index = self.speech_base - (left or 0)
+        if not 0 <= index < len(os_.sample_lengths(call)):
+            index = 0
+        deff = self.hit_deff
+
+        def play():
+            if os_.display.fg != deff:
+                return
+            end = os_.sound(call, in_deff=deff, index=index)
+            self.speech_after(end, index)
+        if completed and self.speech_final_delay is not None:
+            delay = self.speech_final_delay
+        os_.after(1 + delay, play)
+
+    def speech_after(self, end, index):
+        """The follow-ups a hit deff's child task queues after its speech (snd_play_after [0x000253d4])."""
+
+    def _queue(self, end, call, sample, then=None):
+        """snd_play_after(call, handle): `call` sample `sample` once the playing sample ends; then(end) next."""
+        if end is None:
+            return
+        os_ = self.os
+
+        def play(_dt=None):
+            nxt = os_.sound(call, index=sample)
+            if then:
+                then(nxt)
+        os_.machine.clock.schedule_once(play, max(0.0, end - os_.now))
 
     def complete(self):
         os_ = self.os
@@ -349,6 +395,7 @@ class Starscream(Battle):
     timer_task, run_task, intro_task = 0x9c, 0x9d, 0x68
     item, audit_started, audit_completed, insert = 1, 0x59, 0x5a, 7
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 92, 93, 94, 95, 0x28, 106, 0x181
+    speech, speech_base = (0x18e, 0x7d, False), 9                     # deff_094 [0x010189a8]
     total_task = 0x80
     shots = 10
     PAIRS = (0x03, 0x06, 0x0c, 0x18, 0x30, 0x18, 0x0c, 0x06)       # table 0x040c6a40
@@ -378,6 +425,7 @@ class Shockwave(Battle):
     timer_task, run_task, intro_task, total_task = 0x9e, 0x9f, 0x69, 0x81
     item, audit_started, audit_completed, insert = 2, 0x5b, 0x5c, 6
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 96, 97, 98, 99, 0x29, 110, 0x195
+    speech, speech_base = (0x1a4, 0x5d, True), 10                     # deff_098
     shots = 11
     completed_seconds = 8.67
 
@@ -402,6 +450,16 @@ class Blackout(Battle):
     timer_task, run_task, intro_task, total_task = 0xa0, 0xa1, 0x6a, 0x82
     item, audit_started, audit_completed, insert = 3, 0x5d, 0x5e, 5
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 100, 101, 102, 103, 0x2a, 114, 0x1ab
+    speech, speech_base = (0x1c3, 0x5d, False), 10                    # child task [0x0101db34]
+    speech_follow = (0x1c4, 0x1c5)
+
+    def speech_after(self, end, index):
+        """[0x0101db34]: samples 1-4 and 7-8 queue 0x1c4 with the same sample; sample 5 queues 0x1c5 0, 1, 2, 3."""
+        if 1 <= index <= 4 or 7 <= index <= 8:
+            self._queue(end, 0x1c4, index)
+        elif index == 5:
+            chain = lambda k: (lambda e: self._queue(e, 0x1c5, k, chain(k + 1) if k < 3 else None))
+            chain(0)(end)
     shots = 11
     completed_seconds = 9.0
     GROUPS = ((0x01, 0x02, 0x04), (0x08, 0x10, 0x20))
@@ -433,6 +491,13 @@ class Devastator(Battle):
     timer_task, run_task, intro_task, total_task = 0xa2, 0xa3, 0x6b, 0x83
     item, audit_started, audit_completed, insert = 4, 0x5f, 0x60, 4
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 104, 105, 106, 107, 0x2b, 118, 0x1d1
+    speech, speech_base = (0x1e3, 0x5d, True), 9                      # child task snd_1e3_1e4_task_17068 [0x01017068]
+    speech_follow = (0x1e4,)
+    speech_final_delay = 0x1f                                         # +0x38 = 0x1f on the last hit [0x010170b8]
+
+    def speech_after(self, end, index):
+        """[0x01017068]: 0x1e4 with the same sample after 0x1e3."""
+        self._queue(end, 0x1e4, index)
     shots = 10
     completed_seconds = 8.76
     ROVER = (0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0)       # table 0x040c6964
@@ -597,6 +662,7 @@ class Ironhide(Battle):
     timer_task, run_task, intro_task, total_task = 0xa6, 0xa7, 0x6d, 0x85
     item, audit_started, audit_completed, insert = 7, 0x63, 0x64, 24
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 112, 113, 114, 115, 0x2d, 128, 0x201
+    speech, speech_base = (0x214, 0x5d, True), 9                      # deff_114
     shots = 10
     completed_seconds = 7.02
     PATTERNS = {1: 0x08, 2: 0x14, 3: 0x2a, 4: 0x36}    # table 0x040c6b3c
@@ -628,6 +694,7 @@ class Mudflap(Battle):
     timer_task, run_task, intro_task, total_task = 0xa8, 0xa9, 0x6e, 0x86
     item, audit_started, audit_completed, insert = 8, 0x65, 0x66, 25
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 116, 117, 118, 119, 0x2e, 132, 0x21c
+    speech, speech_base = (0x22e, 0x5d, True), 10                     # deff_118
     shots = 11
     multiball = True
     RUNNING_FLAG, COMPLETED_FLAG, ADD_BALL_FLAG = 0x1e, 0x1d, 0x14
@@ -720,6 +787,7 @@ class Ratchet(Battle):
     timer_task, run_task, intro_task, total_task = 0xaa, 0xab, 0x6f, 0x87
     item, audit_started, audit_completed, insert = 9, 0x67, 0x68, 26
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 120, 121, 122, 123, 0x2f, 136, 0x236
+    speech, speech_base = (0x237, 0x5d, True), 10                     # deff_122
     shots = 11
 
     def reset(self):

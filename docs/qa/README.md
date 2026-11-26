@@ -227,6 +227,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     rule leff itself, task_group_running_b780 [0x0000b780] skips the current task and the rule calls leff_start
     again, which refuses it (iVar7 == task_current, [0x00007c10]). The leff keeps running: the second
     leff_start in the traces (177 at optimus_autobot.jsonl 33.36 s, 47 at 71.34 / 71.89 s) is a refused call.
+  - Row "Battle hit deff sounds" fixed: each hit deff's speech plays its sample +0x44 (2 below the animation index
+    +0x34: 9 or 10 - shots left, 0 past the call's count) after 0x5d ticks (0x7d for deff 94, none on its last hit;
+    snd_play_delayed_6a9c [0x01006a9c] or a child task that dies with the deff), Blackout chains 0x1c4 / 0x1c5
+    [0x0101db34] (battle_blackout: both 0x1c4 at their times), Devastator 0x1e4 [0x01017068], 0x1f ticks on its
+    last hit.
   - Nothing left open in either pass: every finding is fixed from the code or has its row in rom_differences.md
     (2026-11-26, 171 of the trace checks OK, the rest the known sample-pick and timing rows).
 
