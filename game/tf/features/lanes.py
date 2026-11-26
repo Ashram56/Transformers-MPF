@@ -76,6 +76,7 @@ class Lanes(Feature):
         lamp = next((n for n in choices if n not in lit), None)
         if lamp is None:
             points, sound, leff = LIT[group]
+            lamp = choices[-1]          # [0x0102db28]: the leff's +0x30 is the lamp hit, already lit
         else:
             lit.add(lamp)
             points, sound, leff = NEW[group]
@@ -85,7 +86,8 @@ class Lanes(Feature):
                 points, sound, leff = DONE[group]
         os_.score_add(points)
         os_.sound(sound)
-        os_.leff_start(leff)
+        # leffs 97 / 98 / 100 / 101 flash the lamp hit (their +0x30, [0x0102db28] / [0x0102e208]); 99 / 102 take none
+        os_.leff_start(leff, lamp=None if leff == DONE[group][2] else lamp)
         self.draw()
         if leff == DONE[group][2]:
             if SIDE_OF[group] == self.pd.get("side", DECEPTICON):

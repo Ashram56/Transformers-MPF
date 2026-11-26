@@ -421,7 +421,7 @@ class Optimus(Feature):
             return
         pd = self.pd
         if self.mb_blocked() or pd.get("opt_battle"):
-            os_.leff_start(BLOCKED_LEFF)
+            os_.leff_start(BLOCKED_LEFF, lamp=0x28)    # leff 169 lights lamp 40 (+0x30) [0x01025de4]
             os_.sound(BLOCKED_SOUND)
             os_.score_add(BLOCKED_POINTS)
             return

@@ -220,6 +220,39 @@ class TestMediumFixes(TfTestCase):
         if entry:
             self.assertTrue(set(self.tf.leffs.claims[leff][0]) <= entry[1].mask)
 
+    def test_code_leffs_lamps_and_flashers(self):
+        """The code leffs (QA L-G code leffs): leff_097 [0x0102dda4] toggles the caller's lamp (+0x30) 10 times, 2
+        ticks apart, then ends; leff_139 (fn 0x0100999c) holds it on 8 ticks; leff_044 [0x01027ffc] ramps coil 0x1f
+        every 4 ticks while the playfield is valid."""
+        self.start()
+        from tf.os_layer import TICK
+        lamps = self.tf.lamps
+        lamps.leff_play(97, lamp=50)
+        layer = lamps.leff_players[97][1]
+        self.assertEqual(({50}, {50}), (layer.mask, layer.image))
+        self.advance_time_and_run(2 * TICK + 0.001)
+        self.assertEqual(set(), layer.image)
+        self.advance_time_and_run(20 * TICK)
+        self.assertNotIn(97, lamps.leff_players)
+        lamps.leff_play(139, lamp=48)
+        self.assertIn(48, lamps.leff_players[139][1].image)
+        self.advance_time_and_run(9 * TICK)
+        self.assertNotIn(139, lamps.leff_players)
+        pulsed = []
+        orig = lamps.flasher
+        lamps.flasher = lambda name, ms=30, owner=None, power=None: pulsed.append((name, ms, power))
+        try:
+            self.tf.pf_valid = True
+            lamps.leff_play(44)
+            self.advance_time_and_run(9 * TICK)
+            lamps.leff_end(44)
+        finally:
+            lamps.flasher = orig
+        names = {num: name for name, num in lamps.coil_numbers.items()}
+        self.assertGreaterEqual(len(pulsed), 2)
+        self.assertEqual((names[0x1f], 100), pulsed[0][:2])
+        self.assertLess(pulsed[0][2], pulsed[1][2])
+
     def test_lock_lamps_flash_while_lock_lit(self):
         """Lamp rule [0x0100b228]: lamps 29, 57, 58 flash while a lock is lit, else off (QA L-R02)."""
         self.start()

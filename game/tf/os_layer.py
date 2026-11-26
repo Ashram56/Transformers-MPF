@@ -390,13 +390,32 @@ class TfOS(CustomCode):
         self.display = Display(self)
         self.tubes = Tubes(self)
         self.leffs = Leffs(self)
-        from tf.lamps import Lamps, SUPER_LIT_LEFF_GROUPS, flasher_group_pulse, flasher_group_ramp  # noqa: E402
+        from tf.lamps import (Lamps, SUPER_LIT_LEFF_GROUPS, RAMP_PATTERNS_11, flasher_group_pulse,  # noqa: E402
+                              flasher_group_ramp, flasher_coil_ramp, lamp_blink, lamp_hold, _no_eject_warning,
+                              gi_lamp_flash)
         self.lamps = Lamps(self)
         self.lamps.leff_code(13, self._leff_save_lamp, priority=0x81)
         self.lamps.leff_code(14, self._leff_save_lamp, priority=0x80)
         for leff_id, group in SUPER_LIT_LEFF_GROUPS.items():   # the super-lit flashers (QA M6)
             self.lamps.leff_code(leff_id, flasher_group_pulse(group))
         self.lamps.leff_code(154, flasher_group_ramp(44))        # leff_154 [0x010327bc] (QA L-154)
+        # the flasher leffs read from their code (QA L-G code leffs); coil groups from lamp_effects.csv
+        for leff_id, group in ((32, 10), (160, 49), (176, 56)):  # leff_032 [0x0102d520], 160 [0x01004b34], 176 [0x01026fb0]
+            self.lamps.leff_code(leff_id, flasher_group_ramp(group))
+        self.lamps.leff_code(157, flasher_group_ramp(48, every=6, ready=_no_eject_warning))   # leff_157 [0x01003f20]
+        self.lamps.leff_code(44, flasher_coil_ramp(0x1f))         # leff_044 [0x01027ffc]
+        self.lamps.leff_code(52, flasher_coil_ramp(0x1f))         # leff_052 [0x0102a10c]
+        self.lamps.leff_code(60, flasher_coil_ramp(0x12, toggle=(0x17, 0x20)))   # leff_060 [0x0100c914]
+        self.lamps.leff_code(68, flasher_coil_ramp(0x12, toggle=(0x17, 0x20)))   # leff_068 [0x0100e7d0]
+        self.lamps.leff_code(148, flasher_coil_ramp(None, group=14, patterns=RAMP_PATTERNS_11))  # leff_148 [0x0102ef90]
+        # the lamp leffs: the lamp is the caller's task +0x30 (leff_start(..., lamp=n))
+        for leff_id, toggles in ((97, 10), (100, 10), (98, 5), (101, 5)):     # [0x0102dda4] [0x0102e4a0] ...
+            self.lamps.leff_code(leff_id, lamp_blink(toggles))
+        for leff_id in (139, 143, 169):                            # fn 0x0100999c: the lamp on for 8 ticks
+            self.lamps.leff_code(leff_id, lamp_hold(True))
+        for leff_id in (141, 145):                                 # fn 0x01009a58: the lamp off for 8 ticks
+            self.lamps.leff_code(leff_id, lamp_hold(False))
+        self.lamps.leff_code(38, gi_lamp_flash())                  # leff_038 [0x01023df8]
         from tf import switches                   # noqa: E402
         self.switches = switches.SwitchLayer(self)
         from tf.features import load_features     # noqa: E402

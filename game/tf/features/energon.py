@@ -22,6 +22,8 @@ LAMPS = (48, 54, 35)
 ALL = 0x07
 TIMED = (5000, 0x25c, 139)
 RELIT = (10000, 0x25d, 141)
+# the targets' lamps: the switch handlers' argument (task +0x34, switches.csv handler_arg): sw 2, 49, 46
+LAMPS = (48, 54, 35)
 LIT_POINTS, LIT_DEFF, LIT_LEFF, LIT_SOUND, LIT_SOUND2, LIT_SOUND2_TICKS = 75000, 124, 140, 0x25e, 0x25f, 62
 LIT_SOUND2_FLAG = 0x47               # task 0x97 [0x01030984]: sleep 0x3e, speech_once(0x25f, flag 0x47) [0x01006ae0]
 SET_DEFF, SET_LEFF, SET_SOUND = 125, 142, 0x260
@@ -61,14 +63,14 @@ class Energon(Feature):
             return
         pd = self.pd
         if os_.any_multiball():                 # [0x0103096c]
-            self._award(*TIMED)
+            self._award(*TIMED, lamp=LAMPS[index])
             return
         if os_.task_running(DEBOUNCE_TASK):
             return
         bit = 1 << index
         lit = pd.get("energon_lit", 0)
         if lit & bit and lit != ALL:
-            self._award(*RELIT)
+            self._award(*RELIT, lamp=LAMPS[index])
             return
         if (lit | bit) != ALL:
             pd.energon_lit = lit | bit
@@ -91,10 +93,10 @@ class Energon(Feature):
         os_.hook("allspark_bank")
         os_.request_refresh()
 
-    def _award(self, points, sound, leff):
+    def _award(self, points, sound, leff, lamp=None):
         os_ = self.os
         os_.sound(sound)
-        os_.leff_start(leff)
+        os_.leff_start(leff, lamp=lamp)     # leff 139 lights / 141 darkens the target's lamp (+0x30) [0x010309a4]
         os_.score_add(points)
 
     def draw(self):

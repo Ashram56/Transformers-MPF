@@ -232,12 +232,36 @@ def shot_blink(rows, mask_fn, blink=3):
     return run
 
 
-# coilgroup_pulse groups of the super-lit leffs: tf_180 coil group table 0x040cf65c (group -> ROM coil numbers)
-COIL_GROUPS = {18: (28,), 22: (25, 31), 26: (28,), 31: (31, 25), 36: (32,), 44: (19,), 57: (31, 25)}
-# leff -> coil group (rom/rom_data/io/lamp_effects.csv coil_group): leff_047 [0x010286f8], leff_055 [0x0102a83c],
-# leff_063 [0x0100d038], leff_071 [0x0100ef64]
-SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31, 85: 36,   # + leff_085 [0x0103692c] (QA L-085)
-                         177: 57}   # leff_177 [0x01027024] (Optimus battle ready, QA L-I59): the same loop, group 57
+def _coil_groups():
+    """The coil group table 0x040cf65c (rom/rom_data/io/coil_groups.json, rom/tools/coil_groups.py): group -> ROM
+    coil numbers, as coilgroup_pulse [0x00005fd4] and coil_group_pulse_fn_6044 [0x00006044] walk it."""
+    import json                         # noqa: PLC0415
+    path = os.path.join(os.path.dirname(__file__), "..", "..", "rom", "rom_data", "io", "coil_groups.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return {int(k): tuple(v) for k, v in json.load(f).items()}
+
+
+COIL_GROUPS = _coil_groups()
+# leff -> coil group (rom/rom_data/io/lamp_effects.csv coil_group, read by task_leff_field8_81f4 [0x000081f4]): the
+# leffs that loop coilgroup_pulse(group, 0x20) every 8 ticks: leff_047 [0x010286f8], leff_055 [0x0102a83c], leff_063
+# [0x0100d038], leff_071 [0x0100ef64], leff_085 [0x0103692c] (QA L-085), leff_177 [0x01027024] (QA L-I59), and
+# leff_077 [0x010104c4], leff_080 [0x01010b4c], leff_088 [0x0103720c], leff_124 [0x01015510]
+SUPER_LIT_LEFF_GROUPS = {47: 18, 55: 22, 63: 26, 71: 31, 85: 36, 177: 57, 77: 34, 80: 35, 88: 37, 124: 46}
+
+
+def _pf_ok(os_):
+    """byte_314d8_d8ac [0x0000d8ac] and no ball search (task 0x2b): the test every flasher leff makes."""
+    return os_.pf_valid and not os_.task_running(0x2b)
+
+
+def _pulse_group(task, group, time, power=None):
+    lamps = task.lamps
+    names = {num: name for name, num in lamps.coil_numbers.items()}
+    for num in COIL_GROUPS.get(group, ()):
+        if num in names:
+            lamps.flasher(names[num], time, owner=task.leff_id, power=power)
 
 
 def flasher_group_pulse(group, every=8, time=0x20):
@@ -245,55 +269,120 @@ def flasher_group_pulse(group, every=8, time=0x20):
     the playfield is valid (DAT_000314d8, FUN_0000d8ac; os.pf_valid) and ball search (task 0x2b) is not
     running. The group is the leff table's coil group, read by FUN_000081f4. -> fn(LeffTask)."""
     def run(task):
-        lamps = task.lamps
-        os_ = lamps.os
-        if os_.pf_valid and not os_.task_running(0x2b):
-            names = {num: name for name, num in lamps.coil_numbers.items()}
-            for num in COIL_GROUPS[group]:
-                if num in names:
-                    lamps.flasher(names[num], time, owner=task.leff_id)
+        if _pf_ok(task.lamps.os):
+            _pulse_group(task, group, time)
         task.sleep(every, run)
     return run
 
 
-# leff_154 [0x010327bc]: coil_group_pulse_fn_6044(group, 0x96, pattern) through table 0x040c7680 (14 patterns), 4 ticks
-# apart, a brightness ramp up and down
+# The brightness ramp of the flasher leffs: the 14 patterns of 0x040c7680 (leff_154), the same values at 0x040c6ff4
+# (leff_040), 0x040c72f4 (044), 0x040c7458 (052), 0x040c643c (060), 0x040c663c (068), 0x040c5d5c (157), 0x040c5db8
+# (160), 0x040c7110 (176), 0x040c751c (032)
 RAMP_PATTERNS = (0x80008000, 0x80808080, 0x88808880, 0x88888888, 0xa888a888, 0xa8a8a8a8, 0xaaa8aaa8, 0xaaaaaaaa,
                  0xaaa8aaa8, 0xa8a8a8a8, 0xa888a888, 0x88888888, 0x88808880, 0x80808080)
+# leff_148 [0x0102ef90]: the 11 patterns of 0x040c7590 (no top three)
+RAMP_PATTERNS_11 = (0x80008000, 0x80808080, 0x88808880, 0x88888888, 0xa888a888, 0xa8a8a8a8, 0xa8a8a8a8, 0xa888a888,
+                    0x88888888, 0x88808880, 0x80808080)
 
 
-def flasher_group_ramp(group, time=0x96, every=4):
-    """leff_154 [0x010327bc] (super spinner lit): forever, while the playfield is valid and ball search does not run
-    (else wait 4 ticks), pulse the group with each of the 14 patterns of 0x040c7680, 4 ticks apart. The pattern's
-    duty is MPF's pulse_power. -> fn(LeffTask)."""
+def _duty(pattern):
+    return bin(pattern).count("1") / 32
+
+
+def flasher_group_ramp(group, time=0x96, every=4, ready=_pf_ok):
+    """leff_154 [0x010327bc] (super spinner lit), leff_032 [0x0102d520], leff_160 [0x01004b34], leff_176
+    [0x01026fb0]: forever, while `ready` fails wait 4 ticks, then pulse the group with each of the 14 patterns,
+    `every` ticks apart, a whole cycle without a new test (coil_group_pulse_fn_6044). leff_157 [0x01003f20] tests
+    eject_warning_needed_3eec [0x01003eec] instead and steps 6 ticks. The pattern's duty is MPF's pulse_power.
+    -> fn(LeffTask)."""
     def run(task, i=0):
-        lamps = task.lamps
-        os_ = lamps.os
-        if i == 0 and not (os_.pf_valid and not os_.task_running(0x2b)):
+        if i == 0 and not ready(task.lamps.os):
             return task.sleep(every, run)
-        names = {num: name for name, num in lamps.coil_numbers.items()}
-        power = bin(RAMP_PATTERNS[i]).count("1") / 32
-        for num in COIL_GROUPS[group]:
-            if num in names:
-                lamps.flasher(names[num], time, owner=task.leff_id, power=power)
+        _pulse_group(task, group, time, _duty(RAMP_PATTERNS[i]))
         task.sleep(every, lambda t: run(t, (i + 1) % len(RAMP_PATTERNS)))
     return run
 
 
-def flasher_coil_ramp(coil, time=100, every=4):
-    """leff_040 [0x01024328] (Allspark banked, QA R-F7): forever, every `every` ticks, when the playfield is valid
-    (byte_314d8_d8ac [0x0000d8ac]) and ball search (task 0x2b) does not run, coil_pulse_fn(coil, time, pattern) with
-    the next of the 14 patterns of 0x040c6ff4 (the values of RAMP_PATTERNS); otherwise the index goes back to 0.
-    The pattern's duty is MPF's pulse_power. -> fn(LeffTask)."""
-    def run(task, i=0):
+def _no_eject_warning(os_):
+    """Not eject_warning_needed_3eec [0x01003eec]: the playfield is valid and no task 0x5d-0x7e runs."""
+    return os_.pf_valid and not any(os_.task_running(t) for t in range(0x5d, 0x7f))
+
+
+def flasher_coil_ramp(coil, time=100, every=4, group=None, patterns=RAMP_PATTERNS, toggle=None):
+    """leff_040 [0x01024328] (Allspark banked, QA R-F7), leff_044 [0x01027ffc], leff_052 [0x0102a10c] (coil 0x1f),
+    leff_060 [0x0100c914], leff_068 [0x0100e7d0] (coil 0x12): forever, every `every` ticks, when the playfield is
+    valid and ball search (task 0x2b) does not run, coil_pulse_fn(coil, time, pattern) with the next pattern;
+    otherwise the index goes back to 0. leff_148 [0x0102ef90] pulses its coil group (`group`) through the 11
+    patterns of 0x040c7590 instead. `toggle` (060 and 068): coil_pulse(0x17, 0x20) on every other pass while
+    valid, the first one included (a flag flipped every pass). The pattern's duty is MPF's pulse_power.
+    -> fn(LeffTask)."""
+    def run(task, i=0, odd=False):
         lamps = task.lamps
-        os_ = lamps.os
-        if not (os_.pf_valid and not os_.task_running(0x2b)):
-            return task.sleep(every, run)
-        names = {num: name for name, num in lamps.coil_numbers.items()}
-        if coil in names:
-            lamps.flasher(names[coil], time, owner=task.leff_id, power=bin(RAMP_PATTERNS[i]).count("1") / 32)
-        task.sleep(every, lambda t: run(t, (i + 1) % len(RAMP_PATTERNS)))
+        if not _pf_ok(lamps.os):
+            i = 0
+        else:
+            names = {num: name for name, num in lamps.coil_numbers.items()}
+            if toggle and not odd and toggle[0] in names:
+                lamps.flasher(names[toggle[0]], toggle[1], owner=task.leff_id)
+            if group is not None:
+                _pulse_group(task, group, time, _duty(patterns[i]))
+            elif coil in names:
+                lamps.flasher(names[coil], time, owner=task.leff_id, power=_duty(patterns[i]))
+            i = (i + 1) % len(patterns)
+        task.sleep(every, lambda t: run(t, i, not odd))
+    return run
+
+
+def _task_lamp(task):
+    lamp = task.data.get("lamp")
+    return lamp if isinstance(lamp, int) else None
+
+
+def lamp_blink(toggles, every=2):
+    """leff_097 [0x0102dda4], leff_100 [0x0102e4a0] (10 toggles), leff_098 [0x0102de08], leff_101 [0x0102e504]
+    (5): the lamp of the task's +0x30 in the leff's own layer (lamp_bit_set_7814 on its mask), its image bit
+    toggled (lamp_bit_flash_78dc) every 2 ticks from off, then the leff returns. -> fn(LeffTask)."""
+    def run(task, n=0):
+        lamp = _task_lamp(task)
+        if lamp is None or n == toggles:
+            return task.end()
+        task.toggle(lamp)
+        task.sleep(every, lambda t: run(t, n + 1))
+    return run
+
+
+def lamp_hold(on, ticks=8):
+    """The lamp of the task's +0x30 forced on (leff_169 [0x0100999c], lamp_bit_toggle_set_77a0: leffs 139, 143,
+    169) or off (leff_171 [0x01009a58], lamp_bit_write_765c: leffs 141, 145) in the leff's own layer for 8 ticks
+    (the task's inline sleep 7 + 1), then the leff returns. -> fn(LeffTask)."""
+    def run(task):
+        lamp = _task_lamp(task)
+        if lamp is None:
+            return task.end()
+        task.set(lamp, on)
+        task.sleep(ticks, lambda t: t.end())
+    return run
+
+
+def gi_lamp_flash(gi_passes=12, toggles=0x50, every=2):
+    """leff_038 [0x01023df8] (a shot goes to 2X): the GI taken (io_owner_take_bdbc) and switched off
+    (io_owner_bit_set_bed8), back on after 12 passes (io_owner_bit_clear_bf04, tick 24); the lamp of the shot's
+    record (+0x30 -> +0x12) toggled 80 times, 2 ticks apart, from off; then the leff returns. -> fn(LeffTask)."""
+    def run(task, n=0):
+        lamps = task.lamps
+        lamp = _task_lamp(task)
+        if n == 0:
+            if lamp is None:
+                return task.end()
+            lamps._gi_cancel()
+            lamps.gi_owner = task.leff_id
+            lamps.gi_set(0, task.leff_id)
+        if n == gi_passes:
+            lamps.gi_set(1, task.leff_id)
+        if n == toggles:
+            return task.end()
+        task.toggle(lamp)
+        task.sleep(every, lambda t: run(t, n + 1))
     return run
 
 

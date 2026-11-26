@@ -35,6 +35,8 @@ TWO_BANK_LAMPS = (21, 20)            # table 0x040c7568 +5: sw 50 -> lamp 21, sw
 SWITCHES = {50: 2, 37: 4}           # switch -> fast_groups bit
 HIT_TICKS = 10                       # task 0xb1: one hit per 10 ticks
 LOCKED = (5000, 0x261, 143)
+# the targets' lamps: the handlers' argument (switches.csv handler_arg) and the table 0x040c5da0 entry +5
+LAMPS = {50: 21, 37: 20}
 HIT = (75000, 0x263, 144)
 LEFT_DEFF, READY_DEFF = 126, 131
 # deff 126 frame 15 (tick 75) [0x0102eaec]: speech_once(0x265, flag 0x30) [0x01006ae0], else 0x264
@@ -117,7 +119,7 @@ class TwoBank(Feature):
             points, sound, leff = LOCKED
             os_.score_add(points)
             os_.sound(sound)
-            os_.leff_start(leff)
+            os_.leff_start(leff, lamp=LAMPS.get(num))   # leff 143 lights the lamp (+0x30) [0x0102e9c0]
             return
         if os_.now - self.last_hit < HIT_TICKS * 0.016:
             return
@@ -232,7 +234,7 @@ class TwoBank(Feature):
         os_ = self.os
         bit = SWITCHES[num]
         if self.groups & bit:
-            os_.leff_start(REPEAT_LEFF)
+            os_.leff_start(REPEAT_LEFF, lamp=LAMPS.get(num))   # leff 145 darkens it (+0x30) [0x010047b8]
             return
         self.groups |= bit
         if self.groups & 6 == 6:                # the completing hit [0x010047b8]

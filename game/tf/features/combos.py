@@ -47,6 +47,8 @@ AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
 MULT_LIT_SPEECH, MULT_LIT_SPEECH_TICKS = 0x05a, 75     # [0x0102de6c] frame 0x19 x 3 ticks (QA R-F6)
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
+# the shots' lamps: byte +0x12 of the shot records 0x040c6f58 + 0x14 x (index + 1), leff 38's lamp [0x01023df8]
+SHOT_LAMPS = (12, 16, 47, 43, 31, 36)
 # deff 50 [0x01023c5c] (its capture has one frame and no length): sound 0x05b, then 0x05c at tick 120 for 2X (0x05d
 # for 3X), 169 ticks in all (op list deff_050.json, the ALLSPARK 2X run; switches.jsonl 133.93 s confirms: 0x05c
 # 1.96 s, next deff 2.78 s)
@@ -193,7 +195,7 @@ class Combos(Feature):
             # the ALLSPARK 2X run's, docs/rom_differences.md)
             variant = "shot%d_x2" % (index + 1)
             os_.deff_start(MULT_DEFF, **({"variant": variant} if deff_variant(MULT_DEFF, variant) else {}))
-            os_.leff_start(MULT_LEFF)
+            os_.leff_start(MULT_LEFF, lamp=SHOT_LAMPS[index])     # deff_050 [0x01023c5c] passes the record
             os_.request_refresh()
 
     def sw_51(self):
