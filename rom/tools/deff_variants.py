@@ -99,12 +99,27 @@ VARIANTS = {
          "Devastator, DAT_000313b4 = 1: the rover text msg 0x645 [0x01016d7c]")],
     113: battle_bg(0x02111e8c, 10, "Ironhide: 10 shots at start FUN_0101abd0 [0x0101abd0]"),
     121: battle_bg(0x02111e2c, 11, "Ratchet: 11 shots at start FUN_010120d4 [0x010120d4]"),
+    94: [("shots%d" % n, {"args": {0x30: (4, 0), 0x34: (2, n), 0x3c: (1, 0)}},
+          "deff_094 [0x010189a8]: +0x34 = shots left picks the animation in table 0x040c6a60 (9 routines; above 8 "
+          "it takes 8), +0x3c = 0 a hit; shots0 (all at 0) is the one packaged") for n in range(0, 9)] + [
+        ("final", {"args": {0x30: (4, 0), 0x34: (2, 0), 0x3c: (1, 1)}},
+         "deff_094 [0x010189a8]: +0x3c != 0, the last hit: animation 1 of table 0x040c6a60, then the end frames")],
+    124: [("target%d" % t, {"args": {0x30: (4, 0), 0x34: (4, t)}},
+           "energon target lit, 0x01030a90 (deff_start(0x7c)): +0x30 = the set's other lit targets, +0x34 = the "
+           "target's bit (1, 2 or 4)") for t in (1, 2, 4)],
+    125: [("target%d" % t, {"args": {0x30: (4, t)}},
+           "energon set completed, 0x01030a90 (deff_start(0x7d)): +0x30 = the bit of the target that completed it")
+          for t in (1, 2, 4)],
+    140: [("%s_lock%d" % (side, n), {"args": {0x30: (1, n)}, "state": {"side": sv}},
+           "deff_140_locked [0x0100b7f0]: +0x30 = the lock number (sound table 0x040c62aa, follow-ups 0x040c62cc / "
+           "0x040c62c0 / 0x040c62b4 by side), player_side %d" % sv)
+          for side, sv in (("decepticon", 2), ("autobot", 1)) for n in (1, 2, 3)],
     152: [("one", {"args": {0x30: (2, 1), 0x34: (2, 1), 0x38: (1, 8), 0x3c: (1, 1), 0x40: (2, 0)}},
            "deff_152 [0x01006e30]: images +0x40 + first-1 .. last-1 by +0x3c, +0x38 ticks each; no caller in "
            "the code starts it: one image")],
 }
 # the others read only values the game draws live (scores, counts): one run with the state at 0
-DEFAULT = [1, 3, 19, 25, 34, 48, 58, 64, 70, 76, 81, 87, 123, 126, 127, 135, 139, 140, 147, 149, 150]
+DEFAULT = [1, 3, 19, 25, 34, 48, 58, 64, 70, 76, 81, 87, 123, 126, 127, 135, 139, 147, 149, 150]
 for _d in DEFAULT:
     VARIANTS[_d] = [("default", {}, "state at 0: the values it prints are drawn live by the game")]
 

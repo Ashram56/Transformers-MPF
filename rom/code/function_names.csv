@@ -26,7 +26,7 @@ address,name,was,rule,evidence
 0x00001074,error_log_user_1074,FUN_00001074,uses,"calls error_log [0x00004f78], audit_get [0x00000afc]"
 0x000010ec,leaf_10ec,FUN_000010ec,leaf,"no call to a named function, no table or RAM symbol"
 0x00001154,game_init_sub_1154,FUN_00001154,sub,called only by game_init [0x00019c64]
-0x00001200,start_deff_25_sub_1200,FUN_00001200,sub,called only by start_deff_25_sub [0x0001a144]
+0x00001200,start_deff_25_sub_1a144_sub_1200,FUN_00001200,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
 0x000012c8,vsprintf_user_12c8,FUN_000012c8,uses,"calls vsprintf_wrap [0x0002fdac], strlen [0x0002fe4c], memcpy [0x0002fd48]"
 0x00001484,memcpy_user_1484,FUN_00001484,uses,"calls memcpy [0x0002fd48], strlen [0x0002fe4c], strcpy [0x0002fe30]"
 0x00001844,leaf_1844,FUN_00001844,leaf,"no call to a named function, no table or RAM symbol"
@@ -35,61 +35,61 @@ address,name,was,rule,evidence
 0x00001bdc,leaf_1bdc,FUN_00001bdc,leaf,"no call to a named function, no table or RAM symbol"
 0x00001c50,leaf_1c50,FUN_00001c50,leaf,"no call to a named function, no table or RAM symbol"
 0x00001cc0,leaf_1cc0,FUN_00001cc0,leaf,"no call to a named function, no table or RAM symbol"
-0x00001cf4,start_deff_5_sub_1cf4,FUN_00001cf4,sub,called only by start_deff_5_sub [0x000036a0]
+0x00001cf4,coil_queue_1cf4,FUN_00001cf4,subsystem,"uses 0x00031438: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
 0x00001d18,ram_00036150_user,FUN_00001d18,ram,uses RAM 0x00036150
 0x00001d88,ram_00031430_user,FUN_00001d88,ram,uses RAM 0x00031430
-0x00001da4,error_log_user_1da4,FUN_00001da4,uses,calls error_log_wrap [0x00001e50]
-0x00001e50,error_log_wrap_1e50,FUN_00001e50,wrapper,only calls error_log [0x00004f78]
-0x00001ecc,error_log_wrap_1ecc,FUN_00001ecc,wrapper,only calls error_log [0x00004f78]
-0x00001f10,leaf_1f10,FUN_00001f10,leaf,"no call to a named function, no table or RAM symbol"
-0x00001f70,error_log_user_1f70,FUN_00001f70,uses,calls error_log [0x00004f78]
-0x00002010,task_sleep_user_2010,FUN_00002010,uses,calls task_sleep [0x0000acfc]
-0x00002078,error_log_user_2078,FUN_00002078,uses,calls error_log_wrap [0x00001e50]
-0x00002160,task_sleep_user_2160,FUN_00002160,uses,calls task_sleep [0x0000acfc]
-0x000021c8,error_log_user_21c8,FUN_000021c8,uses,calls error_log_wrap [0x00001e50]
+0x00001da4,coil_pulse_pending,FUN_00001da4,hand,true while a pulse handle is queued (0x00031434 list) or still holds its coil slot (+0xc)
+0x00001e50,coil_slot_of,FUN_00001e50,hand,"the coil's slot index (coil - 1, below 0x28) and its table record 0x040ce3d4; error 0x40 otherwise"
+0x00001ecc,coil_slot_time,FUN_00001ecc,hand,the slot's pulse time field (+0x18 of 0x00035b10 + n*0x28)
+0x00001f10,coil_slot_start,FUN_00001f10,hand,"fills a coil slot (time +0x18, end callback +4, state 3, on +0x27, handle +0xc) and runs the start callback"
+0x00001f70,coil_pulse_queue,FUN_00001f70,hand,queues a pulse in the list 0x00031434..0x00031438 (error 0x41 when full); returns its handle
+0x00002010,coil_pulse_queue_wait,FUN_00002010,hand,"coil_pulse_queue, then sleeps until the pulse is over"
+0x00002078,coil_pulse_now,FUN_00002078,hand,starts a pulse in the coil's slot now; returns its handle
+0x00002160,coil_pulse_now_wait,FUN_00002160,hand,"coil_pulse_now, then sleeps until the pulse is over"
+0x000021c8,coil_slot_21c8,FUN_000021c8,subsystem,"uses 0x00035b37: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00002290,task_sleep_user_2290,FUN_00002290,uses,calls task_sleep [0x0000acfc]
-0x0000230c,error_log_user_230c,FUN_0000230c,uses,calls error_log_wrap [0x00001e50]
+0x0000230c,coil_slot_230c,FUN_0000230c,subsystem,"uses 0x00035b37: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x000023e4,task_sleep_user_23e4,FUN_000023e4,uses,calls task_sleep [0x0000acfc]
-0x0000246c,error_log_user_246c,FUN_0000246c,uses,calls error_log_wrap [0x00001e50]
-0x000024e4,error_log_user_24e4,FUN_000024e4,uses,calls error_log_wrap [0x00001e50]
+0x0000246c,coil_slot_246c,FUN_0000246c,subsystem,"uses 0x00035b37: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x000024e4,coil_slot_24e4,FUN_000024e4,subsystem,"uses 0x00035b37: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00002558,error_log_user_2558,FUN_00002558,uses,calls error_log_wrap [0x0000e3a0]
 0x000025e8,leaf_25e8,FUN_000025e8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00002624,start_deff_5_sub_2624,FUN_00002624,sub,called only by start_deff_5_sub [0x000036a0]
-0x00002800,error_log_wrap_2800,FUN_00002800,wrapper,only calls error_log [0x00004f78]
-0x00002850,error_log_wrap_2850,FUN_00002850,wrapper,only calls error_log [0x00004f78]
+0x00002624,coil_queue_2624,FUN_00002624,subsystem,"uses 0x0003143c: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00002800,coil_queue_2800,FUN_00002800,subsystem,"uses 0x0003143c: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00002850,coil_slot_2850,FUN_00002850,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x000028ec,leaf_28ec,FUN_000028ec,leaf,"no call to a named function, no table or RAM symbol"
 0x00002930,leaf_2930,FUN_00002930,leaf,"no call to a named function, no table or RAM symbol"
-0x00002a10,error_log_user_2a10,FUN_00002a10,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000e3a0], error_log_wrap [0x00002850]"
+0x00002a10,coil_queue_2a10,FUN_00002a10,subsystem,"uses 0x0003143c: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
 0x00002afc,leaf_2afc,FUN_00002afc,leaf,"no call to a named function, no table or RAM symbol"
-0x00002b38,ram_0003143c_user,FUN_00002b38,ram,"uses RAM 0x0003143c, 0x021100d4, 0x02110084"
-0x00002b7c,start_deff_3_sub_2b7c,FUN_00002b7c,sub,called only by start_deff_3_sub [0x00003678]
+0x00002b38,coil_queue_2b38,FUN_00002b38,subsystem,"uses 0x0003143c: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00002b7c,start_deff_3_sub_3678_sub_2b7c,FUN_00002b7c,sub,called only by start_deff_3_sub_3678 [0x00003678]
 0x00002bb8,error_log_user_2bb8,FUN_00002bb8,uses,calls error_log [0x00004f78]
 0x00002c00,leaf_2c00,FUN_00002c00,leaf,"no call to a named function, no table or RAM symbol"
-0x00002c3c,start_deff_5_sub_2c3c,FUN_00002c3c,sub,called only by start_deff_5_sub [0x000036a0]
-0x00002de8,error_log_wrap_2de8,FUN_00002de8,wrapper,only calls error_log [0x00004f78]
-0x00002e34,error_log_wrap_2e34,FUN_00002e34,wrapper,only calls error_log [0x00004f78]
-0x00002ebc,error_log_wrap_2ebc,FUN_00002ebc,wrapper,only calls error_log_wrap [0x00002e34]
-0x00002efc,error_log_wrap_2efc,FUN_00002efc,wrapper,only calls error_log_wrap [0x00002e34]
-0x00002f3c,error_log_user_2f3c,FUN_00002f3c,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000e3a0], error_log_wrap [0x00002e34]"
+0x00002c3c,coil_slot_2c3c,FUN_00002c3c,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x00002de8,coil_queue_2de8,FUN_00002de8,subsystem,"uses 0x00031440: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00002e34,coil_slot_2e34,FUN_00002e34,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x00002ebc,coil_slot_2e34_wrap_2ebc,FUN_00002ebc,wrapper,only calls coil_slot_2e34 [0x00002e34]
+0x00002efc,coil_slot_2e34_wrap_2efc,FUN_00002efc,wrapper,only calls coil_slot_2e34 [0x00002e34]
+0x00002f3c,coil_queue_2f3c,FUN_00002f3c,subsystem,"uses 0x00031440: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
 0x00003018,leaf_3018,FUN_00003018,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00003054,start_deff_3_sub_3054,FUN_00003054,sub,called only by start_deff_3_sub [0x00003094]
-0x00003094,start_deff_3_sub_3094,FUN_00003094,sub,called only by start_deff_3_sub [0x00003678]
-0x000030d0,error_log_user_30d0,FUN_000030d0,uses,calls error_log [0x00004f78]
+0x00003054,coil_queue_3054,FUN_00003054,subsystem,"uses 0x00031440: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00003094,start_deff_3_sub_3678_sub_3094,FUN_00003094,sub,called only by start_deff_3_sub_3678 [0x00003678]
+0x000030d0,coil_slot_30d0,FUN_000030d0,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x0000310c,leaf_310c,FUN_0000310c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00003148,start_deff_5_sub_3148,FUN_00003148,sub,called only by start_deff_5_sub [0x000036a0]
-0x000032e0,error_log_wrap_32e0,FUN_000032e0,wrapper,only calls error_log [0x00004f78]
-0x00003330,error_log_wrap_3330,FUN_00003330,wrapper,only calls error_log [0x00004f78]
-0x00003438,error_log_user_3438,FUN_00003438,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000e3a0], error_log_wrap [0x00003330]"
+0x00003148,coil_slot_3148,FUN_00003148,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x000032e0,coil_queue_32e0,FUN_000032e0,subsystem,"uses 0x00031444: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x00003330,coil_slot_3330,FUN_00003330,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x00003438,coil_queue_3438,FUN_00003438,subsystem,"uses 0x00031444: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
 0x00003518,leaf_3518,FUN_00003518,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00003554,start_deff_3_sub_3554,FUN_00003554,sub,called only by start_deff_3_sub [0x00003678]
-0x000035d4,error_log_user_35d4,FUN_000035d4,uses,calls error_log [0x00004f78]
+0x00003554,coil_queue_3554,FUN_00003554,subsystem,"uses 0x00031444: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
+0x000035d4,coil_slot_35d4,FUN_000035d4,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00003650,error_log_user_3650,FUN_00003650,uses,"calls error_log_wrap [0x00002ebc], error_log_wrap [0x00003330]"
 0x00003664,error_log_user_3664,FUN_00003664,uses,"calls error_log_wrap [0x00002efc], error_log_wrap [0x00003330]"
 0x00003678,start_deff_3_sub_3678,FUN_00003678,sub,called only by start_deff_3 [0x0000ed90]
 0x0000368c,leaf_368c,FUN_0000368c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x000036a0,start_deff_5_sub_36a0,FUN_000036a0,sub,called only by start_deff_5 [0x00006ecc]
-0x00003758,error_log_user_3758,FUN_00003758,uses,calls error_log_wrap [0x00001e50]
-0x00003854,memset_user_3854,FUN_00003854,uses,calls memset [0x0002fd80]
+0x000036a0,coil_slot_36a0,FUN_000036a0,subsystem,"uses 0x00035b08: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x00003758,coil_pulse_queue_serve,FUN_00003758,hand,"OS loop: starts the queue's head when none runs (0x00031448); once over, the next waits a hold-off of 6 ticks (0x0003144c)"
+0x00003854,coil_slot_3854,FUN_00003854,subsystem,"uses 0x00035b10: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x000038dc,strcmp_user_38dc,FUN_000038dc,uses,"calls strcmp [0x0002fe00], atoi [0x0002fa24]"
 0x00003b44,vsprintf_user_3b44,FUN_00003b44,uses,calls vsprintf [0x0002fef0]
 0x00003b94,table_040c7dc4_reader,FUN_00003b94,table,reads ROM table 0x040c7dc4
@@ -101,7 +101,7 @@ address,name,was,rule,evidence
 0x00003dd8,leaf_3dd8,FUN_00003dd8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00003e1c,leaf_3e1c,FUN_00003e1c,leaf,"no call to a named function, no table or RAM symbol"
 0x00003e3c,adj_get_user_3e3c,FUN_00003e3c,uses,calls adj_get [0x00000340]
-0x00003e78,start_deff_5_sub_3e78,FUN_00003e78,sub,called only by start_deff_5_sub [0x000049e8]
+0x00003e78,start_deff_5_sub_49e8_sub_3e78,FUN_00003e78,sub,called only by start_deff_5_sub_49e8 [0x000049e8]
 0x00003ea8,task_0x13_of_FUN_00019c40_sub_3ea8,FUN_00003ea8,sub,called only by task_0x13_of_FUN_00019c40 [0x00003f00]
 0x00003f00,task_0x13_of_FUN_00019c40,FUN_00003f00,task,"task entry started by FUN_00019c40 [0x00019c40] (task_create, id 0x13)"
 0x000041a0,error_log_user_41a0,FUN_000041a0,uses,calls error_log_wrap [0x00003c60]
@@ -115,7 +115,7 @@ address,name,was,rule,evidence
 0x000044a4,msg_get_user_44a4,FUN_000044a4,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac], strcpy [0x0002fe30]"
 0x000045a4,on_event_05_45a4,FUN_000045a4,hook,"event_hook_add(&DAT_000362e0, 0x5, ..) in FUN_00004c44 [0x00004c44]"
 0x00004664,error_log_user_4664,FUN_00004664,uses,"calls error_log_wrap [0x00003c60], adj_get [0x00000340]"
-0x00004678,error_log_wrap_4678,FUN_00004678,wrapper,only calls error_log_wrap [0x00003c60]
+0x00004678,error_log_wrap_3c60_wrap_4678,FUN_00004678,wrapper,only calls error_log_wrap_3c60 [0x00003c60]
 0x00004694,memset_user_4694,FUN_00004694,uses,calls memset [0x0002fd80]
 0x00004734,leaf_4734,FUN_00004734,leaf,"no call to a named function, no table or RAM symbol"
 0x00004764,error_log_user_4764,FUN_00004764,uses,"calls error_log_wrap [0x00003c60], memset [0x0002fd80], memcpy [0x0002fd48]"
@@ -160,27 +160,27 @@ address,name,was,rule,evidence
 0x00005870,ram_0003630c_user,FUN_00005870,ram,"uses RAM 0x0003630c, 0x00031454"
 0x00005954,start_deff_5_sub_5954,FUN_00005954,sub,called only by start_deff_5 [0x00006ecc]
 0x00005ad8,task_of_serve_ball_sub_5ad8,FUN_00005ad8,sub,called only by task_of_serve_ball [0x0103b128]
-0x00005b58,error_log_wrap_5b58,FUN_00005b58,wrapper,only calls error_log [0x00004f78]
+0x00005b58,game_flag_test,FUN_00005b58,hand,tests game flag n (1..0x4d): bit n & 7 of byte n >> 3 of 0x00031454; error 0x15 otherwise
 0x00005bb0,next_up_sub_5bb0,FUN_00005bb0,sub,called only by next_up [0x0001abb4]
 0x00005bf4,next_up_sub_5bf4,FUN_00005bf4,sub,called only by next_up [0x0001abb4]
 0x00005d20,error_log_user_5d20,FUN_00005d20,uses,"calls error_log [0x00004f78], error_log_wrap [0x00001ecc], fatal_halt [0x00004f58]"
-0x00005ed0,ram_00031434_user,FUN_00005ed0,ram,"uses RAM 0x00031434, 0x00031438, 0x021100d4"
+0x00005ed0,coil_queue_5ed0,FUN_00005ed0,subsystem,"uses 0x00031434: the queued pulse list, coil_pulse_queue_serve [0x00003758]"
 0x00005f10,start_deff_5_sub_5f10,FUN_00005f10,sub,called only by start_deff_5 [0x00006ecc]
 0x00005f88,error_log_wrap_5f88,FUN_00005f88,wrapper,only calls error_log [0x00004f78]
 0x00006044,coil_pulse_fn_user_6044,FUN_00006044,uses,calls coil_pulse_fn [0x00005e70]
 0x000060bc,table_040cf65c_reader,FUN_000060bc,table,reads ROM table 0x040cf65c
 0x0000611c,leff_start_sub_611c,FUN_0000611c,sub,called only by leff_start [0x00007c10]
-0x00006190,start_deff_5_sub_6190,thunk_FUN_00006ef8,sub,called only by start_deff_5 [0x00006ecc]
+0x00006190,coil_slot_6190,thunk_FUN_00006ef8,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00006194,fatal_halt_user_6194,FUN_00006194,uses,"calls fatal_halt [0x00004f58], error_log_wrap [0x0000e3a0], sw_is_disabled [0x0000d480]"
-0x000063a8,ram_0003145c_user_63a8,FUN_000063a8,ram,"uses RAM 0x0003145c, 0x00031458, 0x00035b00"
+0x000063a8,coil_slot_63a8,FUN_000063a8,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x0000643c,error_log_wrap_643c,FUN_0000643c,wrapper,only calls error_log [0x00004f78]
-0x000064ac,error_log_wrap_64ac,FUN_000064ac,wrapper,only calls error_log_wrap [0x0000643c]
-0x000064f0,error_log_wrap_64f0,FUN_000064f0,wrapper,only calls error_log_wrap [0x000064ac]
-0x00006540,error_log_wrap_6540,FUN_00006540,wrapper,only calls error_log_wrap [0x0000643c]
-0x00006588,error_log_wrap_6588,FUN_00006588,wrapper,only calls error_log_wrap [0x00006540]
+0x000064ac,coil_slot_64ac,FUN_000064ac,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x000064f0,coil_slot_64ac_wrap_64f0,FUN_000064f0,wrapper,only calls coil_slot_64ac [0x000064ac]
+0x00006540,coil_slot_6540,FUN_00006540,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
+0x00006588,coil_slot_6540_wrap_6588,FUN_00006588,wrapper,only calls coil_slot_6540 [0x00006540]
 0x000065c4,event_post_user_65c4,FUN_000065c4,uses,"calls event_post [0x00006e50], error_log_wrap [0x000064ac], error_log_wrap [0x00006540]"
 0x00006668,ram_0003145c_user_6668,FUN_00006668,ram,uses RAM 0x0003145c
-0x000066a4,error_log_user_66a4,FUN_000066a4,uses,calls error_log_wrap [0x0000e3a0]
+0x000066a4,coil_slot_66a4,FUN_000066a4,subsystem,"uses 0x00035b00: the coil outputs and the 40 coil pulse slots (0x28 each), io_isr [0x000114b0]"
 0x00006778,ram_0003145c_user_6778,FUN_00006778,ram,uses RAM 0x0003145c
 0x00006840,flipper_buttons_held_wrap_6840,FUN_00006840,wrapper,only calls flipper_buttons_held [0x000067b4]
 0x00006850,flipper_buttons_held_wrap_6850,FUN_00006850,wrapper,only calls flipper_buttons_held [0x000067b4]
@@ -204,22 +204,22 @@ address,name,was,rule,evidence
 0x00007144,memset_wrap_7144,FUN_00007144,wrapper,only calls memset [0x0002fd80]
 0x000071ac,leaf_71ac,FUN_000071ac,leaf,"no call to a named function, no table or RAM symbol"
 0x00007200,error_log_user_7200,FUN_00007200,uses,"calls error_log [0x00004f78], memset [0x0002fd80]"
-0x0000730c,start_deff_5_sub_730c,FUN_0000730c,sub,called only by start_deff_5 [0x00006ecc]
-0x0000731c,start_deff_5_sub_731c,FUN_0000731c,sub,called only by start_deff_5 [0x00006ecc]
-0x000074fc,ball_start_sub_74fc,FUN_000074fc,sub,called only by ball_start [0x00019d30]
+0x0000730c,lamp_layer_730c,FUN_0000730c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x0000731c,lamp_layer_731c,FUN_0000731c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x000074fc,lamp_layer_74fc,FUN_000074fc,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x00007578,error_log_wrap_7578,FUN_00007578,wrapper,only calls error_log [0x00004f78]
-0x000075cc,error_log_wrap_75cc,FUN_000075cc,wrapper,only calls error_log_wrap [0x00007578]
-0x00007604,error_log_wrap_7604,FUN_00007604,wrapper,only calls error_log_wrap [0x00007578]
-0x0000765c,error_log_wrap_765c,FUN_0000765c,wrapper,only calls error_log_wrap [0x00007578]
-0x000076d0,error_log_wrap_76d0,FUN_000076d0,wrapper,only calls error_log_wrap [0x00007578]
-0x00007714,error_log_wrap_7714,FUN_00007714,wrapper,only calls error_log_wrap [0x00007578]
-0x000077a0,error_log_wrap_77a0,FUN_000077a0,wrapper,only calls error_log_wrap [0x00007578]
-0x00007814,error_log_wrap_7814,FUN_00007814,wrapper,only calls error_log_wrap [0x00007578]
-0x00007858,error_log_wrap_7858,FUN_00007858,wrapper,only calls error_log_wrap [0x00007578]
-0x000078dc,error_log_wrap_78dc,FUN_000078dc,wrapper,only calls error_log_wrap [0x00007578]
-0x0000795c,error_log_wrap_795c,FUN_0000795c,wrapper,only calls error_log_wrap [0x00007578]
-0x000079ac,error_log_wrap_79ac,FUN_000079ac,wrapper,only calls error_log_wrap [0x00007578]
-0x00007a58,error_log_wrap_7a58,FUN_00007a58,wrapper,only calls error_log_wrap [0x00007578]
+0x000075cc,error_log_wrap_7578_wrap_75cc,FUN_000075cc,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x00007604,error_log_wrap_7578_wrap_7604,FUN_00007604,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x0000765c,error_log_wrap_7578_wrap_765c,FUN_0000765c,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x000076d0,error_log_wrap_7578_wrap_76d0,FUN_000076d0,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x00007714,error_log_wrap_7578_wrap_7714,FUN_00007714,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x000077a0,error_log_wrap_7578_wrap_77a0,FUN_000077a0,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x00007814,error_log_wrap_7578_wrap_7814,FUN_00007814,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x00007858,error_log_wrap_7578_wrap_7858,FUN_00007858,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x000078dc,error_log_wrap_7578_wrap_78dc,FUN_000078dc,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x0000795c,error_log_wrap_7578_wrap_795c,FUN_0000795c,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x000079ac,error_log_wrap_7578_wrap_79ac,FUN_000079ac,wrapper,only calls error_log_wrap_7578 [0x00007578]
+0x00007a58,error_log_wrap_7578_wrap_7a58,FUN_00007a58,wrapper,only calls error_log_wrap_7578 [0x00007578]
 0x00007aa4,leaf_7aa4,FUN_00007aa4,leaf,"no call to a named function, no table or RAM symbol"
 0x00007b24,leaf_7b24,FUN_00007b24,leaf,"no call to a named function, no table or RAM symbol"
 0x00007b74,leaf_7b74,FUN_00007b74,leaf,"no call to a named function, no table or RAM symbol"
@@ -228,40 +228,40 @@ address,name,was,rule,evidence
 0x00007df0,table_040cfe06_reader,FUN_00007df0,table,reads ROM table 0x040cfe06
 0x00007f1c,leaf_7f1c,FUN_00007f1c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00007f60,leaf_7f60,FUN_00007f60,leaf,"no call to a named function, no table or RAM symbol"
-0x00008174,error_log_wrap_8174,FUN_00008174,wrapper,only calls error_log_wrap [0x000081c4]
-0x000081c4,error_log_wrap_81c4,FUN_000081c4,wrapper,only calls error_log_wrap [0x0000e3a0]
-0x000081f4,error_log_wrap_81f4,FUN_000081f4,wrapper,only calls error_log_wrap [0x00008244]
-0x00008244,error_log_wrap_8244,FUN_00008244,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x00008174,error_log_wrap_e3a0_wrap_81c4_wrap_8174,FUN_00008174,wrapper,only calls error_log_wrap_e3a0_wrap_81c4 [0x000081c4]
+0x000081c4,error_log_wrap_e3a0_wrap_81c4,FUN_000081c4,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
+0x000081f4,error_log_wrap_e3a0_wrap_8244_wrap_81f4,FUN_000081f4,wrapper,only calls error_log_wrap_e3a0_wrap_8244 [0x00008244]
+0x00008244,error_log_wrap_e3a0_wrap_8244,FUN_00008244,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x00008274,get_dat_00031488,FUN_00008274,getter,returns DAT_00031488
 0x00008284,set_dat_00031488,FUN_00008284,setter,writes DAT_00031488
 0x00008294,strcmp_user_8294,FUN_00008294,uses,"calls strcmp [0x0002fe00], atoi [0x0002fa24], leff_start [0x00007c10]"
-0x000083dc,error_log_wrap_83dc,FUN_000083dc,wrapper,only calls error_log [0x00004f78]
-0x00008440,error_log_wrap_8440,FUN_00008440,wrapper,only calls error_log [0x00004f78]
-0x0000848c,error_log_wrap_848c,FUN_0000848c,wrapper,only calls error_log_wrap [0x0000765c]
-0x000084cc,error_log_user_84cc,FUN_000084cc,uses,calls error_log_wrap [0x0000765c]
-0x0000853c,error_log_user_853c,FUN_0000853c,uses,calls error_log_wrap [0x000076d0]
-0x000085a4,error_log_user_85a4,FUN_000085a4,uses,"calls error_log_wrap [0x0000765c], error_log_wrap [0x000076d0]"
-0x00008624,error_log_wrap_8624,FUN_00008624,wrapper,only calls error_log_wrap [0x000077a0]
-0x00008664,error_log_user_8664,FUN_00008664,uses,calls error_log_wrap [0x000077a0]
-0x000086d4,error_log_user_86d4,FUN_000086d4,uses,calls error_log_wrap [0x00007814]
-0x0000873c,error_log_user_873c,FUN_0000873c,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x000076d0]"
-0x000087bc,error_log_wrap_87bc,FUN_000087bc,wrapper,only calls error_log_wrap [0x000078dc]
-0x000087fc,error_log_user_87fc,FUN_000087fc,uses,calls error_log_wrap [0x000078dc]
-0x0000886c,error_log_user_886c,FUN_0000886c,uses,calls error_log_wrap [0x0000795c]
-0x000088d4,error_log_user_88d4,FUN_000088d4,uses,"calls error_log [0x00004f78], error_log_wrap [0x000079ac]"
-0x00008964,error_log_user_8964,FUN_00008964,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007a58]"
-0x00008bb4,error_log_user_8bb4,FUN_00008bb4,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007578]"
-0x00008ce0,error_log_user_8ce0,FUN_00008ce0,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007578]"
-0x00008ed4,error_log_user_8ed4,FUN_00008ed4,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007578]"
-0x00009000,error_log_user_9000,FUN_00009000,uses,"calls error_log [0x00004f78], error_log_wrap [0x000079ac], error_log_wrap [0x000077a0]"
-0x000090b8,error_log_user_90b8,FUN_000090b8,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007a58], error_log_wrap [0x00007814]"
-0x00009164,error_log_user_9164,FUN_00009164,uses,"calls error_log [0x00004f78], error_log_wrap [0x000079ac], error_log_wrap [0x000077a0]"
-0x00009214,error_log_user_9214,FUN_00009214,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007a58], error_log_wrap [0x00007814]"
-0x000092b8,error_log_user_92b8,FUN_000092b8,uses,"calls error_log [0x00004f78], error_log_wrap [0x000079ac], error_log_wrap [0x0000765c]"
-0x00009370,error_log_user_9370,FUN_00009370,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007a58], error_log_wrap [0x000076d0]"
-0x0000941c,error_log_user_941c,FUN_0000941c,uses,"calls error_log [0x00004f78], error_log_wrap [0x000079ac], error_log_wrap [0x0000765c]"
-0x000094cc,error_log_user_94cc,FUN_000094cc,uses,"calls error_log [0x00004f78], error_log_wrap [0x00007a58], error_log_wrap [0x000076d0]"
-0x00009570,leff_start_sub_9570,FUN_00009570,sub,called only by leff_start [0x00007c10]
+0x000083dc,lamp_group_83dc,FUN_000083dc,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008440,lamp_group_8440,FUN_00008440,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x0000848c,error_log_wrap_7578_wrap_765c_wrap_848c,FUN_0000848c,wrapper,only calls error_log_wrap_7578_wrap_765c [0x0000765c]
+0x000084cc,lamp_group_84cc,FUN_000084cc,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x0000853c,lamp_group_853c,FUN_0000853c,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000085a4,lamp_group_85a4,FUN_000085a4,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008624,error_log_wrap_7578_wrap_77a0_wrap_8624,FUN_00008624,wrapper,only calls error_log_wrap_7578_wrap_77a0 [0x000077a0]
+0x00008664,lamp_group_8664,FUN_00008664,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000086d4,lamp_group_86d4,FUN_000086d4,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x0000873c,lamp_group_873c,FUN_0000873c,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000087bc,error_log_wrap_7578_wrap_78dc_wrap_87bc,FUN_000087bc,wrapper,only calls error_log_wrap_7578_wrap_78dc [0x000078dc]
+0x000087fc,lamp_group_87fc,FUN_000087fc,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x0000886c,lamp_group_886c,FUN_0000886c,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000088d4,lamp_group_88d4,FUN_000088d4,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008964,lamp_group_8964,FUN_00008964,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008bb4,lamp_group_8bb4,FUN_00008bb4,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008ce0,lamp_group_8ce0,FUN_00008ce0,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00008ed4,lamp_group_8ed4,FUN_00008ed4,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00009000,lamp_group_9000,FUN_00009000,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000090b8,lamp_group_90b8,FUN_000090b8,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00009164,lamp_group_9164,FUN_00009164,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00009214,lamp_group_9214,FUN_00009214,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000092b8,lamp_group_92b8,FUN_000092b8,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00009370,lamp_group_9370,FUN_00009370,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x0000941c,lamp_group_941c,FUN_0000941c,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x000094cc,lamp_group_94cc,FUN_000094cc,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x00009570,lamp_group_9570,FUN_00009570,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
 0x000095e4,error_log_wrap_95e4,FUN_000095e4,wrapper,only calls error_log [0x00004f78]
 0x00009648,error_log_wrap_9648,FUN_00009648,wrapper,only calls error_log [0x00004f78]
 0x000096a0,leaf_96a0,FUN_000096a0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -294,7 +294,7 @@ address,name,was,rule,evidence
 0x00009f64,leaf_9f64,FUN_00009f64,leaf,"no call to a named function, no table or RAM symbol"
 0x00009fc4,leaf_9fc4,FUN_00009fc4,leaf,"no call to a named function, no table or RAM symbol"
 0x00009ff8,text_width_user_9ff8,FUN_00009ff8,uses,"calls text_width [0x00021378], vsprintf_wrap [0x0002fdac], msg_get [0x000099f0]"
-0x0000a438,draw_current_pricing_sub_a438,FUN_0000a438,sub,called only by draw_current_pricing_sub [0x00004a30]
+0x0000a438,draw_current_pricing_sub_4a30_sub_a438,FUN_0000a438,sub,called only by draw_current_pricing_sub_4a30 [0x00004a30]
 0x0000a4d0,error_log_wrap_a4d0,FUN_0000a4d0,wrapper,only calls error_log [0x00004f78]
 0x0000a5dc,default_user_a5dc,FUN_0000a5dc,uses,calls default [0x00004ef4]
 0x0000a6e0,memset_wrap_a6e0,FUN_0000a6e0,wrapper,only calls memset [0x0002fd80]
@@ -332,7 +332,7 @@ address,name,was,rule,evidence
 0x0000ba48,set_dat_000314b4_ba48,FUN_0000ba48,setter,writes DAT_000314b4
 0x0000ba54,set_dat_000314b4_ba54,FUN_0000ba54,setter,writes DAT_000314b4
 0x0000ba64,set_dat_000314b4_ba64,FUN_0000ba64,setter,writes DAT_000314b4
-0x0000bab4,set_dat_000314b4_wrap,FUN_0000bab4,wrapper,only calls set_dat_000314b4 [0x0000ba64]
+0x0000bab4,set_dat_000314b4_ba64_wrap,FUN_0000bab4,wrapper,only calls set_dat_000314b4_ba64 [0x0000ba64]
 0x0000bc08,bag_weighted_pick_user,FUN_0000bc08,uses,"calls bag_weighted_pick [0x0000bae8], bag_run_award [0x0000bc2c]"
 0x0000bc84,deff_052_special_sub,FUN_0000bc84,sub,called only by deff_052_special [0x01024524]
 0x0000bcf4,start_deff_5_sub_bcf4,FUN_0000bcf4,sub,called only by start_deff_5 [0x00006ecc]
@@ -376,32 +376,32 @@ address,name,was,rule,evidence
 0x0000cbf8,adj_time_format_cbf8,FUN_0000cbf8,adj,adj_get(3) TIME FORMAT
 0x0000d2a8,leaf_d2a8,FUN_0000d2a8,leaf,"no call to a named function, no table or RAM symbol"
 0x0000d2bc,draw_switch_alerts_sub,FUN_0000d2bc,sub,called only by draw_switch_alerts [0x0104beb8]
-0x0000d2d4,error_log_wrap_d2d4,FUN_0000d2d4,wrapper,only calls error_log [0x00004f78]
-0x0000d394,error_log_wrap_d394,FUN_0000d394,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d3e8,error_log_wrap_d3e8,FUN_0000d3e8,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d464,error_log_wrap_d464,FUN_0000d464,wrapper,only calls error_log_wrap [0x0000d3e8]
-0x0000d51c,error_log_wrap_d51c,FUN_0000d51c,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d594,error_log_wrap_d594,FUN_0000d594,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d60c,error_log_wrap_d60c,FUN_0000d60c,wrapper,only calls error_log_wrap [0x0000d594]
-0x0000d6c0,error_log_wrap_d6c0,FUN_0000d6c0,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d700,error_log_wrap_d700,FUN_0000d700,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d7bc,error_log_wrap_d7bc,FUN_0000d7bc,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x0000d82c,error_log_wrap_d82c,FUN_0000d82c,wrapper,only calls error_log_wrap [0x0000d7bc]
+0x0000d2d4,switch_rec_d2d4,FUN_0000d2d4,subsystem,"uses 0x040e2c20: the switch records (matrix 0x20 each, dedicated from 0x040e3740), [0x0000d2d4]"
+0x0000d394,switch_rec_d2d4_wrap_d394,FUN_0000d394,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d3e8,switch_rec_d2d4_wrap_d3e8,FUN_0000d3e8,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d464,sw_matrix_d464,FUN_0000d464,subsystem,"uses 0x00036902: the switch rows the IO interrupt reads, io_isr [0x000114b0]"
+0x0000d51c,switch_rec_d2d4_wrap_d51c,FUN_0000d51c,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d594,switch_rec_d2d4_wrap_d594,FUN_0000d594,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d60c,switch_rec_d2d4_wrap_d594_wrap_d60c,FUN_0000d60c,wrapper,only calls switch_rec_d2d4_wrap_d594 [0x0000d594]
+0x0000d6c0,switch_rec_d2d4_wrap_d6c0,FUN_0000d6c0,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d700,switch_rec_d2d4_wrap_d700,FUN_0000d700,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d7bc,switch_rec_d2d4_wrap_d7bc,FUN_0000d7bc,wrapper,only calls switch_rec_d2d4 [0x0000d2d4]
+0x0000d82c,switch_rec_d2d4_wrap_d7bc_wrap_d82c,FUN_0000d82c,wrapper,only calls switch_rec_d2d4_wrap_d7bc [0x0000d7bc]
 0x0000d8a0,task_of_serve_ball_sub_d8a0,FUN_0000d8a0,sub,called only by task_of_serve_ball [0x0103b128]
 0x0000d8ac,ram_000314d8_user,FUN_0000d8ac,ram,uses RAM 0x000314d8
 0x0000d8c4,event_post_wrap_d8c4,FUN_0000d8c4,wrapper,only calls event_post [0x00006e50]
 0x0000d8d0,event_post_wrap_d8d0,FUN_0000d8d0,wrapper,only calls event_post [0x00006e50]
 0x0000d8e4,msg_get_user_d8e4,FUN_0000d8e4,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x0000d930,error_log_user_d930,FUN_0000d930,uses,"calls error_log_wrap [0x0000d2d4], strcpy [0x0002fe30]"
-0x0000d974,play_sound_00f_sub_d974,FUN_0000d974,sub,called only by play_sound_00f [0x0104817c]
-0x0000d9f0,start_deff_5_sub_d9f0,FUN_0000d9f0,sub,called only by start_deff_5_sub [0x0000db14]
-0x0000db14,start_deff_5_sub_db14,FUN_0000db14,sub,called only by start_deff_5 [0x00006ecc]
+0x0000d974,play_sound_00f_4817c_sub_d974,FUN_0000d974,sub,called only by play_sound_00f_4817c [0x0104817c]
+0x0000d9f0,sw_matrix_d9f0,FUN_0000d9f0,subsystem,"uses 0x000368da: the switch rows the IO interrupt reads, io_isr [0x000114b0]"
+0x0000db14,sw_matrix_db14,FUN_0000db14,subsystem,"uses 0x000368da: the switch rows the IO interrupt reads, io_isr [0x000114b0]"
 0x0000dec4,switch_dispatch_debounce_wrap,FUN_0000dec4,wrapper,only calls switch_dispatch_debounce [0x0000dc44]
 0x0000df38,game_init_sub_df38,FUN_0000df38,sub,called only by game_init [0x00019c64]
 0x0000df44,ball_start_sub_df44,FUN_0000df44,sub,called only by ball_start [0x00019d30]
 0x0000e06c,ram_01100005_user,FUN_0000e06c,ram,uses RAM 0x01100005
 0x0000e084,memset_user_e084,FUN_0000e084,uses,"calls memset [0x0002fd80], error_log_wrap [0x0000d700]"
-0x0000e0b8,sw_is_disabled_user_e0b8,FUN_0000e0b8,uses,"calls sw_is_disabled [0x0000d480], msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
+0x0000e0b8,switch_rec_e0b8,FUN_0000e0b8,subsystem,"uses 0x040e2c28: the switch records (matrix 0x20 each, dedicated from 0x040e3740), [0x0000d2d4]"
 0x0000e264,event_hook_add_user_e264,FUN_0000e264,uses,calls event_hook_add [0x00006da8]
 0x0000e348,msg_get_user_e348,FUN_0000e348,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
 0x0000e374,leaf_e374,FUN_0000e374,leaf,"no call to a named function, no table or RAM symbol"
@@ -439,20 +439,20 @@ address,name,was,rule,evidence
 0x0000f2d8,error_log_user_f2d8,FUN_0000f2d8,uses,calls error_log [0x00004f78]
 0x0000f344,memset_user_f344,FUN_0000f344,uses,calls memset [0x0002fd80]
 0x0000f378,memset_user_f378,FUN_0000f378,uses,calls memset [0x0002fd80]
-0x0000f3c0,play_sound_00f_sub_f3c0,FUN_0000f3c0,sub,called only by play_sound_00f [0x0104817c]
-0x0000f480,play_sound_00f_sub_f480,FUN_0000f480,sub,called only by play_sound_00f [0x0104817c]
+0x0000f3c0,play_sound_00f_4817c_sub_f3c0,FUN_0000f3c0,sub,called only by play_sound_00f_4817c [0x0104817c]
+0x0000f480,play_sound_00f_4817c_sub_f480,FUN_0000f480,sub,called only by play_sound_00f_4817c [0x0104817c]
 0x0000f4e0,error_log_user_f4e0,FUN_0000f4e0,uses,calls error_log [0x00004f78]
-0x0000f59c,play_sound_00f_sub_f59c,FUN_0000f59c,sub,called only by play_sound_00f [0x0104817c]
+0x0000f59c,play_sound_00f_4817c_sub_f59c,FUN_0000f59c,sub,called only by play_sound_00f_4817c [0x0104817c]
 0x0000f644,error_log_wrap_f644,FUN_0000f644,wrapper,only calls error_log [0x00004f78]
-0x0000f6a0,play_sound_00f_sub_f6a0,FUN_0000f6a0,sub,called only by play_sound_00f [0x0104817c]
-0x0000f740,play_sound_00f_sub_f740,FUN_0000f740,sub,called only by play_sound_00f [0x0104817c]
+0x0000f6a0,play_sound_00f_4817c_sub_f6a0,FUN_0000f6a0,sub,called only by play_sound_00f_4817c [0x0104817c]
+0x0000f740,play_sound_00f_4817c_sub_f740,FUN_0000f740,sub,called only by play_sound_00f_4817c [0x0104817c]
 0x0000f768,leaf_f768,FUN_0000f768,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000f790,leaf_f790,FUN_0000f790,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0000f7b4,error_log_user_f7b4,FUN_0000f7b4,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000d464]"
 0x0000f820,table_040e3c10_reader,FUN_0000f820,table,reads ROM table 0x040e3c10
 0x0000f888,error_log_user_f888,FUN_0000f888,uses,"calls error_log_wrap [0x0000d2d4], error_log_wrap [0x00001e50], fatal_halt [0x00004f58]"
 0x0000f9c0,start_deff_5_sub_f9c0,FUN_0000f9c0,sub,called only by start_deff_5 [0x00006ecc]
-0x0000fa04,on_event_05_sub_fa04,FUN_0000fa04,sub,called only by on_event_05 [0x01005c30]
+0x0000fa04,on_event_05_5c30_sub_fa04,FUN_0000fa04,sub,called only by on_event_05_5c30 [0x01005c30]
 0x0000fa8c,event_post_user_fa8c,FUN_0000fa8c,uses,"calls event_post [0x00006e50], task_sleep [0x0000acfc]"
 0x0000fd20,task_running_user_fd20,FUN_0000fd20,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
 0x0000fdb0,leaf_fdb0,FUN_0000fdb0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -489,7 +489,7 @@ address,name,was,rule,evidence
 0x00010e60,leaf_10e60,FUN_00010e60,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00010ebc,set_dat_000314b4_user_10ebc,FUN_00010ebc,uses,"calls set_dat_000314b4 [0x0000ba64], random_below_wrap [0x00010d38]"
 0x00010f3c,set_dat_000314b4_user_10f3c,FUN_00010f3c,uses,"calls set_dat_000314b4 [0x0000ba54], get_dat_000315d4 [0x00013a50]"
-0x00010fd4,memset_wrap_10fd4,FUN_00010fd4,wrapper,only calls memset_wrap [0x00010fec]
+0x00010fd4,memset_wrap_10fec_wrap_10fd4,FUN_00010fd4,wrapper,only calls memset_wrap_10fec [0x00010fec]
 0x00010fec,memset_wrap_10fec,FUN_00010fec,wrapper,only calls memset [0x0002fd80]
 0x0001106c,memset_wrap_1106c,FUN_0001106c,wrapper,only calls memset [0x0002fd80]
 0x000110ec,table_040c897c_reader,FUN_000110ec,table,reads ROM table 0x040c897c
@@ -498,7 +498,7 @@ address,name,was,rule,evidence
 0x00011174,strcmp_user_11174,FUN_00011174,uses,"calls strcmp [0x0002fe00], memset_wrap [0x00010fd4]"
 0x000111bc,vsprintf_user_111bc,FUN_000111bc,uses,calls vsprintf [0x0002fef0]
 0x000111dc,table_040c8940_reader,FUN_000111dc,table,reads ROM table 0x040c8940
-0x00011274,ram_000315ec_user_11274,FUN_00011274,ram,"uses RAM 0x000315ec, 0x00031534"
+0x00011274,flash_bank_set,FUN_00011274,hand,writes the flash bank register (0x00031534 -> 0x02580000); returns the old bank (read back at 0x000315ec)
 0x000112a0,leaf_112a0,FUN_000112a0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0001134c,ram_000315ec_user_1134c,FUN_0001134c,ram,uses RAM 0x000315ec
 0x00011368,start_deff_5_sub_11368,FUN_00011368,sub,called only by start_deff_5 [0x00006ecc]
@@ -506,7 +506,7 @@ address,name,was,rule,evidence
 0x00011388,start_deff_5_sub_11388,FUN_00011388,sub,called only by start_deff_5 [0x00006ecc]
 0x000113a4,leaf_113a4,FUN_000113a4,leaf,"no call to a named function, no table or RAM symbol"
 0x000113fc,ram_00031478_user,FUN_000113fc,ram,"uses RAM 0x00031478, 0x0003147c, 0x00031474"
-0x000114b0,table_040e3c14_reader,FUN_000114b0,table,reads ROM table 0x040e3c14
+0x000114b0,io_isr,FUN_000114b0,hand,"the 4 kHz IO interrupt: 1 ms coil slot pass (time, patterns, end), switch rows (0x000368da), line sync, then motor_poll_all"
 0x00012880,ram_00031548_user,FUN_00012880,ram,uses RAM 0x00031548
 0x000128c4,start_deff_5_sub_128c4,FUN_000128c4,sub,called only by start_deff_5 [0x00006ecc]
 0x00012b24,table_040c8ad0_reader,FUN_00012b24,table,reads ROM table 0x040c8ad0
@@ -543,7 +543,7 @@ address,name,was,rule,evidence
 0x00013810,leaf_13810,FUN_00013810,leaf,"no call to a named function, no table or RAM symbol"
 0x00013884,leaf_13884,FUN_00013884,leaf,"no call to a named function, no table or RAM symbol"
 0x00013920,leaf_13920,FUN_00013920,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00013940,start_deff_5_sub_13940,FUN_00013940,sub,called only by start_deff_5_sub [0x000128c4]
+0x00013940,start_deff_5_sub_128c4_sub_13940,FUN_00013940,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
 0x00013980,table_040c8ac8_reader_13980,FUN_00013980,table,reads ROM table 0x040c8ac8
 0x00013a14,error_log_user_13a14,FUN_00013a14,uses,calls error_log [0x00004f78]
 0x00013a50,get_dat_000315d4,FUN_00013a50,getter,returns DAT_000315d4
@@ -588,7 +588,7 @@ address,name,was,rule,evidence
 0x000150a0,leaf_150a0,FUN_000150a0,leaf,"no call to a named function, no table or RAM symbol"
 0x000150b8,leaf_150b8,FUN_000150b8,leaf,"no call to a named function, no table or RAM symbol"
 0x000150d4,leaf_150d4,FUN_000150d4,leaf,"no call to a named function, no table or RAM symbol"
-0x00015104,start_deff_5_sub_15104,FUN_00015104,sub,called only by start_deff_5_sub [0x000128c4]
+0x00015104,start_deff_5_sub_128c4_sub_15104,FUN_00015104,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
 0x000151ac,table_040c8ac8_reader_151ac,FUN_000151ac,table,reads ROM table 0x040c8ac8
 0x0001520c,table_040c8ac8_reader_1520c,FUN_0001520c,table,reads ROM table 0x040c8ac8
 0x0001524c,leaf_1524c,FUN_0001524c,leaf,"no call to a named function, no table or RAM symbol"
@@ -613,8 +613,8 @@ address,name,was,rule,evidence
 0x000154ec,leaf_154ec,FUN_000154ec,leaf,"no call to a named function, no table or RAM symbol"
 0x00015530,leaf_15530,FUN_00015530,leaf,"no call to a named function, no table or RAM symbol"
 0x00015714,leaf_15714,FUN_00015714,leaf,"no call to a named function, no table or RAM symbol"
-0x000157f8,start_deff_5_sub_157f8,FUN_000157f8,sub,called only by start_deff_5_sub [0x000128c4]
-0x000158a0,start_deff_5_sub_158a0,FUN_000158a0,sub,called only by start_deff_5_sub [0x000128c4]
+0x000157f8,start_deff_5_sub_128c4_sub_157f8,FUN_000157f8,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
+0x000158a0,start_deff_5_sub_128c4_sub_158a0,FUN_000158a0,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
 0x00015958,leaf_15958,FUN_00015958,leaf,"no call to a named function, no table or RAM symbol"
 0x00015a04,start_deff_5_sub_15a04,FUN_00015a04,sub,called only by start_deff_5 [0x00006ecc]
 0x00015a7c,ram_0003710c_user_15a7c,FUN_00015a7c,ram,"uses RAM 0x0003710c, 0x000315e0, 0x00037334"
@@ -629,8 +629,8 @@ address,name,was,rule,evidence
 0x00016048,leaf_16048,FUN_00016048,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00016088,leaf_16088,FUN_00016088,leaf,"no call to a named function, no table or RAM symbol"
 0x000160c0,ram_00016080_user,FUN_000160c0,ram,"uses RAM 0x00016080, 0x00016078"
-0x00016100,start_deff_5_sub_16100,FUN_00016100,sub,called only by start_deff_5_sub [0x000128c4]
-0x00016140,error_log_user_16140,FUN_00016140,uses,"calls error_log_wrap [0x00001e50], fatal_halt [0x00004f58]"
+0x00016100,start_deff_5_sub_128c4_sub_16100,FUN_00016100,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
+0x00016140,motor_16140,FUN_00016140,subsystem,"uses 0x000315f4: the list of motors, motor_poll_all [0x00016b7c]"
 0x0001630c,on_event_25_1630c,FUN_0001630c,hook,"event_hook_add(&DAT_0003756c, 0x25, ..) in FUN_00017348 [0x00017348]"
 0x00016358,leaf_16358,FUN_00016358,leaf,"no call to a named function, no table or RAM symbol"
 0x000163a4,on_event_3a_163a4,FUN_000163a4,hook,"event_hook_add(&DAT_00037570, 0x3a, ..) in FUN_00017348 [0x00017348]"
@@ -641,24 +641,24 @@ address,name,was,rule,evidence
 0x00016628,on_event_0c_16628,FUN_00016628,hook,"event_hook_add(&DAT_0003757c, 0xc, ..) in FUN_00017348 [0x00017348]"
 0x00016674,task_0x2b_of_FUN_0001673c,FUN_00016674,task,"task entry started by FUN_0001673c [0x0001673c] (task_create, id 0x2b)"
 0x0001673c,task_create_wrap_1673c,FUN_0001673c,wrapper,only calls task_create [0x0000aa04]
-0x00016768,ram_000315f4_user_16768,FUN_00016768,ram,uses RAM 0x000315f4
-0x00016810,leaf_16810,FUN_00016810,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0001687c,error_log_user_1687c,FUN_0001687c,uses,"calls error_log [0x00004f78], task_sleep [0x0000acfc], error_log_wrap [0x0000b598]"
-0x0001699c,error_log_wrap_1699c,FUN_0001699c,wrapper,only calls error_log_wrap [0x0000b598]
-0x000169f0,ram_021100d4_user_169f0,FUN_000169f0,ram,"uses RAM 0x021100d4, 0x02110084, 0x02110088"
-0x00016a24,ram_000368da_user,FUN_00016a24,ram,uses RAM 0x000368da
-0x00016b7c,ram_000315f4_user_16b7c,FUN_00016b7c,ram,uses RAM 0x000315f4
-0x00016bbc,error_log_wrap_16bbc,FUN_00016bbc,wrapper,only calls error_log_wrap [0x0000d2d4]
-0x00016c88,task_of_FUN_00016f88,FUN_00016c88,task,"task entry started by FUN_00016f88 [0x00016f88] (FUN_0000ab4c, id *(undefined2 *)(param_1 + 0x18))"
-0x00016ea8,task_running_wrap_16ea8,FUN_00016ea8,wrapper,only calls task_running [0x0000b248]
-0x00016ec4,error_log_wrap_16ec4,FUN_00016ec4,wrapper,only calls error_log [0x00004f78]
-0x00016f28,task_sleep_wrap_16f28,FUN_00016f28,wrapper,only calls task_sleep [0x0000acfc]
-0x00016f88,task_running_user_16f88,FUN_00016f88,uses,calls task_running [0x0000b248]
-0x00017024,task_kill_user_17024,FUN_00017024,uses,calls task_kill [0x0000ae1c]
-0x00017094,leaf_17094,FUN_00017094,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0001714c,leaf_1714c,FUN_0001714c,leaf,"no call to a named function, no table or RAM symbol"
-0x000171d0,leaf_171d0,FUN_000171d0,leaf,"no call to a named function, no table or RAM symbol"
-0x0001724c,leaf_1724c,FUN_0001724c,leaf,"no call to a named function, no table or RAM symbol"
+0x00016768,motor_16768,FUN_00016768,subsystem,"uses 0x000315f4: the list of motors, motor_poll_all [0x00016b7c]"
+0x00016810,motor_set_position,FUN_00016810,hand,"OS motor class (vtable 0x000339d4 +0x18): writes the current position +0x20, interrupts off"
+0x0001687c,motor_claim,FUN_0001687c,hand,"waits up to n ticks while vtable +0x2c says the motor is owned, then makes the current task its owner (+0x2c) with an exit call 0x000169f0"
+0x0001699c,motor_release,FUN_0001699c,hand,"clears the owner +0x2c (and its exit call), then vtable +0xc"
+0x000169f0,motor_owner_exit,FUN_000169f0,hand,"exit call of a motor's owner task: stops the move (vtable +0xf4), else logs error 0x8e"
+0x00016a24,motor_poll_1ms,FUN_00016a24,hand,"every 4th call (+0x34) of the IO interrupt: the target switch seen in +0x5c polls, then the after-run (+0x54 / +100), then stop (vtable +0x10c); Optimus motor 0x000351e8"
+0x00016b7c,motor_poll_all,FUN_00016b7c,hand,every motor of the list 0x000315f4: vtable +0xe4 (motor_poll_1ms)
+0x00016bbc,motor_arm_target,FUN_00016bbc,hand,"vtable +0xac: target switch (switch_rec_d2d4 record), debounce 2, after-run from table +0x14, target +0x22"
+0x00016c88,motor_move_task,FUN_00016c88,hand,"task +0x18 of a motor: start delay +4, start (vtable +0xac), wait at most vtable +0x24 ticks (0x00016830: 0x1d4 = 468), arrival (+0x94 / +0xa4) or fault (+0x8c / +0x9c) callbacks, stop (+0x104)"
+0x00016ea8,motor_moving,FUN_00016ea8,hand,task_running(motor task id +0x18)
+0x00016ec4,motor_goto_check,FUN_00016ec4,hand,vtable +0x34 then +0xec (motor_goto); error 0x8f when not allowed
+0x00016f28,motor_goto_wait,FUN_00016f28,hand,vtable +0x44 (goto) then sleeps while vtable +0x64 (moving); true when the position +0x20 is the target
+0x00016f88,motor_goto,FUN_00016f88,hand,starts the move task 0x00016c88 toward a position unless already there or moving there
+0x00017024,motor_stop,FUN_00017024,hand,kills the move task and stops the motor (vtable +0x10c)
+0x00017094,motor_off_locked,FUN_00017094,hand,vtable +0x10c with interrupts off
+0x0001714c,motor_position_faulty,FUN_0001714c,hand,the fault count of a position (table +0x1c) is above 2
+0x000171d0,motor_fault_set,FUN_000171d0,hand,sets or clears the fault count of a position (table +0x1c)
+0x0001724c,motor_fault_count,FUN_0001724c,hand,"adds one to the fault count of a position (table +0x1c), at most 3"
 0x000172b8,leaf_172b8,FUN_000172b8,leaf,"no call to a named function, no table or RAM symbol"
 0x00017348,event_hook_add_user_17348,FUN_00017348,uses,calls event_hook_add [0x00006da8]
 0x00017500,fatal_halt_user_17500,FUN_00017500,uses,calls fatal_halt [0x00004f58]
@@ -679,7 +679,7 @@ address,name,was,rule,evidence
 0x00017be4,task_kill_range_user_17be4,FUN_00017be4,uses,calls task_kill_range [0x0000af20]
 0x00017c00,ram_00031604_user_17c00,FUN_00017c00,ram,uses RAM 0x00031604
 0x00017c24,ram_00031604_user_17c24,FUN_00017c24,ram,uses RAM 0x00031604
-0x00017c2c,start_deff_5_sub_17c2c,FUN_00017c2c,sub,called only by start_deff_5_sub [0x000267fc]
+0x00017c2c,start_deff_5_sub_267fc_sub_17c2c,FUN_00017c2c,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x00017c60,task_running_user_17c60,FUN_00017c60,uses,"calls task_running [0x0000b248], get_dat_00031621 [0x00019328], ball_search_start [0x0103b8e0]"
 0x00017d2c,ball_start_sub_17d2c,FUN_00017d2c,sub,called only by ball_start [0x00019d30]
 0x00017d60,task_running_user_17d60,FUN_00017d60,uses,calls task_running [0x0000b248]
@@ -689,17 +689,17 @@ address,name,was,rule,evidence
 0x00017ed4,adj_player_competition,FUN_00017ed4,adj,adj_get(46) PLAYER COMPETITION
 0x00017fa0,adj_player_competition_user,FUN_00017fa0,uses,"calls adj_player_competition [0x00017ed4], task_kill [0x0000ae1c], error_log [0x00004f78]"
 0x00017fdc,memset_wrap_17fdc,FUN_00017fdc,wrapper,only calls memset [0x0002fd80]
-0x0001801c,ball_start_sub_1801c,FUN_0001801c,sub,called only by ball_start [0x00019d30]
+0x0001801c,lamp_layer_1801c,FUN_0001801c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0001803c,adj_extra_ball_limit,FUN_0001803c,adj,adj_get(26) EXTRA BALL LIMIT
 0x00018090,current_player_wrap_18090,FUN_00018090,wrapper,only calls current_player [0x0001aa40]
 0x000180c8,current_player_user_180c8,FUN_000180c8,uses,calls current_player [0x0001aa40]
 0x00018170,count_coins_through_fifth_slot,FUN_00018170,audit,audit_add(9) COINS THROUGH FIFTH SLOT
 0x00018204,start_deff_54_sub,FUN_00018204,sub,called only by start_deff_54 [0x01007b74]
 0x00018284,next_up_sub_18284,FUN_00018284,sub,called only by next_up [0x0001abb4]
-0x000182ac,current_player_user_182ac,FUN_000182ac,uses,"calls current_player [0x0001aa40], event_post [0x00006e50], error_log_wrap [0x0000765c]"
-0x000183ac,error_log_user_183ac,FUN_000183ac,uses,"calls error_log_wrap [0x00005b58], error_log_wrap [0x000077a0], error_log_wrap [0x00007578]"
+0x000182ac,lamp_layer_182ac,FUN_000182ac,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x000183ac,lamp_layer_183ac,FUN_000183ac,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x00018460,adj_hstd_reset_count_18460,FUN_00018460,adj,adj_get(61) HSTD RESET COUNT
-0x00018480,game_init_sub_18480,FUN_00018480,sub,called only by game_init_sub [0x000184f8]
+0x00018480,game_init_sub_184f8_sub_18480,FUN_00018480,sub,called only by game_init_sub_184f8 [0x000184f8]
 0x000184f8,game_init_sub_184f8,FUN_000184f8,sub,called only by game_init [0x00019c64]
 0x0001855c,error_log_wrap_1855c,FUN_0001855c,wrapper,only calls error_log [0x00004f78]
 0x000185c8,error_log_user_185c8,FUN_000185c8,uses,"calls error_log_wrap [0x0000e3a0], error_log [0x00004f78]"
@@ -711,12 +711,12 @@ address,name,was,rule,evidence
 0x00018830,leaf_18830,FUN_00018830,leaf,"no call to a named function, no table or RAM symbol"
 0x00018874,leaf_18874,FUN_00018874,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x000188cc,error_log_user_188cc,FUN_000188cc,uses,"calls error_log [0x00004f78], error_log_wrap [0x0000e3a0], nvram_unlock [0x00009ec8]"
-0x000189fc,error_log_wrap_189fc,FUN_000189fc,wrapper,only calls error_log_wrap [0x0000e3a0]
-0x00018ab4,error_log_wrap_18ab4,FUN_00018ab4,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x000189fc,error_log_wrap_e3a0_wrap_189fc,FUN_000189fc,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
+0x00018ab4,error_log_wrap_e3a0_wrap_18ab4,FUN_00018ab4,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x00018b20,adj_hstd_reset_count_18b20,FUN_00018b20,adj,adj_get(61) HSTD RESET COUNT
 0x00018b70,num_players_wrap,FUN_00018b70,wrapper,only calls num_players [0x0001a94c]
 0x00018c04,start_deff_33,FUN_00018c04,deff,deff_start(33)
-0x000190bc,start_deff_5_sub_190bc,FUN_000190bc,sub,called only by start_deff_5_sub [0x000267fc]
+0x000190bc,start_deff_5_sub_267fc_sub_190bc,FUN_000190bc,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x00019114,get_dat_0003243d_wrap,FUN_00019114,wrapper,only calls get_dat_0003243d [0x0001cd1c]
 0x0001912c,get_dat_0003161c,FUN_0001912c,getter,returns DAT_0003161c
 0x0001913c,set_dat_0003161c,FUN_0001913c,setter,writes DAT_0003161c
@@ -733,18 +733,18 @@ address,name,was,rule,evidence
 0x0001995c,start_deff_38_sub,FUN_0001995c,sub,called only by start_deff_38 [0x00019668]
 0x00019988,leaf_19988,FUN_00019988,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x000199bc,tournament_get_type_user_199bc,FUN_000199bc,uses,calls tournament_get_type [0x0001e8c0]
-0x00019a0c,error_log_user_19a0c,FUN_00019a0c,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x0000765c], task_sleep [0x0000acfc]"
-0x00019b28,task_running_user_19b28,FUN_00019b28,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
+0x00019a0c,lamp_layer_19a0c,FUN_00019a0c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x00019b28,lamp_layer_19b28,FUN_00019b28,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x00019c40,task_create_wrap_19c40,FUN_00019c40,wrapper,only calls task_create [0x0000aa04]
 0x00019e44,start_deff_25,FUN_00019e44,deff,deff_start(25)
 0x0001a110,task_sleep_wrap_1a110,FUN_0001a110,wrapper,only calls task_sleep [0x0000acfc]
 0x0001a144,start_deff_25_sub_1a144,FUN_0001a144,sub,called only by start_deff_25 [0x00019e44]
 0x0001a6e4,sw_start_button,FUN_0001a6e4,switch,handler of switch(es) START BUTTON (switch table)
 0x0001a6fc,sw_tournament_start,FUN_0001a6fc,switch,handler of switch(es) TOURNAMENT START (switch table)
-0x0001a714,start_deff_5_sub_1a714,FUN_0001a714,sub,called only by start_deff_5_sub [0x000267fc]
+0x0001a714,start_deff_5_sub_267fc_sub_1a714,FUN_0001a714,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x0001a734,ram_021108ed_user,FUN_0001a734,ram,uses RAM 0x021108ed
-0x0001a760,memcpy_wrap_1a760,FUN_0001a760,wrapper,only calls memcpy [0x0002fd48]
-0x0001a7b4,error_log_wrap_1a7b4,FUN_0001a7b4,wrapper,only calls error_log_wrap [0x00007578]
+0x0001a760,lamp_layer_1a760,FUN_0001a760,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x0001a7b4,lamp_layer_1a7b4,FUN_0001a7b4,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0001a928,error_log_wrap_1a928,FUN_0001a928,wrapper,only calls error_log [0x00004f78]
 0x0001a980,error_log_wrap_1a980,FUN_0001a980,wrapper,only calls error_log [0x00004f78]
 0x0001a9c8,ram_02110900_user,FUN_0001a9c8,ram,uses RAM 0x02110900
@@ -767,7 +767,7 @@ address,name,was,rule,evidence
 0x0001b01c,error_log_user_1b01c,FUN_0001b01c,uses,calls error_log_wrap [0x0000e3a0]
 0x0001b074,leaf_1b074,FUN_0001b074,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0001b0a0,error_log_user_1b0a0,FUN_0001b0a0,uses,calls error_log_wrap [0x0000e3a0]
-0x0001b0c0,start_deff_5_sub_1b0c0,FUN_0001b0c0,sub,called only by start_deff_5_sub [0x000267fc]
+0x0001b0c0,start_deff_5_sub_267fc_sub_1b0c0,FUN_0001b0c0,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x0001b134,nvram_unlock_user_1b134,FUN_0001b134,uses,calls nvram_unlock [0x00009ec8]
 0x0001b17c,game_init_sub_1b17c,FUN_0001b17c,sub,called only by game_init [0x00019c64]
 0x0001b19c,nvram_unlock_user_1b19c,thunk_FUN_00021a04,uses,calls nvram_unlock [0x00009ec8]
@@ -795,21 +795,21 @@ address,name,was,rule,evidence
 0x0001c174,task_running_user_1c174,FUN_0001c174,uses,"calls task_running [0x0000b248], current_player [0x0001aa40], error_log [0x00004f78]"
 0x0001c21c,adj_replay_award_1c21c,FUN_0001c21c,adj,adj_get(13) REPLAY AWARD
 0x0001c2b8,adj_dynamic_replay_start_user_1c2b8,FUN_0001c2b8,uses,"calls adj_dynamic_replay_start [0x0001beb0], memset [0x0002fd80]"
-0x0001c2c8,start_deff_5_sub_1c2c8,FUN_0001c2c8,sub,called only by start_deff_5_sub [0x000267fc]
+0x0001c2c8,start_deff_5_sub_267fc_sub_1c2c8,FUN_0001c2c8,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x0001c2ec,game_init_sub_1c2ec,FUN_0001c2ec,sub,called only by game_init [0x00019c64]
 0x0001c6b8,adj_replay_percentage,FUN_0001c6b8,adj,adj_get(12) REPLAY PERCENTAGE
-0x0001c888,start_deff_25_sub_1c888,FUN_0001c888,sub,called only by start_deff_25_sub [0x0001a144]
+0x0001c888,start_deff_25_sub_1a144_sub_1c888,FUN_0001c888,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
 0x0001caac,current_player_wrap_1caac,FUN_0001caac,wrapper,only calls current_player [0x0001aa40]
-0x0001cacc,error_log_wrap_1cacc,FUN_0001cacc,wrapper,only calls error_log_wrap [0x0001a928]
+0x0001cacc,error_log_wrap_1a928_wrap_1cacc,FUN_0001cacc,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001cc84,current_player_user_1cc84,FUN_0001cc84,uses,"calls current_player [0x0001aa40], error_log_wrap [0x0001a928]"
-0x0001cca0,error_log_wrap_1cca0,FUN_0001cca0,wrapper,only calls error_log_wrap [0x0001a928]
+0x0001cca0,error_log_wrap_1a928_wrap_1cca0,FUN_0001cca0,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001cce0,error_log_wrap_1cce0,FUN_0001cce0,wrapper,only calls error_log [0x00004f78]
 0x0001cd1c,get_dat_0003243d,FUN_0001cd1c,getter,returns DAT_0003243d
 0x0001cd2c,ram_021109d4_user,FUN_0001cd2c,ram,"uses RAM 0x021109d4, 0x021109e0"
 0x0001ce0c,game_init_sub_1ce0c,FUN_0001ce0c,sub,called only by game_init [0x00019c64]
 0x0001ce20,ball_start_sub_1ce20,FUN_0001ce20,sub,called only by ball_start [0x00019d30]
 0x0001ce44,set_dat_0003243d,FUN_0001ce44,setter,writes DAT_0003243d
-0x0001ce58,start_deff_25_sub_1ce58,FUN_0001ce58,sub,called only by start_deff_25_sub [0x0001a144]
+0x0001ce58,start_deff_25_sub_1a144_sub_1ce58,FUN_0001ce58,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
 0x0001cf9c,strcmp_user_1cf9c,FUN_0001cf9c,uses,"calls strcmp [0x0002fe00], num_players [0x0001a94c], atoi [0x0002fa24]"
 0x0001d09c,vsprintf_user_1d09c,FUN_0001d09c,uses,calls vsprintf [0x0002fef0]
 0x0001d0e0,ram_00037608_user,FUN_0001d0e0,ram,uses RAM 0x00037608
@@ -819,14 +819,14 @@ address,name,was,rule,evidence
 0x0001d50c,task_0x39_of_FUN_0001d534,FUN_0001d50c,task,"task entry started by FUN_0001d534 [0x0001d534] (task_create, id 0x39)"
 0x0001d534,start_deff_24,FUN_0001d534,deff,deff_start(24)
 0x0001d624,memset_wrap_1d624,FUN_0001d624,wrapper,only calls memset [0x0002fd80]
-0x0001d654,ball_start_sub_1d654,FUN_0001d654,sub,called only by ball_start [0x00019d30]
+0x0001d654,lamp_layer_1d654,FUN_0001d654,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0001d668,adj_special_limit,FUN_0001d668,adj,adj_get(22) SPECIAL LIMIT
 0x0001d6bc,current_player_wrap_1d6bc,FUN_0001d6bc,wrapper,only calls current_player [0x0001aa40]
 0x0001d708,current_player_user_1d708,FUN_0001d708,uses,calls current_player [0x0001aa40]
-0x0001d770,error_log_wrap_1d770,FUN_0001d770,wrapper,only calls error_log_wrap [0x0001a928]
+0x0001d770,error_log_wrap_1a928_wrap_1d770,FUN_0001d770,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001d7a0,adj_special_award,FUN_0001d7a0,adj,adj_get(23) SPECIAL AWARD
 0x0001d90c,current_player_user_1d90c,FUN_0001d90c,uses,"calls current_player [0x0001aa40], adj_special_award [0x0001d7a0]"
-0x0001d98c,current_player_user_1d98c,FUN_0001d98c,uses,"calls current_player [0x0001aa40], error_log_wrap [0x00007578], error_log_wrap [0x000077a0]"
+0x0001d98c,lamp_layer_1d98c,FUN_0001d98c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0001da14,set_dat_00037628,FUN_0001da14,setter,writes DAT_00037628
 0x0001da38,adj_coin_door_disable_tilt,FUN_0001da38,adj,adj_get(64) COIN DOOR DISABLE TILT
 0x0001da8c,adj_tilt_warnings,FUN_0001da8c,adj,adj_get(32) TILT WARNINGS
@@ -834,36 +834,36 @@ address,name,was,rule,evidence
 0x0001dd14,leaf_1dd14,FUN_0001dd14,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0001dd44,nvram_unlock_user_1dd44,FUN_0001dd44,uses,"calls nvram_unlock [0x00009ec8], memset [0x0002fd80]"
 0x0001dd8c,nvram_unlock_user_1dd8c,FUN_0001dd8c,uses,"calls nvram_unlock [0x00009ec8], memset [0x0002fd80]"
-0x0001ddc0,nvram_unlock_user_1ddc0,FUN_0001ddc0,uses,"calls nvram_unlock [0x00009ec8], error_log [0x00004f78]"
+0x0001ddc0,tournament_1ddc0,FUN_0001ddc0,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
 0x0001e0d8,error_log_user_1e0d8,FUN_0001e0d8,uses,"calls error_log_wrap [0x0001e994], tournament_get [0x0001ec30], msg_get [0x000099f0]"
 0x0001e194,error_log_user_1e194,FUN_0001e194,uses,"calls error_log_wrap [0x0001a928], error_log_wrap [0x0001e994], tournament_get [0x0001ec30]"
 0x0001e24c,random_below_user_1e24c,FUN_0001e24c,uses,calls random_below [0x0000ba94]
 0x0001e2e4,ram_02100000_user,FUN_0001e2e4,ram,uses RAM 0x02100000
 0x0001e328,start_deff_34_sub,FUN_0001e328,sub,called only by start_deff_34 [0x0001e810]
 0x0001e810,start_deff_34,FUN_0001e810,deff,deff_start(34)
-0x0001e934,error_log_user_1e934,FUN_0001e934,uses,calls error_log [0x00004f78]
-0x0001e994,error_log_wrap_1e994,FUN_0001e994,wrapper,only calls error_log_wrap [0x0001a928]
-0x0001e9b8,error_log_user_1e9b8,FUN_0001e9b8,uses,"calls error_log [0x00004f78], nvram_unlock [0x00009ec8], memcpy [0x0002fd48]"
+0x0001e934,tournament_1e934,FUN_0001e934,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001e994,error_log_wrap_1a928_wrap_1e994,FUN_0001e994,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
+0x0001e9b8,tournament_1e9b8,FUN_0001e9b8,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
 0x0001eb74,leaf_1eb74,FUN_0001eb74,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0001ec8c,error_log_user_1ec8c,FUN_0001ec8c,uses,calls error_log [0x00004f78]
-0x0001ed14,error_log_user_1ed14,FUN_0001ed14,uses,calls error_log [0x00004f78]
-0x0001ed68,sw_tournament_start_sub,FUN_0001ed68,sub,called only by sw_tournament_start [0x0001a6fc]
-0x0001edf8,error_log_user_1edf8,FUN_0001edf8,uses,calls error_log [0x00004f78]
-0x0001ee78,nvram_unlock_user_1ee78,FUN_0001ee78,uses,"calls nvram_unlock [0x00009ec8], error_log [0x00004f78]"
-0x0001ef58,error_log_user_1ef58,FUN_0001ef58,uses,"calls error_log_wrap [0x0001a928], nvram_unlock [0x00009ec8]"
+0x0001ec8c,tournament_1ec8c,FUN_0001ec8c,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001ed14,tournament_1ed14,FUN_0001ed14,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001ed68,tournament_1ed68,FUN_0001ed68,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001edf8,tournament_1edf8,FUN_0001edf8,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001ee78,tournament_1ee78,FUN_0001ee78,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0001ef58,tournament_1ef58,FUN_0001ef58,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
 0x0001f004,adj_balls_per_game_1f004,FUN_0001f004,adj,adj_get(31) BALLS PER GAME
 0x0001f060,table_040c8d50_reader,FUN_0001f060,table,reads ROM table 0x040c8d50
 0x0001f090,table_040c8dc8_reader,FUN_0001f090,table,reads ROM table 0x040c8dc8
 0x0001f0b0,msg_get_user_1f0b0,FUN_0001f0b0,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], vsprintf_wrap [0x0002fdac]"
 0x0001f170,msg_get_user_1f170,FUN_0001f170,uses,"calls msg_get [0x000099f0], strcpy [0x0002fe30], vsprintf_wrap [0x0002fdac]"
 0x0001f1b0,nvram_unlock_user_1f1b0,FUN_0001f1b0,uses,calls nvram_unlock [0x00009ec8]
-0x0001f2f0,error_log_wrap_1f2f0,FUN_0001f2f0,wrapper,only calls error_log_wrap [0x0001a928]
+0x0001f2f0,error_log_wrap_1a928_wrap_1f2f0,FUN_0001f2f0,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x0001f320,ram_0003154c_user,FUN_0001f320,ram,uses RAM 0x0003154c
-0x0001f340,start_deff_5_sub_1f340,thunk_FUN_0001f320,sub,called only by start_deff_5_sub [0x000267fc]
+0x0001f340,start_deff_5_sub_267fc_sub_1f340,thunk_FUN_0001f320,sub,called only by start_deff_5_sub_267fc [0x000267fc]
 0x0001f344,audit_add_user_1f344,FUN_0001f344,uses,"calls audit_add [0x00000c3c], current_player [0x0001aa40]"
 0x0001f550,game_init_sub_1f550,FUN_0001f550,sub,called only by game_init [0x00019c64]
-0x0001f564,start_deff_25_sub_1f564,FUN_0001f564,sub,called only by start_deff_25_sub [0x0001a144]
-0x0001f634,dmd_page_alloc_pair_user_1f634,FUN_0001f634,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
+0x0001f564,start_deff_25_sub_1a144_sub_1f564,FUN_0001f564,sub,called only by start_deff_25_sub_1a144 [0x0001a144]
+0x0001f634,dmd_page_1f634,FUN_0001f634,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
 0x0001f8bc,error_log_user_1f8bc,FUN_0001f8bc,uses,calls error_log [0x00004f78]
 0x0001f910,leaf_1f910,FUN_0001f910,leaf,"no call to a named function, no table or RAM symbol"
 0x0001f9c0,dmd_hline_buf_user,FUN_0001f9c0,uses,"calls dmd_hline_buf [0x0001fa04], error_log [0x00004f78]"
@@ -887,15 +887,15 @@ address,name,was,rule,evidence
 0x0001ff10,leaf_1ff10,FUN_0001ff10,leaf,"no call to a named function, no table or RAM symbol"
 0x000201f0,dmd_show_pages_user_201f0,FUN_000201f0,uses,"calls dmd_show_pages [0x00020134], default [0x00004ef4]"
 0x00020244,dmd_show_pages_user_20244,FUN_00020244,uses,"calls dmd_show_pages [0x00020134], dmd_page_alloc [0x0001ffd4]"
-0x00020298,deff_038_sub_20298,FUN_00020298,sub,called only by deff_038_sub [0x000202c8]
+0x00020298,deff_038_sub_202c8_sub_20298,FUN_00020298,sub,called only by deff_038_sub_202c8 [0x000202c8]
 0x000202c8,deff_038_sub_202c8,FUN_000202c8,sub,called only by deff_038 [0x0100820c]
-0x000202ec,ram_00037664_user,FUN_000202ec,ram,"uses RAM 0x00037664, 0x00037654, 0x00032478"
+0x000202ec,dmd_page_202ec,FUN_000202ec,subsystem,"uses 0x00037654: the DMD page allocator, dmd_page_alloc"
 0x00020374,default_user_20374,FUN_00020374,uses,calls default [0x00004ef4]
 0x0002038c,error_log_wrap_2038c,FUN_0002038c,wrapper,only calls error_log [0x00004f78]
 0x000203d0,table_040cf044_reader,FUN_000203d0,table,reads ROM table 0x040cf044
 0x00020478,ram_00037670_user,FUN_00020478,ram,uses RAM 0x00037670
-0x000207c8,start_deff_5_sub_207c8,FUN_000207c8,sub,called only by start_deff_5 [0x00006ecc]
-0x000208f4,deff_start_core_user,FUN_000208f4,uses,"calls deff_start_core [0x00020498], error_log [0x00004f78], task_kill [0x0000ae1c]"
+0x000207c8,dmd_page_207c8,FUN_000207c8,subsystem,"uses 0x00037654: the DMD page allocator, dmd_page_alloc"
+0x000208f4,coil_rec_208f4,FUN_000208f4,subsystem,"uses 0x040ce7c4: the coil records (0x1c each), coil_slot_of [0x00001e50]"
 0x000209d4,leaf_209d4,FUN_000209d4,leaf,"no call to a named function, no table or RAM symbol"
 0x00020a90,leaf_20a90,FUN_00020a90,leaf,"no call to a named function, no table or RAM symbol"
 0x00020ab0,leaf_20ab0,FUN_00020ab0,leaf,"no call to a named function, no table or RAM symbol"
@@ -933,7 +933,7 @@ address,name,was,rule,evidence
 0x000221bc,error_log_user_221bc,FUN_000221bc,uses,"calls error_log_wrap [0x0002386c], memcpy [0x0002fd48], error_log_wrap [0x00021f04]"
 0x00022324,error_log_user_22324,FUN_00022324,uses,"calls error_log_wrap [0x0002386c], memcpy [0x0002fd48], error_log_wrap [0x00021f04]"
 0x00022480,error_log_user_22480,FUN_00022480,uses,"calls error_log_wrap [0x0002386c], memcpy [0x0002fd48], error_log_wrap [0x00021f04]"
-0x000225e8,error_log_wrap_225e8,FUN_000225e8,wrapper,only calls error_log_wrap [0x0002386c]
+0x000225e8,error_log_wrap_23788_wrap_2386c_wrap_225e8,FUN_000225e8,wrapper,only calls error_log_wrap_23788_wrap_2386c [0x0002386c]
 0x0002276c,error_log_user_2276c,FUN_0002276c,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000225e8], error_log_wrap [0x00021f04]"
 0x0002281c,error_log_user_2281c,FUN_0002281c,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000225e8], error_log_wrap [0x00021f04]"
 0x000228e0,error_log_user_228e0,FUN_000228e0,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000225e8], error_log_wrap [0x00021f04]"
@@ -944,7 +944,7 @@ address,name,was,rule,evidence
 0x00022bf0,error_log_user_22bf0,FUN_00022bf0,uses,calls error_log_wrap [0x00021f94]
 0x00022c68,error_log_user_22c68,FUN_00022c68,uses,calls error_log_wrap [0x00021f94]
 0x00022ce0,error_log_user_22ce0,FUN_00022ce0,uses,calls error_log_wrap [0x00021f94]
-0x00022d60,error_log_wrap_22d60,FUN_00022d60,wrapper,only calls error_log_wrap [0x0002386c]
+0x00022d60,error_log_wrap_23788_wrap_2386c_wrap_22d60,FUN_00022d60,wrapper,only calls error_log_wrap_23788_wrap_2386c [0x0002386c]
 0x00022e68,error_log_user_22e68,FUN_00022e68,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x00022d60], error_log_wrap [0x00021f04]"
 0x00022f18,error_log_user_22f18,FUN_00022f18,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x00022d60], error_log_wrap [0x00021f04]"
 0x00022fdc,error_log_user_22fdc,FUN_00022fdc,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x00022d60], error_log_wrap [0x00021f04]"
@@ -954,14 +954,14 @@ address,name,was,rule,evidence
 0x00023254,error_log_user_23254,FUN_00023254,uses,calls error_log_wrap [0x00021f94]
 0x000232cc,error_log_user_232cc,FUN_000232cc,uses,calls error_log_wrap [0x00021f94]
 0x00023344,error_log_user_23344,FUN_00023344,uses,calls error_log_wrap [0x00021f94]
-0x000233c4,error_log_wrap_233c4,FUN_000233c4,wrapper,only calls error_log_wrap [0x0002386c]
+0x000233c4,error_log_wrap_23788_wrap_2386c_wrap_233c4,FUN_000233c4,wrapper,only calls error_log_wrap_23788_wrap_2386c [0x0002386c]
 0x00023454,error_log_user_23454,FUN_00023454,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000233c4], error_log_wrap [0x00021f04]"
 0x00023504,error_log_user_23504,FUN_00023504,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000233c4], error_log_wrap [0x00021f04]"
 0x000235c8,error_log_user_235c8,FUN_000235c8,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000233c4], error_log_wrap [0x00021f04]"
 0x0002368c,error_log_user_2368c,FUN_0002368c,uses,"calls error_log_wrap [0x00021f94], error_log_wrap [0x000233c4], error_log_wrap [0x00021f04]"
 0x00023758,start_deff_5_sub_23758,FUN_00023758,sub,called only by start_deff_5 [0x00006ecc]
 0x00023788,error_log_wrap_23788,FUN_00023788,wrapper,only calls error_log [0x00004f78]
-0x0002386c,error_log_wrap_2386c,FUN_0002386c,wrapper,only calls error_log_wrap [0x00023788]
+0x0002386c,error_log_wrap_23788_wrap_2386c,FUN_0002386c,wrapper,only calls error_log_wrap_23788 [0x00023788]
 0x00023988,default_user_23988,FUN_00023988,uses,calls default [0x00004ef4]
 0x00023990,leaf_23990,FUN_00023990,leaf,"no call to a named function, no table or RAM symbol"
 0x00023998,error_log_user_23998,FUN_00023998,uses,calls error_log [0x00004f78]
@@ -973,25 +973,25 @@ address,name,was,rule,evidence
 0x00023e70,leaf_23e70,FUN_00023e70,leaf,"no call to a named function, no table or RAM symbol"
 0x00023e98,start_deff_5_sub_23e98,FUN_00023e98,sub,called only by start_deff_5 [0x00006ecc]
 0x00023eb4,start_deff_5_sub_23eb4,FUN_00023eb4,sub,called only by start_deff_5 [0x00006ecc]
-0x00023f00,leaf_23f00,FUN_00023f00,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
+0x00023f00,snd_fiq,FUN_00023f00,hand,"the sound FIQ (4 kHz, knowledge/sam_hardware): acknowledges the AIC, then snd_fiq_mix"
 0x00023f38,leaf_23f38,FUN_00023f38,leaf,"no call to a named function, no table or RAM symbol"
 0x00023f48,start_deff_5_sub_23f48,FUN_00023f48,sub,called only by start_deff_5 [0x00006ecc]
 0x00023f58,leaf_23f58,FUN_00023f58,leaf,"no call to a named function, no table or RAM symbol"
-0x00023f78,ram_00038274_user,FUN_00023f78,ram,"uses RAM 0x00038274, 0x0003828e"
-0x00023fd0,ram_00038254_user,FUN_00023fd0,ram,uses RAM 0x00038254
-0x00024080,leaf_24080,FUN_00024080,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x000240b0,leaf_240b0,FUN_000240b0,leaf,"no call to a named function, no table or RAM symbol"
-0x000240d4,leaf_240d4,FUN_000240d4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00024250,leaf_24250,FUN_00024250,leaf,"no call to a named function, no table or RAM symbol"
-0x000242fc,ram_00032498_user,FUN_000242fc,ram,uses RAM 0x00032498
-0x00024340,leaf_24340,FUN_00024340,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x00024498,ram_00031534_user_24498,FUN_00024498,ram,uses RAM 0x00031534
-0x00024538,leaf_24538,FUN_00024538,leaf,"no call to a named function, no table or RAM symbol"
-0x000245a8,ram_00032494_user,FUN_000245a8,ram,uses RAM 0x00032494
-0x00024600,leaf_24600,FUN_00024600,leaf,"no call to a named function, no table or RAM symbol"
-0x0002466c,leaf_2466c,FUN_0002466c,leaf,"no call to a named function, no table or RAM symbol"
-0x000246e8,ram_00031534_user_246e8,FUN_000246e8,ram,uses RAM 0x00031534
-0x0002475c,leaf_2475c,FUN_0002475c,leaf,"no call to a named function, no table or RAM symbol"
+0x00023f78,snd_ramp_23f78,FUN_00023f78,subsystem,"uses 0x00038274: the sound volumes and ramps, snd_fiq_mix [0x000261fc]"
+0x00023fd0,snd_chan_free,FUN_00023fd0,hand,"clears the channel's active flags (+0x98, voices +0x36, ramps +0x9b) and gives back their volume"
+0x00024080,snd_chan_free_locked,FUN_00024080,hand,snd_chan_free with interrupts off
+0x000240b0,snd_voice_reset,FUN_000240b0,hand,clears a voice's state for sample formats 1-3 (sample header +7)
+0x000240d4,snd_op_end,FUN_000240d4,hand,"script opcode 0: frees the channel when its ramps are over and +0x84 reached +0x80, else waits"
+0x00024250,snd_op_route,FUN_00024250,hand,"script opcode: sets a routing bit (+0x68 + n, +0x70)"
+0x000242fc,snd_op_set_88,FUN_000242fc,hand,script opcode: channel +0x88 = DAT_00032498
+0x00024340,snd_op_ramp,FUN_00024340,hand,script opcode: starts a volume ramp (0x00038274 record)
+0x00024498,snd_op_voice_start,FUN_00024498,hand,"script opcode: starts a voice on a sample (bank in the top byte, window 0x04800000)"
+0x00024538,snd_op_voice_stop,FUN_00024538,hand,script opcode: stops the voices of a mask
+0x000245a8,snd_op_set_8c,FUN_000245a8,hand,script opcode: channel +0x8c = DAT_00032494
+0x00024600,snd_op_wait,FUN_00024600,hand,script opcode: waits n FIQ steps (+0x7c)
+0x0002466c,snd_op_wait_voices,FUN_0002466c,hand,script opcode: waits while the voices of a mask play (+0x36)
+0x000246e8,snd_chan_script_step,FUN_000246e8,hand,runs the channel's script opcodes (table 0x0003249c) until one yields (2); counts +0x84 against +0x80
+0x0002475c,snd_voice_step,FUN_0002475c,hand,"one voice: stops it (+0x36 = 0) at the end of its sample (first word), else mixes it"
 0x000247d8,leaf_247d8,FUN_000247d8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0002486c,leaf_2486c,FUN_0002486c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0002496c,leaf_2496c,FUN_0002496c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1001,16 +1001,16 @@ address,name,was,rule,evidence
 0x00025340,snd_play_after_wrap_25340,FUN_00025340,wrapper,only calls snd_play_after [0x00025284]
 0x00025364,snd_play_after_wrap_25364,FUN_00025364,wrapper,only calls snd_play_after [0x00025284]
 0x0002539c,snd_play_after_wrap_2539c,FUN_0002539c,wrapper,only calls snd_play_after [0x00025284]
-0x000254b4,snd_resolve_call_wrap,FUN_000254b4,wrapper,only calls snd_resolve_call [0x00025044]
-0x000255d4,ram_00037b94_user_255d4,FUN_000255d4,ram,"uses RAM 0x00037b94, 0x00037c2c"
-0x0002562c,ram_00037b94_user_2562c,FUN_0002562c,ram,uses RAM 0x00037b94
-0x00025690,ram_00037c24_user,FUN_00025690,ram,"uses RAM 0x00037c24, 0x00037c2c, 0x0003836c"
-0x000257b4,ram_00037b94_user_257b4,FUN_000257b4,ram,uses RAM 0x00037b94
-0x00025854,ram_00037b94_user_25854,FUN_00025854,ram,"uses RAM 0x00037b94, 0x00037c2c"
+0x000254b4,snd_chan_254b4,FUN_000254b4,subsystem,"uses 0x00037c2c: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x000255d4,snd_call_playing,FUN_000255d4,hand,true when a call is on one of the 8 channels (+0x94 with +0x98 set); used by bg_entry_eval and the left eject
+0x0002562c,snd_chan_2562c,FUN_0002562c,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x00025690,snd_chan_25690,FUN_00025690,subsystem,"uses 0x00037c24: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x000257b4,snd_chan_257b4,FUN_000257b4,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x00025854,snd_chan_25854,FUN_00025854,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
 0x0002599c,error_log_wrap_2599c,FUN_0002599c,wrapper,only calls error_log [0x00004f78]
 0x000259e8,memset_wrap_259e8,FUN_000259e8,wrapper,only calls memset [0x0002fd80]
 0x00025a14,ram_00038356_user,FUN_00025a14,ram,"uses RAM 0x00038356, 0x00038354"
-0x00025a78,start_deff_5_sub_25a78,FUN_00025a78,sub,called only by start_deff_5_sub [0x00025f44]
+0x00025a78,snd_chan_25f44_sub_25a78,FUN_00025a78,sub,called only by snd_chan_25f44 [0x00025f44]
 0x00025b3c,leaf_25b3c,FUN_00025b3c,leaf,"no call to a named function, no table or RAM symbol"
 0x00025bd0,error_log_user_25bd0,FUN_00025bd0,uses,calls error_log [0x00004f78]
 0x00025c3c,ram_000324e4_user,FUN_00025c3c,ram,"uses RAM 0x000324e4, 0x00030e78"
@@ -1018,19 +1018,19 @@ address,name,was,rule,evidence
 0x00025c9c,leaf_25c9c,FUN_00025c9c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00025cd0,ram_02110250_user,FUN_00025cd0,ram,"uses RAM 0x02110250, 0x02110251"
 0x00025d14,error_log_user_25d14,FUN_00025d14,uses,calls error_log [0x00004f78]
-0x00025d54,ram_00037c2d_user_25d54,FUN_00025d54,ram,"uses RAM 0x00037c2d, 0x000380c6"
-0x00025dc4,ram_00037c2d_user_25dc4,FUN_00025dc4,ram,"uses RAM 0x00037c2d, 0x000380c6"
-0x00025e30,ram_00037b94_user_25e30,FUN_00025e30,ram,uses RAM 0x00037b94
+0x00025d54,snd_chan_25d54,FUN_00025d54,subsystem,"uses 0x00037c2d: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x00025dc4,snd_chan_25dc4,FUN_00025dc4,subsystem,"uses 0x00037c2d: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
+0x00025e30,snd_chan_25e30,FUN_00025e30,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
 0x00025e6c,leaf_25e6c,FUN_00025e6c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x00025e90,error_log_user_25e90,FUN_00025e90,uses,calls error_log [0x00004f78]
-0x00025f44,start_deff_5_sub_25f44,FUN_00025f44,sub,called only by start_deff_5 [0x00006ecc]
+0x00025f44,snd_chan_25f44,FUN_00025f44,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
 0x00025fb0,table_040c8ac8_reader_25fb0,FUN_00025fb0,table,reads ROM table 0x040c8ac8
 0x00025fb8,strcmp_user_25fb8,FUN_00025fb8,uses,"calls strcmp [0x0002fe00], atoi [0x0002fa24], snd_play [0x000251f4]"
 0x00026150,ram_0003252c_user,FUN_00026150,ram,"uses RAM 0x0003252c, 0x000324ec"
-0x000261fc,table_040c91a8_reader,FUN_000261fc,table,reads ROM table 0x040c91a8
+0x000261fc,snd_fiq_mix,FUN_000261fc,hand,"writes 12 samples to 0x0109f000, steps every active channel's script (0x00037b94 + n*0xa0, +0x98) and the volume ramps 0x00038274"
 0x00026584,task_running_user_26584,thunk_FUN_00019b28,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
 0x00026588,task_0x13_of_FUN_00019c40_sub_26588,FUN_00026588,sub,called only by task_0x13_of_FUN_00019c40 [0x00003f00]
-0x00026594,on_event_05_sub_26594,FUN_00026594,sub,called only by on_event_05 [0x000045a4]
+0x00026594,lamp_layer_26594,FUN_00026594,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x000265c0,task_running_range_wrap_265c0,FUN_000265c0,wrapper,only calls task_running_range [0x0000b2ac]
 0x000265d8,task_running_user_265d8,thunk_FUN_00019b28,uses,"calls task_running [0x0000b248], error_log [0x00004f78], error_log_wrap [0x0000a4d0]"
 0x000265dc,memcpy_user_265dc,FUN_000265dc,uses,"calls memcpy [0x0002fd48], strlen [0x0002fe4c], msg_get [0x000099f0]"
@@ -1038,8 +1038,8 @@ address,name,was,rule,evidence
 0x00026608,start_deff_14_26608,FUN_00026608,deff,deff_start(14)
 0x000267ec,leaf_267ec,FUN_000267ec,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x000267fc,start_deff_5_sub_267fc,FUN_000267fc,sub,called only by start_deff_5 [0x00006ecc]
-0x000268a4,start_deff_5_sub_268a4,FUN_000268a4,sub,called only by start_deff_5 [0x00006ecc]
-0x000268b4,task_running_user_268b4,FUN_000268b4,uses,"calls task_running [0x0000b248], task_create [0x0000aa04]"
+0x000268a4,lamp_layer_268a4,FUN_000268a4,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x000268b4,game_device_268b4,FUN_000268b4,subsystem,"uses 0x040d1804: the game's ball device records (0x24 each), balldev_count_switches"
 0x000268d4,start_deff_3_sub_268d4,FUN_000268d4,sub,called only by start_deff_3 [0x0000ed90]
 0x000268fc,vsprintf_user_268fc,FUN_000268fc,uses,"calls vsprintf [0x0002fef0], msg_get [0x000099f0]"
 0x0002696c,vsprintf_user_2696c,FUN_0002696c,uses,"calls vsprintf [0x0002fef0], msg_get [0x000099f0]"
@@ -1158,13 +1158,13 @@ address,name,was,rule,evidence
 0x0002b088,msg_get_user_2b088,FUN_0002b088,uses,"calls msg_get [0x000099f0], strlen [0x0002fe4c]"
 0x0002b0f8,draw_clock_not_set,FUN_0002b0f8,msg,"draws msg 0x22b ""CLOCK NOT SET"""
 0x0002b2b4,start_deff_5_sub_2b2b4,FUN_0002b2b4,sub,called only by start_deff_5 [0x00006ecc]
-0x0002b30c,start_deff_5_sub_2b30c,FUN_0002b30c,sub,called only by start_deff_5_sub [0x000128c4]
+0x0002b30c,start_deff_5_sub_128c4_sub_2b30c,FUN_0002b30c,sub,called only by start_deff_5_sub_128c4 [0x000128c4]
 0x0002b37c,ram_01059c84_user,FUN_0002b37c,ram,"uses RAM 0x01059c84, 0x01059c80, 0x01059c88"
 0x0002b3c4,ram_00038d24_user_2b3c4,thunk_FUN_01051330,ram,"uses RAM 0x00038d24, 0x00038d3c, 0x00038d34"
 0x0002b400,table_040c8b18_reader,FUN_0002b400,table,reads ROM table 0x040c8b18
 0x0002b470,leaf_2b470,FUN_0002b470,leaf,"no call to a named function, no table or RAM symbol"
 0x0002b48c,malloc_sub,FUN_0002b48c,sub,called only by malloc [0x0002b4dc]
-0x0002b49c,start_deff_5_sub_2b49c,FUN_0002b49c,sub,called only by start_deff_5_sub [0x0002b2b4]
+0x0002b49c,start_deff_5_sub_2b2b4_sub_2b49c,FUN_0002b49c,sub,called only by start_deff_5_sub_2b2b4 [0x0002b2b4]
 0x0002b5ac,malloc_user_2b5ac,FUN_0002b5ac,uses,"calls malloc [0x0002b4dc], memset [0x0002fd80]"
 0x0002b5dc,malloc_user_2b5dc,FUN_0002b5dc,uses,"calls malloc [0x0002b4dc], memcpy [0x0002fd48]"
 0x0002b62c,ram_01059c90_user_2b62c,thunk_FUN_000335cc,ram,"uses RAM 0x01059c90, 0x01059c94, 0x0003389c"
@@ -1181,8 +1181,8 @@ address,name,was,rule,evidence
 0x0002bdb8,leaf_2bdb8,FUN_0002bdb8,leaf,"no call to a named function, no table or RAM symbol"
 0x0002bdbc,ram_000338a2_user,FUN_0002bdbc,ram,"uses RAM 0x000338a2, 0x000338a4, 0x000338a8"
 0x0002be10,adj_get_wrap_2be10,FUN_0002be10,wrapper,only calls adj_get [0x00000340]
-0x0002c000,start_deff_27_user,FUN_0002c000,uses,calls start_deff_27 [0x0001914c]
-0x0002c018,flipper_buttons_held_wrap_2c018,FUN_0002c018,wrapper,only calls flipper_buttons_held_wrap [0x00006840]
+0x0002c000,tournament_2c000,FUN_0002c000,subsystem,"uses 0x02100bb8: the tournament settings, tournament_get"
+0x0002c018,flipper_buttons_held_wrap_6840_wrap_2c018,FUN_0002c018,wrapper,only calls flipper_buttons_held_wrap_6840 [0x00006840]
 0x0002c028,ram_000339c4_user,FUN_0002c028,ram,uses RAM 0x000339c4
 0x0002c078,ram_00033e3c_user,FUN_0002c078,ram,"uses RAM 0x00033e3c, 0x00033e40"
 0x0002c0f4,ram_00038e48_user,FUN_0002c0f4,ram,uses RAM 0x00038e48
@@ -1202,17 +1202,17 @@ address,name,was,rule,evidence
 0x0002e62c,leaf_2e62c,FUN_0002e62c,leaf,"no call to a named function, no table or RAM symbol"
 0x0002ea88,leaf_2ea88,FUN_0002ea88,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0002eb50,leaf_2eb50,FUN_0002eb50,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0002ec40,draw_luk_sub_2ec40,FUN_0002ec40,sub,called only by draw_luk_sub [0x0002f998]
+0x0002ec40,draw_luk_2cbac_sub_2f998_sub_2ec40,FUN_0002ec40,sub,called only by draw_luk_2cbac_sub_2f998 [0x0002f998]
 0x0002ecdc,leaf_2ecdc,FUN_0002ecdc,leaf,"no call to a named function, no table or RAM symbol"
 0x0002eddc,leaf_2eddc,FUN_0002eddc,leaf,"no call to a named function, no table or RAM symbol"
-0x0002eea4,draw_luk_sub_2eea4,FUN_0002eea4,sub,called only by draw_luk_sub [0x0002f084]
-0x0002f084,draw_luk_sub_2f084,FUN_0002f084,sub,called only by draw_luk [0x0102cbac]
-0x0002f130,draw_luk_sub_2f130,FUN_0002f130,sub,called only by draw_luk [0x0102cbac]
-0x0002f2c4,draw_luk_sub_2f2c4,FUN_0002f2c4,sub,called only by draw_luk [0x0102cbac]
+0x0002eea4,draw_luk_2cbac_sub_2f084_sub_2eea4,FUN_0002eea4,sub,called only by draw_luk_2cbac_sub_2f084 [0x0002f084]
+0x0002f084,draw_luk_2cbac_sub_2f084,FUN_0002f084,sub,called only by draw_luk_2cbac [0x0102cbac]
+0x0002f130,draw_luk_2cbac_sub_2f130,FUN_0002f130,sub,called only by draw_luk_2cbac [0x0102cbac]
+0x0002f2c4,draw_luk_2cbac_sub_2f2c4,FUN_0002f2c4,sub,called only by draw_luk_2cbac [0x0102cbac]
 0x0002f410,leaf_2f410,FUN_0002f410,leaf,"no call to a named function, no table or RAM symbol"
-0x0002f7ec,draw_luk_sub_2f7ec,FUN_0002f7ec,sub,called only by draw_luk [0x0102cbac]
+0x0002f7ec,draw_luk_2cbac_sub_2f7ec,FUN_0002f7ec,sub,called only by draw_luk_2cbac [0x0102cbac]
 0x0002f96c,leaf_2f96c,FUN_0002f96c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0002f998,draw_luk_sub_2f998,FUN_0002f998,sub,called only by draw_luk [0x0102cbac]
+0x0002f998,draw_luk_2cbac_sub_2f998,FUN_0002f998,sub,called only by draw_luk_2cbac [0x0102cbac]
 0x0002f9e4,leaf_2f9e4,FUN_0002f9e4,leaf,"no call to a named function, no table or RAM symbol"
 0x0002fae8,ram_0106dc92_user,FUN_0002fae8,ram,"uses RAM 0x0106dc92, 0x0106f08c, 0x0106f08e"
 0x0002fb1c,ram_000339d0_user,FUN_0002fb1c,ram,"uses RAM 0x000339d0, 0x0106dc90, 0x0106dc92"
@@ -1263,12 +1263,12 @@ address,name,was,rule,evidence
 0x01001f90,deff_128_sub_1f90,FUN_01001f90,sub,called only by deff_128 [0x010023e8]
 0x010026cc,event_hook_add_user_26cc,FUN_010026cc,uses,calls event_hook_add [0x00006da8]
 0x010026dc,leff_rule_dtor_user_26dc,FUN_010026dc,uses,calls leff_rule_dtor [0x000177a4]
-0x010026ec,error_log_wrap_26ec,FUN_010026ec,wrapper,only calls error_log_wrap [0x0001a928]
+0x010026ec,error_log_wrap_1a928_wrap_26ec,FUN_010026ec,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x01002754,current_player_wrap_2754,FUN_01002754,wrapper,only calls current_player [0x0001aa40]
-0x0100279c,error_log_wrap_279c,FUN_0100279c,wrapper,only calls error_log_wrap [0x0001a928]
+0x0100279c,error_log_wrap_1a928_wrap_279c,FUN_0100279c,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x010027e0,draw_02lu_combo_p1_s,FUN_010027e0,msg,"draws msg 0x6e0 ""%,02lu COMBO%P1//S/%"""
 0x010028c4,msg_get_user_28c4,FUN_010028c4,uses,"calls msg_get [0x000099f0], vsprintf [0x0002fef0]"
-0x010028f4,error_log_wrap_28f4,FUN_010028f4,wrapper,only calls error_log_wrap [0x0001a928]
+0x010028f4,error_log_wrap_1a928_wrap_28f4,FUN_010028f4,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x01002918,current_player_wrap_2918,FUN_01002918,wrapper,only calls current_player [0x0001aa40]
 0x01002974,draw_p1_double_triple_u,FUN_01002974,msg,"draws msg 0x6e1 ""%P1//DOUBLE /TRIPLE //%%u-WAY"""
 0x01002a7c,msg_get_user_2a7c,FUN_01002a7c,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
@@ -1279,7 +1279,7 @@ address,name,was,rule,evidence
 0x01002b5c,task_0x92_of_FUN_01002be4,FUN_01002b5c,task,"task entry started by FUN_01002be4 [0x01002be4] (task_create, id 0x92)"
 0x01002be4,task_running_range_user_2be4,FUN_01002be4,uses,"calls task_running_range_wrap [0x01002b28], task_kill_range [0x0000af20], any_multiball_running_wrap [0x01002afc]"
 0x01002c7c,leaf_2c7c,FUN_01002c7c,leaf,"no call to a named function, no table or RAM symbol"
-0x01002ca4,count_wizard_mb_req_8_sub_2ca4,FUN_01002ca4,sub,called only by count_wizard_mb_req_8_sub [0x01002cf0]
+0x01002ca4,count_wizard_mb_req_8_sub_2cf0_sub_2ca4,FUN_01002ca4,sub,called only by count_wizard_mb_req_8_sub_2cf0 [0x01002cf0]
 0x01002cf0,count_wizard_mb_req_8_sub_2cf0,FUN_01002cf0,sub,called only by count_wizard_mb_req_8 [0x01002d14]
 0x01002d14,count_wizard_mb_req_8,FUN_01002d14,audit,audit_add(155) WIZARD MB: REQ. 8 COMPLETED
 0x01002d54,table_040c5ccc_reader,FUN_01002d54,table,reads ROM table 0x040c5ccc
@@ -1296,7 +1296,7 @@ address,name,was,rule,evidence
 0x01003a64,play_sound_27c,FUN_01003a64,sound,snd_play(0x27c)
 0x01003a8c,adj_double_scoring_timer,FUN_01003a8c,adj,adj_get(80) DOUBLE SCORING TIMER
 0x01003b40,deff_129_double_sub,FUN_01003b40,sub,called only by deff_129_double [0x01003c5c]
-0x01003ec8,task_running_wrap_3ec8,FUN_01003ec8,wrapper,only calls task_running_wrap [0x010038b0]
+0x01003ec8,task_running_wrap_38b0_wrap_3ec8,FUN_01003ec8,wrapper,only calls task_running_wrap_38b0 [0x010038b0]
 0x01003eec,leff_157_sub,FUN_01003eec,sub,called only by leff_157 [0x01003f20]
 0x01003f74,leff_rule_dtor_user_3f74,FUN_01003f74,uses,calls leff_rule_dtor [0x000177a4]
 0x01004050,error_log_wrap_4050,FUN_01004050,wrapper,only calls error_log [0x00004f78]
@@ -1341,7 +1341,7 @@ address,name,was,rule,evidence
 0x01005fd0,task_sleep_user_5fd0,FUN_01005fd0,uses,"calls task_sleep [0x0000acfc], error_log_wrap [0x0000febc], snd_resolve_call [0x00025044]"
 0x01006054,on_event_62,FUN_01006054,hook,"event_hook_add(&DAT_00034cac, 0x62, ..) in FUN_010075e8 [0x010075e8]"
 0x0100607c,on_event_63,FUN_0100607c,hook,"event_hook_add(&DAT_00034cb0, 0x63, ..) in FUN_010075e8 [0x010075e8]"
-0x01006138,snd_play_user,FUN_01006138,uses,"calls snd_play [0x000251f4], task_sleep [0x0000acfc]"
+0x01006138,snd_chan_6138,FUN_01006138,subsystem,"uses 0x00037b94: the 8 sound channels (0xa0 each), stepped by snd_fiq_mix [0x000261fc]"
 0x01006290,on_event_13_6290,FUN_01006290,hook,"event_hook_add(&DAT_00034ccc, 0x13, ..) in FUN_010075e8 [0x010075e8]"
 0x010062a0,on_event_61,FUN_010062a0,hook,"event_hook_add(&DAT_00034cd0, 0x61, ..) in FUN_010075e8 [0x010075e8]"
 0x010062b0,task_sleep_wrap_62b0,FUN_010062b0,wrapper,only calls task_sleep [0x0000acfc]
@@ -1360,7 +1360,7 @@ address,name,was,rule,evidence
 0x01006a58,task_sleep_user_6a58,FUN_01006a58,uses,"calls task_sleep [0x0000acfc], snd_resolve_call [0x00025044]"
 0x01006a9c,leaf_6a9c,FUN_01006a9c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01006ae0,deff_126_0_more_sub,FUN_01006ae0,sub,called only by deff_126_0_more [0x0102eaec]
-0x01006bb4,ram_000315f4_user_6bb4,thunk_FUN_00016b7c,ram,uses RAM 0x000315f4
+0x01006bb4,motor_poll_all_isr,thunk_FUN_00016b7c,hand,"same as 0x00016b7c, called at the end of the IO interrupt io_isr [0x000114b0]"
 0x01006bb8,memcpy_wrap_6bb8,FUN_01006bb8,wrapper,only calls memcpy [0x0002fd48]
 0x01006cf4,memcpy_wrap_6cf4,FUN_01006cf4,wrapper,only calls memcpy [0x0002fd48]
 0x01006ef4,task_sleep_user_6ef4,FUN_01006ef4,uses,"calls task_sleep [0x0000acfc], default [0x00004ef4]"
@@ -1372,19 +1372,19 @@ address,name,was,rule,evidence
 0x01007b74,start_deff_54,FUN_01007b74,deff,deff_start(54)
 0x0100807c,draw_02lu_807c,FUN_0100807c,msg,"draws msg 0x502 ""%,02lu"""
 0x010084fc,task_0x61_of_FUN_01008528,FUN_010084fc,task,"task entry started by FUN_01008528 [0x01008528] (FUN_0000ab4c, id 0x61)"
-0x01008528,error_log_user_8528,FUN_01008528,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007814], nvram_unlock [0x00009ec8]"
+0x01008528,lamp_layer_8528,FUN_01008528,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01008658,task_0x62_of_FUN_01008684,FUN_01008658,task,"task entry started by FUN_01008684 [0x01008684] (FUN_0000ab4c, id 0x62)"
-0x01008684,start_leff_35_sub,FUN_01008684,sub,called only by start_leff_35 [0x01033488]
-0x01008a50,error_log_user_8a50,FUN_01008a50,uses,"calls error_log_wrap [0x000076d0], error_log_wrap [0x00007578]"
+0x01008684,lamp_layer_8684,FUN_01008684,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x01008a50,lamp_layer_8a50,FUN_01008a50,subsystem,"uses 0x00036388: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01008c88,error_log_user_8c88,FUN_01008c88,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007578]"
 0x01008cb8,error_log_user_8cb8,FUN_01008cb8,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007578]"
-0x01008d08,error_log_user_8d08,FUN_01008d08,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007578]"
-0x01008d3c,error_log_user_8d3c,FUN_01008d3c,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007578]"
+0x01008d08,lamp_layer_8d08,FUN_01008d08,subsystem,"uses 0x00036394: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x01008d3c,lamp_layer_8d3c,FUN_01008d3c,subsystem,"uses 0x00036394: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01008d84,error_log_user_8d84,FUN_01008d84,uses,"calls error_log_wrap [0x000083dc], error_log_wrap [0x00008440]"
-0x01008e90,error_log_user_8e90,FUN_01008e90,uses,calls error_log_wrap [0x0000765c]
-0x01008ea0,error_log_user_8ea0,FUN_01008ea0,uses,calls error_log_wrap [0x0000765c]
-0x01008ed0,error_log_user_8ed0,FUN_01008ed0,uses,calls error_log_wrap [0x0000765c]
-0x01008f00,error_log_user_8f00,FUN_01008f00,uses,calls error_log_wrap [0x000077a0]
+0x01008e90,lamp_group_8e90,FUN_01008e90,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x01008ea0,lamp_group_8ea0,FUN_01008ea0,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x01008ed0,lamp_group_8ed0,FUN_01008ed0,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
+0x01008f00,lamp_group_8f00,FUN_01008f00,subsystem,"uses 0x040d1510: the lamp group table (0x93 groups, each a 0-ended lamp list; error 0x30 outside), [0x000083dc]"
 0x01008f10,error_log_user_8f10,FUN_01008f10,uses,"calls error_log_wrap [0x000083dc], error_log_wrap [0x00008440]"
 0x01008fa0,error_log_user_8fa0,FUN_01008fa0,uses,"calls error_log_wrap [0x000083dc], error_log_wrap [0x00008440]"
 0x01009040,error_log_user_9040,FUN_01009040,uses,"calls error_log_wrap [0x000083dc], error_log_wrap [0x00008440]"
@@ -1395,7 +1395,7 @@ address,name,was,rule,evidence
 0x010092c8,leaf_92c8,FUN_010092c8,leaf,"no call to a named function, no table or RAM symbol"
 0x010092f0,error_log_user_92f0,FUN_010092f0,uses,"calls error_log_wrap [0x000095e4], error_log_wrap [0x00009648], task_sleep [0x0000acfc]"
 0x010093e8,error_log_user_93e8,FUN_010093e8,uses,"calls error_log_wrap [0x000095e4], error_log_wrap [0x00009648], task_sleep [0x0000acfc]"
-0x0100955c,task_sleep_wrap_955c,FUN_0100955c,wrapper,only calls task_sleep [0x0000acfc]
+0x0100955c,lamp_layer_955c,FUN_0100955c,subsystem,"uses 0x00036394: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0100959c,task_sleep_wrap_959c,FUN_0100959c,wrapper,only calls task_sleep [0x0000acfc]
 0x010095e0,task_0x5a_of_FUN_0100963c,FUN_010095e0,task,"task entry started by FUN_0100963c [0x0100963c] (task_create, id 0x5a)"
 0x0100963c,task_create_wrap_963c,FUN_0100963c,wrapper,only calls task_create [0x0000aa04]
@@ -1409,17 +1409,17 @@ address,name,was,rule,evidence
 0x01009d98,task_sleep_user_9d98,FUN_01009d98,uses,calls task_sleep [0x0000acfc]
 0x01009de8,error_log_user_9de8,FUN_01009de8,uses,"calls error_log_wrap [0x00008440], task_sleep [0x0000acfc]"
 0x0100a074,on_event_0f_a074,FUN_0100a074,hook,"event_hook_add(&DAT_00034d24, 0xf, ..) in FUN_0100aa7c [0x0100aa7c]"
-0x0100a0a4,balls_count_all_user,FUN_0100a0a4,uses,calls balls_count_all [0x01037e5c]
-0x0100a150,ram_00031468_user_a150,FUN_0100a150,ram,uses RAM 0x00031468
-0x0100a188,leaf_a188,FUN_0100a188,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
+0x0100a0a4,trough_callback,FUN_0100a0a4,hand,"device callback: case 9 queues a trough eject (coil 1, 64 ms, coil_pulse_queue_wait); case 0xe calls portal_mb_down_to_one_ball_user when fewer than 2 balls are left"
+0x0100a150,auto_launch_started,FUN_0100a150,hand,"start callback of the queued auto-launch pulse (coil 2): leaf_abe8(0x3c, 0xbb) and task 0x45"
+0x0100a188,trough_auto_launch,FUN_0100a188,hand,"device callback: queues the auto-launch pulse (coil 2, 64 ms, coil_pulse_queue_wait) with auto_launch_started"
 0x0100a1f8,adj_megatron_m_b_virtual,FUN_0100a1f8,adj,adj_get(69) MEGATRON M.B. VIRTUAL LOCK
-0x0100a294,error_log_wrap_a294,FUN_0100a294,wrapper,only calls error_log_wrap [0x0000d464]
+0x0100a294,sw_matrix_d464_wrap_a294,FUN_0100a294,wrapper,only calls sw_matrix_d464 [0x0000d464]
 0x0100a2dc,sw_megatron_lock_4_etc,FUN_0100a2dc,switch,handler of switch(es) M.TRON LOCK #1-BACK; MEGATRON JAM; MEGATRON LOCK #2; MEGATRON LOCK #3 (switch table)
 0x0100a31c,task_running_user_a31c,FUN_0100a31c,uses,"calls task_running [0x0000b248], start_deff_83 [0x01010174], play_sound_27c [0x01003a64]"
 0x0100a374,leaf_a374,FUN_0100a374,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100a3b8,error_log_user_a3b8,FUN_0100a3b8,uses,"calls error_log_wrap [0x0000d464], error_log_wrap [0x0100a294], task_sleep [0x0000acfc]"
 0x0100a754,sw_left_eject,FUN_0100a754,switch,handler of switch(es) LEFT EJECT (switch table)
-0x0100a788,count_8_10_minute_games,FUN_0100a788,audit,audit_add(69) 8 - 10 MINUTE GAMES
+0x0100a788,left_eject_callback,FUN_0100a788,hand,"game device 3 callback (table 0x040d17fc +0xc): the Allspark award, warning 0x157 + leff 21 (case 7), eject 0x158 + leff 22 and coil 22"
 0x0100aa44,portal_mb_down_to_one_ball_user,FUN_0100aa44,uses,"calls portal_mb_down_to_one_ball [0x01019550], error_log_wrap [0x0103657c], game_flag_clear [0x00005a38]"
 0x0100aa7c,event_hook_add_user_aa7c,FUN_0100aa7c,uses,calls event_hook_add [0x00006da8]
 0x0100ab5c,current_player_wrap_ab5c,FUN_0100ab5c,wrapper,only calls current_player [0x0001aa40]
@@ -1433,7 +1433,7 @@ address,name,was,rule,evidence
 0x0100b080,task_0x73_of_FUN_0100b130,FUN_0100b080,task,"task entry started by FUN_0100b130 [0x0100b130] (task_create, id 0x73)"
 0x0100b0b8,error_log_user_b0b8,FUN_0100b0b8,uses,"calls error_log_wrap [0x0100be3c], error_log_wrap [0x0100de78], error_log_wrap [0x01027698]"
 0x0100b130,count_optimus_m_b_a,FUN_0100b130,audit,audit_add(117) OPTIMUS M.B.A. LEVEL #1 JP.
-0x0100b228,error_log_user_b228,FUN_0100b228,uses,"calls error_log_wrap [0x000077a0], error_log_wrap [0x00007814], error_log_wrap [0x00007578]"
+0x0100b228,lamp_layer_b228,FUN_0100b228,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0100b5a0,task_sleep_user_b5a0,FUN_0100b5a0,uses,"calls task_sleep [0x0000acfc], snd_resolve_call [0x00025044]"
 0x0100b5ec,leaf_b5ec,FUN_0100b5ec,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100b624,ram_00001818_user,FUN_0100b624,ram,uses RAM 0x00001818
@@ -1451,7 +1451,7 @@ address,name,was,rule,evidence
 0x0100bd1c,current_player_user_bd1c,FUN_0100bd1c,uses,"calls current_player_wrap [0x0100bcc0], current_player [0x0001aa40]"
 0x0100bd54,on_event_26_bd54,FUN_0100bd54,hook,"event_hook_add(&DAT_00034d48, 0x26, ..) in FUN_0100db24 [0x0100db24]"
 0x0100bdcc,error_log_wrap_bdcc,FUN_0100bdcc,wrapper,only calls error_log [0x00004f78]
-0x0100be3c,error_log_wrap_be3c,FUN_0100be3c,wrapper,only calls error_log_wrap [0x00005b58]
+0x0100be3c,game_flag_test_wrap_be3c,FUN_0100be3c,wrapper,only calls game_flag_test [0x00005b58]
 0x0100be50,error_log_user_be50,FUN_0100be50,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x0100be84,error_log_user_be84,FUN_0100be84,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
 0x0100bf14,ram_00034db0_user,FUN_0100bf14,ram,"uses RAM 0x00034db0, 0x00034dac, 0x0007a120"
@@ -1467,7 +1467,7 @@ address,name,was,rule,evidence
 0x0100c1d4,task_0x74_of_FUN_0100c200,FUN_0100c1d4,task,"task entry started by FUN_0100c200 [0x0100c200] (FUN_0000ab4c, id 0x74)"
 0x0100c200,adj_save_megatron_progress_c200,FUN_0100c200,adj,adj_get(88) SAVE MEGATRON PROGRESS
 0x0100c430,error_log_user_c430,FUN_0100c430,uses,"calls error_log_wrap [0x0100bdcc], score_add [0x0001caf0], current_player [0x0001aa40]"
-0x0100c790,on_event_1d_sub_c790,FUN_0100c790,sub,called only by on_event_1d [0x0100c8dc]
+0x0100c790,on_event_1d_c8dc_sub_c790,FUN_0100c790,sub,called only by on_event_1d_c8dc [0x0100c8dc]
 0x0100c7e8,task_0xbb_of_FUN_0100c814,FUN_0100c7e8,task,"task entry started by FUN_0100c814 [0x0100c814] (FUN_0000ab4c, id 0xbb)"
 0x0100c814,error_log_user_c814,FUN_0100c814,uses,"calls error_log_wrap [0x0100be3c], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
 0x0100c858,task_running_range_user_c858,FUN_0100c858,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
@@ -1475,8 +1475,8 @@ address,name,was,rule,evidence
 0x0100c8dc,on_event_1d_c8dc,FUN_0100c8dc,hook,"event_hook_add(&DAT_00034d4c, 0x1d, ..) in FUN_0100db24 [0x0100db24]"
 0x0100c998,deff_069_sub,FUN_0100c998,sub,called only by deff_069 [0x0100c9e4]
 0x0100cee0,error_log_user_cee0,FUN_0100cee0,uses,"calls error_log_wrap [0x0100be3c], task_running [0x0000b248]"
-0x0100cf18,adj_save_megatron_progress_sub_cf18,FUN_0100cf18,sub,called only by adj_save_megatron_progress [0x0100c200]
-0x0100d004,error_log_wrap_d004,FUN_0100d004,wrapper,only calls error_log_wrap [0x0100be3c]
+0x0100cf18,adj_save_megatron_progress_c200_sub_cf18,FUN_0100cf18,sub,called only by adj_save_megatron_progress_c200 [0x0100c200]
+0x0100d004,game_flag_test_wrap_be3c_wrap_d004,FUN_0100d004,wrapper,only calls game_flag_test_wrap_be3c [0x0100be3c]
 0x0100d07c,leaf_d07c,FUN_0100d07c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100d0d4,leaf_d0d4,FUN_0100d0d4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0100d124,leaf_d124,FUN_0100d124,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1493,7 +1493,7 @@ address,name,was,rule,evidence
 0x0100dd50,on_event_26_dd50,FUN_0100dd50,hook,"event_hook_add(&DAT_00034dbc, 0x26, ..) in FUN_0100fcc0 [0x0100fcc0]"
 0x0100dd94,error_log_wrap_dd94,FUN_0100dd94,wrapper,only calls error_log [0x00004f78]
 0x0100ddc8,random_below_wrap_ddc8,FUN_0100ddc8,wrapper,only calls random_below [0x0000ba94]
-0x0100de78,error_log_wrap_de78,FUN_0100de78,wrapper,only calls error_log_wrap [0x00005b58]
+0x0100de78,game_flag_test_wrap_de78,FUN_0100de78,wrapper,only calls game_flag_test [0x00005b58]
 0x0100de8c,error_log_user_de8c,FUN_0100de8c,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x0100dec0,error_log_user_dec0,FUN_0100dec0,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
 0x0100df50,ram_00034e2e_user,FUN_0100df50,ram,"uses RAM 0x00034e2e, 0x0003d090"
@@ -1503,17 +1503,17 @@ address,name,was,rule,evidence
 0x0100e090,task_0x75_of_FUN_0100e0bc,FUN_0100e090,task,"task entry started by FUN_0100e0bc [0x0100e0bc] (FUN_0000ab4c, id 0x75)"
 0x0100e0bc,adj_save_megatron_progress_e0bc,FUN_0100e0bc,adj,adj_get(88) SAVE MEGATRON PROGRESS
 0x0100e29c,error_log_user_e29c,FUN_0100e29c,uses,"calls error_log_wrap [0x0100dd94], current_player [0x0001aa40], score_add [0x0001caf0]"
-0x0100e61c,on_event_1d_sub_e61c,FUN_0100e61c,sub,called only by on_event_1d [0x0100e768]
+0x0100e61c,on_event_1d_e768_sub_e61c,FUN_0100e61c,sub,called only by on_event_1d_e768 [0x0100e768]
 0x0100e674,task_0xbf_of_FUN_0100e6a0,FUN_0100e674,task,"task entry started by FUN_0100e6a0 [0x0100e6a0] (FUN_0000ab4c, id 0xbf)"
 0x0100e6a0,error_log_user_e6a0,FUN_0100e6a0,uses,"calls error_log_wrap [0x0100de78], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
 0x0100e6e4,task_running_range_user_e6e4,FUN_0100e6e4,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
 0x0100e720,ram_00034e18_user_e720,FUN_0100e720,ram,"uses RAM 0x00034e18, 0x00034e1c"
 0x0100e768,on_event_1d_e768,FUN_0100e768,hook,"event_hook_add(&DAT_00034dc0, 0x1d, ..) in FUN_0100fcc0 [0x0100fcc0]"
-0x0100e798,ram_00034e18_user_e798,FUN_0100e798,ram,uses RAM 0x00034e18
+0x0100e798,optimus_wanted_position,FUN_0100e798,hand,"0x2b (up) when the Optimus battle runs (0x00034e18 == 3), else 0"
 0x0100e854,deff_075_sub,FUN_0100e854,sub,called only by deff_075 [0x0100e890]
 0x0100ee0c,error_log_user_ee0c,FUN_0100ee0c,uses,"calls error_log_wrap [0x0100de78], task_running [0x0000b248]"
-0x0100ee44,adj_save_megatron_progress_sub_ee44,FUN_0100ee44,sub,called only by adj_save_megatron_progress [0x0100e0bc]
-0x0100ef30,error_log_wrap_ef30,FUN_0100ef30,wrapper,only calls error_log_wrap [0x0100de78]
+0x0100ee44,adj_save_megatron_progress_e0bc_sub_ee44,FUN_0100ee44,sub,called only by adj_save_megatron_progress_e0bc [0x0100e0bc]
+0x0100ef30,game_flag_test_wrap_de78_wrap_ef30,FUN_0100ef30,wrapper,only calls game_flag_test_wrap_de78 [0x0100de78]
 0x0100efa8,ram_00001c94_user,FUN_0100efa8,ram,uses RAM 0x00001c94
 0x0100eff8,ram_00001c95_user,FUN_0100eff8,ram,"uses RAM 0x00001c95, 0x00001ca4"
 0x0100f050,leaf_f050,FUN_0100f050,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1529,8 +1529,8 @@ address,name,was,rule,evidence
 0x0100fcc0,leff_rule_dtor_user_fcc0,FUN_0100fcc0,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0100fe5c,on_event_26_fe5c,FUN_0100fe5c,hook,"event_hook_add(&DAT_00034e38, 0x26, ..) in FUN_01011ed4 [0x01011ed4]"
 0x0100feb4,error_log_wrap_feb4,FUN_0100feb4,wrapper,only calls error_log [0x00004f78]
-0x0100ff58,error_log_wrap_ff58,FUN_0100ff58,wrapper,only calls error_log_wrap [0x00005b58]
-0x0100ff6c,error_log_wrap_ff6c,FUN_0100ff6c,wrapper,only calls error_log_wrap [0x00005b58]
+0x0100ff58,game_flag_test_wrap_ff58,FUN_0100ff58,wrapper,only calls game_flag_test [0x00005b58]
+0x0100ff6c,game_flag_test_wrap_ff6c,FUN_0100ff6c,wrapper,only calls game_flag_test [0x00005b58]
 0x0100ffc4,task_0x79_of_FUN_0100fff0,FUN_0100ffc4,task,"task entry started by FUN_0100fff0 [0x0100fff0] (FUN_0000ab4c, id 0x79)"
 0x0100fff0,count_megatron_m_b_a,FUN_0100fff0,audit,audit_add(126) MEGATRON M.B.A. STARTED
 0x01010100,table_040c66e8_reader,FUN_01010100,table,reads ROM table 0x040c66e8
@@ -1539,7 +1539,7 @@ address,name,was,rule,evidence
 0x01010304,leaf_10304,FUN_01010304,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01010330,ram_00031468_user_10330,FUN_01010330,ram,"uses RAM 0x00031468, 0x00034ecc"
 0x010103c0,start_deff_83_sub,FUN_010103c0,sub,called only by start_deff_83 [0x01010174]
-0x010103f8,on_event_1d_sub_103f8,FUN_010103f8,sub,called only by on_event_1d [0x01010428]
+0x010103f8,on_event_1d_10428_sub_103f8,FUN_010103f8,sub,called only by on_event_1d_10428 [0x01010428]
 0x01010428,on_event_1d_10428,FUN_01010428,hook,"event_hook_add(&DAT_00034e40, 0x1d, ..) in FUN_01011ed4 [0x01011ed4]"
 0x01010508,task_running_user_10508,FUN_01010508,uses,calls task_running [0x0000b248]
 0x01010958,error_log_user_10958,FUN_01010958,uses,"calls error_log_wrap [0x0100ff6c], task_running [0x0000b248]"
@@ -1608,7 +1608,7 @@ address,name,was,rule,evidence
 0x01014f84,play_sound_1f9,FUN_01014f84,sound,snd_play(0x1f9)
 0x010153c0,task_running_user_153c0,FUN_010153c0,uses,"calls task_running_wrap [0x010140f4], task_running [0x0000b248]"
 0x010153f8,adj_bumblebee_timer_sub,FUN_010153f8,sub,called only by adj_bumblebee_timer [0x010142dc]
-0x010154dc,task_running_wrap_154dc,FUN_010154dc,wrapper,only calls task_running_wrap [0x010140f4]
+0x010154dc,task_running_wrap_140f4_wrap_154dc,FUN_010154dc,wrapper,only calls task_running_wrap_140f4 [0x010140f4]
 0x01015a14,leff_rule_dtor_user_15a14,FUN_01015a14,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01015b50,current_player_wrap_15b50,FUN_01015b50,wrapper,only calls current_player [0x0001aa40]
 0x01015b78,on_event_26_15b78,FUN_01015b78,hook,"event_hook_add(&DAT_00034f8c, 0x26, ..) in FUN_010175dc [0x010175dc]"
@@ -1671,7 +1671,7 @@ address,name,was,rule,evidence
 0x01018fac,current_player_wrap_18fac,FUN_01018fac,wrapper,only calls current_player [0x0001aa40]
 0x01018fd4,on_event_26_18fd4,FUN_01018fd4,hook,"event_hook_add(&DAT_00035028, 0x26, ..) in FUN_0101aa58 [0x0101aa58]"
 0x01019000,error_log_wrap_19000,FUN_01019000,wrapper,only calls error_log [0x00004f78]
-0x01019058,error_log_wrap_19058,FUN_01019058,wrapper,only calls error_log_wrap [0x00005b58]
+0x01019058,game_flag_test_wrap_19058,FUN_01019058,wrapper,only calls game_flag_test [0x00005b58]
 0x0101906c,error_log_user_1906c,FUN_0101906c,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x010190a8,task_0x6e_of_FUN_01019150,FUN_010190a8,task,"task entry started by FUN_01019150 [0x01019150] (FUN_0000ab4c, id 0x6e)"
 0x010190e0,current_player_wrap_190e0,FUN_010190e0,wrapper,only calls current_player [0x0001aa40]
@@ -1782,7 +1782,7 @@ address,name,was,rule,evidence
 0x0101f5dc,adj_shockwave_timer_sub_1f5dc,FUN_0101f5dc,sub,called only by adj_shockwave_timer [0x0101e400]
 0x0101fbb0,leff_rule_dtor_user_1fbb0,FUN_0101fbb0,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0101fcb4,error_log_wrap_1fcb4,FUN_0101fcb4,wrapper,only calls error_log [0x00004f78]
-0x0101fce8,start_deff_91_sub_1fce8,FUN_0101fce8,sub,called only by start_deff_91_sub [0x0101ffa0]
+0x0101fce8,start_deff_91_sub_1ffa0_sub_1fce8,FUN_0101fce8,sub,called only by start_deff_91_sub_1ffa0 [0x0101ffa0]
 0x0101fd14,adj_mode_start_difficulty,FUN_0101fd14,adj,adj_get(66) MODE START DIFFICULTY
 0x0101fd34,current_player_wrap_1fd34,FUN_0101fd34,wrapper,only calls current_player [0x0001aa40]
 0x0101fdac,clu_start_allowed_user_1fdac,FUN_0101fdac,uses,"calls clu_start_allowed [0x01022ca8], player_side [0x01033e30], current_player [0x0001aa40]"
@@ -1819,7 +1819,7 @@ address,name,was,rule,evidence
 0x010223f4,palette_identity_user_223f4,FUN_010223f4,uses,"calls palette_identity [0x00023e58], dmd_page_alloc_pair [0x000200a0], bitmap_draw [0x00023d28]"
 0x01022568,leaf_22568,FUN_01022568,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010225a8,leaf_225a8,FUN_010225a8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01022854,current_player_user_22854,FUN_01022854,uses,"calls current_player [0x0001aa40], player_side [0x01033e30], error_log_wrap [0x00007714]"
+0x01022854,lamp_layer_22854,FUN_01022854,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x010229ec,current_player_wrap_229ec,FUN_010229ec,wrapper,only calls current_player [0x0001aa40]
 0x01022aa0,adj_competition_mode_user_22aa0,FUN_01022aa0,uses,"calls adj_competition_mode [0x00017ea0], player_side [0x01033e30], current_player [0x0001aa40]"
 0x01022ae8,current_player_wrap_22ae8,FUN_01022ae8,wrapper,only calls current_player [0x0001aa40]
@@ -1838,7 +1838,7 @@ address,name,was,rule,evidence
 0x010230d0,set_dat_000315fc_user_230d0,FUN_010230d0,uses,calls set_dat_000315fc [0x00017650]
 0x01023130,on_event_65_23130,FUN_01023130,hook,"event_hook_add(&DAT_0003516c, 0x65, ..) in FUN_010232d4 [0x010232d4]"
 0x01023140,on_event_1d_23140,FUN_01023140,hook,"event_hook_add(&DAT_00035170, 0x1d, ..) in FUN_010232d4 [0x010232d4]"
-0x010232d0,on_event_26_sub_232d0,FUN_010232d0,sub,called only by on_event_26 [0x01022c20]
+0x010232d0,on_event_26_22c20_sub_232d0,FUN_010232d0,sub,called only by on_event_26_22c20 [0x01022c20]
 0x010232d4,leff_rule_dtor_user_232d4,FUN_010232d4,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01023418,on_event_11,FUN_01023418,hook,"event_hook_add(&DAT_00035188, 0x11, ..) in FUN_01023ea0 [0x01023ea0]"
 0x01023494,current_player_user_23494,FUN_01023494,uses,"calls current_player [0x0001aa40], task_running [0x0000b248]"
@@ -1849,14 +1849,14 @@ address,name,was,rule,evidence
 0x0102378c,current_player_wrap_2378c,FUN_0102378c,wrapper,only calls current_player [0x0001aa40]
 0x010237ac,start_deff_50,FUN_010237ac,deff,deff_start(50)
 0x01023890,leff_037_sub,FUN_01023890,sub,called only by leff_037 [0x01023928]
-0x01023a84,current_player_user_23a84,FUN_01023a84,uses,"calls current_player [0x0001aa40], error_log_wrap [0x00007714], error_log_wrap [0x00007858]"
+0x01023a84,lamp_layer_23a84,FUN_01023a84,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01023ddc,task_sleep_wrap_23ddc,FUN_01023ddc,wrapper,only calls task_sleep [0x0000acfc]
 0x01023ea0,leff_rule_dtor_user_23ea0,FUN_01023ea0,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01023fc8,on_event_26_23fc8,FUN_01023fc8,hook,"event_hook_add(&DAT_000351c8, 0x26, ..) in FUN_01024f24 [0x01024f24]"
 0x0102402c,current_player_wrap_2402c,FUN_0102402c,wrapper,only calls current_player [0x0001aa40]
 0x01024058,current_player_wrap_24058,FUN_01024058,wrapper,only calls current_player [0x0001aa40]
 0x01024388,task_0x5e_of_FUN_010243b4,FUN_01024388,task,"task entry started by FUN_010243b4 [0x010243b4] (task_create, id 0x5e)"
-0x010243b4,count_8_10_minute_games_sub_243b4,FUN_010243b4,sub,called only by count_8_10_minute_games [0x0100a788]
+0x010243b4,allspark_mystery_award,FUN_010243b4,hand,"the Allspark mystery award (rules/modes/allspark_and_energon.md 5.3): bag_weighted_pick [0x0000bae8] on the item list 0x040dde30, task 0x5e shows deff 52"
 0x01024808,current_player_wrap_24808,FUN_01024808,wrapper,only calls current_player [0x0001aa40]
 0x010248b0,leaf_248b0,FUN_010248b0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01024924,leaf_24924,FUN_01024924,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1870,22 +1870,22 @@ address,name,was,rule,evidence
 0x01024f14,count_wizard_mb_req_10_wrap,FUN_01024f14,wrapper,only calls count_wizard_mb_req_10 [0x0102d31c]
 0x01024f24,leff_rule_dtor_user_24f24,FUN_01024f24,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01024fe0,ram_00031454_user_24fe0,FUN_01024fe0,ram,uses RAM 0x00031454
-0x01024fe8,count_8_10_minute_games_sub_24fe8,FUN_01024fe8,sub,called only by count_8_10_minute_games [0x0100a788]
+0x01024fe8,hint_speech_set_allspark,FUN_01024fe8,hand,unless game flag 0x48: sets flag 0x48 and the hint call 0x145 (0x02111f54)
 0x01025028,ram_00031454_user_25028,FUN_01025028,ram,uses RAM 0x00031454
-0x01025030,game_flag_clear_user,FUN_01025030,uses,"calls game_flag_clear [0x00005a38], current_player [0x0001aa40], player_side [0x01033e30]"
-0x0102523c,any_multiball_running_user_2523c,FUN_0102523c,uses,"calls any_multiball_running [0x01006704], any_timed_mode_running [0x010067bc], error_log_wrap [0x0100ff6c]"
-0x01025294,leaf_25294,FUN_01025294,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x0102534c,ram_000339d4_user,FUN_0102534c,ram,uses RAM 0x000339d4
+0x01025030,hint_speech_set,FUN_01025030,hand,clears game flags 0x48 / 0x49 and the hint index 0x02111f64; arg 1: call 0x14e and flag 0x48; else by side 0x148 + random_below(3) / 0x14c + random_below(2) into 0x02111f54
+0x0102523c,hint_speech_allowed,FUN_0102523c,hand,"no multiball, no timed mode, 0x0101ff6c false, game flag 0x49 clear and 0x48 set"
+0x01025294,hint_speech_start,FUN_01025294,hand,"starts task 0xc6 (hint speech, 0x010250f4) when any_multiball_running_user_2523c allows it (game_flow.md 5.7)"
+0x0102534c,optimus_motor_ctor,FUN_0102534c,hand,builds a motor (motor_16140) with the class vtable 0x000339d4 (the Optimus motor 0x000351e8)
 0x010253b8,ram_00031468_user_253b8,FUN_010253b8,ram,uses RAM 0x00031468
 0x010253d8,dbattle_can_progress_user_253d8,FUN_010253d8,uses,calls dbattle_can_progress [0x010260d8]
 0x01025480,ram_000313cc_user,FUN_01025480,ram,uses RAM 0x000313cc
 0x010254d0,error_log_wrap_254d0,FUN_010254d0,wrapper,only calls error_log [0x00004f78]
 0x01025500,ram_000313c8_user,FUN_01025500,ram,"uses RAM 0x000313c8, 0x000313cc"
-0x01025558,fatal_halt_user_25558,FUN_01025558,uses,calls fatal_halt [0x00004f58]
-0x01025568,task_sleep_user_25568,FUN_01025568,uses,"calls task_sleep_wrap [0x00016f28], error_log [0x00004f78]"
-0x010255f8,play_sound_010_sub_255f8,FUN_010255f8,sub,called only by play_sound_010 [0x01025844]
-0x01025764,play_sound_010_sub_25764,FUN_01025764,sub,called only by play_sound_010 [0x01025844]
-0x010257dc,play_sound_010_sub_257dc,FUN_010257dc,sub,called only by play_sound_010 [0x01025844]
+0x01025558,motor_25558,FUN_01025558,subsystem,"uses 0x000315f4: the list of motors, motor_poll_all [0x00016b7c]"
+0x01025568,optimus_motor_test,FUN_01025568,hand,coil test of coil 30: moves the Optimus motor 0x000351e8 to the next position (motor_goto_wait)
+0x010255f8,play_sound_010_25844_sub_255f8,FUN_010255f8,sub,called only by play_sound_010_25844 [0x01025844]
+0x01025764,play_sound_010_25844_sub_25764,FUN_01025764,sub,called only by play_sound_010_25844 [0x01025844]
+0x010257dc,play_sound_010_25844_sub_257dc,FUN_010257dc,sub,called only by play_sound_010_25844 [0x01025844]
 0x01025844,play_sound_010_25844,FUN_01025844,sound,snd_play(0x10)
 0x01025c1c,table_040c702c_reader,FUN_01025c1c,table,reads ROM table 0x040c702c
 0x01025ccc,current_player_wrap_25ccc,FUN_01025ccc,wrapper,only calls current_player [0x0001aa40]
@@ -1893,7 +1893,7 @@ address,name,was,rule,evidence
 0x01025de4,start_deff_141,FUN_01025de4,deff,deff_start(141)
 0x0102606c,leaf_2606c,FUN_0102606c,leaf,"no call to a named function, no table or RAM symbol"
 0x01026098,current_player_user_26098,FUN_01026098,uses,calls current_player [0x0001aa40]
-0x010260c4,error_log_wrap_260c4,FUN_010260c4,wrapper,only calls error_log_wrap [0x00005b58]
+0x010260c4,game_flag_test_wrap_260c4,FUN_010260c4,wrapper,only calls game_flag_test [0x00005b58]
 0x01026140,error_log_user_26140,FUN_01026140,uses,"calls error_log_wrap [0x010260c4], current_player [0x0001aa40]"
 0x0102628c,start_deff_142,FUN_0102628c,deff,deff_start(142)
 0x010262f0,start_deff_144,FUN_010262f0,deff,deff_start(144)
@@ -1923,22 +1923,22 @@ address,name,was,rule,evidence
 0x01027594,current_player_wrap_27594,thunk_FUN_01027510,wrapper,only calls current_player [0x0001aa40]
 0x01027598,on_event_26_27598,FUN_01027598,hook,"event_hook_add(&DAT_00035298, 0x26, ..) in FUN_010293bc [0x010293bc]"
 0x01027628,error_log_wrap_27628,FUN_01027628,wrapper,only calls error_log [0x00004f78]
-0x0102767c,error_log_wrap_2767c,FUN_0102767c,wrapper,only calls error_log_wrap [0x01027698]
-0x01027698,error_log_wrap_27698,FUN_01027698,wrapper,only calls error_log_wrap [0x00005b58]
+0x0102767c,game_flag_test_wrap_27698_wrap_2767c,FUN_0102767c,wrapper,only calls game_flag_test_wrap_27698 [0x01027698]
+0x01027698,game_flag_test_wrap_27698,FUN_01027698,wrapper,only calls game_flag_test [0x00005b58]
 0x010276ac,error_log_user_276ac,FUN_010276ac,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x010276e0,error_log_user_276e0,FUN_010276e0,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
-0x01027718,error_log_wrap_27718,FUN_01027718,wrapper,only calls error_log_wrap [0x0102767c]
+0x01027718,game_flag_test_wrap_27698_wrap_2767c_wrap_27718,FUN_01027718,wrapper,only calls game_flag_test_wrap_27698_wrap_2767c [0x0102767c]
 0x01027734,current_player_wrap_27734,FUN_01027734,wrapper,only calls current_player [0x0001aa40]
 0x01027754,current_player_wrap_27754,FUN_01027754,wrapper,only calls current_player [0x0001aa40]
 0x0102779c,current_player_wrap_2779c,FUN_0102779c,wrapper,only calls current_player [0x0001aa40]
-0x0102781c,current_player_wrap_2781c,FUN_0102781c,wrapper,only calls current_player_wrap [0x0102779c]
+0x0102781c,current_player_wrap_2779c_wrap_2781c,FUN_0102781c,wrapper,only calls current_player_wrap_2779c [0x0102779c]
 0x0102783c,current_player_wrap_2783c,FUN_0102783c,wrapper,only calls current_player [0x0001aa40]
 0x01027874,current_player_wrap_27874,FUN_01027874,wrapper,only calls current_player [0x0001aa40]
 0x010278ec,current_player_wrap_278ec,FUN_010278ec,wrapper,only calls current_player [0x0001aa40]
 0x01027968,task_0x71_of_FUN_01027994,FUN_01027968,task,"task entry started by FUN_01027994 [0x01027994] (FUN_0000ab4c, id 0x71)"
 0x01027994,adj_save_optimus_prime_progress_27994,FUN_01027994,adj,adj_get(87) SAVE OPTIMUS PRIME PROGRESS
 0x01027b74,error_log_user_27b74,FUN_01027b74,uses,"calls error_log_wrap [0x01027628], current_player [0x0001aa40], current_player_wrap [0x0102779c]"
-0x01027ec0,on_event_1d_sub_27ec0,FUN_01027ec0,sub,called only by on_event_1d [0x01027fc4]
+0x01027ec0,on_event_1d_27fc4_sub_27ec0,FUN_01027ec0,sub,called only by on_event_1d_27fc4 [0x01027fc4]
 0x01027f18,task_0xb7_of_FUN_01027f44,FUN_01027f18,task,"task entry started by FUN_01027f44 [0x01027f44] (FUN_0000ab4c, id 0xb7)"
 0x01027f44,error_log_user_27f44,FUN_01027f44,uses,"calls error_log_wrap [0x01027698], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
 0x01027f88,task_running_range_user_27f88,FUN_01027f88,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
@@ -1946,8 +1946,8 @@ address,name,was,rule,evidence
 0x01027ff4,leaf_27ff4,FUN_01027ff4,leaf,"no call to a named function, no table or RAM symbol"
 0x0102806c,deff_057_sub,FUN_0102806c,sub,called only by deff_057 [0x010280bc]
 0x010285a0,error_log_user_285a0,FUN_010285a0,uses,"calls error_log_wrap [0x01027698], task_running [0x0000b248]"
-0x010285d8,adj_save_optimus_prime_progress_sub_285d8,FUN_010285d8,sub,called only by adj_save_optimus_prime_progress [0x01027994]
-0x010286c4,error_log_wrap_286c4,FUN_010286c4,wrapper,only calls error_log_wrap [0x01027698]
+0x010285d8,adj_save_optimus_prime_progress_2799_sub_285d8,FUN_010285d8,sub,called only by adj_save_optimus_prime_progress_27994 [0x01027994]
+0x010286c4,game_flag_test_wrap_27698_wrap_286c4,FUN_010286c4,wrapper,only calls game_flag_test_wrap_27698 [0x01027698]
 0x0102873c,ram_00001c34_user,FUN_0102873c,ram,uses RAM 0x00001c34
 0x0102878c,leaf_2878c,FUN_0102878c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x010287e8,leaf_287e8,FUN_010287e8,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -1968,22 +1968,22 @@ address,name,was,rule,evidence
 0x01029670,error_log_wrap_29670,FUN_01029670,wrapper,only calls error_log [0x00004f78]
 0x010296a4,leaf_296a4,FUN_010296a4,leaf,"no call to a named function, no table or RAM symbol"
 0x010296d0,current_player_wrap_296d0,FUN_010296d0,wrapper,only calls current_player [0x0001aa40]
-0x010296f0,error_log_wrap_296f0,FUN_010296f0,wrapper,only calls error_log_wrap [0x0102970c]
-0x0102970c,error_log_wrap_2970c,FUN_0102970c,wrapper,only calls error_log_wrap [0x00005b58]
+0x010296f0,game_flag_test_wrap_2970c_wrap_296f0,FUN_010296f0,wrapper,only calls game_flag_test_wrap_2970c [0x0102970c]
+0x0102970c,game_flag_test_wrap_2970c,FUN_0102970c,wrapper,only calls game_flag_test [0x00005b58]
 0x01029720,error_log_user_29720,FUN_01029720,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x01029754,error_log_user_29754,FUN_01029754,uses,"calls error_log_wrap [0x00005b58], task_running_range [0x0000b2ac]"
-0x0102978c,error_log_wrap_2978c,FUN_0102978c,wrapper,only calls error_log_wrap [0x010296f0]
+0x0102978c,game_flag_test_wrap_2970c_wrap_296f0_wrap_2978c,FUN_0102978c,wrapper,only calls game_flag_test_wrap_2970c_wrap_296f0 [0x010296f0]
 0x010297a8,current_player_wrap_297a8,FUN_010297a8,wrapper,only calls current_player [0x0001aa40]
 0x010297c8,current_player_wrap_297c8,FUN_010297c8,wrapper,only calls current_player [0x0001aa40]
 0x01029810,current_player_wrap_29810,FUN_01029810,wrapper,only calls current_player [0x0001aa40]
-0x01029890,current_player_wrap_29890,FUN_01029890,wrapper,only calls current_player_wrap [0x01029810]
+0x01029890,current_player_wrap_29810_wrap_29890,FUN_01029890,wrapper,only calls current_player_wrap_29810 [0x01029810]
 0x010298b0,current_player_wrap_298b0,FUN_010298b0,wrapper,only calls current_player [0x0001aa40]
 0x010298e8,current_player_wrap_298e8,FUN_010298e8,wrapper,only calls current_player [0x0001aa40]
 0x01029960,current_player_wrap_29960,FUN_01029960,wrapper,only calls current_player [0x0001aa40]
 0x010299dc,task_0x72_of_FUN_01029a08,FUN_010299dc,task,"task entry started by FUN_01029a08 [0x01029a08] (FUN_0000ab4c, id 0x72)"
 0x01029a08,adj_save_optimus_prime_progress_29a08,FUN_01029a08,adj,adj_get(87) SAVE OPTIMUS PRIME PROGRESS
 0x01029bf4,error_log_user_29bf4,FUN_01029bf4,uses,"calls error_log_wrap [0x01029670], current_player [0x0001aa40], current_player_wrap [0x01029810]"
-0x01029fa4,on_event_1d_sub_29fa4,FUN_01029fa4,sub,called only by on_event_1d [0x0102a0a8]
+0x01029fa4,on_event_1d_2a0a8_sub_29fa4,FUN_01029fa4,sub,called only by on_event_1d_2a0a8 [0x0102a0a8]
 0x01029ffc,task_0xb9_of_FUN_0102a028,FUN_01029ffc,task,"task entry started by FUN_0102a028 [0x0102a028] (FUN_0000ab4c, id 0xb9)"
 0x0102a028,error_log_user_2a028,FUN_0102a028,uses,"calls error_log_wrap [0x0102970c], game_flag_clear [0x00005a38], set_dat_000315fc [0x00017650]"
 0x0102a06c,task_running_range_user_2a06c,FUN_0102a06c,uses,"calls task_running_range [0x0000b2ac], task_kill_range [0x0000af20], game_flag_set [0x00005a88]"
@@ -1991,8 +1991,8 @@ address,name,was,rule,evidence
 0x0102a0d8,ram_00035370_user,FUN_0102a0d8,ram,uses RAM 0x00035370
 0x0102a17c,deff_063_sub,FUN_0102a17c,sub,called only by deff_063 [0x0102a1b8]
 0x0102a6e4,error_log_user_2a6e4,FUN_0102a6e4,uses,"calls error_log_wrap [0x0102970c], task_running [0x0000b248]"
-0x0102a71c,adj_save_optimus_prime_progress_sub_2a71c,FUN_0102a71c,sub,called only by adj_save_optimus_prime_progress [0x01029a08]
-0x0102a808,error_log_wrap_2a808,FUN_0102a808,wrapper,only calls error_log_wrap [0x0102970c]
+0x0102a71c,adj_save_optimus_prime_progress_29a0_sub_2a71c,FUN_0102a71c,sub,called only by adj_save_optimus_prime_progress_29a08 [0x01029a08]
+0x0102a808,game_flag_test_wrap_2970c_wrap_2a808,FUN_0102a808,wrapper,only calls game_flag_test_wrap_2970c [0x0102970c]
 0x0102a880,leaf_2a880,FUN_0102a880,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0102a8d0,leaf_2a8d0,FUN_0102a8d0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0102a928,leaf_2a928,FUN_0102a928,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2034,7 +2034,7 @@ address,name,was,rule,evidence
 0x0102bd08,leaf_2bd08,FUN_0102bd08,leaf,"no call to a named function, no table or RAM symbol"
 0x0102bd18,leaf_2bd18,FUN_0102bd18,leaf,"no call to a named function, no table or RAM symbol"
 0x0102bd4c,task_0x2b_of_FUN_0102bbac_sub_2bd4c,FUN_0102bd4c,sub,called only by task_0x2b_of_FUN_0102bbac [0x0102bb28]
-0x0102be38,error_log_wrap_2be38,FUN_0102be38,wrapper,only calls error_log_wrap [0x0000b598]
+0x0102be38,error_log_wrap_b598_wrap_2be38,FUN_0102be38,wrapper,only calls error_log_wrap_b598 [0x0000b598]
 0x0102bee0,task_0x2b_of_FUN_0102bbac_sub_2bee0,FUN_0102bee0,sub,called only by task_0x2b_of_FUN_0102bbac [0x0102bb28]
 0x0102bf2c,leaf_2bf2c,FUN_0102bf2c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0102bf98,task_0x2b_of_FUN_0102bbac_sub_2bf98,FUN_0102bf98,sub,called only by task_0x2b_of_FUN_0102bbac [0x0102bb28]
@@ -2047,8 +2047,8 @@ address,name,was,rule,evidence
 0x0102c624,start_deff_47,FUN_0102c624,deff,deff_start(47)
 0x0102c804,start_leff_33_sub_2c804,FUN_0102c804,sub,called only by start_leff_33 [0x0102c8c8]
 0x0102c878,start_leff_33_sub_2c878,FUN_0102c878,sub,called only by start_leff_33 [0x0102c8c8]
-0x0102c8a4,error_log_wrap_2c8a4,FUN_0102c8a4,wrapper,only calls error_log_wrap [0x00005b58]
-0x0102c8b8,error_log_wrap_2c8b8,FUN_0102c8b8,wrapper,only calls error_log_wrap [0x0102c8a4]
+0x0102c8a4,game_flag_test_wrap_2c8a4,FUN_0102c8a4,wrapper,only calls game_flag_test [0x00005b58]
+0x0102c8b8,game_flag_test_wrap_2c8a4_wrap_2c8b8,FUN_0102c8b8,wrapper,only calls game_flag_test_wrap_2c8a4 [0x0102c8a4]
 0x0102c8c8,start_leff_33,FUN_0102c8c8,leff,leff_start(33)
 0x0102ca30,task_0x51_of_FUN_0102ca98,FUN_0102ca30,task,"task entry started by FUN_0102ca98 [0x0102ca98] (task_create, id 0x51)"
 0x0102ca98,start_leff_26,FUN_0102ca98,leff,leff_start(26)
@@ -2064,18 +2064,18 @@ address,name,was,rule,evidence
 0x0102d6ec,deff_150_super_pop_bumpers_sub_2d6ec,FUN_0102d6ec,sub,called only by deff_150_super_pop_bumpers [0x0102d770]
 0x0102d9f4,leff_rule_dtor_user_2d9f4,FUN_0102d9f4,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0102dad8,current_player_wrap_2dad8,FUN_0102dad8,wrapper,only calls current_player [0x0001aa40]
-0x0102db28,error_log_user_2db28,FUN_0102db28,uses,"calls error_log_wrap [0x000079ac], error_log_wrap [0x000077a0], leff_start [0x00007c10]"
-0x0102dd58,error_log_user_2dd58,FUN_0102dd58,uses,calls error_log_wrap [0x00007578]
+0x0102db28,lamp_layer_2db28,FUN_0102db28,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x0102dd58,lamp_layer_2dd58,FUN_0102dd58,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0102e1b8,current_player_wrap_2e1b8,FUN_0102e1b8,wrapper,only calls current_player [0x0001aa40]
-0x0102e208,error_log_user_2e208,FUN_0102e208,uses,"calls error_log_wrap [0x000079ac], error_log_wrap [0x000077a0], leff_start [0x00007c10]"
-0x0102e408,error_log_user_2e408,FUN_0102e408,uses,calls error_log_wrap [0x00007578]
+0x0102e208,lamp_layer_2e208,FUN_0102e208,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x0102e408,lamp_layer_2e408,FUN_0102e408,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0102e88c,current_player_wrap_2e88c,FUN_0102e88c,wrapper,only calls current_player [0x0001aa40]
 0x0102e930,current_player_wrap_2e930,FUN_0102e930,wrapper,only calls current_player [0x0001aa40]
 0x0102e95c,any_multiball_running_user_2e95c,FUN_0102e95c,uses,"calls any_multiball_running [0x01006704], any_timed_mode_running [0x010067bc], current_player_wrap [0x0102e930]"
 0x0102e994,any_multiball_running_user_2e994,FUN_0102e994,uses,"calls any_multiball_running [0x01006704], any_timed_mode_running [0x010067bc]"
 0x0102e9c0,leff_start_user_2e9c0,FUN_0102e9c0,uses,"calls leff_start [0x00007c10], snd_play [0x000251f4], score_add [0x0001caf0]"
 0x0102ed18,coilgroup_pulse_user_2ed18,FUN_0102ed18,uses,"calls coilgroup_pulse [0x00005fd4], task_sleep [0x0000acfc]"
-0x0102ede0,current_player_user_2ede0,FUN_0102ede0,uses,"calls current_player [0x0001aa40], error_log_wrap [0x00007714], error_log_wrap [0x000077a0]"
+0x0102ede0,lamp_layer_2ede0,FUN_0102ede0,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x0102eff8,leff_rule_dtor_user_2eff8,FUN_0102eff8,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x0102f11c,table_040c75d0_reader,FUN_0102f11c,table,reads ROM table 0x040c75d0
 0x0102f174,leaf_2f174,FUN_0102f174,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2104,9 +2104,9 @@ address,name,was,rule,evidence
 0x01030188,dmd_page_alloc_user_30188,FUN_01030188,uses,"calls dmd_page_alloc [0x0001ffd4], bitmap_draw2 [0x00023c7c], dmd_show_pages [0x00020134]"
 0x0103025c,dmd_page_alloc_user_3025c,FUN_0103025c,uses,"calls dmd_page_alloc [0x0001ffd4], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
 0x01030374,dmd_page_alloc_user_30374,FUN_01030374,uses,"calls dmd_page_alloc [0x0001ffd4], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x010303cc,dmd_show_pages_user_303cc,FUN_010303cc,uses,"calls dmd_show_pages [0x00020134], task_sleep [0x0000acfc], dmd_page_alloc [0x0001ffd4]"
-0x010304ac,dmd_show_pages_user_304ac,FUN_010304ac,uses,"calls dmd_show_pages [0x00020134], task_sleep [0x0000acfc], dmd_page_alloc [0x0001ffd4]"
-0x0103058c,dmd_page_alloc_user_3058c,FUN_0103058c,uses,"calls dmd_page_alloc [0x0001ffd4], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
+0x010303cc,dmd_page_303cc,FUN_010303cc,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x010304ac,dmd_page_304ac,FUN_010304ac,subsystem,"uses 0x00037654: the DMD page allocator, dmd_page_alloc"
+0x0103058c,dmd_page_3058c,FUN_0103058c,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
 0x0103070c,error_log_user_3070c,FUN_0103070c,uses,"calls error_log_wrap [0x00001ecc], error_log [0x00004f78]"
 0x010307a0,adj_shaker_motor_optional,FUN_010307a0,adj,adj_get(96) SHAKER MOTOR (OPTIONAL)
 0x010307e8,error_log_wrap_307e8,FUN_010307e8,wrapper,only calls error_log [0x00004f78]
@@ -2117,7 +2117,7 @@ address,name,was,rule,evidence
 0x0103096c,any_multiball_running_wrap_3096c,FUN_0103096c,wrapper,only calls any_multiball_running [0x01006704]
 0x010309a4,any_multiball_running_user_309a4,FUN_010309a4,uses,"calls any_multiball_running_wrap [0x0103096c], leff_start [0x00007c10], snd_play [0x000251f4]"
 0x01030eb8,coilgroup_pulse_user_30eb8,FUN_01030eb8,uses,"calls coilgroup_pulse [0x00005fd4], task_sleep [0x0000acfc]"
-0x01030f80,any_multiball_running_user_30f80,FUN_01030f80,uses,"calls any_multiball_running_wrap [0x0103096c], current_player [0x0001aa40], error_log_wrap [0x00007714]"
+0x01030f80,lamp_layer_30f80,FUN_01030f80,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x010312e4,event_hook_add_user_312e4,FUN_010312e4,uses,calls event_hook_add [0x00006da8]
 0x01031398,error_log_wrap_31398,FUN_01031398,wrapper,only calls error_log [0x00004f78]
 0x010313cc,on_event_6b_313cc,FUN_010313cc,hook,"event_hook_add(&DAT_000356e0, 0x6b, ..) in FUN_01031eb4 [0x01031eb4]"
@@ -2126,14 +2126,14 @@ address,name,was,rule,evidence
 0x010314ac,task_running_wrap_314ac,FUN_010314ac,wrapper,only calls task_running [0x0000b248]
 0x010314c0,task_running_range_wrap_314c0,FUN_010314c0,wrapper,only calls task_running_range [0x0000b2ac]
 0x010314d8,task_0xb2_of_FUN_01031518,FUN_010314d8,task,"task entry started by FUN_01031518 [0x01031518] (task_create, id 0xb2)"
-0x01031518,on_event_0f_sub_31518,FUN_01031518,sub,called only by on_event_0f [0x01031928]
+0x01031518,on_event_0f_31928_sub_31518,FUN_01031518,sub,called only by on_event_0f_31928 [0x01031928]
 0x01031590,current_player_wrap_31590,FUN_01031590,wrapper,only calls current_player [0x0001aa40]
 0x010315e0,current_player_wrap_315e0,FUN_010315e0,wrapper,only calls current_player [0x0001aa40]
 0x01031630,start_deff_42,FUN_01031630,deff,deff_start(42)
 0x01031704,leaf_31704,FUN_01031704,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01031724,task_running_range_wrap_31724,FUN_01031724,wrapper,only calls task_running_range [0x0000b2ac]
 0x0103173c,task_0xb4_of_FUN_0103177c,FUN_0103173c,task,"task entry started by FUN_0103177c [0x0103177c] (task_create, id 0xb4)"
-0x0103177c,on_event_0f_sub_3177c,FUN_0103177c,sub,called only by on_event_0f [0x01031928]
+0x0103177c,on_event_0f_31928_sub_3177c,FUN_0103177c,sub,called only by on_event_0f_31928 [0x01031928]
 0x010317cc,current_player_wrap_317cc,FUN_010317cc,wrapper,only calls current_player [0x0001aa40]
 0x0103181c,task_0x65_of_FUN_01031848,FUN_0103181c,task,"task entry started by FUN_01031848 [0x01031848] (FUN_0000ab4c, id 0x65)"
 0x01031848,sw_megatron_back_door_sub,FUN_01031848,sub,called only by sw_megatron_back_door [0x01033c80]
@@ -2144,11 +2144,11 @@ address,name,was,rule,evidence
 0x010319b0,task_running_user_319b0,FUN_010319b0,uses,"calls task_running_wrap [0x010314ac], side_choice_running [0x01033e84]"
 0x010319f4,leaf_319f4,FUN_010319f4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01031eb4,leff_rule_dtor_user_31eb4,FUN_01031eb4,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
-0x01032090,sw_right_orbit_spinner_sub_32090,FUN_01032090,sub,called only by sw_right_orbit_spinner_sub [0x01032294]
+0x01032090,sw_right_orbit_spinner_sub_32294_sub_32090,FUN_01032090,sub,called only by sw_right_orbit_spinner_sub_32294 [0x01032294]
 0x01032094,play_sound_270_sub,FUN_01032094,sub,called only by play_sound_270 [0x010320a4]
 0x010320a4,play_sound_270,FUN_010320a4,sound,snd_play(0x270)
 0x01032230,task_0x49_of_FUN_01032294,FUN_01032230,task,"task entry started by FUN_01032294 [0x01032294] (task_create, id 0x49)"
-0x01032280,error_log_wrap_32280,FUN_01032280,wrapper,only calls error_log_wrap [0x00005b58]
+0x01032280,game_flag_test_wrap_32280,FUN_01032280,wrapper,only calls game_flag_test [0x00005b58]
 0x01032294,sw_right_orbit_spinner_sub_32294,FUN_01032294,sub,called only by sw_right_orbit_spinner [0x01033a08]
 0x010324dc,on_event_26_324dc,FUN_010324dc,hook,"event_hook_add(&DAT_00035718, 0x26, ..) in FUN_01032c48 [0x01032c48]"
 0x01032510,current_player_wrap_32510,FUN_01032510,wrapper,only calls current_player [0x0001aa40]
@@ -2160,8 +2160,8 @@ address,name,was,rule,evidence
 0x01032944,deff_147_super_spinner_sub_32944,FUN_01032944,sub,called only by deff_147_super_spinner [0x010329c8]
 0x01032c48,leff_rule_dtor_user_32c48,FUN_01032c48,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
 0x01032d2c,current_player_user_32d2c,FUN_01032d2c,uses,"calls current_player_wrap [0x01000dfc], current_player [0x0001aa40], error_log_wrap [0x0001a928]"
-0x01032d5c,start_deff_14_user_32d5c,FUN_01032d5c,uses,"calls start_deff_14 [0x000068ec], error_log_wrap [0x0000d464], error_log_wrap [0x00007578]"
-0x01032dac,start_deff_14_user_32dac,FUN_01032dac,uses,"calls start_deff_14 [0x000068ec], error_log_wrap [0x0000d464], error_log_wrap [0x00007578]"
+0x01032d5c,lamp_layer_32d5c,FUN_01032d5c,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
+0x01032dac,lamp_layer_32dac,FUN_01032dac,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01032dfc,sw_shooter_lane,FUN_01032dfc,switch,handler of switch(es) SHOOTER LANE (switch table)
 0x01032eb0,task_sleep_user_32eb0,FUN_01032eb0,uses,"calls task_sleep [0x0000acfc], task_running [0x0000b248], error_log_wrap [0x00002e34]"
 0x01032f08,leaf_32f08,FUN_01032f08,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
@@ -2201,35 +2201,35 @@ address,name,was,rule,evidence
 0x01033d3c,sw_optimus_prime,FUN_01033d3c,switch,handler of switch(es) OPTIMUS PRIME (switch table)
 0x01033dec,on_event_6b_33dec,FUN_01033dec,hook,"event_hook_add(&DAT_000359e0, 0x6b, ..) in FUN_01034618 [0x01034618]"
 0x01033e08,on_event_6c_33e08,FUN_01033e08,hook,"event_hook_add(&DAT_000359e4, 0x6c, ..) in FUN_01034618 [0x01034618]"
-0x01033e50,error_log_wrap_33e50,FUN_01033e50,wrapper,only calls error_log_wrap [0x0001a928]
+0x01033e50,error_log_wrap_1a928_wrap_33e50,FUN_01033e50,wrapper,only calls error_log_wrap_1a928 [0x0001a928]
 0x01033e74,leaf_33e74,FUN_01033e74,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01033e98,task_200_of_FUN_01033ec8,FUN_01033e98,task,"task entry started by FUN_01033ec8 [0x01033ec8] (task_create, id 200)"
-0x01033ec8,on_event_26_sub_33ec8,FUN_01033ec8,sub,called only by on_event_26 [0x01033f94]
+0x01033ec8,on_event_26_33f94_sub_33ec8,FUN_01033ec8,sub,called only by on_event_26_33f94 [0x01033f94]
 0x01033f2c,sw_shooter_lane_sub_33f2c,FUN_01033f2c,sub,called only by sw_shooter_lane [0x01032dfc]
 0x01033f44,sw_shooter_lane_sub_33f44,FUN_01033f44,sub,called only by sw_shooter_lane [0x01032dfc]
 0x01033f54,start_deff_41,FUN_01033f54,deff,deff_start(41)
 0x01033f94,on_event_26_33f94,FUN_01033f94,hook,"event_hook_add(&DAT_000359e8, 0x26, ..) in FUN_01034618 [0x01034618]"
 0x01034010,on_event_0f_34010,FUN_01034010,hook,"event_hook_add(&DAT_000359ec, 0xf, ..) in FUN_01034618 [0x01034618]"
 0x01034618,leff_rule_dtor_user_34618,FUN_01034618,uses,"calls leff_rule_dtor [0x000177a4], event_hook_add [0x00006da8]"
-0x01034758,dmd_page_alloc_pair_user_34758,FUN_01034758,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x010349c0,dmd_page_alloc_pair_user_349c0,FUN_010349c0,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x01034b68,dmd_page_alloc_pair_user_34b68,FUN_01034b68,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x01034d04,dmd_page_alloc_pair_user_34d04,FUN_01034d04,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x01034ea8,dmd_page_alloc_pair_user_34ea8,FUN_01034ea8,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x01035058,dmd_page_alloc_pair_user_35058,FUN_01035058,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x010351ec,dmd_page_alloc_pair_user_351ec,FUN_010351ec,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x0103539c,dmd_page_alloc_pair_user_3539c,FUN_0103539c,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x0103553c,dmd_page_alloc_pair_user_3553c,FUN_0103553c,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
-0x010356f4,dmd_page_alloc_pair_user_356f4,FUN_010356f4,uses,"calls dmd_page_alloc_pair [0x000200a0], dmd_show_pages [0x00020134], task_sleep [0x0000acfc]"
+0x01034758,dmd_page_34758,FUN_01034758,subsystem,"uses 0x00037654: the DMD page allocator, dmd_page_alloc"
+0x010349c0,dmd_page_349c0,FUN_010349c0,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x01034b68,dmd_page_34b68,FUN_01034b68,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x01034d04,dmd_page_34d04,FUN_01034d04,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x01034ea8,dmd_page_34ea8,FUN_01034ea8,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x01035058,dmd_page_35058,FUN_01035058,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x010351ec,dmd_page_351ec,FUN_010351ec,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x0103539c,dmd_page_3539c,FUN_0103539c,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x0103553c,dmd_page_3553c,FUN_0103553c,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
+0x010356f4,dmd_page_356f4,FUN_010356f4,subsystem,"uses 0x00037658: the DMD page allocator, dmd_page_alloc"
 0x010359ac,on_event_26_359ac,FUN_010359ac,hook,"event_hook_add(&DAT_00035a08, 0x26, ..) in FUN_010360bc [0x010360bc]"
 0x010359f4,current_player_user_359f4,FUN_010359f4,uses,"calls current_player [0x0001aa40], current_player_wrap [0x010176e0], current_player_wrap [0x0101e228]"
 0x01035ad0,count_wizard_mb_req_4_sub_35ad0,FUN_01035ad0,sub,called only by count_wizard_mb_req_4 [0x010363ec]
-0x01035af0,adj_bonus_extra_ball_at,FUN_01035af0,adj,adj_get(83) BONUS EXTRA BALL AT
+0x01035af0,wizard_req_collect,FUN_01035af0,hand,"wizard requirement n (table 0x040c7a10, 11 records of 0x10): per-player count 0x0211210c, audit counter at +0x0e (129..139 WIZARD: REQ. n COLLECTED), bonus EB when the count reaches adj 0x53"
 0x01035c60,current_player_user_35c60,FUN_01035c60,uses,"calls current_player [0x0001aa40], error_log [0x00004f78]"
 0x01035d00,current_player_wrap_35d00,FUN_01035d00,wrapper,only calls current_player [0x0001aa40]
 0x01035db4,zuse_qualify_enabled_sub,FUN_01035db4,sub,called only by zuse_qualify_enabled [0x0100ff80]
 0x01035e58,current_player_wrap_35e58,FUN_01035e58,wrapper,only calls current_player [0x0001aa40]
-0x01035ea8,current_player_user_35ea8,FUN_01035ea8,uses,"calls current_player [0x0001aa40], error_log_wrap [0x00007714], error_log_wrap [0x000077a0]"
+0x01035ea8,lamp_layer_35ea8,FUN_01035ea8,subsystem,"uses 0x00036374: the lamp layers, lamp_compositor_tick [0x000073cc]"
 0x01035f70,msg_get_user_35f70,FUN_01035f70,uses,"calls msg_get [0x000099f0], vsprintf [0x0002fef0]"
 0x01035fb0,strcmp_user_35fb0,FUN_01035fb0,uses,"calls strcmp [0x0002fe00], atoi [0x0002fa24], current_player [0x0001aa40]"
 0x0103609c,vsprintf_user_3609c,FUN_0103609c,uses,calls vsprintf [0x0002fef0]
@@ -2243,11 +2243,11 @@ address,name,was,rule,evidence
 0x010363b4,items_all_collected_user,FUN_010363b4,uses,"calls items_all_collected [0x01035d50], any_multiball_running [0x01006704], error_log_wrap [0x0100ff6c]"
 0x010363ec,count_wizard_mb_req_4,FUN_010363ec,audit,audit_add(151) WIZARD MB: REQ. 4 COMPLETED
 0x01036534,table_040c7acc_reader,FUN_01036534,table,reads ROM table 0x040c7acc
-0x0103657c,error_log_wrap_3657c,FUN_0103657c,wrapper,only calls error_log_wrap [0x00005b58]
+0x0103657c,game_flag_test_wrap_3657c,FUN_0103657c,wrapper,only calls game_flag_test [0x00005b58]
 0x01036590,error_log_user_36590,FUN_01036590,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248]"
 0x010365c4,error_log_user_365c4,FUN_010365c4,uses,"calls error_log_wrap [0x0103628c], score_add [0x0001caf0], deff_start [0x000209b4]"
 0x010367c4,task_running_user_367c4,FUN_010367c4,uses,"calls task_running [0x0000b248], task_kill [0x0000ae1c], game_flag_set [0x00005a88]"
-0x01036814,on_event_1d_sub_36814,FUN_01036814,sub,called only by on_event_1d [0x0103686c]
+0x01036814,on_event_1d_3686c_sub_36814,FUN_01036814,sub,called only by on_event_1d_3686c [0x0103686c]
 0x0103686c,on_event_1d_3686c,FUN_0103686c,hook,"event_hook_add(&DAT_00035a38, 0x1d, ..) in FUN_010378c4 [0x010378c4]"
 0x01036970,task_running_user_36970,FUN_01036970,uses,calls task_running [0x0000b248]
 0x01037018,error_log_user_37018,FUN_01037018,uses,"calls error_log_wrap [0x0103657c], task_running [0x0000b248]"
@@ -2257,40 +2257,40 @@ address,name,was,rule,evidence
 0x01037b60,leaf_37b60,FUN_01037b60,leaf,"no call to a named function, no table or RAM symbol"
 0x01037b74,leaf_37b74,FUN_01037b74,leaf,"no call to a named function, no table or RAM symbol"
 0x01037b84,leaf_37b84,FUN_01037b84,leaf,"no call to a named function, no table or RAM symbol"
-0x01037bdc,table_040d1808_reader,FUN_01037bdc,table,reads ROM table 0x040d1808
-0x01037c9c,error_log_user_37c9c,FUN_01037c9c,uses,"calls error_log [0x00004f78], balldev_count_switches [0x01037c38]"
+0x01037bdc,game_device_37bdc,FUN_01037bdc,subsystem,"uses 0x040d1808: the game's ball device records (0x24 each), balldev_count_switches"
+0x01037c9c,game_device_37c9c,FUN_01037c9c,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x01037cf4,balldev_count_switches_user_37cf4,FUN_01037cf4,uses,"calls balldev_count_switches [0x01037c38], task_sleep [0x0000acfc]"
 0x01037d54,balldev_count_switches_user_37d54,FUN_01037d54,uses,"calls balldev_count_switches [0x01037c38], task_sleep [0x0000acfc]"
 0x01037dac,get_dat_00031624,FUN_01037dac,getter,returns DAT_00031624
 0x01037dbc,get_dat_00031626,FUN_01037dbc,getter,returns DAT_00031626
 0x01037dcc,get_dat_00031628,FUN_01037dcc,getter,returns DAT_00031628
-0x01037f10,error_log_wrap_37f10,FUN_01037f10,wrapper,only calls error_log [0x00004f78]
-0x0103801c,error_log_wrap_3801c,FUN_0103801c,wrapper,only calls error_log_wrap [0x0103a120]
-0x01038078,start_deff_5_sub_38078,FUN_01038078,sub,called only by start_deff_5_sub [0x01039c24]
+0x01037f10,game_device_37f10,FUN_01037f10,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103801c,game_device_3a120_wrap_3801c,FUN_0103801c,wrapper,only calls game_device_3a120 [0x0103a120]
+0x01038078,game_device_39c24_sub_38078,FUN_01038078,sub,called only by game_device_39c24 [0x01039c24]
 0x010380b4,ram_00031638_user,FUN_010380b4,ram,uses RAM 0x00031638
-0x010380fc,error_log_wrap_380fc,FUN_010380fc,wrapper,only calls error_log_wrap [0x0103a120]
-0x010382f8,start_deff_12_sub,FUN_010382f8,sub,called only by start_deff_12 [0x010383a8]
+0x010380fc,game_device_380fc,FUN_010380fc,subsystem,"uses 0x040d1804: the game's ball device records (0x24 each), balldev_count_switches"
+0x010382f8,start_deff_12_383a8_sub,FUN_010382f8,sub,called only by start_deff_12_383a8 [0x010383a8]
 0x010383a8,start_deff_12_383a8,FUN_010383a8,deff,deff_start(12)
 0x010387ac,start_deff_12_387ac,FUN_010387ac,deff,deff_start(12)
 0x01038b80,start_deff_12_38b80,FUN_01038b80,deff,deff_start(12)
-0x01038e30,task_running_user_38e30,FUN_01038e30,uses,"calls task_running [0x0000b248], error_log_wrap [0x0103a120], balldev_count_switches [0x01037c38]"
+0x01038e30,game_device_38e30,FUN_01038e30,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x010391a0,start_deff_12_391a0,FUN_010391a0,deff,deff_start(12)
-0x01039484,error_log_wrap_39484,FUN_01039484,wrapper,only calls error_log_wrap [0x0103a120]
-0x010394ac,error_log_user_394ac,FUN_010394ac,uses,"calls error_log_wrap [0x0000d464], task_running [0x0000b248], error_log_wrap [0x0103a40c]"
+0x01039484,game_device_3a120_wrap_39484,FUN_01039484,wrapper,only calls game_device_3a120 [0x0103a120]
+0x010394ac,game_device_394ac,FUN_010394ac,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x01039ad8,sw_trough_4_l_etc,FUN_01039ad8,switch,handler of switch(es) TROUGH #1 (R); TROUGH #2; TROUGH #3; TROUGH #4 (L) (switch table)
-0x01039bbc,memset_user_39bbc,FUN_01039bbc,uses,"calls memset [0x0002fd80], error_log_wrap [0x0103a188]"
-0x01039c24,start_deff_5_sub_39c24,FUN_01039c24,sub,called only by start_deff_5_sub [0x000267fc]
+0x01039bbc,game_device_39bbc,FUN_01039bbc,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x01039c24,game_device_39c24,FUN_01039c24,subsystem,"uses 0x040d1800: the game's ball device records (0x24 each), balldev_count_switches"
 0x01039db4,task_0x1c_of_FUN_0100a1f8,FUN_01039db4,task,"task entry started by FUN_0100a1f8 [0x0100a1f8] (task_create, id 0x1c)"
-0x01039de0,task_running_user_39de0,FUN_01039de0,uses,"calls task_running [0x0000b248], balldev_count_switches [0x01037c38], task_create [0x0000aa04]"
-0x0103a120,error_log_wrap_3a120,FUN_0103a120,wrapper,only calls error_log [0x00004f78]
-0x0103a188,error_log_wrap_3a188,FUN_0103a188,wrapper,only calls error_log_wrap [0x0103a120]
+0x01039de0,game_device_39de0,FUN_01039de0,subsystem,"uses 0x040d181c: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103a120,game_device_3a120,FUN_0103a120,subsystem,"uses 0x040d1804: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103a188,game_device_3a120_wrap_3a188,FUN_0103a188,wrapper,only calls game_device_3a120 [0x0103a120]
 0x0103a1c4,error_log_user_3a1c4,FUN_0103a1c4,uses,calls error_log_wrap [0x0103a188]
 0x0103a228,error_log_user_3a228,FUN_0103a228,uses,calls error_log_wrap [0x0103a188]
 0x0103a26c,error_log_user_3a26c,FUN_0103a26c,uses,"calls error_log_wrap [0x0103a188], balls_in_play [0x0103a5ec]"
-0x0103a2c0,error_log_user_3a2c0,FUN_0103a2c0,uses,"calls error_log_wrap [0x0103a120], error_log [0x00004f78], task_running [0x0000b248]"
-0x0103a3c0,error_log_wrap_3a3c0,FUN_0103a3c0,wrapper,only calls error_log [0x00004f78]
-0x0103a40c,error_log_wrap_3a40c,FUN_0103a40c,wrapper,only calls error_log_wrap [0x0103a3c0]
-0x0103a464,error_log_user_3a464,FUN_0103a464,uses,"calls error_log_wrap [0x0103a120], error_log [0x00004f78]"
+0x0103a2c0,game_device_3a2c0,FUN_0103a2c0,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103a3c0,game_device_3a3c0,FUN_0103a3c0,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103a40c,game_device_3a3c0_wrap_3a40c,FUN_0103a40c,wrapper,only calls game_device_3a3c0 [0x0103a3c0]
+0x0103a464,game_device_3a464,FUN_0103a464,subsystem,"uses 0x040d181d: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103a4d0,task_running_range_wrap_3a4d0,FUN_0103a4d0,wrapper,only calls task_running_range [0x0000b2ac]
 0x0103a4f0,task_running_user_3a4f0,FUN_0103a4f0,uses,"calls task_running [0x0000b248], error_log [0x00004f78]"
 0x0103a544,task_running_wrap_3a544,FUN_0103a544,wrapper,only calls task_running [0x0000b248]
@@ -2300,35 +2300,35 @@ address,name,was,rule,evidence
 0x0103a7d8,ram_00031628_user,FUN_0103a7d8,ram,"uses RAM 0x00031628, 0x00031454"
 0x0103a7fc,error_log_user_3a7fc,FUN_0103a7fc,uses,calls error_log_wrap [0x00005b58]
 0x0103a848,task_kill_wrap,FUN_0103a848,wrapper,only calls task_kill [0x0000ae1c]
-0x0103a87c,task_of_multiball_start_sub_3a87c,FUN_0103a87c,sub,called only by task_of_multiball_start [0x0103aba4]
-0x0103aa5c,task_of_multiball_start_sub_3aa5c,FUN_0103aa5c,sub,called only by task_of_multiball_start [0x0103aba4]
+0x0103a87c,game_device_3a87c,FUN_0103a87c,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103aa5c,game_device_3aa5c,FUN_0103aa5c,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103ab6c,adj_coindoor_ball_saver,FUN_0103ab6c,adj,adj_get(41) COINDOOR BALL SAVER
 0x0103aba4,task_of_multiball_start,FUN_0103aba4,task,"task entry started by multiball_start [0x0103aec0] (FUN_0000ab4c, id DAT_00031624 + 0x18)"
 0x0103aff4,balls_in_play_user,FUN_0103aff4,uses,"calls balls_in_play [0x0103a5ec], multiball_start [0x0103aec0]"
-0x0103b048,task_of_serve_ball_sub_3b048,FUN_0103b048,sub,called only by task_of_serve_ball [0x0103b128]
+0x0103b048,game_device_3b048,FUN_0103b048,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103b128,task_of_serve_ball,FUN_0103b128,task,"task entry started by serve_ball [0x0103b39c] (FUN_0000ab4c, id DAT_00031624 + 0x18)"
 0x0103b4ac,ball_save_try_sub,FUN_0103b4ac,sub,called only by ball_save_try [0x00017b3c]
-0x0103b4fc,event_post_user_3b4fc,FUN_0103b4fc,uses,"calls event_post_wrap [0x0000d8c4], task_kill [0x0000ae1c]"
+0x0103b4fc,game_device_3b4fc,FUN_0103b4fc,subsystem,"uses 0x040d181c: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103b778,count_15_0m_17_49m,FUN_0103b778,audit,audit_add(37) 15.0M-17.49M SCORES
 0x0103b840,task_running_range_user_3b840,FUN_0103b840,uses,"calls task_running_range_wrap [0x0103a4d0], balls_count_all [0x01037e5c], error_log_wrap [0x0103a188]"
 0x0103b89c,task_running_user_3b89c,FUN_0103b89c,uses,"calls task_running [0x0000b248], task_sleep [0x0000acfc]"
-0x0103b9cc,memset_user_3b9cc,FUN_0103b9cc,uses,"calls memset [0x0002fd80], task_sleep [0x0000acfc], event_post [0x00006e50]"
-0x0103bb88,start_deff_5_sub_3bb88,FUN_0103bb88,sub,called only by start_deff_5_sub [0x000268a4]
+0x0103b9cc,game_device_3b9cc,FUN_0103b9cc,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
+0x0103bb88,lamp_layer_268a4_sub_3bb88,FUN_0103bb88,sub,called only by lamp_layer_268a4 [0x000268a4]
 0x0103bba0,error_log_user_3bba0,FUN_0103bba0,uses,calls error_log_wrap [0x00005b58]
 0x0103bc34,error_log_user_3bc34,FUN_0103bc34,uses,calls error_log_wrap [0x00005b58]
-0x0103bc90,error_log_user_3bc90,FUN_0103bc90,uses,"calls error_log_wrap [0x00005b58], task_running [0x0000b248], balldev_count_switches [0x01037c38]"
+0x0103bc90,game_device_3bc90,FUN_0103bc90,subsystem,"uses 0x040d181c: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103bcf4,on_event_6a_3bcf4,FUN_0103bcf4,hook,"event_hook_add(&DAT_000375d4, 0x6a, ..) in FUN_0103c2a8 [0x0103c2a8]"
 0x0103bd5c,on_event_65_3bd5c,FUN_0103bd5c,hook,"event_hook_add(&DAT_000375d8, 0x65, ..) in FUN_0103c2a8 [0x0103c2a8]"
-0x0103bdd8,error_log_user_3bdd8,FUN_0103bdd8,uses,"calls error_log [0x00004f78], error_log_wrap [0x00005b58]"
+0x0103bdd8,game_device_3bdd8,FUN_0103bdd8,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103be8c,game_flag_set_user,FUN_0103be8c,uses,calls game_flag_set [0x00005a88]
-0x0103bffc,on_event_3d_sub_3bffc,FUN_0103bffc,sub,called only by on_event_3d_sub [0x0103c074]
+0x0103bffc,game_device_3bffc,FUN_0103bffc,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103c074,on_event_3d_sub_3c074,FUN_0103c074,sub,called only by on_event_3d [0x0103c0f0]
 0x0103c0b8,on_event_3d_sub_3c0b8,FUN_0103c0b8,sub,called only by on_event_3d [0x0103c0f0]
 0x0103c0f0,on_event_3d,FUN_0103c0f0,hook,"event_hook_add(&DAT_000375dc, 0x3d, ..) in FUN_0103c2a8 [0x0103c2a8]"
 0x0103c120,task_running_user_3c120,FUN_0103c120,uses,"calls task_running [0x0000b248], error_log_wrap [0x0103a188], msg_get [0x000099f0]"
-0x0103c1e8,msg_get_user_3c1e8,FUN_0103c1e8,uses,"calls msg_get [0x000099f0], vsprintf_wrap [0x0002fdac]"
+0x0103c1e8,game_device_3c1e8,FUN_0103c1e8,subsystem,"uses 0x040d17fc: the game's ball device records (0x24 each), balldev_count_switches"
 0x0103c2a8,event_hook_add_user_3c2a8,FUN_0103c2a8,uses,calls event_hook_add [0x00006da8]
-0x0103c7bc,error_log_wrap_3c7bc,FUN_0103c7bc,wrapper,only calls error_log_wrap [0x0000d464]
+0x0103c7bc,sw_matrix_d464_wrap_3c7bc,FUN_0103c7bc,wrapper,only calls sw_matrix_d464 [0x0000d464]
 0x0103cfd4,deff_033_x_d_h_t_sub,FUN_0103cfd4,sub,called only by deff_033_x_d_h_t [0x0103d0e4]
 0x0103d36c,draw_s_selected_sub_3d36c,FUN_0103d36c,sub,called only by draw_s_selected [0x0103d588]
 0x0103d40c,draw_s_selected_sub_3d40c,FUN_0103d40c,sub,called only by draw_s_selected [0x0103d588]
@@ -2336,13 +2336,13 @@ address,name,was,rule,evidence
 0x0103d588,draw_s_selected,FUN_0103d588,msg,"draws msg 0x4ea ""%s SELECTED"""
 0x0103d828,deff_014_sub,FUN_0103d828,sub,called only by deff_014 [0x0103c6f8]
 0x0103d838,flipper_buttons_held_user,FUN_0103d838,uses,"calls flipper_buttons_held_wrap [0x00006860], draw_s_selected [0x0103d588], current_player [0x0001aa40]"
-0x0103e340,error_log_wrap_3e340,FUN_0103e340,wrapper,only calls error_log_wrap [0x0000d464]
+0x0103e340,sw_matrix_d464_wrap_3e340,FUN_0103e340,wrapper,only calls sw_matrix_d464 [0x0000d464]
 0x0103e368,strlen_wrap_3e368,FUN_0103e368,wrapper,only calls strlen [0x0002fe4c]
 0x0103e8f8,text_printf_msg_wrap,FUN_0103e8f8,wrapper,only calls text_printf_msg [0x00021660]
 0x0103ed60,deff_004_50v_20v_disabled_sub,FUN_0103ed60,sub,called only by deff_004_50v_20v_disabled [0x0103ee10]
 0x0103f47c,deff_003_transformers_sub_3f47c,FUN_0103f47c,sub,called only by deff_003_transformers [0x0103f960]
 0x0103f888,deff_003_transformers_sub_3f888,FUN_0103f888,sub,called only by deff_003_transformers [0x0103f960]
-0x0104015c,play_sound_010_sub_4015c,FUN_0104015c,sub,called only by play_sound_010 [0x010402c0]
+0x0104015c,play_sound_010_402c0_sub_4015c,FUN_0104015c,sub,called only by play_sound_010_402c0 [0x010402c0]
 0x010402c0,play_sound_010_402c0,FUN_010402c0,sound,snd_play(0x10)
 0x010405ec,text_draw_msg_page_user_405ec,FUN_010405ec,uses,"calls text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c], deff_frame_sleep [0x00020220]"
 0x01040720,ram_00033550_user,FUN_01040720,ram,"uses RAM 0x00033550, 0x000311e4"
@@ -2393,7 +2393,7 @@ address,name,was,rule,evidence
 0x010457e4,leaf_457e4,FUN_010457e4,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01045814,text_draw_str_page_user_45814,FUN_01045814,uses,"calls text_draw_str_page [0x00021838], error_log_wrap [0x00004678]"
 0x010459d8,error_log_user_459d8,FUN_010459d8,uses,calls error_log_wrap [0x0000e3a0]
-0x01045a78,error_log_wrap_45a78,FUN_01045a78,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x01045a78,error_log_wrap_e3a0_wrap_45a78,FUN_01045a78,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01045ac4,leaf_45ac4,FUN_01045ac4,leaf,"no call to a named function, no table or RAM symbol"
 0x01045b1c,event_post_user_45b1c,FUN_01045b1c,uses,"calls event_post [0x00006e50], adj_get_wrap [0x0002be10]"
 0x01045c08,adj_get_user_45c08,FUN_01045c08,uses,"calls adj_get [0x00000340], error_log_wrap [0x0000e3a0], text_printf_msg [0x00021660]"
@@ -2403,11 +2403,11 @@ address,name,was,rule,evidence
 0x01046598,draw_lifetime_s,FUN_01046598,msg,"draws msg 0x281 ""[LIFETIME: %s]"""
 0x01046990,draw_lifetime_s_wrap_46990,FUN_01046990,wrapper,only calls draw_lifetime_s [0x01046598]
 0x010469e0,leaf_469e0,FUN_010469e0,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01046a38,error_log_wrap_46a38,FUN_01046a38,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x01046a38,error_log_wrap_e3a0_wrap_46a38,FUN_01046a38,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01046a98,play_sound_010_46a98,FUN_01046a98,sound,snd_play(0x10)
 0x01046e24,leaf_46e24,FUN_01046e24,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01046e7c,error_log_wrap_46e7c,FUN_01046e7c,wrapper,only calls error_log_wrap [0x0000e3a0]
-0x01046eec,error_log_wrap_46eec,FUN_01046eec,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x01046e7c,error_log_wrap_e3a0_wrap_46e7c,FUN_01046e7c,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
+0x01046eec,error_log_wrap_e3a0_wrap_46eec,FUN_01046eec,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01046f4c,play_sound_010_46f4c,FUN_01046f4c,sound,snd_play(0x10)
 0x01047388,error_log_user_47388,FUN_01047388,uses,"calls error_log_wrap [0x01046a38], error_log_wrap [0x0000e3a0], error_log_wrap [0x0000b3b0]"
 0x0104743c,deff_frame_sleep_user_4743c,FUN_0104743c,uses,calls deff_frame_sleep [0x00020220]
@@ -2422,11 +2422,11 @@ address,name,was,rule,evidence
 0x010487ac,draw_ticket_dispenser_test,FUN_010487ac,msg,"draws msg 0x23c ""TICKET DISPENSER TEST"""
 0x01048a9c,text_printf_msg_user,FUN_01048a9c,uses,"calls text_printf_msg [0x00021660], text_draw_msg_page [0x000215ac], text_draw_msg_fit [0x0002174c]"
 0x01048d1c,leaf_48d1c,FUN_01048d1c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x01048d74,error_log_wrap_48d74,FUN_01048d74,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x01048d74,error_log_wrap_e3a0_wrap_48d74,FUN_01048d74,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x01048de4,play_sound_010_48de4,FUN_01048de4,sound,snd_play(0x10)
 0x01049170,leaf_49170,FUN_01049170,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
-0x010491c8,error_log_wrap_491c8,FUN_010491c8,wrapper,only calls error_log_wrap [0x0000e3a0]
-0x01049248,error_log_wrap_49248,FUN_01049248,wrapper,only calls error_log_wrap [0x0000e3a0]
+0x010491c8,error_log_wrap_e3a0_wrap_491c8,FUN_010491c8,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
+0x01049248,error_log_wrap_e3a0_wrap_49248,FUN_01049248,wrapper,only calls error_log_wrap_e3a0 [0x0000e3a0]
 0x010492b8,play_sound_010_492b8,FUN_010492b8,sound,snd_play(0x10)
 0x010496f4,ram_000337a8_user,FUN_010496f4,ram,"uses RAM 0x000337a8, 0x0003115c"
 0x01049734,ram_000337b0_user,FUN_01049734,ram,"uses RAM 0x000337b0, 0x00030f3c"
@@ -2461,7 +2461,7 @@ address,name,was,rule,evidence
 0x0104c988,bitmap_draw2_user_4c988,FUN_0104c988,uses,"calls bitmap_draw2 [0x00023c7c], sw_is_disabled_wrap [0x0104c904], bitmap_draw [0x00023d28]"
 0x0104cae4,play_sound_00f_4cae4,FUN_0104cae4,sound,snd_play(0xf)
 0x0104d14c,strlen_wrap_4d14c,FUN_0104d14c,wrapper,only calls strlen [0x0002fe4c]
-0x0104d198,strlen_wrap_4d198,FUN_0104d198,wrapper,only calls strlen_wrap [0x0104d14c]
+0x0104d198,strlen_wrap_4d14c_wrap_4d198,FUN_0104d198,wrapper,only calls strlen_wrap_4d14c [0x0104d14c]
 0x0104d1c8,leaf_4d1c8,FUN_0104d1c8,leaf,"no call to a named function, no table or RAM symbol"
 0x0104d1dc,leaf_4d1dc,FUN_0104d1dc,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x0104d234,text_draw_msg_page_user_4d234,FUN_0104d234,uses,"calls text_draw_msg_page [0x000215ac], deff_frame_sleep [0x00020220], text_draw_msg_fit [0x0002174c]"
@@ -2522,7 +2522,7 @@ address,name,was,rule,evidence
 0x01050e7c,leaf_50e7c,FUN_01050e7c,leaf,"no call to a named function, no table or RAM symbol (calls only unnamed ones)"
 0x01050f1c,leaf_50f1c,FUN_01050f1c,leaf,"no call to a named function, no table or RAM symbol"
 0x01050f70,ram_00038d24_user_50f70,FUN_01050f70,ram,"uses RAM 0x00038d24, 0x00038d28, 0x00038d2c"
-0x01050f9c,start_deff_5_sub_50f9c,FUN_01050f9c,sub,called only by start_deff_5_sub [0x0002b2b4]
+0x01050f9c,start_deff_5_sub_2b2b4_sub_50f9c,FUN_01050f9c,sub,called only by start_deff_5_sub_2b2b4 [0x0002b2b4]
 0x01050ff0,ram_02f80000_user,FUN_01050ff0,ram,"uses RAM 0x02f80000, 0x02f00000"
 0x01051028,ram_00038d24_user_51028,FUN_01051028,ram,"uses RAM 0x00038d24, 0x00038d38, 0x00038d2c"
 0x0105114c,ram_00038d2c_user_5114c,FUN_0105114c,ram,uses RAM 0x00038d2c

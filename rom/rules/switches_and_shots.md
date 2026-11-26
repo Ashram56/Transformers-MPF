@@ -13,7 +13,7 @@ on its events, `game_init` [0x00019c64] as `sw_start_button` [0x0001a6e4] calls 
 0x040e2c20 + n*0x20 gives the handler (+0), its argument (+4), the task flags (+0xc), the edges and game-state
 mask (+0xe: 0x400 closing edge, 0x800 opening edge; the captive ball runs on both, hence its 60 points) and
 the task id (+0x14); dedicated switches (flippers, tilt, coins) have their records at 0x040e3740 + (n - 0x81) * 0x20
-(`error_log_wrap_d2d4` [0x0000d2d4]). Every rule routine, deff, leff, sound and coil pulse below is the ROM's code,
+(`switch_rec_d2d4` [0x0000d2d4]). Every rule routine, deff, leff, sound and coil pulse below is the ROM's code,
 the current player, side and flipper state included; tasks end through the OS exit path with their exit calls
 (`leaf_a84c` [0x0000a84c]). Python only records `score_add_player` [0x0001cb0c], `event_post`, `audit_add`, the game
 flags and the deff, leff and sound starts, keeps the OS task list, and moves the balls as the tracer does

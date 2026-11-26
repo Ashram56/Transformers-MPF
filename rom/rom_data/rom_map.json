@@ -256,8 +256,9 @@
    "address": "0x040dde30",
    "count": 13,
    "record_size": 24,
-   "name": "",
-   "tag": ""
+   "name": "allspark_mystery_awards",
+   "tag": "code",
+   "note": "the Allspark mystery award items {weight fn, award fn, weight store, name, u16 base weight +0x10, u16 audit +0x14}, picked by bag_weighted_pick [0x0000bae8] from allspark_mystery_award [0x010243b4]; 12 items after the list head"
   },
   {
    "registry_entry": "0x30c74",

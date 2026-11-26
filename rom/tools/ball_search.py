@@ -14,8 +14,9 @@ FUN_00002160 [0x00002160] starts a pulse at once (FUN_00002078: the coil's slot 
 sleeps one tick at a time while the slot still holds it (FUN_00001da4); the 1 ms IO pass [0x000114b0] clears the
 slot when the pulse time is over. The pulse starts at the next 1 ms pass, inside the tick, so a pulse of n ms
 holds the search n // 16 + 1 ticks (64 ms: 5 ticks; the 16.0 ms tick, owner 2026-11-25). The queued form FUN_00001f70 [0x00001f70] waits its turn in the list 0x00031434 served once a
-tick by FUN_00003758 [0x00003758] in the OS loop FUN_0002bd48 (from the next tick, one queued pulse at a time,
-6 ticks between two).
+tick by FUN_00003758 [0x00003758] in the OS loop FUN_0002bd48 (from the next tick, one queued pulse at a time:
+the tick that sees a pulse over sets a hold-off of 6 (0x0003144c), counted down one a tick, so the next starts 7
+ticks after; switch_lift.py runs this queue as ROM code).
 
 Runs FUN_0103b778 in Unicorn (coderun / leff_lift runners) with those pulse routines answered in Python, every
 other routine as ROM code. Usage: TF_ROM=tf_180.bin ball_search.py OUT_JSON
@@ -48,9 +49,9 @@ class SearchRunner(leff_lift.LeffRunner):
             return h
         st(S("FUN_00002078"), "pulse_now", pulse_now)
 
-        def pulse_queued(r):                 # FUN_00001f70: one at a time, 6 ticks apart (FUN_00003758)
+        def pulse_queued(r):                 # FUN_00001f70: one at a time, 7 ticks apart (FUN_00003758)
             coil, ms = a(0) & 0xff, a(1) & 0xffff
-            start = max([r.now + 1] + [e + 6 for e in r.queued])
+            start = max([r.now + 1] + [e + 7 for e in r.queued])
             h = len(r.pulses) + 1
             r.pulses[h] = start + ms // int(TICK_MS) + 1
             r.queued.append(r.pulses[h])

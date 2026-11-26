@@ -76,13 +76,23 @@ ball's travel (switch 0xe closing), which is physics, not code.
 | 0 | 12 Optimus Prime | the coil registry's search routine 0x01033cb0 (`FUN_000025e8`, registry 0x00030b48 = ROM 0x040ce3d4) |
 | 5 | 9 top pop | `FUN_00003018` [0x00003018] pops 1..3 |
 | 6 | 22 left eject, 3 Megatron lockup | the game devices `FUN_0103be8c` [0x0103be8c]: device tasks `FUN_01039db4` |
-| 6 | 2 auto launch (queued) | the trough's device task, queued pulse `FUN_00001f70` (served by `FUN_00003758`) |
+| 6 (queued), 13 (starts) | 2 auto launch | the trough's device task queues it with `coil_pulse_queue` [0x00001f70]; `coil_pulse_queue_serve` [0x00003758] starts it at 13 |
 | 10 | 10 right pop | |
 | 15 | 11 bottom pop | |
 | 20 | 13 left sling | `FUN_00003518` [0x00003518] slings 1..2 |
 | 25 | 14 right sling | |
+| 31 | 5 orbit control gate | the gate object's pulse `leaf_2c074` [0x0102c074] |
 
 Each direct pulse (`FUN_00002160` [0x00002160]) holds the search until the 1 ms IO pass ends it: 64 // 16 + 1 =
 5 ticks. The game's `BALL_SEARCH_SWEEP` is this table one tick later (the task runs the tick after its start).
-Code open: when the queued auto-launch pulse really starts (the game uses 14 from a trace, not yet from the code), the Optimus motor and
-the orbit gate (from the event 0xd / 0xc handlers), and the search's own length (`task_running(0x2b)` loop).
+The queued auto-launch pulse (code, `rom/tools/switch_lift.py` runs the queue as ROM code: `coils` scenario,
+search at tick 1736): `coil_pulse_queue_serve` [0x00003758] runs in the OS tick work `event_post_user_2bd48`
+[0x0002bd48] and starts the head of the list 0x00031434 when no queued pulse runs (0x00031448 == 0) and the
+hold-off 0x0003144c is 0; when a queued pulse is over it sets the hold-off to 6, so the next one starts 7 ticks
+later. In the search the queue is still held off from the trough's previous pulse: queued at 6, started at 13,
+which is the game's 14 one tick later (so the game's value is now code, not trace). The orbit gate (coil 5) is
+pulsed at 31 for 1,488 ms (`leaf_2c074` [0x0102c074]: the game's `BALL_SEARCH_GATE` (32, 91) is this one tick later).
+The Optimus motor (coil 30, object 0x000351e8) did not move in the three sweeps of the run: its only movers are
+`optimus_motor_test` [0x01025568] and `play_sound_010_25844` [0x01025844] (`motor_goto_check`), and the run's motor
+was already where the game wants it. Code open: the search's motor step the game plays at 33 (traces only).
+The sweep repeats every 1,125 ticks (18.0 s: ticks 1736, 2861, 3986) while the search runs.

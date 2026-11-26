@@ -195,6 +195,43 @@ t 40.65 (10.06 s after sw12 at 30.59).
   matched or 0x073 when none did, and 0x074 with the award (`match_award`); no deff 38 when adj 30 = 11 (OFF) or in a
   tournament. Award adj 29, percentage adj 30. The trace (t 166.65 → 171.48) shows the no-match path.
 
+### 5.7 Hint speech (task 0xc6) [0x010250f4]
+A per-player hint call is kept at 0x02111f54 + 2 (p - 1) (u16) with its next sample index at 0x02111f64 + 4 (p - 1)
+(u32). Code (the task body is a label inside `hint_speech_set`, decompiled only by disassembly):
+- **Set**: `hint_speech_set(arg)` [0x01025030] clears game flags 0x48 / 0x49 and the index; arg 1 (from
+  `count_megatron_m_b_a` [0x0100fff0] case 4) sets call 0x14e and game flag 0x48 (bit 0 of byte 9 of 0x00031454); arg 0
+  (side choice, `start_deff_41` [0x01033f54]) sets, by side, Autobot (player_side 1) 0x148 + random_below(3), else
+  0x14c + random_below(2). `left_eject_callback_sub_24fe8` [0x01024fe8], at each Allspark award unless game flag 0x48
+  is set, sets game flag 0x48 (`ram_00031454_user_24fe0` [0x01024fe0]) and call 0x145.
+- **Start**: `hint_speech_start` [0x01025294] starts task 0xc6 when `hint_speech_allowed` [0x0102523c] says:
+  no multiball, no timed mode, 0x0101ff6c false, game flag 0x49 clear and 0x48 set (`game_flag_test`
+  [0x00005b58] tests a game flag: byte flag >> 3, bit flag & 7 of 0x00031454). Called by the left eject
+  (after the Allspark award, once tasks 0x5d..0x7e are over) and by `deff_141_0_more` [0x01025f18] at its frame 10.
+- **Task 0xc6**: sleeps 0x7d = 125 ticks (2.0 s); n = `snd_call_sample_count(call)` [0x00025924]; when the index
+  >= n it ends (every sample of the call was said once). Else it tries `snd_resolve_call_user_25250(call, index)`
+  [0x00025250] (sample `index` of the call) once a tick, at most 31 times; when it plays: call 0x145 with index 2
+  queues 0x146 after it, then 0x146 again (`snd_play_after_wrap_2539c` [0x0002539c], last argument 0 then 1), index 4
+  queues 0x147 the same way; call 0x14a with index 1 queues 0x14b; then the index + 1.
+
+### 5.8 Rule leffs and background deffs (OS rule records) [0x000177b4] [0x000178b0]
+The game builds rule records in RAM at power-up (read after game start by running the ROM's code; the lists are
+`rules/leff_rules.csv` and the `background` rows of `rules/deff_starters.csv`). The OS evaluates them each tick, and
+a record runs only when the game state `DAT_00031468` is 0 or has a bit in common with the record's mask (+4: 0x20 for
+most records, 0 for the attract-only ones).
+- **Rule leff** (vtable 0x00033dfc, `leff_start_user_177b4` [0x000177b4]): if its condition (+0xc) is true and the
+  leff (+0x10) is not running, `leff_start`; if the condition is false, the leff is stopped (`leaf_b7e4`
+  [0x0000b7e4]). 47 records.
+- **Background deff** (vtable 0x00033dd4, `bg_entry_eval` [0x000178b0]): if the condition is true, deff +0x10 and
+  sound +0x12 are started when not already running; an adjust routine (+0x14) can change both first (deff 130
+  double scoring from 0x01003ed8, deff 40 or 19 and the side music from 0x010068e4). 15 records with a deff: the
+  battle "running" screens 93 97 101 105 109 113 117 121, the mode screens 58 64 70 76 82 87, deff 133.
+A rule leff's task gets flags 0x22 plus 0x100 when the leff's table flags (0x040cfe00 + 12 x id, +4) have bit 0 and not
+bit 2, else 0x2000 (`leff_start` [0x00007c10]). So at the end of ball `task_kill(0, 0x100)` in `start_deff_25`
+[0x00019e44] kills every rule leff task except those with 0x100 (column `end_of_ball` of `rules/leff_rules.csv`).
+`ball_start` [0x00019d30] `task_kill(0, 0x80)`, `game_init` [0x00019c64] (0x400) and `tilt` [0x0001db40]
+(0x1000) kill them all, since no leff task has these flags. The rule restarts a killed leff on the next tick
+where its mask lets it run.
+
 ## 6. How it ends
 
 ### 6.1 End of ball [0x00019e44]
