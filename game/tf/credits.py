@@ -16,8 +16,10 @@ Coin task FUN_00003f00, one per coin switch closure [0x00019c40]:
   attract capture: "CREDITS 1/3" after one coin).
 This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS), re-cited to
 tf_180's routines (QA F13); the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
-pricing presets come from pricing.json; CUSTOM (68) uses the operator's SET CUSTOM PRICING values (machine vars
-custom_coin_units, custom_units_per_credit; interim, the ROM's custom ladder editor is not modelled).
+pricing presets come from pricing.json; CUSTOM (68) is the record SET CUSTOM PRICING installs (NVRAM 0x2110808, kept in
+"tf_credits" as custom_ladder): coin_pricing_get_4764 [0x00004764] starts from the factory-default preset's coin door,
+unit index and money formats with an empty ladder; the editor [0x01044f7c] (tf/service.py CustomPricing) sets the
+credits of each unit step, coin_pricing_set_48a8 [0x000048a8] trims the trailing zero steps and marks it valid.
 """
 import json
 import os
@@ -79,19 +81,60 @@ class Credits:
         self.credits = int(data.get("credits", 0))
         self.counter = int(data.get("counter", -1))
         self.free_games = 0           # credits awarded in the running game (adj 25)
+        self.custom_ladder = [int(c) for c in data.get("custom_ladder") or []]   # the custom record's ladder
+        self.custom_valid = bool(data.get("custom_valid"))
 
     def save(self):
-        self.store.save_all(data={"credits": self.credits, "counter": self.counter})
+        self.store.save_all(data={"credits": self.credits, "counter": self.counter,
+                                  "custom_ladder": self.custom_ladder, "custom_valid": self.custom_valid})
 
     # ------------------------------------------------------------------ pricing
 
     def pricing(self):
         """(units per slot, credit ladder) of adj 28."""
         if self.os.adj[28] == CUSTOM:
-            var = self.machine.variables.get_machine_var
-            per_credit = max(1, int(var("custom_units_per_credit") or 3))
-            return {1: max(1, int(var("custom_coin_units") or 1))}, (0,) * (per_credit - 1) + (1,)
+            units = self.factory_preset()[0]
+            return units, tuple(self.custom_ladder) if self.custom_valid and self.custom_ladder else (0,)
         return presets().get(self.os.adj[28], presets()[66])
+
+    def factory_preset(self):
+        """The preset of adj 28's factory default (adj_default_get_3d8 [0x000003d8]), which the custom record
+        starts from [0x00004764]."""
+        return presets().get(self.os.adj.default(28), presets()[66])
+
+    def custom_record(self):
+        """coin_pricing_get_4764 [0x00004764]: (ladder, its length) of the installed custom record, else the
+        factory preset's door with an empty ladder."""
+        if self.custom_valid:
+            return list(self.custom_ladder), len(self.custom_ladder)
+        return [], 0
+
+    def custom_install(self, ladder):
+        """coin_pricing_set_48a8 [0x000048a8]: store the ladder, trailing zero steps trimmed, record valid."""
+        ladder = [int(c) for c in ladder[:100]]
+        while ladder and not ladder[-1]:
+            ladder.pop()
+        self.custom_ladder, self.custom_valid = ladder, True
+        self.save()
+        return True
+
+    def unit_money(self, units, style="short"):
+        """units x the unit value of the factory preset's coin door, in its money format (record +0x12 plain,
+        +0x14 short, +0x16 long; pricing.json money_formats)."""
+        from tf.media_bridge import format_rom_text      # noqa: PLC0415
+        preset = self.factory_preset_record()
+        total = units * int(preset.get("unit_value_minor", 25))
+        fmt = preset.get("money_formats", {}).get(style, "$%,d.%02d")
+        return format_rom_text(fmt, [total // 100, total % 100])
+
+    def factory_preset_record(self):
+        """The pricing.json entry of the factory-default preset (unit value, money formats)."""
+        if os.path.exists(PRICING_JSON):
+            with open(PRICING_JSON, encoding="utf-8") as f:
+                for p in json.load(f)["presets"]:
+                    if int(p["adj_value"]) == self.os.adj.default(28):
+                        return p
+        return {"unit_value_minor": 25, "money_formats": {"plain": "%,d.%02d", "short": "$%,d.%02d"}}
 
     def money(self, units):
         """adj_text_price_26f74 [0x00026f74]: units x the unit value of the pricing selected now, as money in its

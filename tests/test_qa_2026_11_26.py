@@ -408,6 +408,46 @@ class TestMediumFixes(TfTestCase):
         self.assertFalse(mode.active)
         self.assertFalse(self.tf.in_service)
 
+    def test_custom_pricing_editor(self):
+        """SET CUSTOM PRICING [0x01044f7c]: credits per unit step, INSTALL after a step that gives credits,
+        coin_pricing_set_48a8 [0x000048a8] stores the ladder; adj 28 = CUSTOM then credits by it (QA D-CR-CUSTOM)."""
+        from tf.service import CustomPricing, price_summary
+        cm = self.tf.credit_model
+        saved = (list(cm.custom_ladder), cm.custom_valid, self.tf.adj[28])
+        cm.custom_ladder, cm.custom_valid = [], False
+        ed = CustomPricing(cm)
+        self.assertEqual((0, False), (ed.pos, ed.end))
+        ed.select()                         # step 1: 0 credits
+        ed.plus()                           # step 2: 1 credit
+        self.assertIn("$0.50", [d.get("t") for d in ed.draw()])
+        ed.select()                         # step 3
+        ed.minus()                          # 0 -> INSTALL (step 2 gives credits)
+        self.assertTrue(ed.end)
+        self.assertTrue(ed.select())
+        self.assertEqual(([0, 1], True), (cm.custom_ladder, cm.custom_valid))
+        self.assertEqual("1/0.50", price_summary([0, 1], 2, lambda u: cm.unit_money(u, "plain")))
+        self.tf.adj[28] = 68
+        self.assertEqual((0, 1), cm.pricing()[1])
+        cm.custom_ladder, cm.custom_valid, self.tf.adj[28] = saved
+        # from the menu: UTILITIES > SET CUSTOM PRICING (adj_game_pricing [0x010457c4]), then BACK leaves it
+        self.advance_time_and_run(1)
+        self.hit_and_release_switch("s_select")
+        mode = self.machine.modes["tf_service"]
+        mode.title = False
+        mode._open_menu("UTILITIES", "MAIN MENU / UTILITIES")
+        mode._open_page({"text": "SET CUSTOM PRICING", "kind": "item"})
+        self.advance_time_and_run(0.2)
+        self.assertEqual("custom", mode.page["kind"])
+        self.hit_and_release_switch("s_plus")
+        self.hit_and_release_switch("s_select")
+        self.hit_and_release_switch("s_minus")       # INSTALL
+        self.hit_and_release_switch("s_select")       # installs
+        self.hit_and_release_switch("s_select")       # continue
+        self.assertEqual((68, [1]), (self.tf.adj[28], cm.custom_ladder))
+        self.assertIsNone(mode.page)
+        cm.custom_ladder, cm.custom_valid, self.tf.adj[28] = saved
+        mode.stop()
+
     def test_total_earnings(self):
         """TOTAL EARNINGS [0x00026e7c]: units counter 7 x the current pricing's unit value, in its money format
         [0x00026f74] ("USD 3.25" for 13 units at USA 10; QA D-AUD-11)."""
