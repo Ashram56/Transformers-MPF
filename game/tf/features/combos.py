@@ -34,6 +34,7 @@ The orbits are decided with the battle shots (tf/features/battles.py: left orbit
 sw12 ignored after a left orbit pass, the center lane, a plunge or the back door, and within 187 ticks of the
 previous right orbit) and come here through hook combo_shot.
 """
+from tf.display import deff_variant
 from tf.features import Feature
 
 ORDER = 45
@@ -45,9 +46,10 @@ WINDOW_TASK = 0x92
 AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
-# deff 50 [0x01023c5c] (its capture has one frame and no length): 53 frames of 3 ticks then 10 more, sound 0x05b,
-# then 0x05c at frame 40 for 2X (0x05d for 3X) (observed: switches.jsonl 133.93 s, 0x05c 1.96 s, next deff 2.78 s)
-MULT_SECONDS, MULT_SOUND_2X, MULT_SOUND_2X_AT = 2.78, 0x05c, 1.96
+# deff 50 [0x01023c5c] (its capture has one frame and no length): sound 0x05b, then 0x05c at tick 120 for 2X (0x05d
+# for 3X), 169 ticks in all (op list deff_050.json, the ALLSPARK 2X run; switches.jsonl 133.93 s confirms: 0x05c
+# 1.96 s, next deff 2.78 s)
+MULT_TICKS, MULT_SOUND_2X, MULT_SOUND_2X_TICKS = 169, 0x05c, 120
 HOLD_FLAG = 0x16
 ROVE_TASK, ROVE_TICKS, ROVE_LEFF, ROVE_BLINK = 0xb6, 46, 39, 3
 X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58 + 0x12, entries 1-6)
@@ -67,7 +69,9 @@ class Combos(Feature):
                       order=0x01023928)
         self.rove = self.rove_prev = 0          # roving 3X index (1-6 = shot + 1) and the one it just left
         self.rove_dir = -1
-        os_.display.set_media(MULT_DEFF, MULT_SECONDS, (), ((0.0, MULT_SOUND), (MULT_SOUND_2X_AT, MULT_SOUND_2X)))
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        os_.display.set_media(MULT_DEFF, MULT_TICKS * TICK, (), ((0.0, MULT_SOUND),
+                                                                 (MULT_SOUND_2X_TICKS * TICK, MULT_SOUND_2X)))
         os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
         os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
         os_.lamp_update(self.draw)
@@ -183,7 +187,11 @@ class Combos(Feature):
         if pd.get("mult_lit") and pd.shot_mult[index] < 2:
             pd.shot_mult[index] = 2
             pd.mult_lit = False
-            os_.deff_start(MULT_DEFF)                   # its sound 0x05b comes with it
+            # its sound 0x05b comes with it; +0x30 = the shot's record (shot index + 1), +0x34 = the new level
+            # [0x010237ac]: the op list of that shot and level gives its sounds (QA V050; the frames are still
+            # the ALLSPARK 2X run's, docs/rom_differences.md)
+            variant = "shot%d_x2" % (index + 1)
+            os_.deff_start(MULT_DEFF, **({"variant": variant} if deff_variant(MULT_DEFF, variant) else {}))
             os_.leff_start(MULT_LEFF)
             os_.request_refresh()
 

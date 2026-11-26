@@ -39,6 +39,7 @@ import random
 
 from tf.features import Feature
 from tf.lamps import shot_blink
+from tf.display import deff_variant
 
 # the display effects' random animation picks: their own generator, so the rules' picks stay as they were
 VARIANTS = random.Random()
@@ -129,12 +130,16 @@ class Side:
         pass
 
     def award(self, points, deff, leff, sound, audit, anim=None):
-        """anim: which of the deff's animations the ROM shows (the PuP map reads it; the display shows the
-        recorded one)."""
+        """anim: which of the deff's animations the ROM shows (the PuP map reads it); its length and sounds come
+        from its op list, the frames are still the recorded animation's (docs/rom_differences.md)."""
         os_ = self.os
         os_.score_add(points)
         self.total += points
-        os_.deff_start(deff, values=[points], **({} if anim is None else {"anim": anim}))
+        kwargs = {} if anim is None else {"anim": anim}
+        if anim and deff_variant(deff, "video%d" % anim):
+            # the picked video's own length, sounds and leffs (op lists deff_066 / 071 / 072__videoN; QA V066-V072)
+            kwargs["variant"] = "video%d" % anim
+        os_.deff_start(deff, values=[points], **kwargs)
         os_.audit(audit)
         os_.deff_media(deff, leff, sound)
         os_.request_refresh()

@@ -31,6 +31,7 @@
 from tf.features import Feature
 
 ORDER = 40
+TWO_BANK_LAMPS = (21, 20)            # table 0x040c7568 +5: sw 50 -> lamp 21, sw 37 -> lamp 20
 SWITCHES = {50: 2, 37: 4}           # switch -> fast_groups bit
 HIT_TICKS = 10                       # task 0xb1: one hit per 10 ticks
 LOCKED = (5000, 0x261, 143)
@@ -65,6 +66,7 @@ class TwoBank(Feature):
         self.groups = 0
         self.awards = 0
         self.last_hit = -1.0
+        os_.lamp_update(self.draw)
         self.lingering = False          # task 0xad after the total (see above)
         self.total_at = None            # when deff 137 last started
         self.end_wait = 0.0
@@ -283,6 +285,21 @@ class TwoBank(Feature):
 
     timed_mode = scoring_boost          # a timed mode ([0x010067bc], task 0xac / 0xc3)
 
+
+    def draw(self):
+        """Lamp layer lamp_layer_2ede0 [0x0102ede0]: outside multiballs and timed modes (0x0102e994) the 2-bank
+        lamps 21 (sw 50, bit 1) and 20 (sw 37, bit 2) of table 0x040c7568 flash, solid when their bit of the
+        player's mask 0x02112098 is set; else off. Nothing in the code sets that mask (only 0x0102e88c clears it:
+        its two literals 0x0006e8f4 / 0x0006ee94 are that reset and this read), so they flash (QA L-R05)."""
+        if not self.os.game:
+            return
+        lamps = self.os.lamps
+        on = not self.os.any_multiball() and not self.os.timed_mode_running()
+        for lamp in TWO_BANK_LAMPS:
+            if on:
+                lamps.lamp_flash(lamp)
+            else:
+                lamps.lamp_off_all(lamp)
 
 def feature(os_):
     return TwoBank(os_)

@@ -144,6 +144,9 @@ class MediaBridge:
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
         if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
             passed["values"] = format_values(info["values"], args.get("values") or [])
+            for slot, text in (args.get("slot_texts") or {}).items():   # a fixed message drawn in a slot's place
+                if slot < len(passed["values"]):
+                    passed["values"][slot] = text
             for slot, text in zip(info["values"], passed["values"]):
                 if text is None:
                     self.note_missing(deff_id, "slot", slot)

@@ -329,7 +329,16 @@ class Battle:
         """A pop bumper hit while it runs."""
 
     def background_values(self):
-        return {"values": [self.seconds, self.pd.get(self.left_key, self.shots) if self.os.game else self.shots]}
+        left = self.pd.get(self.left_key, self.shots) if self.os.game else self.shots
+        out = {"values": [self.seconds, left]}
+        if self.os.game and not left:
+            # 0 shots left: text_draw_msg "SHOOT LIT SHOT" in place of "SHOOT %u SHOT%P1//S/%" (e.g. deff 97
+            # [0x0101f580], deff 105 msg 0x643 [0x01016d7c]; QA V097-V121)
+            out["slot_texts"] = {1: SHOOT_LIT_SHOT}
+        return out
+
+
+SHOOT_LIT_SHOT = "SHOOT LIT SHOT"
 
 
 class Starscream(Battle):
@@ -443,6 +452,13 @@ class Devastator(Battle):
             self.lit = 1 << RIGHT_ORBIT
             self.restart_timer(self.os.adj[self.timer_adj])
 
+    def background_values(self):
+        """deff 105 [0x01016d7c]: in state 1 (DAT_000313b4 = 1) msg 0x645 "SHOOT R. ORBIT" in the shots slot."""
+        out = Battle.background_values(self)
+        if self.os.game and self.active and self.state == 1:
+            out["slot_texts"] = {1: "SHOOT R. ORBIT"}
+        return out
+
     def pop(self):
         if self.state == 2 and self.scoring:
             os_ = self.os
@@ -451,9 +467,6 @@ class Devastator(Battle):
             os_.leff_start(self.ROVER_LEFF)
             os_.score_add(self.ROVER_POINTS)
             os_.request_refresh()
-
-    def background_values(self):
-        return {"values": [self.seconds, self.pd.get(self.left_key, self.shots) if self.os.game else self.shots]}
 
 
 class Bumblebee(Battle):

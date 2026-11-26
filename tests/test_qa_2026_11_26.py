@@ -117,6 +117,23 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual([False, True, False, False, False, True],
                          [lamps.lamp_test(n) and not lamps.lamp_flashing(n) for n in combos.X_LAMPS])
 
+    def test_two_bank_lamps(self):
+        """Lamp layer [0x0102ede0]: the 2-bank lamps 21 and 20 flash outside multiballs and timed modes (QA L-R05)."""
+        self.start()
+        self.tf.rules_refresh()
+        self.assertTrue(all(self.tf.lamps.lamp_flashing(n) for n in (21, 20)))
+
+    def test_leff_switches_gi(self):
+        """leff_081 [0x010119d8] switches the GI (owner 0x000314c4): off at tick 9, on at its end (QA L-G07)."""
+        self.start()
+        from tf.os_layer import TICK
+        lamps = self.tf.lamps
+        lamps.leff_play(81)
+        self.advance_time_and_run(10 * TICK)
+        self.assertEqual(0, lamps.gi)
+        lamps.leff_end(81)
+        self.assertEqual(1, lamps.gi)
+
     def test_lock_lamps_flash_while_lock_lit(self):
         """Lamp rule [0x0100b228]: lamps 29, 57, 58 flash while a lock is lit, else off (QA L-R02)."""
         self.start()
@@ -257,6 +274,31 @@ class TestMediumFixes(TfTestCase):
         self.assertEqual("USD 3.25", self.tf.audits.text(11))
         self.tf.audits.counts[7] = 0
         self.assertEqual("USD 0.00", self.tf.audits.text(11))
+
+    def test_sample_pick_memory(self):
+        """snd_resolve_call [0x00025044]: a call's no-repeat memory (+0x0e) and the speech ring (0x00038354, the
+        last 9 speech samples) steer the pick: 7 plays of 0x0b1 (7 samples, memory 4, speech) are 7 different
+        samples (QA SC16)."""
+        picks = []
+        for _ in range(7):
+            i = self.tf._sample_pick(0xb1, 7)
+            self.tf._sample_remember(0xb1, i)
+            picks.append(i)
+        self.assertEqual(7, len(set(picks)))
+
+    def test_battle_shoot_lit_shot(self):
+        """0 shots left: the battle background draws "SHOOT LIT SHOT" (deff 97 [0x0101f580]); Devastator in state
+        1 "SHOOT R. ORBIT" (msg 0x645 [0x01016d7c]) (QA V097-V121)."""
+        self.start()
+        b = next(x for x in self.tf.features_by_name["battles"].battles if x.bg == 97)
+        self.tf.pd[b.left_key] = 0
+        self.assertEqual("SHOOT LIT SHOT", self.tf.media.deff_lines(97, {})["values"][1])
+        self.tf.pd[b.left_key] = 3
+        self.assertEqual("SHOOT 3 SHOTS", self.tf.media.deff_lines(97, {})["values"][1])
+        dv = next(x for x in self.tf.features_by_name["battles"].battles if x.bg == 105)
+        dv.active, dv.state = True, 1
+        self.assertEqual("SHOOT R. ORBIT", self.tf.media.deff_lines(105, {})["values"][1])
+        dv.active = False
 
     def test_high_score_lists(self):
         """Tables 0x040cf948 / 0x040cfc48: 17 entries in 5 lists, the side lists and the two combo champions with

@@ -12,7 +12,8 @@ Three standups: left sw 2, center sw 49, right sw 46 (bits 1 / 2 / 4 of energon_
   sound 0x260 (0x13e, 0x13f from the deff); energon_sets + 1, the targets unlit, one Allspark banked
   (tf/features/allspark.py). The Megatron lock lighting it also calls comes with the Megatron spec.
 The switch's own 1,110 follows (tf/switches.py). Inserts 48 / 54 / 35: unlit flash, lit solid (observed).
-Deffs 124 and 125 have no capture: their lengths are inferred (1.0 s, 2.0 s), 0x13f at 1.13 s is observed.
+Deffs 124 and 125 have no capture: their lengths and sounds come from their op lists (agent A, the deff code run):
+124 31 frames x 5 ticks + hold = 156 ticks; 125 142 ticks, 0x13e at 0 and 0x13f at tick 70 (QA V124, V125).
 """
 from tf.features import Feature
 
@@ -23,6 +24,7 @@ TIMED = (5000, 0x25c, 139)
 RELIT = (10000, 0x25d, 141)
 LIT_POINTS, LIT_DEFF, LIT_LEFF, LIT_SOUND, LIT_SOUND2, LIT_SOUND2_TICKS = 75000, 124, 140, 0x25e, 0x25f, 62
 SET_DEFF, SET_LEFF, SET_SOUND = 125, 142, 0x260
+LIT_DEFF_TICKS, SET_DEFF_TICKS = 156, 142       # the op lists' end_tick (deff_124 [0x01030b94], deff_125 [0x01031038])
 SET_BASE, SET_STEP, SET_CAP = 250000, 25000, 750000
 DEBOUNCE_TASK, DEBOUNCE_TICKS = 0xb0, 10
 SOUND_TASK = 0x97
@@ -34,8 +36,9 @@ class Energon(Feature):
 
     def __init__(self, os_):
         super().__init__(os_)
-        os_.display.set_media(LIT_DEFF, 1.0, (), ())
-        os_.display.set_media(SET_DEFF, 2.0, (), ((0.0, 0x13e), (1.13, 0x13f)))
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        os_.display.set_media(LIT_DEFF, LIT_DEFF_TICKS * TICK, (), ())                   # deff_124.json end_tick
+        os_.display.set_media(SET_DEFF, SET_DEFF_TICKS * TICK, (), ((0.0, 0x13e), (70 * TICK, 0x13f)))   # deff_125.json
         os_.lamp_update(self.draw)
 
     def player_first_ball(self):

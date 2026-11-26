@@ -328,6 +328,9 @@ class Lamps:
         self._flash_handle = None
         self._dirty = False
         self.leff_players = {}      # leff id -> ShowPlayer
+        self.gi = 1                 # the GI (owner 0x000314c4): on at power up, switched by 30 leffs (QA L-G07)
+        self.gi_owner = None        # the leff that switched it last
+        self._gi_handles = []
         self.tube_players = {}      # tube show id -> ShowPlayer
         self.code_leffs = {}        # leff id -> (layer priority, fn(LeffTask)): leffs drawn by code
         self.rules = []             # list-5 lamp rules: (priority, seq, fn)
@@ -475,6 +478,7 @@ class Lamps:
         """A leff task started (display.Leffs accepted it): play its captured show on a layer at the ROM
         priority. `lamp` is the lamp (or lamp list / light tag) a caller passes to the token effects."""
         self.leff_end(leff_id)
+        self._gi_play(leff_id)
         name, loops, prio = self.leff_info.get(leff_id, ("", 0, 0))
         if leff_id in self.code_leffs:
             layer_prio, fn = self.code_leffs[leff_id]
@@ -509,7 +513,61 @@ class Lamps:
                 entry[0].stop()
             self.layer_free(entry[1])
 
+    # ------------------------------------------------------------------ GI
+
+    def _gi_steps(self, leff_id):
+        """[(tick, 0 / 1)]: when the leff's code switches the GI (agent A's leff op lists, frames "gi"; the GI
+        owner 0x000314c4, e.g. leff_081 ram_000314c4_user_bdbc(0) [0x010119d8])."""
+        if not hasattr(self, "_gi_table"):
+            import json                                  # noqa: PLC0415
+            self._gi_table = {}
+            folder = os.path.join(os.path.dirname(__file__), "..", "..", "rom", "rom_data", "io", "leff_ops")
+            if os.path.isdir(folder):
+                for name in os.listdir(folder):
+                    if name.startswith("leff_") and name.endswith(".json"):
+                        with open(os.path.join(folder, name), encoding="utf-8") as f:
+                            d = json.load(f)
+                        steps, last = [], None
+                        for frame in d.get("frames") or ():
+                            gi = frame.get("gi") if isinstance(frame, dict) else None
+                            if gi is not None and gi != last:
+                                steps.append((frame["t"], int(gi)))
+                                last = gi
+                        if any(v == 0 for _, v in steps):
+                            self._gi_table[int(d["leff"])] = steps
+        return self._gi_table.get(leff_id, ())
+
+    def _gi_play(self, leff_id):
+        steps = self._gi_steps(leff_id)
+        if not steps:
+            return
+        self._gi_cancel()
+        self.gi_owner = leff_id
+        for tick, value in steps:
+            fire = (lambda v: lambda: self.gi_set(v, leff_id))(value)
+            if tick <= 0:
+                fire()
+            else:
+                self._gi_handles.append(self.clock.schedule_once(lambda dt=0, f=fire: f(), tick * TICK))
+
+    def _gi_cancel(self):
+        for handle in self._gi_handles:
+            self.clock.unschedule(handle)
+        self._gi_handles = []
+
+    def gi_set(self, value, owner=None):
+        if owner is not None and owner != self.gi_owner:
+            return
+        if value != self.gi:
+            self.gi = value
+            self.os.trace.log("gi", on=value)
+            self.machine.events.post("tf_gi", on=value)
+
     def leff_end(self, leff_id):
+        if leff_id == self.gi_owner:             # the leff's end gives the GI back (on)
+            self._gi_cancel()
+            self.gi_set(1, leff_id)
+            self.gi_owner = None
         entry = self.leff_players.pop(leff_id, None)
         if entry:
             entry[0].stop()

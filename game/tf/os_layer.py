@@ -641,13 +641,78 @@ class TfOS(CustomCode):
         if index is not None and index < len(lengths):
             i = index
         else:
-            i = self.pick("sample_0x{:03x}".format(call), [1] * len(lengths)) if len(lengths) > 1 else 0
+            i = self._sample_pick(call, len(lengths))
+        self._sample_remember(call, i or 0)
         self.media.sound(call, i or 0)             # the media controller plays the same sample
         channels = self.sample_channels(call)
         if channels and (i or 0) < len(channels):
             self._playing = [p for p in getattr(self, "_playing", []) if p[0] > self.now]
             self._playing.append((self.now + lengths[i or 0],) + channels[i or 0])
         return self.now + lengths[i or 0]
+
+    def _sound_memory(self, call):
+        """(sample ids, no-repeat memory length +0x0e, speech flag +0x12) of a call's record (table 0x040dee08,
+        20 bytes per call; rom/rom_data/sound/sound_calls.csv)."""
+        if not hasattr(self, "_call_records"):
+            import csv                                          # noqa: PLC0415
+            self._call_records = {}
+            path = os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "sound", "sound_calls.csv")
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    for row in csv.DictReader(f):
+                        ids = [int(x, 16) for x in (row["samples"] or "").split()]
+                        self._call_records[int(row["call"], 16)] = (ids, int(row["no_repeat"] or 0),
+                                                                    bool(int(row["speech"] or 0)))
+            self._call_memory = {}          # call -> its last samples (+0x0e of them, the record's list)
+            self._speech_ring = [0] * 10    # 0x00038354: the last 9 speech samples, head DAT_00032490 (1..9)
+            self._speech_head = 0
+        return self._call_records.get(call, ([], 0, False))
+
+    def _sample_pick(self, call, n):
+        """snd_resolve_call [0x00025044]: from a random start r, the next samples r+1 .. r in turn; the first one
+        neither in the call's no-repeat memory (leaf_25b3c [0x00025b3c]) nor in the speech ring of the last 9
+        speech samples (0x00025a14) plays; if every one is, the last one checked that is in the ring but not the
+        latest speech sample (else r). A test can force the pick (self.forced "sample_0x...")."""
+        if n <= 1:
+            return 0
+        forced = self.forced.get("sample_0x{:03x}".format(call))
+        if forced:
+            choice = forced.pop(0)
+            if choice is not None:
+                return choice
+        ids = self._sound_memory(call)[0]
+        r = self.random.randrange(n)
+        if len(ids) != n:
+            return r
+        memory = self._call_memory.get(call, ())
+        ring = self._speech_ring[1:]
+        latest = self._speech_ring[self._speech_head]
+        fallback, i = r, r
+        while True:
+            i = (i + 1) % n
+            sample = ids[i]
+            if sample not in memory:
+                if sample not in ring:
+                    return i
+                if sample != latest:
+                    fallback = i
+            if i == r:
+                return fallback
+
+    def _sample_remember(self, call, i):
+        """snd_start_sample [0x00024ae4]: a speech call's sample goes into the ring 0x00038354 (head 1..9), and
+        into the call's own memory of its last +0x0e samples."""
+        ids, keep, speech = self._sound_memory(call)
+        if i >= len(ids):
+            return
+        sample = ids[i]
+        if speech:
+            self._speech_head = self._speech_head % 9 + 1
+            self._speech_ring[self._speech_head] = sample
+        if keep:
+            memory = self._call_memory.setdefault(call, [])
+            memory.append(sample)
+            del memory[:-keep]
 
     def sound_refused(self, call):
         """The sound board refuses `call` while a sample of a higher priority call plays on one of its channels
