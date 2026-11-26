@@ -222,6 +222,11 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - ~~M11~~ (2026-11-25): adj 89 and adj 69 both read now (D-ADJ-89, D-ADJ-69-use).
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
       [0x0101fd34].
+  - Row "Rule leff restarts" removed: not a departure. The rules are evaluated by the poll hooks of task_sleep
+    [0x0000acfc] -> [0x0000b648] -> event 0x4a [0x01006240], in the context of the task that sleeps; when it is the
+    rule leff itself, task_group_running_b780 [0x0000b780] skips the current task and the rule calls leff_start
+    again, which refuses it (iVar7 == task_current, [0x00007c10]). The leff keeps running: the second
+    leff_start in the traces (177 at optimus_autobot.jsonl 33.36 s, 47 at 71.34 / 71.89 s) is a refused call.
   - Nothing left open in either pass: every finding is fixed from the code or has its row in rom_differences.md
     (2026-11-26, 171 of the trace checks OK, the rest the known sample-pick and timing rows).
 
