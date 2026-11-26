@@ -42,6 +42,17 @@ class TestConversionPure(unittest.TestCase):
 
 
 class TestConversionGame(TfTestCase):
+    def test_slam_tilt_in_attract(self):
+        """slam_tilt [0x0001d534] has no game test: in attract the slam shows deff 24, leff 12, sound 0x018 and
+        starts the reset task 0x39 (QA F14)."""
+        self.advance_time_and_run(1)
+        self.assertFalse(self.machine.game)
+        self.hit_switch_and_run("s_slam_tilt", 0.1)
+        self.assertIn(24, [e["id"] for e in self.tf.trace.of("deff_start")])
+        self.assertTrue(self.tf.task_running(0x39))
+        self.release_switch_and_run("s_slam_tilt", 6)
+        self.assertFalse(self.tf.task_running(0x39))
+
     def test_score_status_counters(self):
         """deff 19 [0x0102f200] [0x0102fa40] with the counters of 0x0102f9ec (event 0x21, one per tick): after
         0x3e idle ticks the current score blanks 7 of every 14 ticks; the last award fades over 0x1a ticks; a 2-way

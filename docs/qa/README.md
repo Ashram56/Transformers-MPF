@@ -208,6 +208,13 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       (0xca / 0xd2, DAT_00034db8, back to 0 below 10 jackpots [0x0100c430]), 77 / 78 (0xe4 / 0xf7, DAT_00034e2c, 0 on
       the Megatron shot, the tenth jackpot, the third double and the super [0x0100e29c]), 59 (0x7f, DAT_00035308,
       0 at the start and the super [0x01027b74]); deff 65 plays sample 0 (its +0x34 is never set).
+    - ~~F14~~ (2026-11-25) slam_tilt [0x0001d534] has no game test: in attract too, deff 24, leff 12, 0x018 and the reset
+      task 0x39; the service menu (state & 0x100) and a running task 0x39 stop it.
+    - ~~F16~~ (2026-11-25): the slings 26 / 27 [0x01033104] [0x010331a4] and switches 3, 38-42 count (above).
+    - ~~F17~~ (2026-11-25) ball_search_tick [0x00017c60] has no multiball test: the search no longer waits for the
+      multiball save and grace (no trace changes). The count reset through the switch-timeout object 0x31608
+      [0x00017d60] stays approximated by the playfield switches (doubtful in the report).
+    - P19 (2026-11-25): row in rom_differences.md (no switch fails on virtual or VPX hardware).
     - ~~M14~~ (2026-11-25) task ids from the code: Megatron end tasks 0xbb / 0xbf with their totals shown by 0x8b /
       0x8c [0x0100c790] [0x0100e61c]; Optimus Decepticon intro 0x72 [0x01029a08]; side mode done deff 84 task 0x7a
       [0x01010174], total deff 85 as show 0x7b when completed and, at the end of ball, task 0x8f waiting for the
@@ -284,7 +291,7 @@ High first. Each line's detail, proof and game line are in its report.
 
 | id | What | Sev |
 |---|---|---|
-| F14, F16, F17, P19 (F18, M8, M11, M12, M14 fixed) | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
+| P19 (row; F14, F16-F18, M8, M11, M12, M14 fixed) | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
 M8 stays open on purpose: the code starts leffs 76 / 77 on zuse_qualify_enabled for either side [0x01011ed4], but
 the Decepticon reference (wizard_all_hail_megatron.jsonl 16.38 s) shows no 76 / 77 after its requirements are poked

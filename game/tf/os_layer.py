@@ -1620,9 +1620,9 @@ class TfOS(CustomCode):
         self._search_handle = None
         if not self.game:
             return
-        # no search while the multiball task (save and grace, FUN_0103aba4) runs: it reloads at its end
+        # ball_search_tick [0x00017c60] has no multiball test (QA F17): the multiball save and grace do not stop it
         if (self.pf_valid and not self.state & (ST_END_BALL | ST_BONUS | 0x18) and not self.ball_held
-                and not self.device_ejecting and not self.mb_save_running()):
+                and not self.device_ejecting):
             self.ball_search_count += 1
             if self.ball_search_count == LOST_BALL_SEARCH and self.adj_value(63) == 1:
                 self._lost_ball_feed()
