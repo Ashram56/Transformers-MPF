@@ -31,6 +31,7 @@ class Spinner(Feature):
         self.queue = 0
         self.sample = 0
         self.super_total = 0
+        self._first = False
         os_.deff_live((SUPER_DEFF,), lambda: {"values": [self.pd.get("super_spin_left", 0), self.super_total]})
         # leff 154 while the super spinner is lit (flag 0x4c): rule flag_4c_test_32094 [0x01032094] -> [0x01032280]
         # (QA L-154)
@@ -49,11 +50,14 @@ class Spinner(Feature):
             return
         self.queue += 1
         if not self.os.task_running(TASK):
-            self._pay()
+            self._pay(first=True)                    # [0x01032294]: play_sound_270(1), then task 0x49
         elif self.queue == 1:
             self._pay()
 
-    def _pay(self):
+    def _pay(self, first=False):
+        """One spin [0x010320a4]; `first` is its argument (the spin that starts task 0x49): the burst totals
+        0x00035738 and super 0x00035740 start again there, else they add up while the task runs."""
+        self._first = first
         os_ = self.os
         if not self.queue or not os_.game or os_.tilted:
             self.queue = 0
@@ -88,9 +92,7 @@ class Spinner(Feature):
         pd = self.pd
         points = pd.get("super_spin_value", 50000)
         os_.score_add(points)
-        if not os_.display.running(SUPER_DEFF):
-            self.super_total = 0
-        self.super_total += points
+        self.super_total = points if self._first else self.super_total + points
         pd.super_spin_left = max(pd.get("super_spin_left", 1) - 1, 0)
         if pd.super_spin_left == 0:
             os_.deff_start(SUPER_DONE_DEFF, values=[points])

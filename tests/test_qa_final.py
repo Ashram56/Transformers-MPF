@@ -74,3 +74,19 @@ class TestFinalPass(QaCase):
         self.assertFalse(self.tf._pulse_queue_used)
         self.start()
         self.assertTrue(self.tf._pulse_queue_used)
+
+    def test_f042_super_spinner_total_starts_with_the_task(self):
+        """play_sound_270 [0x010320a4]: the spin that starts task 0x49 starts the super total again; the others
+        add up while the task runs (93 idle ticks)."""
+        self.start()
+        spinner = self.tf.features_by_name["spinner"]
+        spinner.light_super()
+        self.advance_time_and_run(6)
+        value = self.tf.pd.super_spin_value
+        self.hit("s_right_orbit_spinner", 0.2)
+        self.assertEqual(value, spinner.super_total)
+        self.hit("s_right_orbit_spinner", 0.2)
+        self.assertEqual(2 * value, spinner.super_total)
+        self.advance_time_and_run(2)                    # task 0x49 ends
+        self.hit("s_right_orbit_spinner", 0.2)
+        self.assertEqual(value, spinner.super_total)
