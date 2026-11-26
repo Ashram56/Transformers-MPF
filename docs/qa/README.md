@@ -222,7 +222,8 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
     - ~~M11~~ (2026-11-25): adj 89 and adj 69 both read now (D-ADJ-89, D-ADJ-69-use).
     - ~~R-F12~~ diagram node MSH now gives the code's min(10,000 + 10,000 x started + 5,000 x hits, 75,000)
       [0x0101fd34].
-  - Still open (in progress): the device, display, lamp and rules lows of the reports.
+  - Nothing left open in either pass: every finding is fixed from the code or has its row in rom_differences.md
+    (2026-11-26, 171 of the trace checks OK, the rest the known sample-pick and timing rows).
 
 ## Pass of 2026-11-25
 
@@ -244,7 +245,7 @@ the game before the fixes; the regression tests are in [tests/test_qa_2026_11_25
 | Check | State |
 |---|---|
 | Rule text in CLAUDE.md | passes |
-| `docs/boards_inventory.md` | written; **fails**: the ARM game program is `partiel` (the flipper drive and 2,526 unnamed functions open), the two Xilinx XC95144XL CPLDs `absent` (flash fuse map, only readable through the J8 JTAG header of a real board; owner to say whether it counts) |
+| `docs/boards_inventory.md` | **passes** since 2026-11-26: the ARM game program is `complet` (every function named from its code, the flipper drive decoded); the two Xilinx CPLDs are left undecoded by the owner's decision ("On ne les décode pas") |
 | Captured data | **passes** (was 266 failures): the flipper times in `coils.csv` are decoded from the code since 2026-11-26 (table 0x040cf590 run each 1 ms by io_isr [0x000114b0]: 40 ms pulse, hold 1 ms on / 11 ms off, `rom/tools/flipper_drive.py`); the owner's waiver of 2026-11-25 is no longer used. Decoded from the code by agent A on 2026-11-25: all 153 deffs (the 38 game-state ones per state, `rom/tools/deff_variants.py`), all leff shows, 33 coil times, every adjustment value text ([pinmame_waivers.md](../pinmame_waivers.md)) |
 | Functional diagram | passes: [functional_diagram.md](../functional_diagram.md), assembled after the fact from A's specs, each address checked by `tests/test_functional_diagram.py` |
 
@@ -293,10 +294,7 @@ High first. Each line's detail, proof and game line are in its report.
 |---|---|---|
 | P19 (row; F14, F16-F18, M8, M11, M12, M14 fixed) | smaller differences (lengths, ids, args, sample picks, rare adjustments) | low |
 
-M8 stays open on purpose: the code starts leffs 76 / 77 on zuse_qualify_enabled for either side [0x01011ed4], but
-the Decepticon reference (wizard_all_hail_megatron.jsonl 16.38 s) shows no 76 / 77 after its requirements are poked
-while the Autobot one (wizard_multiball.jsonl 17.96 s) does; FUN_01035db4 / FUN_0100ff58 are to be read before the
-Autobot-only gate goes.
+M8 was closed on 2026-11-26 from the code (both sides, [0x0100ff80] [0x0100ff58]; batch 2 above).
 
 ### For agent A (one batched request)
 
