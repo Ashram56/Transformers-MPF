@@ -6,8 +6,8 @@
   double and fast scoring): 5,000, sound 0x261, leff 143.
 - Else twobank_left > 0: - 1, 75,000, sound 0x263, leff 144, deff 126 "n MORE FOR FAST SCORING"; reaching 0
   shows deff 131 "FAST SCORING READY" instead and leffs 147 / 148 run while it is ready.
-- twobank_left = 0: fast scoring starts [0x01004394]: 100,000, starts + 1, twobank_left = 5 + 2 x starts (cap
-  12; observed 7 at the first ball, 9 after the first start), audit 106.
+- twobank_left = 0: fast scoring starts [0x01004394]: 100,000, starts + 1, twobank_left = 5 + 2 x fs_level (cap
+  12): fs_level is adj 82 at the player's first ball [0x0102e8f8] and + 1 at each start [0x0102e9c0], audit 106.
 - Fast scoring: fast_value = 10,000 + 5,000 x starts before (cap 50,000); deff 132 0.9 s later (sound 0x289,
   leff 158), background deff 133 "ALL TARGETS = n" with music 0x027, leffs 159 / 160. The countdown, adj 81
   counts of 66 ticks, holds while a show or deff 132 is up (observed: first count 5.1 s after the start).
@@ -41,7 +41,8 @@ LEFT_DEFF, READY_DEFF = 126, 131
 LEFT_SOUND_TICKS, LEFT_SPEECH, LEFT_FLAG, LEFT_SOUND = 75, 0x265, 0x30, 0x264
 READY_LEFFS = (148, 147)
 START_POINTS, START_AUDIT = 100000, 106
-FIRST_LEFT = 7
+FIRST_LEVEL = 1                      # adj 82 factory EASY: twobank_left 7 before the first ball sets it
+FIRST_LEFT = 5 + 2 * FIRST_LEVEL
 COUNT_TICKS, TAIL_TICKS, SHOW_TICKS = 66, 250, 55
 STEP_TICKS, STEPS = 6, 11            # a count: 11 x task_sleep(6) [0x01004220]
 NEW_LEFF, REPEAT_LEFF = 0x90, 0x91   # 144 a new target this cycle, 145 a repeat [0x010047b8]
@@ -98,7 +99,10 @@ class TwoBank(Feature):
             os_.sound(LEFT_SOUND, in_deff=LEFT_DEFF)
 
     def player_first_ball(self):
-        self.pd.twobank_left = FIRST_LEFT
+        """Event 0x26 hook [0x0102e8f8]: fs_level (0x2112090) = adj 82 MUDFLAP/SKIDS TARGET DIFFICULTY, then
+        twobank_left = min(5 + 2 x fs_level, 12) [0x0102e88c] (factory 1: 7)."""
+        self.pd.fs_level = self.os.adj_value(82)
+        self.pd.twobank_left = min(5 + 2 * self.pd.fs_level, 12)
         self.pd.fs_starts = 0
 
     def sw_50(self):
@@ -149,7 +153,8 @@ class TwoBank(Feature):
         os_.flag_clear(0x13)                         # ADD MORE TIME offered again [0x01004394] (QA P5)
         self.value = min(10000 + 5000 * pd.get("fs_starts", 0), 50000)
         pd.fs_starts = pd.get("fs_starts", 0) + 1
-        pd.twobank_left = min(5 + 2 * (pd.fs_starts + 1), 12)
+        pd.fs_level = min(pd.get("fs_level", FIRST_LEVEL) + 1, 255)      # [0x0102e9c0]
+        pd.twobank_left = min(5 + 2 * pd.fs_level, 12)
         os_.audit(START_AUDIT)
         self.running = self.counting = True
         self.steps = 0

@@ -233,11 +233,21 @@ class ServiceMode(Mode):
             num = page["list"][page["i"]]
             info = self.os.audits.info[num]
             return [rd.text(info["menu_label"], 2, 64, 5, 2), rd.fit(info["name"], 64, 14, (6, 2, 0)),
-                    rd.text(self.os.audits.text(num), 8, 64, 22, 2)]
+                    ] + self._value_lines(self.os.audits.text(num))
         texts = screens().get(page["path"] + " [select]")
         if texts:
             return draw_of(texts)
         return [rd.text(page["path"].rsplit(" / ", 1)[-1], MENU_FONT, 64, MENU_Y, 2)]
+
+    @staticmethod
+    def _value_lines(text):
+        """draw_lifetime_s [0x01046598]: the value split at its newlines (split_lines_10ec), at most two lines in font
+        8 from row 0x16, one dot plus the font height apart."""
+        draw, y = [], 0x16
+        for line in text.split("\n")[:2]:
+            draw.append(rd.text(line, 8, 64, y, 2))
+            y += 1 + rd.fonts().get(8, {}).get("height", 7)
+        return draw
 
     def show(self):
         draw = self.draw()

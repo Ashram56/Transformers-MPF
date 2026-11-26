@@ -71,15 +71,15 @@ class SkillShot(Feature):
         if self.top:
             if num == self.lane:
                 self._award_top(num)
-            elif num in (7, 8):
+            elif num in (7, 8) or self._ends(num, (7, 8, 12), self.seen_top):
                 self.top = False
-            elif self._ends(num, (7, 8, 12), self.seen_top):
-                self.top = False
+                os_.request_refresh()     # task 0xb2 ends: set_dat_000315fc, the rules are evaluated [0x010314d8]
         if self.super:
             if num == 13:
                 self._award_super()
             elif self._ends(num, (12, 13), self.seen_super):
                 self.super = False
+                os_.request_refresh()     # task 0xb4 ends: set_dat_000315fc [0x0103173c]
 
     def _ends(self, num, exempt, seen):
         from tf.os_layer import COUNTING_SWITCHES, FORCE_SWITCHES

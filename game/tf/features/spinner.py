@@ -2,8 +2,8 @@
 + observed: 5 spins -> 5 x (2,500 + 90), traces/scoring.jsonl t 33.71).
 
 - spin_value (0x21120dc + 4(p-1)): 2,500 at ball start (event 0x11 hook 0x01032484) unless game flag 0x1c.
-  NOTE: flag 0x1c is also set by the valid playfield (event 0x6a) in this OS model, so the reset is applied
-  at every ball start here (what sets the spinner's keep flag was not found).
+  Nothing in 1.80 sets flag 0x1c (no game_flag_set(0x1c) in the code, agent A, scoring_features.md), so the
+  value is reset at every ball start.
 - Each spin (the handler adds 90, tf/switches.py) is queued like the pops (task 0x49, one per tick, 93-tick
   idle end): spin_value, leff 152, sound 0x26d stepping through its samples.
 - Super spinner (left-eject award "SUPER SPINNER LIT") [0x010325bc]: value 50,000 + 10,000 x times lit before

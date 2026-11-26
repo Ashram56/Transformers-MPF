@@ -1,7 +1,8 @@
 """Pop bumpers: the growing pop value (rom/rules/modes/scoring_features.md 4.1; code + observed in
 traces/scoring.jsonl).
 
-- pop_base (0x2112054 + 4(p-1)): 3,000 at ball start (event 0x11 hook 0x0102d1ec) unless game flag 0x40.
+- pop_base (0x2112054 + 4(p-1)): 3,000 at ball start (event 0x11 hook 0x0102d1ec) unless game flag 0x40, which
+  nothing in 1.80 sets (agent A, scoring_features.md): reset every ball.
 - Each pop hit (handler 0x01032f8c, tf/switches.py: +170, audit 73) queues one award; task 0x51 pays one
   queued award per tick [0x0102ca98] and ends 93 ticks after the last one, setting pop_value back to
   pop_base [0x0102ca30] (observed: back to 3,000 1.53 s after the last hit).

@@ -144,6 +144,20 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
   - ~~CC5~~ lock entry [0x0100a3b8 case 2]: up to 3 coil-3 nudges of 4 ms, 0x5d ticks apart, while the jam
     switch 42 is closed or the device count moves.
   - ~~V014~~, ~~V002~~: above.
+  - Batch 2 (2026-11-26):
+    - FMT6 audits [0x0002700c]: value, then "p% OF GAMES" (q digits before) over audit 0x1d, two lines in
+      font 8 from y 0x16 (draw_lifetime_s [0x01046598]).
+    - adj 84 / 85: the orbit gate (vtable +0x24 adj_is_1_2c0cc) and the Optimus motor (+0x74 [0x00017120])
+      do nothing when their adjustment disables the device.
+    - Two-bank difficulty adj 82 [0x0102e8f8]: the first level, +1 per start [0x0102e9c0], 5 + 2 x level
+      targets (12 at most).
+    - Switches 3 and 38-42 count for the skill shot windows (event 0x6b [0x0000ddf8]).
+    - M8: the side qualify leffs 77 / 76 for both sides [0x0100ff80] [0x0100ff58]; a requirement poke asks no
+      evaluation.
+    - Skill-shot window ends: the rules are evaluated (tasks 0xb2 [0x010314d8], 0xb4 [0x0103173c]).
+    - Leff end: leff_free_7df0 [0x00007df0] sets 0x31488 when the leff had a lamp or coil group, and the rules
+      hook [0x01006240] then evaluates the whole leff rule list (list 3) unless task 0x29 runs. The game only
+      retried refused leffs: wizard_multiball now starts 77 / 76 when leff 96 ends, as the ROM does.
   - Still open (in progress): the device, display, lamp and rules lows of the reports.
 
 ## Pass of 2026-11-25

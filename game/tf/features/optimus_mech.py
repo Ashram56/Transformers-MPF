@@ -15,7 +15,9 @@ megatron_decepticon.jsonl).
   up is still wanted (optimus_decepticon.jsonl: 14.95, 23.53, 31.81, 42.68, 51.36 s). The virtual platforms do the
   same here: the down switch starts closed and nothing else moves it, so the coil 30 runs match the traces.
 - Ball search: 33 ticks into each search the motor runs to its time limit (tf/os_layer.py BALL_SEARCH_SWEEP).
-- Adj 85 DISABLE OPTIMUS PRIME MOTOR is not read by the code (open question in the spec); not used.
+- Adj 85 DISABLE OPTIMUS PRIME MOTOR = YES: the motor device's record carries adj 85 and its "disabled" method
+  (vtable +0x74, 0x00017120: adj_get == 1) makes motor_goto [0x00016f88] and motor_move_task [0x00016c88] do
+  nothing: the figure never moves (QA D-ADJ-85).
 """
 from tf.features import Feature
 from tf.os_layer import TICK
@@ -97,6 +99,8 @@ class OptimusMech(Feature):
             self._move("search")
 
     def _move(self, target):
+        if self.os.adj_value(85) == 1:              # motor_goto [0x00016f88]: the disabled motor does not move
+            return
         self.moving = target
         self.machine.coils[MOTOR].enable()
         self.os.trace.log("coil", coil=MOTOR_NUM, on=1)

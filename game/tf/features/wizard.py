@@ -48,7 +48,10 @@ SIDE_AFTER_SOUND = 0x119        # queued after the Autobot routines 6-11's speec
 SIDE_DONE_DEFF, SIDE_DONE_LEFF, SIDE_DONE_TASK = 84, 82, 0x7b
 SIDE_DONE_SOUNDS = {DECEPTICON: (0x128, 0x12a), AUTOBOT: (0x128, 0x12b)}
 SIDE_TOTAL_DEFF, SIDE_TOTAL_LEFF, SIDE_TOTAL_TASK = 85, 83, 0x8f
-QUALIFY_LEFFS = {AUTOBOT: (77, 76)}           # observed with the Autobot requirements (wizard_multiball 17.96 s)
+# zuse_qualify_enabled [0x0100ff80] (rule leffs 77, 76 [0x01011ed4]): no multiball, no timed mode, flag 0x3d clear
+# [0x0100ff58] and the side's five requirements done; the side only picks the range (0x01035db4: 0-4 Decepticon,
+# 5-9 Autobot), so both sides (QA M8, wizard_modes.md 1)
+QUALIFY_LEFFS = (77, 76)
 
 WMB_POINTS, WMB_STEP, WMB_HITS = 500000, 50000, 3
 WMB_BALLS, WMB_SAVE, WMB_GRACE = 4, 937, 312
@@ -104,8 +107,8 @@ class Wizard(Feature):
         os_.lamp_rule(lambda: self.wmb_running, leff=WMB_RULE_LEFF, order=0x01037018)
         os_.lamp_rule(lambda: self.wmb_running and all(c >= WMB_HITS for c in self.wmb_counts), leff=WMB_SUPER_LIT_LEFF,
                       order=0x01037019)
-        for i, leff in enumerate(QUALIFY_LEFFS[AUTOBOT]):
-            os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("side") == AUTOBOT and self.side_qualifies(),
+        for i, leff in enumerate(QUALIFY_LEFFS):
+            os_.lamp_rule(lambda: bool(os_.game) and self.side_qualifies(),
                           leff=leff, order=0x0100ff80 + i)
         os_.lamp_update(self.draw, priority=1)
         # leffs 84 and 85 while every requirement is completed, no multiball runs and flag 0x3c is clear: rule
@@ -126,7 +129,8 @@ class Wizard(Feature):
                 req = players[p].get("wiz_req") or [[0, 0] for _ in range(REQS)]
                 req[r] = [v & 0xff, (v >> 8) & 0xff]
                 players[p]["wiz_req"] = req
-            self.os.request_refresh()
+            # an NVRAM poke requests no rules evaluation: the rule leffs change at the next request
+            # (set_dat_000315fc [0x00017650], wizard_modes.md 1)
         return setter
 
     def _poke_side_count(self, i, v):

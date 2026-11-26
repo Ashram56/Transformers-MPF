@@ -49,7 +49,8 @@ END_BALL_WAIT_MAX = 937     # DAT_00033324: the end of ball waits at most this l
 # slings and pops (0x04) do not count, but traces/basic validates on the 3rd different switch of slings 26, 27
 # and pop 30 (play music 0x01f at 7.78 s): they count, as on Tron (observed).
 FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
-COUNTING_SWITCHES = {1, 2, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 45, 46, 49, 50, 51}
+# 3 and 38-42 (left eject, Megatron lock): top byte 0x1f, the 0x1000 mask word: event 0x6b [0x0000ddf8] (game_flow.md 4.3)
+COUNTING_SWITCHES = {1, 2, 3, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 45, 46, 49, 50, 51}
 
 # Game flags of the running multiballs: [0x01006704], named any_timed_mode_running in the decompile, tests these
 # six flags. 0x1e Mudflap & Skids; the others come with their specs.
@@ -542,11 +543,24 @@ class TfOS(CustomCode):
 
     def rules_refresh(self, leffs_only=False):
         """leffs_only: only start refused rule leffs whose flashers were freed (display.Leffs)."""
-        if leffs_only:
+        if leffs_only:                  # the rules hook [0x01006240]: list 3 after a leff freed its outputs
+            if self._refresh_pending or self.task_running(0x29) or (self.game and self.state & ST_TILT):
+                return                  # a full evaluation is due anyway / task 0x29 / FUN_000176ec's mode mask
             active_game = bool(self.game) and not self.state & (ST_ATTRACT | ST_END_BALL | ST_BONUS)
             for rule in self.rules:
-                if rule[3] and rule[1] is not None and self.leffs.retry_due(rule[1]) and active_game and rule[0]():
-                    self.leff_start(rule[1], loop=True)
+                cond, leff, tube, on = rule[:4]
+                if leff is None or tube is not None:
+                    continue
+                info = self.leff_rule_info.get(leff)
+                if info is not None and self.game and self.state and not self.state & ST_ATTRACT \
+                        and not self.state & info[0]:
+                    continue
+                want = bool(active_game and cond())
+                if want and (not on or self.leffs.retry_due(leff)):
+                    self.leff_start(leff, loop=True)
+                elif on and not want:
+                    self.leff_stop(leff)
+                rule[3] = want
             return
         self._refresh_pending = False
         if self.game and self.state & ST_TILT:
@@ -1628,6 +1642,8 @@ class TfOS(CustomCode):
         coil = self.machine.coils.get(name) if hasattr(self.machine, "coils") else None
         if coil is None:
             return
+        if name == "c_orbit_control_gate" and self.adj_value(84) == 1:
+            return      # adj 84 DISABLE ORBIT CONTROL GATE: drv_turn_on [0x0102bfec] asks adj_is_1_2c0cc [0x0102c0cc]
         held = getattr(self, "_held", None)
         if held is None:
             held = self._held = {}

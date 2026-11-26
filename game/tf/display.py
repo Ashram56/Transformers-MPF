@@ -776,11 +776,15 @@ class Leffs:
     def _ended(self, leff_id):
         self.running.pop(leff_id, None)
         self.os.lamps.leff_end(leff_id)
-        self._retry()
+        self._retry(leff_id)
 
-    def _retry(self):
-        """Outputs were freed: the lamp rules run again and start a refused rule leff that can run now."""
-        if any(not self.blocked(p) for p in self.pending):
+    def _retry(self, leff_id=None):
+        """Outputs were freed: leff_free_7df0 [0x00007df0] sets 0x31488 when the ended leff had a lamp group or
+        a coil group; the rules hook [0x01006240] then runs the leff rule list (list 3, rule_list_eval_17690)
+        on its next pass, unless task 0x29 runs: every leff rule is evaluated again (rule_leff_record_eval_177b4
+        [0x000177b4]: started when wanted and not running, killed when not wanted)."""
+        lamps_, coils_, _ = self.claims.get(leff_id, (frozenset(), frozenset(), 0))
+        if lamps_ or coils_ or any(not self.blocked(p) for p in self.pending):
             from tf.os_layer import TICK
             self.os.machine.clock.schedule_once(lambda: self.os.rules_refresh(leffs_only=True), TICK / 2)
 
@@ -805,4 +809,4 @@ class Leffs:
         if handle:
             self.os.machine.clock.unschedule(handle)
         self.os.lamps.leff_end(leff_id)
-        self._retry()
+        self._retry(leff_id)

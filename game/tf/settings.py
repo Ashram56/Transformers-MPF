@@ -203,6 +203,12 @@ class Audits:
         """The value as shown: money, percentages and times formatted."""
         v = self.value(number)
         name = self.info[number]["name"]
+        if self.info[number].get("display_type") == 6:
+            # msg_get_user_2700c [0x0002700c]: games = audit 0x1d; q = v / games, p = (v % games) x 100 / games;
+            # msg 0x500 "%u\n%u%% OF GAMES" (v, p) when q is 0, else msg 0x501 "%u\n%u%u%% OF GAMES" (v, q, p)
+            games = self.value(0x1d)
+            q, p = (v // games, (v % games) * 100 // games) if games else (0, 0)
+            return "{}\n{}% OF GAMES".format(v, p) if not q else "{}\n{}{}% OF GAMES".format(v, q, p)
         if "PERCENT" in name and self.info[number]["computed"]:
             return "{}%".format(v)
         if number == 11 and self.money:
