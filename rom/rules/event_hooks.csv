@@ -40,7 +40,7 @@ event,order,handler,name,priority
 0x1f,0,0x0102b980,on_event_1f,0
 0x21,0,0x00019420,adj_knocker_volume,0
 0x21,1,0x0102b798,on_event_21,0
-0x21,2,0x0102f9ec,entry inside keep_lowest_120b4_2f998 [0x0102f998],0
+0x21,2,0x0102f9ec,score_counters_tick_2f9ec (code after keep_lowest_120b4_2f998 that Ghidra did not split: adds 1 to 0x021120b0 0x021120b8 0x021120a8 and returns 1),0
 0x25,0,0x0001630c,on_event_25_1630c,0
 0x25,1,0x0102b698,on_event_25_2b698,0
 0x25,2,0x000100e4,entry inside halt_forever_100d0 [0x000100d0],0
