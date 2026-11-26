@@ -53,7 +53,7 @@ def fit(t, x=64, y=0, fonts_list=(2, 0), flags=2, width=WIDTH):
 
 
 def image(n, x, y, inv=False):
-    """inv: drawn through the palette 0x040c95c8 of the service tests (0 -> 15: the image's empty dots lit)."""
+    """inv: drawn through the palette 0x040c95c8 of the service tests (15, 1, .., 14, 0: levels 0 and 15 swap)."""
     item = {"i": n, "x": x, "y": y}
     if inv:
         item["inv"] = True

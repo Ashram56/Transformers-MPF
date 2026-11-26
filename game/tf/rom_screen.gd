@@ -5,7 +5,7 @@ extends Control
 ##   at x, 2 centred on x, 4 right edge at x), measured as the ROM measures it, at palette level l (0-15);
 ## - {"i", "x", "y"}: ROM image i (rom/mpf_package/media/rom_images_all.zip, img_NNNNN.png), top left at x, y;
 ## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15);
-## - {"i", "x", "y", "inv": true}: the image drawn through the service tests' palette (its empty dots lit);
+## - {"i", "x", "y", "inv": true}: the image drawn through the service tests' palette 0x040c95c8 (levels 0 and 15 swap);
 ## - {"chk": phase}: the DOT MATRIX TEST's checkerboard.
 
 const RomFonts = preload("res://tf/rom_fonts.gd")
@@ -14,6 +14,7 @@ const IMAGES_ZIP := "../rom/mpf_package/media/rom_images_all.zip"
 
 static var _zip: ZIPReader = null
 static var _textures: Dictionary = {}
+static var _inv_textures: Dictionary = {}
 
 
 func _ready() -> void:
@@ -53,6 +54,26 @@ static func texture(n: int) -> Texture2D:
 	return tex
 
 
+static func inv_texture(n: int, tex: Texture2D) -> Texture2D:
+	## The image drawn through the service tests' palette 0x040c95c8 (15, 1, 2, .., 14, 0): levels 0 and 15
+	## swap, 1-14 stay, the transparent dots stay transparent (the closed switch boxes of the trough test).
+	if _inv_textures.has(n):
+		return _inv_textures[n]
+	var img := tex.get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	for y in img.get_height():
+		for x in img.get_width():
+			var c := img.get_pixel(x, y)
+			if c.a == 0.0:
+				continue
+			var level := int(round(c.r * 15.0))
+			level = 15 if level == 0 else (0 if level == 15 else level)
+			img.set_pixel(x, y, Color(level / 15.0, level / 15.0, level / 15.0, 1))
+	var out := ImageTexture.create_from_image(img)
+	_inv_textures[n] = out
+	return out
+
+
 func _draw_items(items: Array) -> void:
 	for child in get_children():
 		remove_child(child)
@@ -72,14 +93,7 @@ func _draw_items(items: Array) -> void:
 				r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 				r.modulate = DMD_COLOR
 				if d.get("inv", false):
-					# drawn through the palette 0 -> 15 (the service tests' closed switch boxes, palette
-					# 0x040c95c8): the image's empty dots lit behind its own dots
-					var back := ColorRect.new()
-					back.color = DMD_COLOR
-					back.position = r.position
-					back.size = r.size
-					add_child(back)
-					r.modulate = Color(0, 0, 0, 1)
+					r.texture = inv_texture(int(d["i"]), tex)
 				add_child(r)
 		elif d.has("chk"):
 			add_child(_checker(int(d["chk"])))
