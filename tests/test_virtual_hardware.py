@@ -1,4 +1,5 @@
-"""The desktop overlay's virtual devices (tf/virtual_hardware.py): the Megatron lock keeps a clicked ball."""
+"""The desktop overlay's virtual devices (tf/virtual_hardware.py): a click on a trough or lock switch is a ball that
+stays until the device ejects it."""
 from tests.tf_test import TfTestCase
 
 
@@ -43,3 +44,29 @@ class TestVirtualLock(TfTestCase):
         self.advance_time_and_run(5)            # no game: the device kicks the unexpected ball out
         self.assertEqual(self.active(), [])
         self.assertEqual(self.lock.balls, 0)
+
+
+class TestVirtualTrough(TfTestCase):
+
+    def test_a_clicked_drain_serves_the_next_ball(self):
+        from tf.virtual_hardware import VirtualTrough
+        trough = VirtualTrough(self.machine, "virtual_trough")
+        trough._start()
+        self.fill_trough()
+        self.hit_and_release_switch("s_start_button")
+        self.advance_time_and_run(3)
+        sw = self.machine.switch_controller
+        self.assertTrue(sw.is_active(self.machine.switches["s_shooter_lane"]))
+        self.assertEqual(3, trough.balls)
+        sw.process_switch("s_shooter_lane", 0, True)       # plunged
+        self.advance_time_and_run(1)
+        from tf.switches import SW
+        self.hit_and_release_switch(SW[10])                 # a switch that validates the playfield
+        self.advance_time_and_run(30)                       # past the ball save
+        sw.process_switch("s_trough_4_l", 1, True)          # MPF Monitor click: the ball drains
+        self.advance_time_and_run(0.05)
+        sw.process_switch("s_trough_4_l", 0, True)
+        self.advance_time_and_run(8)
+        self.assertEqual(2, self.machine.game.player.ball)
+        self.assertTrue(sw.is_active(self.machine.switches["s_shooter_lane"]))
+        self.assertEqual(3, trough.balls)
