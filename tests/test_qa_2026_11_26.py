@@ -522,14 +522,18 @@ class TestMediumFixes(TfTestCase):
         """0 shots left: the battle background draws "SHOOT LIT SHOT" (deff 97 [0x0101f580]); Devastator in state
         1 "SHOOT R. ORBIT" (msg 0x645 [0x01016d7c]) (QA V097-V121)."""
         self.start()
+        from tf.display import deff_variant
+        if not deff_variant(97, "lit"):
+            self.skipTest("no deff 97 lit op list")
         b = next(x for x in self.tf.features_by_name["battles"].battles if x.bg == 97)
         self.tf.pd[b.left_key] = 0
-        self.assertEqual("SHOOT LIT SHOT", self.tf.media.deff_lines(97, {})["values"][1])
+        self.assertEqual("lit", b.background_values()["variant"])          # its code run with 0 shots left
         self.tf.pd[b.left_key] = 3
+        self.assertIsNone(b.background_values()["variant"])
         self.assertEqual("SHOOT 3 SHOTS", self.tf.media.deff_lines(97, {})["values"][1])
         dv = next(x for x in self.tf.features_by_name["battles"].battles if x.bg == 105)
         dv.active, dv.state = True, 1
-        self.assertEqual("SHOOT R. ORBIT", self.tf.media.deff_lines(105, {})["values"][1])
+        self.assertEqual("rover", dv.background_values()["variant"])       # DAT_000313b4 = 1: msg 0x645
         dv.active = False
 
     def test_high_score_lists(self):

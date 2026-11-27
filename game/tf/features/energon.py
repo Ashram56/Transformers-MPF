@@ -16,6 +16,7 @@ Deffs 124 and 125 have no capture: their lengths and sounds come from their op l
 124 31 frames x 5 ticks + hold = 156 ticks; 125 142 ticks, 0x13e at 0 and 0x13f at tick 70 (QA V124, V125).
 """
 from tf.features import Feature
+from tf.display import deff_variant
 
 TARGETS = {2: 0, 49: 1, 46: 2}
 LAMPS = (48, 54, 35)
@@ -27,6 +28,10 @@ LAMPS = (48, 54, 35)
 LIT_POINTS, LIT_DEFF, LIT_LEFF, LIT_SOUND, LIT_SOUND2, LIT_SOUND2_TICKS = 75000, 124, 140, 0x25e, 0x25f, 62
 LIT_SOUND2_FLAG = 0x47               # task 0x97 [0x01030984]: sleep 0x3e, speech_once(0x25f, flag 0x47) [0x01006ae0]
 SET_DEFF, SET_LEFF, SET_SOUND = 125, 142, 0x260
+def variant(deff_id, name):
+    return {"variant": name} if deff_variant(deff_id, name) else {}
+
+
 LIT_DEFF_TICKS, SET_DEFF_TICKS = 156, 142       # the op lists' end_tick (deff_124 [0x01030b94], deff_125 [0x01031038])
 SET_BASE, SET_STEP, SET_CAP = 250000, 25000, 750000
 DEBOUNCE_TASK, DEBOUNCE_TICKS = 0xb0, 10
@@ -74,7 +79,9 @@ class Energon(Feature):
             return
         if (lit | bit) != ALL:
             pd.energon_lit = lit | bit
-            os_.deff_start(LIT_DEFF, values=[lit, bit])     # arg0: the set before the new bit [0x010309a4] (QA P18)
+            # arg0: the set before the new bit [0x010309a4] (QA P18); +0x34 the bit picks the target's drawing (its code
+            # run, rom/tools/deff_variants.py 124)
+            os_.deff_start(LIT_DEFF, values=[lit, bit], **variant(LIT_DEFF, "target%d" % bit))
             os_.leff_start(LIT_LEFF)
             os_.sound(LIT_SOUND)
             os_.task_start(SOUND_TASK, LIT_SOUND2_TICKS, lambda: os_.speech_once(LIT_SOUND2, LIT_SOUND2_FLAG))
@@ -82,7 +89,7 @@ class Energon(Feature):
             os_.request_refresh()
             return
         sets = pd.get("energon_sets", 0)
-        os_.deff_start(SET_DEFF)
+        os_.deff_start(SET_DEFF, **variant(SET_DEFF, "target%d" % bit))     # +0x30 the completing bit (deff_variants 125)
         os_.leff_start(SET_LEFF)
         os_.sound(SET_SOUND)
         os_.score_add(min(SET_BASE + SET_STEP * sets, SET_CAP))

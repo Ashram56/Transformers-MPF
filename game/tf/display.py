@@ -406,7 +406,7 @@ class Display:
         if deff_id not in (self.bg, self.fg):
             return
         self.os.machine.events.post("tf_deff_{}".format(deff_id), **args)
-        self.os.media.deff_start(deff_id, self.prio.get(deff_id, 0), **args)
+        self.os.media.deff_redraw(deff_id, self.prio.get(deff_id, 0), **args)
 
     def stop(self, deff_id):
         os_ = self.os

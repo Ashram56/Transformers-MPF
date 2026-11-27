@@ -161,6 +161,14 @@ VARIANTS.update({
     102: battle_hit(102, 0x0101dc18, 0x040c6c34, 11, "start_deff_102 [0x0101cc6c] (0xc - hits)"),
     114: battle_hit(114, 0x0101c208, 0x040c6b98, 10, "start_deff_114 [0x0101afbc] (0xb - hits)"),
     122: battle_hit(122, 0x01013a1c, 0x040c6818, 11, "start_deff_122 [0x01012508] (0xc - hits)"),
+    40: [("default", {}, "the player's side byte 0x02112108 (DAT_02112107 + player 1) at 0: deff_040 [0x01034198] draws "
+                         "the Decepticon image 0x2234 (any side but 1)"),
+         ("autobot", {"ram": {0x02112108: bytes([1])}},
+          "side 1, Autobot: deff_040 [0x01034198] draws image 0x2232 (side_choice sets the byte, [0x01034198] itself "
+          "on a flipper)")],
+    41: [("default", {}, "side byte at 0: deff_041 [0x01034424] draws msg 0x683 DECEPTICON (any side but 1)"),
+         ("autobot", {"ram": {0x02112108: bytes([1])}},
+          "side 1, Autobot: deff_041 [0x01034424] draws msg 0x682 AUTOBOT")],
     109: [("default", {}, "DAT_00034f68 = 0: deff_109_bumblebee [0x01015184] draws phase 2's page (the timer, SHOOT "
                           "CAMARO, FOR the award)"),
           ("phase1", {"ram": {0x00034f68: (1).to_bytes(4, "little")}},

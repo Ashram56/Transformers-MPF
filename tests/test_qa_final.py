@@ -625,15 +625,17 @@ class TestFinalPass(QaCase):
         self.assertEqual([10, 3750000], bb.background_values()["values"])
 
     def test_f074_every_deff_replayed_from_its_code(self):
-        """Every deff but the ported ones (1, 19) and the side ones (40, 41) is replayed live from its op list, the lift
-        of its code; a looping background deff (109 [0x01015184]) goes round its cycle past the recorded run."""
+        """Every deff but the ported ones (1, 19) is replayed live from its op list, the lift of its code (40 and 41 by
+        the player's side: their autobot op lists); a looping background deff (109 [0x01015184]) goes round its cycle
+        past the recorded run."""
         import os
         from tf import media_bridge, op_player
         if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_109.json.gz")):
             self.skipTest("no generated live ops (scripts/gen_media.py)")
         live = media_bridge.live_ids()
-        self.assertEqual(set(), {1, 19, 40, 41} & live)
-        self.assertGreaterEqual(len(live), 150)
+        self.assertEqual(set(), {1, 19} & live)
+        self.assertGreaterEqual(len(live), 152)
+        self.assertTrue(os.path.exists(os.path.join(op_player.OPS_DIR, "deff_040__autobot.json.gz")))
         player = op_player.OpPlayer.load("deff_109")
         start, period = player.loop
         end = player.ops[-1]["t"]

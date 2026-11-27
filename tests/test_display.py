@@ -17,8 +17,7 @@ class TestScoreScreen(TfTestCase):
         self.fill_trough()
         self.hit_and_release_switch("s_start_button")
         self.advance_time_and_run(2)
-        slide, priority, extra = sent[-1]
-        self.assertEqual("rom_screen", slide)
+        slide, priority, extra = [s for s in sent if s[0] == "rom_screen"][-1]   # under deff 40 (rom_ops_bg)
         self.assertEqual(1, priority)                           # deff 19's ROM priority
         draw = extra["draw"]
         # deff 19's capture: panel score (font 0, right edge 38, row 5), score (font 26 at 84, 21), bottom row

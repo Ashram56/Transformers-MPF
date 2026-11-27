@@ -382,9 +382,11 @@ class Battle:
     def background_values(self):
         left = self.pd.get(self.left_key, self.shots) if self.os.game else self.shots
         out = {"values": [self.seconds, left]}
-        if self.os.game and not left:
-            # 0 shots left: text_draw_msg "SHOOT LIT SHOT" in place of "SHOOT %u SHOT%P1//S/%" (e.g. deff 97
-            # [0x0101f580], deff 105 msg 0x643 [0x01016d7c]; QA V097-V121)
+        if deff_variant(self.bg, "lit"):
+            # 0 shots left: the deff's code draws text_draw_msg "SHOOT LIT SHOT" in place of "SHOOT %u SHOT%P1//S/%"
+            # (e.g. deff 97 [0x0101f580], deff 105 msg 0x643 [0x01016d7c]; QA V097-V121): its "lit" code run
+            out["variant"] = "lit" if self.os.game and not left else None
+        elif self.os.game and not left:
             out["slot_texts"] = {1: SHOOT_LIT_SHOT}
         return out
 
@@ -523,7 +525,10 @@ class Devastator(Battle):
         """deff 105 [0x01016d7c]: in state 1 (DAT_000313b4 = 1) msg 0x645 "SHOOT R. ORBIT" in the shots slot."""
         out = Battle.background_values(self)
         if self.os.game and self.active and self.state == 1:
-            out["slot_texts"] = {1: "SHOOT R. ORBIT"}
+            if deff_variant(self.bg, "rover"):
+                out["variant"] = "rover"              # its code run with DAT_000313b4 = 1 (rom/tools/deff_variants.py)
+            else:
+                out["slot_texts"] = {1: "SHOOT R. ORBIT"}
         return out
 
     def pop(self):

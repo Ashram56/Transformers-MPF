@@ -94,6 +94,7 @@ def live_ids():
 
 
 LIVE = live_ids()
+SIDE_DEFFS = (40, 41)            # draw the player's side (side_variant)
 PANEL_COLS = 41                  # the status panel's columns 0-40 [0x0102f200] (separator [0x0102f504] at x 40)
 
 
@@ -226,7 +227,7 @@ class MediaBridge:
         if not info:
             return
         if variant is None:
-            variant = self.live_variant(deff_id)
+            variant = self.live_variant(deff_id) or self.side_variant(deff_id)
         if deff_id in LIVE and self.ops_start(deff_id, info, priority, variant, args):
             return
         slide = (info.get("variants") or {}).get(variant) if variant else None
@@ -250,6 +251,14 @@ class MediaBridge:
                                            "priority": priority}},
                    priority=priority, **self.deff_lines(deff_id, args))
         self._played(slide)
+
+    def deff_redraw(self, deff_id, priority, **args):
+        """A running deff draws new state (tf/display.py redraw: deff 40 after a side change): the deff's code goes on
+        with the other state, so a replayed one switches op list at the same tick instead of starting again."""
+        run = self.ops.get(deff_id)
+        self.deff_start(deff_id, priority, **args)
+        if run is not None and deff_id in self.ops:
+            self.ops[deff_id]["since"] = run["since"]
 
     def ops_start(self, deff_id, info, priority, variant, args):
         """A deff in LIVE: its op list (the variant's when it has one) replayed tick by tick on the rom_ops slide
@@ -331,12 +340,14 @@ class MediaBridge:
                            need_data=False, draw=draw)
 
     def deff_slide(self, info):
-        """The slide of a deff that draws the player's side (deff 40, 41: media_data "sides", scripts/gen_media.py
-        SIDE_VARIANTS) for the current player's side; else the deff's one slide."""
-        sides = info.get("sides")
-        if sides and self.os.game:
-            return sides.get(str(self.os.pd.get("side")), info["slide"])
         return info["slide"]
+
+    def side_variant(self, deff_id):
+        """deff 40 [0x01034198] and 41 [0x01034424] draw the player's side from the byte 0x02112107 + player: the
+        Autobot side (1) runs their "autobot" op list (rom/tools/deff_variants.py), any other the default one."""
+        if deff_id in SIDE_DEFFS and self.os.game and self.os.pd.get("side") == 1:
+            return "autobot"
+        return None
 
     def deff_stop(self, deff_id):
         info = self.data["deffs"].get(deff_id) if self.data else None

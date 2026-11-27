@@ -683,7 +683,11 @@ class Megatron(Feature):
             os_.audit(LOCK_AUDIT)
             os_.score_add(LOCK_POINTS)
             # show task 0x73: it waits for the ball launch deff 41 (megatron_autobot.jsonl 10.71 s, 0.33 s on)
-            os_.show(LOCK_TASK, LOCK_DEFF, values=[n], sounds=[
+            # deff_140_locked [0x0100b7f0]: +0x30 the lock number, the player's side picks the drawing (its code runs,
+            # rom/tools/deff_variants.py 140)
+            name = "%s_lock%d" % ("autobot" if pd.get("side") == 1 else "decepticon", n)
+            os_.show(LOCK_TASK, LOCK_DEFF, values=[n], **({"variant": name} if deff_variant(LOCK_DEFF, name) else {}),
+                     sounds=[
                 (0, lambda: os_.sound(LOCK_SOUNDS[min(n, 3) - 1], in_deff=LOCK_DEFF)),
                 (LOCK_SPEECH_AT, lambda: self.lock_call(n))],
                 on_start=lambda: os_.deff_media(LOCK_DEFF, LOCK_LEFF))
