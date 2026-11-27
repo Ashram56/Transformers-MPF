@@ -218,6 +218,8 @@ class MediaBridge:
             return
         if deff_id in LIVE and self.ops_start(deff_id, info, priority, variant, args):
             return
+        if variant is None:
+            variant = self.live_variant(deff_id)
         slide = (info.get("variants") or {}).get(variant) if variant else None
         self.variant_of[deff_id] = variant if slide else None     # its own printf slots (deff_lines)
         slide = slide or self.deff_slide(info)
@@ -441,6 +443,12 @@ class MediaBridge:
         self.redraw()
         self.panels_refresh()
 
+    def live_variant(self, deff_id):
+        """The variant a deff draws now from the RAM it reads every frame (its values function's "variant", e.g.
+        deff 109 [0x01015184] picks its page by DAT_00034f68, the Bumblebee phase): None for the default."""
+        live = getattr(self.os, "deff_values", {}).get(deff_id)
+        return live().get("variant") if live else None
+
     def panels_refresh(self):
         """The status panel and live values of the effects on screen, sent when they changed (every tick)."""
         if not self.data:
@@ -450,6 +458,12 @@ class MediaBridge:
             info = self.data["deffs"].get(deff_id)
             live = deff_id in getattr(self.os, "deff_values", {})
             if not info or not (info.get("panel") is not None or live):
+                continue
+            values = self.os.deff_values[deff_id]() if live else {}
+            want = values.get("variant") if (info.get("variants") or {}).get(values.get("variant")) else None
+            if "variant" in values and deff_id not in self.ops and want != self.variant_of.get(deff_id):
+                # the deff's code switched page on the RAM it reads (deff 109: phase 1 to phase 2): its other slide
+                self.deff_start(deff_id, self.os.display.prio.get(deff_id, 0), **self.started.get(deff_id, {}))
                 continue
             mine = self.panel_args(info)
             if live:

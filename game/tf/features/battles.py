@@ -650,13 +650,15 @@ class Bumblebee(Battle):
         return self.active and self.pd.get("bb_phase", 1) == 2
 
     def background_values(self):
-        """Deff 109's captured page is phase 2's: "%,02lu" the timer (RAM 0x34f7c) over "SHOOT CAMARO / FOR %,02lu"
-        the award (0x34f74). Phase 1's page (value 0x34f70, "BEE = " award) is not in the capture: its value and
-        award go in the same two slots."""
+        """deff_109_bumblebee [0x01015184] picks its page every frame by DAT_00034f68, the phase: 1 draws the value
+        0x34f70 (font 0x10), "BEE = %,02lu" the award 0x34f74 and SHOOT LIT SHOT (variant "phase1",
+        rom/tools/deff_variants.py); 2 draws the timer 0x34f7c, SHOOT CAMARO and "FOR %,02lu" the award (the
+        default page). The award is 0 at a phase 1 start and grows by each lit shot [0x01014638]; 200,000 at a
+        phase 2 start (adj_bumblebee_timer [0x010142dc])."""
         award = self.DIRECT_JACKPOT if getattr(self, "direct", False) else getattr(self, "jackpot", 0)
         if self.os.game and self.pd.get("bb_phase", 1) == 2:
-            return {"values": [self.seconds, award]}
-        return {"values": [getattr(self, "current", 0), award]}
+            return {"values": [self.seconds, award], "variant": None}
+        return {"values": [getattr(self, "current", 0), award], "variant": "phase1"}
 
 
 class Ironhide(Battle):

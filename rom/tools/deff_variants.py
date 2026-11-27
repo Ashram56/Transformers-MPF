@@ -161,6 +161,11 @@ VARIANTS.update({
     102: battle_hit(102, 0x0101dc18, 0x040c6c34, 11, "start_deff_102 [0x0101cc6c] (0xc - hits)"),
     114: battle_hit(114, 0x0101c208, 0x040c6b98, 10, "start_deff_114 [0x0101afbc] (0xb - hits)"),
     122: battle_hit(122, 0x01013a1c, 0x040c6818, 11, "start_deff_122 [0x01012508] (0xc - hits)"),
+    109: [("default", {}, "DAT_00034f68 = 0: deff_109_bumblebee [0x01015184] draws phase 2's page (the timer, SHOOT "
+                          "CAMARO, FOR the award)"),
+          ("phase1", {"ram": {0x00034f68: (1).to_bytes(4, "little")}},
+           "DAT_00034f68 = 1, the Bumblebee battle's phase 1 (adj_bumblebee_timer [0x010142dc] copies it from the player's "
+           "0x02111e34): deff_109 [0x01015184] draws the value 0x34f70, BEE = the award 0x34f74, SHOOT LIT SHOT")],
     144: [("%s_left%d" % (side, n), {"args": {0x30: (1, 0), 0x34: (2, n)}, "state": {"side": sv}},
            "deff_144_more_to_start [0x0102712c]: +0x34 = DAT_00035294 (start_deff_144 [0x010262f0]) picks the "
            "animation, table 0x040c70e0 (12, above 11 it takes 11) for player_side 1, 0x040c70c4 (7, above 6 it "

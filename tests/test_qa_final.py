@@ -603,3 +603,23 @@ class TestFinalPass(QaCase):
         self.assertNotEqual(code.frame, media.ops[132]["player"].frame)
         media.deff_stop(132)
         self.assertNotIn(132, media.ops)
+
+    def test_f073_bumblebee_page_by_phase(self):
+        """deff_109_bumblebee [0x01015184] picks its page every frame by DAT_00034f68: phase 1 draws the value, BEE =
+        the award and SHOOT LIT SHOT (variant phase1), phase 2 the timer, SHOOT CAMARO and FOR the award."""
+        self.start()
+        media = self.tf.media
+        if not (media.data and (media.data["deffs"].get(109) or {}).get("variants", {}).get("phase1")):
+            self.skipTest("no generated deff 109 variant (scripts/gen_media.py)")
+        bb = self.tf.features_by_name["battles"].battles[4]
+        self.tf.pd.bb_phase = 1
+        bb.current, bb.jackpot = 750000, 0
+        self.assertEqual({"values": [750000, 0], "variant": "phase1"}, bb.background_values())
+        self.tf.deff_live((109,), bb.background_values)
+        media.deff_start(109, 0x40)
+        self.assertEqual("phase1", media.variant_of.get(109))
+        self.tf.pd.bb_phase = 2                                 # [0x01014638]: the last lit shot
+        bb.seconds, bb.jackpot = 10, 3750000
+        media.panels_refresh()
+        self.assertIsNone(media.variant_of.get(109))
+        self.assertEqual([10, 3750000], bb.background_values()["values"])
