@@ -1,5 +1,5 @@
 """Skill shot and super skill shot (rom/rules/modes/game_flow.md 5.1; code [0x01031928] [0x01031518]
-[0x0103177c] [0x01031630] [0x01031848] + observed in traces/game_flow.jsonl t 18.79, 55.12, 80.86).
+[0x0103177c] [0x01031630] [0x01031848], confirmed by traces/game_flow.jsonl t 18.79, 55.12, 80.86).
 
 Armed on every serve of type 3 or 4 (a new ball) by the event 0x0f hook; a ball-save serve (type 1)
 cancels both.
@@ -11,7 +11,8 @@ cancels both.
   other than 7, 8, 12 or after 3 different valid switches other than those.
 - Super skill shot (task 0xb4): the Megatron back door (sw13): 500,000 + 100,000 x super skill shots made
   (cap 1,000,000); deff 43 queued (show task 0x65), leff 94, sound 0x167. It ends on a force switch other
-  than 12, 13 or 3 different valid switches other than those. Slings and pops end neither.
+  than 12, 13 or 3 different valid switches other than those. Every switch that posts event 0x6b counts,
+  slings, pops, the captive ball 45 and Optimus 51 included (hook 0x010313cc registered at 0x01031ed8; QA P3).
 """
 from tf.features import Feature
 
@@ -21,9 +22,10 @@ LANE = {AUTOBOT: 7}                 # own lane by side (Decepticon: 8)
 NOT_HANDS_FREE = 0x11
 SKILL_DEFF = 42
 SUPER_DEFF, SUPER_TASK = 43, 0x65
-# the skill shots' own count of valid switches (obj 0x31400 / 0x3140c): slings and pops do not end them
-SKILL_COUNTING = {1, 2, 4, 5, 6, 13, 35, 37, 46, 49, 50}
 
+
+WINDOW_LEFF = 92
+SKILL_LANE_LAMP = {8: 50, 7: 49}     # the second lane award's lamp [0x010335d0] / [0x0103361c] (QA P13)
 
 class SkillShot(Feature):
     name = "skill_shot"
@@ -40,6 +42,8 @@ class SkillShot(Feature):
             if name in self.machine.switches:
                 sc.add_switch_handler(name, self._flipper)
         os_.deff_live((SKILL_DEFF, SUPER_DEFF), lambda: {"values": [self.value]})
+        # leff rule check_task_b2_314ac [0x010314ac]: leff 92 while the skill shot task 0xb2 runs (QA L-092)
+        os_.lamp_rule(lambda: bool(os_.game) and self.top, leff=WINDOW_LEFF)
 
     def player_first_ball(self):
         self.pd.skill_hands_free = self.pd.skill_regular = self.pd.super_skill = 0
@@ -50,6 +54,7 @@ class SkillShot(Feature):
             self.seen_top, self.seen_super = set(), set()
             self.lane = LANE.get(self.pd.get("side", 2), 8)
             self.os.flag_clear(NOT_HANDS_FREE)
+            self.os.request_refresh()   # clear_flag_11_start_task_b2_31518 [0x01031518]: set_dat_000315fc
         elif serve_type == 1:
             self.cancel()
 
@@ -70,23 +75,23 @@ class SkillShot(Feature):
         if self.top:
             if num == self.lane:
                 self._award_top(num)
-            elif num in (7, 8):
+            elif num in (7, 8) or self._ends(num, (7, 8, 12), self.seen_top):
                 self.top = False
-            elif self._ends(num, (7, 8, 12), self.seen_top):
-                self.top = False
+                os_.request_refresh()     # task 0xb2 ends: set_dat_000315fc, the rules are evaluated [0x010314d8]
         if self.super:
             if num == 13:
                 self._award_super()
             elif self._ends(num, (12, 13), self.seen_super):
                 self.super = False
+                os_.request_refresh()     # task 0xb4 ends: set_dat_000315fc [0x0103173c]
 
     def _ends(self, num, exempt, seen):
-        from tf.os_layer import FORCE_SWITCHES
+        from tf.os_layer import COUNTING_SWITCHES, FORCE_SWITCHES
         if num in exempt:
             return False
         if num in FORCE_SWITCHES:
             return True
-        if num in SKILL_COUNTING:
+        if num in COUNTING_SWITCHES:        # the event 0x6b hook's count (obj 0x31400 / 0x3140c) [0x010313cc]
             seen.add(num)
             return len(seen) >= 3
         return False
@@ -103,7 +108,7 @@ class SkillShot(Feature):
         self.cancel()
         os_.score_add(self.value)
         os_.deff_start(SKILL_DEFF, values=[self.value])     # its sound 0x165 and leff 93 come with it
-        os_.hook("lane_award", num)
+        os_.hook("lane_award", num, SKILL_LANE_LAMP.get(num))
 
     def _award_super(self):
         os_ = self.os

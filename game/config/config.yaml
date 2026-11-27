@@ -20,6 +20,7 @@ config:
 modes:
   - attract
   - game
+  - tf_service
 
 custom_code: tf.os_layer.TfOS
 

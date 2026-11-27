@@ -22,7 +22,8 @@ class TestSwitchScores(TfTestCase):
         self.assertEqual(440, self.hit("s_right_slingshot"))
         self.assertEqual(3170, self.hit("s_top_bumper"))
         self.assertEqual(560, self.hit("s_l_ramp_entrance"))
-        self.assertEqual(500030, self.hit("s_megatron_back_door"))    # super skill shot (ends both)
+        # slings and a pop are 3 switches posting event 0x6b: both skill shots have ended [0x010313cc] (QA P3)
+        self.assertEqual(30, self.hit("s_megatron_back_door"))
         self.assertEqual(2500 + 2560, self.hit("s_left_top_lane"))     # lane lamp + handler
         sounds = [int(e["call"], 16) for e in self.tf.trace.of("sound")]
         self.assertTrue({0x15a, 0x15c} <= set(sounds))
@@ -35,13 +36,20 @@ class TestSwitchScores(TfTestCase):
         self.assertIn(42, [e["id"] for e in self.tf.trace.of("deff_start")])
 
     def test_side_choice_ends_on_a_playfield_switch(self):
+        """Task 200 ends on a force switch (event 0x6c [0x01033e08]) or 3 different counting ones (event 0x6b
+        [0x01033dec]), with no deff 41 (only the shooter lane's task 0xc9 shows it [0x01033f54])."""
         self.fill_trough()
         self.hit_and_release_switch("s_start_button")
         self.advance_time_and_run(2)
         self.assertEqual(40, self.tf.display.bg)
+        side = self.tf.features_by_name["side"]
         self.hit_and_release_switch("s_left_slingshot")
         self.advance_time_and_run(0.5)
-        self.assertIn(41, [e["id"] for e in self.tf.trace.of("deff_start")])
+        self.assertTrue(side.choosing)
+        self.hit_and_release_switch("s_left_top_lane")
+        self.advance_time_and_run(0.5)
+        self.assertFalse(side.choosing)
+        self.assertNotIn(41, [e["id"] for e in self.tf.trace.of("deff_start")])
 
     def test_pop_runs_its_lamp_effect(self):
         """A pop starts leff 26, whose captured show pulses the pop bumper flasher (lampfx_026.yaml)."""

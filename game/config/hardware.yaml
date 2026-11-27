@@ -40,6 +40,10 @@ ball_devices:
     eject_coil: c_auto_launch
     mechanical_eject: true
     eject_timeouts: 1s
+    # the shooter device's task (task 26 in the code run) settles the arrival +0x10 (31 ticks, table 0x040d17fc),
+    # queues coil 2 on its next tick and the pulse queue's hold-off [0x00003758] starts it 7 ticks later:
+    # 38 ticks from the ball's arrival (scenario_lift game_flow: arrival 678, queued 709, pulse 716)
+    entrance_count_delay: 608ms
   bd_left_eject:          # left eject saucer (switch 3, coil 22)
     ball_switches: s_left_eject
     eject_coil: c_left_eject
@@ -48,7 +52,7 @@ ball_devices:
     ball_switches: s_m_tron_lock_1_back, s_megatron_lock_2, s_megatron_lock_3, s_megatron_lock_4
     jam_switch: s_megatron_jam
     eject_coil: c_megatron_lockup
-    eject_timeouts: 350ms     # the multiball release kicks the balls 0.3-0.5 s apart (traces/megatron_*.jsonl)
+    eject_timeouts: 350ms     # under the release step, 25 ticks a ball (5 + 0x14, device 4 case 3 [0x0100a3b8])
     exit_count_delay: 100ms
     entrance_count_delay: 300ms
 

@@ -1,4 +1,6 @@
 # every playfield switch hit twice, one at a time, ball in play (first hit after the validating sling)
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
+#! random 0000bae8 1004   mystery award at the left eject (bag_weighted_pick [0x0000bae8], random_below(1006)) as the emulator made it: item 12 SUPER POPS (deff 149)
 autoplunge 0
 start 1
 wait 3

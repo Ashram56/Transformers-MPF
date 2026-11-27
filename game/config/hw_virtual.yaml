@@ -12,5 +12,6 @@ hardware:
 # The trough starts full: 4 balls (machine: balls_installed)
 virtual_platform_start_active_switches: s_trough_1_r, s_trough_2, s_trough_3, s_trough_4_l
 
-# The trough's balls roll toward the eject end, as on the machine (tf/virtual_hardware.py).
-custom_code: tf.os_layer.TfOS, tf.virtual_hardware.VirtualTrough
+# The trough and the Megatron lock keep their balls as on the machine: an MPF Monitor click on one of their switches
+# is a ball arriving (a drain, a lock), which stays until the device ejects it (tf/virtual_hardware.py).
+custom_code: tf.os_layer.TfOS, tf.virtual_hardware.VirtualTrough, tf.virtual_hardware.VirtualLock

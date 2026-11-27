@@ -1,6 +1,6 @@
 # Transformers Pro v1.80: service menu, adjustments and audits
 
-Read from the ROM (`tf_180`) by `rom/tools/settings_extract.py`. The menu tree is the one the ROM builds at run time (0xeb3c, factory settings, observed in the emulator); item texts, the adjustment table (98 entries), value labels and audit names come from the ROM's own tables, and function-formatted value labels were produced by running the ROM's own formatter code in the emulator. `config/settings.yaml` has every adjustment as an MPF setting. Details and evidence tags are in `rom/rom_data/settings/`.
+Read from the ROM (`tf_180`) by `rom/tools/settings_extract.py`. The menu tree is the one the ROM builds at run time (0xeb3c, factory settings; observed in the emulator, and confirmed in code: `rom/tools/service_walk.py` walks every menu in a code run, `rom/rom_data/settings/service_screens.json`, every visible menu has the same items, TOURNAMENT stays hidden with factory settings); item texts, the adjustment table (98 entries), value labels and audit names come from the ROM's own tables, and function-formatted value labels were produced by running the ROM's own formatter code in the emulator. `config/settings.yaml` has every adjustment as an MPF setting. Details and evidence tags are in `rom/rom_data/settings/`.
 
 ## Buttons
 

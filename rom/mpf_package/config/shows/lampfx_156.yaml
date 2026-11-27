@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 156, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 335 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 10ms
+# ROM lamp effect (leff) 156, function 0x01003dac, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_156.json). ends by itself after 20 ticks (320 ms).
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
+- duration: 16ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -9,33 +9,33 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 33ms
+- duration: 32ms
   lights:
     l_bumblebee_captive_ball: "ffffff"
 - duration: 32ms
   lights:
     l_bumblebee_captive_ball: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_bumblebee_captive_ball: "ffffff"
 - duration: 32ms
   lights:
     l_bumblebee_captive_ball: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_bumblebee_captive_ball: "ffffff"
 - duration: 32ms
   lights:
     l_bumblebee_captive_ball: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_bumblebee_captive_ball: "ffffff"
 - duration: 32ms
   lights:
     l_bumblebee_captive_ball: "000000"
-- duration: 33ms
+- duration: 32ms
   lights:
     l_bumblebee_captive_ball: "ffffff"
-- duration: 32ms
+- duration: 16ms
   lights:
     l_bumblebee_captive_ball: "000000"

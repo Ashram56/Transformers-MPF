@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 103, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 1034 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 65ms
+# ROM lamp effect (leff) 103, function 0x010227e0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_103.json). ends by itself after 63 ticks (1008 ms).
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
+- duration: 64ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -12,7 +12,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 65ms
+- duration: 64ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -23,7 +23,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 65ms
+- duration: 64ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -34,7 +34,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 65ms
+- duration: 64ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -45,7 +45,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 130ms
+- duration: 128ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -56,18 +56,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 32
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
+- duration: 48ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -89,40 +78,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 250
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
+- duration: 48ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -144,29 +100,7 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 250
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
-  coils:
-    c_flash_left_ramp:
-      action: pulse
-      pulse_ms: 250
-    c_flash_pop_bumper:
-      action: pulse
-      pulse_ms: 250
-    c_flash_right_ramp:
-      action: pulse
-      pulse_ms: 250
-- duration: 49ms
+- duration: 48ms
   coils:
     c_flash_left_ramp:
       action: pulse
@@ -188,7 +122,73 @@
     c_flash_right_ramp:
       action: pulse
       pulse_ms: 250
-- duration: 59ms
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
+  coils:
+    c_flash_left_ramp:
+      action: pulse
+      pulse_ms: 250
+    c_flash_pop_bumper:
+      action: pulse
+      pulse_ms: 250
+    c_flash_right_ramp:
+      action: pulse
+      pulse_ms: 250
+- duration: 48ms
   coils:
     c_flash_left_ramp:
       action: pulse

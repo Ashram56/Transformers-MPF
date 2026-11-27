@@ -209,7 +209,7 @@ class TestPupMachine(TfTestCase):
     def test_decepticon_jackpot_draw(self):
         """[0x0100ddc8]: deff 77's lit-shot animations come without repeats until 1-8 are used."""
         side = self.tf.features_by_name["megatron"].sides[2]
-        side.setup()
+        side.bag = 1                         # what setup() does at each multiball start [0x0100e0bc]
         drawn = [side.draw() for _ in range(8)]
         self.assertTrue(all(1 <= d <= 9 for d in drawn))
         self.assertEqual(len(drawn), len(set(drawn)))

@@ -6,12 +6,12 @@ ball is on the playfield, validates it, reloads the ball search), then calls the
 "sw_<number>" and "switch" in registration order (os.hook), then adds the switch's base score.
 
 The scores, sounds, display and lamp effects are the ROM extraction's per-switch trace (rom/rules/
-switches_and_shots.md, switch_handlers.csv; observed from a fresh ball):
+switches_and_shots.md, switch_handlers.csv; read by running the ROM's code from a fresh ball, rom/tools/switch_lift.py):
 - BASE_SCORE: the points the switch's own handler adds after the rules (column "handler");
 - slingshots: 440 (0x1033104 / 0x10331a4) and sound 0x15a (0x159 on the Autobot side);
 - pop bumpers: 170 from the handler (0x1032f8c) and audit 73; the pop award is tf/features/pops.py.
 Every handler adds 1 to the bonus count (0x1032d2c -> 0x1000dfc, hook bonus_add) except sw 6's (0x010332e4 returns
-without it; observed: traces/combos.jsonl last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
+without it, code; traces/combos.jsonl confirms: last ball, 25 switches of which 10 sw 6, bonus count 15). The features behind the
 switches register "sw_<number>" hooks (pops, lanes, spinner, Bumblebee, 2-bank, combos, skill shots; specs in
 rom/rules/modes/).
 """
@@ -35,20 +35,28 @@ BASE_SCORE = {1: 30, 2: 1110, 4: 560, 5: 1220, 7: 2560, 8: 2560, 10: 1170, 11: 3
               24: 100000, 25: 1090, 28: 1090, 29: 100000, 34: 90, 35: 560, 37: 30, 45: 30, 46: 1110, 49: 1110,
               50: 30, 51: 30}
 SLINGS = {26: 440, 27: 440}
-SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon (observed: game_flow player 1 Autobot 0x159)
+SLING_SOUND = {1: 0x159, 2: 0x15a}    # Autobot / Decepticon: player_side() picks the call [0x01033104]
 POPS = (30, 31, 32)
 POP_EXTRA = 170
-# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, observed callers
+# audit counters the handlers themselves add, first thing (switch_handlers.csv audit_counters, callers
 # 0x1033aec, 0x1033c1c / 0x1033c5c, 0x1033b24, 0x1033050); the shot audits 65-68 are the mode-progress
 # function's (0x1020074, with the modes)
 SW_AUDIT = {1: 71, 30: 73, 31: 73, 32: 73, 37: 70, 45: 72, 50: 70}
-# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv; observed
-# traces/switches.jsonl 124.35 / 124.42 s: audit 72 and 30 at close + 46 ms and at open + 50 ms)
+# switches whose handler runs on both edges, about 3 ticks after each (flags 0x1fff0000 in switches.csv: the edge mask
+# +0xe 0x1fff has 0x400 closing and 0x800 opening, switch_dispatch_debounce [0x0000dc44]; the trace
+# traces/switches.jsonl 124.35 / 124.42 s confirms: audit 72 and 30 at close + 46 ms and at open + 50 ms)
 BOTH_EDGES = {45: 3}
+CAPTIVE_BALL = 45
 NO_BONUS = {6}
-# handlers that run later than the usual tick: the Optimus target (observed 0.08 s in every trace with sw 51)
-DELAY = {51: 5}
+DELAY = {}
+# switches whose handler runs on the opening edge only: sw 51 OPTIMUS PRIME, +0xe = 0x1800 (0x800 opening, no
+# 0x400 closing), debounce 0 / 0, switch_dispatch_debounce [0x0000dc44]; the traces' "0.08 s" was the release of
+# their 60 ms hit (QA D-SW-51-EDGE)
+OPENING_ONLY = {51}
 
+
+RAMP_ENTRANCE_TIMERS = {4: 0xc, 35: 0xd}     # left / right ramp entrance: switch-timeout tokens
+RAMP_ENTRANCE_SOUNDS = {4: 0x273, 35: 0x272}  # snd_play on every hit [0x010337e8 / 0x010338dc] (QA R-F1, SC5)
 
 class SwitchLayer:
 
@@ -58,6 +66,9 @@ class SwitchLayer:
         sc = self.machine.switch_controller
         for num, name in SW.items():
             if name in self.machine.switches:
+                if num in OPENING_ONLY:
+                    sc.add_switch_handler(name, self._dispatch(num), state=0)
+                    continue
                 sc.add_switch_handler(name, self._dispatch(num))
                 if num in BOTH_EDGES:
                     sc.add_switch_handler(name, self._dispatch(num), state=0)
@@ -68,6 +79,8 @@ class SwitchLayer:
         (os.request_refresh) as the ROM does."""
         def on_close():
             if not self.os.game or not self.os.in_play:
+                if num == CAPTIVE_BALL:     # sw_captive_ball [0x01033b14]: audit 72 before any state test (QA D-SW-45)
+                    self.os.after(BOTH_EDGES[num], lambda: self.os.audit(SW_AUDIT[num]))
                 return
             self.os.after(BOTH_EDGES.get(num, DELAY.get(num, 1)), lambda: self.handle(num))
         return on_close
@@ -77,14 +90,26 @@ class SwitchLayer:
         if not os_.game or not os_.in_play:
             return
         os_.playfield_switch(num)
+        if num == 51 and (os_.task_running(0x54) or os_.task_running(0x4e)):
+            return              # [0x01033d3c] returns at once while the last hit's task 0x54 (or 0x4e) runs (QA P11)
+        # sw 11 while task 0x54 runs: only its 30 and bonus count, the shot block is skipped [0x01033b3c] (QA M5)
+        locked = num == 11 and os_.task_running(0x54)
+        if num in RAMP_ENTRANCE_TIMERS:     # FUN_0000ff00(0xc / 0xd, 0x5d) [0x010337e8 / 0x010338dc] (QA M9)
+            os_.sound(RAMP_ENTRANCE_SOUNDS[num])
+            os_.timer_set(RAMP_ENTRANCE_TIMERS[num], 0x5d)
         if num in OUTLANES:
             os_.ball_save_try(OUTLANES[num])
-        if num in SW_AUDIT and not os_.tilted:
+        if num in SW_AUDIT and (not os_.tilted or num == CAPTIVE_BALL):
             os_.audit(SW_AUDIT[num])
         if num not in NO_BONUS:
             os_.hook("bonus_add")
-        os_.hook("sw_{}".format(num))
+        if not locked:
+            os_.hook("sw_{}".format(num))
         os_.hook("switch", num)
+        if not locked and num != 6 and not os_.tilted:
+            # FUN_010047b8 (fast scoring award) and FUN_01003a64 (double scoring sounds): every handler but
+            # sw 6's [0x010332e4], and the eject and lock entries (QA P10)
+            os_.hook("scoring_switch", num)
         if os_.tilted:
             return
         if num in SLINGS:

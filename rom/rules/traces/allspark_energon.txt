@@ -1,4 +1,6 @@
 # Energon targets light the Allspark (left eject); collecting it gives a mystery award. Second set, repeat hits.
+#! random 01033f94 1   side draw (on_event_26_33f94 [0x01033f94], random_below(2) + 1) as the emulator made it: 2 Decepticon, the default side
+#! random 0000bae8 206 1004 206   mystery awards (bag_weighted_pick [0x0000bae8], random_below(total weight)) as the emulator made them: item 4 BONUS X, item 12 SUPER POPS, item 4
 autoplunge 0
 start 1
 wait 3

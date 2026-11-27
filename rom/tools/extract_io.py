@@ -14,7 +14,7 @@ def sw_row(a, num, ded=None):
     w10, w12, w14, w16, m18 = struct.unpack_from('<5H', ROM, foff(a) + 0x10)
     b1a, b1b, b1c = ROM[foff(a) + 0x1a], ROM[foff(a) + 0x1b], ROM[foff(a) + 0x1c]
     return dict(number=num, name=cstr(u32(nm)) if nm else '', handler=hx(h) if h else '', handler_arg=p4,
-                flags_0x0c=hx(f0c, 8), w_0x10=w10, w_0x12=w12, w_0x14=w14, w_0x16=w16,
+                flags_0x0c=hx(f0c, 8), w_0x10=w10, w_0x12=w12, w_0x14=w14, w_0x16=w16, msg_0x16_text=msg(w16) or "",
                 msg_0x18=m18, msg_0x18_text=msg(m18) or '', id_0x1a=b1a, b_0x1b=b1b, b_0x1c=b1c, desc_addr=hx(a))
 rows = []
 for i in range(1, 65):

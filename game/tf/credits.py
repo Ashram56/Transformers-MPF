@@ -1,31 +1,35 @@
 """Credits and pricing as the ROM's OS does them (MPF's credits mode cannot: it has no pricing units, ladders
 or the ROM's coin task). The credit record is kept in MPF's data file "tf_credits" like the ROM's NVRAM.
 
-Coin task FUN_00004a50, one per coin switch closure [0x00004cb4]:
+Coin task FUN_00003f00, one per coin switch closure [0x00019c40]:
 - waits adj 62 COIN INPUT DELAY ticks (61 = OFF: no wait) and drops the coin when the coin is refused during
-  the wait (FUN_000049f8: the service menu runs, gf_state 0x100);
+  the wait (FUN_00003ea8: the service menu runs, gf_state 0x100);
 - audits the slot's coin counter (left 2, right 4, center 3, 4th 5, 5th 6);
-- the pricing entry of adj 28 GAME PRICING (FUN_0000498c) gives the slot's units; the meter and audit 7
+- the pricing entry of adj 28 GAME PRICING (FUN_00003e3c) gives the slot's units; the meter and audit 7
   METER CLICKS count the units;
 - each unit steps the unit counter (it wraps at the ladder length; -1 after a reset) and adds the credits of
-  the ladder at that step (FUN_00004890: never above adj 33 CREDIT LIMIT): audit 1 TOTAL PAID CREDITS by the
-  ladder's credits, event 0x19 (a sound, flag 47); deff 10 per unit; event 0x1a (a sound) when no
+  the ladder at that step (FUN_00003d40: never above adj 33 CREDIT LIMIT): audit 1 TOTAL PAID CREDITS by the
+  ladder's credits, event 0x19 (a sound, flag 0x12); deff 10 per unit; event 0x1a (a sound) when no
   unit gave a credit.
-- The credit text (FUN_00004ff4): "FREE PLAY" on adj 34, else "CREDITS n", "CREDITS a/b" or
+- The credit text (FUN_000044a4): "FREE PLAY" on adj 34, else "CREDITS n", "CREDITS a/b" or
   "CREDITS n a/b" (units since the last credit over the units of the ladder step that gives the next one;
   attract capture: "CREDITS 1/3" after one coin).
-This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS; the
-addresses are Tron's; the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
-pricing presets come from pricing.json; CUSTOM (68) uses the operator's SET CUSTOM PRICING values (machine vars
-custom_coin_units, custom_units_per_credit; interim, the ROM's custom ladder editor is not modelled).
+This is the Tron 1.74 OS model (github.com/Ashram56/Tron-Legacy-MPF game/tron/credits.py, the same SAM OS), re-cited to
+tf_180's routines (QA F13); the same algorithm on tf_180, rom/rom_data/settings/pricing.json "algorithm"). The 68
+pricing presets come from pricing.json; CUSTOM (68) is the record SET CUSTOM PRICING installs (NVRAM 0x2110808, kept in
+"tf_credits" as custom_ladder): coin_pricing_get_4764 [0x00004764] starts from the factory-default preset's coin door,
+unit index and money formats with an empty ladder; the editor [0x01044f7c] (tf/service.py CustomPricing) sets the
+credits of each unit step, coin_pricing_set_48a8 [0x000048a8] trims the trailing zero steps and marks it valid.
 """
 import json
 import os
 
-# coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots (observed, keys 3-6 of PinMAME)
+# coin switch -> (ROM slot 0-4, slot audit counter): pricing.json coin_slots; the slot is the handler argument of
+# D1-D5 in the switch table (handler 0x00019c40, dedicated_switches.csv)
 SLOTS = {"s_left_coin_slot": (0, 2), "s_center_coin_slot": (1, 3), "s_right_coin_slot": (2, 4),
          "s_fourth_coin_slot": (3, 5), "s_fifth_coin_slot": (4, 6)}
-CREDIT_SOUND, COIN_SOUND = 0x043, 0x042   # observed (traces/sounds.jsonl): 0x043 on the coin that completes a credit, 0x042 on the others
+CREDIT_FLAG, MORE_COINS_SOUND = 0x12, 0x045    # [0x01005ebc] sets flag 0x12; play_sound_045 [0x01005f00]
+CREDIT_SOUND, COIN_SOUND, SERVICE_CREDIT_SOUND = 0x043, 0x042, 0x044   # event 0x19 [0x01005ebc] snd_play(0x43); event 0x1a [0x01005ed8] snd_play(0x42); event 0x51 [0x01005eec] snd_play(0x44) (QA D-CR-SNDS)
 METER_AUDIT, PAID_CREDITS_AUDIT, SERVICE_CREDITS_AUDIT = 7, 1, 0x24
 # The 68 pricing presets (rom/rom_data/settings/pricing.json, by adj 28 value; code, checked in the emulator
 # for USA 10): units per slot of the preset's coin door and the credit ladder. Factory default 66 = USA 10.
@@ -48,6 +52,22 @@ def presets():
     return _PRESETS
 
 
+_MONEY = None
+
+
+def money_formats():
+    """adj 28 value -> (unit value in minor units, money format): the pricing record's unit table entry
+    (+0 + unit index x 0xc) and its money format message (+0x16), adj_text_price_26f74 [0x00026f74]."""
+    global _MONEY
+    if _MONEY is None:
+        _MONEY = {66: (25, "USD %,d.%02d")}
+        if os.path.exists(PRICING_JSON):
+            with open(PRICING_JSON, encoding="utf-8") as f:
+                for p in json.load(f)["presets"]:
+                    _MONEY[int(p["adj_value"])] = (int(p["unit_value_minor"]), p["money_formats"]["long"])
+    return _MONEY
+
+
 FREE_GAME_UNLIMITED = 10              # adj 25 FREE GAME LIMIT: 10 = UNLIMITED, 0 = NO FREE GAMES
 DELAY_OFF = 61                        # adj 62 COIN INPUT DELAY: 61 = OFF
 
@@ -62,19 +82,71 @@ class Credits:
         self.credits = int(data.get("credits", 0))
         self.counter = int(data.get("counter", -1))
         self.free_games = 0           # credits awarded in the running game (adj 25)
+        self.custom_ladder = [int(c) for c in data.get("custom_ladder") or []]   # the custom record's ladder
+        self.custom_valid = bool(data.get("custom_valid"))
 
     def save(self):
-        self.store.save_all(data={"credits": self.credits, "counter": self.counter})
+        self.store.save_all(data={"credits": self.credits, "counter": self.counter,
+                                  "custom_ladder": self.custom_ladder, "custom_valid": self.custom_valid})
 
     # ------------------------------------------------------------------ pricing
 
     def pricing(self):
         """(units per slot, credit ladder) of adj 28."""
         if self.os.adj[28] == CUSTOM:
-            var = self.machine.variables.get_machine_var
-            per_credit = max(1, int(var("custom_units_per_credit") or 3))
-            return {1: max(1, int(var("custom_coin_units") or 1))}, (0,) * (per_credit - 1) + (1,)
+            units = self.factory_preset()[0]
+            return units, tuple(self.custom_ladder) if self.custom_valid and self.custom_ladder else (0,)
         return presets().get(self.os.adj[28], presets()[66])
+
+    def factory_preset(self):
+        """The preset of adj 28's factory default (adj_default_get_3d8 [0x000003d8]), which the custom record
+        starts from [0x00004764]."""
+        return presets().get(self.os.adj.default(28), presets()[66])
+
+    def custom_record(self):
+        """coin_pricing_get_4764 [0x00004764]: (ladder, its length) of the installed custom record, else the
+        factory preset's door with an empty ladder."""
+        if self.custom_valid:
+            return list(self.custom_ladder), len(self.custom_ladder)
+        return [], 0
+
+    def custom_install(self, ladder):
+        """coin_pricing_set_48a8 [0x000048a8]: store the ladder, trailing zero steps trimmed, record valid."""
+        ladder = [int(c) for c in ladder[:100]]
+        while ladder and not ladder[-1]:
+            ladder.pop()
+        self.custom_ladder, self.custom_valid = ladder, True
+        self.save()
+        return True
+
+    def unit_money(self, units, style="short"):
+        """units x the unit value of the factory preset's coin door, in its money format (record +0x12 plain,
+        +0x14 short, +0x16 long; pricing.json money_formats)."""
+        from tf.media_bridge import format_rom_text      # noqa: PLC0415
+        preset = self.factory_preset_record()
+        total = units * int(preset.get("unit_value_minor", 25))
+        fmt = preset.get("money_formats", {}).get(style, "$%,d.%02d")
+        return format_rom_text(fmt, [total // 100, total % 100])
+
+    def factory_preset_record(self):
+        """The pricing.json entry of the factory-default preset (unit value, money formats)."""
+        if os.path.exists(PRICING_JSON):
+            with open(PRICING_JSON, encoding="utf-8") as f:
+                for p in json.load(f)["presets"]:
+                    if int(p["adj_value"]) == self.os.adj.default(28):
+                        return p
+        return {"unit_value_minor": 25, "money_formats": {"plain": "%,d.%02d", "short": "$%,d.%02d"}}
+
+    def money(self, units):
+        """adj_text_price_26f74 [0x00026f74]: units x the unit value of the pricing selected now, as money in its
+        format (TOTAL EARNINGS, audit 11: counter 7; "USD 3.25" for 13 units at USA 10). CUSTOM keeps the
+        factory preset's unit table and formats (0x00004764)."""
+        from tf.media_bridge import format_rom_text      # noqa: PLC0415
+        value, fmt = money_formats().get(self.os.adj[28], money_formats()[66])
+        if self.os.adj[28] == CUSTOM:
+            value, fmt = money_formats()[66]
+        total = units * value
+        return format_rom_text(fmt, [total // 100, total % 100])
 
     def slots(self):
         """The coin switches this machine has."""
@@ -84,7 +156,7 @@ class Credits:
         return self.os.adj[34] == 1
 
     def can_start(self, needed=1):
-        """FUN_000202a8 / start_button_handler: free play or enough credits."""
+        """FUN_00019988 / start_button_handler: free play or enough credits."""
         return self.free_play() or self.credits >= needed
 
     # ------------------------------------------------------------------ coins
@@ -95,7 +167,16 @@ class Credits:
         if delay == DELAY_OFF:
             self._accept(*slot)
             return
-        self.os.after(delay, lambda: None if self.os.in_service else self._accept(*slot))
+        self._delay(delay, slot)
+
+    def _delay(self, left, slot):
+        """task_0x13 [0x00003f00]: task_sleep(1) adj 62 times, the coin dropped as soon as coin_task_running_3ea8
+        [0x00003ea8] refuses it (service, gf_state & 0x100) (QA D-CR-DELAY)."""
+        def tick():
+            if self.os.in_service:
+                return
+            self._delay(left - 1, slot) if left > 1 else self._accept(*slot)
+        self.os.after(1, tick)
 
     def _accept(self, slot, audit):
         os_ = self.os
@@ -113,8 +194,8 @@ class Credits:
                 self.add(credits)
                 os_.audit(PAID_CREDITS_AUDIT, credits)
                 credited = True
-                os_.sound(CREDIT_SOUND)             # event 0x19 (credit added) handler
-                os_.flag_set(47)
+                os_.sound(CREDIT_SOUND)             # event 0x19 (credit added) handler [0x01005ebc]
+                os_.flag_set(CREDIT_FLAG)
             self.save()
             os_.deff_start(10, credits=self.text())
         if not credited:
@@ -123,7 +204,7 @@ class Credits:
     # ------------------------------------------------------------------ credits
 
     def add(self, n):
-        """FUN_00004890: add up to adj 33 CREDIT LIMIT; returns the credits added."""
+        """FUN_00003d40: add up to adj 33 CREDIT LIMIT; returns the credits added."""
         n = max(0, min(n, self.os.adj[33] - self.credits))
         if n:
             self.credits += n
@@ -132,7 +213,7 @@ class Credits:
         return n
 
     def take(self, n=1):
-        """FUN_00004e9c: take up to n credits (also on free play while credits remain)."""
+        """FUN_0000434c: take up to n credits (also on free play while credits remain)."""
         n = min(n, self.credits)
         if n:
             self.credits -= n
@@ -141,35 +222,33 @@ class Credits:
         return n
 
     def award(self, n=1):
-        """A free game (replay, special, match or high-score credit, FUN_00004cf0) within adj 25 FREE GAME
-        LIMIT per game (inferred: the decompile has no reader of adj 25). Returns the credits added."""
-        limit = self.os.adj[25]
-        if limit != FREE_GAME_UNLIMITED:
-            n = max(0, min(n, limit - self.free_games))
+        """A free game (replay, special, match or high-score credit, FUN_000041a0). No cap: the code has no
+        reader of adj 25 FREE GAME LIMIT (no adj_get(25) call site; QA D-ADJ-25). Returns the credits added."""
         n = self.add(n) if n else 0
         self.free_games += n
         return n
 
     def service_credit(self):
-        """BACK outside the service menu [0x0000fc20 case 1]: one service credit, audit 0x24 SERVICE
-        CREDITS when it was added, deff 17."""
+        """BACK outside the service menu [0x0000f008 case 1]: one service credit, audit 0x24 SERVICE
+        CREDITS when it was added, deff 17. Event 0x51 comes first: its hook [0x01005eec] plays 0x044."""
         if self.add(1):
+            self.os.sound(SERVICE_CREDIT_SOUND)
             self.os.audit(SERVICE_CREDITS_AUDIT)
         self.os.deff_start(17, credits=self.text())
 
     def reset(self):
-        """RESET CREDITS (FUN_00004e88): no credits, unit counter -1."""
+        """RESET CREDITS (FUN_00004338): no credits, unit counter -1."""
         self.credits, self.counter = 0, -1
         self.save()
         self.changed()
 
     def changed(self):
-        """FUN_00020448 after every credit change: the start button lamp."""
+        """FUN_00019b28 after every credit change: the start button lamp."""
         self.machine.events.post("tf_credits_changed", credits=self.credits)
         self.os.start_button_lamp()
 
     def fraction(self):
-        """FUN_00004d48: (units since the last credit, units of the step that gives the next credit), or None."""
+        """FUN_000041f8: (units since the last credit, units of the step that gives the next credit), or None."""
         ladder = self.pricing()[1]
         p = self.counter
         if p < 0 or p >= len(ladder) or ladder[p]:
@@ -187,8 +266,20 @@ class Credits:
                 a, b = a // d, b // d
         return a, b
 
+    def start_refused(self):
+        """Event 0x2d in attract (state & 0x118 == 0x10) [0x01005f84] -> play_sound_045 [0x01005f00]: with flag
+        0x12 (a credit was added) and FUN_000041f8 giving no credit (record +4) but a partial credit, sound
+        0x045, and flag 0x12 is cleared."""
+        os_ = self.os
+        if os_.game or os_.in_service or not os_.flag(CREDIT_FLAG):
+            return
+        frac = self.fraction()
+        if self.credits == 0 and frac and frac[0]:
+            os_.sound(MORE_COINS_SOUND)
+            os_.flag_clear(CREDIT_FLAG)
+
     def text(self):
-        """FUN_00004ff4: the credit text of the attract page and of deffs 10, 15 and 17."""
+        """FUN_000044a4: the credit text of the attract page and of deffs 10, 15 and 17."""
         if self.free_play():
             return "FREE PLAY"
         frac = self.fraction()

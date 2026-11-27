@@ -1,48 +1,8 @@
 #show_version=6
-# ROM lamp effect (leff) 142, captured in the emulator (tools/emu/lfx.cpp). ends by itself after 802 ms.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 66ms
+# ROM lamp effect (leff) 142, function 0x01009ab0, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_142.json). ends by itself after 48 ticks (768 ms).
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
+- duration: 752ms
   lights:
     l_energon_center: "000000"
     l_energon_left: "000000"
     l_energon_right: "000000"
-    l_top_lane_purple_bot: "ffffff"
-    l_top_lane_purple_top: "ffffff"
-    l_top_lane_red_bot: "000000"
-    l_top_lane_red_top: "000000"
-- duration: 83ms
-  lights:
-    l_top_lane_purple_bot: "000000"
-    l_top_lane_purple_top: "000000"
-- duration: 82ms
-  lights:
-    l_top_lane_purple_bot: "ffffff"
-    l_top_lane_purple_top: "ffffff"
-- duration: 82ms
-  lights:
-    l_top_lane_purple_bot: "000000"
-    l_top_lane_purple_top: "000000"
-- duration: 83ms
-  lights:
-    l_top_lane_purple_bot: "ffffff"
-    l_top_lane_purple_top: "ffffff"
-- duration: 82ms
-  lights:
-    l_top_lane_purple_bot: "000000"
-    l_top_lane_purple_top: "000000"
-- duration: 83ms
-  lights:
-    l_top_lane_purple_bot: "ffffff"
-    l_top_lane_purple_top: "ffffff"
-- duration: 82ms
-  lights:
-    l_top_lane_purple_bot: "000000"
-    l_top_lane_purple_top: "000000"
-- duration: 83ms
-  lights:
-    l_top_lane_purple_bot: "ffffff"
-    l_top_lane_purple_top: "ffffff"
-- duration: 76ms
-  lights:
-    l_top_lane_purple_bot: "000000"
-    l_top_lane_purple_top: "000000"

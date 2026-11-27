@@ -1,7 +1,7 @@
 #show_version=6
-# ROM lamp effect (leff) 5, captured in the emulator (tools/emu/lfx.cpp). sets this lamp state and holds it until stopped.
-# Colors: ffffff = on, 7f7f7f = second plane only (dim / blink phase), 000000 = off.
-- duration: 12014ms
+# ROM lamp effect (leff) 5, function 0x0104ae28, decoded from its code (rom/tools/leff_lift.py; ticks in rom/rom_data/io/leff_ops/leff_005.json). runs until stopped; sets this state and holds it.
+# Colors: ffffff = on (both planes), aaaaaa = plane 1 only (2/3), 555555 = plane 0 only (1/3), 000000 = off.
+- duration: 16ms
   lights:
     l_allspark_orange: "000000"
     l_allspark_purple: "000000"

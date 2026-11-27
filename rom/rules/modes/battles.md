@@ -145,11 +145,14 @@ needed = 4. (verified: traces/battle_starscream.jsonl 10.52 mode_start_lit 30)
 2. mode_start_hits += 1.
 3. If hits < needed: unlight the shot (not at EXTRA EASY); if fewer than the minimum stay lit, light one other
    random unlit shot (not the one just hit) [0x0101ffa0]; deff 91 "N MORE / FOR / MODE START" (N = needed - hits,
-   also gets battle_lit); leff 103. Deff 91 plays 0x170 (Decepticon) / 0x174 (Autobot) (observed).
+   also gets battle_lit); leff 103. Deff 91 [0x01022608] plays the lit battle's call (task +0x38 = battle_lit): 0x170
+   Starscream, 0x171 Shockwave, 0x172 Blackout, 0x173 Devastator, 0x174 Bumblebee, 0x175 Ironhide, 0x176 Mudflap,
+   0x177 Ratchet (else 0x170), then one of its voice routines picked by random_below(2 or 4) (tables 0x040c6d64-0x040c6dc4).
+   So 0x170 / 0x174 by side only because Starscream / Bumblebee are each side's first battle (code).
 4. Else start the lit battle [0x01022f34 = 0x01022e08].
 An unlit mode-start shot gives nothing from this rule.
 
-Observed (traces/battle_starscream.jsonl): 18.58 left orbit 10,000 "3 MORE"; 20.75 left ramp 15,000; 22.94 right
+Code run = trace (traces/battle_starscream.jsonl, `traces/code_runs.csv`): 18.58 left orbit 10,000 "3 MORE"; 20.75 left ramp 15,000; 22.94 right
 ramp 20,000; 25.12 right orbit 25,000 -> Starscream starts. Relighting: 0x1e -> 0x1c -> 0x1a -> 0x16.
 
 ### 4.3 Battle start [0x01022e08]
@@ -157,7 +160,7 @@ For the record whose bit is battle_lit:
 1. Call its start fn; if it fails, nothing more.
 2. battle_started |= bit; mode-start reset (4.2); battles_started_n += 1; audits (record + 0x58); wizard item
    "played" +1 [0x01035af0(item, 1)].
-3. battle_lit = next battle (4.1). (observed: battle_lit 1 -> 2 at 25.13 s when Starscream starts)
+3. battle_lit = next battle (4.1). (code run = trace: battle_lit 1 -> 2 at 25.13 s when Starscream starts)
 
 Every start fn: kills a running copy; sets its per-run state; adds **100,000** (kept as the run total); reads its
 timer adjustment; creates the timer task and the intro task; clears game flag 0x13 (so ADD MORE TIME can be
@@ -207,8 +210,17 @@ then if seconds = 0 stop, else seconds -= 1. When it stops: kill the run task (s
 125 ticks (2.0 s; **lit shots still score during this grace** because the timer task itself is the "running"
 test), then the total screen. Pause task 0x59 [0x010062f0(ticks)] is started for 156 ticks by: the intro end,
 pop bumpers, top lanes (sw 7, 8) and Bumblebee phase-1 hits; 372 ticks by 0x0100b058 (Megatron).
-Observed: Starscream 45 s adj: started 25.12, first decrement 34.20, 0 at 81.13, run killed 82.20 (music 0x1f),
+Code run = trace: Starscream 45 s adj: started 25.12, first decrement 34.20, 0 at 81.13, run killed 82.20 (music 0x1f),
 total deff 95 at 84.23.
+
+Timer and tick length: the timer counts OS ticks, so its end moves with the tick. In `traces/switches` Blackout
+(45 s) runs from sw_14 (67.58 s) to its stop at 138.17 s: 4,342 passes of the emulator's 16.26 ms, which the code
+run (16.0 ms ticks, owner 2026-11-25) plays 1.13 s earlier against the scenario's wall-clock hits (code run tick
+about 7,880 against sw_50 at 7,911; trace 0.69 s after sw_50). The total task 0x82 [0x0101ce60] then waits for a
+free display (`deff_sequence_wait_664c` [0x0100664c], up to 3,750 checks): in the code run it starts deff 103 before
+sw_50_again's deff 126 takes the display, in the trace after deff 126 and deff 50 (4.5 s later). Hence the code run's
+deff 103 + 0x1cb + leff 116 about 400 ticks before the trace's (`traces/code_runs.csv` switches sw_50 /
+sw_51_again). No pause is missing: the game, with its 16.26 ms tick, agrees with the trace.
 
 **Add time** (ADD MORE TIME mystery, `0x01024b14`, once per mode via flag 0x13): +15 s, capped at 90 s, restart the
 timer task: Starscream 0x01017a78, Shockwave 0x0101e528, Blackout 0x0101cbc0, Devastator 0x01015ee0, Ironhide
@@ -225,7 +237,7 @@ kills the run at once.
 - Lit shots: a moving pair from table 0x040c6a40, index 0..7: 0x03 (Allspark + left orbit), 0x06, 0x0c, 0x18,
   0x30 (right ramp + right orbit), 0x18, 0x0c, 0x06. The index moves one step after every lit hit, and once
   shots left < 6 also every timer second unless switch-timeout tokens 0xc or 0xd are active [0x01017824].
-- Observed: 32.29 left orbit 100,000; 34.47 left ramp 112,500; 36.69 center 125,000; 38.96 left ramp unlit
+- Code run = trace: 32.29 left orbit 100,000; 34.47 left ramp 112,500; 36.69 center 125,000; 38.96 left ramp unlit
   25,000; 41.17 right ramp 137,500; ss_lit 3 -> 6 -> 12 -> 24 -> 48.
 
 ### 5.2 Shockwave (Decepticon 2) [0x0101e400, 0x0101e5d4]
@@ -233,7 +245,7 @@ kills the run at once.
   words = 25,000 per completion; Ghidra shows it as pointer arithmetic, scale 4].
 - Phases: 1 Allspark only (0x01) -> 2 right ramp only (0x10) -> 3 all six (0x3f) -> from then on all six except
   the shot just hit.
-- Observed (traces/battle_shockwave.jsonl): Allspark 200,000; right ramp 225,000; left orbit 250,000; left ramp
+- Code run = trace (traces/battle_shockwave.jsonl, `traces/code_runs.csv`): Allspark 200,000; right ramp 225,000; left orbit 250,000; left ramp
   275,000; left ramp again (unlit) 25,000; completing center 300,000; total deff 99 at 55.15.
 
 ### 5.3 Blackout (Decepticon 3) [0x0101caa4, 0x0101cc6c, 0x0101c910]
@@ -243,7 +255,7 @@ kills the run at once.
   0x10, 0x20). After an even number of lit hits a random shot of A not used yet in this run is added to the
   used-A set and **the whole used-A set is lit**; after an odd number, the same with B. When a group is used up,
   its full group stays lit.
-- Observed (traces/battle_blackout.jsonl): lit 0x01 -> (hit) 0x10 -> 0x03 -> 0x30 -> 0x07; values 200,000,
+- Code run = trace (traces/battle_blackout.jsonl, `traces/code_runs.csv`): lit 0x01 -> (hit) 0x10 -> 0x03 -> 0x30 -> 0x07; values 200,000,
   250,000, 300,000, 350,000.
 
 ### 5.4 Devastator (Decepticon 4) [0x01015dc0, 0x01015f8c, 0x010161e4]
@@ -252,7 +264,7 @@ kills the run at once.
   0x040c6964 = 0,1,2,3,4,5,5,4,3,2,1,0 (shot ids). Each pop bumper hit while in state 2 moves the rover one step
   (wraps after 12), starts leff 120 and scores 10,000 (x the playfield multiplier, via the score event). A hit on
   the rover shot -> state 1 and the timer restarts at max(current, adj 75).
-- Observed (traces/battle_devastator.jsonl): right orbit 100,000 (rover 0x01); Allspark 200,000 (timer 17 -> 20);
+- Code run = trace (traces/battle_devastator.jsonl, `traces/code_runs.csv`): right orbit 100,000 (rover 0x01); Allspark 200,000 (timer 17 -> 20);
   right orbit 300,000; two bumpers move 0x01 -> 0x02 -> 0x04 (+10,000 each); left ramp 400,000; right orbit
   500,000 completes; total deff 107 at 57.14.
 
@@ -268,7 +280,7 @@ Two phases, the phase is kept per player:
   the jackpot = sum of this attempt's phase-1 lit awards, or **200,000** if the battle started directly in phase 2
   (an earlier attempt ended between the phases), and completes the battle.
 - Shot count: none (completion is the phase-2 hit). Deff 110 gets "7 - lit shots left".
-- Observed (traces/battle_bumblebee.jsonl, Autobot): Allspark, left orbit, left ramp, right ramp, right orbit
+- Code run = trace (traces/battle_bumblebee.jsonl, `traces/code_runs.csv`, Autobot): Allspark, left orbit, left ramp, right ramp, right orbit
   750,000 each (no decay yet: paused after each hit); right ramp again 25,000; center 668,300; phase 2; Bumblebee
   target 4,418,300 (= 5 x 750,000 + 668,300), completed; total deff 111 at 59.73.
 
@@ -278,7 +290,7 @@ Two phases, the phase is kept per player:
   (left orbit, center, right orbit), 4 = 0x36 (orbits + ramps). A lit hit unlights the shot (saved per player);
   when the pattern is cleared the level goes up one (4 stays 4), the new pattern is lit and the timer restarts at
   max(current, adj 77).
-- Observed (traces/battle_ironhide.jsonl): center 200,000 (level 2, lit 0x14); left ramp 250,000; right ramp
+- Code run = trace (traces/battle_ironhide.jsonl, `traces/code_runs.csv`): center 200,000 (level 2, lit 0x14); left ramp 250,000; right ramp
   300,000 (level 3, lit 0x2a); left orbit 350,000; center 400,000 completes; total deff 115 at 51.34.
 
 ### 5.7 Mudflap & Skids (Autobot 3) [0x01019150, 0x01019294, 0x01019550]
@@ -287,17 +299,17 @@ Two phases, the phase is kept per player:
   0x14 (ADD-A-BALL used) only when no multiball runs, but flag 0x1e is already set at that point, so the test is
   always true and **flag 0x14 is never cleared here** (unlike the Optimus / wizard multiball starts, which test
   before setting their flag). So in the ROM, ADD-A-BALL stays unavailable in Mudflap & Skids while flag 0x14 is
-  still set from an earlier award. Observed: traces/battle_mudflap.jsonl 27.34 flag 30 set and 29 cleared, no
+  still set from an earlier award. Code run = trace: traces/battle_mudflap.jsonl 27.34 flag 30 set and 29 cleared, no
   clear of flag 20; compare traces/optimus_autobot.jsonl 34.93 flag 20 cleared by 0x1027ad0. Intro deff 116 from task 0x6e.
 - All six main shots lit; a lit hit unlights it; when all six are made they all relight.
 - Value = min(200,000 + 50,000 x (hits this run + C), 500,000) [0x010190e0, hits 0x35058 counted before the
-  value is read, so the first hit of a run is 250,000 with C = 0 - observed]. Shots left 11; when it reaches 0 it is
+  value is read, so the first hit of a run is 250,000 with C = 0 - code run = trace]. Shots left 11; when it reaches 0 it is
   reset to 11.
 - The first time shots left reaches 0 in the run (flag 0x1d clear) the battle is **completed** (flag 0x1d set,
   wizard item, audit, total) but the multiball and the battle continue.
 - Ends when the multiball is down to one ball [0x01019550 clears flag 0x1e and starts task 0xa9 (a short grace,
   LAB_01019504) whose end shows the total]; an ADD-A-BALL during the grace revives it [0x01019594].
-- Observed (traces/battle_mudflap.jsonl, poked battle_lit 0x40, shots left poked to 1 at 44.07): 4 mode-start hits
+- Code run = trace (traces/battle_mudflap.jsonl, `traces/code_runs.csv`, poked battle_lit 0x40, shots left poked to 1 at 44.07): 4 mode-start hits
   start it at 27.34 (100,000 start award, audit 0x65 started); intro deff 117 from 32.72; hits at 37.52 left orbit
   250,000, 39.71 left ramp 300,000, 41.90 right ramp 350,000, 44.09 right orbit 400,000 = completion (audit 102,
   battle_completed 0x40, mf_left back to 11, deff 118 "COMPLETED") - the multiball keeps running; 46.27 left ramp
@@ -309,7 +321,7 @@ Two phases, the phase is kept per player:
   the lowest-numbered lit shot (Allspark first).
 - Lit mask kept per player (0x3f at reset); a lit hit unlights it; all six made -> all relit; the double shot is
   recomputed after every hit [0x01012178].
-- Observed (traces/battle_ratchet.jsonl, poked battle_lit 0x80): started at 27.33; intro deff 121 at 31.09; 34.51
+- Code run = trace (traces/battle_ratchet.jsonl, `traces/code_runs.csv`, poked battle_lit 0x80): started at 27.33; intro deff 121 at 31.09; 34.51
   left orbit 100,000 (not the double: Allspark was); 37.52 Allspark 300,000 (= 2 x 150,000, double); 40.96 left ramp
   400,000 (= 2 x 200,000, the new double); 43.15 right ramp 250,000; 45.41 left ramp again (unlit) 25,000
   [0x0101272c]; drain at 47.63 ends it: total deff 123 at 48.17 (sound 0x255), then bonus.
@@ -345,22 +357,47 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
   "COMPLETED" on the last shot. Total: "NAME / TOTAL: / value". Deffs 94-123 take their numbers from the task.
 - Music table (`rom_data/sound/music_table.csv`, entries 9-16, mask 0x20, priority 5): condition = the battle's
   timer task (first id) runs and, while the intro task runs, only once the intro deff is no longer showing
-  [e.g. 0x01018884]; Mudflap: flag 0x1e. Observed music: Starscream 0x28 at 25.14, back to 0x1f at 82.20;
+  [e.g. 0x01018884]; Mudflap: flag 0x1e. Code run = trace, music: Starscream 0x28 at 25.14, back to 0x1f at 82.20;
   Shockwave 0x29; Blackout 0x2a; Devastator 0x2b; Bumblebee 0x2c (traces).
 - The 0x31 / 0x34 "battle" music of the fallback entry comes from 0x010260d8 (the Optimus feature), not from these
   battles.
-- Mode start: deff 91 + leff 103, sounds 0x170 / 0x174 by side. Lit-battle insert: leff 104 (rule while
+- Mode start: deff 91 + leff 103, the lit battle's call 0x170-0x177 [0x01022608] (4.2). Lit-battle insert: leff 104 (rule while
   qualifying is allowed, registered in 0x010232d4) flashes the insert lamp of battle_lit (byte +0x1e of the
   record) every 4 ticks [leff_104 0x01023150].
 - Total task ids: Shockwave 0x81, Blackout 0x82, Devastator 0x83, Bumblebee 0x84, Ironhide 0x85, Mudflap 0x86,
-  Ratchet 0x87 [end fns]; Starscream's is created in 0x01017d40 (not decoded).
+  Ratchet 0x87 [end fns]; Starscream's is task 0x80: `mode_task_80_resume_17d40` [0x01017d40] creates it when
+  the game state has none of bits 0x310 and the total 0x3501c is not 0 (`task_create_unique_aaf8(0x80, 0x01017d30,
+  0x2002)`, +0x30 = the total), and it runs `deff_sequence_wait_664c(0x5f, 0xea6)`: deff 95 with the total (code).
 
 ## 8. Lamps
 - Mode-start arrows [0x01022854, lamp rule 0x0003515c]: for each of the 5 shots, if qualifying is allowed and the
   shot is in mode_start_lit: the side's colour flashes (red Autobot / purple Decepticon), the other colour off;
   otherwise both off.
-- Battle arrows: the orange insert of each lit battle shot (5.0 table), drawn by the battle's rule leff (lamp
-  groups from the shot table). Observed lit masks are in the traces; the flash pattern itself was not decoded.
+- Battle arrows (code): the orange insert of each battle shot, drawn by the battle's rule leff. Each one
+  allocates a lamp layer (`lamp_layer_alloc_7200`), claims the six orange arrows (seven for Bumblebee: the
+  captive ball insert) as its own (`lamp_group_86d4` on the layer mask +0x14), then every **3 ticks** walks its
+  table of (shot bit, lamp group), 12 bytes an entry: a shot whose bit is in the battle's lit mask is toggled
+  (`lamp_group_87fc` -> `lamp_bit_flash_78dc` [0x000078dc], both planes), any other is cleared
+  (`lamp_group_84cc` -> `lamp_bit_write_765c`). So a lit shot flashes 3 ticks on, 3 ticks off (96 ms period,
+  starting on), an unlit one is off. No layer: retry every 6 ticks.
+
+  | leff | battle | fn | lit mask | table | arrows (lamp groups) |
+  |---|---|---|---|---|---|
+  | 106 | Starscream | 0x010188cc | 0x35010 | 0x040c69f8 | 79-84 |
+  | 110 | Shockwave | 0x0101f5ec | 0x35148 | 0x040c6c74 | 85-90 |
+  | 114 | Blackout | 0x0101da60 | 0x350f4 | 0x040c6bd4 | 91-96 |
+  | 118 | Devastator | 0x01016f94 | 0x34fc0 | 0x040c691c | 97-102 |
+  | 123 | Bumblebee | 0x01015408 | 0x34f6c | 0x040c6888 | 110-116 (116 = BUMBLEBEE captive ball, bit 0x40) |
+  | 128 | Ironhide | 0x0101c12c | 0x350a8 | 0x040c6b50 | 117-122 |
+  | 132 | Mudflap & Skids | 0x0101a45c | 0x3505c | 0x040c6aa4 | 123-128 |
+  | 136 | Ratchet | 0x01013918 | 0x34f0c / 0x34f08 | 0x040c67d0 | 129-134 |
+
+  Bits 0x1 to 0x20 are ALLSPARK, LEFT ORBIT, LEFT RAMP, CENTER LANE, RIGHT RAMP, RIGHT ORBIT (orange). Ratchet
+  differs: a shot in its double mask 0x34f0c flashes, a shot only in its lit mask 0x34f08 is held **on**
+  (`lamp_group_8664` -> `lamp_bit_toggle_set_77a0`, sets the bit), any other is off. Bumblebee's second rule leff
+  124 [0x01015510] draws no lamp: every 8 ticks, while `byte_314d8_d8ac` and no ball search (task 0x2b), it
+  pulses its coil group (leff field +8, group 46) with 0x20. The lit masks per hit are in the code runs
+  (`tools/scenario_lift.py`, scenarios battle_*).
 - Character inserts (4-7 Decepticons, 23-26 Autobots) [0x01035ea8, wizard items]: off = never started, flashing =
   started but not completed, solid = completed; the lit battle additionally blinks via leff 104.
 
@@ -368,7 +405,8 @@ already count as the first mode-start hit (battle_blackout.jsonl 57.04: 350,000 
 - Only one battle at a time; while one runs no mode start, no lit-battle rotation, and the side-complete feature
   cannot start (`zuse_qualify_enabled` 0x0100ff80 needs no timed mode; Mudflap & Skids blocks it as a multiball).
 - Energon targets pay 5,000 only during Mudflap & Skids (a multiball) [0x0103096c]; the seven timed battles leave
-  them normal (observed: traces/switches.jsonl 128.67, Energon lit for 75,000 during the Blackout battle).
+  them normal (code run `tools/switch_lift.py`, `rules/switch_handlers.csv` sw 46: 75,000 during the Blackout battle;
+  traces/switches.jsonl 128.67 agrees).
 - Double / fast scoring are timed modes but do not block battle qualifying (`clu_start_allowed` has no timed-mode
   test); they do block the side-complete feature and ADD MORE TIME applies to them.
 - Mudflap & Skids is a multiball: its intro waits for display priority; ADD-A-BALL works during it.

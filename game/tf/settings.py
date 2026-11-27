@@ -35,7 +35,7 @@ def service_data():
 
 
 def pct(num, den):
-    """The ROM's percentage audits: num * 100 / den, 0 when nothing was counted (FUN_0002e308 and kin)."""
+    """The ROM's percentage audits: num * 100 / den, 0 when nothing was counted (FUN_0002d1b4 and kin)."""
     return num * 100 // den if den else 0
 
 
@@ -145,6 +145,7 @@ class Audits:
         data = self.store.get_data() or {}
         self.counts = {int(k): int(v) for k, v in (data.get("counters") or {}).items()}
         self.extra = {k: float(v) for k, v in (data.get("extra") or {}).items()}
+        self.money = None       # units -> money text of the current pricing (Credits.money, set by the OS)
 
     def save(self):
         self.store.save_all(data={"counters": dict(self.counts), "extra": dict(self.extra)})
@@ -167,7 +168,7 @@ class Audits:
     # ------------------------------------------------------------------ menu values (audit numbers 1-150)
 
     def plays(self):
-        return self[17] + self[18]          # TOTAL PLAYS: paid (0x11) + free (0x12) games [FUN_0002e5a4]
+        return self[17] + self[18]          # TOTAL PLAYS: paid (0x11) + free (0x12) games [FUN_00026eec]
 
     def value(self, number):
         """Audit `number` (1-150) as the menu shows it: a counter, or computed from counters."""
@@ -175,24 +176,26 @@ class Audits:
         if not a["computed"]:
             return self[a["counter"]]
         plays = self.plays()
-        replays = sum(self[c] for c in (10, 11, 12, 13))               # FUN_0002e5d4
+        replays = sum(self[c] for c in (10, 11, 12, 13))               # FUN_00026f1c
         computed = {
-            2: lambda: pct(self[18], plays),                              # FREE GAME PERCENTAGE
+            2: lambda: pct(self.value(28), self[17]),                     # FREE GAME PERCENTAGE [0x00026c94] (QA D-AUD-2)
             3: lambda: int(self.extra.get("ball_seconds", 0) // self[8]) if self[8] else 0,   # AVERAGE BALL TIME
             4: lambda: int(self.extra.get("game_seconds", 0) // plays) if plays else 0,       # AVERAGE GAME TIME
-            10: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)),             # TOTAL COINS [FUN_0002e4c8]
-            11: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)) * 25,        # TOTAL EARNINGS, cents (inferred)
-            13: lambda: self[7],                                           # SOFTWARE METER (inferred)
-            16: lambda: pct(self[9], self[8]),                             # EXTRA BALL PERCENTAGE
+            10: lambda: sum(self[c] for c in (2, 3, 4, 5, 6)),             # TOTAL COINS [FUN_00026e10]
+            11: lambda: self[7],                                           # TOTAL EARNINGS: units counter 7 [0x00026e7c]
+            13: lambda: 0,                                                 # SOFTWARE METER: returns 0 [0x0002af18] (QA D-AUD-13)
+            16: lambda: pct(self[9], self[17]),                            # EXTRA BALL PERCENTAGE [0x00026c48]
             21: lambda: replays,                                           # TOTAL REPLAYS
-            22: lambda: pct(replays, plays),                               # REPLAY PERCENTAGE
-            24: lambda: pct(self[14], plays),                              # SPECIAL PERCENTAGE
-            27: lambda: pct(self[16], plays),                              # HIGH SCORE PERCENT
-            28: lambda: replays + self[14] + self[15] + self[16],          # TOTAL FREE PLAYS [FUN_0002e54c]
+            22: lambda: pct(replays, self[17]),                            # REPLAY PERCENTAGE [0x00026d34]
+            24: lambda: pct(self[14], self[17]),                           # SPECIAL PERCENTAGE [0x00026d80]
+            27: lambda: pct(self[16], self[17]),                           # HIGH SCORE PERCENT [0x00026ce0]
+            28: lambda: replays + self[14] + self[15] + self[16],          # TOTAL FREE PLAYS [FUN_00026e94]
             29: lambda: plays,                                             # TOTAL PLAYS
-            47: lambda: int(self.extra.get("score_total", 0) // plays) if plays else 0,       # AVERAGE SCORES
-            53: lambda: max(0, self[8] - self[40] - self[41]),             # CENTER DRAINS [FUN_0002e484]
-            72: lambda: pct(replays, plays),                               # RECENT REPLAY PERCENT (inferred)
+            # AVERAGE SCORES [0x00026c3c]: sum / count, /10 x 10; one count per player [0x0001ce58] (QA D-AUD-47)
+            47: lambda: (self.extra.get("score_total", 0) // self.extra["score_count"]) // 10 * 10
+            if self.extra.get("score_count") else 0,
+            53: lambda: max(0, self[8] - self[40] - self[41]),             # CENTER DRAINS [FUN_00026dcc]
+            72: lambda: 0,                                                 # RECENT REPLAY PERCENT: returns 0 [0x00026d2c]
         }
         return computed.get(number, lambda: 0)()
 
@@ -200,10 +203,16 @@ class Audits:
         """The value as shown: money, percentages and times formatted."""
         v = self.value(number)
         name = self.info[number]["name"]
+        if self.info[number].get("display_type") == 6:
+            # msg_get_user_2700c [0x0002700c]: games = audit 0x1d; q = v / games, p = (v % games) x 100 / games;
+            # msg 0x500 "%u\n%u%% OF GAMES" (v, p) when q is 0, else msg 0x501 "%u\n%u%u%% OF GAMES" (v, q, p)
+            games = self.value(0x1d)
+            q, p = (v // games, (v % games) * 100 // games) if games else (0, 0)
+            return "{}\n{}% OF GAMES".format(v, p) if not q else "{}\n{}{}% OF GAMES".format(v, q, p)
         if "PERCENT" in name and self.info[number]["computed"]:
             return "{}%".format(v)
-        if number == 11:
-            return "${}.{:02d}".format(v // 100, v % 100)
+        if number == 11 and self.money:
+            return self.money(v)                    # units as money of the current pricing [0x00026f74] (QA D-AUD-11)
         if number in (3, 4):
             return "{}:{:02d}".format(v // 60, v % 60)
         return "{:,}".format(v)

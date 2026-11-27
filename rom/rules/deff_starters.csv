@@ -1,0 +1,168 @@
+deff,starter_address,starter,call_site,found_by,how
+1,0x000009b4,adj_cmd_usage_9b4,0x00000aa8,static,call deff_start
+2,0x0000ee1c,start_deff_2_ee1c,0x0000eecc,static,call deff_start
+2,0x0000f008,start_deff_17_f008,0x0000f1d4,static,"task entry stub at 0x0000f1d4 (after start_deff_17_f008), tail branch to deff_start"
+3,0x0000ed90,start_deff_3,0x0000edb4,static,call deff_start
+4,0x00007028,post_event_1b_start_task_2_7028,0x00007048,static,"task entry stub at 0x00007048 (after post_event_1b_start_task_2_7028), tail branch to deff_start"
+5,0x00006ecc,start_deff_5,0x00006fb4,static,call deff_start
+6,0x00005604,post_event_1b_start_task_2_5604,0x00005610,static,"task entry stub at 0x00005610 (after post_event_1b_start_task_2_5604), tail branch to deff_start"
+7,0x00005630,start_deff_7,0x000056f4,static,call deff_start
+9,0x000050cc,nvram_records_check_50cc,0x00005128,static,call deff_start
+10,0x00003f00,task_0x13_of_FUN_00019c40,0x00004114,static,call deff_start
+11,0x0103b4fc,game_device_3b4fc,0x0103b684,static,call deff_start
+12,0x010383a8,start_deff_12_383a8,0x01038658,static,call deff_start
+12,0x010387ac,start_deff_12_387ac,0x010389b8,static,call deff_start
+12,0x01038b80,start_deff_12_38b80,0x01038d84,static,call deff_start
+12,0x010391a0,start_deff_12_391a0,0x010393fc,static,call deff_start
+12,0x010394ac,game_device_394ac,0x01039a5c,static,call deff_start
+13,0x0103b89c,check_task_2b_3b89c,0x0103b990,static,call deff_start
+14,0x00026608,start_deff_14_26608,0x000266f0,static,call deff_start
+14,0x00026608,start_deff_14_26608,0x000267c4,static,call deff_start
+15,0x0001a144,post_event_2a_kill_task_0_1a144,0x0001a698,static,call deff_start
+16,0x0001a6fc,sw_tournament_start,0x0001a6fc,decompile,deff_start(0x10) when tournament_get_type() == 4
+17,0x000267fc,game_boot_init_267fc,0x00026888,static,call deff_start
+18,0x0001a144,post_event_2a_kill_task_0_1a144,0x0001a2f8,static,call deff_start
+19,0x00019c40,start_task_13_19c40,0x00019e28,static,call deff_start
+20,0x00017b24,tasks_31_32_running_17b24,0x00017bbc,static,call deff_start
+21,0x0001da8c,adj_tilt_warnings,0x0001dbe0,code run,deff id read from the stack ([sp]) before deff_start: the tilt warning number; seen in the tilt_ball_save code run
+23,0x0001da8c,adj_tilt_warnings,0x0001db1c,code run,deff id read from the stack ([sp]) before deff_start: the tilt warning number; seen in the tilt_ball_save code run
+24,0x0001d534,start_deff_24,0x0001d5ec,static,call deff_start
+25,0x00019e44,start_deff_25,0x00019fb4,static,call deff_start
+26,0x00019c40,start_task_13_19c40,0x00019e00,static,call deff_start
+27,0x0001914c,start_deff_27,0x0001925c,static,"task entry stub at 0x0001925c (after start_deff_27), tail branch to deff_start"
+27,0x0001914c,start_deff_27,0x000192b4,static,call deff_start
+28,0x0001c2ec,replay_levels_load_1c2ec,0x0001c38c,static,call deff_start
+29,0x0001ddc0,tournament_1ddc0,0x0001e054,static,call deff_start
+30,0x0001b370,hstd_reset_1b370,0x0001b3e4,static,call deff_start
+31,0x00018c04,start_deff_33,0x00018efc,static,call deff_start
+32,0x00018c04,start_deff_33,0x00018f58,static,call deff_start
+33,0x00018c04,start_deff_33,0x00018cf8,static,call deff_start
+34,0x0001e810,start_deff_34,0x0001e874,static,call deff_start
+35,0x0001e328,show_deff_35_post_event_33_1e328,0x0001e4e8,static,call deff_start
+36,0x0001e328,show_deff_35_post_event_33_1e328,0x0001e544,static,call deff_start
+36,0x0001e328,show_deff_35_post_event_33_1e328,0x0001e5e8,static,call deff_start
+37,0x0001e328,show_deff_35_post_event_33_1e328,0x0001e790,static,call deff_start
+38,0x00019668,start_deff_38,0x00019804,static,call deff_start
+39,0x00017ed4,adj_player_competition,0x00017f94,static,call deff_start
+40,0x010068b4,test_flag_10_68b4,0x000178b0,background,background entry 0x00034cd4: its adjust function 0x010068e4 sets deff 40 (else 19) and the side sound
+41,0x01033f54,start_deff_41,0x01033f74,static,call deff_start
+42,0x01031630,start_deff_42,0x010316d0,static,call deff_start
+43,0x0103181c,task_0x65_of_FUN_01031848,0x0103183c,static,call deff_sequence_flippers_6480
+44,0x0102db28,lamp_layer_2db28,0x0102dc80,static,call deff_start
+44,0x0102e208,lamp_layer_2e208,0x0102e374,static,call deff_start
+45,0x0102db28,lamp_layer_2db28,0x0102dcb4,static,call deff_start
+45,0x0102e208,lamp_layer_2e208,0x0102e3a8,static,call deff_start
+46,0x0102c8c8,start_leff_33,0x0102c9e0,static,call deff_start
+47,0x0102c624,start_deff_47,0x0102c660,static,call deff_start
+50,0x010237ac,start_deff_50,0x01023838,static,call deff_start
+52,0x01024388,task_0x5e_of_FUN_010243b4,0x010243a8,static,call deff_sequence_6350
+53,0x01007b14,task_0x5f_of_FUN_01007b40,0x01007b34,static,call deff_sequence_6350
+54,0x01007b74,start_deff_54,0x01007ba0,static,call deff_start
+55,0x010084fc,task_0x61_of_FUN_01008528,0x0100851c,static,call deff_sequence_6350
+56,0x01008658,task_0x62_of_FUN_01008684,0x01008678,static,call deff_sequence_6350
+57,0x01027968,task_0x71_of_FUN_01027994,0x01027988,static,call deff_sequence_flippers_6480
+58,0x010285a0,check_task_71_285a0,0x000178b0,background,"background entry 0x000352b4, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x032"
+59,0x01027b74,show_deff_59_count_mudflap_skids_started_27b74,0x01027c38,static,call deff_start
+60,0x01027b74,show_deff_59_count_mudflap_skids_started_27b74,0x01027d18,static,call deff_start
+61,0x01027b74,show_deff_59_count_mudflap_skids_started_27b74,0x01027dc0,static,call deff_start
+62,0x01027b74,show_deff_59_count_mudflap_skids_started_27b74,0x01027ebc,static,"task entry stub at 0x01027ebc (after show_deff_59_count_mudflap_skids_started_27b74), tail branch to deff_sequence_wait_664c"
+63,0x010299dc,task_0x72_of_FUN_01029a08,0x010299fc,static,call deff_sequence_flippers_6480
+64,0x0102a6e4,check_task_72_2a6e4,0x000178b0,background,"background entry 0x00035328, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x035"
+65,0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,0x01029cd8,static,call deff_start
+65,0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,0x01029e24,static,call deff_start
+66,0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,0x01029d8c,static,call deff_start
+67,0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,0x01029e98,static,call deff_start
+68,0x01029bf4,show_deff_65_count_double_scoring_started_29bf4,0x01029fa0,static,"task entry stub at 0x01029fa0 (after show_deff_65_count_double_scoring_started_29bf4), tail branch to deff_sequence_wait_664c"
+69,0x0100c1d4,task_0x74_of_FUN_0100c200,0x0100c1f4,static,call deff_sequence_flippers_6480
+70,0x0100cee0,check_task_74_cee0,0x000178b0,background,"background entry 0x00034d64, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x038"
+71,0x0100c430,show_deff_71_count_optimus_m_b_a_c430,0x0100c4e8,static,call deff_start
+72,0x0100c430,show_deff_71_count_optimus_m_b_a_c430,0x0100c604,static,call deff_start
+73,0x0100c430,show_deff_71_count_optimus_m_b_a_c430,0x0100c6bc,static,call deff_start
+74,0x0100c430,show_deff_71_count_optimus_m_b_a_c430,0x0100c78c,static,"task entry stub at 0x0100c78c (after show_deff_71_count_optimus_m_b_a_c430), tail branch to deff_sequence_wait_664c"
+75,0x0100e090,task_0x75_of_FUN_0100e0bc,0x0100e0b0,static,call deff_sequence_flippers_6480
+76,0x0100ee0c,check_task_75_ee0c,0x000178b0,background,"background entry 0x00034dd8, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x03b"
+77,0x0100e29c,show_deff_77_count_optimus_m_b_super_e29c,0x0100e380,static,call deff_start
+78,0x0100e29c,show_deff_77_count_optimus_m_b_super_e29c,0x0100e480,static,call deff_start
+79,0x0100e29c,show_deff_77_count_optimus_m_b_super_e29c,0x0100e570,static,call deff_start
+80,0x0100e29c,show_deff_77_count_optimus_m_b_super_e29c,0x0100e618,static,"task entry stub at 0x0100e618 (after show_deff_77_count_optimus_m_b_super_e29c), tail branch to deff_sequence_wait_664c"
+81,0x0100ffc4,task_0x79_of_FUN_0100fff0,0x0100ffe4,static,call deff_sequence_flippers_6480
+82,0x01010958,check_task_79_10958,0x000178b0,background,"background entry 0x00034e6c, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x03c"
+83,0x01010174,start_deff_83,0x01010174,decompile,"deff_start(0x53), +0x30 = the points just scored (score_add)"
+84,0x01010148,task_0x7a_of_FUN_01010174,0x01010168,static,call deff_sequence_flippers_6480
+85,0x01010174,start_deff_83,0x01010300,static,"task entry stub at 0x01010300 (after start_deff_83), tail branch to deff_sequence_wait_664c"
+85,0x01010304,call_6480_55_753_10304,0x01010324,static,call deff_sequence_flippers_6480
+86,0x01036388,task_0x7c_of_FUN_010363ec,0x010363a8,static,call deff_sequence_6350
+87,0x01037018,check_task_7c_37018,0x000178b0,background,"background entry 0x00035a64, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x03d"
+88,0x010365c4,show_deff_89_count_wizard_mb_req_6_365c4,0x010366d0,static,call deff_start
+89,0x010365c4,show_deff_89_count_wizard_mb_req_6_365c4,0x01036638,static,call deff_start
+90,0x010367c4,set_flag_3e_check_task_c5_367c4,0x01036810,static,"task entry stub at 0x01036810 (after set_flag_3e_check_task_c5_367c4), tail branch to deff_sequence_wait_664c"
+91,0x01020074,start_deff_91,0x01020140,static,call deff_start
+92,0x010177b4,task_0x68_of_FUN_0101795c,0x010177d8,static,call deff_sequence_flippers_6480
+93,0x01018884,check_task_68_18884,0x000178b0,background,"background entry 0x00034fe0, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x028"
+94,0x01017a78,kill_task_9d_set_dat_000315fc_17a78,0x01017b18,static,call deff_sequence_flippers_6480
+94,0x01017b24,start_deff_94,0x01017c18,static,call deff_start
+95,0x01017b24,start_deff_94,0x01017d3c,static,"task entry stub at 0x01017d3c (after start_deff_94), tail branch to deff_sequence_wait_664c"
+96,0x0101e2fc,task_0x69_of_FUN_0101e400,0x0101e320,static,call deff_sequence_flippers_6480
+97,0x0101f5a4,check_task_69_1f5a4,0x000178b0,background,"background entry 0x00035118, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x029"
+98,0x0101e528,kill_task_9f_set_dat_000315fc_1e528,0x0101e5c8,static,call deff_sequence_flippers_6480
+98,0x0101e5d4,start_deff_98,0x0101e6c0,static,call deff_start
+99,0x0101e5d4,start_deff_98,0x0101e850,static,"task entry stub at 0x0101e850 (after start_deff_98), tail branch to deff_sequence_wait_664c"
+100,0x0101c8d8,task_0x6a_of_FUN_0101caa4,0x0101c8fc,static,call deff_sequence_flippers_6480
+101,0x0101da18,check_task_6a_1da18,0x000178b0,background,"background entry 0x000350c4, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02a"
+102,0x0101cbc0,kill_task_a1_set_dat_000315fc_1cbc0,0x0101cc60,static,call deff_sequence_flippers_6480
+102,0x0101cc6c,start_deff_102,0x0101cd50,static,call deff_start
+103,0x0101cc6c,start_deff_102,0x0101ce5c,static,"task entry stub at 0x0101ce5c (after start_deff_102), tail branch to deff_sequence_wait_664c"
+104,0x01015c24,task_0x6b_of_FUN_01015dc0,0x01015c48,static,call deff_sequence_flippers_6480
+105,0x01016f4c,check_task_6b_16f4c,0x000178b0,background,"background entry 0x00034f90, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02b"
+106,0x01015ee0,kill_task_a3_set_dat_000315fc_15ee0,0x01015f80,static,call deff_sequence_flippers_6480
+106,0x01015f8c,start_deff_106,0x01016070,static,call deff_start
+107,0x010161e4,start_leff_120,0x010162e0,static,"task entry stub at 0x010162e0 (after start_leff_120), tail branch to deff_sequence_wait_664c"
+108,0x010142b0,task_0x6c_of_FUN_010142dc,0x010142d0,static,call deff_sequence_flippers_6480
+109,0x010153c0,check_task_6c_153c0,0x000178b0,background,"background entry 0x00034f28, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02c"
+110,0x0101456c,kill_task_a5_set_dat_000315fc_1456c,0x0101462c,static,call deff_sequence_flippers_6480
+110,0x01014638,start_deff_110,0x010146e8,static,call deff_start
+110,0x01014638,start_deff_110,0x0101483c,static,call deff_start
+111,0x01014638,start_deff_110,0x01014914,static,"task entry stub at 0x01014914 (after start_deff_110), tail branch to deff_sequence_wait_664c"
+112,0x0101acc4,task_0x6d_of_FUN_0101adc8,0x0101ace8,static,call deff_sequence_flippers_6480
+113,0x0101c0e4,check_task_6d_1c0e4,0x000178b0,background,"background entry 0x00035074, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02d"
+114,0x0101af10,kill_task_a7_set_dat_000315fc_1af10,0x0101afb0,static,call deff_sequence_flippers_6480
+114,0x0101afbc,start_deff_114,0x0101b0d0,static,call deff_start
+115,0x0101afbc,start_deff_114,0x0101b2cc,static,"task entry stub at 0x0101b2cc (after start_deff_114), tail branch to deff_sequence_wait_664c"
+116,0x010190a8,task_0x6e_of_FUN_01019150,0x010190cc,static,call deff_sequence_flippers_6480
+117,0x0101a414,check_task_6e_1a414,0x000178b0,background,"background entry 0x0003502c, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02e"
+118,0x01019150,adj_mudflap_skids_timer,0x01019288,static,call deff_sequence_flippers_6480
+118,0x01019294,start_deff_118,0x01019390,static,call deff_start
+119,0x01019294,start_deff_118,0x010194a8,static,"task entry stub at 0x010194a8 (after start_deff_118), tail branch to deff_sequence_wait_664c"
+120,0x01012214,task_0x6f_of_FUN_01012318,0x01012238,static,call deff_sequence_flippers_6480
+121,0x010138d0,check_task_6f_138d0,0x000178b0,background,"background entry 0x00034ed8, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x20), sound 0x02f"
+122,0x0101245c,kill_task_ab_set_dat_000315fc_1245c,0x010124fc,static,call deff_sequence_flippers_6480
+122,0x01012508,start_deff_122,0x01012620,static,call deff_start
+123,0x01012508,start_deff_122,0x0101276c,static,"task entry stub at 0x0101276c (after start_deff_122), tail branch to deff_sequence_wait_664c"
+124,0x010309a4,show_deff_125_run_leff_139_309a4,0x01030a60,static,call deff_start
+125,0x010309a4,show_deff_125_run_leff_139_309a4,0x01030b04,static,call deff_start
+126,0x0102e9c0,run_leff_143_play_snd_261_2e9c0,0x0102ea34,static,conditional id (mov<cond> r0) then call deff_start
+128,0x01001a70,start_deff_128,0x01001ad8,static,call deff_start
+129,0x010039a0,start_deff_129,0x01003a1c,static,call deff_start
+130,0x01003ec8,task_c3_running_3ec8,0x000178b0,background,"background entry 0x00034bb4: its adjust function 0x01003ed8 sets deff 130, sound 0x026"
+131,0x010042ec,test_flag_3f_any_multiball_running_42ec,0x0100435c,static,call deff_start
+131,0x0102e9c0,run_leff_143_play_snd_261_2e9c0,0x0102ea34,static,conditional id (mov<cond> r0) then call deff_start
+132,0x010041f4,task_0x70_of_FUN_01004394,0x01004214,static,call deff_sequence_6350
+133,0x010049fc,check_task_70_49fc,0x000178b0,background,"background entry 0x00034bf4, shown while its condition holds (bg_entry_eval [0x000178b0], gf_state mask 0x0), sound 0x027"
+134,0x01004644,start_deff_134,0x010046e4,static,call deff_start
+135,0x01004520,start_deff_135,0x0100456c,static,call deff_start
+136,0x0100457c,start_deff_136,0x01004600,static,call deff_start
+137,0x010047b8,run_leff_144_check_task_5b_47b8,0x0100494c,static,"task entry stub at 0x0100494c (after run_leff_144_check_task_5b_47b8), tail branch to deff_sequence_wait_664c"
+139,0x0100af0c,start_deff_139,0x0100afc4,static,call deff_start
+140,0x0100b080,task_0x73_of_FUN_0100b130,0x0100b0a4,static,call deff_sequence_flippers_6480
+141,0x01025de4,start_deff_141,0x01025e50,static,call deff_start
+142,0x0102628c,start_deff_142,0x010262dc,static,call deff_start
+144,0x010262f0,start_deff_144,0x01026354,static,call deff_start
+146,0x01032590,task_99_of_FUN_010325bc,0x010325b0,static,call deff_sequence_flippers_6480
+147,0x010320a4,play_sound_270,0x01032150,static,call deff_start
+148,0x010320a4,play_sound_270,0x01032120,static,call deff_start
+149,0x0102d2f0,task_100_of_FUN_0102d31c,0x0102d310,static,call deff_sequence_flippers_6480
+150,0x0102c8c8,start_leff_33,0x0102c974,static,call deff_start
+151,0x0102c8c8,start_leff_33,0x0102c944,static,call deff_start
+153,0x01006ef4,io_owner_hold_6ef4,0x010071a4,static,"task entry stub at 0x010071a4 (after io_owner_hold_6ef4), tail branch to deff_start"
+154,0x01006ef4,io_owner_hold_6ef4,0x010074fc,static,"task entry stub at 0x010074fc (after io_owner_hold_6ef4), tail branch to deff_start"
+155,0x01006ef4,io_owner_hold_6ef4,0x01007288,static,"task entry stub at 0x01007288 (after io_owner_hold_6ef4), tail branch to deff_start"

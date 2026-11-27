@@ -4,7 +4,11 @@ extends Control
 ## - {"t", "f", "x", "y", "a", "l"}: text t in ROM font f (game/fonts), baseline row y, a = flags (1 left edge
 ##   at x, 2 centred on x, 4 right edge at x), measured as the ROM measures it, at palette level l (0-15);
 ## - {"i", "x", "y"}: ROM image i (rom/mpf_package/media/rom_images_all.zip, img_NNNNN.png), top left at x, y;
-## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15).
+## - {"r": [x, y, w, h], "l"}: a filled rectangle at palette level l (0-15);
+## - {"i", "x", "y", "inv": true}: the image drawn through the service tests' palette 0x040c95c8 (levels 0 and 15 swap);
+## - {"chk": phase}: the DOT MATRIX TEST's checkerboard;
+## - {"px": hex}: a whole 128x32 screen, one byte per dot (level * 17), row by row: a deff replayed live from its
+##   op list (tf/op_player.py).
 
 const RomFonts = preload("res://tf/rom_fonts.gd")
 const DMD_COLOR := Color(1, 0.45, 0.05, 1)
@@ -12,6 +16,7 @@ const IMAGES_ZIP := "../rom/mpf_package/media/rom_images_all.zip"
 
 static var _zip: ZIPReader = null
 static var _textures: Dictionary = {}
+static var _inv_textures: Dictionary = {}
 
 
 func _ready() -> void:
@@ -51,6 +56,26 @@ static func texture(n: int) -> Texture2D:
 	return tex
 
 
+static func inv_texture(n: int, tex: Texture2D) -> Texture2D:
+	## The image drawn through the service tests' palette 0x040c95c8 (15, 1, 2, .., 14, 0): levels 0 and 15
+	## swap, 1-14 stay, the transparent dots stay transparent (the closed switch boxes of the trough test).
+	if _inv_textures.has(n):
+		return _inv_textures[n]
+	var img := tex.get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	for y in img.get_height():
+		for x in img.get_width():
+			var c := img.get_pixel(x, y)
+			if c.a == 0.0:
+				continue
+			var level := int(round(c.r * 15.0))
+			level = 15 if level == 0 else (0 if level == 15 else level)
+			img.set_pixel(x, y, Color(level / 15.0, level / 15.0, level / 15.0, 1))
+	var out := ImageTexture.create_from_image(img)
+	_inv_textures[n] = out
+	return out
+
+
 func _draw_items(items: Array) -> void:
 	for child in get_children():
 		remove_child(child)
@@ -69,7 +94,13 @@ func _draw_items(items: Array) -> void:
 				r.size = tex.get_size()
 				r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 				r.modulate = DMD_COLOR
+				if d.get("inv", false):
+					r.texture = inv_texture(int(d["i"]), tex)
 				add_child(r)
+		elif d.has("chk"):
+			add_child(_checker(int(d["chk"])))
+		elif d.has("px"):
+			add_child(_dots(str(d["px"])))
 		elif d.has("r"):
 			var rect := ColorRect.new()
 			var level := int(d.get("l", 15)) / 15.0
@@ -77,6 +108,31 @@ func _draw_items(items: Array) -> void:
 			rect.position = Vector2(int(d["r"][0]), int(d["r"][1]))
 			rect.size = Vector2(int(d["r"][2]), int(d["r"][3]))
 			add_child(rect)
+
+
+func _dots(hex: String) -> TextureRect:
+	## A replayed screen (tf/op_player.py dots_hex): 4096 dots, grey level * 17, tinted with the DMD colour.
+	var data := hex.hex_decode()
+	var r := TextureRect.new()
+	if data.size() == 128 * 32:
+		r.texture = ImageTexture.create_from_image(Image.create_from_data(128, 32, false, Image.FORMAT_L8, data))
+	r.size = Vector2(128, 32)
+	r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	r.modulate = DMD_COLOR
+	return r
+
+
+func _checker(phase: int) -> TextureRect:
+	## The DOT MATRIX TEST's checkerboard [0x01047a50]: dot (x, y) lit when (x + y + phase) is odd.
+	var img := Image.create_empty(128, 32, false, Image.FORMAT_RGBA8)
+	for y in 32:
+		for x in 128:
+			img.set_pixel(x, y, DMD_COLOR if (x + y + phase) % 2 == 1 else Color(0, 0, 0, 1))
+	var r := TextureRect.new()
+	r.texture = ImageTexture.create_from_image(img)
+	r.size = Vector2(128, 32)
+	r.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	return r
 
 
 func _add_text(s: String, font_id: int, x: int, y: int, flags: int, level: int = 15) -> void:

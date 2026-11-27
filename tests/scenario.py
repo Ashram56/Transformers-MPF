@@ -21,7 +21,15 @@ SCRIPT_START_TIME = 2.745 - 1.896   # 'start' runs this long after the Start pre
 # the reference traces credit a coin 0.528 s after the script starts; the coin task waits adj 62 COIN INPUT
 # DELAY (30 ticks at factory settings) first, so the coin switch closes that much earlier, and START comes
 # 0.144 s after the credit
-COIN_DELAY = 30 * 0.01626
+COIN_DELAY = 30 * 0.01615           # in reference seconds, like every time below (REF_TICK)
+# The reference traces were recorded in PinMAME, whose ROM tick lasts about 16.15 ms (counted on code-timed spans:
+# battle_starscream's 44 battle seconds of 66 ticks [0x01017824] take 46.93 s; deff 92's 343 ticks 5.539 s;
+# 16.26 ms, measured earlier on mixed spans, drifted 0.3 s over a battle); the game runs the
+# code's 16 ms tick (64 x 250 us [0x000114b0], owner 2026-11-25). The replay counts reference time in ticks:
+# every wait below is in reference seconds and runs for TIME_SCALE as long in the game, and the game's trace
+# is written back in reference seconds (Trace.time_scale), so a ROM timer ends at the same reference time.
+REF_TICK = 0.01615
+TIME_SCALE = 0.016 / REF_TICK
 COIN_FIRST, COIN_GAP, START_AFTER_COIN = 0.528 - COIN_DELAY, 0.612, 0.144 + COIN_DELAY
 # every hit is followed by 100 ms settle; with STEP_OVERSHOOT on both phases a hit lasts ~173 ms past
 # its ms (reference traces: hit + wait 1 = 1.17-1.18 s)
@@ -93,6 +101,8 @@ def reference_inputs(name):
             key = ("drain", None)
         elif e.get("ev") == "button":
             key = ("button", e.get("button") or e.get("name"))
+        elif e.get("ev") == "end":
+            key = ("end", None)
         if key:
             out.setdefault(key, []).append(e["t"] - t0)
     return out
@@ -232,7 +242,8 @@ class ScenarioRun(TfTestCase):
     # ------------------------------------------------------------------ helpers
 
     def wait(self, seconds):
-        self.advance_time_and_run(seconds)
+        """Wait `seconds` of reference time (TIME_SCALE)."""
+        self.advance_time_and_run(seconds * TIME_SCALE)
 
     def sw(self, name, state):
         self.machine.switch_controller.process_switch(name, state, True)
@@ -256,6 +267,7 @@ class ScenarioRun(TfTestCase):
         out_path = out_path or os.path.join(OUT, name + ".jsonl")
         trace = self.tf.trace
         trace.path = out_path
+        trace.time_scale = TIME_SCALE
         trace._file = open(out_path, "w", encoding="utf-8")
         self.autoplunge = 1.0
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._on_shooter, state=1)
@@ -272,6 +284,7 @@ class ScenarioRun(TfTestCase):
                     self.command(["mark", line[5:].strip()])     # free text (may hold quotes)
                 elif line:
                     self.command(shlex.split(line))
+        self.sync(("end", None))     # run as long as the reference did: its last events are compared too
         self.log("end")
         trace.close()
         return out_path
@@ -296,7 +309,7 @@ class ScenarioRun(TfTestCase):
         if not times:
             return
         target = times.pop(0)
-        now = self.machine.clock.get_time() - self.ready_at
+        now = (self.machine.clock.get_time() - self.ready_at) / TIME_SCALE
         if target > now + 0.0005:
             self.wait(target - now)
 

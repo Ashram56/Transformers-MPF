@@ -18,6 +18,17 @@ the many modes needed to qualify:
 The game keeps 11 **wizard requirements** per player: Megatron multiball, the 4 Decepticon battles, Optimus
 multiball, the 4 Autobot battles, and the side mode below. Each is "collected" when started and "completed" when
 won (battle completed, multiball super jackpot). Starting 5 of them lights an extra ball.
+The qualify lamps are lamp rules 76 (0x4c) and 77 (0x4d) on the layers 0x34e44 / 0x34e58, registered with the
+condition `zuse_qualify_enabled` [0x0100ff80] (registered by 0x01011ed4): no multiball, no timed mode, game flag
+0x3d clear (`test_flag_3d_ff58` [0x0100ff58]) and the side's five requirements completed (`zuse_qualify_enabled_35db4`
+[0x01035db4]: byte 1 of 0x0211210c + 16 r + 4 (p-1) set for r = 0-4 on side 2 Decepticon, r = 5-9 on side 1
+Autobot). The side only picks the range: both sides, not Autobot only (QA M8, code). A rule leff is started or
+killed only when the rules are evaluated (`rule_leff_record_eval_177b4` [0x000177b4]), which happens on the tick
+after some code asked for it (`set_dat_000315fc` [0x00017650], 112 call sites; `rules_eval_if_requested_17664`
+[0x00017664]); an NVRAM poke asks for nothing. Run in ROM code (the scenarios wizard_all_hail_megatron and
+wizard_multiball stopped after their pokes) the condition is true on both sides, and neither run starts 76 / 77
+before the next request; the Autobot trace shows them because something in the emulator asked for an evaluation in
+that second, not because of the side.
 - Completing your own side's five (Decepticon: Megatron multiball + Starscream, Shockwave, Blackout, Devastator;
   Autobot: Optimus multiball + Bumblebee, Ironhide, Mudflap & Skids, Ratchet) makes the **Allspark** (left eject)
   start **All Hail Megatron** (Decepticon) / **Autobots Roll Out** (Autobot): a single-ball mode, 1,000,000 to
@@ -108,7 +119,7 @@ Shot index (wizard numbering; table rows {mask, lamp group, counter address, max
 | shot i | its counter < 2 | **500,000 + 50,000 x (total hits so far)** x mult [0x01010100]; counter += 1; added to super and total; counter 0x7f (#135 WIZARD AWARDS) | 83: on a shot's first hit the character of that shot: Decepticon SOUNDWAVE, DEMOLISHER, STARSCREAM, SHOCKWAVE, BLACKOUT, DEVASTATOR / Autobot ARCEE, SIDESWIPE, BUMBLEBEE, IRONHIDE, MUD & SKIDS, RATCHET (index 0-5) [msg tables 0x040c66c8 / 0x040c66d4]; second hit: value only | 0x11b, 0x11c / leff 81 |
 | shot i | counter = 2 | nothing from this mode | | |
 | Allspark | all six counters = 2 [portal_mb_all_shots_done] | **super = ahm_super x Allspark multiplier**; counter 0x80 (#136 WIZARD COMPLETED); mode ends (flag 0x3c cleared) | 84 "ALL HAIL MEGATRON / COMPLETED" or "AUTOBOTS ROLL OUT / COMPLETED", then total 85 | 0x128, 0x12a / 0x12c |
-Observed (wizard_all_hail_megatron.jsonl): 26.33-59.62 twelve shots 500,000, 550,000 ... 1,050,000; 63.57 super
+Code run = trace (traces/wizard_all_hail_megatron.jsonl, `traces/code_runs.csv`): 26.33-59.62 twelve shots 500,000, 550,000 ... 1,050,000; 63.57 super
 **9,300,000** (the sum), deff 84 at 64.22, deff 85 at 66.84. The background deff 82 "ALL HAIL MEGATRON / NEXT
 SHOT = n / SUPER = n" ("SUPER LIT / SHOOT THE ALLSPARK" when lit) with music 0x3c appears after the intro
 (33.45 s). With the counters poked to 2, the super is only the real awards (wizard_multiball.jsonl 30.75 s:
@@ -120,7 +131,7 @@ SHOT = n / SUPER = n" ("SUPER LIT / SHOOT THE ALLSPARK" when lit) with music 0x3
 | shot i | counter < 3 | **500,000 + 50,000 x (total hits this round)** x mult [0x01036534]; counter += 1; added to super and total; counter 0x98 (#160 WIZARD MULTIBALL AWARDS) | 88 (value, shot, "complete" flag) | 0x131 |
 | Allspark | counter 0 >= 3 and all others at 3 [0x01036318] | **SUPER WIZARD JACKPOT = wmb_super x Allspark multiplier**; all counters and wmb_super = 0 (new round, values restart at 500,000); counter 0x99 (#161) | 89 "SUPER WIZARD JACKPOT" | 0x135-0x139 |
 | shot at 3 | super not lit | nothing | | |
-Observed (wizard_multiball.jsonl): 55.09-103.52 eighteen shots 500,000 ... 1,350,000; 107.44 super wizard
+Code run = trace (traces/wizard_multiball.jsonl, `traces/code_runs.csv`): 55.09-103.52 eighteen shots 500,000 ... 1,350,000; 107.44 super wizard
 jackpot **16,650,000**. Background deff 87 "NEXT SHOT = n" / "SHOOT THE ALLSPARK / SUPER = n" + music 0x3d from
 the start (40.95 s).
 
@@ -151,9 +162,20 @@ Music table rows: 3 = side mode (flag test 0x01010958) -> deff 82 + music 0x3c; 
 
 ## 8. Lamps
 Side mode lamp groups 0x37-0x3c: two inserts per shot (purple + red arrow: Allspark 13/14, left orbit 17/18, left
-ramp 46/45, center 42/41, right orbit 37/38, right ramp 32/33) - one per hit left (inferred). Wizard multiball
-groups 0x41-0x46: three inserts per shot (purple, red, orange) - one per hit left (inferred). The Allspark flashes
-when the super is lit (inferred). Character inserts (4-7, 23-26) show battle requirements (`battles.md`).
+ramp 46/45, center 42/41, right orbit 37/38, right ramp 32/33). Wizard multiball groups 0x41-0x46: three inserts
+per shot (purple, red, orange). Both are drawn by a rule leff (code): side mode leff 79 [0x010109a0] (table
+0x040c66e4: per shot its group and the address of its hit count ahm_c 0x00034eb4 + 4i), wizard multiball leff 87
+[0x01037060] (table 0x040c7ac8, wmb_c 0x00035aac + 4i). Every 3 ticks, for each shot, insert k of its group is on
+when k < the hits made on the shot (solid) and otherwise on and off in turn (the phase flips every pass): the
+inserts already earned stay lit, the ones still to make flash 3 ticks on, 3 off. Once every shot is done
+(`portal_mb_all_shots_done`, `wizard_items_ready_36318`: the super is lit) the leff releases the shot inserts
+(group 0x36 / 0x40) and runs the Allspark stack (group 0x3d / 0x47: ALLSPARK X, purple, red, orange): it fills it
+one insert per 8 ticks (`lamp_group_9164` [0x00009164]) then empties it one per 8 ticks (`lamp_group_941c`
+[0x0000941c]), a 64-tick (1.02 s) cycle, while the super stays lit. Character inserts (`lamp_layer_35ea8`
+[0x01035ea8], table 0x040c7a14, 11 entries: 27 MEGATRON, 7 STARSCREAM, 6 SHOCKWAVE, 5 BLACKOUT, 4 DEVASTATOR, 22
+OPTIMUS PRIME, 23 BUMBLEBEE, 24 IRONHIDE, 25 MUDFLAP / SKIDS, 26 RATCHET, 28 SENTINEL PRIME = requirements 0-10):
+off while the requirement (0x0211210c + 16 r) was never started, on with the flash bit (rule layer) once started,
+solid once completed.
 
 ## 9. Interactions
 - The side mode blocks: the Megatron lock (not held, no lighting), the Optimus battle, character battle starts;

@@ -1,5 +1,5 @@
 """Character battles and the mode-start shots (rom/rules/modes/battles.md; code [0x01020074] [0x01022e08]
-[0x010229ec] [0x01022cf8] and the eight battles' start / hit / end functions; observed in traces/battle_*.jsonl).
+[0x010229ec] [0x01022cf8] and the eight battles' start / hit / end functions; confirmed by traces/battle_*.jsonl).
 
 Mode start (4.2): five shots (Allspark, left orbit, left ramp, right ramp, right orbit) carry the side's arrows;
 adj 66 MODE START DIFFICULTY lights N of them at reset (game start, each battle start) and keeps at least a
@@ -23,16 +23,17 @@ at 0 one more count, then the run ends (music back), lit shots still score for 1
 The last shot completes it (completed bit, audits, wizard item completed 0x8c + item): run killed at once, the
 hit deff runs its COMPLETED page, then the total. Drain and tilt end every battle (no total on a tilt).
 
-Observed, not in the spec text:
-- the shot audits 65 left orbit, 66 right orbit, 67 left ramp, 68 right ramp come first in the shot handlers,
-  lit or not, then the battles, then the mode-start rule (traces: audit, battle score, 25,000 / deff 91);
-- the completed hit deff runs until the total (Shockwave 8.67 s, Blackout 9.0, Devastator 8.76, Bumblebee 7.99,
-  Ironhide 7.02 after the hit); Starscream and Ratchet were not traced, 8.5 s is assumed;
-- Starscream's lit pair did not move with the seconds once 5 shots were left (battle_starscream 41-82 s): only
-  lit hits move it here (the spec's per-second move depends on switch tokens 0xc / 0xd, not traced);
-- deffs without a capture get their length, lamp effects and sounds from the traces (UNCAPTURED).
+Not in the spec text (code; traces confirm):
+- the shot audits 65 left orbit, 66 right orbit, 67 left ramp, 68 right ramp come first in the shot routines,
+  lit or not, then the combo multiplier (deff 50) and the modes in turn, the battles among them ([0x01033244]
+  [0x01033488] [0x01033824] [0x01033918]: audit_add(0x41..0x44) first);
+- the completed hit deff runs its final animation (+0x3c = 1: set by the hit [0x01014638], read by the hit deff,
+  e.g. deff_094 [0x010189a8]), whose op list (run as ROM code) gives its length;
+- Starscream's lit pair also moves each counted second with fewer than 6 shots left, unless a ramp entrance
+  (switch-timeout tokens 0xc / 0xd, 93 ticks) was hit [0x01017824] (QA M9);
 """
 from tf.features import Feature
+from tf.display import deff_variant
 
 ORDER = 40
 AUTOBOT, DECEPTICON = 1, 2
@@ -43,23 +44,19 @@ SHOT_SWITCHES = {5: LEFT_ORBIT, 6: LEFT_ORBIT, 10: LEFT_RAMP, 11: CENTER, 51: CE
                  12: RIGHT_ORBIT, 1: BEE}
 SHOT_AUDIT = {LEFT_ORBIT: 65, RIGHT_ORBIT: 66, LEFT_RAMP: 67, RIGHT_RAMP: 68}
 ORANGE = {ALLSPARK: 15, LEFT_ORBIT: 19, LEFT_RAMP: 44, CENTER: 40, RIGHT_RAMP: 34, RIGHT_ORBIT: 39, BEE: 30}
-# Left orbit, switch-timeout token 7 (187 units) [0x01033354 sw 5, 0x010332e4 sw 6]: with the token down, sw 5 or
-# sw 6 counts the shot and sets it; with it up, sw 5 clears it and sw 6 sets it again, neither counts; sw 12 clears
-# it [0x01033530]. Its length is observed between 2.18 s (switches.jsonl: sw 5 and sw 6 again 2.17-2.18 s later,
-# not counted) and 2.35 s (combos.jsonl: sw 6 every 2.35-2.37 s, each counted), so about 12 ms per unit (inferred).
-ORBIT_TOKEN_S = 2.26
-# A left orbit that counts holds the orbit control gate (coil 5) open 91 ticks (1.48-1.52 s), so the ball goes round
-# (observed: every counted sw 5 / sw 6 in the traces, 0.02-0.05 s after the switch, e.g. switches.jsonl 24.7 / 29.1 s;
-# the ignored repeats leave it shut)
-GATE_TICKS = 91
-CENTER_LOCK_S = 1.0         # center lane / Optimus: one of them per pass (task 0x54, inferred time)
-# sw 12 is ignored while task 0x47 runs (a ball that just came round): after a left orbit pass, the center lane,
-# a plunge or the Megatron back door (sw 13) (traces/game_flow.jsonl 30.57 s, 1.0 s after a plunge, and 56.29 s,
-# 2.18 s after a plunge, 1.17 s after sw 13; switches.jsonl 58.86 s, 2.18 s after the center lane; counted 4.36 s
-# after it: no audit, no mode start, no combo); the 3 s are inferred. Within 187 ticks of the previous right orbit
-# shot it is ignored too (timer 9 [0x01033530], combos_and_multipliers.md 4.1).
-RIGHT_IGNORE_S = 3.0
-RIGHT_REPEAT_S = 187 * 0.01626
+# Left orbit, switch-timeout token 7 [0x01033354 sw 5, 0x010332e4 sw 6]: with the token down, sw 5 or sw 6 counts
+# the shot and sets it; with it up, sw 5 clears it and sw 6 sets it again, neither counts; sw 12 clears it
+# [0x01033530]. 0xbb = 187 units of the OS loop [0x0002bd48], which runs once per 16 ms tick (io_isr [0x000114b0]
+# counts the tick; agent A, 2026-11-26): 2.99 s (QA R-F3; it was 2.26 s, fitted to the traces).
+ORBIT_TOKEN_S = 0xbb * 0.016
+# A left orbit that counts holds the orbit control gate (coil 5) open 93 ticks (1,488 ms in agent A's code run, from
+# 0x0102c0a8; QA R-F11), so the ball goes round; the ignored repeats leave it shut
+GATE_TICKS = 93
+# Right orbit sw 12 [0x01033530] (QA R-F3): with token 7 up (a left orbit just counted) it clears token 7 and counts
+# nothing; else with task 0x47 running it kills the task and counts nothing; else with token 9 up it clears token 9
+# and counts nothing; else it sets token 9 and counts the shot. Task 0x47 (task_create_arg_abe8(0x47, 0xbb)) is started by the
+# shooter lane [0x01032dfc] and the center lane [0x01033b3c]. Tokens 7 and 9 and task 0x47 all last 0xbb = 187
+# units of the OS loop [0x0002bd48]: ORBIT_TOKEN_S for the three.
 
 # mode-start shots [table 0x040c6d00]: battle shot -> mode-start index (mask bit 1 << index)
 MS_SHOT = {ALLSPARK: 0, LEFT_ORBIT: 1, LEFT_RAMP: 2, RIGHT_RAMP: 3, RIGHT_ORBIT: 4}
@@ -69,7 +66,9 @@ MS_DIFFICULTY = {0: (5, 5), 1: (5, 4), 2: (4, 4), 3: (4, 3), 4: (4, 2)}       # 
 MS_WALK = (1, 2, 3, 4, 0)
 MS_NEEDED = 4
 MS_DEFF, MS_LEFF = 91, 103
-MS_SOUND = {AUTOBOT: 0x174, DECEPTICON: 0x170}
+# deff 91 [0x01022608] plays its call by the lit battle bit (task+0x38 = DAT_02111ecc[p], pd.battle_lit), 0x170 for
+# any other value (QA R-F2, SC3)
+MS_SOUND = {2: 0x171, 4: 0x172, 8: 0x173, 0x10: 0x174, 0x20: 0x175, 0x40: 0x176, 0x80: 0x177}
 LIT_LEFF = 104
 SIDE_DONE_FLAG = 0x3d
 ADD_TIME_FLAG = 0x13
@@ -83,17 +82,8 @@ GRACE_TICKS = 125
 MODES_STARTED_AUDIT = 0x58
 WIZARD_PLAYED_AUDIT, WIZARD_DONE_AUDIT = 0x81, 0x8c
 ADD_TIME, MAX_TIME = 15, 90
-RULE_PRIORITY = 0x40                  # below double / fast scoring (music table entries 7-8 before 9-16)
-TOTAL_TICKS = 120                     # a total started at the drain holds the bonus (battle_ratchet: 1.94 s)
+RULE_PRIORITY = 0x40                  # below double / fast scoring (music table [0x000178b0]; QA V-ENG5)
 
-# deffs the package has no capture (or no end) of: (seconds, leffs, sounds), from the reference traces
-UNCAPTURED = {
-    94: (2.2, (107,), ((2.02, 0x18e),)),                    # Starscream hit (0x18e 2.02 s after each hit)
-    96: (4.93, (109,), ((0.0, 0x193), (3.70, 0x194))),      # Shockwave intro (deff 97 again 4.93 s later)
-    111: (1.92, (126,), ((0.0, 0x1fe),)),                   # Bumblebee total
-    118: (4.4, (133,), ()),                                 # Mudflap & Skids hit (length as deff 114)
-    119: (1.92, (134,), ((0.0, 0x232),)),                   # Mudflap & Skids total
-}
 
 
 class Battle:
@@ -110,8 +100,14 @@ class Battle:
     music = 0
     rule_leff = 0
     hit_sound = 0
+    # the hit deff's speech: (call, delay ticks, also on the last hit): snd_play_delayed_6a9c(call, +0x44, delay, 1)
+    # [0x01006a9c] or a child task, sample +0x44 = 2 less than the animation index +0x34 (base - shots left), 0
+    # past the call's sample count (QA SC6 battles)
+    speech = None
+    speech_base = 10
+    speech_follow = ()                  # the calls its follow-ups play (their op-list copies are not played)
+    speech_final_delay = None           # the child's sleep on the last hit, when it differs
     shots = 10
-    completed_seconds = 8.5
     multiball = False
 
     def __init__(self, mgr):
@@ -195,7 +191,11 @@ class Battle:
             self.time_up()
             return
         self.seconds -= 1
+        self.second()
         os_.task_start(self.timer_task, STEP_TICKS, self._timer)
+
+    def second(self):
+        """Called at each counted second, after the decrement."""
 
     def restart_timer(self, at_least):
         """A new level / rover hit: the timer back to at least `at_least` seconds, the count restarted."""
@@ -273,13 +273,76 @@ class Battle:
         """left: the shots left after this hit, which picks the ROM's hit animation (index BASE - left, the hit
         functions' task+0x34); the PuP map reads it with hit and completed."""
         os_ = self.os
-        kwargs = {"run_seconds": self.completed_seconds} if completed else {}
+        # the hit deff plays snd_play2(hit_sound, task+0x40) once (e.g. deff_094 [0x010189a8]): here, with its
+        # argument, so not a second time from the deff's op list (QA SC1)
+        os_.display.own_sounds.add((self.hit_deff, self.hit_sound))
+        kwargs = {}
         if left is not None:
             kwargs["left"] = left
+        # the hit deff's animation by its +0x34 (anim_index) or the final one (+0x3c = 1): deff 94 [0x010189a8]
+        # table 0x040c6a60, 102 [0x0101dc18] 0x040c6c34, ...; past the table's last routine the deff takes the
+        # last (the op lists shots1..N); its op list gives the run's length and sounds (QA SC2)
+        variant = None
+        if completed:
+            variant = "final"
+        elif left is not None:
+            k = max(1, self.anim_index(left))
+            while k > 1 and not deff_variant(self.hit_deff, "shots{}".format(k)):
+                k -= 1
+            variant = "shots{}".format(k)
+        if deff_variant(self.hit_deff, variant):
+            kwargs["variant"] = variant
         os_.deff_start(self.hit_deff, values=[points], hit=self.hits, completed=int(completed), **kwargs)  # PuP
         lengths = os_.sample_lengths(self.hit_sound)
-        os_.sound(self.hit_sound, in_deff=self.hit_deff,
-                  index=(self.hits - 1) % len(lengths) if lengths else None)
+        index = (self.hits - 1) % len(lengths) if lengths else None
+        # from the deff's own task, at its first run: after the switch's other handlers (the Allspark warning
+        # 0x157 of the same left eject takes its voice first, then this one takes it over, snd_start_sample
+        # [0x00024ae4])
+        os_.after(1, lambda: os_.sound(self.hit_sound, in_deff=self.hit_deff, index=index))
+        self._speech(completed, left)
+
+    def anim_index(self, left):
+        """The hit deff's +0x34 set by its start function: speech base + 2 - shots left (start_deff_94
+        [0x01017b24] 0xb - left, start_deff_102 [0x0101cc6c] 0xc - left; +0x44 = +0x34 - 2)."""
+        return self.speech_base + 2 - left
+
+    def _speech(self, completed, left):
+        """The hit deff's delayed speech, from its child task (task_create_same_id: it dies with the deff)."""
+        if not self.speech:
+            return
+        os_ = self.os
+        call, delay, final_too = self.speech
+        os_.display.own_sounds.update((self.hit_deff, c) for c in (call,) + self.speech_follow)
+        if completed and not final_too:
+            return
+        index = self.speech_base - (left or 0)
+        if not 0 <= index < len(os_.sample_lengths(call)):
+            index = 0
+        deff = self.hit_deff
+
+        def play():
+            if os_.display.fg != deff:
+                return
+            end = os_.sound(call, in_deff=deff, index=index)
+            self.speech_after(end, index)
+        if completed and self.speech_final_delay is not None:
+            delay = self.speech_final_delay
+        os_.after(1 + delay, play)
+
+    def speech_after(self, end, index):
+        """The follow-ups a hit deff's child task queues after its speech (snd_play_after [0x000253d4])."""
+
+    def _queue(self, end, call, sample, then=None):
+        """snd_play_after(call, handle): `call` sample `sample` once the playing sample ends; then(end) next."""
+        if end is None:
+            return
+        os_ = self.os
+
+        def play(_dt=None):
+            nxt = os_.sound(call, index=sample)
+            if then:
+                then(nxt)
+        os_.machine.clock.schedule_once(play, max(0.0, end - os_.now))
 
     def complete(self):
         os_ = self.os
@@ -317,7 +380,18 @@ class Battle:
         """A pop bumper hit while it runs."""
 
     def background_values(self):
-        return {"values": [self.seconds, self.pd.get(self.left_key, self.shots) if self.os.game else self.shots]}
+        left = self.pd.get(self.left_key, self.shots) if self.os.game else self.shots
+        out = {"values": [self.seconds, left]}
+        if deff_variant(self.bg, "lit"):
+            # 0 shots left: the deff's code draws text_draw_msg "SHOOT LIT SHOT" in place of "SHOOT %u SHOT%P1//S/%"
+            # (e.g. deff 97 [0x0101f580], deff 105 msg 0x643 [0x01016d7c]; QA V097-V121): its "lit" code run
+            out["variant"] = "lit" if self.os.game and not left else None
+        elif self.os.game and not left:
+            out["slot_texts"] = {1: SHOOT_LIT_SHOT}
+        return out
+
+
+SHOOT_LIT_SHOT = "SHOOT LIT SHOT"
 
 
 class Starscream(Battle):
@@ -325,6 +399,7 @@ class Starscream(Battle):
     timer_task, run_task, intro_task = 0x9c, 0x9d, 0x68
     item, audit_started, audit_completed, insert = 1, 0x59, 0x5a, 7
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 92, 93, 94, 95, 0x28, 106, 0x181
+    speech, speech_base = (0x18e, 0x7d, False), 9                     # deff_094 [0x010189a8]
     total_task = 0x80
     shots = 10
     PAIRS = (0x03, 0x06, 0x0c, 0x18, 0x30, 0x18, 0x0c, 0x06)       # table 0x040c6a40
@@ -340,14 +415,22 @@ class Starscream(Battle):
         self.pair = (self.pair + 1) % len(self.PAIRS)
         self.lit = self.PAIRS[self.pair]
 
+    def second(self):
+        """FUN_01017824: each counted second, with fewer than 6 shots left and neither ramp entrance in the last
+        93 ticks (switch-timeout tokens 0xc / 0xd), the lit pair moves on (FUN_010177ec) (QA M9)."""
+        os_ = self.os
+        if self.pd.get(self.left_key, self.shots) < 6 and not os_.timer_running(0xc) and not os_.timer_running(0xd):
+            self.advance(None)
+            os_.request_refresh()
+
 
 class Shockwave(Battle):
     key, index, side, timer_adj = "sw", 1, DECEPTICON, 73
     timer_task, run_task, intro_task, total_task = 0x9e, 0x9f, 0x69, 0x81
     item, audit_started, audit_completed, insert = 2, 0x5b, 0x5c, 6
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 96, 97, 98, 99, 0x29, 110, 0x195
+    speech, speech_base = (0x1a4, 0x5d, True), 10                     # deff_098
     shots = 11
-    completed_seconds = 8.67
 
     def setup(self):
         self.phase = 1
@@ -370,8 +453,17 @@ class Blackout(Battle):
     timer_task, run_task, intro_task, total_task = 0xa0, 0xa1, 0x6a, 0x82
     item, audit_started, audit_completed, insert = 3, 0x5d, 0x5e, 5
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 100, 101, 102, 103, 0x2a, 114, 0x1ab
+    speech, speech_base = (0x1c3, 0x5d, False), 10                    # child task [0x0101db34]
+    speech_follow = (0x1c4, 0x1c5)
+
+    def speech_after(self, end, index):
+        """[0x0101db34]: samples 1-4 and 7-8 queue 0x1c4 with the same sample; sample 5 queues 0x1c5 0, 1, 2, 3."""
+        if 1 <= index <= 4 or 7 <= index <= 8:
+            self._queue(end, 0x1c4, index)
+        elif index == 5:
+            chain = lambda k: (lambda e: self._queue(e, 0x1c5, k, chain(k + 1) if k < 3 else None))
+            chain(0)(end)
     shots = 11
-    completed_seconds = 9.0
     GROUPS = ((0x01, 0x02, 0x04), (0x08, 0x10, 0x20))
 
     def setup(self):
@@ -401,8 +493,14 @@ class Devastator(Battle):
     timer_task, run_task, intro_task, total_task = 0xa2, 0xa3, 0x6b, 0x83
     item, audit_started, audit_completed, insert = 4, 0x5f, 0x60, 4
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 104, 105, 106, 107, 0x2b, 118, 0x1d1
+    speech, speech_base = (0x1e3, 0x5d, True), 9                      # child task snd_1e3_1e4_task_17068 [0x01017068]
+    speech_follow = (0x1e4,)
+    speech_final_delay = 0x1f                                         # +0x38 = 0x1f on the last hit [0x010170b8]
+
+    def speech_after(self, end, index):
+        """[0x01017068]: 0x1e4 with the same sample after 0x1e3."""
+        self._queue(end, 0x1e4, index)
     shots = 10
-    completed_seconds = 8.76
     ROVER = (0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0)       # table 0x040c6964
     ROVER_LEFF, ROVER_POINTS = 120, 10000
 
@@ -423,6 +521,16 @@ class Devastator(Battle):
             self.lit = 1 << RIGHT_ORBIT
             self.restart_timer(self.os.adj[self.timer_adj])
 
+    def background_values(self):
+        """deff 105 [0x01016d7c]: in state 1 (DAT_000313b4 = 1) msg 0x645 "SHOOT R. ORBIT" in the shots slot."""
+        out = Battle.background_values(self)
+        if self.os.game and self.active and self.state == 1:
+            if deff_variant(self.bg, "rover"):
+                out["variant"] = "rover"              # its code run with DAT_000313b4 = 1 (rom/tools/deff_variants.py)
+            else:
+                out["slot_texts"] = {1: "SHOOT R. ORBIT"}
+        return out
+
     def pop(self):
         if self.state == 2 and self.scoring:
             os_ = self.os
@@ -432,9 +540,6 @@ class Devastator(Battle):
             os_.score_add(self.ROVER_POINTS)
             os_.request_refresh()
 
-    def background_values(self):
-        return {"values": [self.seconds, self.pd.get(self.left_key, self.shots) if self.os.game else self.shots]}
-
 
 class Bumblebee(Battle):
     """Phase 1: the six main shots at a decaying value (no timer); phase 2: the Bumblebee target on a timer."""
@@ -443,7 +548,6 @@ class Bumblebee(Battle):
     item, audit_started, audit_completed, insert = 6, 0x61, 0x62, 23
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 108, 109, 110, 111, 0x2c, 123, 0x1ee
     PHASE2_LEFF = 124
-    completed_seconds = 7.99
     DECAY_TICKS, END_TICKS, FLOOR = 3, 46, 100000
     DIRECT_JACKPOT = 200000
 
@@ -503,6 +607,10 @@ class Bumblebee(Battle):
         self.os.score_add(points)
         self.total += points
 
+    def anim_index(self, left):
+        """start_deff_110 [0x01014638]: +0x34 = 7 - the shots still lit (bit_count_140b0)."""
+        return 7 - left
+
     def lit_hit(self, shot, m):
         os_ = self.os
         pd = self.pd
@@ -547,13 +655,15 @@ class Bumblebee(Battle):
         return self.active and self.pd.get("bb_phase", 1) == 2
 
     def background_values(self):
-        """Deff 109's captured page is phase 2's: "%,02lu" the timer (RAM 0x34f7c) over "SHOOT CAMARO / FOR %,02lu"
-        the award (0x34f74). Phase 1's page (value 0x34f70, "BEE = " award) is not in the capture: its value and
-        award go in the same two slots."""
+        """deff_109_bumblebee [0x01015184] picks its page every frame by DAT_00034f68, the phase: 1 draws the value
+        0x34f70 (font 0x10), "BEE = %,02lu" the award 0x34f74 and SHOOT LIT SHOT (variant "phase1",
+        rom/tools/deff_variants.py); 2 draws the timer 0x34f7c, SHOOT CAMARO and "FOR %,02lu" the award (the
+        default page). The award is 0 at a phase 1 start and grows by each lit shot [0x01014638]; 200,000 at a
+        phase 2 start (adj_bumblebee_timer [0x010142dc])."""
         award = self.DIRECT_JACKPOT if getattr(self, "direct", False) else getattr(self, "jackpot", 0)
         if self.os.game and self.pd.get("bb_phase", 1) == 2:
-            return {"values": [self.seconds, award]}
-        return {"values": [getattr(self, "current", 0), award]}
+            return {"values": [self.seconds, award], "variant": None}
+        return {"values": [getattr(self, "current", 0), award], "variant": "phase1"}
 
 
 class Ironhide(Battle):
@@ -561,8 +671,8 @@ class Ironhide(Battle):
     timer_task, run_task, intro_task, total_task = 0xa6, 0xa7, 0x6d, 0x85
     item, audit_started, audit_completed, insert = 7, 0x63, 0x64, 24
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 112, 113, 114, 115, 0x2d, 128, 0x201
+    speech, speech_base = (0x214, 0x5d, True), 9                      # deff_114
     shots = 10
-    completed_seconds = 7.02
     PATTERNS = {1: 0x08, 2: 0x14, 3: 0x2a, 4: 0x36}    # table 0x040c6b3c
 
     def reset(self):
@@ -592,6 +702,7 @@ class Mudflap(Battle):
     timer_task, run_task, intro_task, total_task = 0xa8, 0xa9, 0x6e, 0x86
     item, audit_started, audit_completed, insert = 8, 0x65, 0x66, 25
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 116, 117, 118, 119, 0x2e, 132, 0x21c
+    speech, speech_base = (0x22e, 0x5d, True), 10                     # deff_118
     shots = 11
     multiball = True
     RUNNING_FLAG, COMPLETED_FLAG, ADD_BALL_FLAG = 0x1e, 0x1d, 0x14
@@ -684,6 +795,7 @@ class Ratchet(Battle):
     timer_task, run_task, intro_task, total_task = 0xaa, 0xab, 0x6f, 0x87
     item, audit_started, audit_completed, insert = 9, 0x67, 0x68, 26
     intro, bg, hit_deff, total_deff, music, rule_leff, hit_sound = 120, 121, 122, 123, 0x2f, 136, 0x236
+    speech, speech_base = (0x237, 0x5d, True), 10                     # deff_122
     shots = 11
 
     def reset(self):
@@ -709,11 +821,26 @@ class Ratchet(Battle):
 
 
 BATTLES = (Starscream, Shockwave, Blackout, Devastator, Bumblebee, Ironhide, Mudflap, Ratchet)
+ARROW_BLINK = 3        # battles.md 8: every 3 ticks [0x010188cc ...]
+
+
+def arrow_blink(rows, flash_fn, steady_fn=lambda: 0):
+    """The battle rule leffs 106-136 (battles.md 8: leff_106 [0x010188cc], 110 [0x0101f5ec], 114 [0x0101da60],
+    118 [0x01016f94], 123 [0x01015408], 128 [0x0101c12c], 132 [0x0101a45c], 136 [0x01013918]): the layer owns the
+    orange arrows (seven with Bumblebee's captive ball, bit 0x40); every 3 ticks a shot in the flash mask is toggled
+    (lamp_bit_flash_78dc [0x000078dc], starting on), a shot in the steady mask (Ratchet's lit shots that are not
+    doubled: lamp_bit_toggle_set_77a0) is on, any other is off (lamp_bit_write_765c)."""
+    def run(task, on=True):
+        flash, steady = flash_fn() or 0, steady_fn() or 0
+        for bit, lamp in rows:
+            task.set(lamp, on if flash & bit else bool(steady & bit))
+        task.sleep(ARROW_BLINK, lambda t: run(t, not on))
+    return run
 
 
 class Battles(Feature):
     name = "battles"
-    HOOKS = ("player_first_ball", "ball_start", "side_changed", "ball_end", "ball_end_wait", "tilt", "timed_mode",
+    HOOKS = ("player_first_ball", "add_ball_open", "ball_start", "side_changed", "ball_end", "tilt", "timed_mode",
              "timer_pause", "multiball_end", "battle_shot", "mode_start_shot", "add_time", "add_ball",
              "sw_1", "sw_5", "sw_6", "sw_13", "sw_10", "sw_11", "sw_12", "sw_14", "sw_51", "sw_7", "sw_8",
              "sw_30", "sw_31", "sw_32", "battle_running", "wizard_reset")
@@ -725,20 +852,26 @@ class Battles(Feature):
         self.orbit_token = 0.0          # token 7 runs until then
         self.center_at = self.lane_at = -10.0
         self.launched_at = self.back_door_at = self.right_at = -10.0
+        self.task47_until = self.token9_until = 0.0      # task 0x47 and token 9 [0x01033530]
         self.machine.switch_controller.add_switch_handler("s_shooter_lane", self._launched, state=0)
         self.ended_at_drain = False
-        for deff_id, (seconds, leffs, sounds) in UNCAPTURED.items():
-            os_.display.set_media(deff_id, seconds, leffs, sounds)
         for b in self.battles:
             os_.deff_rule((lambda b_: lambda: b_.rule())(b), b.bg, music=b.music, priority=RULE_PRIORITY)
             os_.deff_live((b.bg,), b.background_values)
             if b.rule_leff:
+                rows = [(1 << shot, lamp) for shot, lamp in ORANGE.items() if shot != BEE or isinstance(b, Bumblebee)]
+                if isinstance(b, Ratchet):              # the double mask 0x34f0c flashes, the lit mask 0x34f08 holds
+                    fn = arrow_blink(rows, (lambda b_: lambda: b_.double())(b),
+                                     (lambda b_: lambda: b_.lit & ~b_.double())(b))
+                else:
+                    fn = arrow_blink(rows, (lambda b_: lambda: b_.lit)(b))
+                os_.lamps.leff_code(b.rule_leff, fn)
                 os_.lamp_rule((lambda b_: lambda: b_.active and not (isinstance(b_, Bumblebee) and b_.phase2()))(b),
-                              leff=b.rule_leff, order=0x01012000 + b.index)
+                              leff=b.rule_leff)
         bee = self.battles[4]
-        os_.lamp_rule(lambda: bee.phase2(), leff=Bumblebee.PHASE2_LEFF, order=0x01012010)
+        os_.lamp_rule(lambda: bee.phase2(), leff=Bumblebee.PHASE2_LEFF)
         os_.lamp_rule(lambda: bool(os_.game) and self.qualify_allowed() and bool(self.pd.get("battle_lit")),
-                      leff=LIT_LEFF, order=0x010232d4)
+                      leff=LIT_LEFF)
         os_.lamp_update(self.draw)
         os_.register_poke(0x2111ecc, self._poke("battle_lit"), stride=4)
         for b in self.battles:
@@ -878,7 +1011,6 @@ class Battles(Feature):
         pd = self.pd
         if os_.tilted or not self.qualify_allowed() or not pd.get("ms_lit", 0) & (1 << ms):
             return
-        side = pd.get("side", DECEPTICON)
         value = min(10000 + 10000 * pd.get("battles_started_n", 0) + 5000 * pd.get("ms_hits", 0), 75000)
         shot = MS_BATTLE_SHOT[ms]
         os_.score_add(value * os_.shot_mult(shot))
@@ -894,7 +1026,8 @@ class Battles(Feature):
                 if pick is not None:
                     pd.ms_lit |= 1 << pick
             left = pd.ms_needed - pd.ms_hits
-            os_.deff_start(MS_DEFF, values=[left], sounds=[(0, lambda: os_.sound(MS_SOUND[side], in_deff=MS_DEFF))])
+            call = MS_SOUND.get(pd.get("battle_lit", 0), 0x170)
+            os_.deff_start(MS_DEFF, values=[left], sounds=[(0, lambda: os_.sound(call, in_deff=MS_DEFF))])
             os_.leff_start(MS_LEFF)
             os_.request_refresh()
             return
@@ -928,6 +1061,7 @@ class Battles(Feature):
         os_ = self.os
         if not os_.game or os_.tilted:
             return
+        os_.hook("shot_mult_take", shot)            # FUN_010237ac(shot) first in every shot handler (QA P2)
         if shot in SHOT_AUDIT:
             os_.audit(SHOT_AUDIT[shot])
         if mb:
@@ -940,6 +1074,7 @@ class Battles(Feature):
 
     def _launched(self):
         self.launched_at = self.os.now
+        self.task47_until = self.os.now + ORBIT_TOKEN_S   # sw_shooter_lane [0x01032dfc] starts task 0x47
 
     def sw_13(self):
         self.back_door_at = self.os.now
@@ -969,26 +1104,33 @@ class Battles(Feature):
         self.shot(LEFT_RAMP)
 
     def _center(self, mb=True):
-        now = self.os.now
-        last, self.center_at = self.center_at, now
-        if now - last < CENTER_LOCK_S:
-            return
+        """The center lane and the Optimus target lock each other out through task 0x54 (tf/switches.py)."""
+        self.center_at = self.os.now
         self.shot(CENTER, mb)
 
     def sw_11(self):
-        self.lane_at = self.os.now                  # the right orbit's debounce counts the lane only (optimus_* traces)
+        self.lane_at = self.os.now
+        self.task47_until = self.os.now + ORBIT_TOKEN_S   # sw_center_lane [0x01033b3c] starts task 0x47
         self._center()
 
     def sw_51(self):
         self._center(mb=False)                      # Optimus has its own multiball rules (hook sw_51)
 
     def sw_12(self):
+        """[0x01033530]: one of token 7, task 0x47, token 9 cancels the shot and is cleared, in that order."""
         now = self.os.now
-        self.orbit_token = 0.0
-        last = max(list(self.left_orbit_at.values()) + [self.back_door_at, self.lane_at, self.launched_at])
-        if now - last < RIGHT_IGNORE_S or now - self.right_at < RIGHT_REPEAT_S:
+        if now < self.orbit_token:
+            self.orbit_token = 0.0
             return
+        if now < self.task47_until:
+            self.task47_until = 0.0
+            return
+        if now < self.token9_until:
+            self.token9_until = 0.0
+            return
+        self.token9_until = now + ORBIT_TOKEN_S
         self.right_at = now
+        self.os.right_orbit_awards()                # [0x01033488]: special, then extra ball
         self.shot(RIGHT_ORBIT)
 
     def sw_14(self):
@@ -1002,8 +1144,7 @@ class Battles(Feature):
         self.battle_shot(BEE)
 
     def _top_lane(self):
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x010335d0] / [0x0103361c], always (QA P7)
 
     sw_7 = sw_8 = _top_lane
 
@@ -1015,8 +1156,7 @@ class Battles(Feature):
         for b in self.battles:
             if b.scoring:
                 b.pop()
-        if self.running():
-            self.pause()
+        self.pause()                                # FUN_010062f0(0x9c) [0x01032f8c], always (QA P7)
 
     sw_30 = sw_31 = sw_32 = _pop
 
@@ -1027,6 +1167,10 @@ class Battles(Feature):
 
     def add_ball(self):
         self.battles[6].add_ball()
+
+    def add_ball_open(self):
+        """The battle multiball's end task 0xa9 [0x0101906c] (QA M7)."""
+        return self.os.task_running(self.battles[6].run_task)
 
     def multiball_end(self):
         self.battles[6].multiball_end()
@@ -1039,9 +1183,6 @@ class Battles(Feature):
         for b in self.battles:
             if b.end(show_total=not self.os.tilted):
                 self.ended_at_drain = True
-
-    def ball_end_wait(self):
-        return TOTAL_TICKS if self.ended_at_drain else None
 
     def tilt(self):
         for b in self.battles:
@@ -1063,23 +1204,10 @@ class Battles(Feature):
             else:
                 lamps.lamp_off(mine)
             lamps.lamp_off(other)
-        lit = 0
-        for b in self.battles:
-            if b.scoring:
-                lit |= b.lit
-        for shot, lamp in ORANGE.items():
-            if lit & (1 << shot):
-                lamps.lamp_flash(lamp)
-            else:
+        for shot, lamp in ORANGE.items():           # the battle's rule leff owns the arrows (arrow_blink)
+            if shot != BEE:                         # lamp 30 is arcade_lamp_rule's (bumblebee.py, QA L-R01)
                 lamps.lamp_off(lamp)
-        started, completed = pd.get("battle_started", 0), pd.get("battle_completed", 0)
-        for b in self.battles:
-            if completed & b.bit:
-                lamps.lamp_on(b.insert)
-            elif started & b.bit:
-                lamps.lamp_flash(b.insert)
-            else:
-                lamps.lamp_off(b.insert)
+        # the battle inserts are the requirement inserts: wizard.py draw [0x01035ea8] (QA L-R07)
 
 
 def feature(os_):

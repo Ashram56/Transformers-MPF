@@ -3,7 +3,7 @@
 Audience: a developer rebuilding the game in MPF who has not read the ROM. Most of the flow lives in the
 Stern SAM OS (addresses below 0x36000), which is the same OS as Tron Legacy 1.74 at different addresses;
 Transformers game code hooks into it through OS events (`event_post(id)`). Sources: `[0xADDR]` = function in
-`code/tf_decompiled.c` (scratch copy `out/tf_decompiled.c`), "observed" = `rules/traces/game_flow.jsonl`
+`code/tf_decompiled.c` (scratch copy `out/tf_decompiled.c`), "code run = trace" = the scenario `game_flow` played in the ROM's code (`tools/scenario_lift.py`, `traces/code_runs.csv`) and in the emulator (`rules/traces/game_flow.jsonl`), which agree
 (scenario `game_flow.txt`, watch list `watch_game_flow.tsv`, factory settings, 2 players), "inferred" = reasoning.
 Times in the trace are emulated seconds since power-on (script starts at 8.0 s).
 
@@ -17,7 +17,7 @@ is **0x3243c** and, unlike Tron, Transformers **does** set it (double scoring = 
 
 1 `task_sleep` tick ≈ 16.26 ms (Tron measurement, same OS and same scheduler; not re-measured here). The
 ROM treats 62 ticks (0x3e) as one second for ball save and tilt bob timing [0x00017a28] [0x0001dc14].
-Observed here: ball search 10.06 s after the last switch (traces t 30.59 → 40.65), i.e. 620 ticks at 16.2 ms.
+Ball search waits `DAT_00033320` = 10 seconds, a ROM constant (code); the traces confirm 10.06 s (t 30.59 → 40.65).
 
 ## 1. Summary
 
@@ -34,10 +34,10 @@ again / next player / game over with high scores and match.
 | Adj # | ROM name | Default | Range | Effect |
 |---|---|---|---|---|
 | 31 | BALLS PER GAME | 3 | 1-10 | Balls per player |
-| 32 | TILT WARNINGS | 2 | 0-3 | DANGER warnings before a tilt [0x0001da8c] (observed: 2 warnings, 3rd bob tilts) |
+| 32 | TILT WARNINGS | 2 | 0-3 | DANGER warnings before a tilt [0x0001da8c] (code run = trace: 2 warnings, 3rd bob tilts) |
 | 64 | COIN DOOR DISABLE TILT | 0 | 0-1 | 1 = tilt bob ignored with the coin door open [0x0001da38] |
 | 38 | BALL SAVE TIME | 5 | 0-16 | Seconds × 62 ticks; 0 = no ball save [0x00017acc] |
-| 65 | TRANSFORMERS SELECT | 0 RANDOM | 0-2 | Starting side per player: random / Autobot / Decepticon (observed: random gave P1 Autobot, P2 Autobot in this run) |
+| 65 | TRANSFORMERS SELECT | 0 RANDOM | 0-2 | Starting side per player: random / Autobot / Decepticon (random_below(2) + 1 in on_event_26_33f94 [0x01033f94]; the emulator drew P1 Autobot, P2 Autobot in game_flow, the input of the code run) |
 | 26 | EXTRA BALL LIMIT | 5 | 0-10 | Max extra balls per player per game (OS, same rule as Tron) |
 | 83 | BONUS EXTRA BALL AT | 5 | 0-10 | Extra ball lit once per game when a progress count reaches this value [0x01035af0] (owned by the mode specs) |
 | 22 / 23 | SPECIAL LIMIT / SPECIAL AWARD | 1 / CREDIT | | Special award [0x0001d7a0] |
@@ -53,13 +53,13 @@ again / next player / game over with high scores and match.
 
 | Name | RAM | Scope | Init / reset | Meaning |
 |---|---|---|---|---|
-| gf_state | 0x31468 (u16) | machine | 16 in attract | Bits: 0x01 bonus running, 0x04 end of ball, 0x08 game over sequence, 0x10 no game, 0x20 starting, 0x80 match, 0x200 **tilted**. Observed values: attract 16, play 0, bonus 5, tilt 512, match 152 (observed) |
+| gf_state | 0x31468 (u16) | machine | 16 in attract | Bits: 0x01 bonus running, 0x04 end of ball, 0x08 game over sequence, 0x10 no game, 0x20 starting, 0x80 match, 0x200 **tilted**. Code run = trace values: attract 16, play 0, bonus 5, tilt 512, match 152 (code run = trace) |
 | gf_cur_player | 0x32438 (u8) | game | 1 | Player up [0x0001aa40] |
 | gf_ball | 0x32439 (u8) | game | 1 | Ball number, advances after the last player [0x0001abb4] |
 | gf_num_players | 0x2110900 (u8) | game | 1 | Players [0x0001a94c] |
 | gf_scores | 0x21109e4 (u32[4]) | game | 0 | Scores |
 | gf_pf_mult | 0x3243c (u8) | per ball | 1 at ball start and before bonus | Playfield multiplier applied by every score_add [0x0001cce0] [0x00019e44] |
-| gf_tilt_warnings | 0x37628 (u8) | per ball | 0 at ball start | DANGER warnings this ball [0x0001da8c] (observed 0→1→2, back to 0 at next ball) |
+| gf_tilt_warnings | 0x37628 (u8) | per ball | 0 at ball start | DANGER warnings this ball [0x0001da8c] (code run = trace 0→1→2, back to 0 at next ball) |
 | player side | 0x2112107 + player (u8) | per player | adj 65 at game start | 1 Autobot, 2 Decepticon (switches_and_shots.md) |
 | skill_lane_mask | 0x3570c (u8) | per serve | 2 if side = Autobot, else 1 [0x01031518] | Lit skill lane: bit 1 = left top lane sw8, bit 2 = right top lane sw7 [table 0x040c7654] |
 | skill flag 0x11 | game flag 17 | per serve | cleared at serve [0x01031518] | Set when a flipper moved the skill lane after the side choice → regular (not hands-free) skill shot [0x0103196c] [0x010319b0] |
@@ -73,7 +73,7 @@ again / next player / game over with high scores and match.
 ### 4.1 Game start [0x00019c64]
 Same OS sequence as Tron: event 0x2f veto, state = 0x20, players/ball = 1, extra-ball counters, scores and
 replay levels cleared, event 0x2e (game hook 0x0103621c clears a per-player array 0x21121bc), then ball
-start. Audit 17 GAMES STARTED. Pressing START again on ball 1 adds a player (observed t 13.89: audit 17,
+start. Audit 17 GAMES STARTED. Pressing START again on ball 1 adds a player (code run = trace t 13.89: audit 17,
 sound 0x048, num_players 2).
 
 ### 4.2 Ball start [0x00019d30]
@@ -90,17 +90,20 @@ sound 0x048, num_players 2).
 - On the player's **first ball** the side choice runs: deff 40 "USE FLIPPERS TO CHOOSE YOUR SIDE", music
   0x1a (Autobot) / 0x1b (Decepticon); flippers toggle (sound 0x257); the plunge confirms 0.53 s later with
   deff 41 + speech 0x057 Autobot / 0x058 Decepticon and music 0x1c / 0x1d. On later balls deff 19 with
-  music 0x1c / 0x1d at once (observed t 13.00, 18.37, 52.96, 54.71, 74.57). Details: switches_and_shots.md.
+  music 0x1c / 0x1d at once (code run = trace t 13.00, 18.37, 52.96, 54.71, 74.57). Details: switches_and_shots.md.
 - Trace: ball start → trough eject 0.54-0.64 s later; first playfield switch switches music to 0x1e
-  (Autobot) / 0x1f (Decepticon) (observed t 18.81, 56.31).
+  (Autobot) / 0x1f (Decepticon) (code run = trace t 18.81, 56.31).
 
 ### 4.3 Valid playfield (OS, same rule as Tron) [0x0000e264 hooks 0x6b/0x6c]
 The switch descriptor's top byte (`flags_0x0c` in `rom_data/io/switches.csv`): **0x20 = force** (one hit
 validates): 7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34; **0x10 = valid** (3 different needed): 1, 2, 4, 5, 6,
-13, 35, 37, 46, 49, 50. **Slingshots and pops (0x04) also count as valid** (observed in basic.jsonl: sw26,
-sw27 then pop 30 validate, music 0x01f starts; correction from the MPF port, the first version of this spec said
-they did not). The eject/lock/trough switches do not count (inferred from the flag pattern). The skill-shot end
-count (obj 0x31400) does exclude slings and pops (below). Observed: one sling then drain → re-served for a manual
+13, 35, 37, 46, 49, 50. **Slingshots and pops also count as valid** (code: their handlers 0x01033104, 0x010331a4 and 0x01032f8c post
+event 0x6b, the valid-playfield hook; basic.jsonl confirms: sw26, sw27 then pop 30 validate, music 0x01f starts).
+Switches 3 and 38-42 (left eject, Megatron lock) have the top byte 0x1f: bit 0x10 is set, so they validate like
+the 0x10 switches (code): the descriptor's u16 at +0xe is the dispatcher's mask word, and `switch_dispatch_debounce`
+[0x0000dc44] posts event 0x6b (valid, hook 0x0000e230 -> `switch_timeout_obj_add`) for a switch with 0x1000 there and
+0x6c (force) for one with 0x2000, when the game state is 0 or shares a bit with that word [0x0000ddf8]. Each of these
+switches is one of the three different valid switches. The skill-shot end count (obj 0x31400) counts slings and pops too (below). Code run = trace: one sling then drain → re-served for a manual
 plunge, same player and ball, no bonus, no ball save (t 25.25 → 26.44 drain → 27.61 eject); sw7 or sw12
 alone validates (t 18.78, 30.57).
 
@@ -117,28 +120,29 @@ auto-launch) cancels both.
   (two lamps on solid, other lane off) [0x01031a04].
 - Left flipper shifts the lit lane one way, right flipper the other (with two lanes both toggle)
   [0x0103196c] [0x010319b0]. During the side choice the flippers toggle side and lane together and nothing
-  else happens; after it, a flipper press sets game flag 0x11 (= not hands free) (observed t 79.69:
+  else happens; after it, a flipper press sets game flag 0x11 (= not hands free) (code run = trace t 79.69:
   flag 17 set, mask 2 → 1).
 - Hitting the lit lane while task 0xb2 runs:
   - flag 0x11 clear (**hands free**): 350,000 + 25,000 × hands-free skill shots already made this game,
-    cap 500,000 [0x010315e0] (observed t 18.79: 350,000).
+    cap 500,000 [0x010315e0] (code run = trace t 18.79: 350,000).
   - flag 0x11 set: 250,000 + 25,000 × regular skill shots made, cap 500,000 [0x01031590]
-    (observed t 80.86: 250,000).
+    (code run = trace t 80.86: 250,000).
   - The count used is then +1. deff 42 (prio 193): image sweep, then "HANDS FREE / SKILL SHOT / value" or
     "SKILL SHOT / value"; leff 93, sound 0x165 [0x01031aa4]. Both skill tasks are killed.
   - The lane's own handler also runs: the lane switch lights **both** lamps of that lane (two lane awards of
-    2,500, see combos_and_multipliers.md) (observed t 18.79, 80.86).
+    2,500, see combos_and_multipliers.md) (code run = trace t 18.79, 80.86).
 - Hitting the unlit lane: nothing extra, and the skill shot is cancelled (task killed) [0x01031630].
 - Ends (task killed) on a **force** switch other than 7, 8, 12, or after **3 different valid** switches other
-  than 7, 8, 12 [0x010313cc] [0x01031420] [0x01031470] [obj 0x31400 count 3]. Slings and pops do not end it.
+  than 7, 8, 12 [0x010313cc] [0x01031420] [0x01031470] [obj 0x31400 count 3]. Slings, pops, the captive ball 45 and Optimus 51 count like any switch that posts 0x6b (QA P3, hook 0x010313cc
+  registered at 0x01031ed8); only 7, 8, 12 (and 12 / 13 for the super) are left out.
 
 **Super skill shot** (task 0xb4):
 - Megatron back door (sw13) while task 0xb4 runs: 500,000 + 100,000 × super skill shots made this game,
   cap 1,000,000 [0x010317cc]; count +1; deff 43 "SUPER SKILL SHOT / value" (prio 193, leff 94, sound 0x167)
-  is queued through task 0x65 and appears when the display is free (observed t 55.12 score 500,000,
+  is queued through task 0x65 and appears when the display is free (code run = trace t 55.12 score 500,000,
   deff 43 at t 57.21, 2.1 s later). Both skill tasks killed.
 - Ends on a force switch other than 12, 13 or 3 different valid switches other than 12, 13 (obj 0x3140c).
-  The right orbit (sw12) does not end either skill shot (observed t 56.29).
+  The right orbit (sw12) does not end either skill shot (code run = trace t 56.29).
 
 ### 5.2 Ball save (adj 38) [0x00017acc] [0x00017a28] [0x00017b3c]
 Same OS code as Tron: armed at each new-ball serve (task 0x31, adj38 × 62 = 310 ticks, leff 14); paused until
@@ -146,23 +150,29 @@ the playfield is valid; then 6-tick steps; at expiry leff 14 stops and a 218-tic
 (task 0x32). A drain while either runs and the playfield is valid: deff 20 "BALL SAVED / KEEP SHOOTING"
 (prio 223, sounds 0x05e, 0x05f), leff 15, audit 43, replacement **auto-launched** (coil 2) with no ball save
 and no skill shot of its own.
-Observed: drain t 21.12 (2.3 s after valid) → deff 20 at 21.66 (trough settle 0.54 s) → launch 22.97.
+Code run = trace: drain t 21.12 (2.3 s after valid) → deff 20 at 21.66 (trough settle 0.54 s) → launch 22.97.
 Outlanes call ball_save_try(1/2) for an early save (code, not traced). Multiball starts kill it (OS).
 
 ### 5.3 Ball search (OS)
-10 s (620 ticks) without a valid/force switch or score → search (audit 37), coils pulsed; 15 s after a tilt;
-5th search with adj 63 = 1 → deff 13 "PINBALL MISSING / PLEASE WAIT", ball re-served. Observed: audit 37 at
+10 s (`DAT_00033320` = 10, ROM constant) without a valid/force switch or score → search (audit 37), coils pulsed; 15 s after a tilt;
+5th search with adj 63 = 1 → deff 13 "PINBALL MISSING / PLEASE WAIT", ball re-served. Code run = trace: audit 37 at
 t 40.65 (10.06 s after sw12 at 30.59).
 
 ### 5.4 Tilt [0x0001da8c] [0x0001db40] [0x0001dc14] [0x0001d534]
 | Trigger | Condition | Effect | Display | Sound | Lamp |
 |---|---|---|---|---|---|
 | Plumb bob | not tilted, coin-door rule, warnings < adj 32 | warnings +1 | deff 23 "DANGER" (prio 241) | 0x016, then speech **0x052** 0.51 s later (game hook) | leff 11 |
-| Plumb bob | warnings ≥ adj 32 | **TILT**: event 0x66, state \|= 0x200, audit 42, flippers/slings off, tasks with flag 0x1000 killed, sounds stopped, event 0x65 (game hooks stop modes: 0x0100414c fast scoring, 0x01023130 shot multipliers, 0x0102b898, 0x0103bd5c, 0x01005e98), ball search 15 s | deff 21 "TILT" | 0x017, speech **0x053** 1.0 s later | leff 9 |
-| Bob held closed | — | a warning every 62 ticks, tilt after 2 | | | |
+| Plumb bob | warnings ≥ adj 32 | **TILT**: event 0x66, state \|= 0x200, audit 42, flippers/slings off, every task without flag 0x1000 killed (`task_kill(0, 0x1000)` [0x0001dbb4], keep mask: [0x0000ae1c] kills id 0 tasks whose flags & mask == 0), sounds stopped, event 0x65 (game hooks stop modes: 0x0100414c fast scoring, 0x01023130 shot multipliers, 0x0102b898, 0x0103bd5c, 0x01005e98), ball search 15 s | deff 21 "TILT" | 0x017, speech **0x053** 1.0 s later | leff 9 |
+| Bob held closed | — | a warning every 62 ticks, **tilt after 124 ticks** (task 0x2e 0x0001dc14, FUN_0001dc58) | | | |
+| Bob ignored | while task 0x29 runs or state & 0x310 [0x0001da8c] | — | | | |
 | Slam tilt (dedicated) | — | state \|= 0x200, task 0x39 resets the game (OS) | deff 24 "SLAM TILT" (prio 251) | 0x018 | leff 12 |
-- While tilted: no score, no ball save, no bonus; ball(s) drain; next ball starts with warnings 0.
-- Observed: bobs at t 83.19 / 85.31 → deff 23, warnings 1, 2; t 87.45 → deff 21, state 512; drain t 91.70
+- While tilted: no score, no bonus, **no ball save** (QA F15, code): the save task 0x31 `ball_save_task` [0x00017a28]
+  has flags 0x300 [0x00017acc], so the tilt's `task_kill(0, 0x1000)` [0x0001dbb4] ends it; the drain path
+  [0x01039ed4] then finds no task 0x31 / 0x32 (`ball_save_try(0)` [0x00017b3c] needs one) and ends the ball.
+  Run in ROM code (`scenario_lift.py tilt_ball_save`): task 0x31 started at the serve, killed at the tilt (tick 397),
+  drain at 436 → audit 8 at 467, next ball served at 655; the trace only confirms it. Ball(s) drain; next ball
+  starts with warnings 0.
+- Code run = trace: bobs at t 83.19 / 85.31 → deff 23, warnings 1, 2; t 87.45 → deff 21, state 512; drain t 91.70
   → audit 8 at 92.23 (0.53 s), no deff 25, next player at once (state 0, warnings 0).
 
 ### 5.5 Extra ball (deff 53 / 54) and special (deff 55 / 56)
@@ -175,9 +185,9 @@ t 40.65 (10.06 s after sw12 at 30.59).
   Not traced.
 - **Shoot again**: at the next end of ball the same player plays again with the same ball number; ball start
   shows deff 26 + leff 16 [0x00019d30] [0x0001abb4].
-- **Special** [0x01008528]: lit by the left-eject award "SPECIAL LIT" (weight 1) [0x010248b0]: lamp 53
-  SPECIAL on, task 0x61 queues deff 55 "SPECIAL / IS LIT" (prio 180, sound 0x066). Collected at the **right
-  orbit** while lamp 53 is lit [0x01008684]: lamp off, OS special award 0x0001d7a0 (adj 22/23), deff 56
+- **Special** [0x01008528]: lit by the left-eject award "SPECIAL LIT" (weight 1) [0x010248b0]: the lit state *is*
+  lamp 53 SPECIAL (on, with a flash), audit at 0x02102cf8, task 0x61 queues deff 55 "SPECIAL / IS LIT" (prio 180, sound 0x066). Collected at the **right
+  orbit** while lamp 53 is lit [0x01008684]: lamp off, OS special award 0x0001d7a0 (adj 22/23; over the limit it scores 5,000,000, `DAT_00030ea8`), task 0x62 → deff 56
   (sound 0x068). Not traced.
 
 ### 5.6 Replay, high score, match
@@ -187,31 +197,69 @@ t 40.65 (10.06 s after sw12 at 30.59).
   deff 33 "PLAYER %d", deff 31 "PLAYER %d / ENTER INITIALS", deff 32 initials entry; deffs 34-37 are the
   competition/tournament results ("SORRY, YOU DID NOT QUALIFY", "YOU QUALIFIED!", "%P PLACE") [0x0001e810]
   [0x0001e328]. Not traced (needs ≥ 25 M).
-- Match [0x00019668]: deff 38 (prio 245), music 0x023, then 0x073 (observed t 166.65 → 171.48); award adj 29,
-  percentage adj 30.
+- Match [0x00019668]: deff 38 (prio 245) [deff_038 0x0100820c]: music 0x023, then at step 60 0x072 when a player
+  matched or 0x073 when none did, and 0x074 with the award (`match_award`); no deff 38 when adj 30 = 11 (OFF) or in a
+  tournament. Award adj 29, percentage adj 30. The trace (t 166.65 → 171.48) shows the no-match path.
+
+### 5.7 Hint speech (task 0xc6) [0x010250f4]
+A per-player hint call is kept at 0x02111f54 + 2 (p - 1) (u16) with its next sample index at 0x02111f64 + 4 (p - 1)
+(u32). Code (the task body is a label inside `hint_speech_set`, decompiled only by disassembly):
+- **Set**: `hint_speech_set(arg)` [0x01025030] clears game flags 0x48 / 0x49 and the index; arg 1 (from
+  `count_megatron_m_b_a` [0x0100fff0] case 4) sets call 0x14e and game flag 0x48 (bit 0 of byte 9 of 0x00031454); arg 0
+  (side choice, `start_deff_41` [0x01033f54]) sets, by side, Autobot (player_side 1) 0x148 + random_below(3), else
+  0x14c + random_below(2). `left_eject_callback_sub_24fe8` [0x01024fe8], at each Allspark award unless game flag 0x48
+  is set, sets game flag 0x48 (`player_flag9_bit1_24fe0` [0x01024fe0]) and call 0x145.
+- **Start**: `hint_speech_start` [0x01025294] starts task 0xc6 when `hint_speech_allowed` [0x0102523c] says:
+  no multiball, no timed mode, 0x0101ff6c false, game flag 0x49 clear and 0x48 set (`game_flag_test`
+  [0x00005b58] tests a game flag: byte flag >> 3, bit flag & 7 of 0x00031454). Called by the left eject
+  (after the Allspark award, once tasks 0x5d..0x7e are over) and by `deff_141_0_more` [0x01025f18] at its frame 10.
+- **Task 0xc6**: sleeps 0x7d = 125 ticks (2.0 s); n = `snd_call_sample_count(call)` [0x00025924]; when the index
+  >= n it ends (every sample of the call was said once). Else it tries `snd_play_arg_25250(call, index)`
+  [0x00025250] (sample `index` of the call) once a tick, at most 31 times; when it plays: call 0x145 with index 2
+  queues 0x146 after it, then 0x146 again (`snd_play_after_handle_2539c` [0x0002539c], last argument 0 then 1), index 4
+  queues 0x147 the same way; call 0x14a with index 1 queues 0x14b; then the index + 1.
+
+### 5.8 Rule leffs and background deffs (OS rule records) [0x000177b4] [0x000178b0]
+The game builds rule records in RAM at power-up (read after game start by running the ROM's code; the lists are
+`rules/leff_rules.csv` and the `background` rows of `rules/deff_starters.csv`). The OS evaluates them each tick, and
+a record runs only when the game state `DAT_00031468` is 0 or has a bit in common with the record's mask (+4: 0x20 for
+most records, 0 for the attract-only ones).
+- **Rule leff** (vtable 0x00033dfc, `rule_leff_record_eval_177b4` [0x000177b4]): if its condition (+0xc) is true and the
+  leff (+0x10) is not running, `leff_start`; if the condition is false, the leff is stopped (`task_group_kill_b7e4`
+  [0x0000b7e4]). 47 records.
+- **Background deff** (vtable 0x00033dd4, `bg_entry_eval` [0x000178b0]): if the condition is true, deff +0x10 and
+  sound +0x12 are started when not already running; an adjust routine (+0x14) can change both first (deff 130
+  double scoring from 0x01003ed8, deff 40 or 19 and the side music from 0x010068e4). 15 records with a deff: the
+  battle "running" screens 93 97 101 105 109 113 117 121, the mode screens 58 64 70 76 82 87, deff 133.
+A rule leff's task gets flags 0x22 plus 0x100 when the leff's table flags (0x040cfe00 + 12 x id, +4) have bit 0 and not
+bit 2, else 0x2000 (`leff_start` [0x00007c10]). So at the end of ball `task_kill(0, 0x100)` in `start_deff_25`
+[0x00019e44] kills every rule leff task except those with 0x100 (column `end_of_ball` of `rules/leff_rules.csv`).
+`ball_start` [0x00019d30] `task_kill(0, 0x80)`, `game_init` [0x00019c64] (0x400) and `tilt` [0x0001db40]
+(0x1000) kill them all, since no leff task has these flags. The rule restarts a killed leff on the next tick
+where its mask lets it run.
 
 ## 6. How it ends
 
 ### 6.1 End of ball [0x00019e44]
 Same as Tron: event 0x1e, state |= 4, event 0x1d (game hooks end multiballs/modes: 0x0100415c,
 0x0100c8dc, 0x0100e768, 0x01010428, 0x01023140, 0x01027fc4, 0x0102a0a8, 0x0103686c), audit 8 (and 40 / 41
-LEFT/RIGHT DRAINS after an outlane), wait up to 169 ticks for "total" deffs, **pf multiplier = 1**, then (not
+LEFT/RIGHT DRAINS after an outlane), wait up to 937 ticks (`DAT_00033324`) for every task with flag 0x2000 (every foreground deff with flags & 5 == 0), **pf multiplier = 1**, then (not
 tilted) deff 25 bonus (see combos_and_multipliers.md for the formula), event 0x16 adds it, event 0x15; wait
 for replay tasks; clear tilt; event 0x1f; next up [0x0001abb4].
-- Observed: drain t 42.82 → audit 8 + deff 25 at 43.36 (0.54 s) → bonus added at 48.85 (5.5 s at bonus X 1)
+- Code run = trace: drain t 42.82 → audit 8 + deff 25 at 43.36 (0.54 s) → bonus added at 48.85 (5.5 s at bonus X 1)
   → next player's ball start in the same ms.
 - Bonus sounds: 0x021 (Autobot) / 0x020 (Decepticon) at start, 0x077 + 0x078 at +0.76 s, 0x079 +1.08 s,
-  0x07a +2.1 s ("TOTAL BONUS"), 0x022 +2.44 s, 0x001 +5.45 s (observed).
+  0x07a +2.1 s ("TOTAL BONUS"), 0x022 +2.44 s, 0x001 +5.45 s (code run = trace).
 
 ### 6.2 Multi-player rotation [0x0001abb4]
 Shoot-again pending → same player, flag 9. Else player + 1; after the last player, ball + 1 and player 1.
-Per-player state lives in NVRAM arrays indexed by player and survives other players' turns. Observed order:
+Per-player state lives in NVRAM arrays indexed by player and survives other players' turns. Code run = trace, order:
 P1 b1 → P2 b1 → P1 b2 → P2 b2 → P1 b3 → P2 b3 (t 48.86, 74.57, 92.23, 118.02, 142.34).
 
 ### 6.3 Game over [0x0001a144]
-Ball > balls per game: event 0x2a, state |= 0x18, audits (46, 19 observed), high score entry, match deff 38,
+Ball > balls per game: event 0x2a, state |= 0x18, audits (46, 19; code run = trace), high score entry, match deff 38,
 event 0x2b (game hook 0x01006200), attract: deff 1 + leff 1, sound 0x024 then 0x04b 2.0 s later
-[0x01006164]. Observed: last bonus t 166.65 → deff 38 at once → attract t 172.66 (6.0 s).
+[0x01006164]. Code run = trace: last bonus t 166.65 → deff 38 at once → attract t 172.66 (6.0 s).
 
 ## 7. Media
 

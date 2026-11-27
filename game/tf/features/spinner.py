@@ -1,9 +1,9 @@
 """Right orbit spinner (rom/rules/modes/scoring_features.md 4.2; code [0x01033a08 -> 0x01032294 -> 0x010320a4]
-+ observed: 5 spins -> 5 x (2,500 + 90), traces/scoring.jsonl t 33.71).
+, confirmed by traces: 5 spins -> 5 x (2,500 + 90), traces/scoring.jsonl t 33.71).
 
 - spin_value (0x21120dc + 4(p-1)): 2,500 at ball start (event 0x11 hook 0x01032484) unless game flag 0x1c.
-  NOTE: flag 0x1c is also set by the valid playfield (event 0x6a) in this OS model, so the reset is applied
-  at every ball start here (what sets the spinner's keep flag was not found).
+  Nothing in 1.80 sets flag 0x1c (no game_flag_set(0x1c) in the code, agent A, scoring_features.md), so the
+  value is reset at every ball start.
 - Each spin (the handler adds 90, tf/switches.py) is queued like the pops (task 0x49, one per tick, 93-tick
   idle end): spin_value, leff 152, sound 0x26d stepping through its samples.
 - Super spinner (left-eject award "SUPER SPINNER LIT") [0x010325bc]: value 50,000 + 10,000 x times lit before
@@ -31,7 +31,11 @@ class Spinner(Feature):
         self.queue = 0
         self.sample = 0
         self.super_total = 0
+        self._first = False
         os_.deff_live((SUPER_DEFF,), lambda: {"values": [self.pd.get("super_spin_left", 0), self.super_total]})
+        # leff 154 while the super spinner is lit (flag 0x4c): rule flag_4c_test_32094 [0x01032094] -> [0x01032280]
+        # (QA L-154)
+        os_.lamp_rule(lambda: bool(os_.game) and os_.flag(0x4c), leff=154)
 
     def player_first_ball(self):
         self.pd.super_spin_count = 0
@@ -39,17 +43,21 @@ class Spinner(Feature):
 
     def ball_start(self):
         self.pd.spin_value = VALUE
+        self.sample = 0             # 0x26d's sample index, reset every ball (strh 0 to 0x3573c) [0x01032484] (QA P17)
 
     def sw_34(self):
         if self.os.tilted:
             return
         self.queue += 1
         if not self.os.task_running(TASK):
-            self._pay()
+            self._pay(first=True)                    # [0x01032294]: play_sound_270(1), then task 0x49
         elif self.queue == 1:
             self._pay()
 
-    def _pay(self):
+    def _pay(self, first=False):
+        """One spin [0x010320a4]; `first` is its argument (the spin that starts task 0x49): the burst totals
+        0x00035738 and super 0x00035740 start again there, else they add up while the task runs."""
+        self._first = first
         os_ = self.os
         if not self.queue or not os_.game or os_.tilted:
             self.queue = 0
@@ -84,9 +92,7 @@ class Spinner(Feature):
         pd = self.pd
         points = pd.get("super_spin_value", 50000)
         os_.score_add(points)
-        if not os_.display.running(SUPER_DEFF):
-            self.super_total = 0
-        self.super_total += points
+        self.super_total = points if self._first else self.super_total + points
         pd.super_spin_left = max(pd.get("super_spin_left", 1) - 1, 0)
         if pd.super_spin_left == 0:
             os_.deff_start(SUPER_DONE_DEFF, values=[points])

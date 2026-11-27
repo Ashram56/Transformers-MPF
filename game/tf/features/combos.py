@@ -1,5 +1,5 @@
 """Combos and shot multipliers (rom/rules/modes/combos_and_multipliers.md sections 4 and 6; code [0x01002f0c]
-[0x01002be4] [0x01002b5c] [0x010236e8] [0x01023538] + observed in traces/combos.jsonl).
+[0x01002be4] [0x01002b5c] [0x010236e8] [0x01023538], confirmed by traces/combos.jsonl).
 
 Major shots (index / mask bit): 0 left eject (the Allspark rule, tf/features/allspark.py), 1 left orbit (sw5
 or sw6 as tf/features/battles.py decides a pass, hook combo_shot), 2 left ramp exit
@@ -9,20 +9,22 @@ round the left orbit, switch timer 7, and not within 187 ticks of the previous r
 Combos, on a major shot:
 1. no window running: combo_way = 1, no award;
 2. the shot's bit in combo_mask: way + 1, award M x (100,000 + 25,000 x way) with M the shot's multiplier,
-   leff 35, audit 154 (observed 150,000 ... 250,000 for 2- to 6-way);
+   leff 35, audit 154 (the traces confirm 150,000 ... 250,000 for 2- to 6-way);
 3. else the way count stays.
 Then the window ends, and unless a multiball runs ([0x01002afc] -> [0x01006704], the multiball flags, named
 any_timed_mode_running in the decompile) mask = all six minus the shot when it is the eject or the left ramp and
 the window restarts: 312 ticks (task 0x92, not counting while the
-left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (observed:
-traces/battle_starscream.jsonl, no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
+left eject holds a ball) + 124 grace ticks (task 0x93). During a battle it restarts (the test is the multiball
+flags only; traces/battle_starscream.jsonl confirms: no award at 32.29 s 7.2 s after the last shot, 2-way 150,000 at 34.47 s, then a
 combo on every shot). The arrows of the allowed shots (leff 34 [0x01003104]) are not drawn: 1.80 never runs
 that leff (no start in the code or the traces; the arrow lamps stay as the modes set them during a window).
 deff 48 (n-WAY COMBO) is never started in 1.80 (no starter; the status panel shows combos).
 
 Shot multipliers (per ball, 1X unless the shot's hold flag 0x16 + s is set):
 - lighting (own lanes complete, left-eject award): if a shot is below 2X, mult_lit and leff 37 run, deff 44;
-- the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38 (inferred: after its combo award).
+- the next major shot below 2X goes to 2X: deff 50, sound 0x05b, leff 38, first thing in the shot's handler, so its
+  combo and mode awards already count 2X (FUN_010237ac called first by 0x0100a788, 0x01033244, 0x01033824,
+  0x01033918, 0x01033b3c, 0x01033488; QA P2).
 - lighting with all six at 2X starts the roving 3X [0x010236e8] (task 0xb6, until the ball ends) [0x01023650]:
   index 6 (the right orbit) moving to 2 and back every 92 ticks; the shot at the index is 3X, and for the
   first 46 ticks after a move the shot it left too [0x01023538]. Leff 39 (rule while task 0xb6 runs) blinks
@@ -32,6 +34,7 @@ The orbits are decided with the battle shots (tf/features/battles.py: left orbit
 sw12 ignored after a left orbit pass, the center lane, a plunge or the back door, and within 187 ticks of the
 previous right orbit) and come here through hook combo_shot.
 """
+from tf.display import deff_variant
 from tf.features import Feature
 
 ORDER = 45
@@ -42,10 +45,14 @@ WINDOW_TICKS, GRACE_TICKS, STEP_TICKS = 312, 124, 7
 WINDOW_TASK = 0x92
 AWARD_LEFF, AWARD_AUDIT, WINDOW_LEFF = 35, 154, 34
 MULT_LIT_LEFF, MULT_LIT_DEFF = 37, 44
+MULT_LIT_SPEECH, MULT_LIT_SPEECH_TICKS = 0x05a, 75     # [0x0102de6c] frame 0x19 x 3 ticks (QA R-F6)
 MULT_DEFF, MULT_SOUND, MULT_LEFF = 50, 0x05b, 38
-# deff 50 [0x01023c5c] (its capture has one frame and no length): 53 frames of 3 ticks then 10 more, sound 0x05b,
-# then 0x05c at frame 40 for 2X (0x05d for 3X) (observed: switches.jsonl 133.93 s, 0x05c 1.96 s, next deff 2.78 s)
-MULT_SECONDS, MULT_SOUND_2X, MULT_SOUND_2X_AT = 2.78, 0x05c, 1.96
+# the shots' lamps: byte +0x12 of the shot records 0x040c6f58 + 0x14 x (index + 1), leff 38's lamp [0x01023df8]
+SHOT_LAMPS = (12, 16, 47, 43, 31, 36)
+# deff 50 [0x01023c5c] (its capture has one frame and no length): sound 0x05b, then 0x05c at tick 120 for 2X (0x05d
+# for 3X), 169 ticks in all (op list deff_050.json, the ALLSPARK 2X run; switches.jsonl 133.93 s confirms: 0x05c
+# 1.96 s, next deff 2.78 s)
+MULT_TICKS, MULT_SOUND_2X, MULT_SOUND_2X_TICKS = 169, 0x05c, 120
 HOLD_FLAG = 0x16
 ROVE_TASK, ROVE_TICKS, ROVE_LEFF, ROVE_BLINK = 0xb6, 46, 39, 3
 X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58 + 0x12, entries 1-6)
@@ -53,20 +60,36 @@ X_LAMPS = (12, 16, 47, 43, 31, 36)  # shot index -> its X lamp (table 0x040c6f58
 
 class Combos(Feature):
     name = "combos"
-    HOOKS = ("player_first_ball", "ball_start", "switch", "sw_51", "shot_mult_light", "ball_end", "tilt", "combo_shot")
+    HOOKS = ("player_first_ball", "ball_start", "switch", "sw_51", "shot_mult_light", "ball_end", "tilt", "combo_shot",
+             "shot_mult_take")
 
     def __init__(self, os_):
         super().__init__(os_)
         self.way = 0
         self.ticks = 0
         self.mask = ALL
-        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF,
-                      order=0x01023928)
+        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("mult_lit")), leff=MULT_LIT_LEFF)
         self.rove = self.rove_prev = 0          # roving 3X index (1-6 = shot + 1) and the one it just left
         self.rove_dir = -1
-        os_.display.set_media(MULT_DEFF, MULT_SECONDS, (), ((0.0, MULT_SOUND), (MULT_SOUND_2X_AT, MULT_SOUND_2X)))
-        os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF, order=0x01023a70)
+        from tf.os_layer import TICK                     # noqa: PLC0415
+        os_.display.set_media(MULT_DEFF, MULT_TICKS * TICK, (), ((0.0, MULT_SOUND),
+                                                                 (MULT_SOUND_2X_TICKS * TICK, MULT_SOUND_2X)))
+        os_.lamp_rule(lambda: bool(os_.game) and os_.task_running(ROVE_TASK), leff=ROVE_LEFF)
         os_.lamps.leff_code(ROVE_LEFF, self._rove_leff)
+        os_.lamp_update(self.draw)
+
+    def draw(self):
+        """Lamp rule current_player_user_23a84 [0x01023a84] (registered by [0x01023ea0], list 4): for entries 1-6
+        of table 0x040c6f58, the X lamp (+0x12) is solid (0x00007858) while the player's multiplier byte
+        (+4: 0x02111f28 + 4 x shot) is at least the threshold (+8, 2 for every shot), else off (0x00007714)
+        (QA L-R04)."""
+        mult = self.pd.get("shot_mult") or [1] * 6
+        lamps = self.os.lamps
+        for shot, lamp in enumerate(X_LAMPS):
+            if mult[shot] < 2:
+                lamps.lamp_off_all(lamp)
+            else:
+                lamps.lamp_on_solid(lamp)
 
     def shot_mult(self, shot):
         """[0x01023538]: the shot's multiplier, 3 while the roving 3X is on it."""
@@ -123,6 +146,8 @@ class Combos(Feature):
         pd.mult_lit = False
 
     def switch(self, num):
+        if num == 11 and self.os.task_running(0x54):
+            return                                  # [0x01033b3c]: the Optimus hit's task 0x54 (QA M5)
         if num in SHOTS and not self.os.tilted:
             self.shot(SHOTS[num])
 
@@ -140,9 +165,9 @@ class Combos(Feature):
             mult = self.shot_mult(index)
             pd.combo_best = max(pd.get("combo_best", 1), (self.way << 16) | mult)
             os_.score_add(mult * (100000 + 25000 * self.way))
+            os_.status.combo(self.way, pd.combo_total, os_.now)   # the status panel's combo texts [0x0102f1c0]
             os_.leff_start(AWARD_LEFF)
             os_.audit(AWARD_AUDIT)
-        self._mult(index)
         restart = not os_.task_running(WINDOW_TASK)
         os_.task_kill(WINDOW_TASK)
         if os_.any_multiball():
@@ -154,6 +179,10 @@ class Combos(Feature):
         if restart:
             os_.request_refresh()
 
+    def shot_mult_take(self, index):
+        if self.os.game and self.os.in_play and not self.os.tilted:
+            self._mult(index)
+
     def _mult(self, index):
         """[0x010237ac]: a lit shot multiplier goes to the shot if it is below 2X."""
         os_ = self.os
@@ -161,13 +190,18 @@ class Combos(Feature):
         if pd.get("mult_lit") and pd.shot_mult[index] < 2:
             pd.shot_mult[index] = 2
             pd.mult_lit = False
-            os_.deff_start(MULT_DEFF)                   # its sound 0x05b comes with it
-            os_.leff_start(MULT_LEFF)
+            # its sound 0x05b comes with it; +0x30 = the shot's record (shot index + 1), +0x34 = the new level
+            # [0x010237ac]: the op list of that shot and level gives its sounds (QA V050; the frames are still
+            # the ALLSPARK 2X run's, docs/rom_differences.md)
+            variant = "shot%d_x2" % (index + 1)
+            os_.deff_start(MULT_DEFF, **({"variant": variant} if deff_variant(MULT_DEFF, variant) else {}))
+            os_.leff_start(MULT_LEFF, lamp=SHOT_LAMPS[index])     # deff_050 [0x01023c5c] passes the record
             os_.request_refresh()
 
     def sw_51(self):
         """The Optimus handler [0x01033d3c] gives the center lane's multiplier slot (not a combo shot), unless
-        task 0x54 (the previous hit) or 0x4e runs (observed: switches.jsonl 133.93 s, deff 50 on the Optimus)."""
+        task 0x4e or 0x54 (the previous hit) runs; start_deff_50(4) is shot record 4, the center lane (switches.jsonl
+        133.93 s confirms)."""
         os_ = self.os
         if os_.game and os_.in_play and not os_.tilted and not os_.task_running(0x54) \
                 and not os_.task_running(0x4e):
@@ -188,20 +222,29 @@ class Combos(Feature):
     def _window_end(self):
         self.os.request_refresh()
 
-    def shot_mult_light(self):
-        """[0x010236e8]: shot multipliers lit when a shot is below 2X, else the roving 3X starts (deff 44 shows
-        which, from the lanes' caller)."""
+    def shot_mult_light(self, lanes=False):
+        """[0x010236e8] with FUN_01023494: nothing (0) while a multiplier is lit or the roving 3X runs; else the
+        multipliers lit (2) when a shot is below 2X, or the roving 3X started (3). A lane completion [0x0102db28]
+        always starts deff 44 with that result (QA P15); the Allspark's item 10 shows it only when one happened."""
         os_ = self.os
         pd = self.pd
-        below = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
-        if below:
-            pd.mult_lit = True
-        elif not os_.task_running(ROVE_TASK):
-            self._rove_start()
-        else:
-            return
-        os_.deff_start(MULT_LIT_DEFF)
-        os_.request_refresh()
+        code = count = 0
+        if not pd.get("mult_lit") and not os_.task_running(ROVE_TASK):
+            count = sum(1 for m in pd.get("shot_mult", [1] * 6) if m < 2)
+            if count:
+                code = 2
+                pd.mult_lit = True
+            else:
+                code, count = 3, 1
+                self._rove_start()
+        if lanes or code:
+            os_.deff_start(MULT_LIT_DEFF, values=[code, count])
+            if count:       # deff_044_multipliers [0x0102de6c]: frame 25 (3 ticks each) plays 0x05a when +0x34 != 0
+                os_.after(MULT_LIT_SPEECH_TICKS, lambda: os_.display.running(MULT_LIT_DEFF)
+                          and os_.sound(MULT_LIT_SPEECH, in_deff=MULT_LIT_DEFF))
+        if code:
+            os_.request_refresh()
+        return code
 
     def ball_end(self):
         self.os.task_kill(WINDOW_TASK)

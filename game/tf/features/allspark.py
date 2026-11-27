@@ -1,12 +1,12 @@
 """The Allspark: the left eject (sw 3, coil 22) and its mystery award (rom/rules/modes/allspark_and_energon.md
-5.2-5.3; code [0x0100a754] [0x0100a788] [0x010243b4] [table 0x040dde30] + observed in
+5.2-5.3; code [0x0100a754] [0x0100a788] [0x010243b4] [table 0x040dde30], confirmed by
 traces/allspark_energon.jsonl and the battle traces).
 
-The eject holds its ball (ball hold hold_left_eject). The device settles 47 ticks (observed 0.76 s), then the
+The eject holds its ball (ball hold hold_left_eject). The device settles 46 ticks (record 0x040d1868 +0x10) from the tick after the switch, then the
 rule runs (not when tilted): audit 0x45; every battle with shot 0 (tf/features/battles.py); the mystery award if
 an Allspark is banked; mode-start shot 0; combo shot 0; the handler's bonus count and 5,070. The kickout waits
 while a show runs (the award, a battle intro), then sound 0x157 + leff 21, 54 ticks later 0x158 + leff 22 and
-coil 22 (observed: 36.27 / 37.15 s with nothing showing; after deff 52 with the award).
+coil 22 (device 3 case 7 [0x0100a788]: 0x35 + 1 ticks; the traces confirm, 36.27 / 37.15 s with nothing showing).
 
 Mystery award (one banked Allspark spent): a weighted pick over 12 items (each item's weight is 0 when it was
 the last award; ADD-A-BALL only in a multiball and once, ADD MORE TIME only in a timed mode and once per mode,
@@ -28,7 +28,7 @@ WARN_TRIES = 0x3a9
 WARN_SOUND, WARN_LEFF = 0x157, 21
 EJECT_SOUND, EJECT_LEFF = 0x158, 22
 RELEASE_EVENT = "tf_hold_release"
-EJECT_COIL, EJECT_LOG_MS = 22, 130         # the device pulses c_left_eject; traces log it on 130 ms (observed)
+EJECT_COIL, EJECT_LOG_MS = 22, 64          # coil_pulse_now(22, 64 ms) [0x0100a9b0] (QA CC7; traces log 130 ms)
 ENTER_AUDIT = 0x45
 POINTS = 5070
 BANKED_LEFF = 40
@@ -36,7 +36,8 @@ AWARD_TASK, AWARD_DEFF = 0x5e, 52
 AWARD_SOUNDS = (0x140, 0x141)
 ITEM_SOUND = {5: 0x143, 6: 0x142}
 ITEM_SOUND_OTHER = 0x144
-ITEM_SOUND_AT, END_SOUND_AT = 0.2, 1.63
+# deff_052_special [0x01024524]: 2 ticks a frame (dmd_page_303cc(2)); the item's sound at frame 6, 0x141 at frame 0x32
+ITEM_SOUND_AT, END_SOUND_AT = 6 * 2 * 0.016, 0x32 * 2 * 0.016
 BASE_WEIGHT = {1: 1, 2: 5, 3: 200, 4: 150, 5: 300, 6: 250, 7: 150, 8: 100, 9: 100, 10: 100, 11: 100, 12: 100}
 COMPETITION_ITEM = {0: 1, 1: 2, 2: 3, 3: 12, 4: 11, 5: 10, 6: 9, 7: 8, 8: 4, 9: 7}
 ITEM_AUDIT = 74                         # + item: MYSTERY: LIGHT SPECIAL (75) .. SUPER POPS LIT (86)
@@ -53,10 +54,10 @@ class Allspark(Feature):
         super().__init__(os_)
         self.machine.switch_controller.add_switch_handler(SWITCH, self._entered)
         self.machine.events.add_handler("balldevice_bd_left_eject_ball_eject_success", self._eject_success)
-        os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("allspark_lit", 0) > 0, leff=BANKED_LEFF,
-                      order=0x01024f24)
-        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("super_pops")), leff=SUPER_POPS_LEFF,
-                      order=0x0102d520)
+        os_.lamp_rule(lambda: bool(os_.game) and self.pd.get("allspark_lit", 0) > 0, leff=BANKED_LEFF)
+        from tf.lamps import flasher_coil_ramp                  # noqa: PLC0415
+        os_.lamps.leff_code(BANKED_LEFF, flasher_coil_ramp(32))     # leff_040 [0x01024328] (QA R-F7)
+        os_.lamp_rule(lambda: bool(os_.game) and bool(self.pd.get("super_pops")), leff=SUPER_POPS_LEFF)
 
     def player_first_ball(self):
         pd = self.pd
@@ -89,6 +90,7 @@ class Allspark(Feature):
         """[0x0100a788] event 2, ball entered."""
         os_ = self.os
         os_.audit(ENTER_AUDIT)
+        os_.hook("shot_mult_take", 0)               # FUN_010237ac(0) first [0x0100a788] (QA P2)
         os_.hook("eject_modes")                     # the wizard modes' hits and starts first [0x0100a788]
         os_.hook("mb_shot", 0)
         os_.hook("battle_shot", 0)
@@ -96,9 +98,20 @@ class Allspark(Feature):
             self.award()
         os_.hook("mode_start_shot", 0)
         os_.hook("combo_shot", 0)
+        os_.hook("hint_set_allspark")               # [0x01024fe8], then hint_speech_start once tasks 0x5d-0x7e end
+        self._hint_wait()                           # [0x0100a788] (QA SC4)
+        os_.hook("scoring_switch", None)            # FUN_010047b8 and FUN_01003a64 [0x0100a788] (QA P10)
         os_.hook("bonus_add")
         os_.base_score(POINTS)
         os_.request_refresh()
+
+    def _hint_wait(self):
+        """[0x0100a788]: task_sleep(6) while a show task 0x5d-0x7e runs, then hint_speech_start [0x01025294]."""
+        os_ = self.os
+        if os_.show_running():
+            os_.after(6, self._hint_wait)
+            return
+        os_.hook("hint_start")
 
     def _kickout(self):
         """Event 7: wait for the show tasks, then the warning (0x157, leff 21) and the eject."""
@@ -158,7 +171,7 @@ class Allspark(Feature):
         pd = self.pd
         last = pd.get("allspark_last", 0)
         w = dict(BASE_WEIGHT)
-        if not os_.any_multiball() or os_.flag(ADD_BALL_FLAG):
+        if not os_.add_ball_open() or os_.flag(ADD_BALL_FLAG):       # [0x01024a20] (QA M7)
             w[5] = 0
         else:
             w[5] += 1000
@@ -172,8 +185,8 @@ class Allspark(Feature):
             w[8] = 0
         if os_.flag(BONUS_X_HOLD):
             w[9] = 0
-        if all(m >= 2 for m in pd.get("shot_mult", [1] * 6)):
-            w[10] = 0
+        if pd.get("mult_lit") or os_.task_running(0xb6):     # 0x01023494 returns 0 (QA P4): a multiplier lit
+            w[10] = 0                                         # or the roving 3X runs; all six at 2X still offer it
         if pd.get("super_spinner"):
             w[11] = 0
         if last in w and last not in (5, 6):
@@ -194,9 +207,11 @@ class Allspark(Feature):
             return
         item = pick + 1
         sound = ITEM_SOUND.get(item, ITEM_SOUND_OTHER)
-        # the item pages' printf slots: "%iX BONUS" and "POPS SCORE %,02lu" (the value the award sets, inferred)
+        # the item pages' printf slots: "%iX BONUS" (read after the award, 0x01000f18: capped at 25, QA P20) and
+        # "POPS SCORE %,02lu": the show task's +0x34, pop_base read after the award ran (bag_run_award, then
+        # player_word_12054_2c54c [0x010243b4]), so the grown base
         pop_next = min(pd.get("pop_base", 3000) + 1000, 20000)
-        os_.show(AWARD_TASK, AWARD_DEFF, values=[pd.get("bonus_x", 1) + (1 if item == 4 else 0), pop_next], sounds=[
+        os_.show(AWARD_TASK, AWARD_DEFF, values=[min(pd.get("bonus_x", 1) + (1 if item == 4 else 0), 25), pop_next], sounds=[
             (0.0, lambda: os_.sound(AWARD_SOUNDS[0], in_deff=AWARD_DEFF)),
             (ITEM_SOUND_AT, lambda: os_.sound(sound, in_deff=AWARD_DEFF)),
             (END_SOUND_AT, lambda: os_.sound(AWARD_SOUNDS[1], in_deff=AWARD_DEFF))])
@@ -211,8 +226,7 @@ class Allspark(Feature):
         os_ = self.os
         pd = self.pd
         if item == 1:
-            os_.specials_lit[os_.player_num - 1] += 1
-            os_.special_lamp_update()
+            os_.light_special()                     # [0x01008528]
         elif item == 2:
             os_.light_extra_ball()
         elif item == 3:
@@ -220,9 +234,12 @@ class Allspark(Feature):
         elif item == 4:
             os_.hook("bonus_x_add")
         elif item == 5:
-            os_.flag_set(ADD_BALL_FLAG)
-            os_.multiball_start(os_.rom_balls_in_play() + 1)
-            os_.hook("add_ball")
+            # [0x01024a60]: FUN_0103aff4(1, 0, 312, 187), ball save 312 and grace 187; flag 0x14 and the revives
+            # only when the multiball starts (QA M7)
+            if os_.add_ball_open() and not os_.flag(ADD_BALL_FLAG) and \
+                    os_.multiball_start(os_.rom_balls_in_play() + 1, save_ticks=0x138, grace_ticks=0xbb):
+                os_.flag_set(ADD_BALL_FLAG)
+                os_.hook("add_ball")
         elif item == 6:
             os_.hook("add_time")
             os_.flag_set(ADD_TIME_FLAG)

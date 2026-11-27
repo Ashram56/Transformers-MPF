@@ -9,17 +9,19 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/fonts/                        the ROM fonts (scripts/gen_fonts.py)
 - game/tf/media_data.json            sound pools (one per ROM sound call) and display effect facts for
                                      tf/media_bridge.py
-- game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each captured display effect
-- game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs), plus deff_NNN_side1.tscn for
-                                     the effects that draw the player's side (SIDE_VARIANTS: the capture is the
-                                     Decepticon side, the Autobot one is made from it with the ROM's own image or
-                                     message)
+- game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each display effect not replayed live (from its code run)
+- game/media/live_ops/deff_NNN[__<variant>].json.gz  the op lists of the deffs replayed live (live_ops_ids():
+                                     tf/op_player.py), compacted from rom/rom_data/dmd/deff_ops/
+- game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect not replayed live (LIVE_EXCLUDED), and
+                                     deff_NNN__<variant>.tscn for each of its variants drawn from game state
+                                     (rom/mpf_package/media/dmd/deffs/deff_NNN/variants/<variant>/)
 
 The score display (deff 19) is drawn live from its draw calls (tf/score_screen.py).
 
 Usage: .venv/bin/python scripts/gen_media.py [--only-data]
 """
 import glob
+import gzip
 import json
 import os
 import shutil
@@ -204,13 +206,48 @@ def value_texts(timing, frames, deff_id=None, fits=None):
             if key not in keys:
                 keys[key] = len(slots)
                 slots.append({"t": t["str"], "f": t["font"], "x": t["x"], "y": t["y"], "a": t["flags"],
-                              "source": t["source"]})
+                              "source": t["source"], "site": t.get("call_site")})
                 if "fl" in t:
                     slots[-1].update(fl=t["fl"], w=t["w"])
             for x, y, _ in lit:
                 px[x, y] = (0, 0, 0, 255)
             shown.append(keys[key])
         per_frame.append(sorted(set(shown)))
+    return slots, per_frame
+
+
+# deff_017_insert_coins [0x01000000] (deffs 10, 15, 17): every 15 ticks the credit line (msg_get_user_44a4
+# [0x000044a4], text_draw_str at 0x010000a0) and, on even frames, PRESS START (msg 0x31a) or INSERT COINS (0x31b)
+# by leaf_19988 [0x00019988] (0x010000ec), font list 0x040c5b74 fitted to 83 columns, centred on x 0x54
+CREDIT_LINE_DEFFS = (10, 15, 17)
+
+
+def credit_slots(timing, frames):
+    """Two live slots for the credit deffs: 0 the credit line (on every frame), 1 PRESS START / INSERT COINS (on the
+    frames that draw it, whose dots are cleared): the code run drew them with an empty credit record."""
+    import gen_fonts
+    fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
+                                                     encoding="utf-8"))["fonts"]}
+    get = gen_fonts.load_images()
+    texts = {t["call_site"]: t for p in timing.get("pages") or [] for t in p["texts"]}
+    line, start = texts.get("10000a0"), texts.get("10000ec")
+    if not line or not start:
+        return [], [[] for _ in frames]
+    slots = [{"t": "", "f": line["font"], "x": line["x"], "y": line["y"], "a": line["flags"], "source": "%s"},
+             {"t": start["str"], "f": start["font"], "x": start["x"], "y": start["y"], "a": start["flags"],
+              "source": "%s"}]
+    canvas = [[None] * 128 for _ in range(32)]
+    gen_fonts.render(get, fonts[start["font"]], start["str"], start["x"], start["y"], start["flags"], canvas)
+    lit = [(x, y, v) for y, row in enumerate(canvas) for x, v in enumerate(row) if v]
+    per_frame = []
+    for img, _ in frames:
+        px = img.load()
+        if lit and all(round(px[x, y][0] / 17) == v for x, y, v in lit):
+            for x, y, _ in lit:
+                px[x, y] = (0, 0, 0, 255)
+            per_frame.append([0, 1])
+        else:
+            per_frame.append([0])
     return slots, per_frame
 
 
@@ -221,60 +258,6 @@ def loop_period(frames):
     h = [hashlib.md5(img.tobytes()).hexdigest() for img, _ in frames]
     n = len(h)
     return next((p for p in range(1, n // 2 + 1) if all(h[i] == h[i + p] for i in range(n - p))), None)
-
-
-# Effects that draw the player's side (1 Autobot, 2 Decepticon, byte 0x02112107 + player): every capture ran on
-# the Decepticon side, so the Autobot slide is the capture with the ROM's Autobot image or message in its place.
-# image: (Decepticon image, Autobot image, x, y, rows): deff 40 [0x01034198] draws 0x2234 (Decepticon) or 0x2232
-#        (Autobot) at 41, 0 on its background page; rows 25-31 are covered by the text band, so only rows 0-24
-#        show the image (observed: those rows of every frame are exactly image 8756). The one frame of 0x2233
-#        (both logos, drawn on the tick the side changes) is left out (inferred: 1 tick).
-# text: (font, x, y, flags, Decepticon text, Autobot text): deff 41 [0x01034424] draws message 0x683 DECEPTICON
-#       or 0x682 AUTOBOT, blinking; frames where the captured text is not exactly drawn stay as they are.
-SIDE_VARIANTS = {
-    40: {"image": (0x2234, 0x2232, 41, 0, 25)},
-    41: {"text": (16, 0x54, 0x12, 2, "DECEPTICON", "AUTOBOT")},
-}
-
-
-def side_frames(deff_id, frames):
-    """The Autobot side's frames of a SIDE_VARIANTS effect, made from the (Decepticon) capture's frames."""
-    import gen_fonts
-    spec = SIDE_VARIANTS[deff_id]
-    get = gen_fonts.load_images()
-    out = []
-    for img, ms in frames:
-        img = img.copy()
-        px = img.load()
-        if "image" in spec:
-            old, new, x0, y0, rows = spec["image"]
-            a, b = get(old), get(new)
-            level_of = lambda v: 0 if v == gen_fonts.TRANSPARENT else v
-            if all(px[x0 + x, y0 + y][0] == level_of(a[y][x]) * 17
-                   for y in range(rows) for x in range(len(a[0])) if x0 + x < 128):
-                for y in range(rows):
-                    for x, v in enumerate(b[y]):
-                        if x0 + x < 128:
-                            level = level_of(v) * 17
-                            px[x0 + x, y0 + y] = (level, level, level, 255)
-        if "text" in spec:
-            font_id, x, y, flags, old, new = spec["text"]
-            fonts = {int(f["id"]): f for f in json.load(open(os.path.join(GAME, "fonts", "fonts.json"),
-                                                             encoding="utf-8"))["fonts"]}
-            was = [[None] * 128 for _ in range(32)]
-            gen_fonts.render(get, fonts[font_id], old, x, y, flags, was)
-            lit = [(cx, cy, v) for cy, row in enumerate(was) for cx, v in enumerate(row) if v]
-            if lit and all(round(px[cx, cy][0] / 17) == v for cx, cy, v in lit):
-                for cx, cy, _ in lit:
-                    px[cx, cy] = (0, 0, 0, 255)
-                now = [[None] * 128 for _ in range(32)]
-                gen_fonts.render(get, fonts[font_id], new, x, y, flags, now)
-                for cy, row in enumerate(now):
-                    for cx, v in enumerate(row):
-                        if v is not None:
-                            px[cx, cy] = (v * 17, v * 17, v * 17, 255)
-        out.append((img, ms))
-    return out
 
 
 def write_slide(deff_id, frames, loop, folder_rel, panel, values=None, name=None):
@@ -333,6 +316,7 @@ def build_deffs(only_data):
     rows = deff_rows()
     fits = fit_formats()
     out = {}
+    live = set(live_ops_ids())         # replayed from their op lists: no frames, no slide (only their data)
     if not only_data:
         fsutil.clear_dir(os.path.join(GAME, "slides", "deffs"))
         fsutil.clear_dir(os.path.join(GAME, "media", "dmd"))
@@ -348,11 +332,12 @@ def build_deffs(only_data):
         panel = panel_level(timing, frames)
         loop = rows.get(deff_id, {}).get("background_loop") == "yes"
         slots, per_frame = value_texts(timing, frames, deff_id, fits)
+        if deff_id in CREDIT_LINE_DEFFS:
+            slots, per_frame = credit_slots(timing, frames)
         out[deff_id] = {"slide": "deff_{:03d}".format(deff_id), "source": "reference", "text": [], "loop": loop,
-                        "panel": panel, "args": [], "values": [v["source"] for v in slots]}
-        if deff_id in SIDE_VARIANTS:
-            out[deff_id]["sides"] = {"1": "deff_{:03d}_side1".format(deff_id)}
-        if only_data:
+                        "panel": panel, "args": [], "values": [v["source"] for v in slots],
+                        "sites": [v.get("site") for v in slots]}
+        if only_data or deff_id in live:
             continue
         if panel is not None:
             for img, _ in frames:
@@ -364,10 +349,111 @@ def build_deffs(only_data):
         rel = "media/dmd/deff_{:03d}".format(deff_id)
         os.makedirs(os.path.join(GAME, rel), exist_ok=True)
         write_slide(deff_id, frames, loop, rel, panel, (slots, per_frame))
-        if deff_id in SIDE_VARIANTS:
-            name = "deff_{:03d}_side1".format(deff_id)
-            write_slide(deff_id, side_frames(deff_id, frames), loop, rel, panel, (slots, per_frame), name=name)
+    for vfolder in sorted(glob.glob(os.path.join(DEFFS, "deff_*", "variants", "*"))):
+        # a variant drawn from game state (rom/tools/deff_package.py --ops-variants): its own slide
+        deff_id = int(os.path.basename(os.path.dirname(os.path.dirname(vfolder))).split("_")[1])
+        vname = os.path.basename(vfolder)
+        if deff_id not in out:
+            continue
+        with open(os.path.join(vfolder, "timing.json"), encoding="utf-8") as f:
+            timing = json.load(f)
+        if not timing.get("frames"):
+            continue
+        slide = "deff_{:03d}__{}".format(deff_id, vname)
+        out[deff_id].setdefault("variants", {})[vname] = slide
+        frames = capture_frames(vfolder, timing)
+        panel = out[deff_id]["panel"]
+        loop = out[deff_id]["loop"]
+        slots, per_frame = value_texts(timing, frames, deff_id, fits)
+        # the variant's own printf slots (deff 25 at 2X and up has the counting pages' [0x01001258] [0x01001290]):
+        # tf/media_bridge.py deff_lines fills them by call site (site_values)
+        out[deff_id].setdefault("variant_values", {})[vname] = {"values": [v["source"] for v in slots],
+                                                               "sites": [v["site"] for v in slots]}
+        if only_data or deff_id in live:
+            continue
+        if panel is not None:
+            for img, _ in frames:
+                ImageDraw.Draw(img).rectangle((0, 0, PANEL_WIDTH - 1, 31), fill=(0, 0, 0, 255))
+        if loop:
+            period = loop_period(frames)
+            frames = frames[:period] if period else frames
+            per_frame = per_frame[:len(frames)]
+        rel = "media/dmd/deff_{:03d}/{}".format(deff_id, vname)
+        os.makedirs(os.path.join(GAME, rel), exist_ok=True)
+        write_slide(deff_id, frames, loop, rel, panel, (slots, per_frame), name=slide)
     return out
+
+
+# Every deff is replayed live from its op list (tf/op_player.py; tf/media_bridge.py), its texts with the rules'
+# values: the ROM's code drawn again tick by tick, not frames. Left out: the deffs the game draws from its own port
+# (tf/media_bridge.py DRAWN: 1 the attract pages, 19 the score display), which keep their frame slides.
+LIVE_EXCLUDED = (1, 19)
+
+
+def live_ops_ids():
+    ids = sorted({int(os.path.basename(p)[5:8]) for p in glob.glob(os.path.join(OPS_SRC, "deff_*.json"))})
+    return tuple(d for d in ids if d not in LIVE_EXCLUDED)
+
+
+OPS_SRC = os.path.join(ROOT, "rom", "rom_data", "dmd", "deff_ops")
+OP_KEEP = {"fill", "rect", "frame", "copy", "copy_rect", "invert", "remap", "bitmap", "bitmap_masked", "text",
+           "show", "dissolve"}
+OP_DROP = ("at", "task", "helper", "msg", "varargs", "printf")
+
+
+def loop_ticks(ops):
+    """[start, period] in ticks of a deff that never ends (its code loops; the lift stopped it after 1500 ticks):
+    the frames repeat with that period from that tick to the end of the run, so tf/op_player.py replays the run
+    and then that cycle. None when the run shows no cycle (the last frame then holds)."""
+    sys.path.insert(0, GAME)
+    from tf.op_player import OpPlayer
+    player = OpPlayer(ops)
+    end = ops[-1]["t"]
+    frames = []
+    for tick in range(end + 1):
+        player.advance(tick)
+        frames.append(bytes(player.frame) if player.frame is not None else b"")
+    for period in range(1, (end + 1) // 2 + 1):
+        if all(frames[t] == frames[t - period] for t in range((end + 1) // 2, end + 1)):
+            start = (end + 1) // 2
+            while start - period >= 0 and frames[start - 1] == frames[start - 1 - period]:
+                start -= 1
+            return [start, period]
+    return None
+
+
+def build_live_ops():
+    """game/media/live_ops/<name>.json.gz: the drawing ops of each live deff (live_ops_ids) and variant, in tick order; a
+    text keeps its call site ("site": the printf's address without 0x and leading zeros, as site_values)."""
+    import fsutil
+    out_dir = os.path.join(GAME, "media", "live_ops")
+    fsutil.clear_dir(out_dir)
+    # the dissolve tables [0x01034758] the op lists name (rom/tools/export_op_data.py)
+    with open(os.path.join(ROOT, "rom", "rom_data", "dmd", "dissolve_tables.json"), encoding="utf-8") as f:
+        tables = json.load(f)
+    n = 0
+    for deff_id in live_ops_ids():
+        for path in sorted(glob.glob(os.path.join(OPS_SRC, "deff_%03d.json" % deff_id)) +
+                           glob.glob(os.path.join(OPS_SRC, "deff_%03d__*.json" % deff_id))):
+            with open(path, encoding="utf-8") as f:
+                doc = json.load(f)
+            ops = []
+            for o in doc["ops"]:
+                if o["op"] not in OP_KEEP:
+                    continue
+                c = {k: v for k, v in o.items() if k not in OP_DROP}
+                if o["op"] == "text" and o.get("printf"):
+                    c["site"] = "%x" % int(o["at"], 16)
+                if o["op"] == "dissolve":
+                    c["table"] = tables[o["table"]]
+                ops.append(c)
+            out = {"deff": deff_id, "end_tick": doc.get("end_tick"), "ops": ops}
+            if doc.get("end_tick") is None and ops:
+                out["loop"] = loop_ticks(ops)
+            with gzip.open(os.path.join(out_dir, os.path.basename(path) + ".gz"), "wt", encoding="utf-8") as f:
+                json.dump(out, f, separators=(",", ":"))
+            n += 1
+    return n
 
 
 def main():
@@ -377,6 +463,7 @@ def main():
     if not only_data or not os.path.exists(os.path.join(GAME, "fonts", "fonts.json")):
         gen_fonts.build()
     data = {"pools": build_sounds(only_data), "deffs": build_deffs(only_data)}
+    build_live_ops()
     with open(os.path.join(GAME, "tf", "media_data.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(data, f, indent=0, sort_keys=True)
     if not only_data:

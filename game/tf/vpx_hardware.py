@@ -20,8 +20,9 @@ fixes the answers where MPF 0.80's platform differs from VPinMAME:
   is in rom/rom_data/io/coils.csv).
 - Lamps 1-80 are reported 0-255 (MPF's brightness; core.vbs with UseVPMModSol = 2 expects that and scales by
   1/255). scripts/vpx_bridge.py turns them into 0/1 for a table without physical outputs (SolMask(2) < 2).
-- GI: MPF does not switch the GI (the ROM extraction found no GI output), so GI string 0 reads 255 from the start:
-  the table's GiCallBack2 (GI_PWM) turns its GI on, as PinMAME does when the machine powers up.
+- GI: string 0 reads 255 from the start (the table's GiCallBack2 (GI_PWM) turns its GI on, as PinMAME does when the
+  machine powers up), and 0 while one of the 30 leffs that switch the GI has it off (tf/lamps.py gi, owner
+  0x000314c4, from the leff op lists; QA L-G07).
 - Stop: the table closed; MPF quits too when the bridge started it.
 
 MPF's platform classes have __slots__, so the methods are replaced on the classes; they fall back to MPF's own
@@ -165,7 +166,9 @@ class VpxAdapter:
 
     def changed_gi_strings(self):
         changed = []
-        for number, value in sorted(GI_STRINGS.items()):
+        lamps = getattr(getattr(self.machine, "tf", None), "lamps", None)
+        strings = {n: (v if lamps is None or lamps.gi else 0) for n, v in GI_STRINGS.items()}   # QA L-G07
+        for number, value in sorted(strings.items()):
             if self.last_gi.get(number) != value:
                 self.last_gi[number] = value
                 changed.append([number, value])

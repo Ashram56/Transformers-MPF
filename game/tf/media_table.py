@@ -1,8 +1,8 @@
 """What each ROM display effect (deff) starts, read from the ROM extraction's package (rom/mpf_package).
 
-- media/dmd/deffs/deff_NNN/timing.json: run length (ended_ms: when the deff ended in the capture; none for a
-  deff that ran past the capture window), the sounds and lamp effects the deff's code started, with their
-  offsets (observed in emulation). Values are written as hex digits, sometimes as JSON numbers ("5e", 20).
+- media/dmd/deffs/deff_NNN/timing.json: run length (ended_ms: when the deff's code run ended; none for a deff that
+  runs until it is stopped), the sounds and lamp effects the deff's code started, with their offsets (tag code:
+  the deff's function run as ROM code, rom/tools/deff_lift.py, op list rom/rom_data/dmd/deff_ops/). Values are written as hex digits, sometimes as JSON numbers ("5e", 20).
 - lamp_effects.csv "started_by": lamp-matrix effects a deff starts ("effect N (deff_N_...)").
 """
 import csv
@@ -13,7 +13,7 @@ import re
 
 
 class DeffInfo:
-    __slots__ = ("id", "name", "seconds", "sounds", "tubes", "leffs")
+    __slots__ = ("id", "name", "seconds", "sounds", "tubes", "leffs", "after")
 
     def __init__(self, deff_id, name):
         self.id, self.name = deff_id, name
@@ -21,6 +21,7 @@ class DeffInfo:
         self.sounds = []        # (offset s, call)
         self.tubes = []         # (offset s, tube show)
         self.leffs = []         # lamp-matrix effects started with the deff
+        self.after = []         # (offset s, call) queued after the deff's previous sound (snd_play_after)
 
 
 def load(pkg):

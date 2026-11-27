@@ -15,8 +15,8 @@ import re
 
 CONTEXT = "tf_media"
 SERVICE_PRIORITY = 1000         # the service slide covers every deff (ROM priorities are 0-255)
-TICK = 0.01626                                     # seconds per ROM tick (os_layer.TICK)
-SPEC = re.compile(r"%(P\d/[^%]*%|[-+ #0,]*\d*l?[dus])")
+TICK = 0.016                                     # seconds per ROM tick (os_layer.TICK)
+SPEC = re.compile(r"%(P\d/[^%]*%|[-+ #0,]*\d*l?[dius])")     # %i = %d (deff 52 "%iX BONUS"; QA V-TXT3)
 # The values of a deff's printf lines, in the ROM's argument order, for effects whose callers also pass
 # arguments the text does not print (the others: every argument not in the deff's "args", in call order).
 # Filled per deff as the rules are ported (Tron's table: game/tron/media_bridge.py).
@@ -33,11 +33,13 @@ def format_rom_text(line, args, last=None):
     def sub(m):
         spec = m.group(1)
         if spec.startswith("P"):
-            choices = spec[3:-1].split("/")
+            # vsprintf [0x0002fef0]: %P1/c1/c2/.../cn//% picks choice n-1 (unsigned), clamped to the last one:
+            # "%d COMBO%P1//S/%" gives "1 COMBO", "0 COMBOS", "3 COMBOS" (deff op lists, e.g. deff_044). The
+            # caller passes the number again for %P; every live text passes the previous %d's value, so `last`
+            # holds it (QA V-TXT1; the tournament texts 36 / 37 pass another value: V-TXT2, not modelled).
+            choices = spec[3:-1].split("/")[:-1] or [""]
             n = last[0]
-            if spec[1] == "1" and len(choices) > 2:     # ordinal list: 1-based
-                return choices[n - 1] if 0 < n <= len(choices) else ""
-            return choices[0] if n == 1 else (choices[2] if len(choices) > 2 else choices[-1])
+            return choices[min(max(n - 1, 0) if n > 0 else len(choices) - 1, len(choices) - 1)]
         value = args.pop(0) if args else 0
         if value is None:
             return ""
@@ -72,8 +74,28 @@ def format_values(sources, values):
     return out
 
 
+CREDIT_LINE_DEFFS = (10, 15, 17)    # deff_017_insert_coins [0x01000000] (scripts/gen_media.py credit_slots)
+
 # Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
-DRAWN = (19,)
+DRAWN = (19, 1)      # the score display and the attract pages (tf/attract_pages.py)
+DRAWN_SLIDES = {19: "rom_screen", 1: "attract_pages"}
+# Every other deff is replayed live from its op list (tf/op_player.py; scripts/gen_media.py live_ops_ids: the lift of
+# its code, never a capture): the ROM's draw calls run again tick by tick with the rules' values, on the rom_ops slide
+# (rom_ops_bg for a mode's background deff, under the foreground one). A deff without a generated op list plays its
+# frame slide (gen_media LIVE_EXCLUDED: 40 and 41 draw the player's side).
+OPS_DIR = os.path.join(os.path.dirname(__file__), "..", "media", "live_ops")
+
+
+def live_ids():
+    """The deffs with a generated op list (game/media/live_ops/deff_NNN.json.gz)."""
+    if not os.path.isdir(OPS_DIR):
+        return frozenset()
+    return frozenset(int(n[5:8]) for n in os.listdir(OPS_DIR) if n.startswith("deff_") and n.endswith(".json.gz"))
+
+
+LIVE = live_ids()
+SIDE_DEFFS = (40, 41)            # draw the player's side (side_variant)
+PANEL_COLS = 41                  # the status panel's columns 0-40 [0x0102f200] (separator [0x0102f504] at x 40)
 
 
 class MediaBridge:
@@ -92,6 +114,8 @@ class MediaBridge:
         self.service_shown = False
         self.counters = {}
         self._refresh = None
+        self._panel_last = {}                     # deff -> the panel arguments last sent (sent again only on change)
+        self.variant_of = {}                       # deff -> the variant whose slide runs (deff_start)
         self.active = set()                        # deffs on screen that draw the status panel or live values
         self.started = {}                          # deff id -> the args of its last start
         self.slides = {}                           # deff id -> the slide it plays (a side variant: deff_slide)
@@ -104,8 +128,10 @@ class MediaBridge:
         self.kept = None                           # the last one, stopped but left up until the next plays
         self.drawn = set()                         # deffs shown by deff_draw (rom_screen) in place of their frames
         self.drawn_since = {}                      # deff in DRAWN -> when it started
-        self.drawn_last = None
+        self.drawn_last = {}
         self._drawn_timer = None
+        self.ops = {}                              # deff in LIVE -> its op player run (ops_start)
+        self._ops_timer = None
 
     # ------------------------------------------------------------------ transport
 
@@ -139,10 +165,21 @@ class MediaBridge:
         live = getattr(self.os, "deff_values", {}).get(deff_id)
         if live:                                       # values the deff reads from RAM, now (over the passed ones)
             args = dict(args, **live())
+        if deff_id in CREDIT_LINE_DEFFS:               # [0x01000000]: the credit line and PRESS START / INSERT COINS
+            args = dict(args, slot_texts={0: self.credits_text(), 1: "PRESS START" if self.can_start() else
+                                          "INSERT COINS"})
         passed = {k: args[k] for k in info.get("args", []) if k in args}   # e.g. letters for letter_panel.gd
-        if info.get("values"):                         # captured printf texts drawn live (tf/deff_values.gd)
-            passed["values"] = format_values(info["values"], args.get("values") or [])
-            for slot, text in zip(info["values"], passed["values"]):
+        own = (info.get("variant_values") or {}).get(self.variant_of.get(deff_id))
+        sources, sites = (own["values"], own["sites"]) if own else (info.get("values"), info.get("sites"))
+        if sources:                                    # captured printf texts drawn live (tf/deff_values.gd)
+            values = args.get("values") or []
+            if args.get("site_values") is not None and sites:   # by the printf's call site in the deff's code
+                values = [args["site_values"].get(site) for site in sites]
+            passed["values"] = format_values(sources, values)
+            for slot, text in (args.get("slot_texts") or {}).items():   # a fixed message drawn in a slot's place
+                if slot < len(passed["values"]):
+                    passed["values"][slot] = text
+            for slot, text in zip(sources, passed["values"]):
                 if text is None:
                     self.note_missing(deff_id, "slot", slot)
         if not info["text"]:
@@ -175,19 +212,27 @@ class MediaBridge:
             with open(path, "a", encoding="utf-8") as f:
                 f.write("{}\t{}\t{}\n".format(deff_id, where, text))
 
-    def deff_start(self, deff_id, priority, **args):
+    def deff_start(self, deff_id, priority, variant=None, **args):
+        """variant: the state the deff runs with (tf/display.py deff_variant): its own slide when the package has
+        that variant's frames (media_data "variants")."""
         info = self.data["deffs"].get(deff_id) if self.data else None
         if deff_id in DRAWN:                             # drawn live from its draw calls
             self.drawn.add(deff_id)
             self.drawn_since[deff_id] = self.machine.clock.get_time()
-            self.drawn_last = self.drawn_screen(deff_id)
-            self.text_show("rom_screen", [], priority, draw=self.drawn_last)
+            self.drawn_last[deff_id] = self.drawn_screen(deff_id)
+            self.text_show(DRAWN_SLIDES[deff_id], [], priority, draw=self.drawn_last[deff_id])
             if self._drawn_timer is None and self.connected(need_data=False):
-                self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, 0.1)
+                self._drawn_timer = self.machine.clock.schedule_interval(self.redraw, TICK)   # blink, fade
             return
         if not info:
             return
-        slide = self.deff_slide(info)
+        if variant is None:
+            variant = self.live_variant(deff_id) or self.side_variant(deff_id)
+        if deff_id in LIVE and self.ops_start(deff_id, info, priority, variant, args):
+            return
+        slide = (info.get("variants") or {}).get(variant) if variant else None
+        self.variant_of[deff_id] = variant if slide else None     # its own printf slots (deff_lines)
+        slide = slide or self.deff_slide(info)
         old = self.slides.get(deff_id)
         if old not in (None, slide):               # the other side's slide of the same deff (a side change)
             self._remove(old)
@@ -195,31 +240,131 @@ class MediaBridge:
         self.started[deff_id] = args
         if info.get("panel") is not None or deff_id in getattr(self.os, "deff_values", {}):
             self.active.add(deff_id)
-            if self._refresh is None and self.connected():   # timer bars move between scores
-                self._refresh = self.machine.clock.schedule_interval(self.score_changed, 0.25)
+            self._panel_last.pop(deff_id, None)
+            # the deff's code draws the panel every frame (draw_way_palette_identity_2f200 [0x0102f200]: the score
+            # box blink, the award fade, the combo slide, timer bars): checked every tick, sent when it changed
+            # (QA V-SC11)
+            if self._refresh is None and self.connected():
+                self._refresh = self.machine.clock.schedule_interval(lambda *_: self.panels_refresh(), TICK)
         self._send("slides_play", {slide: {"action": "remove", "key": slide, "expire": None}})
         self._send("slides_play", {slide: {"action": "play", "key": slide, "expire": None,
                                            "priority": priority}},
                    priority=priority, **self.deff_lines(deff_id, args))
         self._played(slide)
 
+    def deff_redraw(self, deff_id, priority, **args):
+        """A running deff draws new state (tf/display.py redraw: deff 40 after a side change): the deff's code goes on
+        with the other state, so a replayed one switches op list at the same tick instead of starting again."""
+        run = self.ops.get(deff_id)
+        self.deff_start(deff_id, priority, **args)
+        if run is not None and deff_id in self.ops:
+            self.ops[deff_id]["since"] = run["since"]
+
+    def ops_start(self, deff_id, info, priority, variant, args):
+        """A deff in LIVE: its op list (the variant's when it has one) replayed tick by tick on the rom_ops slide
+        (tf/op_player.py), its texts with the values of their call sites now. False when the op list is not
+        generated (the frame slide plays)."""
+        from tf.op_player import OpPlayer
+        name = "deff_%03d" % deff_id
+        player = (OpPlayer.load(name + "__" + variant) if variant else None) or OpPlayer.load(name)
+        if player is None:
+            return False
+        self.started[deff_id] = args
+        self.variant_of[deff_id] = variant if player.name != name else None     # its printf slots (deff_lines)
+        slide = "rom_ops_bg" if deff_id in getattr(self.os.display, "background", ()) else "rom_ops"
+        for other in [d for d, run in self.ops.items() if run["slide"] == slide and d != deff_id]:
+            self.ops.pop(other)                     # the deff it replaces on that slide
+        self.ops[deff_id] = {"player": player, "since": self.machine.clock.get_time(), "info": info, "last": None,
+                             "slide": slide, "priority": priority}
+        draw = self.ops_screen(deff_id)
+        self.ops[deff_id]["last"] = draw
+        self.text_show(slide, [], priority, draw=draw)
+        if self._ops_timer is None and self.connected(need_data=False):
+            self._ops_timer = self.machine.clock.schedule_interval(self.ops_redraw, TICK)
+        return True
+
+    def ops_site_values(self, deff_id):
+        """The values of a LIVE deff's printf texts now: the rules' site_values (raw, by call site), else its
+        values in the ROM's argument order formatted into the slots of its frames (media_data "values" and
+        "sites", keyed "site|format"), else given in the order the op list first prints them."""
+        args = self.started.get(deff_id, {})
+        live = getattr(self.os, "deff_values", {}).get(deff_id)
+        if live:
+            args = dict(args, **live())
+        if deff_id in CREDIT_LINE_DEFFS:               # [0x01000000]: the credit line and PRESS START / INSERT COINS
+            args = dict(args, slot_texts={0: self.credits_text(), 1: "PRESS START" if self.can_start() else
+                                          "INSERT COINS"})
+        if args.get("site_values") is not None:
+            return args["site_values"]
+        values = args.get("values") or []
+        run, info = self.ops[deff_id], self.ops[deff_id]["info"]
+        own = (info.get("variant_values") or {}).get(self.variant_of.get(deff_id))
+        sources, sites = (own["values"], own["sites"]) if own else (info.get("values"), info.get("sites"))
+        if sources and sites:
+            texts = format_values(sources, values)
+            for slot, text in (args.get("slot_texts") or {}).items():
+                if slot < len(texts):
+                    texts[slot] = text
+            return {"%s|%s" % (site, src): t for site, src, t in zip(sites, sources, texts) if t is not None}
+        return dict(zip(run["player"].printf_keys(), values))
+
+    def ops_screen(self, deff_id):
+        """The draw list of a LIVE deff now: its replayed screen (a "px" item, tf/rom_screen.gd), the status panel
+        drawn over its columns 0-40 when the deff has one (tf/score_screen.py panel_draw)."""
+        from tf.op_player import dots_hex
+        run = self.ops[deff_id]
+        ticks = int((self.machine.clock.get_time() - run["since"]) / TICK + 1e-6)
+        run["player"].advance(ticks, self.ops_site_values(deff_id))
+        frame = run["player"].frame
+        if frame is None:
+            return []
+        panel = run["info"].get("panel") is not None
+        return [{"px": dots_hex(frame, PANEL_COLS if panel else 0)}] + self.panel_args(run["info"]).get("draw", [])
+
+    def ops_redraw(self, *_):
+        for deff_id in list(self.ops):
+            run = self.ops.get(deff_id)
+            if run is None:
+                continue
+            want = self.live_variant(deff_id)
+            if want != self.variant_of.get(deff_id) and "variant" in self._live_values(deff_id) and (
+                    want is None or os.path.exists(os.path.join(OPS_DIR, "deff_%03d__%s.json.gz" % (deff_id, want)))):
+                # the deff's code switched page on the RAM it reads (deff 109: phase 1 to phase 2): that op list
+                self.ops_start(deff_id, run["info"], run["priority"], want, self.started.get(deff_id, {}))
+                continue
+            draw = self.ops_screen(deff_id)
+            if draw != run["last"]:
+                run["last"] = draw
+                slide = run["slide"]
+                self._send("slides_play", {slide: {"action": "update", "key": slide, "expire": None}},
+                           need_data=False, draw=draw)
+
     def deff_slide(self, info):
-        """The slide of a deff that draws the player's side (deff 40, 41: media_data "sides", scripts/gen_media.py
-        SIDE_VARIANTS) for the current player's side; else the deff's one slide."""
-        sides = info.get("sides")
-        if sides and self.os.game:
-            return sides.get(str(self.os.pd.get("side")), info["slide"])
         return info["slide"]
+
+    def side_variant(self, deff_id):
+        """deff 40 [0x01034198] and 41 [0x01034424] draw the player's side from the byte 0x02112107 + player: the
+        Autobot side (1) runs their "autobot" op list (rom/tools/deff_variants.py), any other the default one."""
+        if deff_id in SIDE_DEFFS and self.os.game and self.os.pd.get("side") == 1:
+            return "autobot"
+        return None
 
     def deff_stop(self, deff_id):
         info = self.data["deffs"].get(deff_id) if self.data else None
         self.active.discard(deff_id)
-        if deff_id in self.drawn:
+        if deff_id in self.ops:
+            slide = self.ops.pop(deff_id)["slide"]
+            if not self.ops and self._ops_timer is not None:
+                self.machine.clock.unschedule(self._ops_timer)
+                self._ops_timer = None
+            if not any(run["slide"] == slide for run in self.ops.values()):
+                self._remove(slide)
+        elif deff_id in self.drawn:
             self.drawn.discard(deff_id)
             if self._drawn_timer is not None and not self.drawn & set(DRAWN):
                 self.machine.clock.unschedule(self._drawn_timer)
                 self._drawn_timer = None
-            self._remove("rom_screen")
+            self._remove(DRAWN_SLIDES.get(deff_id, "rom_screen"))
         elif info:
             self._remove(self.slides.pop(deff_id, info["slide"]))
 
@@ -232,16 +377,31 @@ class MediaBridge:
         if not info or info.get("panel") is None:
             return {}
         from tf import score_screen
-        return {"draw": score_screen.panel_draw(self.scores(), self.os.player_num or 1, info["panel"])}
+        return {"draw": score_screen.panel_draw(self.scores(), self.os.player_num or 1, info["panel"],
+                                                **self.status_args())}
+
+    def status_args(self):
+        """The status counters, game state and playfield-valid flag the score drawing reads [0x0102f200]."""
+        status = getattr(self.os, "status", None)
+        return {"status": (status, self.machine.clock.get_time()) if status else None,
+                "state": getattr(self.os, "state", 0), "valid": getattr(self.os, "pf_valid", False)}
 
     def drawn_screen(self, deff_id):
-        """The screen of a deff in DRAWN (tf/score_screen.py): the score display."""
+        """The screen of a deff in DRAWN: the score display (tf/score_screen.py), the attract pages
+        (tf/attract_pages.py, with the status panel in attract state: the last game's scores)."""
         from tf import score_screen
+        if deff_id == 1:
+            from tf import attract_pages
+            walker = getattr(self.os, "attract_walker", None)
+            if walker is None:
+                return []
+            panel = score_screen.panel_draw(list(getattr(self.os, "last_scores", []) or []), 0, state=0x10)
+            return attract_pages.screen(self.os, walker.entry, walker.tick(self.machine.clock.get_time()), panel)
         game = self.os.game
         ball = game.player.ball if game and game.player else 1
         ticks = int((self.machine.clock.get_time() - self.drawn_since.get(deff_id, 0)) / TICK)
         return score_screen.score_draw(self.scores(), self.os.player_num or 1, ball, self.credits_text(),
-                                       self.replay_text() if game else "", ticks)
+                                       self.replay_text() if game else "", ticks, **self.status_args())
 
     def deff_draw(self, deff_id, priority, draw):
         """A running deff whose next screen its captured frames do not hold (deff 4 dims after 30 s): the ROM
@@ -272,7 +432,7 @@ class MediaBridge:
     # ------------------------------------------------------------------ score display (deff 19)
 
     def credits_text(self):
-        """FUN_00004ff4: "FREE PLAY", "CREDITS n", "CREDITS a/b" (coins toward the next credit) or
+        """FUN_000044a4: "FREE PLAY", "CREDITS n", "CREDITS a/b" (coins toward the next credit) or
         "CREDITS n a/b". The credit count comes from the OS when it keeps one (os.credits,
         os.credit_fraction = (coins, coins per credit), os.free_play); 3 coins make a credit."""
         if getattr(self.os, "free_play", False):
@@ -285,8 +445,15 @@ class MediaBridge:
             return "CREDITS %d/%d" % (num, den)
         return "CREDITS %d %d/%d" % (whole, num, den)
 
+    def can_start(self):
+        """leaf_19988 [0x00019988]: free play (0x00004464: the pricing's adjustment is 1), else the credit record's
+        +4 (0x000041d4: whole credits)."""
+        if getattr(self.os, "free_play", False):
+            return True
+        return int(getattr(self.os, "credits", 0) or 0) > 0
+
     def replay_text(self):
-        """FUN_01023704: the current player's first replay level not yet awarded ("REPLAY AT <level>",
+        """adj_replay_award_2f804 [0x0102f804] (deff 19): the current player's first replay level not yet awarded ("REPLAY AT <level>",
         the award text for adj 13 = 0; the other awards' texts are ROM messages not in the package)."""
         level_of = getattr(self.os, "replay_level", None)
         if not level_of:
@@ -303,15 +470,28 @@ class MediaBridge:
         for deff_id in DRAWN:
             if deff_id in self.drawn:
                 draw = self.drawn_screen(deff_id)
-                if draw != self.drawn_last:
-                    self.drawn_last = draw
-                    self._send("slides_play", {"rom_screen": {"action": "update", "key": "rom_screen",
+                if draw != self.drawn_last.get(deff_id):
+                    self.drawn_last[deff_id] = draw
+                    slide = DRAWN_SLIDES[deff_id]
+                    self._send("slides_play", {slide: {"action": "update", "key": slide,
                                                               "expire": None}}, need_data=False, draw=draw)
 
     def score_changed(self, *_):
-        """Score flush (and every 0.25 s while a panel shows): refresh the score display and the
-        status panel of the effects on screen."""
+        """Score flush: refresh the score display and the status panel of the effects on screen."""
         self.redraw()
+        self.panels_refresh()
+
+    def _live_values(self, deff_id):
+        live = getattr(self.os, "deff_values", {}).get(deff_id)
+        return live() if live else {}
+
+    def live_variant(self, deff_id):
+        """The variant a deff draws now from the RAM it reads every frame (its values function's "variant", e.g.
+        deff 109 [0x01015184] picks its page by DAT_00034f68, the Bumblebee phase): None for the default."""
+        return self._live_values(deff_id).get("variant")
+
+    def panels_refresh(self):
+        """The status panel and live values of the effects on screen, sent when they changed (every tick)."""
         if not self.data:
             return
         args = None
@@ -320,12 +500,21 @@ class MediaBridge:
             live = deff_id in getattr(self.os, "deff_values", {})
             if not info or not (info.get("panel") is not None or live):
                 continue
+            values = self.os.deff_values[deff_id]() if live else {}
+            want = values.get("variant") if (info.get("variants") or {}).get(values.get("variant")) else None
+            if "variant" in values and deff_id not in self.ops and want != self.variant_of.get(deff_id):
+                # the deff's code switched page on the RAM it reads (deff 109: phase 1 to phase 2): its other slide
+                self.deff_start(deff_id, self.os.display.prio.get(deff_id, 0), **self.started.get(deff_id, {}))
+                continue
             mine = self.panel_args(info)
             if live:
                 # its own lines only: fresh RAM values for a live deff (one effect's lines never go to
                 # another: they share the names line0, line1, ...)
                 mine.update({k: v for k, v in self.deff_lines(deff_id, self.started.get(deff_id, {})).items()
                              if k.startswith("line") or k in ("screen", "values")})
+            if self._panel_last.get(deff_id) == mine:
+                continue
+            self._panel_last[deff_id] = mine
             slide = self.slides.get(deff_id, info["slide"])
             self._send("slides_play", {slide: {"action": "update", "key": slide, "expire": None}}, **mine)
 
@@ -373,10 +562,18 @@ class MediaBridge:
     # ------------------------------------------------------------------ sounds
 
     def sound_stop(self, call):
-        """Stop every sample of sound call `call` (FUN_0002ceb4)."""
+        """Stop every sample of sound call `call` (FUN_000257b4)."""
         pool = self.data["pools"].get(call) if self.data else None
         for sample in (pool or {}).get("samples", []):
             self._send("sounds_play", {sample: {"action": "stop", "key": sample}})
+
+    def sound_fade(self, call, seconds):
+        """Fade out and stop every sample of sound call `call` over `seconds` (task 0x9b [0x01006138])."""
+        pool = self.data["pools"].get(call) if self.data else None
+        for sample in (pool or {}).get("samples", []):
+            self._send("sounds_play", {sample: {"action": "stop", "key": sample, "fade_out": seconds}})
+        if pool and pool["track"] == "music":
+            self.music_key = None
 
     def sound(self, call, index=None):
         if not self.data:

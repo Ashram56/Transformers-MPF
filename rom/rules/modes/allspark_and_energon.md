@@ -33,7 +33,7 @@ None for the Energon targets themselves [0x010309a4].
 | allspark_lit | 0x02111f50 + (p-1) (written as 0x02111f4f + p) | 1 | per player | 0 at game start [0x01023fc8]; +1 per Energon set [0x0102402c]; -1 per collection [0x010243b4] | banked Allspark awards (they stack) |
 | allspark_last_award | 0x02111f48 + 2*(p-1) | 2 | per player | 0 at game start [0x01023fc8] | item number (1-12) of the last mystery award; that item gets weight 0 next time (no repeat) [0x01024808] |
 | allspark_comp_step | 0x02111f44 + (p-1) | 1 | per player | 9 at game start [0x01023fc8] | competition sequence step: before an award, 0 becomes 10; after it, -1 [0x010243b4] |
-| (task 0xb0) | – | – | 10 ticks | started after a completed set [0x010309a4 `FUN_0000abe8(0xb0,10,0)`] | for 10 ticks (162 ms) Energon hits do nothing (inferred: debounce of a ball rattling between targets) |
+| (task 0xb0) | – | – | 10 ticks | started after a completed set [0x010309a4 `FUN_0000abe8(0xb0,10,0)`] | for 10 ticks (160 ms) Energon hits do nothing (code; the code gives no reason) |
 
 (verified in emulator: traces/allspark_energon.jsonl, vars energon_mask, energon_sets, allspark_lit, allspark_last)
 
@@ -55,7 +55,7 @@ value (1,110, from the switch table).
 
 Scores here are plain `score_add` (the playfield multiplier applies; no shot multiplier).
 
-Observed (traces/allspark_energon.jsonl): 18.58 left 75,000 (+1,110 switch), deff 124; 20.77 left again 10,000;
+Code run = trace (traces/allspark_energon.jsonl, `traces/code_runs.csv`): 18.58 left 75,000 (+1,110 switch), deff 124; 20.77 left again 10,000;
 22.97 right 75,000; 25.16 center 250,000 with deff 125, energon_sets 1, allspark_lit 1; second set 43.10
 275,000; third set 55.87 300,000.
 
@@ -71,7 +71,9 @@ The left eject is an OS ball device; its rule callback 0x0100a788 gets these eve
 - **4 / 9 = eject**: sound 0x158, leff 22; **3**: pulse coil 22 (`FUN_00002078(0x16,...)`).
 - **7 = eject retry / warning**: waits for the device, then sound 0x157 and leff 21.
 
-Observed: the switch closes, the rule runs about 0.75 s later (device settle), 0x157 + leff 21 at the end of the
+Code run = trace (`allspark_energon` eject_unlit in `traces/code_runs.csv`: the 0x157 + leff 21 warning step comes from
+`left_eject_callback` [0x0100a788] event 7 once the coil pulses and the sound FIQ run as ROM code; 0x158 comes 53 ticks
+after 0x157 in both): the switch closes, the rule runs about 0.75 s later (device settle), 0x157 + leff 21 at the end of the
 wait, 0x158 + leff 22, coil 22 64 ms about 0.1 s after that. With no award showing the ball is held about 1.9 s
 (traces/allspark_energon.jsonl 35.51 -> 37.26); with the mystery award showing about 4.4 s (29.34 -> 33.70).
 
@@ -93,20 +95,23 @@ Only if allspark_lit > 0:
 | 4 | %iX BONUS MULTIPLIER | 150 | last award | competition step 8 | bonus multiplier +1 [0x01000e44(1)] | MYSTERY: BONUS X |
 | 5 | ADD-A-BALL | 300 -> only offered during a multiball, and once | no multiball (0x01006760) or flag 0x14 set | always when offered (weight + 1000) | add one ball (0x0103aff4), set flag 0x14, notify Mudflap/Optimus/Megatron/wizard multiballs [0x01024a60] | MYSTERY: ADD-A-BALL |
 | 6 | ADD MORE TIME | 250 -> only during a timed mode, once per mode | no timed mode (0x010067bc) or flag 0x13 set | always when offered (+1000) | every running battle +15 s (cap 90 s), Bumblebee phase 1 value restored / phase 2 +5 s, double and fast scoring time; sets flag 0x13 [0x01024b14] | MYS. ADD MORE TIME |
-| 7 | POPS SCORE %,02lu | 150 | last award, or 0x0102c8a4 true (super pops running, inferred) | competition step 9 | pop bumper value up (0x0102c624) | MYSTERY: POPS GROW |
+| 7 | POPS SCORE %,02lu | 150 | last award, or 0x0102c8a4 true (game flag 0x4d: super pops lit, code) | competition step 9 | pop bumper value up (0x0102c624) | MYSTERY: POPS GROW |
 | 8 | BONUS HOLD | 100 | last award, or flag 0x4b set (already held) | competition step 7 | set flag 0x4b | MYSTERY: BONUS HOLD |
 | 9 | BONUS X HOLD | 100 | last award, or flag 0x4a set | competition step 6 | set flag 0x4a | MYSTERY: BONUS X HOLD |
-| 10 | SHOT MULTIPLER(S) LIT | 100 | last award, or no shot multiplier can be raised (0x01023494) | competition step 5 | light shot multipliers (0x010236e8) | MYSTERY: SHOT MULTIP. LIT |
+| 10 | SHOT MULTIPLER(S) LIT | 100 | last award, or 0x01023494 returns 0: only when a shot multiplier is already lit or the roving 3X runs (with all six at 2X it returns 3 and starts the roving 3X; QA P4) | competition step 5 | light shot multipliers (0x010236e8) | MYSTERY: SHOT MULTIP. LIT |
 | 11 | SUPER SPINNER LIT | 100 | last award, or super spinner already lit (0x01032280) | competition step 4 | light super spinner (0x010325bc) | MYSTERY: SUPER SPINNERS LIT |
 | 12 | SUPER POP BUMPERS LIT | 100 | last award, or 0x0102c8a4 true | competition step 3 | light super pops (0x0102d31c) | MYSTERY: SUPER POPS LIT |
 
 Item table: ROM 0x040dde30, 0x18 bytes each {weight fn, award fn, weight store, name, u16 base weight at +0x10,
 u16 audit at +0x14} [0x0000bae8, 0x0000bc2c]. Weights are recomputed at every pick. The competition sequence
 (starting value 9, so the first award of a game is item 7): 7 POPS, 4 BONUS X, 8 BONUS HOLD, 9 BONUS X HOLD, 10
-SHOT MULT, 11 SUPER SPINNER, 12 SUPER POPS, 3 200,000, 2 EXTRA BALL, 1 SPECIAL, then again from 7 (inferred from
-the weight functions; Add-a-Ball and Add Time still force themselves in because they add 1000 too).
+SHOT MULT, 11 SUPER SPINNER, 12 SUPER POPS, 3 200,000, 2 EXTRA BALL, 1 SPECIAL, then again from 7 (code: in
+competition mode (`adj_competition_mode` [0x00017ea0]) each item's weight function adds 1000 to its base weight
+when the player's step 0x02111f44 + (p-1) is its own, before its other tests, e.g. BONUS HOLD [0x01024c68]: step 7
+-> 100 + 1000 even when flag 0x4b is set; only the last-award test [0x01024808] comes after. Add-a-Ball and Add
+Time still force themselves in because they add 1000 too, and win on their higher base weight).
 
-Observed (factory settings, no multiball, no timed mode): 30.09 item 4 BONUS X; 48.02 item 12 SUPER POPS (then
+Trace (random draws, fed to the code run as inputs: `#! random 0000bae8 206 1004 206` in `traces/allspark_energon.txt`, `random_below(1006)` [0x0000bae8] picks the first item whose cumulative weight passes the draw, so 206 is item 4 and 1004 item 12; code run = trace on the three awards, `traces/code_runs.csv`, whose last mark still differs on the end-of-ball bonus after the drain, 405,150 from `start_deff_25` [0x00019e44] in the trace; factory settings, no multiball, no timed mode): 30.09 item 4 BONUS X; 48.02 item 12 SUPER POPS (then
 deff 149 "SUPER POP BUMPERS"); 60.79 item 4 again (traces/allspark_energon.jsonl).
 
 ### 5.4 2-bank, Bumblebee and Optimus targets (only how they touch battles)
@@ -132,25 +137,29 @@ unspent Allspark stays banked across balls.
 | Energon lit target re-hit | – | 0x25d | leff 141 |
 | Energon during a multiball | – | 0x25c | leff 139 |
 | Set complete | deff 125 "ALLSPARK / LIT" (priority 129) | 0x260; 0x13e, 0x13f (deff) | leff 142 |
-| Allspark banked | – | – | leff 40 rule (runs while allspark_lit > 0 [0x01024058, rule 0x01024f24]): pulses the Allspark flasher, coil 32 FLASH: ALLSPARK, continuously (observed) |
+| Allspark banked | – | – | leff 40 rule (runs while allspark_lit > 0 [0x01024058, rule 0x01024f24]): pulses the Allspark flasher, coil 32 FLASH: ALLSPARK, continuously: leff_040 [0x01024328] every 4 ticks `coil_pulse_fn(0x20, 100 ms, pattern)` with the 14 patterns of 0x040c6ff4 in turn, while the playfield is active (0x000314d8) and no ball search (task 0x2b) runs (code) |
 | Allspark collected | deff 52 (award text cycling through all items, then the chosen one) | 0x140, then 0x143 (item 5) / 0x142 (item 6) / 0x144 (others), 0x141 | leff 41 |
 | Eject | – | 0x157 then 0x158 | leff 21, leff 22, coil 22 |
 deff 51 also draws "ALLSPARK / LIT" with sounds 0x13e/0x13f, but no code path that starts it was found (only its
 deff table entry references it).
 
 ## 8. Lamps
-Energon inserts: 48 ENERGON (LEFT), 54 ENERGON (CENTER), 35 ENERGON (RIGHT). Observed: an unlit target flashes
-(about 0.33 s period), a lit one is solid on, all flash again after a set (traces/allspark_energon.jsonl lamp
-events 18-26 s). The lamp rule is 0x01030f80 (registered by 0x010312e4). The Allspark has no "lit" insert of its
+Energon inserts: 48 ENERGON (LEFT), 54 ENERGON (CENTER), 35 ENERGON (RIGHT). The lamp rule 0x01030f80 (registered by
+0x010312e4), for the three entries of table 0x040c7630 against the player's lit mask 0x021120bc: an unlit target is
+on (lamp_bit_toggle_set_77a0 [0x000077a0]) with its flash bit set (lamp_bit_set_7814 [0x00007814], mask 0x00036388), a
+lit one is on with the flash bit cleared (solid, lamp_bit_copy_masked_7858 [0x00007858]); a completed set clears the mask,
+so all three flash again. The flash phase is the lamp compositor's: lamp_compositor_tick [0x000073cc] inverts it every
+10 ticks (counter 0x0003148c), a 20-tick period = 0.32 s (code; the trace's lamp events 18-26 s of
+traces/allspark_energon.jsonl confirm about 0.33 s). The Allspark has no "lit" insert of its
 own: the flasher coil 32 shows a banked Allspark. Inserts 12-15 ALLSPARK (X / PURPLE / RED / ORANGE) are the shot
 multiplier, mode-start (purple Decepticon / red Autobot) and battle-shot (orange) arrows of shot 0.
 
 ## 9. Interactions
 - Multiballs (Mudflap & Skids, Optimus, Megatron, wizard multiball) freeze the Energon targets at 5,000
   [0x0103096c -> 0x01006704]; the Energon lamp rule then drives all three inserts the same way (FUN_00007714, regardless of lit state)
-  [0x01030f80]. Timed battles, double and fast scoring leave them working normally (observed:
-  traces/switches.jsonl 128.67, sw 46 lights the right target for 75,000 with deff 124 while the Blackout battle,
-  task 0xa0 started 67.58, end task 0x82 at 140.18, is running).
+  [0x01030f80]. Timed battles, double and fast scoring leave them working normally (the test is 0x01006704 only;
+  code run `tools/switch_lift.py`: sw 46 first hit gives 75,000 with deff 124 while the Blackout battle runs,
+  `rules/switch_handlers.csv`; the trace traces/switches.jsonl 128.67 agrees).
 - A completed set also calls 0x0100af0c (Megatron multiball lock lighting; deff 139) - see the Megatron spec.
 - The mystery award can add time to battles (item 6) and balls to Mudflap & Skids (item 5).
 - The left eject waits for display-show tasks 0x5d-0x7e, so battle intros started by the Allspark hold the ball

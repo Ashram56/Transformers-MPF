@@ -34,7 +34,7 @@ It ends when one ball is left; a "MEGATRON MULTIBALL TOTAL" screen follows.
 | 68 | MEGATRON M.B. LOCK DIFFICULTY | 0 (EASY) | 0-2 (EASY/MEDIUM/HARD) | starting lock level per player at game start [0x0100ada4]; see 4.1 |
 | 69 | MEGATRON M.B. VIRTUAL LOCK | NO | NO/YES (FRANCE: YES) | YES: the lock keeps no balls, every locked ball is kicked out again (locks are counted virtually) [0x0100a1f8] |
 | 88 | SAVE MEGATRON PROGRESS | YES | NO/YES | YES: Autobot multiball phase, lit shots, jackpot count and the "since last super" sum are kept per player into the next Megatron multiball [0x0100c200] |
-| 89 | AUTOFIRE AFTER LOCK | YES | NO/YES | a new ball is served and auto-launched (coil 2) after a lock (verified in emulator: megatron_decepticon.jsonl 17.14 lock -> 19.65 trough coil 1 -> 20.30 coil 2) (inferred: adj read not located) |
+| 89 | AUTOFIRE AFTER LOCK | YES | NO/YES | the serve after a lock (serve type 5) is auto-launched: the event 0xf hook on_event_0f_a074 [0x0100a074] sets the serve's auto-launch byte when adj 89 = YES (code; megatron_decepticon.jsonl 17.14 lock -> 19.65 trough coil 1 -> 20.30 coil 2 confirms) |
 Nothing else (values, counts, timers) is adjustable.
 
 ## 3. State
@@ -71,8 +71,9 @@ Nothing else (values, counts, timers) is adjustable.
 | mtd_jp | 0x00034e2e | 0 | jackpots this cycle |
 | mtd_dj | 0x00034e30 | 0 on entering phase 2 | double jackpots this cycle (reads 65535 before the first phase 2: uninitialised, harmless) |
 
-Game flags: 0x25 (37) Megatron A running, 0x26 (38) A grace; 0x29 (41) Megatron D running, 0x2a (42) D grace
-[0x0100c200, 0x0100e0bc] (verified in emulator).
+Game flags: 0x25 (37) Megatron A running, 0x29 (41) Megatron D running [0x0100c200, 0x0100e0bc]. Flags 0x26 (38) and
+0x2a (42), once read as A / D grace, are never set (only `game_flag_clear` touches them): the end window is the end
+task below, and the shot rules keep running during it (QA M13).
 
 ## 4. How it starts
 ### 4.1 Lighting the lock
@@ -103,13 +104,13 @@ no Megatron/Optimus/AHM/wizard multiball is running [0x0100b0b8]:
 3. Else (4th ball): start the multiball: Autobot side -> 0x0100c200, Decepticon -> 0x0100e0bc [0x0100b130].
    (verified in emulator: megatron_decepticon.jsonl 29.65 s; megatron_autobot.jsonl 36.88 s)
 
-Ball handling [0x0100a1f8]: the device keeps lit + locked balls, capped by its size (observed 3 =
+Ball handling [0x0100a1f8]: the device keeps lit + locked balls, capped by its size (code run = trace 3 =
 the 3 locked balls), and 0 when adj 69 = YES, the back-door task 0x4f runs, a multiball runs (`any_multiball_running`
 0x01006704: Mudflap & Skids, Optimus A/D, Megatron A/D, wizard multiball) or All Hail Megatron runs (flag 0x3c,
 0x0100ff6c). Timed battles, double and fast scoring do not release the held balls. Back door (switch 13) starts task 0x4f for 187 ticks (3.0 s); a lock entry during it is not held and skips
 all shot handlers. The lock-entry handler waits while tasks 0x73/0x74/0x75 (lock deff, A intro, D intro) run, and
 the eject waits for deff 61 (Optimus super) [list 0x040c61f8 / 0x040c6200]. A ball re-entering about 1-2 s after an
-eject is ignored (observed; locks spaced 4 s worked on the default side, 6 s were used on the Autobot run).
+eject is ignored (scenario timing, trace and code run: locks spaced 4 s work on the Decepticon run, 6 s were used on the Autobot run).
 
 ### 4.3 Multiball start (both sides)
 `multiball_start(balls = 4 if none in play else in_play + 3, 0, ball save 625 ticks = 10.2 s, grace 187 ticks =
@@ -140,10 +141,10 @@ Let J = min(100,000 x (mta_supers + 1) + 25,000 x M, 500,000) [0x0100bf14]; DJ =
 |---|---|---|---|---|---|
 | Megatron lock | phase 1 | J x mult; jp += 1; M += 1 (max 6); counter 0x77 | 71 JACKPOT | 0xca (sample index cycles) | phase 2, mask 0x3f; if jp >= 10: phase 3 |
 | a lit main shot | phase 2 | DJ x mult; the shot unlights; jp += 1; M += 1; counter 0x78 | 72 DOUBLE JACKPOT | 0xd2 | if jp >= 10 or no shot left: phase 3 (mask 0x40, M = 1) |
-| no double jackpot for 250 + 62 ticks (5.07 s) after the last one | phase 2 | mask 0x40, M = 1 (tasks 0xbd / 0xbe) | - | - | phase 1 |
+| no double jackpot for 250 + 62 ticks (5.07 s) after the last one, counted only once M >= 3 (the timer task waits `while (M < 3)` first [0x0100c10c]) | phase 2 | mask 0x40, M = 1 (tasks 0xbd / 0xbe) | - | - | phase 1 |
 | Megatron lock | phase 3 | **super** = max(1,000,000, pct x mt_sum), pct = [100, 100, 75, 50]% indexed by min(mt_mb_since_super, 3) [table 0x040c6438, 0x0100c024]; supers += 1; jp = 0; mt_sum = 0; mt_mb_since_super = 0; wizard req 0 completed (0x01035af0(0,2), counter 0x8c #148); counter 0x79 | 73 SUPER JACKPOT | from deff 73 | phase 1 |
 | unlit shot | any | nothing from this mode | - | - | - |
-Observed (megatron_autobot.jsonl): 49.05 jackpot 125,000; 51.49 DJ 300,000; 56.56 timeout (phase 1, M = 1);
+Code run = trace (traces/megatron_autobot.jsonl, `traces/code_runs.csv`): 49.05 jackpot 125,000; 51.49 DJ 300,000; 56.56 timeout (phase 1, M = 1);
 59.70 unlit left ramp: nothing; 62.13 jackpot 125,000; 64.58-73.97 six DJ 300k, 350k, 400k, 450k, 500k, 500k ->
 phase 3; 76.89 super **3,050,000** (= the sum of the 9 awards); 81.07 jackpot 225,000 (supers = 1).
 
@@ -154,7 +155,7 @@ phase 3; 76.89 super **3,050,000** (= the sum of the 9 awards); 81.07 jackpot 22
 | Megatron lock | phase 1, lit | 100,000 flat; all 7 relit (mask 0x7f); jp += 1; counter 0x7b | 77 | 0xe4 | same |
 | center lane | phase 2 | 500,000 x mult; dj += 1; counter 0x7c | 78 DOUBLE JACKPOT | 0xf7 | dj = 3: phase 3 (mask 0x80); Optimus is raised (0x0100e798 returns position 0x2b) |
 | Optimus target sw 51 | phase 3 | 1,000,000 x mult; supers += 1; wizard req 0 completed (counter 0x8c); counter 0x7d | 79 (super jackpot) | 0xf9 | phase 1, mask 0x7f, jp = 0 |
-Observed (megatron_decepticon.jsonl): 38.08-47.21 jackpots 100k, 125k, 150k, 175k, 200k, 225k (left orbit, left
+Code run = trace (traces/megatron_decepticon.jsonl, `traces/code_runs.csv`): 38.08-47.21 jackpots 100k, 125k, 150k, 175k, 200k, 225k (left orbit, left
 ramp, center, right ramp, right orbit, Allspark); 50.37 Megatron 100,000 and all relit; 52.78-56.14 250k x 3 ->
 phase 2; 58.32 / 60.49 / 62.66 DJ 500,000 -> phase 3; 66.90 super 1,000,000 -> phase 1.
 
@@ -163,15 +164,18 @@ phase 2; 58.32 / 60.49 / 62.66 DJ 500,000 -> phase 3; 66.90 super 1,000,000 -> p
   156 then 62 ticks) then the total screen: deff 74 "MEGATRON MULTIBALL TOTAL: n" (A) / deff 80 (D) via a queued
   task (0x8b) [0x0100c790]; not shown in tilt / game-over states (0x31468 & 0x310).
   (verified in emulator: A flag 37 cleared 86.25 s, deff 74 at 89.78 s; D flag 41 cleared 73.84 s, deff 80 at 77.40 s)
-- Add-a-ball (Allspark mystery award, 0x01024a60) during the grace window revives the multiball [0x0100c858].
+- Add-a-ball (Allspark mystery award, 0x01024a60) is offered only in the first 156 ticks of the end window
+  [0x01006760]; taken, it revives the multiball, which the end task allows for its whole 218 ticks [0x0100c858].
+  The D total (deff 80) is queued by show task 0x8c.
 - Carries over: mtl_level (+1 per multiball), A progress if adj 88 = YES, mt_sum / mt_mb_since_super (A),
-  wizard requirement 0. D progress always starts fresh.
+  wizard requirement 0. D progress is restored too when adj 88 = YES [0x0100e0bc] (QA M2; it does not always start
+  fresh).
 
 ## 7. Media
 | When | Display effect | Sound | Lamp effect |
 |---|---|---|---|
 | lock lit | 139 (LOCK IS LIT; no text captured) | 0x293 | 167 |
-| ball locked | 140 "BALL n LOCKED" | from table 0x040c62aa: 0x29a / 0x29c / 0x29f (lock 1/2/3), then the side's lock music: the per-player call Autobot 0x294-0x296 (RAM 0x02111d58) / Decepticon 0x297-0x299 (0x02111d68), first at the player's first ball [0x0100ab5c], next at every Megatron multiball [0x0100ad70] (observed: 0x297, then 0x298 after the multiball, megatron_decepticon.jsonl 94.66 s). The Decepticon animation also follows it: 0x297 first-round animations, else the "2nd" ones (tables 0x040c62b4 / 0x040c62c0) | 168 |
+| ball locked | 140 "BALL n LOCKED" | from table 0x040c62aa: 0x29a / 0x29c / 0x29f (lock 1/2/3), then the side's lock music: the per-player call Autobot 0x294-0x296 (RAM 0x02111d58) / Decepticon 0x297-0x299 (0x02111d68), first at the player's first ball [0x0100ab5c], next at every Megatron multiball [0x0100ad70] (code run = trace: 0x297, then 0x298 after the multiball, megatron_decepticon.jsonl 94.66 s). The Decepticon animation also follows it: 0x297 first-round animations, else the "2nd" ones (tables 0x040c62b4 / 0x040c62c0) | 168 |
 | A start | 69 intro (6.4 s) then background 70 "MEGATRON MULTIBALL / SHOOT FLASHING SHOTS" | 0xc7, 0xc8, 0xc9; music 0x38 | 61, 62 |
 | A jackpot / double / super / total | 71 / 72 / 73 / 74 "MEGATRON MULTIBALL TOTAL:" | 0xca / 0xd2 / 0xd9.. / 0xde | |
 | D start | 75 intro (6.1 s) then background 76 | 0xe2, 0xe3; music 0x3b | 69, 70 |
@@ -184,9 +188,15 @@ Megatron (`wizard_modes.md`), not to this multiball.
 ## 8. Lamps
 Shot inserts by lamp group (`rom_data/io/lamp_groups.json`): A uses groups 0x25-0x2b, D 0x2c-0x33: the orange arrow
 of each shot (15 Allspark, 19 left orbit, 44 left ramp, 40 center, 34 right ramp, 39 right orbit), 29 CHALLENGE
-MEGATRON for the lock and 59 OPTIMUS PRIME CHALLENGE for Optimus (D) [tables 0x040c63e4, 0x040c65dc]. Lit shot =
-flashing (inferred from the leff shapes; not captured lamp by lamp). Megatron inserts 27 / 57 / 58 show the lock
-(inferred).
+MEGATRON for the lock and 59 OPTIMUS PRIME CHALLENGE for Optimus (D) [tables 0x040c63e4, 0x040c65dc]. They are
+drawn by the rule leffs 62 [0x0100cf28] (A, lit mask mta_mask 0x00034da8, 7 entries) and 70 [0x0100ee54] (D,
+mtd_mask 0x00034e1c, 8 entries) (code): every 3 ticks it walks its table of (shot bit, lamp group), 12 bytes an entry: a shot in the lit mask is claimed (`lamp_group_86d4` on the layer mask) and drawn on and off in turn (`lamp_group_8664` / `lamp_group_84cc`, the phase flips every pass, starting on): **3 ticks on, 3 off** (96 ms period); a shot not lit is released (`lamp_group_853c`), so the lamp below it shows. No layer: retry every 6 ticks.
+The lock (code): the lamp rule `lamp_layer_b228` [0x0100b228] (registered by 0x0100bc0c, record 0x00034d3c, state
+mask 0x20): when `no_mode_and_flag_b0b8` [0x0100b0b8] (game flags 0x25, 0x29, 0x1f, 0x22, 0x3c, 0x3e all clear,
+and mtl_lit 0x02111d50 + (p-1) != 0), lamps 29 CHALLENGE MEGATRON, 57 MEGATRON (BOTTOM) and 58 MEGATRON (TOP) are
+on with their flash bit set (rule layer 0x00036374, flash mask 0x00036388: the compositor's 10-tick phase,
+`allspark_and_energon.md` 8); otherwise off and released. Lamp 27 MEGATRON is not the lock: it is the character
+insert of requirement 0 (`lamp_layer_35ea8` [0x01035ea8], `wizard_modes.md` 8).
 
 ## 9. Interactions
 - Blocks: lock lighting and locking while any Megatron/Optimus/AHM/wizard multiball runs [0x0100ae6c, 0x0100b0b8];
@@ -199,7 +209,7 @@ flashing (inferred from the leff shapes; not captured lamp by lamp). Megatron in
 
 ## 10. Reference scenarios
 `traces/megatron_decepticon.txt`, `traces/megatron_autobot.txt` (run `tf_ref <scenario> <trace> traces/watch_megatron.tsv`).
-Key expected events: see the observed lines in 4.1, 4.2, 5.1, 5.2 and 6.
+Key expected events: see the code-run lines in 4.1, 4.2, 5.1, 5.2 and 6.
 
 ## 11. Open questions
 - Deff 138 "N MORE TARGET COMPLETIONS TO LIGHT LOCK" (function 0x0100b2f0) has no starter in the code; a

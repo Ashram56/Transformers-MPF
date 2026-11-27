@@ -37,14 +37,14 @@ names_out['switches'] = {**{str(k): v for k, v in sn.items()}, **{str(k): v for 
 # ---- coils
 co = rd('coils.csv'); cn = names(co, 'coil', 'c_')
 L = [HDR, '# number: the SAM driver number (1-32 on the IO board, 33-35 aux bus ticket outputs). FLASH: entries are\n',
-     '# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse and hold times were measured from the\n',
-     '# solenoid register writes in the emulator (rom_data/io/coil_timing.csv, mpf_source column of coils.csv).\ncoils:\n']
+     '# flashers. Motors and the orbit gate (5, 8, 30) are held outputs. Pulse times are the code\'s (rom/tools/coil_pulses.py:\n',
+     '# rom_data/io/coil_pulses.csv, one row per call site; mpf_source column of coils.csv says which, and which stay open).\ncoils:\n']
 for r in co:
     n = int(r['coil'])
     if n not in cn: continue
     L.append('  %s:\n    number: %d   # %s\n' % (cn[n], n, r['name']))
     src = r.get('mpf_source', '')
-    if 'motor_or_long' in r['flags_decoded'] or src.startswith('motor'):
+    if 'motor_or_long' in r['flags_decoded'] or src.startswith('motor') or src.endswith('not pulsed'):
         L.append('    default_hold_power: 1.0   # held on, not pulsed\n')
         if r.get('mpf_default_pulse_ms'): L.append('    # the game ran it %s ms at a time\n' % r['mpf_default_pulse_ms'])
         continue

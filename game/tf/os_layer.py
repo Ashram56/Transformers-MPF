@@ -3,7 +3,7 @@
 MPF owns the hardware: switches, ball devices, the trough, players and turn order. This layer adds
 the ROM's own semantics on top:
 
-- ROM tasks: named timers counted in 16.26 ms ticks (task ids are the ROM's, for cross-reference).
+- ROM tasks: named timers counted in 16 ms ticks (task ids are the ROM's, for cross-reference).
 - Game flags, audits, adjustments (operator settings by ROM number) and the trace log.
 - score_add (nothing while tilted or out of game), valid playfield, ball save, tilt, extra ball,
   the end-of-ball sequence with the bonus, and game over.
@@ -18,91 +18,135 @@ Where this comes from. Transformers runs the same Stern SAM OS as Tron Legacy, w
 parts of tf_180 that were compared match Tron's [code]: the display effects 1-39 (same numbers and priorities,
 deff table 0x040ce7c4), the lamp effects 1-19 (same flags and priorities, leff table 0x040cfe00), the sound
 calls 0x001-0x019 (same channel flags, sound call table 0x040dee08), the adjustments 1-64 and the audit counters
-(same names and numbers, tables 0x040cb20c and 0x040cd5a4). So this module keeps Tron's OS model: addresses in
-[brackets] and the tick counts are Tron 1.74's (the same OS code sits at other addresses in tf_180, e.g. leff 13
-is 0x00028168 here, 0x0002fd60 on Tron) until the ROM extraction maps tf_180's OS and records its traces.
+(same names and numbers, tables 0x040cb20c and 0x040cd5a4). So this module keeps Tron's OS model, re-cited to
+tf_180 (QA F13, 2026-11-25): every address in [brackets] is tf_180's routine, found by matching each Tron routine
+against the tf_180 decompile (normalised bodies; the trough, serve, multiball and ball search routines moved to
+0x01039ed4-0x0103c0f0 in tf_180). A citation still marked "Tron" has no tf_180 routine identified yet.
 The game's own numbers (music, speech, lamps) are in GAME below, from tf_180's tables where known; None means
 not known yet, and the call is skipped.
 """
 import csv
 import os
-import random
 import re
 
 from mpf.core.custom_code import CustomCode
 
+from tf.score_screen import StatusCounters
 from tf.trace import Trace
 
-TICK = 0.01626          # seconds per ROM tick in play
+TICK = 0.016            # seconds per ROM tick: 64 x 250 us FIQ [0x000114b0] (owner, 2026-11-25: the code, not the measured 16.26 ms)
+VOLUME_DEFF, VOLUME_DEFAULT, VOLUME_MAX = 2, 0x28, 0x3f   # deff 2 [0x01040050]; [0x00025fb0]; [0x0000f008]
 SECOND = 62             # ticks the ROM treats as one second
 START_HOLD_TICKS = 62   # adj 36 GAME RESTART: START held this long (timer 4, 0x3e ticks)
 
-# game state word bits (Tron 0x37274)
+# game state word bits (gf_state, RAM 0x31468)
 ST_BONUS, ST_END_BALL, ST_ATTRACT, ST_TILT = 0x01, 0x04, 0x10, 0x200
+END_BALL_WAIT_MAX = 937     # DAT_00033324: the end of ball waits at most this long for the flag-0x2000 tasks
 
 # Valid playfield (OS, game_flow.md 4.3): the switch descriptor's top byte (rom/rom_data/io/switches.csv
-# flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). The spec infers that
-# slings and pops (0x04) do not count, but traces/basic validates on the 3rd different switch of slings 26, 27
-# and pop 30 (play music 0x01f at 7.78 s): they count, as on Tron (observed).
+# flags_0x0c): 0x20 = force (one hit validates), the others count (3 different needed). Slings and pops (0x04,
+# no event bit in the dispatcher's mask) count too: their handlers post event 0x6b themselves (the slings
+# [0x01033104], the pops [0x01032f8c]: post_event_6a_d8d0 then event_post(0x6b)), whose hook [0x00017db4] adds the
+# switch to the counter 0x00031608; traces/basic confirms (play music 0x01f at 7.78 s).
 FORCE_SWITCHES = {7, 8, 10, 11, 12, 14, 24, 25, 28, 29, 34}
-COUNTING_SWITCHES = {1, 2, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 45, 46, 49, 50, 51}
+# 3 and 38-42 (left eject, Megatron lock): top byte 0x1f, the 0x1000 mask word: event 0x6b [0x0000ddf8] (game_flow.md 4.3)
+COUNTING_SWITCHES = {1, 2, 3, 4, 5, 6, 13, 26, 27, 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 45, 46, 49, 50, 51}
 
 # Game flags of the running multiballs: [0x01006704], named any_timed_mode_running in the decompile, tests these
-# six flags (FUN_0100f918 on Tron). 0x1e Mudflap & Skids; the others come with their specs.
+# six flags. 0x1e Mudflap & Skids; the others come with their specs.
 MULTIBALL_FLAGS = (0x1e, 0x1f, 0x22, 0x25, 0x29, 0x3e)
 BALL_SAVE_GRACE = 218        # ticks (0xda) of grace after the ball-save timer
 SERVE_EJECT_TICKS = 32
-LATER_SERVE_EXTRA_TICKS = 6     # every later ball start: trough eject 0.645 s after the ball start, not 0.545 s
-SAVE_EJECT_TICKS = 39
-AUTO_LAUNCH_TICKS = 12      # task 0x3c after an auto-launch (inferred: covers the shooter lane opening)
+# coil_pulse_queue_serve [0x00003758]: the queue's head still points at the last pulse it ran; the serve that steps
+# past it sets a hold-off of 6 serves (one a tick), so every queued pulse after the first since power-up starts 6
+# ticks later (the trough kick run as ROM code: queued +32, started +39; scenario_lift game_flow)
+LATER_SERVE_EXTRA_TICKS = 6
+# serve task [0x0103b128] (ball_feed.md): types 2 and 8 kick without a settle, the others after the trough's +0x10
+# settle (31 ticks, table 0x040d17fc) and the tick the task starts on (QA CC1, CC2)
+SAVE_EJECT_TICKS = 1
+AUTO_LAUNCH_TICKS = 0xbb    # auto_launch_started [0x0100a150]: task 0x3c sleeps 0xbb ticks (task_create_arg_abe8 [0x0000abe8])
 MB_TASK = "multiball"       # the multiball task (ROM id: trough device + 0x18)
-MB_EJECT_TICKS = 101        # trough eject cycle while it launches multiball balls (Tron traces)
-# A device holding a ball for the rules (Tron: the VUK) stays busy for a fixed time after its kick, however
-# soon MPF confirms the eject (Tron traces: 3.0 s from the kick to the first multiball ball's launch).
-DEVICE_BUSY_TICKS = 149
-# A request without a held ball (add-a-ball, a drain during the save) launches its first ball after a trough
-# cycle (Tron traces: 1.43 s, of which MPF's trough eject + auto-launch take ~0.6 s).
-MB_FIRST_EJECT_TICKS = 51
-SAVE_SERVE_TICKS = 48           # ball save re-serve: deff 20 -> shooter lane opens 1.383 s (Tron traces)
+# Multiball feed FUN_0103aba4 [0x0103aba4] / FUN_0103aa5c [0x0103aa5c] (ball_feed.md, QA CC3, R-F10): each ball
+# after the trough's 31-tick settle, then 6-tick polls while a ball sits in the shooter lane [0x0103ab6c] or the
+# shooter's task 0x16 runs (125 ticks from the shooter lane switch closing [0x0103a7a4]); no fixed device hold.
+MB_SETTLE_TICKS, MB_POLL_TICKS, SHOOTER_TASK_TICKS = 31, 6, 125
+MB_KICK_RETRY_TICKS = 312       # [0x0103a7fc]: from the 16th try on, 312 ticks between kick tries
+MB_FIRST_EJECT_TICKS = 32       # settle + the task's start tick
+SAVE_SERVE_TICKS = 32           # ball save re-serve, serve type 1: settle + the task's start tick (QA CC1)
 BALL_SEARCH_EVENT_TICKS = 36
 BALL_SEARCH_RUN_TICKS = 496     # a search that finds no ball runs about as long as its Optimus motor run (33 + ~465 ticks), then
                                 # the countdown resumes: searches repeat every 18.13-18.18 s (coils, scoring, battle_starscream)
-BALL_SEARCH_TICKS = 104     # search task 0x2b; a drain during it ends the ball after it
+class RomRandom:
+    """The ROM's generator: x = x * 0x19660d + 1 mod 2^32 (set_dat_000314b4_ba64 [0x0000ba64]), random_below(n) =
+    n * x >> 32 [0x0000ba94]. Its state 0x000314b4 starts at 0x04277dc9 [0x0000ba48] and is set from the factory config
+    words in flash [0x0000ba54] (factory_config_read_10da4 [0x00010da4], factory_config_get_10f3c [0x00010f3c]), a
+    machine's own data, so live play seeds it from the clock in place of them; tests and scenarios seed it."""
+
+    def __init__(self, seed=None):
+        self.seed(seed)
+
+    def seed(self, value=None):
+        import time                         # noqa: PLC0415
+        self.state = (int(time.time() * 1000) if value is None else int(value)) & 0xffffffff
+
+    def next(self):
+        self.state = (self.state * 0x19660d + 1) & 0xffffffff
+        return self.state
+
+    def randrange(self, n):
+        return (n * self.next()) >> 32
+
+
+BALL_SEARCH_TICKS = 104     # search task 0x2b
+LOCATE_ROUNDS, LOCATE_CHECKS, LOCATE_EVERY = 4, 0x34, 6    # task_ball_search [0x0103b5e4]
+# its device tasks: created at tick 5, once coil_reset_one_2558 [0x00002558] has waited out coil 12's 64 ms pulse
+# (coil_pulse_now_wait, one-tick sleeps at 0x000021a0; rom/rom_data/io/ball_search_ops.json), one tick later in
+# the game as BALL_SEARCH_SWEEP; then device 4's +0x14 settle (62, table 0x040d17fc) and the task's start tick
+SEARCH_DEVICES_TICKS = 5 + 1 + 62 + 1
 OUTLANE_TASK_TICKS = 625    # drain-side tasks 0x37 / 0x38 (0x271)
 SPECIAL_OVER_LIMIT_SCORE = 5000000
-# the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate
-# (observed, the same in every search: traces/game_flow.jsonl 32.65 / 102.01 / 126.13 / 150.45 s,
-# megatron_decepticon.jsonl 68.99 s; pulses 64 ms, the pops' search time; rom_data/io/coils.csv ballsearch_fn)
+# the search's coil sweep (ticks after the search starts, MPF coils), then the Optimus motor and the orbit gate.
+# Code (rom/tools/ball_search.py runs the search task FUN_0103b778 [0x0103b778], rom_data/io/ball_search_ops.json):
+# the coil registry's search routine of the Optimus coil [0x01033cb0], the game devices (FUN_0103be8c: left eject,
+# Megatron lockup, the trough's queued auto-launch), the pops [0x00003018], the slings [0x00003518], 64 ms each,
+# each one holding the search 64 // 16 + 1 = 5 ticks (FUN_00002160); the task runs the tick after its start, hence
+# the +1. The auto-launch time (14) and the gate (32, 1,488 ms) are code: the queued pulse starts at 13, held off 7
+# ticks by coil_pulse_queue_serve [0x00003758], the gate pulse is drv_pulse_coil_2c074 [0x0102c074] at 31 (ball_feed.md). The
+# motor step is code too: the search posts event 0xc at 30 [0x0103b808], whose hook on_event_0c_16628 [0x00016628]
+# starts each motor's search task [0x00016674] (task 0x2b); it claims the motor and sends it round its positions
+# (motor_goto_wait [0x00016f28]), and the move task motor_move_task [0x00016c88] turns the motor on at 32 and runs
+# it to the 468-tick limit when no position switch answers (ball_feed.md; traces only confirm).
 BALL_SEARCH_SWEEP = ((1, ("c_optimus_prime",)), (6, ("c_top_pop_bumper",)), (7, ("c_megatron_lockup", "c_left_eject")),
                      (11, ("c_right_pop_bumper",)), (14, ("c_auto_launch",)), (16, ("c_bottom_pop_bumper",)),
                      (21, ("c_left_slingshot",)), (26, ("c_right_slingshot",)))
 BALL_SEARCH_GATE = (32, 91)         # orbit gate (coil 5) held 1.48 s
 BALL_SEARCH_MOTOR_TICKS = 33        # hook "ball_search_motor": the Optimus motor runs to its time limit
-LOST_BALL_SEARCH = 5        # ball_search_start(5) with adj 63 LOST BALL RECOVERY: a lost ball is fed [0x0001f79c]
-COINDOOR_SAVE_TICKS, COINDOOR_GRACE_TICKS = 0x138, 0xbb     # coin door opened in play, adj 41 [0x0001ff74]
+LOST_BALL_SEARCH = 5        # ball_search_start(5) with adj 63 LOST BALL RECOVERY: a lost ball is fed [0x0103b8e0]
+COINDOOR_SAVE_TICKS, COINDOOR_GRACE_TICKS = 0x138, 0xbb     # coin door opened in play, adj 41 [0x0103c0b8]
 POWER_OFF_DEFF = 4          # "50V / 20V DISABLED / CLOSE COIN DOOR ..." while the door is open
 POWER_OFF_DIM_TICKS = 8 + 10 * 8 + 1875     # deff 4: shown, title blinks 10 x 8 ticks, 1875 ticks, then dimmed
 POWER_OFF_DIM_LEVEL = 6                     # palette_fill(6) of the dimmed screen
-POWER_OFF_CANCEL_SOUND = 0x009              # BACK takes the warning away [0x0000fc20]
+POWER_OFF_CANCEL_SOUND = 0x009              # BACK takes the warning away [0x0000f008]
 SERVICE_CONFIRM_SECONDS = 5                 # SELECT in a game: the end-the-game question waits this long
-DYNAMIC_REPLAY_MIN = 5000000                                # dynamic replay floor [0x000231a4]
+DYNAMIC_REPLAY_MIN = 5000000                                # dynamic replay floor [0x0001c888]
 
 # The game's own numbers the OS uses. Lamps from rom/rom_data/io/lamps.csv [code]; None = not known yet.
 GAME = {
     "start_lamp": 1,            # START BUTTON
-    "shoot_again_lamp": 3,      # ROLL OUT: the insert between the flippers (VPX table: li3, x 0.45 y 0.88), inferred
+    "shoot_again_lamp": 3,      # ROLL OUT: RAM 0x00030e9a after the boot (run as ROM code), read by [0x0001801c]
     "eb_lamp": 55,              # EXTRA BALL
     "special_lamp": 53,         # SPECIAL
     # the base music is the side's (tf/features/side.py)
-    "music_plunger": 0x1d,      # ball start, Decepticon (observed at each ball start)
-    "music_play": 0x1f,         # main play, Decepticon (observed after the first award)
+    "music_plunger": 0x1d,      # ball start, Decepticon: side_choice_deff_ids_68e4 [0x010068e4]
+    "music_play": 0x1f,         # main play, Decepticon: side_deff_ids_6970 [0x01006970]
     "add_player_sound": 0x048,
-    "game_start_sound": None,   # none observed (traces/sounds.jsonl: only the side choice music 0x1b)
-    "tilt_warning_speech": 0x052,   # observed 0.51 s (31 ticks) after sound 0x016
-    "tilt_speech": 0x053,       # observed 1.01 s (62 ticks) after sound 0x017
-    "tilt_speech_ticks": 62,
-    "launch_sound": 0x056,      # observed on every plunge and auto-launch, 0.08 s after the lane opens
-    "launch_sound_ticks": 4,
+    "game_start_sound": None,   # none: the game start's hooks (event 0x2e: [0x0103621c] [0x010026ec]) play no sound
+    "tilt_warning_speech": 0x052,   # task 0x98 [0x01005e44], 0x1f ticks after the warning (event 0x69)
+    "tilt_speech": 0x053,       # task 0x99 [0x01005e80], 0x3e ticks after the tilt (event 0x65)
+    "tilt_speech_ticks": 0x3e + 1,
+    "launch_sound": 0x056,      # sw_shooter_lane [0x01032dfc] on the opening, unless task 0x3d (6 ticks from the closing) runs
+    "launch_sound_ticks": 4,    # the opening's debounce and dispatch (MPF does not debounce: rom_differences D-SW-DEB)
+    "launch_bounce_ticks": 6,   # task 0x3d [0x01032dfc]
 }
 SHOOT_AGAIN_LAMP = GAME["shoot_again_lamp"]
 START_LAMP = GAME["start_lamp"]
@@ -150,6 +194,19 @@ def shaker_table(shaker_csv):
     return deffs
 
 
+def leff_rule_table(path):
+    """{leff: (gf_state mask, killed at end of ball)} from rom/rules/leff_rules.csv (game_flow.md 5.8): the OS rule
+    records' mode mask [0x000176ec] and whether the leff task lacks flag 0x100, so task_kill(0, 0x100) at the end of
+    ball [0x00019e44] kills it (QA L-G06)."""
+    table = {}
+    if not os.path.exists(path):
+        return table
+    with open(path, encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            table[int(row["leff"])] = (int(row["gf_state_mask"], 16), row["end_of_ball"].startswith("killed"))
+    return table
+
+
 def sample_lengths(base):
     """{sound call: [duration (s) of each sample it picks from]} from the ROM extraction's sound tables."""
     import csv
@@ -165,23 +222,50 @@ def sample_lengths(base):
     return out
 
 
-def sample_channels(base):
-    """{sound call: [(channel mask, priority) of each sample it picks from]}: the sample's mask (samples.csv) and
-    the low byte of the call's flags word (sound_calls.csv flags_0x10; meaning inferred: 0x157 with 0x9e is
-    refused while a 0x0c-mask jackpot sample of a 0x1c1 call plays, played over a 0x10-mask one)."""
+def sample_voices(base):
+    """({sound call: (sample ids, priority +0x10, take-over +0x11)}, {sample: (voice mask, voices, loops)}): the call
+    records (sound_calls.csv) and each sample script's bytes 1-2 (sample_voices.csv, rom/tools/sample_voices.py)
+    that snd_start_sample [0x00024ae4] reads; loops: the sample has a loop point (samples.csv loop_start_s)."""
     import csv
-    masks = {}
+    calls, samples, loops = {}, {}, set()
     with open(os.path.join(base, "samples.csv"), encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            masks[int(row["sample"], 16)] = int(row.get("mask") or "0", 16)
-    out = {}
+            if row.get("loop_start_s"):
+                loops.add(int(row["sample"], 16))
+    path = os.path.join(base, "sample_voices.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                n = int(row["sample"], 16)
+                samples[n] = (int(row["voice_mask"], 16), int(row["voices"]), n in loops)
     with open(os.path.join(base, "sound_calls.csv"), encoding="utf-8") as f:
         for row in csv.DictReader(f):
             ids = [int(x, 16) for x in (row["samples"] or "").split()]
-            prio = int(row.get("flags_0x10") or "0", 16) & 0xff
-            out[int(row["call"], 16)] = [(masks.get(i, 0), prio) for i in ids]
+            calls[int(row["call"], 16)] = (ids, int(row["priority"] or 0), int(row["replace_equal"] or 0))
+    return calls, samples
+
+
+def sum_bits(slots):
+    """The voices of a list of sound slots, or-ed."""
+    out = 0
+    for s in slots:
+        out |= s["voices"]
     return out
 
+
+
+_LEFF_RULE_ORDER = None
+
+
+def leff_rule_rank(leff):
+    """The position of `leff`'s rule in the ROM's leff rule list (list 3), from rom/tools/rule_order.py."""
+    global _LEFF_RULE_ORDER
+    if _LEFF_RULE_ORDER is None:
+        import json                         # noqa: PLC0415
+        path = os.path.join(os.path.dirname(__file__), "..", "..", "rom", "rom_data", "rules", "leff_rule_order.json")
+        with open(path, encoding="utf-8") as f:
+            _LEFF_RULE_ORDER = {leff_: i for i, leff_ in enumerate(json.load(f)["order"])}
+    return _LEFF_RULE_ORDER.get(leff, len(_LEFF_RULE_ORDER))
 
 class Task:
     """One ROM task: a timer that calls back after a number of ticks."""
@@ -214,21 +298,25 @@ class TfOS(CustomCode):
         self.trace = Trace(self.machine)
         self.tasks = {}
         self.flags = set()
+        self.last_scores = []        # the last game's scores (0x02110900 players, 0x021109e4 scores): attract panel
+        self.speech_once_count = 0
         self.state = ST_ATTRACT
         self.hooks = {}             # hook name -> [functions], called in registration order
+        self.timers = {}            # switch-timeout timer token -> end time (FUN_0000ff00 / FUN_0000febc)
         self.pokes = {}             # ROM RAM address -> setter(value), for the scenarios' "poke"
         self.features = []
         self.players = []           # PlayerData per player
         self.pf_valid = False
+        self.status = StatusCounters(TICK)  # the score display's counters 0x021120a8-0x021120b8 (tf/score_screen.py)
         self._counting_seen = set()
         self.ball_save = None       # None, "armed" or "grace"
         self.ball_save_left = 0
         self.tilt_warnings = 0
         self._last_bob = -999.0
-        self.eb_lit = []            # OS lit extra balls per player (0x3d46c)
-        self.eb_collected = [0] * 4  # extra balls collected per player (0x3d470)
-        self.specials_lit = [0] * 4  # 0x3d4ef
-        self.specials_collected = [0] * 4  # 0x3d4f3
+        self.eb_lit = []            # OS lit extra balls per player (0x3759c)
+        self.eb_collected = [0] * 4  # extra balls collected per player (0x375a0)
+        self.specials_lit = [0] * 4  # 0x3761f
+        self.specials_collected = [0] * 4  # 0x37623
         self.lamps = None           # tf.lamps.Lamps: the lamp matrix (game image, flash mask, leff layers)
         self.replays_awarded = {}
         self.shoot_again = False    # game flag 9: this ball is a shoot-again ball
@@ -245,15 +333,17 @@ class TfOS(CustomCode):
         # deff id -> function returning the values the deff's code reads from RAM each frame (timers,
         # mode values, the current stage): its display lines (tf/media_bridge.py, refreshed while shown)
         self.deff_values = {}
-        self.random = random.Random()
+        self.random = RomRandom()
         self._new_game = False
-        self._new_game_ball = False
+        self._pulse_queue_used = False  # a queued pulse ran since power-up [0x00003758]
         self._search_handle = None
         self._search_at = 0.0
         self._search_paused = None      # countdown seconds left while a flipper button is held
         self.ball_search_count = 0
+        self._locating = False          # task_ball_search [0x0103b5e4] runs (START with the balls not located)
+        self.balls_installed = 4        # balls_installed_check_3a1c4: the trough's four, then the count it learns
         self.ball_held = False       # a ball sits in a device the rules hold (not in play) waiting for its kickout
-        self.ball_validated = False  # the playfield was validated on this ball (the play music)
+        self.ball_validated = False  # game flag 0x10 for the music rule (set at validation, cleared with the ball)
         self._mb_end_deferred = False
         self.device_ejecting = False    # a held ball's eject not yet confirmed by a playfield switch (no ball search)
         self.device_busy = False        # a held ball released, eject not yet confirmed by the ball device
@@ -266,11 +356,14 @@ class TfOS(CustomCode):
         self.audits = Audits(self.machine)                     # ROM audit counters, persisted
         from tf.credits import Credits             # noqa: E402
         self.credit_model = Credits(self)                      # credits and pricing, persisted
+        self.audits.money = self.credit_model.money
         self._restart = False       # adj 36 GAME RESTART: the running game ends into a new one
         self._valid_at = None       # when the playfield was validated on this ball (play-time audits)
         self.game_seconds = 0.0     # validated play time of the running game
         self.replayed = False       # a replay was awarded in this game (DAT_0003817e)
         self._coindoor_save = False  # the running multiball save is the coin door ball saver's (adj 41)
+        self.leff_rule_info = leff_rule_table(os.path.join(self.machine.machine_path, "..", "rom", "rules",
+                                                           "leff_rules.csv"))
         self.shaker_deffs = shaker_table(os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "io",
                                                       "shaker.csv"))
         self.machine.tf = self
@@ -278,7 +371,7 @@ class TfOS(CustomCode):
         ev = self.machine.events
         ev.add_handler("game_starting", self._game_starting, priority=1000)
         ev.add_handler("ball_starting", self._ball_starting, priority=1000)
-        # the ROM starts the next ball (and deff 19) as soon as the bonus ends [0x00020658]; MPF first waits
+        # the ROM starts the next ball (and deff 19) as soon as the bonus ends [0x00019d30]; MPF first waits
         # for an empty playfield, so the score display comes back here (the screen was empty until then)
         ev.add_handler("ball_will_start", lambda **kwargs: self.display.refresh())
         ev.add_handler("ball_started", self._ball_started, priority=1000)
@@ -297,13 +390,22 @@ class TfOS(CustomCode):
             sw.add_switch_handler(slot, (lambda name: lambda: self.credit_model.coin(name))(slot))
         sw.add_switch_handler("s_start_button", self._start_held, ms=START_HOLD_TICKS * TICK * 1000)
         sw.add_switch_handler("s_back", self._service_back)
+        for name, step in (("s_minus", -1), ("s_plus", 1)):
+            if name in self.machine.switches:
+                sw.add_switch_handler(name, (lambda d: lambda: self._volume_button(d))(step))
+        self.volume = VOLUME_DEFAULT        # RAM 0x02110250 (ram_02110250_user [0x00025cd0])
+        self.deff_live([VOLUME_DEFF], lambda: {"values": [self.volume]})
         sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob)
+        sw.add_switch_handler("s_tilt_pendulum", self._plumb_bob_open, state=0)
         sw.add_switch_handler("s_l_flipper_button", lambda: self._flipper_launch(1))
         sw.add_switch_handler("s_r_flipper_button", lambda: self._flipper_launch(2))
         for name in ("s_l_flipper_button", "s_r_flipper_button"):
             sw.add_switch_handler(name, self._search_hold)
             sw.add_switch_handler(name, self._search_hold, state=0)
         sw.add_switch_handler("s_shooter_lane", self._shooter_left, state=0)
+        sw.add_switch_handler("s_shooter_lane", self._shooter_entered)
+        self._shooter_at = -1e9     # last closing of the shooter lane switch (task 0x16 [0x0103a7a4] starts there)
+        self._mb_kick_at = -1e9
         sw.add_switch_handler("s_coin_door_open", self._coin_door_opened)
         sw.add_switch_handler("s_coin_door_open", self._coin_door_closed, state=0)
         self._power_off_run = 0     # counts deff 4 starts, so a dim timer of an earlier start does nothing
@@ -313,17 +415,39 @@ class TfOS(CustomCode):
         self.in_service = False     # the service menu (mode tf_service) is running
 
         self.register("rules_refresh", self.request_refresh)
-        self.register_poke(0x3d46c, lambda p, v: self.eb_lit.__setitem__(p, v))
+        self.register_poke(0x3759c, lambda p, v: self.eb_lit.__setitem__(p, v))
         from tf.media_bridge import MediaBridge   # noqa: E402 (import after machine setup)
         self.media = MediaBridge(self)
         from tf.display import Display, Leffs, Tubes     # noqa: E402
         self.display = Display(self)
         self.tubes = Tubes(self)
         self.leffs = Leffs(self)
-        from tf.lamps import Lamps                # noqa: E402
+        from tf.lamps import (Lamps, SUPER_LIT_LEFF_GROUPS, RAMP_PATTERNS_11, flasher_group_pulse,  # noqa: E402
+                              flasher_group_ramp, flasher_coil_ramp, lamp_blink, lamp_hold, _no_eject_warning,
+                              gi_lamp_flash)
         self.lamps = Lamps(self)
         self.lamps.leff_code(13, self._leff_save_lamp, priority=0x81)
         self.lamps.leff_code(14, self._leff_save_lamp, priority=0x80)
+        for leff_id, group in SUPER_LIT_LEFF_GROUPS.items():   # the super-lit flashers (QA M6)
+            self.lamps.leff_code(leff_id, flasher_group_pulse(group))
+        self.lamps.leff_code(154, flasher_group_ramp(44))        # leff_154 [0x010327bc] (QA L-154)
+        # the flasher leffs read from their code (QA L-G code leffs); coil groups from lamp_effects.csv
+        for leff_id, group in ((32, 10), (160, 49), (176, 56)):  # leff_032 [0x0102d520], 160 [0x01004b34], 176 [0x01026fb0]
+            self.lamps.leff_code(leff_id, flasher_group_ramp(group))
+        self.lamps.leff_code(157, flasher_group_ramp(48, every=6, ready=_no_eject_warning))   # leff_157 [0x01003f20]
+        self.lamps.leff_code(44, flasher_coil_ramp(0x1f))         # leff_044 [0x01027ffc]
+        self.lamps.leff_code(52, flasher_coil_ramp(0x1f))         # leff_052 [0x0102a10c]
+        self.lamps.leff_code(60, flasher_coil_ramp(0x12, toggle=(0x17, 0x20)))   # leff_060 [0x0100c914]
+        self.lamps.leff_code(68, flasher_coil_ramp(0x12, toggle=(0x17, 0x20)))   # leff_068 [0x0100e7d0]
+        self.lamps.leff_code(148, flasher_coil_ramp(None, group=14, patterns=RAMP_PATTERNS_11))  # leff_148 [0x0102ef90]
+        # the lamp leffs: the lamp is the caller's task +0x30 (leff_start(..., lamp=n))
+        for leff_id, toggles in ((97, 10), (100, 10), (98, 5), (101, 5)):     # [0x0102dda4] [0x0102e4a0] ...
+            self.lamps.leff_code(leff_id, lamp_blink(toggles))
+        for leff_id in (139, 143, 169):                            # fn 0x0100999c: the lamp on for 8 ticks
+            self.lamps.leff_code(leff_id, lamp_hold(True))
+        for leff_id in (141, 145):                                 # fn 0x01009a58: the lamp off for 8 ticks
+            self.lamps.leff_code(leff_id, lamp_hold(False))
+        self.lamps.leff_code(38, gi_lamp_flash(), gi=True)                  # leff_038 [0x01023df8]
         from tf import switches                   # noqa: E402
         self.switches = switches.SwitchLayer(self)
         from tf.features import load_features     # noqa: E402
@@ -360,6 +484,14 @@ class TfOS(CustomCode):
     def task_running(self, task_id):
         return task_id in self.tasks
 
+    def timer_set(self, token, ticks):
+        """FUN_0000ff00(token, ticks): a switch-timeout timer (tokens 0-0xd, table 0x040cfd20)."""
+        self.timers[token] = self.now + ticks * TICK
+
+    def timer_running(self, token):
+        """FUN_0000febc(token): nonzero while the timer runs."""
+        return self.timers.get(token, 0) > self.now
+
     def task_ticks_left(self, task_id):
         task = self.tasks.get(task_id)
         if not task:
@@ -382,6 +514,30 @@ class TfOS(CustomCode):
     def has_hook(self, name):
         return bool(self.hooks.get(name))
 
+    def add_ball_open(self):
+        """FUN_01006760: a multiball flag is set or a multiball's end task runs its first 156 ticks (0xa9, 0xb7,
+        0xb9, 0xbb, 0xbf, 0xc5; the tasks rename themselves to 0xb8 / 0xba / 0xbc / 0xc0 for their last 62 ticks,
+        [0x0100c7e8]): ADD-A-BALL is offered (QA M7). Hook "add_ball_open" (every feature asked)."""
+        return any(self.flag(f) for f in MULTIBALL_FLAGS) or any(fn() for fn in self.hooks.get("add_ball_open", ()))
+
+    def speech_once(self, call, flag, in_deff=0):
+        """deff_126_0_more_sub [0x01006ae0]: play `call` unless game flag `flag` is set, two such calls already
+        played this game (RAM 0x34d1c), task 0x96 runs, a multiball runs, or this is the last ball
+        (0x0001aae4 the ball number == 0x0001aacc adj 0x1f balls per game). A call that starts its sample
+        sets the flag, starts task 0x96 for 0x3a2 ticks and counts. Returns True when it played. Callers: deff 126 (0x265, flag 0x30)
+        [0x0102eaec], Energon task 0x97 (0x25f, flag 0x47) [0x01030984]."""
+        game = self.game
+        last_ball = bool(game and game.player and game.player.ball >= self.adj_value(0x1f))
+        if (self.flag(flag) or self.speech_once_count >= 2 or self.task_running(0x96) or self.any_multiball()
+                or last_ball):
+            return False
+        if self.sound(call, in_deff=in_deff) is None:   # snd_play returns 0: the sample did not start [0x01006b5c]
+            return False
+        self.flag_set(flag)
+        self.task_start(0x96, 0x3a2)
+        self.speech_once_count += 1
+        return True
+
     def any_multiball(self):
         """A multiball runs: [0x01006704] (the decompile's any_timed_mode_running) tests the six multiball flags.
         It gates the Energon targets, the battle qualify (clu_start_allowed), the pops step and the combo window."""
@@ -393,12 +549,12 @@ class TfOS(CustomCode):
         return bool(self.hook("timed_mode"))
 
     def timed_mode_paused(self):
-        """Mode clocks hold while the playfield is not validated or while a show task waits or plays (Tron
-        timed_mode_paused [0x0100ff64]; its game parts, such as Tron's pop bumper pause, come with the rules)."""
+        """Mode clocks hold while the playfield is not validated or while a show task waits or plays (tf_180
+        [0x0100683c], Tron's timed_mode_paused; its game parts, such as Tron's pop bumper pause, come with the rules)."""
         return not self.pf_valid or self.show_running() or bool(self.hook("timer_pause"))
 
     def display_busy(self):
-        """FUN_000287a4: a display effect other than the background one is running."""
+        """FUN_000210a8: a display effect other than the background one is running."""
         return self.display.fg is not None
 
     def pick(self, name, weights):
@@ -423,11 +579,13 @@ class TfOS(CustomCode):
 
     # ------------------------------------------------------------------ lamp rules
 
-    def lamp_rule(self, cond, leff=None, tube=None, order=0):
-        """Lamp/tube rule (leff_rule_init / FUN_00000da4): lamp-matrix effect `leff` and/or ramp tube show
-        `tube` run while cond() is true. Re-evaluated by rules_refresh() in `order` (use the ROM address
-        of the rule's condition function, so rules start in the ROM's order)."""
-        self.rules.append([cond, leff, tube, False, order])
+    def lamp_rule(self, cond, leff=None, tube=None):
+        """Lamp/tube rule (rule_record_init_a_17748 [0x00017748]): lamp-matrix effect `leff` and/or ramp tube show
+        `tube` run while cond() is true. Re-evaluated by rules_refresh() in the order of the ROM's leff rule list
+        (QA R-F9): every rule has priority 0, so each registration goes to the head of the list
+        [0x00017580] and the static constructors run the modules last first [0x0002c0c8]
+        (rom/rom_data/rules/leff_rule_order.json, rom/tools/rule_order.py)."""
+        self.rules.append([cond, leff, tube, False, leff_rule_rank(leff)])
         self.rules.sort(key=lambda r: r[4])
 
     def deff_live(self, deff_ids, values):
@@ -436,7 +594,12 @@ class TfOS(CustomCode):
             self.deff_values[deff_id] = values
 
     def deff_rule(self, cond, deff_id, music=None, priority=0, on_start=None):
-        """lamp_rule_init(list 2, cond, deff, music, priority): mode background deff + music (display.py)."""
+        """lamp_rule_init(list 2, cond, deff, music, priority): mode background deff + music (display.py).
+        Order (QA V-ENG5, SC14): the ROM's deff rule bytes put the multiballs (7) above the battles, fast and
+        double scoring (5) [FUN_00017834, rule_list_insert_by_prio_17580], and the music table [0x000178b0] takes the first true of
+        Megatron, wizard side, Optimus, wizard multiball, double scoring, fast scoring, battles. The game's
+        priorities keep that order on its own scale (above PREVALID_PRIO): Megatron 0x78, wizard side 0x77,
+        Optimus 0x76, WMB 0x75, double scoring 0x58, fast scoring 0x57, battles 0x40."""
         self.display.add_rule(cond, deff_id, music, priority, on_start)
 
     def request_refresh(self, *_):
@@ -447,20 +610,35 @@ class TfOS(CustomCode):
 
     def rules_refresh(self, leffs_only=False):
         """leffs_only: only start refused rule leffs whose flashers were freed (display.Leffs)."""
-        if leffs_only:
+        if leffs_only:                  # the rules hook [0x01006240]: list 3 after a leff freed its outputs
+            if self._refresh_pending or self.task_running(0x29) or (self.game and self.state & ST_TILT):
+                return                  # a full evaluation is due anyway / task 0x29 / FUN_000176ec's mode mask
             active_game = bool(self.game) and not self.state & (ST_ATTRACT | ST_END_BALL | ST_BONUS)
             for rule in self.rules:
-                if rule[3] and rule[1] is not None and self.leffs.retry_due(rule[1]) and active_game and rule[0]():
-                    self.leff_start(rule[1], loop=True)
+                cond, leff, tube, on = rule[:4]
+                if leff is None or tube is not None:
+                    continue
+                info = self.leff_rule_info.get(leff)
+                if info is not None and self.game and self.state and not self.state & ST_ATTRACT \
+                        and not self.state & info[0]:
+                    continue
+                want = bool(active_game and cond())
+                if want and (not on or self.leffs.retry_due(leff)):
+                    self.leff_start(leff, loop=True)
+                elif on and not want:
+                    self.leff_stop(leff)
+                rule[3] = want
             return
         self._refresh_pending = False
         if self.game and self.state & ST_TILT:
-            return          # FUN_000196e4: a rule runs only when gf_state is 0 or matches its mode mask
-        if self.hook("rules_hold"):
-            return          # a game feature holds the rules (Tron: its arcade show task 0x97)
+            return          # FUN_000176ec: a rule runs only when gf_state is 0 or matches its mode mask
         active_game = bool(self.game) and not self.state & (ST_ATTRACT | ST_END_BALL | ST_BONUS)
         for rule in self.rules:
             cond, leff, tube, on = rule[:4]
+            info = self.leff_rule_info.get(leff) if tube is None else None
+            if info is not None and self.game and self.state and not self.state & ST_ATTRACT \
+                    and not self.state & info[0]:
+                continue    # [0x000176ec]: the record is not evaluated; its leff keeps running (QA L-G06)
             want = bool(active_game and cond())
             if want and leff is not None and (not on or self.leffs.retry_due(leff)):
                 self.leff_start(leff, loop=True)     # also a refused one whose outputs are free now
@@ -475,19 +653,33 @@ class TfOS(CustomCode):
             rule[3] = want
         self.display.rules_refresh()                 # list 2: background deff rules and their music
         if self.game and (self.state == 0 or self.state & 0x20):
-            # list 5: the lamp rules (mode mask 0x20, FUN_000196e4) redraw the inserts from game state
+            # list 5: the lamp rules (mode mask 0x20, FUN_000176ec) redraw the inserts from game state
             self.lamps.run_rules()
             self.shoot_again_lamp_update()
         self.machine.events.post("tf_rules_refresh")
 
+    def rule_leffs_kill(self, end_of_ball=False):
+        """The rule leff tasks killed by task_kill: at the end of ball (0x100, [0x00019e44]) those without task flag
+        0x100 (leff_rules.csv end_of_ball), at ball start (0x80, [0x00019d30]) all; the rule restarts them when its
+        mask lets it run again (game_flow.md 5.8, QA L-G06)."""
+        for rule in self.rules:
+            leff = rule[1]
+            if leff is None or not rule[3]:
+                continue
+            info = self.leff_rule_info.get(leff)
+            if end_of_ball and (info is None or not info[1]):
+                continue
+            self.leff_stop(leff)
+            rule[3] = False
+
     def lamp_update(self, fn, priority=0):
         """rule_obj_init(obj, 5, fn, 0x20, 0, priority): a lamp rule, fn() redraws its inserts from game
         state (lamps.lamp_set / lamp_flash / ...) on every rules refresh during the game. Higher priority
-        runs first; equal priorities run newest first (FUN_00019578 inserts at the head)."""
+        runs first; equal priorities run newest first (FUN_00017580 inserts at the head)."""
         self.lamps.add_rule(fn, priority)
 
     def shoot_again_lamp_update(self):
-        """shoot_again_lamp_update [0x0001a014]: the shoot again lamp flashes while this ball is a
+        """shoot_again_lamp_update [0x0001801c]: the shoot again lamp flashes while this ball is a
         shoot-again ball (flag 9), is solid while an extra ball is pending, off otherwise. The ROM calls
         it when these change; here it also runs with the lamp rules."""
         self.eb_lamp_update()
@@ -499,7 +691,7 @@ class TfOS(CustomCode):
             self.lamps.lamp_off(SHOOT_AGAIN_LAMP)
 
     def eb_lamp_update(self):
-        """FUN_0001a2a4: the EXTRA BALL insert flashes while the player has an extra ball lit."""
+        """FUN_000182ac: the EXTRA BALL insert flashes while the player has an extra ball lit."""
         p = self.player_num - 1
         if p >= 0 and self.eb_lit[p]:
             self.lamps.lamp_flash(EB_LAMP)
@@ -537,7 +729,7 @@ class TfOS(CustomCode):
         self.display.stop(deff_id)
 
     def show(self, task_id, deff_id, **kwargs):
-        """queue_fullscreen_deff [0x0100fbb0] run as show task task_id (0x81-0xa7)."""
+        """deff_sequence_6350 [0x01006350] run as show task task_id (game ids 0x81-0xa7; tf_180 0x5d-0x7e)."""
         self.display.queue(task_id, deff_id, **kwargs)
         self.request_refresh()
 
@@ -545,12 +737,14 @@ class TfOS(CustomCode):
         return self.display.show_running()
 
     def base_music(self):
-        """Music of the score-display deff rules (Tron [0x0100f594 / 0x0100f5c8]): the plunger music until the
-        playfield is validated on this ball, then the play music; a feature may replace it (hook base_music)."""
+        """Music of the score-display deff rules, bg_entry_eval [0x000178b0] on records 0x00034cd4 / 0x00034cec: the
+        ball-start music while game flag 0x10 is clear and the playfield is not valid (test_flag_10_68b4 [0x010068b4],
+        side_choice_deff_ids_68e4 [0x010068e4]), else the play music (side_deff_ids_6970 [0x01006970]); the side's
+        calls and the Optimus battle music come from the hooks (tf/features/side.py, optimus.py)."""
         music = self.hook("base_music")
         if music is not None:
             return music
-        return GAME["music_play"] if self.ball_validated else GAME["music_plunger"]
+        return GAME["music_plunger"] if not self.ball_validated and not self.pf_valid else GAME["music_play"]
 
     def music(self, call):
         """Play a background music call and remember it (display.rules_refresh plays it again on a change)."""
@@ -572,35 +766,174 @@ class TfOS(CustomCode):
         if index is not None and index < len(lengths):
             i = index
         else:
-            i = self.pick("sample_0x{:03x}".format(call), [1] * len(lengths)) if len(lengths) > 1 else 0
+            i = self._sample_pick(call, len(lengths))
+        if not self._voice_take(call, i or 0, lengths[i or 0]):
+            return None                            # no voice: the sample does not start (nor enter the memories)
+        self._sample_remember(call, i or 0)
         self.media.sound(call, i or 0)             # the media controller plays the same sample
-        channels = self.sample_channels(call)
-        if channels and (i or 0) < len(channels):
-            self._playing = [p for p in getattr(self, "_playing", []) if p[0] > self.now]
-            self._playing.append((self.now + lengths[i or 0],) + channels[i or 0])
         return self.now + lengths[i or 0]
 
-    def sound_refused(self, call):
-        """The sound board refuses `call` while a sample of a higher priority call plays on one of its channels
-        (inferred from the Allspark's warning 0x157, [0x0100a788] event 7: refused during the jackpot speech)."""
-        channels = self.sample_channels(call)
-        if not channels:
-            return False
-        mask, prio = channels[0]
-        return any(end > self.now and m & mask and p > prio for end, m, p in getattr(self, "_playing", []))
+    def _voice_plan(self, call, i):
+        """snd_start_sample [0x00024ae4], the voice part: the sample may use the voices of its script's byte-1 mask.
+        A playing sample (slot 0x00037c2c, 0xa0 bytes each) on those voices can be taken over when its call's
+        priority (+0x10, slot +0x2a) is below the new call's, or equal and its call has the take-over flag (+0x11,
+        slot +0x2b). The sample starts when the free voices plus the voices of those slots reach the number its
+        byte 2 asks; it takes the free voices first, then the voices of the slot that has played longest
+        (0x00037c18) and stops that slot (snd_chan_free_locked). Returns None (refused: the sound does not play),
+        or (voices taken, slot to stop or None)."""
+        if not hasattr(self, "_voice_calls"):
+            self._voice_calls, self._voice_samples = sample_voices(
+                os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "sound"))
+            self._slots = []
+        ids, prio, _ = self._voice_calls.get(call, ([], 0, 0))
+        if i >= len(ids) or ids[i] not in self._voice_samples:
+            return 0, None
+        mask, need, _ = self._voice_samples[ids[i]]
+        self._slots = [s for s in self._slots if s["end"] > self.now]
+        busy, free_slots = 0, []
+        for s in self._slots:
+            if s["voices"] & mask:
+                if s["prio"] < prio or (s["prio"] == prio and s["takeover"] & 1):
+                    free_slots.append(s)
+                busy |= s["voices"]
+        free = mask & ~busy
+        if bin(free | sum_bits(free_slots)).count("1") < need:
+            return None
+        taken = 0
+        for bit in range(8):
+            if need and free >> bit & 1:
+                taken |= 1 << bit
+                need -= 1
+        victim = None
+        if need:
+            victim = free_slots[0]
+            for s in free_slots:                     # the one that has played longest (ties: the later slot)
+                if s["start"] <= victim["start"]:
+                    victim = s
+            for bit in range(8):
+                if need and (victim["voices"] & mask) >> bit & 1:
+                    taken |= 1 << bit
+                    need -= 1
+        return taken, victim
 
-    def sample_channels(self, call):
-        if not hasattr(self, "_sample_channels"):
-            self._sample_channels = sample_channels(os.path.join(self.machine.machine_path, "..", "rom",
-                                                                 "rom_data", "sound"))
-        return self._sample_channels.get(call, [])
+    def sound_playing(self, call):
+        """snd_call_playing [0x000255d4]: a voice slot (0x00037c2c) plays a sample of `call`."""
+        return any(s["call"] == call and s["end"] > self.now for s in getattr(self, "_slots", ()))
+
+    def _voice_take(self, call, i, length):
+        """Start sample i of `call` on the sound board's voices, or refuse it (_voice_plan)."""
+        plan = self._voice_plan(call, i)
+        if plan is None:
+            self.trace.log("sound_refused", call="0x{:03x}".format(call))
+            return False
+        taken, victim = plan
+        if victim is not None:
+            self._slots.remove(victim)
+            if victim["call"] != call:
+                self.media.sound_stop(victim["call"])
+        ids, prio, takeover = self._voice_calls.get(call, ([], 0, 0))
+        loops = i < len(ids) and self._voice_samples.get(ids[i], (0, 0, False))[2]
+        self._slots.append({"voices": taken, "prio": prio, "takeover": takeover, "start": self.now,
+                            "end": float("inf") if loops else self.now + length, "call": call})
+        return True
+
+    def _sound_memory(self, call):
+        """(sample ids, no-repeat memory length +0x0e, speech flag +0x12) of a call's record (table 0x040dee08,
+        20 bytes per call; rom/rom_data/sound/sound_calls.csv)."""
+        if not hasattr(self, "_call_records"):
+            import csv                                          # noqa: PLC0415
+            self._call_records = {}
+            path = os.path.join(self.machine.machine_path, "..", "rom", "rom_data", "sound", "sound_calls.csv")
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    for row in csv.DictReader(f):
+                        ids = [int(x, 16) for x in (row["samples"] or "").split()]
+                        self._call_records[int(row["call"], 16)] = (ids, int(row["no_repeat"] or 0),
+                                                                    bool(int(row["speech"] or 0)))
+            self._call_memory = {}          # call -> its last samples (+0x0e of them, the record's list)
+            self._speech_ring = [0] * 10    # 0x00038354: the last 9 speech samples, head DAT_00032490 (1..9)
+            self._speech_head = 0
+        return self._call_records.get(call, ([], 0, False))
+
+    def _sample_pick(self, call, n):
+        """snd_resolve_call [0x00025044]: from a random start r, the next samples r+1 .. r in turn; the first one
+        neither in the call's no-repeat memory (leaf_25b3c [0x00025b3c]) nor in the speech ring of the last 9
+        speech samples (0x00025a14) plays; if every one is, the last one checked that is in the ring but not the
+        latest speech sample (else r). A test can force the pick (self.forced "sample_0x...")."""
+        if n <= 1:
+            return 0
+        forced = self.forced.get("sample_0x{:03x}".format(call))
+        if forced:
+            choice = forced.pop(0)
+            if choice is not None:
+                return choice
+        ids = self._sound_memory(call)[0]
+        r = self.random.randrange(n)
+        if len(ids) != n:
+            return r
+        memory = self._call_memory.get(call, ())
+        ring = self._speech_ring[1:]
+        latest = self._speech_ring[self._speech_head]
+        fallback, i = r, r
+        while True:
+            i = (i + 1) % n
+            sample = ids[i]
+            if sample not in memory:
+                if sample not in ring:
+                    return i
+                if sample != latest:
+                    fallback = i
+            if i == r:
+                return fallback
+
+    def _sample_remember(self, call, i):
+        """snd_start_sample [0x00024ae4]: a speech call's sample goes into the ring 0x00038354 (head 1..9), and
+        into the call's own memory of its last +0x0e samples."""
+        ids, keep, speech = self._sound_memory(call)
+        if i >= len(ids):
+            return
+        sample = ids[i]
+        if speech:
+            self._speech_head = self._speech_head % 9 + 1
+            self._speech_ring[self._speech_head] = sample
+        if keep:
+            memory = self._call_memory.setdefault(call, [])
+            memory.append(sample)
+            del memory[:-keep]
+
+    def sound_refused(self, call):
+        """snd_start_sample [0x00024ae4] would not start `call` now: no voice of its first sample is free or can be
+        taken over (_voice_plan)."""
+        if not self.sample_lengths(call):
+            return False
+        refused = self._voice_plan(call, 0) is None
+        if refused and os.environ.get("TF_DEBUG_VOICES"):
+            print("REFUSED", hex(call), self.now, [(hex(x["call"]), x["voices"], x["prio"], x["takeover"], x["end"])
+                                                  for x in self._slots])
+        return refused
+
+    def sound_retry(self, call, tries, in_deff=0):
+        """leaf_6a20 [0x01006a20] -> task 0x95 [0x010069d4]: snd_play(call) once a tick until it starts (a voice
+        is free, snd_start_sample [0x00024ae4]) or `tries` calls were made; every call is a snd_play."""
+        self.task_kill(0x95)
+
+        def step(left):
+            if self.sound_refused(call):
+                self.trace.log("sound", call="0x{:03x}".format(call), in_deff=in_deff)
+                if left > 1:
+                    self.task_start(0x95, 1, lambda: step(left - 1))
+                return
+            self.sound(call, in_deff=in_deff)
+        step(tries)
 
     def sound_stop(self, call):
-        """FUN_0002ceb4(call): stop the sample a sound call plays (Tron: the arcade reel's roll)."""
+        """snd_chan_257b4 [0x000257b4](call): stop the sample a sound call plays; its voices are free again."""
         self.media.sound_stop(call)
+        if getattr(self, "_slots", None):
+            self._slots = [s for s in self._slots if s["call"] != call]
 
     def sound_chain(self, call, after):
-        """snd_play_chain [0x0002ca1c]: play `call` when the sample started by an earlier sound() ends."""
+        """snd_play_chain [0x00025284]: play `call` when the sample started by an earlier sound() ends."""
         if after is None or after <= self.now:
             return self.sound(call)
         self.machine.clock.schedule_once(lambda: self.sound(call), after - self.now)
@@ -614,7 +947,7 @@ class TfOS(CustomCode):
         return self._sample_lengths.get(call, [])
 
     def sound2(self, call, arg, index=None, in_deff=0):
-        """snd_play2(call, arg) [0x0002c950]: a sound call with an argument (e.g. a spoken number). The
+        """snd_play2(call, arg) [0x00025250]: a sound call with an argument (e.g. a spoken number). The
         ROM traces log these from inside snd_play2 (caller 0x2c97c), which trace_check leaves out.
         index: the sample of the call's list the argument picks (the SOS skipped item, a counter), which
         the media controller plays."""
@@ -672,7 +1005,7 @@ class TfOS(CustomCode):
         return game.player.number if game and game.player else 0
 
     def current_score(self):
-        """FUN_000233c8: the current player's score (gf_scores), as the deffs that print it read it."""
+        """FUN_0001caac: the current player's score (gf_scores), as the deffs that print it read it."""
         game = self.machine.game
         return game.player.score if game and game.player else 0
 
@@ -729,17 +1062,17 @@ class TfOS(CustomCode):
         return game.balls_in_play if game else 0
 
     def rom_balls_in_play(self):
-        """The ROM's balls_in_play [0x0001e4a8]: while the multiball task runs (balls still to launch, or its
+        """The ROM's balls_in_play [0x0103a5ec]: while the multiball task runs (balls still to launch, or its
         ball save / grace) it is the requested count; otherwise the balls not in a device (a ball held in
         a device is not in play). E.g. a second multiball started during the first one's save adds a ball."""
         if self.task_running(MB_TASK) or self.mb_save_running():
             return self._mb_balls
         return max(0, self.balls_in_play() - (1 if self.ball_held else 0))
 
-    # ------------------------------------------------------------------ multiball (0x0001ed7c)
+    # ------------------------------------------------------------------ multiball (0x0103aec0)
 
     def multiball_start(self, balls, save_ticks=0, grace_ticks=0):
-        """multiball_start(balls, 0, save_ticks, grace_ticks) [0x0001ed7c]: bring the number of balls in
+        """multiball_start(balls, 0, save_ticks, grace_ticks) [0x0103aec0]: bring the number of balls in
         play up to `balls` (counting a held ball, capped at the 4 installed), kill the single-ball save
         and (re)start the multiball task: leff 13, then the launches and the multiball save (a larger
         pending request wins). Returns False (nothing done) during tilt, end of ball or attract
@@ -777,15 +1110,16 @@ class TfOS(CustomCode):
 
     def _mb_request(self, start_save=True):
         """(Re)create the multiball task for new balls: the first one waits a trough cycle."""
+        if not self.pf_valid:
+            self._validate()                         # FUN_0000d8c4 first in the multiball task [0x0103aba4] (QA F12)
         self._mb_first_at = self.now + (MB_FIRST_EJECT_TICKS - 0.5) * TICK
         self._mb_task(start_save)
 
     def _mb_task(self, start_save=True):
-        """Multiball task FUN_0001ea60: wait until no ball device is busy (a device keeps or is ejecting
+        """Multiball task FUN_0103aba4: wait until no ball device is busy (a device keeps or is ejecting
         its ball), then start the save and launch the balls one per trough eject cycle, the first one
         after a trough cycle (_mb_request)."""
-        device_busy_until = self.device_released_at + (DEVICE_BUSY_TICKS - 0.5) * TICK
-        if self.ball_held or self.device_busy or self.now < device_busy_until:
+        if self.ball_held or self.device_busy:
             self.task_start(MB_TASK, 1, lambda: self._mb_task(start_save))
             return
         if start_save:
@@ -803,15 +1137,38 @@ class TfOS(CustomCode):
     def _mb_launch(self):
         if self._mb_pending <= 0 or not self.game or self.state & 0x214:
             self._mb_pending = 0
+            self._mb_kick_at = -1e9
             self.task_kill(MB_TASK)
             return
+        if not self._mb_feed_ready():
+            self.task_start(MB_TASK, MB_POLL_TICKS, self._mb_launch)
+            return
         self._mb_pending -= 1
-        self.machine.playfield.add_ball(balls=1, player_controlled=False)
-        self.task_start(MB_TASK, MB_EJECT_TICKS, self._mb_launch)
+        self._mb_kick_at = self.now
+        self.after(self.pulse_queue_hold_off(), lambda: self.machine.playfield.add_ball(balls=1, player_controlled=False))
+        self.task_start(MB_TASK, MB_SETTLE_TICKS + 1, self._mb_launch)
+
+    def pulse_queue_hold_off(self):
+        """The trough kick is a queued pulse (coil_pulse_queue [0x00001f70]): coil_pulse_queue_serve [0x00003758]
+        starts it LATER_SERVE_EXTRA_TICKS later, except the first queued pulse since power-up."""
+        extra = LATER_SERVE_EXTRA_TICKS if self._pulse_queue_used else 0
+        self._pulse_queue_used = True
+        return extra
+
+    def _mb_feed_ready(self):
+        """[0x0103aa5c] / [0x0103ab6c]: the shooter lane empty and its task 0x16 (125 ticks from the lane's switch
+        closing) over; the kick before it must have reached the lane."""
+        sw = self.machine.switches.get("s_shooter_lane") if hasattr(self.machine.switches, "get") else None
+        if sw is not None and sw.state:
+            return False
+        if self._mb_kick_at > 0 and self._shooter_at < self._mb_kick_at \
+                and self.now < self._mb_kick_at + MB_KICK_RETRY_TICKS * TICK:
+            return False             # the previous ball has not reached the shooter lane yet
+        return self.now >= self._shooter_at + (SHOOTER_TASK_TICKS - 0.5) * TICK
 
     def _mb_save_grace(self, grace_ticks):
         self.leff_stop(13)
-        # the ball search waits for the end of the multiball task (save, then grace) [0x0001ea60]
+        # the ball search waits for the end of the multiball task (save, then grace) [0x0103aba4]
         self.task_start(0x35, grace_ticks, self.ball_search_reload)
 
     def mb_save_running(self):
@@ -836,7 +1193,7 @@ class TfOS(CustomCode):
         self.task_kill(0x35)
 
     def score_add(self, points):
-        """score_add [0x0002340c]: x playfield multiplier gf_pf_mult (2 during double scoring); nothing while
+        """score_add [0x0001caf0]: x playfield multiplier gf_pf_mult (2 during double scoring); nothing while
         tilted or out of game."""
         if not self.game or self.state & 0x210 or not self.game.player:
             return 0
@@ -844,6 +1201,7 @@ class TfOS(CustomCode):
         points = self.score_event(points * self.pf_mult)
         self.ball_search_reload()
         self._add_score(points)
+        self.status.scored(points, self.now)         # event 0x4d with the points [0x0102f998]
         if not self.ball_scored:
             self.ball_scored = True
             if self.shoot_again:
@@ -869,7 +1227,7 @@ class TfOS(CustomCode):
     # ------------------------------------------------------------------ replay (game_flow.md 5.5)
 
     def replay_level(self, n):
-        """FUN_00022998(n): replay level n (1-4) by adj 11 REPLAY TYPE (0 none, 1 fixed adj 17-20, 2 dynamic:
+        """FUN_0001c07c(n): replay level n (1-4) by adj 11 REPLAY TYPE (0 none, 1 fixed adj 17-20, 2 dynamic:
         level 1 only, the machine's dynamic level that starts at adj 16, 3 auto n x adj 15). With adj 21
         REPLAY BOOST the fixed and auto levels are multiplied by (boost count + 1) (NVRAM 0x0211097c, 0 on a
         fresh machine; see _replay_statistics)."""
@@ -886,7 +1244,7 @@ class TfOS(CustomCode):
         return 0
 
     def replay_check(self, player, score):
-        """replay_check [0x00022f18], on every score change: each level reached and not yet awarded."""
+        """replay_check [0x0001c5fc], on every score change: each level reached and not yet awarded."""
         awarded = self.replays_awarded.setdefault(player, set())
         for n in range(1, 5):
             level = self.replay_level(n)
@@ -895,15 +1253,16 @@ class TfOS(CustomCode):
                 self.replay_award(n)
 
     def replay_award(self, n):
-        """replay_award [0x00022d2c]: award per adj 13 (0 = credit + knocker 0x019), audit 9 + n, then task
-        0x33 (an end-of-ball wait task) shows deff 28 REPLAY with leff 17 once no show runs (traces/
-        portal_multiball.jsonl: replay 16.53 s, deff 28 at 25.09 s when show deff 140 ends), until it ends."""
+        """replay_award [0x0001c410]: award per adj 13 (0 = credit + knocker 0x019), audit 9 + n, then task
+        0x33 [0x0001c360]: it sleeps a tick at a time while a non-background deff is on the display
+        (deff_not_background_210a8 [0x000210a8]), then starts deff 28 REPLAY with leff 17 (when the deff starts)
+        and runs until deff 28 is over (deff_is_active_20a90 [0x00020a90])."""
         award = self.adj_value(13)                   # 0 credit, 1 ticket, 2 token, 3 extra ball
         if award == 0:
-            if self.award_credit():                  # FUN_00004cf0: the knocker only when a credit was added
+            if self.award_credit():                  # FUN_000041a0: the knocker only when a credit was added
                 self.after(1, self.knock)            # knocker, fired by the OS knocker queue
         elif award == 3:
-            self.collect_extra_ball()                # eb_award(0) [0x0001a168]
+            self.collect_extra_ball()                # eb_award(0) [0x00018170]
         else:
             self.machine.events.post("tf_award_ticket" if award == 1 else "tf_award_token")
         self.replayed = True
@@ -913,9 +1272,9 @@ class TfOS(CustomCode):
         self.audit(9 + n)
 
         def show():
-            if self.display.show_running() or (self.display.fg is not None and self.display.fg_prio > 0x9f):
-                # FUN_000287a4: wait while a show runs, or a mode's award deff (traces/wizard_multiball.jsonl:
-                # the replay as the last wizard hit deff 88 ends)
+            if self.display.fg is not None:
+                # deff_not_background_210a8 [0x000210a8]: the deff on the display is not the background deff
+                # (wizard_multiball.jsonl confirms: the replay as the last wizard hit deff 88 ends)
                 self.task_start(0x33, 1, show)
                 return
             if self.deff_start(28):
@@ -932,12 +1291,26 @@ class TfOS(CustomCode):
         return added
 
     def knock(self, forced=False):
-        """Knocker queue [0x0001b370 / 0x0001b418]: sound 0x019 unless adj 35 KNOCKER VOLUME is OFF (a forced
-        knock still sounds); with adj 44 Q24 OPTION = KNOCKER the Q24 output (coil 24) fires too."""
+        """Knocker queue: adj_q24_option [0x00019378] adds a knock to the count 0x000375d0; adj_knocker_volume
+        [0x00019420] (event 0x21, every tick) serves one when its wait 0x000375c8 is 0: with adj 44 Q24 OPTION =
+        KNOCKER the Q24 output (coil 24) for 64 ms (0x40) and a wait of 46 ticks (0x2e); sound 0x019 unless adj
+        35 KNOCKER VOLUME is OFF (a forced knock still sounds), and then a wait of 31 ticks (0x1f) (QA CC6)."""
+        self._knocks = getattr(self, "_knocks", []) + [forced]
+        if not self.task_running("knocker"):
+            self._knock_serve()
+
+    def _knock_serve(self):
+        if not getattr(self, "_knocks", None):
+            return
+        forced = self._knocks.pop(0)
+        wait = 0
         if self.adj_value(44) == 2:
             self.machine.coils["c_optional_coil"].pulse()
+            wait = 0x2e
         if self.adj_value(35) or forced:
             self.sound(0x019)
+            wait = 0x1f
+        self.task_start("knocker", max(wait, 1), self._knock_serve)
 
     def _score_flush(self):
         pending, self._score_pending = self._score_pending, {}
@@ -947,7 +1320,7 @@ class TfOS(CustomCode):
         self.media.score_changed()
 
     def base_score(self, points):
-        """FUN_0102a188: base switch score, nothing while tilted."""
+        """Base switch score: score_add [0x0001caf0] adds nothing while gf_state & 0x210 (tilt)."""
         if not self.tilted:
             self.score_add(points)
 
@@ -960,7 +1333,7 @@ class TfOS(CustomCode):
         """Called by switch handlers: force switches validate at once, 3 distinct counting ones do."""
         self.device_ejecting = False                 # a playfield switch confirms a held ball's eject
         if not self.task_running(0x2b):
-            self.ball_search_count = 0               # ball_search_reset [0x00019d58]: the ball was seen
+            self.ball_search_count = 0               # ball_search_reset [0x00017d60]: the ball was seen
         self.ball_search_reload()
         if num in COUNTING_SWITCHES:
             self.hook("counting_switch", num)        # event 0x6b
@@ -979,7 +1352,7 @@ class TfOS(CustomCode):
         self.pf_valid = True
         if self._valid_at is None:
             self._valid_at = self.now                # validated play time (game-time / ball-time audits)
-        self.flag_set(0x1c)                          # event 0x6a handler [0x0100f25c]
+        self.flag_set(0x10)                          # event 0x6a hook LAB_010060a4 sets game flag 0x10 (QA R-F4)
         self.request_refresh()                       # ... which also requests a rules refresh
         self.hook("playfield_valid")
         self.ball_validated = True
@@ -989,17 +1362,21 @@ class TfOS(CustomCode):
     # ------------------------------------------------------------------ coins and start
 
     def _request_start(self, **kwargs):
-        """start_button_handler [0x00020d14] in attract: a game needs a credit or free play; otherwise event
+        """start_button_handler [0x0001a6e4] in attract: a game needs a credit or free play; otherwise event
         0x2d and deff 15 (credit text, PRESS START / INSERT COINS) unless it already runs."""
         if self.credit_model.can_start():
+            if self.state & ST_ATTRACT and not self.balls_located():
+                self.locate_balls()                  # ball_search_needed_3b840 [0x0103b840]: no game this press
+                return False
             return True
         self.machine.events.post("tf_start_refused")    # event 0x2d
+        self.credit_model.start_refused()
         if not self.display.running(15):
             self.deff_start(15, credits=self.credit_model.text())
         return False
 
     def _player_add_request(self, **kwargs):
-        """START on ball 1 adds a player when a credit (or free play) allows it [0x00020d14]."""
+        """START on ball 1 adds a player when a credit (or free play) allows it [0x0001a6e4]."""
         game = self.machine.game
         return not (game and game.player_list) or self.credit_model.can_start()   # player 1 paid at game start
 
@@ -1007,10 +1384,12 @@ class TfOS(CustomCode):
         if num > 1:
             self.credit_model.take(1)
             self.audit(0x11)
-            self.sound(GAME["add_player_sound"])     # observed: traces/game_flow.jsonl 5.88 s (player 2)
+            # event 0x46 [0x0001a9e4] hook [0x0100601c]: call 0x48 with argument players - 1 (snd_play_arg
+            # [0x00025250]), the sample of that index (0x202 / 0x203 / 0x204 for players 2-4)
+            self.sound(GAME["add_player_sound"], index=num - 1)
 
     def _start_held(self):
-        """adj 36 GAME RESTART [0x00020d14]: START held 62 ticks (timer 4) on ball 2 or later restarts the game,
+        """adj 36 GAME RESTART [0x0001a6e4]: START held 62 ticks (timer 4) on ball 2 or later restarts the game,
         with the same credit check as a game start. The running game ends without its game-over (no
         high-score entry, match or game audits) and a new game starts."""
         game = self.game
@@ -1021,8 +1400,8 @@ class TfOS(CustomCode):
         game.end_game()
 
     def start_button_lamp(self):
-        """FUN_00020448 (game_flow.md 8): with credit, the START BUTTON blinks in attract (task 0x2d,
-        FUN_0002032c: 8 ticks on, 8 off) and is solid otherwise (a credit won at the match lights it at
+        """FUN_00019b28 (game_flow.md 8): with credit, the START BUTTON blinks in attract (task 0x2d,
+        FUN_00019a0c: 8 ticks on, 8 off) and is solid otherwise (a credit won at the match lights it at
         once); without credit it is off."""
         if self.state & ST_ATTRACT and not self.state & 0x08:      # attract proper, not the game's end
             if self.has_credit() and not self.task_running(0x2d):
@@ -1057,16 +1436,21 @@ class TfOS(CustomCode):
         the eject timeout); the multiball task waits for it."""
         self.device_busy = unconfirmed
 
+    def _shooter_entered(self):
+        self._shooter_at = self.now
+
     def _shooter_left(self):
-        """The ball leaves the shooter lane, plunged or auto-launched: the launch sound (GAME, observed;
-        FUN_01032dfc plays it, from which switch is not traced)."""
+        """The ball leaves the shooter lane (switch 23), plunged or auto-launched: sw_shooter_lane [0x01032dfc]
+        plays 0x56 on the opening (game state & 0x316 clear) unless task 0x3d, started for 6 ticks by the
+        closing, still runs (a bounce)."""
+        if self.now - getattr(self, "_shooter_at", -1.0) < GAME["launch_bounce_ticks"] * TICK:
+            return
         if self.game and not self.tilted and GAME["launch_sound"] is not None:
             self.after(GAME["launch_sound_ticks"], lambda: self.game and self.sound(GAME["launch_sound"]))
 
     def _shooter_ejecting(self, mechanical_eject=False, **kwargs):
-        """Auto-launch (coil 2): the OS runs task 0x3c from the launch, so the shooter lane does not raise
-        the orbit post and the launched ball's orbit pass is ignored (sw23; portal_multiball_shots.jsonl
-        24.07 launch, 0x3c at the launch, left orbit 1.8 s later scores no shot). Length not traced."""
+        """Auto-launch (coil 2): auto_launch_started [0x0100a150], the pulse's callback
+        (coil_pulse_queue_wait(2, 0x40, ...)), runs task 0x3c for 0xbb ticks (a bare task_sleep, [0x0000ab9c])."""
         if not mechanical_eject:
             self.task_start(0x3c, AUTO_LAUNCH_TICKS)
 
@@ -1083,24 +1467,27 @@ class TfOS(CustomCode):
         self.eb_collected = [0] * 4
         self.specials_lit = [0] * 4
         self.specials_collected = [0] * 4
-        self.lamps.clear()                           # FUN_00007eb8: lamp images cleared for the new game
+        self.lamps.clear()                           # FUN_0000731c: lamp images cleared for the new game
         self.leffs.kill_all()                        # the attract leff tasks die with the other tasks
         self.replays_awarded = {}                    # player -> replay levels awarded (0x2110993)
         self.replayed = False
         self.game_seconds = 0.0
         self._valid_at = None
         self.shoot_again = False
+        lost = self.flag(0xb)                         # set when a ball search at START found fewer balls
         self.flags.clear()
+        self.speech_once_count = 0                   # RAM 0x34d1c: game_init [0x00019c64] clears it (run as ROM code)
         self.tasks_kill_all()
-        self.credit_model.take(1)                         # FUN_00004e9c: the game's credit
+        self.credit_model.take(1)                         # FUN_0000434c: the game's credit
         self.credit_model.free_games = 0
         self.audit(0x11)
+        if lost:                                     # [0x0001a6e4]: game_flag_test(0xb) -> clear, audit 0x27
+            self.audit(0x27)
         hs = self.features_by_name.get("high_scores")
         if hs:
-            hs.game_started()                        # FUN_0001a4f0: adj 61 HSTD RESET COUNT
+            hs.game_started()                        # FUN_000184f8: adj 61 HSTD RESET COUNT
         self.display.clear()
         self._new_game = True
-        self._new_game_ball = True
         self.hook("game_start")                      # event 0x2e
 
     def tasks_kill_all(self):
@@ -1113,6 +1500,7 @@ class TfOS(CustomCode):
         player = self.game.player
         first_ball = player.ball == 1 and not self.shoot_again
         self.state = 0
+        self.rule_leffs_kill()                       # ball_start task_kill(0, 0x80) [0x00019d30] (QA L-G06)
         self.pf_valid = False
         self._counting_seen = set()
         self.ball_scored = False
@@ -1121,6 +1509,7 @@ class TfOS(CustomCode):
         if first_ball:
             self.hook("player_first_ball")           # event 0x26
         self.hook("ball_start")                      # event 0x11
+        self.status.clear(self.now)                  # event 0x13 at the end of ball_start [0x00019e40] -> [0x0102f958]
         if self.shoot_again:
             self.deff_start(26, player=self.player_num)   # its speech comes with the deff
             self.leff_start(16)
@@ -1134,28 +1523,28 @@ class TfOS(CustomCode):
             self.sound(GAME["game_start_sound"])
         self.ball_search_count = 0
         self.ball_search_reload()
-        later_ball = not self._new_game_ball
-        self._new_game_ball = False
+        extra = self.pulse_queue_hold_off()
         self.serve(3)
-        # The trough eject task kicks the ball about 32 ticks after the serve (traces/game_flow.jsonl
-        # ball start 1.90 s, trough eject 2.42 s); MPF ejects when the ball_starting queue clears.
+        # task_of_serve_ball [0x0103b128] kicks the ball after the trough's settle (SERVE_EJECT_TICKS); MPF ejects
+        # when the ball_starting queue clears (game_flow.jsonl confirms: ball start 1.90 s, trough eject 2.42 s).
         if queue:
             queue.wait()
-            # (all reference traces: 0.545 s for the game's first ball, 0.645 s for every later one)
-            self.after(SERVE_EJECT_TICKS + (LATER_SERVE_EXTRA_TICKS if later_ball else 0), queue.clear)
+            # (the queue's hold-off [0x00003758]; the traces confirm: 0.545 s for the first ball since power-up,
+            # 0.645 s for every later one)
+            self.after(SERVE_EJECT_TICKS + extra, queue.clear)
 
     def _ball_started(self, **kwargs):
         pass
 
     def serve(self, serve_type):
-        """serve(type) [0x0001f258]: 3 = new ball (arms ball save), 1/2 = ball-save replacement."""
+        """serve(type) [0x0103b39c]: 3 = new ball (arms ball save), 1/2 = ball-save replacement."""
         self.serve_type = serve_type
         self.pf_valid = False                        # gf_pf_valid 0 at every serve
         self._counting_seen = set()
         self.hook("ball_served", serve_type)         # event 0x0f
         if serve_type == 3:
             self._arm_ball_save()
-        if self.adj_value(39):                       # FUN_0001e614: timed plunger task 0x17
+        if self.adj_value(39):                       # FUN_0103a758: timed plunger task 0x17
             self.task_start(0x17, self.adj_value(39) * SECOND, self._timed_plunger)
 
     # ------------------------------------------------------------------ ball save (5.1)
@@ -1173,9 +1562,11 @@ class TfOS(CustomCode):
         self.task_start(0x31, 6, self._ball_save_poll)
 
     def _ball_save_poll(self):
-        if self.pf_valid and self.ball_save_left > 6:
-            self.ball_save_left -= 6
-        if self.ball_save_left > 6:
+        """ball_save_task [0x00017a28]: every 6 ticks, held while FUN_000179dc (no valid playfield); ends when
+        fewer than 7 ticks are left, else 6 off: adj 38 = 5 gives 5 x 62 = 310 -> 52 sleeps, 312 ticks (QA F8)."""
+        if not self.pf_valid or self.ball_save_left >= 7:
+            if self.pf_valid:
+                self.ball_save_left -= 6
             self.task_start(0x31, 6, self._ball_save_poll)
             return
         self.leff_stop(14)
@@ -1183,11 +1574,11 @@ class TfOS(CustomCode):
         self.task_start(0x32, BALL_SAVE_GRACE, self._ball_save_end)
 
     def _leff_save_lamp(self, task):
-        """leff_013 [0x0002fd60] / leff_014 [0x0002fe1c]: the multiball / ball save blinks SHOOT AGAIN on
+        """leff_013 [0x00028168] / leff_014 [0x00028224]: the multiball / ball save blinks SHOOT AGAIN on
         its own layer, every (save ticks left / 31) ticks (2-10). Leff 14 first waits for the valid
         playfield and ends with the ball save task 0x31; leff 13 runs until it is stopped."""
         if task.leff_id == 14:
-            if not self.pf_valid and not self.ball_scored:     # FUN_00023638 (a switch scored) or valid
+            if not self.pf_valid and not self.ball_scored:     # FUN_0001cd1c (a switch scored) or valid
                 task.sleep(2, self._leff_save_lamp)
                 return
             if not self.task_running(0x31):
@@ -1203,7 +1594,7 @@ class TfOS(CustomCode):
         self.ball_save = None
 
     def kill_ball_save(self):
-        """Multiball start kills the single-ball save (0x00019bdc)."""
+        """Multiball start kills the single-ball save (0x00017be4)."""
         if self.ball_save == "armed":
             self.leff_stop(14)
         self.task_kill(0x31)
@@ -1211,12 +1602,12 @@ class TfOS(CustomCode):
         self.ball_save = None
 
     def _ball_drain(self, balls=0, **kwargs):
-        """ball_drain relay: ball save and re-serve before the playfield is valid [0x0001dd90]."""
+        """ball_drain relay: ball save and re-serve before the playfield is valid [0x01039ed4]."""
         if not balls or not self.game:
             return {"balls": balls}
         self.device_ejecting = False
         if self._coindoor_save and self.mb_save_running() and not self.tilted:
-            # the coin door ball saver's save (adj 41) re-serves even the last ball [0x0001ff74]
+            # the coin door ball saver's save (adj 41) re-serves even the last ball [0x0103c0b8]
             self._mb_pending += balls
             if not self.task_running(MB_TASK):
                 self._mb_request(start_save=False)
@@ -1224,7 +1615,7 @@ class TfOS(CustomCode):
         if self.balls_in_play() - balls > 0:
             if self.mb_save_running() and not self.tilted:
                 # multiball save: the multiball task launches a replacement. Unlike the single-ball save
-                # (ball_save_try 0x00019b34) it shows nothing and audits nothing.
+                # (ball_save_try 0x00017b3c) it shows nothing and audits nothing.
                 self._mb_pending += balls
                 if not self.task_running(MB_TASK):
                     self._mb_request(start_save=False)
@@ -1232,8 +1623,8 @@ class TfOS(CustomCode):
             self.hook("ball_drained", balls)
             # trough entry (trough device callback [0x0100a0a4] case 0xe): installed - balls in devices (a held
             # ball counts) < 2 -> the multiballs end [0x0100aa44]. While the Megatron lock still holds a ball it
-            # is about to kick, the end comes once that eject is over (hook device_kicking; observed:
-            # optimus_autobot.jsonl, last drain 71.16 s, the super's ball kicked 72.45 s, end 73.53 s)
+            # is about to kick, the end comes once that eject is over: device 4's task 0x1c re-runs case 0xe after
+            # its settle (hook device_kicking, megatron.py EJECT_OVER_TICKS; optimus_autobot.jsonl confirms)
             if self.balls_in_play() - balls - (1 if self.ball_held else 0) < 2:
                 if self.hook("device_kicking"):
                     self._mb_end_deferred = True
@@ -1248,25 +1639,83 @@ class TfOS(CustomCode):
             self.machine.playfield.add_ball(player_controlled=True)
             return {"balls": 0}
         if self.ball_save:
+            # drain [0x01039db4]: ball_save_try(0) [0x00017b3c] (deff 20, leff 15 only when it shows, audit
+            # 0x2b), then serve_ball(1) [0x0103b39c]
             self.kill_ball_save()
-            self.deff_start(20)
-            self.leff_start(15)
+            if self.deff_start(20):
+                self.leff_start(15)
             self.audit(0x2b)
-            self.ball_scored = False                 # traces/game_flow_tilt: ball_scored 0 at BALL SAVED
-            self.request_refresh()                   # the save re-runs the lamp rules (game_flow.jsonl 7.96)
+            # 0x000314d8 (ball scored) cleared by switch_timeout_clear_d8a0 [0x0000d8a0] in the serve; game_flow_tilt
+            # confirms (0 at BALL SAVED)
+            self.ball_scored = False
+            self.request_refresh()                   # the save re-runs the lamp rules (game_flow.jsonl 7.96 confirms)
             self.hook("ball_saved")
             self.serve(1)
-            # trough eject task, then the auto-launch (traces/game_flow.jsonl: save 7.96 s, eject 8.60 s)
-            self.after(SAVE_SERVE_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
+            # task_of_serve_ball [0x0103b128]: the trough's settle then the kick, through the pulse queue
+            # [0x00003758]; then the auto-launch (game_flow.jsonl confirms: save 7.96 s, eject 8.60 s)
+            self.after(SAVE_SERVE_TICKS + self.pulse_queue_hold_off(),
+                       lambda: self.machine.playfield.add_ball(player_controlled=False))
             return {"balls": 0}
         return {"balls": balls}
+
+    # ------------------------------------------------------------------ locating the balls at START
+
+    def balls_counted(self):
+        """balls_count_all / trough_count_3a188: the balls in every ball device, and in the trough."""
+        devices = [d for d in self.machine.ball_devices.values() if not d.is_playfield()]
+        trough = self.machine.ball_devices.get("bd_trough")
+        return sum(d.balls for d in devices), trough.balls if trough else 0
+
+    def balls_located(self):
+        """ball_search_needed_3b840 [0x0103b840] (inverted): some ball counted, and every counted ball in the
+        trough or as many counted as installed (balls_installed_check_3a1c4)."""
+        total, trough = self.balls_counted()
+        return total != 0 and (total == trough or total == self.balls_installed)
+
+    def locate_balls(self):
+        """task_ball_search [0x0103b5e4] (task 0x2b, from the START button [0x0001a6e4] when the balls are not
+        located): up to 4 rounds of 0x34 checks 6 ticks apart; the first check of a round that does not find
+        them shows deff 11 (LOCATING PINBALLS), audits 0x25 and fires the search (count_15_0m_17_49m's sequence:
+        the coils of the search, the devices' kicks); once located, or after the 4 rounds, the balls counted
+        become the installed count (fewer: game flag 0xb, audit 0x27 at the next game) and deff 11 stops."""
+        if self._locating:
+            return
+        self._locating = True
+        self._locate_step(1, 0)
+
+    def _locate_step(self, rnd, check):
+        if not self._locating:
+            return
+        if self.balls_located():
+            return self._locate_end()               # the remaining rounds break at their first check
+        if check == 0:
+            self.deff_start(11)
+            self.audit(0x25)
+            self.task_start(0x2b, BALL_SEARCH_TICKS)
+            self.task_start("search_run", BALL_SEARCH_RUN_TICKS)
+            self._search_sweep()
+            self.hook("ball_search")
+        check += 1
+        if check >= LOCATE_CHECKS:
+            rnd, check = rnd + 1, 0
+            if rnd > LOCATE_ROUNDS:
+                return self._locate_end()
+        self.after(LOCATE_EVERY, lambda: self._locate_step(rnd, check))
+
+    def _locate_end(self):
+        self._locating = False
+        total, _ = self.balls_counted()
+        if total < self.balls_installed:
+            self.flag_set(0xb)
+        self.balls_installed = total                 # balls_installed_store_3a228
+        self.deff_stop(11)
 
     # ------------------------------------------------------------------ ball search (5.2)
 
     def ball_search_reload(self, seconds=10):
-        """ball_search_reset [0x00019d58] / FUN_00019c1c: reload the ball-search countdown (every playfield
+        """ball_search_reset [0x00017d60] / FUN_00017c24: reload the ball-search countdown (every playfield
         switch, every score, a show deff). It only ever grows (the larger of what is left and `seconds`),
-        and it does not count down while a search runs (ball_search_tick [0x00019c58])."""
+        and it does not count down while a search runs (ball_search_tick [0x00017c60])."""
         fire = self.now + (seconds * SECOND + self.task_ticks_left("search_run")) * TICK
         if self._search_paused is not None:
             self._search_paused = max(self._search_paused, fire - self.now)
@@ -1280,7 +1729,7 @@ class TfOS(CustomCode):
 
     def _search_hold(self):
         """The countdown does not run while a flipper button is held (ball_search_tick: the held-buttons byte
-        0x31621 of the instant-info code [0x0001914c]; observed: coils.jsonl, buttons held 19.32-21.32 and
+        0x31621 of the instant-info code [0x0001914c]; confirmed by coils.jsonl, buttons held 19.32-21.32 and
         21.90-23.90 s, search 31.27 s, 14.1 s after the last switch)."""
         sc = self.machine.switch_controller
         held = any(name in self.machine.switches and sc.is_active(self.machine.switches[name])
@@ -1299,9 +1748,9 @@ class TfOS(CustomCode):
         self._search_handle = None
         if not self.game:
             return
-        # no search while the multiball task (save and grace, FUN_0001ea60) runs: it reloads at its end
+        # ball_search_tick [0x00017c60] has no multiball test (QA F17): the multiball save and grace do not stop it
         if (self.pf_valid and not self.state & (ST_END_BALL | ST_BONUS | 0x18) and not self.ball_held
-                and not self.device_ejecting and not self.mb_save_running()):
+                and not self.device_ejecting):
             self.ball_search_count += 1
             if self.ball_search_count == LOST_BALL_SEARCH and self.adj_value(63) == 1:
                 self._lost_ball_feed()
@@ -1337,6 +1786,8 @@ class TfOS(CustomCode):
         coil = self.machine.coils.get(name) if hasattr(self.machine, "coils") else None
         if coil is None:
             return
+        if name == "c_orbit_control_gate" and self.adj_value(84) == 1:
+            return      # adj 84 DISABLE ORBIT CONTROL GATE: drv_turn_on [0x0102bfec] asks adj_is_1_2c0cc [0x0102c0cc]
         held = getattr(self, "_held", None)
         if held is None:
             held = self._held = {}
@@ -1359,7 +1810,7 @@ class TfOS(CustomCode):
         self.machine.clock.schedule_once(off, ticks * TICK)
 
     def _lost_ball_feed(self):
-        """ball_search_start(5) with adj 63 LOST BALL RECOVERY [0x0001f79c]: the balls missing from the
+        """ball_search_start(5) with adj 63 LOST BALL RECOVERY [0x0103b8e0]: the balls missing from the
         playfield count are declared lost: deff 13 "PINBALL MISSING", a new ball is served (type 2, auto-
         launched) and the LOST BALL FEEDS record (counter 0x26) counts it (written directly, no audit_add)."""
         missing = max(1, self.rom_balls_in_play())
@@ -1376,12 +1827,15 @@ class TfOS(CustomCode):
         return bool(self.machine.switch_controller.is_active(self.machine.switches["s_coin_door_open"]))
 
     def _service_back(self):
-        """Coin-door BACK outside the service menu [0x0000fc20]: with the "50V / 20V DISABLED" warning up it
+        """Coin-door BACK outside the service menu [0x0000f008]: with the "50V / 20V DISABLED" warning up it
         takes the warning away (deff_stop(4), sound 0x009); otherwise a service credit."""
         if self.in_service:
             return
         if self._service_confirm:
             self._service_confirm_close()          # BACK answers no
+            return
+        if self.display.running(VOLUME_DEFF):     # case 1 with deff 2 up: it goes away (the volume is kept)
+            self.deff_stop(VOLUME_DEFF)
             return
         if self.display.running(POWER_OFF_DEFF):
             self.deff_stop(POWER_OFF_DEFF)
@@ -1389,9 +1843,30 @@ class TfOS(CustomCode):
             return
         self.credit_model.service_credit()
 
+    def _volume_button(self, step):
+        """Coin-door MINUS (case 2) / PLUS (case 4) outside the service menu [0x0000f008]: without the volume display,
+        task 0xb [0x0000eeb0]: event 0x62 (in attract, on_event_62 [0x01006054] plays 0x01e so the volume can be
+        heard) and deff 2; with it up, the volume (0x02110250, 0-0x3f, 0x28 at a reset [0x00025fb0]) goes down or
+        up by one (error_log_user_25d14 [0x00025d14]) and deff 2 starts again."""
+        if self.in_service or self._service_confirm:
+            return
+        if not self.display.running(VOLUME_DEFF):
+            self.task_kill(0xb)
+            if self.state & ST_ATTRACT:
+                self.sound(0x01e)
+            self.deff_start(VOLUME_DEFF)
+            return
+        if step < 0 and self.volume:
+            self.volume -= 1
+        elif step > 0 and self.volume != VOLUME_MAX:
+            self.volume += 1
+        self.trace.log("volume", value=self.volume)
+        self.machine.events.post("tf_volume", volume=self.volume)
+        self.deff_start(VOLUME_DEFF)
+
     def _service_select(self):
         """Coin-door SELECT: the service menu (tf/service.py). In attract mode it opens at once. In a game the
-        ROM suspends the game and resumes it after the menu (FUN_0000f9b0 / FUN_0000fa34); here the first
+        ROM suspends the game and resumes it after the menu (FUN_0000ed90 / FUN_0000ee1c); here the first
         SELECT asks "END GAME?" and a second one within SERVICE_CONFIRM_SECONDS ends the game, without its
         game over (no high scores, match or game audits, as a GAME RESTART), and opens the menu
         (docs/rom_differences.md). BACK or the timeout leaves the game running."""
@@ -1424,26 +1899,27 @@ class TfOS(CustomCode):
 
     def _coin_door_opened(self):
         """Coin door opened: the door interlock cuts the 50 V and 20 V, so the IO board's power status (RAM
-        0x3727c & 3) is no longer 3 and the power handler FUN_00007bc4 (table 0x040d748c, from FUN_00007c24)
+        0x31470 & 3) is no longer 3 and the power handler FUN_00007028 (table 0x040c7f68, read by FUN_00007088; entry 0 = power off)
         runs: event 0x3d, then the "50V / 20V DISABLED" warning, deff 4.
-        Event 0x3d [0x0001ffac]: with adj 41 COINDOOR BALL SAVER, in play, every ball in play is saved:
-        multiball_start(balls in play, 0, 312, 187) [0x0001ff74 / 0x0001ea28]."""
+        Event 0x3d [0x0103c0f0]: with adj 41 COINDOOR BALL SAVER, in play, every ball in play is saved:
+        multiball_start(balls in play, 0, 312, 187) [0x0103c0b8 / 0x0103ab6c]."""
         if self.adj_value(41) == 1 and self.game and not self.state & 0x214:
             self.multiball_start(max(1, self.rom_balls_in_play()), COINDOOR_SAVE_TICKS, COINDOOR_GRACE_TICKS)
             self._coindoor_save = True
         self._power_off_warning()
 
     def _coin_door_closed(self):
-        """Coin door closed, power back (FUN_00007c08): event 0x3d, and the warning goes if it is still the
+        """Coin door closed, power back (entry 3 of table 0x040c7f68, [0x00007064], read from the ROM: event 0x3d, then
+        FUN_00020be4(4, 0, 0)): the warning goes if it is still the
         running deff."""
         self._power_off_run += 1
         if self.display.fg == POWER_OFF_DEFF:
             self.deff_stop(POWER_OFF_DEFF)
 
     def _power_off_warning(self):
-        """FUN_00007bc4: deff 4 at priority 247, unless a higher one has the display (the volume display 248;
+        """FUN_00007028: deff 4 at priority 247, unless a higher one has the display (the volume display 248;
         the service menu, deff 3 at 253, which is why nothing shows when the door opens inside the menu).
-        Deff 4 [0x01036f1c] never ends by itself: "50V / 20V DISABLED" blinks five times with sound 0x010,
+        Deff 4 [0x0103ee10] never ends by itself: "50V / 20V DISABLED" blinks five times with sound 0x010,
         stays lit for 1875 ticks, then the whole screen dims to palette level 6 until the door is closed or
         BACK is pressed. Its captured frames hold the first part; the dimmed screen is drawn as the ROM draws it."""
         if self.in_service:
@@ -1465,7 +1941,7 @@ class TfOS(CustomCode):
         self.media.deff_draw(POWER_OFF_DEFF, self.display.prio.get(POWER_OFF_DEFF, 0), draw)
 
     def _flipper_launch(self, side):
-        """Flipper button with a ball waiting in the shooter lane [0x0002dcc0]: adj 40 FLIPPER BALL LAUNCH
+        """Flipper button with a ball waiting in the shooter lane [0x00026608]: adj 40 FLIPPER BALL LAUNCH
         (1 left, 2 right, 3 either, 4 both: this button with the other one held) launches it."""
         mode = self.adj_value(40)
         if not mode or not self.game or self.state & 0x214:
@@ -1476,7 +1952,7 @@ class TfOS(CustomCode):
             self._launch_shooter_lane()
 
     def _launch_shooter_lane(self):
-        """FUN_0001fa5c(1): fire the auto-launch for a ball sitting in the shooter lane."""
+        """FUN_0103bba0(1): fire the auto-launch for a ball sitting in the shooter lane."""
         if self.machine.ball_devices["bd_shooter_lane"].balls:
             self.machine.coils["c_auto_launch"].pulse()
             self.task_start(0x3c, AUTO_LAUNCH_TICKS)     # as for every auto-launch (_shooter_ejecting)
@@ -1484,7 +1960,7 @@ class TfOS(CustomCode):
         return False
 
     def _timed_plunger(self):
-        """task_17 [0x0001e58c]: adj 39 TIMED PLUNGER seconds after a serve, a ball still waiting in the
+        """task_17 [0x0103a6d0]: adj 39 TIMED PLUNGER seconds after a serve, a ball still waiting in the
         shooter lane is launched."""
         if self.game and not self.state & 0x214:
             self._launch_shooter_lane()
@@ -1492,43 +1968,90 @@ class TfOS(CustomCode):
     # ------------------------------------------------------------------ tilt (5.3)
 
     def _plumb_bob(self):
-        if not self.game or self.tilted or self.state & ST_END_BALL:
+        """FUN_0001dc58 (QA F4, F5): ignored only in task 0x29 or while gf_state & 0x310 (attract, service, tilt),
+        so the end of ball and the bonus count too. A closing bob warns unless timer 1 runs (62 ticks), and task
+        0x2e [task_2e 0x0001dc14] warns again every 62 ticks while the bob stays closed, then tilts."""
+        if not self.game or self.tilted or self.task_running(0x29) or self.state & (ST_ATTRACT | 0x100 | ST_TILT):
             return
-        if self.now - self._last_bob < SECOND * TICK:
+        if self.now - self._last_bob >= SECOND * TICK:     # timer 1 (FUN_0000ff00(1, 0x3e))
+            self._last_bob = self.now
+            self._tilt_warning()
+        if not self.task_running(0x2e):
+            self.task_start(0x2e, SECOND, lambda: self._bob_held(1))
+
+    def _plumb_bob_open(self):
+        self.task_kill(0x2e)
+
+    def _bob_held(self, n):
+        if not self.game or self.tilted:
             return
-        self._last_bob = self.now
+        self._tilt_warning()
+        if self.tilted:
+            return
+        if n < 2:
+            self.task_start(0x2e, SECOND, lambda: self._bob_held(n + 1))
+        else:
+            self._tilt()
+
+    def _tilt_warning(self):
+        """FUN_0001da8c: a warning while adj 32 allows one, else the tilt."""
         if self.adj_value(64) and self.coin_door_open():
-            return                                   # FUN_00024344: adj 64 ignores the tilt with the door open
+            return                                   # FUN_0001da38: adj 64 ignores the tilt with the door open
         if self.tilt_warnings < self.adj_value(32):
             self.tilt_warnings += 1
             self.deff_start(23)
             self.leff_start(11)
             self.sound(0x016)
-            self.after(31, lambda: self.sound(GAME["tilt_warning_speech"]))
+            # event 0x69 hook [0x01005e5c]: task 0x98 [0x01005e44] sleeps 0x1f, then snd_play(0x52); it runs
+            # first on the next tick (32 in the code run, rom/tools/scenario_lift.py tilt_ball_save)
+            self.task_start(0x98, 0x1f + 1, lambda: self.sound(GAME["tilt_warning_speech"]))
             return
+        self._tilt()
+
+    def _tilt(self):
+        """tilt() [0x0001db40]."""
+        if self.tilted:
+            return
+        self.task_kill(0x2e)
         self.hook("tilt_start")                      # event 0x66, posted before the tilt state is set
         self.state |= ST_TILT
         self.ball_search_reload(15)
         self.audit(0x2a)
-        self.kill_ball_save()
+        if not self.pf_valid:
+            self._validate()                         # tilt() [0x0001db40] calls FUN_0000d8c4 (QA F12)
+        self.kill_ball_save()                        # task_kill(0, 0x1000) [0x0001dbb4] ends save task 0x31 (flags 0x300; QA F15)
         self.machine.events.post("tf_tilt")
         self.hook("tilt")                            # event 0x65
         self.deff_start(21)
         self.leff_start(9)
         self.sound(0x017)
-        self.after(GAME["tilt_speech_ticks"], lambda: self.sound(GAME["tilt_speech"]))
+        # event 0x65 hook [0x01005e98]: task 0x99 [0x01005e80] sleeps 0x3e, then snd_play(0x53)
+        self.task_start(0x99, GAME["tilt_speech_ticks"], lambda: self.sound(GAME["tilt_speech"]))
         for flipper in self.machine.flippers.values():
             flipper.disable()
 
     # ------------------------------------------------------------------ extra ball (5.4)
 
     def light_extra_ball(self):
-        """OS part of 0x01012190: lit count +1 for the current player."""
+        """Light extra ball [0x01007b40]: FUN_000180c8(0) adds one lit extra ball for the current player and
+        redraws the insert; then show task 0x5f queues deff 53 "EXTRA BALL IS LIT" (FUN_01007b14 ->
+        queue_fullscreen_deff(0x35, 0xea6, 0x9f)). QA 2026-11-25 F3."""
         self.eb_lit[self.player_num - 1] += 1
         self.eb_lamp_update()
+        self.show(0x5f, 53)
+
+    def right_orbit_awards(self):
+        """The right orbit handler [0x01033488] collects a lit special [0x01008684], then a lit extra ball
+        [0x01007b74], before its shot rules. QA 2026-11-25 F1, F2."""
+        if self.game and not self.tilted:
+            self.special_collect()
+            p = self.player_num - 1
+            if self.eb_lit[p]:                       # FUN_00018090
+                self.collect_extra_ball()            # FUN_00018204(0)
+                self.deff_start(54)                  # deff_start(0x36)
 
     def collect_extra_ball(self):
-        """0x01012228 OS part: returns True when an extra ball was awarded, False when it paid points
+        """Extra ball collect, OS part (start_deff_54 [0x01007b74] -> [0x00018204]): returns True when an extra ball was awarded, False when it paid points
         (eb_paid: the points scored, which deff 133 prints)."""
         p = self.player_num - 1
         self.eb_lit[p] = max(0, self.eb_lit[p] - 1)
@@ -1543,24 +2066,29 @@ class TfOS(CustomCode):
         return False
 
     def light_special(self):
-        """special_light(0) [0x00024014]: special lit for the current player, lamp update; deff 81
-        "SPECIAL IS LIT" (the caller's display)."""
+        """Light special [0x01008528]: lamp 53 on and flashing (FUN_000077a0 / FUN_00007814), show task 0x61
+        queues deff 55 "SPECIAL IS LIT" (FUN_010084fc -> queue_fullscreen_deff(0x37, 0xea6, 0x9f)); the NVRAM
+        special counters at 0x02102cf8 are not modelled. QA 2026-11-25 F2."""
         self.specials_lit[self.player_num - 1] += 1
         self.special_lamp_update()
-        self.deff_start(81)
+        self.show(0x61, 55)
 
     def special_lamp_update(self):
-        """FUN_00024298: the special insert (SPECIAL_LAMP) is on while the player has a special lit, off
+        """FUN_0001d98c: the special insert (SPECIAL_LAMP) is on while the player has a special lit, off
         otherwise. self.lamps holds the inserts the rules read back (lamp_test), not the lamp matrix."""
         if self.specials_lit[self.player_num - 1]:
             self.lamps.add(SPECIAL_LAMP)
+            self.lamps.lamp_flash(SPECIAL_LAMP)      # [0x01008528]
         else:
             self.lamps.discard(SPECIAL_LAMP)
+            self.lamps.lamp_off(SPECIAL_LAMP)        # [0x01008684] FUN_0000765c
 
     def special_collect(self):
-        """special_collect [0x00024218] + special_award [0x000240ac]: use one lit special and award it per
-        adj 23 (0 credit, 3 points, 4 extra ball), or the over-limit points past the adj 22 limit. Returns
-        True when a special was lit. The outlane shows deff 82 and scores 100,000 itself."""
+        """Special collect [0x01008684] from the right orbit: when lamp 53 is lit, turn it off, award it with
+        FUN_0001d7a0(0) per adj 23 (0 credit, 3 points, 4 extra ball) or the over-limit 5,000,000
+        (0x00030ea8) past the adj 22 limit, and show task 0x62 queues deff 56 (FUN_01008658). Returns True when
+        a special was lit.
+        TODO (QA F13): the FUN_0001d7a0 cases 1 and 2 (adj 23 = 1, 2) are not modelled."""
         p = self.player_num - 1
         if not self.specials_lit[p]:
             return False
@@ -1571,7 +2099,7 @@ class TfOS(CustomCode):
             award = self.adj_value(23)
             if award == 0:
                 self.award_credit()
-                self.knock()                         # FUN_0001b370(1, 1)
+                self.knock()                         # FUN_00019378(1, 1)
             elif award == 3:
                 self.score_add(SPECIAL_OVER_LIMIT_SCORE)
             elif award == 4:
@@ -1579,14 +2107,15 @@ class TfOS(CustomCode):
             self.specials_collected[p] += 1
             self.audit(0x0e)
         self.special_lamp_update()
+        self.show(0x62, 56)
         return True
 
     # ------------------------------------------------------------------ outlane ball save
 
     def ball_save_try(self, side):
-        """ball_save_try [0x00019b34] from the outlanes (side 1 left, 2 right): (re)start the drain-side
+        """ball_save_try [0x00017b3c] from the outlanes (side 1 left, 2 right): (re)start the drain-side
         task 0x37/0x38 for 625 ticks (read at end of ball for the LEFT/RIGHT DRAINS audits). While the
-        ball save runs, the replacement ball is served at once (FUN_0001f368: serve type 2,
+        ball save runs, the replacement ball is served at once (FUN_0103b4ac: serve type 2,
         auto-launched) and the save ends: deff 20 (leff 15 when it shows), audit 0x2b. Returns True then."""
         self.task_kill(0x37)
         self.task_kill(0x38)
@@ -1595,7 +2124,8 @@ class TfOS(CustomCode):
             return False
         self.serve(2)
         self.game.balls_in_play += 1                 # the outlane ball still drains later
-        self.after(SAVE_EJECT_TICKS, lambda: self.machine.playfield.add_ball(player_controlled=False))
+        self.after(SAVE_EJECT_TICKS + self.pulse_queue_hold_off(),
+                   lambda: self.machine.playfield.add_ball(player_controlled=False))
         self.kill_ball_save()
         if self.deff_start(20):
             self.leff_start(15)
@@ -1616,18 +2146,27 @@ class TfOS(CustomCode):
             return
         queue.wait()
         if self.task_running(0x2b):
-            self.after(self.task_ticks_left(0x2b), lambda: self._ball_ending_go(queue))
-            return
+            # the search (count_15_0m_17_49m [0x0103b778]) restarts every ball device's task at its start
+            # (set_flag_a_3be8c [0x0103be8c] -> game_device_39de0(dev, type, 0x1a)); with flag 2 each handler runs
+            # callback 3 and settles with its +0x14 (trough 31 [0x010387ac], shooter 46 [0x010383a8], device 4 62
+            # [0x010391a0]); the last one's task_0x1c [0x01039db4] (no device task left) ends the ball, whose
+            # task_kill(0, 0x100) [0x00019e44] ends the search
+            wait = max(0, SEARCH_DEVICES_TICKS - (BALL_SEARCH_TICKS - self.task_ticks_left(0x2b)))
+            if wait:
+                self.after(wait, lambda: self._ball_ending_go(queue))
+                return
         self._ball_ending_go(queue)
 
     def _ball_ending_go(self, queue):
         self.state |= ST_END_BALL
+        self.rule_leffs_kill(end_of_ball=True)
+        self.task_kill(0x2b)                         # end_of_ball's task_kill(0, 0x100) [0x00019e44]
         self.task_kill("search_run")                 # the search found the drained ball
         self.kill_ball_save()
         self.kill_mb_save()
         self._mb_pending = 0
         self.task_kill(MB_TASK)
-        self.display.clear()
+        self.display.clear(keep_group=True)
         self.hook("ball_end")                        # event 0x1d: every mode stops
         for flipper in self.machine.flippers.values():
             flipper.disable()
@@ -1639,12 +2178,23 @@ class TfOS(CustomCode):
             if self.game and self.game.player:
                 self.game.player.play_seconds = (self.game.player.play_seconds or 0) + played
             self.audits.add_extra("ball_seconds", played)
-        if self.task_running(0x37):                  # end_of_ball [0x00020764]: last outlane drain side
+        if self.task_running(0x37):                  # end_of_ball [0x00019e44]: last outlane drain side
             self.audit(0x28)
         if self.task_running(0x38):
             self.audit(0x29)
-        wait_ticks = self.hook("ball_end_wait") or 0  # mode TOTAL displays (flag-0x2000 tasks)
-        self.after(wait_ticks, lambda: self._ball_ending_bonus(queue))
+        # [0x00019e44]: wait while any flag-0x2000 task runs (the modes' TOTAL displays), at most DAT_00033324 =
+        # 937 ticks (QA F10): the longest wait, not the last feature's
+        waits = [fn() for fn in self.hooks.get("ball_end_wait", ())]
+        least = min(max([w for w in waits if w] or [0]), END_BALL_WAIT_MAX)
+        self._ball_end_poll(queue, 0, least)
+
+    def _ball_end_poll(self, queue, ticks, least):
+        """[0x00019e44]: task_sleep(1) while a flag-0x2000 task runs (display.totals_busy), at most END_BALL_WAIT_MAX
+        ticks; `least`: the ticks a feature still holds the end of ball (hook ball_end_wait)."""
+        if ticks < END_BALL_WAIT_MAX and (ticks < least or self.display.totals_busy()):
+            self.after(1, lambda: self._ball_end_poll(queue, ticks + 1, least))
+            return
+        self._ball_ending_bonus(queue)
 
     def _ball_ending_bonus(self, queue):
         if self.tilted:
@@ -1659,7 +2209,7 @@ class TfOS(CustomCode):
             self._bonus_done(queue, 0)
 
     def _bonus_done(self, queue, total):
-        if total:
+        if total and not self.tilted:                # [0x00019e44]: no bonus when a tilt came during deff 25 (QA F5)
             # event 0x16, multiplier 1, not a score_add
             self._add_score(self.score_event(total))
             self.hook("score_changed")
@@ -1702,8 +2252,8 @@ class TfOS(CustomCode):
             return
         # game-time audits (audits 59-71), one per player by that player's play time (RAM 0x37630, whole
         # seconds counted with audit 0x3c [0x0001f344], bucketed from the table at 0x33328 [0x0001f564];
-        # observed: game_flow.jsonl 158.64 s, two players under a minute: counter 46 twice), and the
-        # score-range audits (audits 30-46, one per player) [0x00023774]
+        # confirmed by game_flow.jsonl 158.64 s, two players under a minute: counter 46 twice), and the
+        # score-range audits (audits 30-46, one per player) [0x0001ce58]
         players = self.game.player_list if self.game else []
         for player in players:
             self.audit(self.audits.game_time_counter(int(player.play_seconds or 0)))
@@ -1711,6 +2261,8 @@ class TfOS(CustomCode):
             self.audit(self.audits.score_range_counter(player.score))
         self.audits.add_extra("game_seconds", self.game_seconds)
         self.audits.add_extra("score_total", sum(p.score for p in players))
+        self.last_scores = [p.score for p in players]
+        self.audits.add_extra("score_count", len(players))   # [0x0001ce58] counts each player (QA D-AUD-47)
         self._replay_statistics(len(players))
         self.hook("game_over")
         queue.wait()
@@ -1723,12 +2275,12 @@ class TfOS(CustomCode):
             else:
                 queue.clear()
         if hs and not self.hook("slammed"):
-            hs.run(to_match)                         # high_score_entry [0x0001ad4c], then match
+            hs.run(to_match)                         # high_score_entry [0x00018d54], then match
         else:
             to_match()
 
     def _replay_statistics(self, players):
-        """Game-over replay bookkeeping [0x000231a4]. Dynamic replay (adj 11 = 2): the level drops by
+        """Game-over replay bookkeeping [0x0001c888]. Dynamic replay (adj 11 = 2): the level drops by
         adj 12 % x players (less the one that replayed) x adj 16 each game, never below 5,000,000 (a replay
         raised it by adj 16). Replay boost: a game with a replay boosts the levels once more; the boost ends
         when the games played since reach the replays won."""

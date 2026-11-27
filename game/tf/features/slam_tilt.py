@@ -1,8 +1,10 @@
-"""Slam tilt (game_flow.md 5.3, slam_tilt [0x00023e40], slam_reset_task [0x00023e18]).
+"""Slam tilt (game_flow.md 5.3, slam_tilt [0x0001d534], slam_reset_task [0x0001d50c]).
 
-The slam switch in a game: the game is lost. Flippers off, every mode stops (event 0x54), deff 24
-"SLAM TILT", leff 12, sound 0x018; task 0x39 then resets the machine after 218 + 93 ticks. The reset is
-modelled as the end of the game without the game-over sequence (no bonus, no match), back to attract.
+The slam switch, in a game or not (no game test in [0x0001d534]; only state & 0x100, the service menu, and a running
+task 0x39 stop it; QA F14): flippers and coils off, the tasks of flag 0x1000 killed (task_kill(0, 0x1000), modelled
+by the modes' tilt hooks), event 0x54, deff 24 "SLAM TILT", leff 12, sound 0x018; task 0x39 then resets the
+machine after 218 + 93 ticks. The reset is modelled as the end of the game without the game-over sequence (no
+bonus, no match), back to attract; in attract it changes nothing else.
 """
 from tf.features import Feature
 from tf.os_layer import ST_TILT
@@ -30,14 +32,15 @@ class SlamTilt(Feature):
 
     def slam_tilt(self):
         os_ = self.os
-        if not os_.game or os_.task_running(0x39):
+        if os_.in_service or os_.state & 0x100 or os_.task_running(0x39):
             return
-        self.slam = True
-        os_.state |= ST_TILT                         # no scores, no rules, no bonus
+        if os_.game:
+            self.slam = True
+            os_.state |= ST_TILT                     # no scores, no rules, no bonus
+            os_.kill_ball_save()
+            os_.hook("tilt")                         # task_kill(0, 0x1000): the modes' tasks stop
         for flipper in self.machine.flippers.values():
             flipper.disable()
-        os_.kill_ball_save()
-        os_.hook("tilt")                             # event 0x54: every mode stops
         os_.task_start(0x39, SLAM_RESET_TICKS, self.reset)
         os_.deff_start(24)
         os_.leff_start(12)
@@ -45,7 +48,7 @@ class SlamTilt(Feature):
         os_.ball_search_reload(15)
 
     def reset(self):
-        """thunk_FUN_00010ce8(0): the machine resets; the game in progress is gone."""
+        """thunk_FUN_000100d0(0): the machine resets; the game in progress is gone."""
         if self.machine.game:
             self.machine.game.end_game()
 

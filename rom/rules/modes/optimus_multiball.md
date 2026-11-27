@@ -75,16 +75,35 @@ Only while the battle can progress (flag 0x46 and no Megatron / Optimus / AHM / 
   multiball for the player's side, passing the center lane's shot multiplier (slot 4) [0x010262f0]
   (verified in emulator: 33.66 s, 2,000,000, opt_level 1 -> 2).
 - So the default (L = 1) needs 3 + 1 = 4 Optimus hits; each battle won adds 2 hits (max 8 + 1).
-- Optimus is raised for the battle and lowered after; in the simulator motor coil 30 runs about 7.65 s per move
-  (observed: 22.95 -> 30.62 s and 31.53 -> 39.19 s). Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background
-  deff) is never started (open question).
+- Optimus is raised for the battle and lowered after. The motor (coil 30, flag motor_or_long) is an OS motor object at
+  0x000351e8 (class vtable 0x000339d4; 0x0100e798 asks for position 0x2b; coil test 0x01025568), read in the code run
+  after game start:
+  - coil +0 = 30; positions +8 = 0x040c702c {44 OPTIMUS PRIME DOWN, 43 OPTIMUS PRIME UP} (a position is the
+    switch that says the motor is there); +0xc = 2 positions; move task id +0x18 = 0x50; start delay +4 = 0.
+  - A move (`motor_goto` [0x00016f88] starts task 0x50, `motor_move_task` [0x00016c88]):
+    `motor_arm_target` [0x00016bbc] arms the target switch (the switch record of `switch_rec_d2d4`
+    [0x0000d2d4], its active level from the record's +4), a debounce of 2 polls (+0x5c) and the after-run of the
+    target from table +0x14 = 0x040c702e (DOWN 0, UP 0x9d = 157 polls); the motor runs; the task waits while it
+    runs, at most **0x1d4 = 468 ticks = 7.49 s** (vtable +0x24, `0x00016830`); then the arrival callbacks (vtable
+    +0x94 / +0xa4) or, short of the target, the fault ones (+0x8c / +0x9c, the per-position fault counts at
+    +0x1c = 0x02111f74, `motor_fault_count` [0x0001724c]).
+  - The poll `motor_poll_1ms` [0x00016a24] runs from the end of the IO interrupt `io_isr`
+    [0x000114b0] (through 0x00006bb4, every motor of the list 0x000315f4) and acts every 4th call (+0x34), i.e.
+    each 1 ms: once the target switch is seen in 2 polls, it runs the after-run (157 ms going up, none going down)
+    and stops the motor (vtable +0x10c).
+  - So a move lasts the mechanism's travel time (until the switch closes; physical, not in the ROM) + 2 ms, + 157 ms
+    when going up, and never more than 7.49 s. The 7.65 s motor runs of the traces are that cap (468 ticks of the
+    emulator's 16.26 ms tick = 7.61 s): the tracer's motor model (tools/trace/tf_ref.cpp, switch 43 / 44 after 1 s
+    of coil 30) never fired in any trace (no `optimus_up` / `optimus_down` event), so the ROM stopped the motor at
+    its timeout.
+- Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" (a background deff) is never started (open question).
 
 ### 4.3 Multiball start [A 0x01027994 / D 0x01029a08]
 `multiball_start(balls = 3 if none in play else in_play + 2, 1, ball save 625 ticks = 10.2 s, grace 187 ticks =
 3.0 s)` (verified in emulator: both traces). Then: adj 87 YES restores phase / remaining / lit from the player's
 copies, NO resets them (all 6 shots, phase 1) and clears mb_since_super and sum; **250,000 x the center-lane
 multiplier**; flag 0x14 cleared (if no other multiball runs); flag 0x1f (A) / 0x22 (D) set; intro task 0x71 (A) - deff 57
-(A, 5.7 s) / deff 63 (D, 8.7 s), shown 1.3 s (A) / 3.5 s (D) after the start (observed); mb_since_super += 1;
+(A, 5.7 s) / deff 63 (D, 8.7 s), shown 1.3 s (A) / 3.5 s (D) after the start (code run = trace); mb_since_super += 1;
 counter 0x6c (A, #116 OPTIMUS M.B.A. STARTED) / 0x70 (D, #120); wizard requirement 5 (Optimus multiball)
 collected: 0x01035af0(5,1), counter 0x86 (#142 WIZARD: REQ. 6 COLLECTED).
 (verified in emulator: optimus_decepticon.jsonl 33.67 s, optimus_autobot.jsonl 34.93 s)
@@ -105,7 +124,7 @@ Super = max(1,000,000, pct x sum), pct = [100, 100, 75, 50]% indexed by min(mb_s
 | the lit shot again | phase 2 | DJ; shot removed from remaining; lit = remaining; counter 0x6e | 60 DOUBLE JACKPOT | 0x84 | phase 1, or phase 3 (lit = Megatron lock) when none remain |
 | Megatron lock | phase 3 | super; opa_supers += 1; wizard req 5 completed (counter 0x91, #153); sum and mb_since_super = 0; all 6 relit; counter 0x6f | 61 SUPER JACKPOT | 0x8f, 0x90, 0xa1 | phase 1 |
 | unlit shot | any | nothing | | | |
-Observed (optimus_autobot.jsonl): 41.05 left orbit J 150,000 (lit 2); 43.20 left ramp: nothing; 45.39 left orbit
+Code run = trace (traces/optimus_autobot.jsonl, `traces/code_runs.csv`): 41.05 left orbit J 150,000 (lit 2); 43.20 left ramp: nothing; 45.39 left orbit
 DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, Allspark (47.57-70.45); 70.45 phase 3;
 74.64 super **2,700,000** at the lock (= 6 x 450,000); background deff 58 changes its text to "SHOOT MEGATRON".
 
@@ -115,14 +134,14 @@ DJ 300,000; then J / DJ pairs at left ramp, center, right ramp, right orbit, All
 | lit shot 0-5 | phase 1 | J; shot removed from remaining; lit = Optimus only (0x40); counter 0x71 | 65 JACKPOT | 0xa5 (cycles) | phase 2 |
 | Optimus sw 51 | phase 2 | DJ; lit = remaining; counter 0x72 | 66 DOUBLE JACKPOT | 0xaa | phase 1, or phase 3 (super at Optimus) when none remain |
 | center lane (sw 11), unlit | phase 2 | **quirk**: J again, deff 65, counter 0x71, no state change | 65 | | phase 2 |
-| Optimus sw 51 | phase 3 | super; opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
-Observed (optimus_decepticon.jsonl): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
+| Optimus sw 51 | phase 3 | super x the center lane's shot multiplier [0x01029bf4] (QA M4); opd_supers += 1; wizard req 5 completed (counter 0x91); sum and mb_since_super = 0; all relit; counter 0x73 | 67 SUPER JACKPOT | 0xab, 0xc5 | phase 1 |
+Code run = trace (traces/optimus_decepticon.jsonl, `traces/code_runs.csv`): 39.78 J 150,000; 42.02 Optimus DJ 300,000; 46.30 center lane in phase 2:
 J 150,000 (quirk, caller 0x01029e14); J/DJ pairs to 66.89; 69.06 super **2,850,000** (= 6 x 450,000 + the quirk
-jackpot). The quirk is probably there because the center lane and Optimus share one shot position (inferred);
-reproduce it or not by choice.
+jackpot). The quirk is the ROM's (code, caller 0x01029e14); the recreation reproduces it.
 
 ## 6. How it ends
-- Down to one ball: flag 0x1f / 0x22 cleared (grace 187 ticks for add-a-ball), then the total screen deff 62 (A) /
+- Down to one ball: flag 0x1f / 0x22 cleared (the end task runs 218 ticks [0x01027f18]; add-a-ball can revive it then; 187 ticks is the
+  multiball_start grace, not this window), then the total screen deff 62 (A) /
   68 (D) "OPTIMUS PRIME MULTIBALL TOTAL: n" via task 0x89 / 0x8a, skipped in tilt / game-over states
   [0x01027ec0, 0x01029fa4] (verified in emulator: A flag 31 cleared 81.53 s, deff 62 at 85.09 s; D flag 34 cleared
   73.82 s, deff 68 at 77.40 s).
@@ -145,7 +164,10 @@ deff 64 + music 0x35; rows 0 and 17 give music 0x31 / 0x34 while the battle can 
 ## 8. Lamps
 Lamp groups (`rom_data/io/lamp_groups.json`): A 0x17-0x1d, D 0x1e-0x24 = the orange arrows (15 Allspark, 19 left
 orbit, 44 left ramp, 40 center, 34 right ramp, 39 right orbit) plus 29 CHALLENGE MEGATRON (A super) or 59 OPTIMUS
-PRIME CHALLENGE (D Optimus). Lit shots flash (inferred). Lamp 22 OPTIMUS PRIME shows the battle (inferred).
+PRIME CHALLENGE (D Optimus). Drawn by the rule leffs 46 [0x010285e8] (A, table 0x040c729c, lit mask opa_lit
+0x00035300) and 54 [0x0102a72c] (D, table 0x040c7400, opd_lit 0x00035378), 7 entries each (code): every 3 ticks it walks its table of (shot bit, lamp group), 12 bytes an entry: a shot in the lit mask is claimed (`lamp_group_86d4` on the layer mask) and drawn on and off in turn (`lamp_group_8664` / `lamp_group_84cc`, the phase flips every pass, starting on): **3 ticks on, 3 off** (96 ms period); a shot not lit is released (`lamp_group_853c`), so the lamp below it shows. No layer: retry every 6 ticks.
+Lamp 22 OPTIMUS PRIME is the character insert of requirement 5 (`lamp_layer_35ea8` [0x01035ea8], table
+0x040c7a14): off while never started, flashing once started (req byte 0), solid once completed (byte 1).
 
 ## 9. Interactions
 - The battle cannot progress during Megatron, Optimus, AHM or wizard multiballs; the access count also stops
@@ -162,7 +184,7 @@ PRIME CHALLENGE (D Optimus). Lit shots flash (inferred). Lamp 22 OPTIMUS PRIME s
 ## 11. Open questions
 - Deff 143 "OPTIMUS BATTLE! / SHOOT OPTIMUS" is never started; the battle shows deff 19.
 - Adj 85 DISABLE OPTIMUS PRIME MOTOR is not read with `adj_get` (maybe read directly from NVRAM).
-- The Optimus position logic (0x0100e798, target 0x2b) and when exactly it rises / lowers were only seen as motor
-  runs; the watch address for the target did not change.
+- When exactly Optimus rises / lowers (0x0100e798, target 0x2b): the motor itself is decoded (4.2), the callers
+  of its moves are not all listed yet.
 - Second argument of `multiball_start` (1 here, 0 for Megatron / wizard).
 - 0x02111f90 and the 25,000 jackpot term are never incremented: dead features or set elsewhere by direct writes.

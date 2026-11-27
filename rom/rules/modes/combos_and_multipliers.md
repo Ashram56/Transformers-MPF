@@ -1,6 +1,6 @@
 # Combos, multipliers, lanes and the bonus — Stern Transformers Pro 1.80 (`tf_180`)
 
-Sources: `[0xADDR]` = function in `code/tf_decompiled.c`; "observed" = `rules/traces/combos.jsonl`
+Sources: `[0xADDR]` = function in `code/tf_decompiled.c`; "code run = trace" = the scenario `combos` played in the ROM's code (`tools/scenario_lift.py`, `traces/code_runs.csv`) and in the emulator (`rules/traces/combos.jsonl`), which agree
 (scenario `combos.txt`, watch `watch_combos.tsv`), `scoring.jsonl` (lanes, bonus X) and `game_flow.jsonl`
 (bonus); "inferred" = reasoning. Factory settings. 1 tick ≈ 16.26 ms. Points go through `score_add`
 (× playfield multiplier, 2 during double scoring).
@@ -28,14 +28,14 @@ No adjustment changes the combo window or values.
 ## 3. State (p = player, arrays [p-1])
 | Name | RAM | Scope | Init / reset | Meaning |
 |---|---|---|---|---|
-| combo_way | 0x34b84 (u8) | running chain | 1 at a chain start | Current n-way [0x01002f0c] (observed 1..6) |
-| combo_mask | 0x34b88 (u8) | running chain | 0x3f | Shots allowed as the next combo: all 6, minus the shot just made if it was the eject (bit 1) or left ramp (bit 4) (observed 63, 59, 62) |
+| combo_way | 0x34b84 (u8) | running chain | 1 at a chain start | Current n-way [0x01002f0c] (code run = trace 1..6) |
+| combo_mask | 0x34b88 (u8) | running chain | 0x3f | Shots allowed as the next combo: all 6, minus the shot just made if it was the eject (bit 1) or left ramp (bit 4) (code run = trace 63, 59, 62) |
 | combo_ticks | 0x34b8c (u16) | running chain | 312 at each combo shot | Window countdown, −7 every 7 ticks [0x01002b5c] |
 | combo_total | 0x2111d08 + 2(p-1) (u16) | per game | 0 (0x010026ec) | Combos made (way ≥ 2) |
-| combo_best | 0x2111d10 + 4(p-1) (u32) | per game | 0x10001 | Best combo, way << 16 \| multiplier (observed 0x60001 = 6-way) [0x01002918] |
+| combo_best | 0x2111d10 + 4(p-1) (u32) | per game | 0x10001 | Best combo, way << 16 \| multiplier (code run = trace 0x60001 = 6-way) [0x01002918] |
 | combo display | 0x21120ac / 0x21120ae | | | Last way / total for the status panel [0x0102f1c0] [0x0102f1f0] |
 | lanes lit | lamp state, groups 76 (left: 50, 51, 8, 9) and 77 (right: 52, 49, 10, 11) | per ball (lamps) | | [lamp_groups.json] |
-| lanes_left_done / right_done | 0x2112080 / 0x2112088 + 2(p-1) (u16) | per game | 0x0102dad8 | Completions (observed 1) |
+| lanes_left_done / right_done | 0x2112080 / 0x2112088 + 2(p-1) (u16) | per game | 0x0102dad8 | Completions (code run = trace 1) |
 | shot_mult[s] | 0x2111f28 + 4(s-1) + (p-1), s = 1..6 (u8) | per ball | 1 at ball start unless the hold flag 0x16+s-1 is set [0x01023418] | Shot multiplier, max 2 [table 0x040c6f58] |
 | mult_lit | 0x2111f40 + (p-1) (u8) | per ball | 0 | "Multipliers lit": next major shot gets +1X [0x010236e8] |
 | roving 3X | task 0xb6, index 0x351c0 / 0x351c4 | while all 2X | | [0x01023650] |
@@ -56,12 +56,14 @@ No adjustment changes the combo window or values.
 | Right orbit | 5 / 0x20 | sw12 0x01033530 → 0x01033488 | 39 RIGHT ORBIT (ORANGE) | 6 RIGHT LOOP |
 - Right orbit (sw12) counts only when the ball did not just come round the left orbit (switch timer 7 from
   the left orbit) and not within 187 ticks (3.0 s) of the previous right orbit shot (timer 9)
-  [0x01033530]. Observed: sw12 1.2 s after sw6 never counted (t 23.76, 69.09 ...); sw12 alone counted
+  [0x01033530]. Code run = trace: sw12 1.2 s after sw6 never counted (t 23.76, 69.09 ...); sw12 alone counted
   (t 38.99). The left orbit (sw6) counted every time.
 - Ramp entrances (4, 35), orbit bottom (5) and the spinner are not combo shots.
 
 ### 4.2 Rule
-On a major shot:
+On a major shot (order, code: every major shot handler calls `FUN_010237ac(shot)` first, so a lit
+multiplier goes to that shot **before** its mode shots and its combo award, which then score at 2X; handlers
+0x0100a788, 0x01033244, 0x01033824, 0x01033918, 0x01033b3c, 0x01033488; QA P2):
 1. If no combo window is running (task 0x92/0x93): combo_way = 1, no award.
 2. Else if the shot's bit is in combo_mask: combo_way + 1, combo_total + 1, best updated,
    **award = M × (100,000 + 25,000 × combo_way)** where M = that shot's multiplier (1, 2, or 3 when the
@@ -70,17 +72,17 @@ On a major shot:
 4. In all cases the window tasks 0x92/0x93 are killed; then, if no **multiball** runs (0x01002afc ->
    `any_multiball_running` 0x01006704): mask = 0x3f minus the shot if it is the eject or left ramp;
    combo_ticks = 312; task 0x92 restarted. During a multiball no new window starts (a window already open still
-   pays the next shot, then ends). Timed battles, double and fast scoring do not affect combos. Observed: task
+   pays the next shot, then ends). Timed battles, double and fast scoring do not affect combos. Code run = trace: task
    0x92 restarted at 34.07-64.35 during the Blackout battle (traces/battle_blackout.jsonl, battle from 26.15),
    but never during Mudflap & Skids (traces/battle_mudflap.jsonl, flag 30 27.34-48.99; next window 54.60) or
    Optimus A (traces/optimus_autobot.jsonl, flag 31 34.93-81.53).
 - Window: task 0x92 counts combo_ticks down by 7 every 7 ticks (312 ticks = 5.07 s), not counting while
   0x0103a4f0(3) reports the ball held; then task 0x93 keeps the window open **124 more ticks (2.0 s)**.
-  Observed: countdown 312 → 0 in 5.1 s (t 30.83 → 35.94); shots 5.7 s and 6.9 s after the previous one still
+  Code run = trace: countdown 312 → 0 in 5.1 s (t 30.83 → 35.94); shots 5.7 s and 6.9 s after the previous one still
   combined (t 49.37, 56.30); 8.2 s later the chain restarted at 1 (t 67.91).
 - leff 34 lights the arrows of the allowed shots and blinks faster as the window runs out (sleep =
   ticks/31, min 2) [0x01003104].
-- Observed values: 2-way 150,000, 3-way 175,000, 4-way 200,000, 5-way 225,000, 6-way 250,000 (t 24.95-30.83
+- Code run = trace values: 2-way 150,000, 3-way 175,000, 4-way 200,000, 5-way 225,000, 6-way 250,000 (t 24.95-30.83
   and t 70.28-79.74, every multiplier 1). There is no cap on the way count in the code.
 
 ### 4.3 Display
@@ -110,13 +112,13 @@ On a major shot:
   - other side: bonus multiplier + 1 [0x01000e44], deff 45 "OPTIMUS LANES / COMPLETED / %dX BONUS"
     (Decepticon player) or "MEGATRON LANES / COMPLETED / %dX BONUS" (Autobot player).
 - A made top-lane skill shot lights both lamps of that lane (0x010335d0 / 0x0103361c call the lane function
-  twice) (observed game_flow t 18.79, two 2,500 awards).
+  twice) (code run = trace game_flow t 18.79, two 2,500 awards).
 - Lane change: each flipper press (not during side choice, bonus, tilt or attract) rotates the lit lamps of
   one group by one position: left flipper the Megatron group in order 50 → 51 → 8 → 9, right flipper the
   Optimus group 52 → 49 → 10 → 11 [0x01032d5c] [0x01032dac] [0x0102dd58] (code; direction not traced).
 - Base switch points on top of this (handlers): top lanes 2,560, return lanes 1,090, **outlanes 100,000**
   (rules/switches_and_shots.md).
-- Observed (scoring.jsonl, Decepticon): 8, 8, 24 → 2,500 each; 25 → 10,000 + deff 44 + leff 37 (t 40.01);
+- Code run = trace (traces/scoring.jsonl, `traces/code_runs.csv`, Decepticon): 8, 8, 24 → 2,500 each; 25 → 10,000 + deff 44 + leff 37 (t 40.01);
   7, 7, 28 → 2,500 each; 29 → 10,000, deff 45, bonus_mult 1 → 2 (t 46.72).
 
 ## 6. Shot multipliers [0x010236e8] [0x010237ac] [0x01023538] [0x01023650]
@@ -131,7 +133,8 @@ On a major shot:
 - Use: the multiplier multiplies the combo award and the mode-progress shot award 0x01020074 for that shot.
 - Reset: every ball each shot goes back to 1X unless its hold flag (game flags 0x16-0x1b) is set; mult_lit
   cleared [0x01023418]. Tilt / ball end: 0x01023048 (event 0x65 / 0x1d).
-- deff 49 "%uX / MULTIPLIER(S) LIT" (leff 36) exists [0x01023b10]; its starter was not found.
+- deff 49 "%uX / MULTIPLIER(S) LIT" (leff 36) exists [0x01023b10] but is never started in 1.80 (code: nothing in the
+  image references it outside the deff table, `rules/deff_starters.csv`).
 
 ## 7. Bonus (end of ball) [0x01000ffc] [0x01000f38] [0x01000d58]
 **bonus = (670 × bonus_count + held_bonus) × bonus_mult**, added with playfield multiplier 1.
@@ -170,6 +173,9 @@ On a major shot:
 - `traces/scoring.txt` → `scoring.jsonl` t 36.45-46.72: both lane groups completed (Decepticon), bonus 2X.
 
 ## 11. Open questions
-- deff 48 / 49 never shown: starter not found (maybe a dead path in 1.80 or a status-panel-only display).
+- deff 48 / 49 are never shown in 1.80 (code): nothing in the image references them outside the deff table
+  (`rules/deff_starters.csv` lists every starter; these two have none).
 - Lane-change rotation direction and the shot multiplier collection were read from code, not traced.
-- The left orbit's own "came from the right" check, if any, was not decoded (sw6 always counted).
+- The left orbit has no "came from the right" check (code): `sw_left_orbit_top` [0x010332e4] only tests its own
+  switch timer 7; within 187 ticks (3.0 s) of the previous left orbit it restarts the timer and does nothing else
+  (`switch_handlers.csv` sw 6 repeat: 0 points), otherwise it starts the timer, leff 35 and the orbit gate.
