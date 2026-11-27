@@ -200,6 +200,8 @@ scenarios match further: 29 of 29 and 55 of 87 sound events in order, before 28 
       LOCATING PINBALLS at START (F071), ~~V005~~ the boot screen (F072).
     - Owner play test 2026-11-27: the Bumblebee battle's phase 1 page (deff 109 [0x01015184], BEE = / SHOOT LIT SHOT,
       F073); the virtual Megatron lock keeps a clicked ball on its switch (tf/virtual_hardware.py VirtualLock).
+    - Owner 2026-11-27, the DMD driven by the code: 151 of the 155 deffs replayed live from their op lists (F074); to do: the
+      35 deffs whose drawing reads RAM ported from their routines (40 and 41 first), then the leffs from their code.
     - ~~SC6~~ the animation sound tables (frame_sound_step_2fcb0 [0x0102fcb0]): agent A's
       `deff_anim_tables.csv` gives one op list per animation; the game plays the chained 0x1f entries
       (snd_play_after_if) after the running sample ends, picks the Optimus hit animation by hit number

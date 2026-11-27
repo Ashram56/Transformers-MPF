@@ -559,7 +559,7 @@ class TestFinalPass(QaCase):
         captured frames held the code run's "00"; the screen is a "px" item under the live status panel."""
         import os
         from tf import op_player
-        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_025__x3.json")):
+        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_025__x3.json.gz")):
             self.skipTest("no generated live ops (scripts/gen_media.py)")
         self.start()
         pd, done = self.tf.pd, []
@@ -581,15 +581,15 @@ class TestFinalPass(QaCase):
     def test_f069_moving_values_of_every_live_deff(self):
         """The deffs whose printf values move or fade (media_bridge LIVE: fast scoring 132 [0x01004de8] slides its
         "%,02lu POINTS" in with copy_rect) take the rules' values in their replayed frames; LIVE and gen_media's
-        LIVE_OPS list the same deffs."""
+        live_ops_ids list the same deffs."""
         import os
         import sys
         from tf import media_bridge, op_player
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
         import gen_media
-        self.assertEqual(tuple(gen_media.LIVE_OPS), tuple(media_bridge.LIVE))
-        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_132.json")):
+        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_132.json.gz")):
             self.skipTest("no generated live ops (scripts/gen_media.py)")
+        self.assertEqual(set(gen_media.live_ops_ids()), set(media_bridge.live_ids()))
         self.start()
         media = self.tf.media
         self.tf.features_by_name["twobank"].value = 25000        # deff_live: the value now
@@ -620,6 +620,27 @@ class TestFinalPass(QaCase):
         self.assertEqual("phase1", media.variant_of.get(109))
         self.tf.pd.bb_phase = 2                                 # [0x01014638]: the last lit shot
         bb.seconds, bb.jackpot = 10, 3750000
-        media.panels_refresh()
+        media.ops_redraw() if 109 in media.ops else media.panels_refresh()
         self.assertIsNone(media.variant_of.get(109))
         self.assertEqual([10, 3750000], bb.background_values()["values"])
+
+    def test_f074_every_deff_replayed_from_its_code(self):
+        """Every deff but the ported ones (1, 19) and the side ones (40, 41) is replayed live from its op list, the lift
+        of its code; a looping background deff (109 [0x01015184]) goes round its cycle past the recorded run."""
+        import os
+        from tf import media_bridge, op_player
+        if not os.path.exists(os.path.join(op_player.OPS_DIR, "deff_109.json.gz")):
+            self.skipTest("no generated live ops (scripts/gen_media.py)")
+        live = media_bridge.live_ids()
+        self.assertEqual(set(), {1, 19, 40, 41} & live)
+        self.assertGreaterEqual(len(live), 150)
+        player = op_player.OpPlayer.load("deff_109")
+        start, period = player.loop
+        end = player.ops[-1]["t"]
+        player.advance(end - period + 10)
+        before = bytes(player.frame)
+        later = op_player.OpPlayer.load("deff_109")
+        later.advance(end + 10)
+        self.assertEqual(before, bytes(later.frame))
+        later.advance(end + 10 + 3 * period)
+        self.assertEqual(before, bytes(later.frame))

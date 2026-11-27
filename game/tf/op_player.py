@@ -23,6 +23,7 @@ Images: rom/mpf_package/media/rom_images_all.zip (grey = level, alpha 0 = byte 0
 images with other mask nibbles from rom_images_mask.zip (rom/tools/export_op_data.py). Fonts: game/fonts/
 fonts.json (scripts/gen_fonts.py: each glyph is a ROM image, "below" = the ROM's y offset).
 """
+import gzip
 import io
 import json
 import os
@@ -42,6 +43,7 @@ PANEL_FIRST, PANEL_END = 0x0102f200, 0x0102f800     # the status panel's printf 
 _MIX = bytes(((b & (f >> 4)) | (f & ~(f >> 4) & 0xff)) & 0xf for f in range(256) for b in range(256))
 
 _zips = {}
+_docs = {}                  # op list name -> its document (OpPlayer.load)
 _images = {}
 _blits = {}
 _fonts = None
@@ -138,9 +140,15 @@ class OpPlayer:
     """One run of a deff's op list. advance(tick, site_values) applies the ops due by `tick` and returns the
     screen shown then (4096 dot levels 0-15, row by row), or None when no new frame was shown."""
 
-    def __init__(self, ops, name=None):
+    def __init__(self, ops, name=None, loop=None):
+        """loop: [start, period] in ticks for a deff whose code never ends (scripts/gen_media.py loop_ticks): past
+        the recorded run, the ticks from start on repeat with that period, replayed from a copy of the state the
+        run had at start."""
         self.name = name
         self.ops = ops
+        self.loop = loop
+        self.saved = None           # (op index, pages, shown) at the loop's start tick
+        self.offset = 0             # ticks taken off the caller's tick by the cycles already replayed
         self.i = 0
         self.pages = {}
         self.shown = (0, 0)
@@ -149,11 +157,16 @@ class OpPlayer:
 
     @classmethod
     def load(cls, name):
-        path = os.path.join(OPS_DIR, name + ".json")
-        if not os.path.exists(path):
-            return None
-        with open(path, encoding="utf-8") as f:
-            return cls(json.load(f)["ops"], name)
+        """The player of game/media/live_ops/<name>.json.gz (scripts/gen_media.py), None when not generated; each
+        op list is read once."""
+        if name not in _docs:
+            path = os.path.join(OPS_DIR, name + ".json.gz")
+            if not os.path.exists(path):
+                return None
+            with gzip.open(path, "rt", encoding="utf-8") as f:
+                _docs[name] = json.load(f)
+        doc = _docs[name]
+        return cls(doc["ops"], name, doc.get("loop"))
 
     def page(self, n):
         p = self.pages.get(n)
@@ -162,6 +175,24 @@ class OpPlayer:
         return p
 
     def advance(self, tick, site_values=None):
+        """Run the ops up to `tick` (ticks since the deff's start); a looping deff's ticks past its run go round its
+        cycle (loop)."""
+        tick -= self.offset
+        if self.loop and self.ops:
+            start, period = self.loop
+            end = self.ops[-1]["t"]
+            if self.saved is None and tick >= start:
+                self._run(start - 1, site_values)
+                self.saved = (self.i, {k: bytearray(v) for k, v in self.pages.items()}, self.shown, self.frame,
+                              list(self.pending))
+            while tick > end and self.saved is not None:
+                tick -= period
+                self.offset += period
+                i, pages, self.shown, self.frame, pending = self.saved
+                self.i, self.pages, self.pending = i, {k: bytearray(v) for k, v in pages.items()}, list(pending)
+        return self._run(tick, site_values)
+
+    def _run(self, tick, site_values):
         new = None
         while self.i < len(self.ops) and self.ops[self.i]["t"] <= tick:
             o = self.ops[self.i]

@@ -7,7 +7,7 @@ test's inverted switch boxes (F064) were checked in Godot pixel by pixel. What n
 
 | # | What | How to check | Why not here |
 |---|---|---|---|
-| 1 | Smoothness of the 14 deffs replayed live (F069: 25 bonus, 46 pops, 48 combo dissolve, 52 add-a-ball, 94-122 battle shots, 129 double scoring, 132 fast scoring): one Python replay per 16 ms tick and a 128x32 frame per change sent to Godot | play a game to the end of a ball with a bonus multiplier (2X or more), a battle with shots, a pops burst; the pages must move without stutter and the values must stay right during the moves | the container's CPU and Xvfb are not a PC; the frame rate under load matters on Windows and macOS |
+| 1 | Smoothness of the deffs replayed live (F069, F074: 151 of 155 since 2026-11-27, a background and a foreground one at a time): one Python replay per 16 ms tick and a 128x32 frame per change sent to Godot | play a game to the end of a ball with a bonus multiplier (2X or more), a battle with shots, a pops burst; the pages must move without stutter and the values must stay right during the moves | the container's CPU and Xvfb are not a PC; the frame rate under load matters on Windows and macOS |
 | 2 | Sounds of those deffs | same game: the bonus count sounds (0x76, 0x77, 0x79), the battle shot sounds | no audio device in the container |
 | 3 | PuP Pack videos at those deffs | `run.py` with the PuP on: the videos the pack plays at the bonus, combos and battle shots still come (the `tf_deff_<id>` events are unchanged) | GoZen video decoding on the GPU, three screens |
 | 4 | Lamp levels 1/3 and 2/3 (F067) | MPF Monitor and VPX: the lamps of leffs 1, 37, 95, 147, 151 at their dim steps | MPF Monitor and VPX are not run here |

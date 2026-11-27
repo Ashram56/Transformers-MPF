@@ -10,7 +10,7 @@ Generated (all git-ignored, rebuilt by scripts/setup.py):
 - game/tf/media_data.json            sound pools (one per ROM sound call) and display effect facts for
                                      tf/media_bridge.py
 - game/media/dmd/deff_NNN/fNNN.png   the distinct frames of each captured display effect
-- game/media/live_ops/deff_NNN[__<variant>].json  the op lists of the deffs replayed live (LIVE_OPS:
+- game/media/live_ops/deff_NNN[__<variant>].json.gz  the op lists of the deffs replayed live (live_ops_ids():
                                      tf/op_player.py), compacted from rom/rom_data/dmd/deff_ops/
 - game/slides/deffs/deff_NNN.tscn    one GMC slide per display effect (build_deffs), plus deff_NNN_side1.tscn for
                                      the effects that draw the player's side (SIDE_VARIANTS: the capture is the
@@ -23,6 +23,7 @@ The score display (deff 19) is drawn live from its draw calls (tf/score_screen.p
 Usage: .venv/bin/python scripts/gen_media.py [--only-data]
 """
 import glob
+import gzip
 import json
 import os
 import shutil
@@ -371,6 +372,7 @@ def build_deffs(only_data):
     rows = deff_rows()
     fits = fit_formats()
     out = {}
+    live = set(live_ops_ids())         # replayed from their op lists: no frames, no slide (only their data)
     if not only_data:
         fsutil.clear_dir(os.path.join(GAME, "slides", "deffs"))
         fsutil.clear_dir(os.path.join(GAME, "media", "dmd"))
@@ -393,7 +395,7 @@ def build_deffs(only_data):
                         "sites": [v.get("site") for v in slots]}
         if deff_id in SIDE_VARIANTS:
             out[deff_id]["sides"] = {"1": "deff_{:03d}_side1".format(deff_id)}
-        if only_data:
+        if only_data or deff_id in live:
             continue
         if panel is not None:
             for img, _ in frames:
@@ -428,7 +430,7 @@ def build_deffs(only_data):
         # tf/media_bridge.py deff_lines fills them by call site (site_values)
         out[deff_id].setdefault("variant_values", {})[vname] = {"values": [v["source"] for v in slots],
                                                                "sites": [v["site"] for v in slots]}
-        if only_data:
+        if only_data or deff_id in live:
             continue
         if panel is not None:
             for img, _ in frames:
@@ -443,25 +445,56 @@ def build_deffs(only_data):
     return out
 
 
-# Deffs replayed live from their op lists (tf/op_player.py; the same list as tf/media_bridge.py LIVE): the deffs
-# whose printf values move or fade with their pages (copy_rect, remap, dissolve, moving texts)
-LIVE_OPS = (25, 46, 48, 52, 94, 98, 102, 106, 110, 114, 118, 122, 129, 132)
+# Every deff is replayed live from its op list (tf/op_player.py; tf/media_bridge.py), its texts with the rules'
+# values: the ROM's code drawn again tick by tick, not frames. Left out: the deffs the game draws from its own port
+# (tf/media_bridge.py DRAWN: 1 the attract pages, 19 the score display) and the ones whose drawing depends on RAM the
+# op list did not run with (SIDE_VARIANTS: 40, 41 draw the player's side), which keep their frame slides.
+LIVE_EXCLUDED = (1, 19, 40, 41)
+
+
+def live_ops_ids():
+    ids = sorted({int(os.path.basename(p)[5:8]) for p in glob.glob(os.path.join(OPS_SRC, "deff_*.json"))})
+    return tuple(d for d in ids if d not in LIVE_EXCLUDED)
+
+
 OPS_SRC = os.path.join(ROOT, "rom", "rom_data", "dmd", "deff_ops")
 OP_KEEP = {"fill", "rect", "frame", "copy", "copy_rect", "invert", "remap", "bitmap", "bitmap_masked", "text",
            "show", "dissolve"}
 OP_DROP = ("at", "task", "helper", "msg", "varargs", "printf")
 
 
+def loop_ticks(ops):
+    """[start, period] in ticks of a deff that never ends (its code loops; the lift stopped it after 1500 ticks):
+    the frames repeat with that period from that tick to the end of the run, so tf/op_player.py replays the run
+    and then that cycle. None when the run shows no cycle (the last frame then holds)."""
+    sys.path.insert(0, GAME)
+    from tf.op_player import OpPlayer
+    player = OpPlayer(ops)
+    end = ops[-1]["t"]
+    frames = []
+    for tick in range(end + 1):
+        player.advance(tick)
+        frames.append(bytes(player.frame) if player.frame is not None else b"")
+    for period in range(1, (end + 1) // 2 + 1):
+        if all(frames[t] == frames[t - period] for t in range((end + 1) // 2, end + 1)):
+            start = (end + 1) // 2
+            while start - period >= 0 and frames[start - 1] == frames[start - 1 - period]:
+                start -= 1
+            return [start, period]
+    return None
+
+
 def build_live_ops():
-    """game/media/live_ops/<name>.json: the drawing ops of each LIVE_OPS deff and variant, in tick order; a
+    """game/media/live_ops/<name>.json.gz: the drawing ops of each live deff (live_ops_ids) and variant, in tick order; a
     text keeps its call site ("site": the printf's address without 0x and leading zeros, as site_values)."""
+    import fsutil
     out_dir = os.path.join(GAME, "media", "live_ops")
-    os.makedirs(out_dir, exist_ok=True)
+    fsutil.clear_dir(out_dir)
     # the dissolve tables [0x01034758] the op lists name (rom/tools/export_op_data.py)
     with open(os.path.join(ROOT, "rom", "rom_data", "dmd", "dissolve_tables.json"), encoding="utf-8") as f:
         tables = json.load(f)
     n = 0
-    for deff_id in LIVE_OPS:
+    for deff_id in live_ops_ids():
         for path in sorted(glob.glob(os.path.join(OPS_SRC, "deff_%03d.json" % deff_id)) +
                            glob.glob(os.path.join(OPS_SRC, "deff_%03d__*.json" % deff_id))):
             with open(path, encoding="utf-8") as f:
@@ -476,8 +509,11 @@ def build_live_ops():
                 if o["op"] == "dissolve":
                     c["table"] = tables[o["table"]]
                 ops.append(c)
-            with open(os.path.join(out_dir, os.path.basename(path)), "w", encoding="utf-8", newline="\n") as f:
-                json.dump({"deff": deff_id, "end_tick": doc.get("end_tick"), "ops": ops}, f, separators=(",", ":"))
+            out = {"deff": deff_id, "end_tick": doc.get("end_tick"), "ops": ops}
+            if doc.get("end_tick") is None and ops:
+                out["loop"] = loop_ticks(ops)
+            with gzip.open(os.path.join(out_dir, os.path.basename(path) + ".gz"), "wt", encoding="utf-8") as f:
+                json.dump(out, f, separators=(",", ":"))
             n += 1
     return n
 

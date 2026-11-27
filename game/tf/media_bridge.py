@@ -79,12 +79,21 @@ CREDIT_LINE_DEFFS = (10, 15, 17)    # deff_017_insert_coins [0x01000000] (script
 # Deffs drawn live as ROM draw lists from their captured draw calls (tf/score_screen.py)
 DRAWN = (19, 1)      # the score display and the attract pages (tf/attract_pages.py)
 DRAWN_SLIDES = {19: "rom_screen", 1: "attract_pages"}
-# Deffs replayed live from their op lists (tf/op_player.py; scripts/gen_media.py LIVE_OPS) on the rom_ops slide:
-# every deff whose printf values move or fade with its pages, which captured frames cannot carry: the bonus page
-# change (25: os_hook_call_203d0(10) [0x010357e0] [0x0103582c]), the remap fades (46 pops [0x0102d004]; the battle
-# shot deffs 94-122 [0x010189a8]...), the dissolve (48 combo [0x01003354]), the moving text (52 [0x01024524]),
-# the copy_rect slides (129 double scoring [0x01003c5c], 132 fast scoring [0x01004de8])
-LIVE = (25, 46, 48, 52, 94, 98, 102, 106, 110, 114, 118, 122, 129, 132)
+# Every other deff is replayed live from its op list (tf/op_player.py; scripts/gen_media.py live_ops_ids: the lift of
+# its code, never a capture): the ROM's draw calls run again tick by tick with the rules' values, on the rom_ops slide
+# (rom_ops_bg for a mode's background deff, under the foreground one). A deff without a generated op list plays its
+# frame slide (gen_media LIVE_EXCLUDED: 40 and 41 draw the player's side).
+OPS_DIR = os.path.join(os.path.dirname(__file__), "..", "media", "live_ops")
+
+
+def live_ids():
+    """The deffs with a generated op list (game/media/live_ops/deff_NNN.json.gz)."""
+    if not os.path.isdir(OPS_DIR):
+        return frozenset()
+    return frozenset(int(n[5:8]) for n in os.listdir(OPS_DIR) if n.startswith("deff_") and n.endswith(".json.gz"))
+
+
+LIVE = live_ids()
 PANEL_COLS = 41                  # the status panel's columns 0-40 [0x0102f200] (separator [0x0102f504] at x 40)
 
 
@@ -216,10 +225,10 @@ class MediaBridge:
             return
         if not info:
             return
-        if deff_id in LIVE and self.ops_start(deff_id, info, priority, variant, args):
-            return
         if variant is None:
             variant = self.live_variant(deff_id)
+        if deff_id in LIVE and self.ops_start(deff_id, info, priority, variant, args):
+            return
         slide = (info.get("variants") or {}).get(variant) if variant else None
         self.variant_of[deff_id] = variant if slide else None     # its own printf slots (deff_lines)
         slide = slide or self.deff_slide(info)
@@ -253,10 +262,14 @@ class MediaBridge:
             return False
         self.started[deff_id] = args
         self.variant_of[deff_id] = variant if player.name != name else None     # its printf slots (deff_lines)
-        self.ops[deff_id] = {"player": player, "since": self.machine.clock.get_time(), "info": info, "last": None}
+        slide = "rom_ops_bg" if deff_id in getattr(self.os.display, "background", ()) else "rom_ops"
+        for other in [d for d, run in self.ops.items() if run["slide"] == slide and d != deff_id]:
+            self.ops.pop(other)                     # the deff it replaces on that slide
+        self.ops[deff_id] = {"player": player, "since": self.machine.clock.get_time(), "info": info, "last": None,
+                             "slide": slide, "priority": priority}
         draw = self.ops_screen(deff_id)
         self.ops[deff_id]["last"] = draw
-        self.text_show("rom_ops", [], priority, draw=draw)
+        self.text_show(slide, [], priority, draw=draw)
         if self._ops_timer is None and self.connected(need_data=False):
             self._ops_timer = self.machine.clock.schedule_interval(self.ops_redraw, TICK)
         return True
@@ -269,6 +282,9 @@ class MediaBridge:
         live = getattr(self.os, "deff_values", {}).get(deff_id)
         if live:
             args = dict(args, **live())
+        if deff_id in CREDIT_LINE_DEFFS:               # [0x01000000]: the credit line and PRESS START / INSERT COINS
+            args = dict(args, slot_texts={0: self.credits_text(), 1: "PRESS START" if self.can_start() else
+                                          "INSERT COINS"})
         if args.get("site_values") is not None:
             return args["site_values"]
         values = args.get("values") or []
@@ -298,10 +314,20 @@ class MediaBridge:
 
     def ops_redraw(self, *_):
         for deff_id in list(self.ops):
+            run = self.ops.get(deff_id)
+            if run is None:
+                continue
+            want = self.live_variant(deff_id)
+            if want != self.variant_of.get(deff_id) and "variant" in self._live_values(deff_id) and (
+                    want is None or os.path.exists(os.path.join(OPS_DIR, "deff_%03d__%s.json.gz" % (deff_id, want)))):
+                # the deff's code switched page on the RAM it reads (deff 109: phase 1 to phase 2): that op list
+                self.ops_start(deff_id, run["info"], run["priority"], want, self.started.get(deff_id, {}))
+                continue
             draw = self.ops_screen(deff_id)
-            if draw != self.ops[deff_id]["last"]:
-                self.ops[deff_id]["last"] = draw
-                self._send("slides_play", {"rom_ops": {"action": "update", "key": "rom_ops", "expire": None}},
+            if draw != run["last"]:
+                run["last"] = draw
+                slide = run["slide"]
+                self._send("slides_play", {slide: {"action": "update", "key": slide, "expire": None}},
                            need_data=False, draw=draw)
 
     def deff_slide(self, info):
@@ -316,11 +342,12 @@ class MediaBridge:
         info = self.data["deffs"].get(deff_id) if self.data else None
         self.active.discard(deff_id)
         if deff_id in self.ops:
-            self.ops.pop(deff_id)
+            slide = self.ops.pop(deff_id)["slide"]
             if not self.ops and self._ops_timer is not None:
                 self.machine.clock.unschedule(self._ops_timer)
                 self._ops_timer = None
-            self._remove("rom_ops")
+            if not any(run["slide"] == slide for run in self.ops.values()):
+                self._remove(slide)
         elif deff_id in self.drawn:
             self.drawn.discard(deff_id)
             if self._drawn_timer is not None and not self.drawn & set(DRAWN):
@@ -443,11 +470,14 @@ class MediaBridge:
         self.redraw()
         self.panels_refresh()
 
+    def _live_values(self, deff_id):
+        live = getattr(self.os, "deff_values", {}).get(deff_id)
+        return live() if live else {}
+
     def live_variant(self, deff_id):
         """The variant a deff draws now from the RAM it reads every frame (its values function's "variant", e.g.
         deff 109 [0x01015184] picks its page by DAT_00034f68, the Bumblebee phase): None for the default."""
-        live = getattr(self.os, "deff_values", {}).get(deff_id)
-        return live().get("variant") if live else None
+        return self._live_values(deff_id).get("variant")
 
     def panels_refresh(self):
         """The status panel and live values of the effects on screen, sent when they changed (every tick)."""
